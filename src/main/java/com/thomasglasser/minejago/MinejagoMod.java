@@ -13,7 +13,6 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.thomasglasser.minejago.init.ClientSetup;
-import com.thomasglasser.minejago.init.CommonSetup;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(MinejagoMod.MODID)
@@ -31,7 +30,6 @@ public class MinejagoMod
         MinejagoEntityTypes.ENTITY_TYPES.register(bus);
         MinejagoItems.ITEMS.register(bus);
 
-        bus.addListener(CommonSetup::init);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> bus.addListener(ClientSetup::init));
         MinecraftForge.EVENT_BUS.addListener(GoldenWeaponItem::checkForAll);
     }
