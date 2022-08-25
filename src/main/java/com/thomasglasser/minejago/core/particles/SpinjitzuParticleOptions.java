@@ -16,6 +16,16 @@ import java.util.Locale;
 public class SpinjitzuParticleOptions implements ParticleOptions {
     public static final float MIN_SCALE = 0.01F;
     public static final float MAX_SCALE = 10.0F;
+
+    public static final Vector3f BLUE = new Vector3f(142, 76, 3);
+    public static final Vector3f BROWN = new Vector3f(157, 193, 240);
+    public static final Vector3f DARK_GOLD = new Vector3f(103, 126, 242);
+    public static final Vector3f LIGHT_BLUE = new Vector3f(78, 5, 2);
+    public static final Vector3f ORANGE = new Vector3f(37, 144, 211);
+    public static final Vector3f TAN = new Vector3f(25, 76, 138);
+    public static final Vector3f WHITE = new Vector3f(7, 2, 3);
+    public static final Vector3f YELLOW = new Vector3f(1, 21, 134);
+
     protected final Vector3f color;
     protected final float scale;
 
