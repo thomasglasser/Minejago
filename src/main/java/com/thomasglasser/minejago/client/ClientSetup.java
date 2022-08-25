@@ -2,15 +2,23 @@ package com.thomasglasser.minejago.client;
 
 import com.thomasglasser.minejago.MinejagoMod;
 import com.thomasglasser.minejago.client.model.ThrownBambooStaffModel;
+import com.thomasglasser.minejago.client.particle.SpinjitzuParticle;
 import com.thomasglasser.minejago.client.renderer.entity.ThrownBambooStaffRenderer;
 import com.thomasglasser.minejago.client.renderer.entity.ThrownBoneKnifeRenderer;
 import com.thomasglasser.minejago.client.model.ThrownBoneKnifeModel;
+import com.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import com.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import com.thomasglasser.minejago.world.item.MinejagoItems;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -45,5 +53,10 @@ public class ClientSetup {
     public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event)
     {
         event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.BAMBOO_STAFF.get()).getCustomRenderer());
+    }
+
+    public static void onRegisterParticleProviders(RegisterParticleProvidersEvent event)
+    {
+        event.register(MinejagoParticleTypes.SPINJITZU.get(), SpinjitzuParticle.Provider::new);
     }
 }

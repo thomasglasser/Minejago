@@ -1,5 +1,6 @@
 package com.thomasglasser.minejago;
 
+import com.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import com.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import com.thomasglasser.minejago.world.item.GoldenWeaponItem;
 import com.thomasglasser.minejago.world.item.MinejagoItems;
@@ -28,8 +29,11 @@ public class MinejagoMod
 
         MinejagoTiers.register();
 
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> bus.addListener(ClientSetup::onRegisterParticleProviders));
+
         MinejagoEntityTypes.ENTITY_TYPES.register(bus);
         MinejagoItems.ITEMS.register(bus);
+        MinejagoParticleTypes.PARTICLE_TYPES.register(bus);
 
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> bus.addListener(ClientSetup::init));
         MinecraftForge.EVENT_BUS.addListener(GoldenWeaponItem::checkForAll);
