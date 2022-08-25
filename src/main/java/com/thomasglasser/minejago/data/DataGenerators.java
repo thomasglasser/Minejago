@@ -1,6 +1,10 @@
-package com.thomasglasser.minejago.generated;
+package com.thomasglasser.minejago.data;
 
 import com.thomasglasser.minejago.MinejagoMod;
+import com.thomasglasser.minejago.data.lang.ModEnUsLanguageProvider;
+import com.thomasglasser.minejago.data.models.ModItemModels;
+import com.thomasglasser.minejago.data.tags.ModBlockTags;
+import com.thomasglasser.minejago.data.tags.ModItemTags;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

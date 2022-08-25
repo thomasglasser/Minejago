@@ -1,7 +1,6 @@
-package com.thomasglasser.minejago.server.item;
+package com.thomasglasser.minejago.world.item;
 
 import com.thomasglasser.minejago.MinejagoMod;
-import com.thomasglasser.minejago.server.item.property.MinejagoTiers;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;

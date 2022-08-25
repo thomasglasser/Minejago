@@ -1,7 +1,7 @@
-package com.thomasglasser.minejago.generated;
+package com.thomasglasser.minejago.data.tags;
 
 import com.thomasglasser.minejago.MinejagoMod;
-import com.thomasglasser.minejago.server.item.MinejagoItems;
+import com.thomasglasser.minejago.world.item.MinejagoItems;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;

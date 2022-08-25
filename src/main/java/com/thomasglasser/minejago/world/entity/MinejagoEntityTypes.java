@@ -1,8 +1,8 @@
-package com.thomasglasser.minejago.server.entity;
+package com.thomasglasser.minejago.world.entity;
 
 import com.thomasglasser.minejago.MinejagoMod;
-import com.thomasglasser.minejago.server.entity.projectile.ThrownBambooStaff;
-import com.thomasglasser.minejago.server.entity.projectile.ThrownBoneKnife;
+import com.thomasglasser.minejago.world.entity.projectile.ThrownBambooStaff;
+import com.thomasglasser.minejago.world.entity.projectile.ThrownBoneKnife;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.registries.DeferredRegister;

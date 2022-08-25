@@ -1,17 +1,13 @@
-package com.thomasglasser.minejago.server.item;
+package com.thomasglasser.minejago.world.item;
 
-import com.thomasglasser.minejago.MinejagoMod;
-import com.thomasglasser.minejago.client.entity.renderer.MinejagoBlockEntityWithoutLevelRenderer;
-import com.thomasglasser.minejago.server.entity.projectile.ThrownBambooStaff;
-import com.thomasglasser.minejago.server.entity.projectile.ThrownBambooStaff;
-import net.minecraft.client.Minecraft;
+import com.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
+import com.thomasglasser.minejago.world.entity.projectile.ThrownBambooStaff;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;

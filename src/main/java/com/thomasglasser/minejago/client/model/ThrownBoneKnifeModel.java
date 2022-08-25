@@ -1,4 +1,4 @@
-package com.thomasglasser.minejago.client.entity.model;
+package com.thomasglasser.minejago.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

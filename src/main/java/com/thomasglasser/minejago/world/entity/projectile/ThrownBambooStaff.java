@@ -1,7 +1,7 @@
-package com.thomasglasser.minejago.server.entity.projectile;
+package com.thomasglasser.minejago.world.entity.projectile;
 
-import com.thomasglasser.minejago.server.entity.MinejagoEntityTypes;
-import com.thomasglasser.minejago.server.item.MinejagoItems;
+import com.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
+import com.thomasglasser.minejago.world.item.MinejagoItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;

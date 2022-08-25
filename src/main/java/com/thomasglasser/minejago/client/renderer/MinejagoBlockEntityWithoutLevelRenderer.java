@@ -1,10 +1,11 @@
-package com.thomasglasser.minejago.client.entity.renderer;
+package com.thomasglasser.minejago.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.thomasglasser.minejago.MinejagoMod;
-import com.thomasglasser.minejago.client.entity.model.ThrownBambooStaffModel;
-import com.thomasglasser.minejago.server.item.MinejagoItems;
+import com.thomasglasser.minejago.client.model.ThrownBambooStaffModel;
+import com.thomasglasser.minejago.client.renderer.entity.ThrownBambooStaffRenderer;
+import com.thomasglasser.minejago.world.item.MinejagoItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;

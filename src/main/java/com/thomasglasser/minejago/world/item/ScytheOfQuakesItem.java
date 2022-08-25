@@ -1,4 +1,4 @@
-package com.thomasglasser.minejago.server.item;
+package com.thomasglasser.minejago.world.item;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;

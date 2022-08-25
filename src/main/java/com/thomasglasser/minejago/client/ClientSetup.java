@@ -1,12 +1,12 @@
-package com.thomasglasser.minejago.init;
+package com.thomasglasser.minejago.client;
 
 import com.thomasglasser.minejago.MinejagoMod;
-import com.thomasglasser.minejago.client.entity.model.ThrownBambooStaffModel;
-import com.thomasglasser.minejago.client.entity.renderer.ThrownBambooStaffRenderer;
-import com.thomasglasser.minejago.client.entity.renderer.ThrownBoneKnifeRenderer;
-import com.thomasglasser.minejago.client.entity.model.ThrownBoneKnifeModel;
-import com.thomasglasser.minejago.server.entity.MinejagoEntityTypes;
-import com.thomasglasser.minejago.server.item.MinejagoItems;
+import com.thomasglasser.minejago.client.model.ThrownBambooStaffModel;
+import com.thomasglasser.minejago.client.renderer.entity.ThrownBambooStaffRenderer;
+import com.thomasglasser.minejago.client.renderer.entity.ThrownBoneKnifeRenderer;
+import com.thomasglasser.minejago.client.model.ThrownBoneKnifeModel;
+import com.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
+import com.thomasglasser.minejago.world.item.MinejagoItems;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelEvent;

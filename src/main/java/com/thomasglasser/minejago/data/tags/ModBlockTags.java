@@ -1,4 +1,4 @@
-package com.thomasglasser.minejago.generated;
+package com.thomasglasser.minejago.data.tags;
 
 import com.thomasglasser.minejago.MinejagoMod;
 import net.minecraft.data.DataGenerator;

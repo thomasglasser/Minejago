@@ -1,8 +1,8 @@
-package com.thomasglasser.minejago.generated;
+package com.thomasglasser.minejago.data.lang;
 
 import com.thomasglasser.minejago.MinejagoMod;
-import com.thomasglasser.minejago.server.entity.MinejagoEntityTypes;
-import com.thomasglasser.minejago.server.item.MinejagoItems;
+import com.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
+import com.thomasglasser.minejago.world.item.MinejagoItems;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.LanguageProvider;
 
