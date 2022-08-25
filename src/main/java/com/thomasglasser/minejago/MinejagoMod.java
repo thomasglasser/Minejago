@@ -27,6 +27,7 @@ public class MinejagoMod
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 
         MinejagoTiers.register();
+
         MinejagoEntityTypes.ENTITY_TYPES.register(bus);
         MinejagoItems.ITEMS.register(bus);
 

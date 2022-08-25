@@ -32,11 +32,6 @@ public class GoldenWeaponItem extends SimpleFoiledItem
     }
 
     @Override
-    public void onCraftedBy(ItemStack pStack, Level pLevel, Player pPlayer) {
-        pStack.addAttributeModifier(Attributes.ATTACK_DAMAGE, new AttributeModifier("AttackDamage", 20, AttributeModifier.Operation.ADDITION), null);
-    }
-
-    @Override
     public boolean canBeDepleted() {
         return false;
     }
