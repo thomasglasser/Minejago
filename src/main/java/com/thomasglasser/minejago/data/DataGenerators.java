@@ -3,6 +3,7 @@ package com.thomasglasser.minejago.data;
 import com.thomasglasser.minejago.MinejagoMod;
 import com.thomasglasser.minejago.data.lang.ModEnUsLanguageProvider;
 import com.thomasglasser.minejago.data.models.ModItemModels;
+import com.thomasglasser.minejago.data.recipes.MinejagoRecipes;
 import com.thomasglasser.minejago.data.tags.ModBlockTags;
 import com.thomasglasser.minejago.data.tags.ModItemTags;
 import net.minecraft.data.DataGenerator;
@@ -27,6 +28,7 @@ public class DataGenerators
 
         //Server
         generator.addProvider(onServer, new ModItemTags(generator, blockTags, existingFileHelper));
+        generator.addProvider(onServer, new MinejagoRecipes(generator));
         generator.addProvider(onServer, blockTags);
 
         //Client

@@ -9,11 +9,11 @@ import com.thomasglasser.minejago.client.model.ThrownBoneKnifeModel;
 import com.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import com.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import com.thomasglasser.minejago.world.item.MinejagoItems;
+import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.ModelEvent;
-import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
-import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -21,9 +21,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 @Mod.EventBusSubscriber(modid = MinejagoMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ClientSetup {
-    public static void init(FMLClientSetupEvent event) {
-    }
-
     @SubscribeEvent
     public static void onRegisterLayers(EntityRenderersEvent.RegisterLayerDefinitions event)
     {
@@ -53,5 +50,15 @@ public class ClientSetup {
     public static void onRegisterParticleProviders(RegisterParticleProvidersEvent event)
     {
         event.register(MinejagoParticleTypes.SPINJITZU.get(), SpinjitzuParticle.Provider::new);
+    }
+
+    public static void onRegisterColorHandlers(RegisterColorHandlersEvent.Item event)
+    {
+        event.register(new ItemColor() {
+            @Override
+            public int getColor(ItemStack pStack, int pTintIndex) {
+                return pTintIndex == 0 ? PotionUtils.getColor(pStack): -1;
+            }
+        }, MinejagoItems.FILLED_TEACUP.get());
     }
 }

@@ -30,12 +30,12 @@ public class MinejagoMod
         MinejagoTiers.register();
 
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> bus.addListener(ClientSetup::onRegisterParticleProviders));
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> bus.addListener(ClientSetup::onRegisterColorHandlers));
 
         MinejagoEntityTypes.ENTITY_TYPES.register(bus);
         MinejagoItems.ITEMS.register(bus);
         MinejagoParticleTypes.PARTICLE_TYPES.register(bus);
 
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> bus.addListener(ClientSetup::init));
         MinecraftForge.EVENT_BUS.addListener(GoldenWeaponItem::checkForAll);
     }
 }

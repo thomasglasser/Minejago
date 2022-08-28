@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "minejago",
+  "key": {
+    "x": {
+      "tag": "minecraft:terracotta"
+    }
+  },
+  "pattern": [
+    "x x",
+    " x "
+  ],
+  "result": {
+    "count": 4,
+    "item": "minejago:teacup"
+  }
+}
