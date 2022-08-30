@@ -14,7 +14,6 @@ import java.util.Locale;
 
 public class SpinjitzuParticleOptions implements ParticleOptions {
     public static final float MIN_SCALE = 0.01F;
-    public static final float MAX_SCALE = 100.0F;
 
     public static final Vector3f BLUE = new Vector3f(142, 76, 3);
     public static final Vector3f BROWN = new Vector3f(157, 193, 240);
@@ -24,13 +23,14 @@ public class SpinjitzuParticleOptions implements ParticleOptions {
     public static final Vector3f TAN = new Vector3f(25, 76, 138);
     public static final Vector3f WHITE = new Vector3f(7, 2, 3);
     public static final Vector3f YELLOW = new Vector3f(1, 21, 134);
+    public static final Vector3f GOLD = new Vector3f(); // TODO: Figure out TOC/Golden color
 
     protected final Vector3f color;
     protected final float scale;
 
     public SpinjitzuParticleOptions(Vector3f pColor, float pScale) {
         this.color = pColor;
-        this.scale = Mth.clamp(pScale, MIN_SCALE, MAX_SCALE);
+        this.scale = Mth.clamp(pScale, MIN_SCALE, Float.MAX_VALUE);
     }
 
     public static Vector3f readVector3f(StringReader pStringInput) throws CommandSyntaxException {

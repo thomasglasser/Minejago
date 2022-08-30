@@ -8,6 +8,7 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -58,7 +59,6 @@ public class SpinjitzuParticle<T extends SpinjitzuParticleOptions> extends Textu
         vector3f1.transform(quaternion);
         Vector3f[] avector3f = new Vector3f[]{new Vector3f(-1.0F, -1.0F, 0.0F), new Vector3f(-1.0F, 1.0F, 0.0F), new Vector3f(1.0F, 1.0F, 0.0F), new Vector3f(1.0F, -1.0F, 0.0F)};
         float f4 = this.getQuadSize(pPartialTicks);
-
         for(int i = 0; i < 4; ++i) {
             Vector3f vector3f = avector3f[i];
             vector3f.transform(quaternion);
@@ -121,6 +121,24 @@ public class SpinjitzuParticle<T extends SpinjitzuParticleOptions> extends Textu
 
         public Particle createParticle(SpinjitzuParticleOptions pType, ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
             return new SpinjitzuParticle<>(pLevel, pX, pY, pZ, pXSpeed, pYSpeed, pZSpeed, pType, this.sprites);
+        }
+    }
+
+    public static void renderSpinjitzu(Entity entity, Vector3f color1, Vector3f color2, double height, boolean toc)
+    {
+        float scale = toc && color1 == SpinjitzuParticleOptions.GOLD ? 2.2f : 2f;
+        float up = 0.0f;
+        for (int i = 0; i < height; i++) {
+            entity.getLevel().addParticle(new SpinjitzuParticleOptions(color1, scale), true, entity.getX(), entity.getY() + up, entity.getZ(), 0, 1, 0);
+            scale *= toc ? 1.1f : 1.15f;
+            up += 0.2f;
+        }
+        scale = toc && color1 == SpinjitzuParticleOptions.GOLD ? 2.2f : 2f;
+        up = 0.1f;
+        for (int i = 0; i < height; i++) {
+            entity.getLevel().addParticle(new SpinjitzuParticleOptions(color2, scale), true, entity.getX(), entity.getY() + up, entity.getZ(), 0, 1, 0);
+            scale *= toc ? 1.1f : 1.15f;
+            up += 0.2f;
         }
     }
 }
