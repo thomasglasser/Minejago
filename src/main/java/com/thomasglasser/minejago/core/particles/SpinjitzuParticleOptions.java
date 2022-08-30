@@ -15,7 +15,7 @@ import java.util.Locale;
 
 public class SpinjitzuParticleOptions implements ParticleOptions {
     public static final float MIN_SCALE = 0.01F;
-    public static final float MAX_SCALE = 10.0F;
+    public static final float MAX_SCALE = 100.0F;
 
     public static final Vector3f BLUE = new Vector3f(142, 76, 3);
     public static final Vector3f BROWN = new Vector3f(157, 193, 240);
