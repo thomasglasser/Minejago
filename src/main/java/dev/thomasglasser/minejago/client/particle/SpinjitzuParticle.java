@@ -124,7 +124,7 @@ public class SpinjitzuParticle<T extends SpinjitzuParticleOptions> extends Textu
         }
     }
 
-    public static void renderSpinjitzu(Entity entity, Vector3f color1, Vector3f color2, double height, boolean toc)
+    public static void renderPlayerSpinjitzu(Entity entity, Vector3f color1, Vector3f color2, double height, boolean toc)
     {
         float scale = toc && color1 == SpinjitzuParticleOptions.GOLD ? 2.2f : 2f;
         float up = 0.0f;
