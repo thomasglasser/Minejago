@@ -3,6 +3,8 @@ package dev.thomasglasser.minejago.world.item;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import dev.thomasglasser.minejago.MinejagoMod;
+import dev.thomasglasser.minejago.client.particle.SpinjitzuParticle;
+import dev.thomasglasser.minejago.core.particles.SpinjitzuParticleOptions;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;

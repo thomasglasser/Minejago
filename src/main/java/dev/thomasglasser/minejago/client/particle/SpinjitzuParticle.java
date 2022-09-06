@@ -29,7 +29,7 @@ public class SpinjitzuParticle<T extends SpinjitzuParticleOptions> extends Textu
         this.bCol = pOptions.getColor().z();
         this.quadSize *= 0.75F * pOptions.getScale();
         int i = (int) (8.0D / (this.random.nextDouble() * 0.8D + 0.2D));
-        this.lifetime = 15;
+        this.lifetime = 5;
         this.setSpriteFromAge(pSprites);
     }
 

@@ -14,31 +14,10 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 
-public class BoneKnifeItem extends SwordItem
+public class BoneKnifeItem extends ThrowableSwordItem
 {
     public BoneKnifeItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
         super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
-    }
-
-    public UseAnim getUseAnimation(ItemStack pStack) {
-        return UseAnim.SPEAR;
-    }
-
-    /**
-     * How long it takes to use or consume an item
-     */
-    public int getUseDuration(ItemStack pStack) {
-        return 3600;
-    }
-
-    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pHand) {
-        ItemStack itemstack = pPlayer.getItemInHand(pHand);
-        if (itemstack.getDamageValue() >= itemstack.getMaxDamage() - 1) {
-            return InteractionResultHolder.fail(itemstack);
-        } else {
-            pPlayer.startUsingItem(pHand);
-            return InteractionResultHolder.consume(itemstack);
-        }
     }
 
     public void releaseUsing(ItemStack pStack, Level pLevel, LivingEntity pEntityLiving, int pTimeLeft) {
@@ -65,10 +44,5 @@ public class BoneKnifeItem extends SwordItem
                 player.awardStat(Stats.ITEM_USED.get(this));
             }
         }
-    }
-
-    @Override
-    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        return super.canApplyAtEnchantingTable(stack, enchantment) || enchantment == Enchantments.LOYALTY;
     }
 }
