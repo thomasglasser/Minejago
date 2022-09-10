@@ -14,6 +14,7 @@ import dev.thomasglasser.minejago.client.animation.MinejagoPlayerAnimator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.event.TickEvent;
@@ -36,13 +37,13 @@ public class SpinjitzuAnimation {
     public static final List<KeyframeAnimation> ANIMATIONS = GeckoLibSerializer.serialize((JsonObject) JsonParser.parseReader(new InputStreamReader(Objects.requireNonNull(SpinjitzuAnimation.class.getClassLoader().getResourceAsStream("assets/minejago/animations/spinjitzu.animation.json")), StandardCharsets.UTF_8)));
 
     @SubscribeEvent
-    public static void onChatReceived(ClientChatReceivedEvent event) {
+    public static void onChatReceived(ClientChatEvent event) {
         //Test if it is a player (main or other) and the message
-        if (!event.getPlayerChatMessage().signer().isSystem() && event.getPlayerChatMessage().signedContent().plain().equals("Ninja, go!")) {
+        if (event.getMessage().equals("Ninja, go!")) {
 
 
             //Get the player from Minecraft, using the chat profile ID. From network packets, you'll receive entity IDs instead of UUIDs
-            var player = Minecraft.getInstance().level.getPlayerByUUID(event.getPlayerChatMessage().signer().profileId());
+            var player = Minecraft.getInstance().level.getPlayerByUUID(Minecraft.getInstance().player.getUUID());
 
             if (player == null) return; //The player can be null because it was a system message or because it is not loaded by this player.
 
