@@ -52,7 +52,7 @@ public class SpinjitzuAnimation {
                 //You can set an animation from anywhere ON THE CLIENT
                 //Do not attempt to do this on a server, that will only fail
                 animation.setAnimation(new KeyframeAnimationPlayer(ANIMATIONS.get(0)));
-                animation.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(6, Ease.CONSTANT), new KeyframeAnimationPlayer(ANIMATIONS.get(1)));
+                animation.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(15, Ease.CONSTANT), new KeyframeAnimationPlayer(ANIMATIONS.get(1)));
                 //You might use  animation.replaceAnimationWithFade(); to create fade effect instead of sudden change
                 //See javadoc for details
             }
