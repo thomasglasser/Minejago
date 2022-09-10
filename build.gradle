@@ -74,6 +74,9 @@ minecraft {
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             property 'forge.enabledGameTestNamespaces', 'minejago'
 
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+
             mods {
                 minejago {
                     source sourceSets.main
@@ -90,6 +93,9 @@ minecraft {
 
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             property 'forge.enabledGameTestNamespaces', 'minejago'
+
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
             mods {
                 minejago {
@@ -152,16 +158,22 @@ repositories {
     maven {
         url "https://cursemaven.com"
     }
+
+    maven {
+        url = "https://api.modrinth.com/maven"
+    }
 }
 
 dependencies {
     // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft', it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:1.19.2-43.1.16'
+    minecraft 'net.minecraftforge:forge:1.19.2-43.1.25'
 
     runtimeOnly fg.deobf("curse.maven:jei-238222:${jei_version}")
     runtimeOnly fg.deobf("curse.maven:theoneprobe-245211:${top_version}")
+
+    implementation fg.deobf("maven.modrinth:playeranimator:${anim_version}-forge")
 }
 
 // Example for how to get properties into the manifest for reading at runtime.
