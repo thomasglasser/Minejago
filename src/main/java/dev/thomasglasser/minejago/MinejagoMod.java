@@ -1,11 +1,13 @@
 package dev.thomasglasser.minejago;
 
+import dev.thomasglasser.minejago.core.CommonSetup;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.item.GoldenWeaponItem;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.MinejagoTiers;
 import dev.thomasglasser.minejago.client.ClientSetup;
+import dev.thomasglasser.minejago.world.level.biome.MinejagoBiomes;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -27,14 +29,17 @@ public class MinejagoMod
     public MinejagoMod() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        MinejagoTiers.register();
-
+        bus.addListener(CommonSetup::onCommonSetup);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> bus.addListener(ClientSetup::onRegisterParticleProviders));
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> bus.addListener(ClientSetup::onRegisterColorHandlers));
+
+        MinejagoTiers.register();
 
         MinejagoEntityTypes.ENTITY_TYPES.register(bus);
         MinejagoItems.ITEMS.register(bus);
         MinejagoParticleTypes.PARTICLE_TYPES.register(bus);
+
+        MinejagoBiomes.registerBiomes(bus);
 
         MinecraftForge.EVENT_BUS.addListener(GoldenWeaponItem::checkForAll);
     }

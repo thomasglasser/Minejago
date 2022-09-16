@@ -11,7 +11,7 @@ loaderVersion="[41,)" #mandatory This is typically bumped every Minecraft versio
 # Review your options at https://choosealicense.com/. All rights reserved is the default copyright stance, and is thus the default here.
 license="All rights reserved"
 # A URL to refer people to when problems occur with this mod
-issueTrackerURL="https://github.com/thomasglasser/Minejago-Latest/issues" #optional
+issueTrackerURL="https://github.com/thomasglasser/Minejago/labels/Latest" #optional
 # A list of mods - how many allowed here is determined by the individual mod loader
 [[mods]] #mandatory
 # The modid of the mod
@@ -25,7 +25,7 @@ displayName="Minejago: Miners of Spinjitzu" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification https://mcforge.readthedocs.io/en/latest/gettingstarted/autoupdate/
 updateJSONURL="https://forge.curseupdate.com/496253/minejago" #optional
 # A URL for the "homepage" for this mod, displayed in the mod UI
-displayURL="https://github.com/thomasglasser/Minejago-Latest" #optional
+displayURL="https://github.com/thomasglasser/Minejago/tree/1.19.2-forge" #optional
 # A file name (in the root of the mod JAR) containing a logo for display
 logoFile="minejago_logo_1.0.png" #optional
 # A text field displayed in the mod UI
@@ -65,5 +65,16 @@ Adds elements of the Ninjago franchise into Minecraft
     versionRange="[${anim_version},)" #mandatory
     # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
     ordering="NONE"
+    # Side this dependency is applied on - BOTH, CLIENT or SERVER
+    side="BOTH"
+[[dependencies.minejago]] #optional
+    # the modid of the dependency
+    modId="terrablender" #mandatory
+    # Does this dependency have to exist - if not, ordering below must be specified
+    mandatory=true #mandatory
+    # The version range of the dependency
+    versionRange="[${tb_version},)" #mandatory
+    # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
+    ordering="BEFORE"
     # Side this dependency is applied on - BOTH, CLIENT or SERVER
     side="BOTH"
