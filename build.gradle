@@ -175,7 +175,9 @@ dependencies {
     minecraft 'net.minecraftforge:forge:'+ mc_version + '-43.1.25'
 
     runtimeOnly fg.deobf("curse.maven:jei-238222:${jei_version}")
-    runtimeOnly fg.deobf("curse.maven:theoneprobe-245211:${top_version}")
+    runtimeOnly fg.deobf("curse.maven:top-245211:${top_version}")
+    runtimeOnly fg.deobf("curse.maven:hsb-474114:${hsb_version}")
+    runtimeOnly fg.deobf("curse.maven:we-225608:${we_version}")
 
     implementation fg.deobf("maven.modrinth:playeranimator:${anim_version}-forge")
 

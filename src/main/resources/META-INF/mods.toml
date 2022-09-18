@@ -29,7 +29,7 @@ displayURL="https://github.com/thomasglasser/Minejago/tree/1.19.2-forge" #option
 # A file name (in the root of the mod JAR) containing a logo for display
 logoFile="minejago_logo_1.0.png" #optional
 # A text field displayed in the mod UI
-credits="Some models and textures made by Pouffy" #optional
+credits="Includes textures by Pouffy, structures by Comerciante" #optional
 # A text field displayed in the mod UI
 authors="Thomas Glasser" #optional
 # The description text for the mod (multi line!) (#mandatory)
