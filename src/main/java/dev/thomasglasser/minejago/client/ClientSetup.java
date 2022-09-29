@@ -1,7 +1,7 @@
 package dev.thomasglasser.minejago.client;
 
 import dev.thomasglasser.minejago.MinejagoMod;
-import dev.thomasglasser.minejago.client.model.ThrownBambooStaffModel;
+import dev.thomasglasser.minejago.client.model.BambooStaffModel;
 import dev.thomasglasser.minejago.client.particle.SpinjitzuParticle;
 import dev.thomasglasser.minejago.client.renderer.entity.ThrownBambooStaffRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.ThrownBoneKnifeRenderer;
@@ -24,7 +24,7 @@ public class ClientSetup {
     public static void onRegisterLayers(EntityRenderersEvent.RegisterLayerDefinitions event)
     {
         event.registerLayerDefinition(ThrownBoneKnifeModel.LAYER_LOCATION, ThrownBoneKnifeModel::createBodyLayer);
-        event.registerLayerDefinition(ThrownBambooStaffModel.LAYER_LOCATION, ThrownBambooStaffModel::createBodyLayer);
+        event.registerLayerDefinition(BambooStaffModel.LAYER_LOCATION, BambooStaffModel::createBodyLayer);
     }
 
     @SubscribeEvent

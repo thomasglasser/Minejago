@@ -3,7 +3,7 @@ package dev.thomasglasser.minejago.client.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.thomasglasser.minejago.MinejagoMod;
-import dev.thomasglasser.minejago.client.model.ThrownBambooStaffModel;
+import dev.thomasglasser.minejago.client.model.BambooStaffModel;
 import dev.thomasglasser.minejago.client.renderer.entity.ThrownBambooStaffRenderer;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import net.minecraft.client.Minecraft;
@@ -16,14 +16,14 @@ import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.world.item.*;
 
 public class MinejagoBlockEntityWithoutLevelRenderer extends net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer implements ResourceManagerReloadListener {
-    private ThrownBambooStaffModel thrownBambooStaffModel;
+    private BambooStaffModel bambooStaffModel;
 
     public MinejagoBlockEntityWithoutLevelRenderer() {
         super(null, null);
     }
 
     public void onResourceManagerReload(ResourceManager pResourceManager) {
-        this.thrownBambooStaffModel = new ThrownBambooStaffModel(Minecraft.getInstance().getEntityModels().bakeLayer(ThrownBambooStaffModel.LAYER_LOCATION));
+        this.bambooStaffModel = new BambooStaffModel(Minecraft.getInstance().getEntityModels().bakeLayer(BambooStaffModel.LAYER_LOCATION));
     }
 
     public void renderByItem(ItemStack pStack, ItemTransforms.TransformType pTransformType, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
@@ -37,8 +37,8 @@ public class MinejagoBlockEntityWithoutLevelRenderer extends net.minecraft.clien
             {
                 pPoseStack.pushPose();
                 pPoseStack.scale(1.0F, -1.0F, -1.0F);
-                VertexConsumer vertexconsumer1 = ItemRenderer.getFoilBufferDirect(pBuffer, this.thrownBambooStaffModel.renderType(ThrownBambooStaffRenderer.TEXTURE_LOCATION), false, pStack.hasFoil());
-                this.thrownBambooStaffModel.renderToBuffer(pPoseStack, vertexconsumer1, pPackedLight, pPackedOverlay, 1.0F, 1.0F, 1.0F, 1.0F);
+                VertexConsumer vertexconsumer1 = ItemRenderer.getFoilBufferDirect(pBuffer, this.bambooStaffModel.renderType(ThrownBambooStaffRenderer.TEXTURE_LOCATION), false, pStack.hasFoil());
+                this.bambooStaffModel.renderToBuffer(pPoseStack, vertexconsumer1, pPackedLight, pPackedOverlay, 1.0F, 1.0F, 1.0F, 1.0F);
                 pPoseStack.popPose();
             }
         }

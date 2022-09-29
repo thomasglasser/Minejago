@@ -3,20 +3,21 @@ package dev.thomasglasser.minejago.client.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.thomasglasser.minejago.MinejagoMod;
-import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 
-public class ThrownBoneKnifeModel<T extends Entity> extends EntityModel<T> {
+public class ThrownBoneKnifeModel extends Model {
 	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(MinejagoMod.MODID, "bone_knife"), "main");
 	private final ModelPart bb_main;
 
 	public ThrownBoneKnifeModel(ModelPart root) {
+		super(RenderType::entitySolid);
 		this.bb_main = root.getChild("bb_main");
 	}
 
@@ -101,11 +102,6 @@ public class ThrownBoneKnifeModel<T extends Entity> extends EntityModel<T> {
 				.texOffs(12, 20).addBox(-1.0F, -1.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, -0.7854F));
 
 		return LayerDefinition.create(meshdefinition, 32, 32);
-	}
-
-	@Override
-	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-
 	}
 
 	@Override
