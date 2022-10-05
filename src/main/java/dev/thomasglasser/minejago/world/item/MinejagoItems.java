@@ -1,6 +1,9 @@
 package dev.thomasglasser.minejago.world.item;
 
 import dev.thomasglasser.minejago.MinejagoMod;
+import dev.thomasglasser.minejago.data.tags.MinejagoBannerPatternTags;
+import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPatterns;
+import net.minecraft.tags.BannerPatternTags;
 import net.minecraft.world.item.*;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -15,4 +18,5 @@ public class MinejagoItems
     public static final RegistryObject<Item> SCYTHE_OF_QUAKES = ITEMS.register("scythe_of_quakes", () -> new ScytheOfQuakesItem(new Item.Properties().defaultDurability(0).tab(CreativeModeTab.TAB_COMBAT).rarity(Rarity.EPIC).fireResistant().setNoRepair().stacksTo(1)));
     public static final RegistryObject<Item> TEACUP = ITEMS.register("teacup", () -> new TeacupItem(new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS)));
     public static final RegistryObject<Item> FILLED_TEACUP = ITEMS.register("filled_teacup", () -> new FilledTeacupItem(new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_BREWING)));
+    public static final RegistryObject<Item> FOUR_WEAPONS_BANNER_PATTERN = ITEMS.register("four_weapons_banner_pattern", () -> new BannerPatternItem(MinejagoBannerPatternTags.PATTERN_ITEM_FOUR_WEAPONS, (new Item.Properties()).stacksTo(1).tab(CreativeModeTab.TAB_MISC).rarity(Rarity.EPIC)));
 }

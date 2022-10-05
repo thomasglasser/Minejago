@@ -4,6 +4,7 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -18,6 +19,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.PotionItem;
+import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.context.UseOnContext;
@@ -25,6 +27,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class FilledTeacupItem extends PotionItem
 {
@@ -101,5 +104,44 @@ public class FilledTeacupItem extends PotionItem
         } else {
             return InteractionResult.PASS;
         }
+    }
+
+    @Override
+    public Component getName(ItemStack pStack) {
+        String id = MinejagoItems.FILLED_TEACUP.get().getDescriptionId();
+        Potion potion = PotionUtils.getPotion(pStack);
+        String label = "";
+        switch (potion.getName(""))
+        {
+            case "swiftness" ->
+            {
+                id += ".potion";
+                label = "effect.minecraft.speed";
+            }
+            case "healing" ->
+            {
+                id += ".potion";
+                label = "effect.minecraft.instant_health";
+            }
+            case "harming" ->
+            {
+                id += ".potion";
+                label = "effect.minecraft.instant_damage";
+            }
+            case "leaping" ->
+            {
+                id += ".potion";
+                label = "effect.minecraft.jump_boost";
+            }
+            case "turtle_master", "thick", "awkward", "mundane", "water", "empty" ->
+            {
+                return super.getName(pStack);
+            }
+            default -> {
+                id += ".potion";
+                label = (potion.getName("effect." + ForgeRegistries.POTIONS.getKey(potion).getNamespace() + "."));
+            }
+        }
+        return Component.translatable(id, Component.translatable(label));
     }
 }
