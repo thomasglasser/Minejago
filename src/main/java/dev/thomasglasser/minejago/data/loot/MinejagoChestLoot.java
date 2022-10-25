@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.data.loot;
 
-import dev.thomasglasser.minejago.MinejagoMod;
+import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import net.minecraft.data.loot.ChestLoot;
 import net.minecraft.resources.ResourceLocation;
@@ -23,6 +23,6 @@ public class MinejagoChestLoot extends ChestLoot
 
     private ResourceLocation modLoc(String name)
     {
-        return new ResourceLocation(MinejagoMod.MODID, "chests/" + name);
+        return new ResourceLocation(Minejago.MODID, "chests/" + name);
     }
 }

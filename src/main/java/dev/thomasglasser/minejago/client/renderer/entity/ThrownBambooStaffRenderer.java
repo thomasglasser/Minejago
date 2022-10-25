@@ -3,7 +3,7 @@ package dev.thomasglasser.minejago.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
-import dev.thomasglasser.minejago.MinejagoMod;
+import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.model.BambooStaffModel;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownBambooStaff;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -16,7 +16,7 @@ import net.minecraft.util.Mth;
 
 public class ThrownBambooStaffRenderer extends EntityRenderer<ThrownBambooStaff>
 {
-    public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(MinejagoMod.MODID, "textures/entity/bamboo_staff.png");
+    public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(Minejago.MODID, "textures/entity/bamboo_staff.png");
     private final BambooStaffModel model;
 
     public ThrownBambooStaffRenderer(EntityRendererProvider.Context context) {

@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.data.recipes;
 
-import dev.thomasglasser.minejago.MinejagoMod;
+import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.data.DataGenerator;
@@ -23,7 +23,7 @@ public class MinejagoRecipes extends RecipeProvider {
                 .pattern("x x")
                 .pattern(" x ")
                 .define('x', ItemTags.TERRACOTTA)
-                .group(MinejagoMod.MODID)
+                .group(Minejago.MODID)
                 .unlockedBy("has_terracotta", InventoryChangeTrigger.TriggerInstance.hasItems(Items.TERRACOTTA));
         teacup.save(writer);
     }

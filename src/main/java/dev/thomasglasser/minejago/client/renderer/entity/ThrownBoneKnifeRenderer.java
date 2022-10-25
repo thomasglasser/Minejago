@@ -3,7 +3,7 @@ package dev.thomasglasser.minejago.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
-import dev.thomasglasser.minejago.MinejagoMod;
+import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.model.ThrownBoneKnifeModel;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownBoneKnife;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -16,7 +16,7 @@ import net.minecraft.util.Mth;
 
 public class ThrownBoneKnifeRenderer extends EntityRenderer<ThrownBoneKnife>
 {
-    public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(MinejagoMod.MODID, "textures/entity/bone_knife.png");
+    public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(Minejago.MODID, "textures/entity/bone_knife.png");
     private final ThrownBoneKnifeModel model;
 
     public ThrownBoneKnifeRenderer(EntityRendererProvider.Context context) {

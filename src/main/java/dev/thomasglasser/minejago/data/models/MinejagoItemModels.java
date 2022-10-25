@@ -1,16 +1,16 @@
 package dev.thomasglasser.minejago.data.models;
 
-import dev.thomasglasser.minejago.MinejagoMod;
+import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
-public class ModItemModels extends ItemModelProvider
+public class MinejagoItemModels extends ItemModelProvider
 {
-    public ModItemModels(DataGenerator generator, ExistingFileHelper helper)
+    public MinejagoItemModels(DataGenerator generator, ExistingFileHelper helper)
     {
-        super(generator, MinejagoMod.MODID, helper);
+        super(generator, Minejago.MODID, helper);
 
     }
 

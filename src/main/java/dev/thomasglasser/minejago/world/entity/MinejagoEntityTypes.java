@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.world.entity;
 
-import dev.thomasglasser.minejago.MinejagoMod;
+import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownBambooStaff;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownBoneKnife;
 import net.minecraft.world.entity.EntityType;
@@ -11,7 +11,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class MinejagoEntityTypes
 {
-    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, MinejagoMod.MODID);
+    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, Minejago.MODID);
 
     public static final RegistryObject<EntityType<ThrownBambooStaff>> THROWN_BAMBOO_STAFF = ENTITY_TYPES.register("thrown_bamboo_staff", () -> EntityType.Builder.<ThrownBambooStaff>of(ThrownBambooStaff::new, MobCategory.MISC)
             .sized(0.5F, 0.5F)

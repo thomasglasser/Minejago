@@ -1,10 +1,9 @@
 package dev.thomasglasser.minejago.data.lang;
 
-import dev.thomasglasser.minejago.MinejagoMod;
+import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPatterns;
-import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
@@ -13,16 +12,15 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.data.LanguageProvider;
 import net.minecraft.world.level.block.entity.BannerPattern;
 
-public class ModEnUsLanguageProvider extends LanguageProvider
+public class MinejagoEnUsLanguageProvider extends LanguageProvider
 {
 
-    public ModEnUsLanguageProvider(DataGenerator generator)
+    public MinejagoEnUsLanguageProvider(DataGenerator generator)
     {
-        super(generator, MinejagoMod.MODID, "en_us");
+        super(generator, Minejago.MODID, "en_us");
     }
 
     @Override
@@ -64,7 +62,7 @@ public class ModEnUsLanguageProvider extends LanguageProvider
     {
         for (DyeColor color: DyeColor.values())
         {
-            add("block.minecraft.banner." + MinejagoMod.MODID + "." + pattern.getHashname() + "." + color.getName(), color.getName().substring(0, 1).toUpperCase() + color.getName().substring(1) + " " + name);
+            add("block.minecraft.banner." + Minejago.MODID + "." + pattern.getHashname() + "." + color.getName(), color.getName().substring(0, 1).toUpperCase() + color.getName().substring(1) + " " + name);
         }
     }
 

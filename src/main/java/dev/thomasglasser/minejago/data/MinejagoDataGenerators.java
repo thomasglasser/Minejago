@@ -1,21 +1,21 @@
 package dev.thomasglasser.minejago.data;
 
-import dev.thomasglasser.minejago.MinejagoMod;
-import dev.thomasglasser.minejago.data.lang.ModEnUsLanguageProvider;
+import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.data.lang.MinejagoEnUsLanguageProvider;
 import dev.thomasglasser.minejago.data.loot.MinejagoLootTableProvider;
-import dev.thomasglasser.minejago.data.models.ModItemModels;
+import dev.thomasglasser.minejago.data.models.MinejagoItemModels;
 import dev.thomasglasser.minejago.data.recipes.MinejagoRecipes;
 import dev.thomasglasser.minejago.data.tags.MinejagoBannerPatternTags;
-import dev.thomasglasser.minejago.data.tags.ModBlockTags;
-import dev.thomasglasser.minejago.data.tags.ModItemTags;
+import dev.thomasglasser.minejago.data.tags.MinejagoBlockTags;
+import dev.thomasglasser.minejago.data.tags.MinejagoItemTags;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.data.event.GatherDataEvent;
 
-@Mod.EventBusSubscriber(modid = MinejagoMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class DataGenerators
+@Mod.EventBusSubscriber(modid = Minejago.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+public class MinejagoDataGenerators
 {
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event)
@@ -26,17 +26,17 @@ public class DataGenerators
         boolean onServer = event.includeServer();
         boolean onClient = event.includeClient();
 
-        ModBlockTags blockTags = new ModBlockTags(generator, existingFileHelper);
+        MinejagoBlockTags blockTags = new MinejagoBlockTags(generator, existingFileHelper);
 
         //Server
-        generator.addProvider(onServer, new ModItemTags(generator, blockTags, existingFileHelper));
+        generator.addProvider(onServer, new MinejagoItemTags(generator, blockTags, existingFileHelper));
         generator.addProvider(onServer, new MinejagoRecipes(generator));
         generator.addProvider(onServer, blockTags);
         generator.addProvider(onServer, new MinejagoBannerPatternTags(generator, existingFileHelper));
         generator.addProvider(onServer, new MinejagoLootTableProvider(generator));
 
         //Client
-        generator.addProvider(onClient, new ModItemModels(generator, existingFileHelper));
-        generator.addProvider(onClient, new ModEnUsLanguageProvider(generator));
+        generator.addProvider(onClient, new MinejagoItemModels(generator, existingFileHelper));
+        generator.addProvider(onClient, new MinejagoEnUsLanguageProvider(generator));
     }
 }

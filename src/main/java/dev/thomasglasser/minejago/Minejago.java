@@ -1,13 +1,13 @@
 package dev.thomasglasser.minejago;
 
-import dev.thomasglasser.minejago.core.CommonSetup;
+import dev.thomasglasser.minejago.core.MinejagoCoreEvents;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
 import dev.thomasglasser.minejago.world.item.GoldenWeaponItem;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.MinejagoTiers;
-import dev.thomasglasser.minejago.client.ClientSetup;
+import dev.thomasglasser.minejago.client.MinejagoClientEvents;
 import dev.thomasglasser.minejago.world.level.biome.MinejagoBiomes;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPatterns;
 import net.minecraftforge.api.distmarker.Dist;
@@ -20,20 +20,20 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 // The value here should match an entry in the META-INF/mods.toml file
-@Mod(MinejagoMod.MODID)
-public class MinejagoMod
+@Mod(Minejago.MODID)
+public class Minejago
 {
     // Directly reference a log4j logger.
     public static final Logger LOGGER = LogManager.getLogger();
 
     public static final String MODID = "minejago";
 
-    public MinejagoMod() {
+    public Minejago() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        bus.addListener(CommonSetup::onCommonSetup);
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> bus.addListener(ClientSetup::onRegisterParticleProviders));
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> bus.addListener(ClientSetup::onRegisterColorHandlers));
+        bus.addListener(MinejagoCoreEvents::onCommonSetup);
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> bus.addListener(MinejagoClientEvents::onRegisterParticleProviders));
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> bus.addListener(MinejagoClientEvents::onRegisterColorHandlers));
 
         MinejagoTiers.register();
 
