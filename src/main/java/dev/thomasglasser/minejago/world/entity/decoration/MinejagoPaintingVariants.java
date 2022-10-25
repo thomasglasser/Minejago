@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.world.entity.decoration;
 
-import dev.thomasglasser.minejago.MinejagoMod;
+import dev.thomasglasser.minejago.Minejago;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -21,14 +21,14 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class MinejagoPaintingVariants
 {
-    public static final DeferredRegister<PaintingVariant> PAINTING_VARIANTS = DeferredRegister.create(ForgeRegistries.PAINTING_VARIANTS, MinejagoMod.MODID);
+    public static final DeferredRegister<PaintingVariant> PAINTING_VARIANTS = DeferredRegister.create(ForgeRegistries.PAINTING_VARIANTS, Minejago.MODID);
 
     public static final RegistryObject<PaintingVariant> FOUR_WEAPONS = PAINTING_VARIANTS.register("four_weapons", () -> new PaintingVariant(32, 16));
 
     @SubscribeEvent
     public static void onInteract(PlayerInteractEvent.EntityInteract event)
     {
-        if (!event.getLevel().isClientSide() && event.getHand() == InteractionHand.MAIN_HAND && event.getTarget() instanceof Painting painting && painting.getVariant().is(new ResourceLocation(MinejagoMod.MODID, "four_weapons")))
+        if (!event.getLevel().isClientSide() && event.getHand() == InteractionHand.MAIN_HAND && event.getTarget() instanceof Painting painting && painting.getVariant().is(new ResourceLocation(Minejago.MODID, "four_weapons")))
         {
             ItemStack itemstack = MapItem.create(event.getEntity().level, (int)event.getEntity().getX(), (int)event.getEntity().getZ(), (byte)2, true, true);
             MapItem.renderBiomePreviewMap((ServerLevel) event.getEntity().level, itemstack);

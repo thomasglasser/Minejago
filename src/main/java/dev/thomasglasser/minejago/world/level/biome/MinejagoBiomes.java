@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.world.level.biome;
 
-import dev.thomasglasser.minejago.MinejagoMod;
+import dev.thomasglasser.minejago.Minejago;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -15,7 +15,7 @@ public class MinejagoBiomes
 {
     public static final ResourceKey<Biome> HIGH_MOUNTAINS = registerKey("high_mountains");
 
-    public static final DeferredRegister<Biome> BIOMES = DeferredRegister.create(Registry.BIOME_REGISTRY, MinejagoMod.MODID);
+    public static final DeferredRegister<Biome> BIOMES = DeferredRegister.create(Registry.BIOME_REGISTRY, Minejago.MODID);
 
     public static void registerBiomes(IEventBus bus)
     {
@@ -30,6 +30,6 @@ public class MinejagoBiomes
 
     private static ResourceKey<Biome> registerKey(String name)
     {
-        return ResourceKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(MinejagoMod.MODID, name));
+        return ResourceKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(Minejago.MODID, name));
     }
 }

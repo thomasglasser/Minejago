@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.client;
 
-import dev.thomasglasser.minejago.MinejagoMod;
+import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.model.BambooStaffModel;
 import dev.thomasglasser.minejago.client.particle.SpinjitzuParticle;
 import dev.thomasglasser.minejago.client.renderer.entity.ThrownBambooStaffRenderer;
@@ -18,8 +18,8 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = MinejagoMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class ClientSetup {
+@Mod.EventBusSubscriber(modid = Minejago.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+public class MinejagoClientEvents {
     @SubscribeEvent
     public static void onRegisterLayers(EntityRenderersEvent.RegisterLayerDefinitions event)
     {
@@ -37,7 +37,7 @@ public class ClientSetup {
     @SubscribeEvent
     public static void registerModels(ModelEvent.RegisterAdditional event)
     {
-        event.register(new ResourceLocation(MinejagoMod.MODID, "item/bamboo_staff_inventory"));
+        event.register(new ResourceLocation(Minejago.MODID, "item/bamboo_staff_inventory"));
     }
 
     @SubscribeEvent

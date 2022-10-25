@@ -3,33 +3,27 @@ package dev.thomasglasser.minejago.client.animation.definitions;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.blaze3d.platform.InputConstants;
-import dev.kosmx.playerAnim.api.layered.IAnimation;
 import dev.kosmx.playerAnim.api.layered.KeyframeAnimationPlayer;
-import dev.kosmx.playerAnim.api.layered.ModifierLayer;
 import dev.kosmx.playerAnim.api.layered.modifier.AbstractFadeModifier;
 import dev.kosmx.playerAnim.core.data.KeyframeAnimation;
 import dev.kosmx.playerAnim.core.data.gson.GeckoLibSerializer;
 import dev.kosmx.playerAnim.core.util.Ease;
 import dev.thomasglasser.minejago.client.animation.MinejagoPlayerAnimator;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ClientChatEvent;
-import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 
-import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
 
-import static dev.thomasglasser.minejago.MinejagoMod.MODID;
+import static dev.thomasglasser.minejago.Minejago.MODID;
 
 @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class SpinjitzuAnimation {
@@ -63,7 +57,7 @@ public class SpinjitzuAnimation {
     @SubscribeEvent
     public static void onKeyPressed(InputEvent.Key event)
     {
-        if (event.getKey() == InputConstants.KEY_LSHIFT)
+        if (event.getKey() == InputConstants.KEY_LSHIFT && Minecraft.getInstance().player != null && !Minecraft.getInstance().player.hasContainerOpen())
         {
             var animation = MinejagoPlayerAnimator.animationData.get(Minecraft.getInstance().player);
             animation.setAnimation(null);

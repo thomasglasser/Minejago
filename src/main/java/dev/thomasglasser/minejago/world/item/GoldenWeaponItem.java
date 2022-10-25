@@ -2,9 +2,7 @@ package dev.thomasglasser.minejago.world.item;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import dev.thomasglasser.minejago.MinejagoMod;
-import dev.thomasglasser.minejago.client.particle.SpinjitzuParticle;
-import dev.thomasglasser.minejago.core.particles.SpinjitzuParticleOptions;
+import dev.thomasglasser.minejago.Minejago;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -24,7 +22,7 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.Set;
 
-@Mod.EventBusSubscriber(modid = MinejagoMod.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@Mod.EventBusSubscriber(modid = Minejago.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class GoldenWeaponItem extends SimpleFoiledItem
 {
     public GoldenWeaponItem(Properties pProperties)
