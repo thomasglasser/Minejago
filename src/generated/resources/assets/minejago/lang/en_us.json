@@ -62,6 +62,9 @@
   "item.minejago.filled_teacup.potion": "Tea of %1$s",
   "item.minejago.four_weapons_banner_pattern": "Banner Pattern",
   "item.minejago.four_weapons_banner_pattern.desc": "Four Weapons",
+  "item.minejago.legend_scroll": "Legend Scroll",
+  "item.minejago.legend_scroll.empty": "Empty",
+  "item.minejago.legend_scroll.four_weapons": "Four Weapons",
   "item.minejago.scythe_of_quakes": "Scythe of Quakes",
   "item.minejago.teacup": "Teacup"
 }

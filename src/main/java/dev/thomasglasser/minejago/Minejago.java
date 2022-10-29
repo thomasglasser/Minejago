@@ -2,6 +2,7 @@ package dev.thomasglasser.minejago;
 
 import dev.thomasglasser.minejago.core.MinejagoCoreEvents;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
+import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
 import dev.thomasglasser.minejago.world.item.GoldenWeaponItem;
@@ -43,6 +44,7 @@ public class Minejago
         MinejagoBiomes.registerBiomes(bus);
         MinejagoPaintingVariants.PAINTING_VARIANTS.register(bus);
         MinejagoBannerPatterns.BANNER_PATTERNS.register(bus);
+        MinejagoSoundEvents.SOUND_EVENTS.register(bus);
 
         MinecraftForge.EVENT_BUS.addListener(GoldenWeaponItem::checkForAll);
         MinecraftForge.EVENT_BUS.addListener(MinejagoPaintingVariants::onInteract);

@@ -21,5 +21,6 @@ public class MinejagoItemModels extends ItemModelProvider
         singleTexture(MinejagoItems.SCYTHE_OF_QUAKES.getId().getPath(), mcLoc("item/handheld"), "layer0", modLoc("item/scythe_of_quakes"));
         singleTexture(MinejagoItems.TEACUP.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/teacup"));
         singleTexture(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/four_weapons_banner_pattern"));
+        singleTexture(MinejagoItems.LEGEND_SCROLL.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/legend_scroll"));
     }
 }

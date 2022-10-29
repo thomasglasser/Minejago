@@ -1,12 +1,3 @@
-/*
-    Update:
-    Mod version
-    Parchment
-    Forge version
-    JEI
-    TOP
- */
-
 buildscript {
     repositories {
         // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
