@@ -16,9 +16,9 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class MinejagoLootTableProvider extends LootTableProvider
+public class MinejagoLootTables extends LootTableProvider
 {
-    public MinejagoLootTableProvider(DataGenerator pGenerator) {
+    public MinejagoLootTables(DataGenerator pGenerator) {
         super(pGenerator);
     }
 

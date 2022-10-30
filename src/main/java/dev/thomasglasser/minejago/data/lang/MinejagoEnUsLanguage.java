@@ -16,10 +16,10 @@ import net.minecraft.world.item.alchemy.Potions;
 import net.minecraftforge.common.data.LanguageProvider;
 import net.minecraft.world.level.block.entity.BannerPattern;
 
-public class MinejagoEnUsLanguageProvider extends LanguageProvider
+public class MinejagoEnUsLanguage extends LanguageProvider
 {
 
-    public MinejagoEnUsLanguageProvider(DataGenerator generator)
+    public MinejagoEnUsLanguage(DataGenerator generator)
     {
         super(generator, Minejago.MODID, "en_us");
     }
