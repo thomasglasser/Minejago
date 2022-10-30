@@ -25,6 +25,9 @@ public class MinejagoRegion extends Region
     @Override
     public void addBiomes(Registry<Biome> registry, Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> mapper)
     {
-        this.addBiome(mapper, Temperature.COOL.parameter(), Humidity.DRY.parameter(), Continentalness.FAR_INLAND.parameter(), Climate.Parameter.point(0.0F), Weirdness.HIGH_SLICE_VARIANT_ASCENDING.parameter(), Climate.Parameter.point(0.0F), 10, MinejagoBiomes.HIGH_MOUNTAINS);
+        this.addModifiedVanillaOverworldBiomes(mapper, builder ->
+        {
+            builder.replaceBiome(Biomes.BADLANDS, MinejagoBiomes.HIGH_MOUNTAINS);
+        });
     }
 }

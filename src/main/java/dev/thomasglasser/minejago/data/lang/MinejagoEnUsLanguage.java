@@ -4,8 +4,10 @@ import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.item.LegendScrollItem;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import dev.thomasglasser.minejago.world.level.biome.MinejagoBiomes;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPatterns;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -13,6 +15,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.common.data.LanguageProvider;
 import net.minecraft.world.level.block.entity.BannerPattern;
 
@@ -56,6 +59,8 @@ public class MinejagoEnUsLanguage extends LanguageProvider
 
         addLegend(LegendScrollItem.Legends.EMPTY, "Empty");
         addLegend(LegendScrollItem.Legends.FOUR_WEAPONS, "Four Weapons");
+
+        add(MinejagoBiomes.HIGH_MOUNTAINS, "Mountains of Impossible Height");
     }
 
     public void addDesc(Item item, String desc)
@@ -78,5 +83,10 @@ public class MinejagoEnUsLanguage extends LanguageProvider
     public void addLegend(LegendScrollItem.Legends legend, String name)
     {
         add(MinejagoItems.LEGEND_SCROLL.get().getDescriptionId() + "." + legend.getLegend(), name);
+    }
+
+    public void add(ResourceKey<Biome> biome, String name)
+    {
+        add("biome." + biome.location().getNamespace() + "." + biome.location().getPath(), name);
     }
 }
