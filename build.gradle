@@ -180,6 +180,8 @@ dependencies {
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     minecraft 'net.minecraftforge:forge:'+ mc_version + '-43.1.47'
 
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}")
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}-forge-api:${jei_version}")
 
@@ -192,6 +194,12 @@ dependencies {
     implementation fg.deobf("dev.kosmx.player-anim:player-animation-lib-forge:${anim_version}")
     // BACKUP implementation fg.deobf("maven.modrinth:playeranimator:${anim_version}-forge")
     implementation fg.deobf("com.github.glitchfiend:TerraBlender-forge:${mc_version}-${tb_version}")
+}
+
+mixin {
+    add sourceSets.main, "minejago.refmap.json"
+
+    config "minejago.mixins.json"
 }
 
 // Example for how to get properties into the manifest for reading at runtime.
