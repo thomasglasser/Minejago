@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "dev.thomasglasser.minejago.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "minejago.refmap.json",
+  "mixins": [
+    "net.minecraft.client.multiplayer.ClientLevelMixin"
+  ],
+  "client": [
+    "net.minecraft.client.multiplayer.ClientLevelMixin"
+  ],
+  "minVersion": "0.8"
+}

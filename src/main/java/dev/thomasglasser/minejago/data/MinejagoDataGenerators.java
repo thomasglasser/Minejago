@@ -5,7 +5,6 @@ import dev.thomasglasser.minejago.data.lang.MinejagoEnUsLanguage;
 import dev.thomasglasser.minejago.data.loot.MinejagoLootTables;
 import dev.thomasglasser.minejago.data.models.MinejagoItemModels;
 import dev.thomasglasser.minejago.data.recipes.MinejagoRecipes;
-import dev.thomasglasser.minejago.data.sounds.MinejagoSoundDefinitions;
 import dev.thomasglasser.minejago.data.tags.MinejagoBannerPatternTags;
 import dev.thomasglasser.minejago.data.tags.MinejagoBlockTags;
 import dev.thomasglasser.minejago.data.tags.MinejagoItemTags;
@@ -39,6 +38,5 @@ public class MinejagoDataGenerators
         //Client
         generator.addProvider(onClient, new MinejagoItemModels(generator, existingFileHelper));
         generator.addProvider(onClient, new MinejagoEnUsLanguage(generator));
-        generator.addProvider(onClient, new MinejagoSoundDefinitions(generator, existingFileHelper));
     }
 }
