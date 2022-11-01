@@ -2,7 +2,7 @@ package dev.thomasglasser.minejago.client;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.model.BambooStaffModel;
-import dev.thomasglasser.minejago.client.particle.SpinjitzuParticle;
+import dev.thomasglasser.minejago.client.particle.*;
 import dev.thomasglasser.minejago.client.renderer.entity.ThrownBambooStaffRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.ThrownBoneKnifeRenderer;
 import dev.thomasglasser.minejago.client.model.ThrownBoneKnifeModel;
@@ -49,6 +49,11 @@ public class MinejagoClientEvents {
     public static void onRegisterParticleProviders(RegisterParticleProvidersEvent event)
     {
         event.register(MinejagoParticleTypes.SPINJITZU.get(), SpinjitzuParticle.Provider::new);
+        event.register(MinejagoParticleTypes.SPARKS.get(), SparksParticle.Provider::new);
+        event.register(MinejagoParticleTypes.SPARKLES.get(), SparklesParticle.Provider::new);
+        event.register(MinejagoParticleTypes.SNOWS.get(), SnowsParticle.Provider::new);
+        event.register(MinejagoParticleTypes.ROCKS.get(), RocksParticle.Provider::new);
+        event.register(MinejagoParticleTypes.BOLTS.get(), BoltsParticle.Provider::new);
     }
 
     public static void onRegisterColorHandlers(RegisterColorHandlersEvent.Item event)
