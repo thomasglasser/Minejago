@@ -29,7 +29,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class FilledTeacupItem extends PotionItem
+public class FilledTeacupItem extends PotionItem implements ITeapotLiquidHolder
 {
     public FilledTeacupItem(Properties pProperties) {
         super(pProperties);
@@ -111,28 +111,12 @@ public class FilledTeacupItem extends PotionItem
         String id = MinejagoItems.FILLED_TEACUP.get().getDescriptionId();
         Potion potion = PotionUtils.getPotion(pStack);
         String label = "";
+
+        if (potion.getName("").contains("tea") || potion.getName("").contains("milk"))
+            return Component.translatable(id + potion.getName("."));
+
         switch (potion.getName(""))
         {
-            case "swiftness" ->
-            {
-                id += ".potion";
-                label = "effect.minecraft.speed";
-            }
-            case "healing" ->
-            {
-                id += ".potion";
-                label = "effect.minecraft.instant_health";
-            }
-            case "harming" ->
-            {
-                id += ".potion";
-                label = "effect.minecraft.instant_damage";
-            }
-            case "leaping" ->
-            {
-                id += ".potion";
-                label = "effect.minecraft.jump_boost";
-            }
             case "turtle_master", "thick", "awkward", "mundane", "water", "empty" ->
             {
                 return super.getName(pStack);
@@ -143,5 +127,15 @@ public class FilledTeacupItem extends PotionItem
             }
         }
         return Component.translatable(id, Component.translatable(label));
+    }
+
+    @Override
+    public int getCups() {
+        return 1;
+    }
+
+    @Override
+    public ItemStack getDrained(ItemStack stack) {
+        return new ItemStack(MinejagoItems.TEACUP.get());
     }
 }

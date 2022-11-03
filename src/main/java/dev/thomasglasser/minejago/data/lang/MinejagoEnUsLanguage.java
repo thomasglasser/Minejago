@@ -1,9 +1,13 @@
 package dev.thomasglasser.minejago.data.lang;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
+import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
 import dev.thomasglasser.minejago.world.level.biome.MinejagoBiomes;
+import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPatterns;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceKey;
@@ -23,7 +27,7 @@ public class MinejagoEnUsLanguage extends LanguageProvider
 
     public MinejagoEnUsLanguage(DataGenerator generator)
     {
-        super(generator, Minejago.MODID, "en_us");
+        super(generator, Minejago.MOD_ID, "en_us");
     }
 
     @Override
@@ -34,6 +38,11 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add(MinejagoItems.TEACUP.get(), "Teacup");
         add(MinejagoItems.FILLED_TEACUP.get(), "Tea");
         add(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get(), "Banner Pattern");
+        add(MinejagoItems.IRON_SPEAR.get(), "Iron Spear");
+        add(MinejagoItems.IRON_SHURIKEN.get(), "Iron Shuriken");
+        add(MinejagoItems.SKELETAL_CHESTPLATE.get(), "Skeletal Chestplate");
+
+        add(MinejagoBlocks.TEAPOT.get(), "Teapot");
 
         addDesc(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get(), "Four Weapons");
 
@@ -48,6 +57,8 @@ public class MinejagoEnUsLanguage extends LanguageProvider
 
         add(MinejagoEntityTypes.THROWN_BONE_KNIFE.get(), "Bone Knife");
         add(MinejagoEntityTypes.THROWN_BAMBOO_STAFF.get(), "Bamboo Staff");
+        add(MinejagoEntityTypes.THROWN_IRON_SHURIKEN.get(), "Iron Shuriken");
+        add(MinejagoEntityTypes.THROWN_IRON_SPEAR.get(), "Iron Spear");
 
         add(MinejagoBannerPatterns.FOUR_WEAPONS_LEFT.get(), "Four Weapons Left");
         add(MinejagoBannerPatterns.FOUR_WEAPONS_RIGHT.get(), "Four Weapons Right");
@@ -56,6 +67,21 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add(Items.FILLED_MAP.getDescriptionId() + ".golden_weapons", "Golden Weapons Map");
 
         add(MinejagoBiomes.HIGH_MOUNTAINS, "Mountains of Impossible Height");
+
+        add("container.teapot", "Teapot");
+
+        addTea(MinejagoPotions.REGULAR_TEA.get(), "Regular Tea");
+        add(MinejagoItems.FILLED_TEACUP.get().getDescriptionId() + ".milk", "Cup of Milk");
+        addPotions(MinejagoPotions.MILK.get(), "Milk");
+
+        add(MinejagoSoundEvents.TEAPOT_WHISTLE.get().getLocation().toLanguageKey() + ".subtitle", "*teapot whistles*");
+
+        add(MinejagoMobEffects.CURE.get(), "Instant Cure");
+
+        add("effect.minecraft.swiftness", "Swiftness");
+        add("effect.minecraft.healing", "Healing");
+        add("effect.minecraft.harming", "Harming");
+        add("effect.minecraft.leaping", "Leaping");
     }
 
     public void addDesc(Item item, String desc)
@@ -67,7 +93,7 @@ public class MinejagoEnUsLanguage extends LanguageProvider
     {
         for (DyeColor color: DyeColor.values())
         {
-            add("block.minecraft.banner." + Minejago.MODID + "." + pattern.getHashname() + "." + color.getName(), color.getName().substring(0, 1).toUpperCase() + color.getName().substring(1) + " " + name);
+            add("block.minecraft.banner." + Minejago.MOD_ID + "." + pattern.getHashname() + "." + color.getName(), color.getName().substring(0, 1).toUpperCase() + color.getName().substring(1) + " " + name);
         }
     }
 
@@ -78,5 +104,23 @@ public class MinejagoEnUsLanguage extends LanguageProvider
     public void add(ResourceKey<Biome> biome, String name)
     {
         add("biome." + biome.location().getNamespace() + "." + biome.location().getPath(), name);
+    }
+
+    public void addTea(Potion tea, String name)
+    {
+        add(MinejagoItems.FILLED_TEACUP.get().getDescriptionId() + tea.getName("."), name);
+        addPotions(tea, name);
+    }
+
+    public void addPotions(Potion potion, String name)
+    {
+        add(Items.POTION, potion, "Bottle of " + name);
+        add(Items.SPLASH_POTION, potion, "Splash Bottle of " + name);
+        add(Items.LINGERING_POTION, potion, "Lingering Bottle of " + name);
+
+        if (!potion.getEffects().isEmpty())
+        {
+            add(Items.TIPPED_ARROW, potion, "Arrow of " + name);
+        }
     }
 }

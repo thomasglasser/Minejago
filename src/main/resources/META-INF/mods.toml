@@ -29,7 +29,7 @@ displayURL="https://github.com/thomasglasser/Minejago/tree/1.19.2-forge" #option
 # A file name (in the root of the mod JAR) containing a logo for display
 logoFile="minejago_logo_1.0.png" #optional
 # A text field displayed in the mod UI
-credits="Includes textures by Pouffy, structures by Comerciante" #optional
+credits="Includes textures by Pouffy, waifu_png_pl, and Sairako; structures by Comerciante" #optional
 # A text field displayed in the mod UI
 authors="Thomas Glasser" #optional
 # The description text for the mod (multi line!) (#mandatory)
@@ -87,5 +87,16 @@ Adds elements of the Ninjago franchise into Minecraft
     versionRange="[${dl_version},)" #mandatory
     # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
     ordering="AFTER"
+    # Side this dependency is applied on - BOTH, CLIENT or SERVER
+    side="BOTH"
+[[dependencies.minejago]] #optional
+    # the modid of the dependency
+    modId="moonlight" #mandatory
+    # Does this dependency have to exist - if not, ordering below must be specified
+    mandatory=true #mandatory
+    # The version range of the dependency
+    versionRange="[${ml_version},)" #mandatory
+    # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
+    ordering="NONE"
     # Side this dependency is applied on - BOTH, CLIENT or SERVER
     side="BOTH"

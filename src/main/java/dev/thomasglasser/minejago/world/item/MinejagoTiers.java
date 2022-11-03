@@ -16,6 +16,6 @@ public class MinejagoTiers
 
     public static void register()
     {
-        TierSortingRegistry.registerTier(BONE_TIER, new ResourceLocation(Minejago.MODID, "bone_tier"), Arrays.asList(net.minecraft.world.item.Tiers.WOOD, net.minecraft.world.item.Tiers.GOLD, net.minecraft.world.item.Tiers.STONE), Arrays.asList(net.minecraft.world.item.Tiers.IRON, net.minecraft.world.item.Tiers.DIAMOND, net.minecraft.world.item.Tiers.NETHERITE));
+        TierSortingRegistry.registerTier(BONE_TIER, new ResourceLocation(Minejago.MOD_ID, "bone_tier"), Arrays.asList(net.minecraft.world.item.Tiers.WOOD, net.minecraft.world.item.Tiers.GOLD, net.minecraft.world.item.Tiers.STONE), Arrays.asList(net.minecraft.world.item.Tiers.IRON, net.minecraft.world.item.Tiers.DIAMOND, net.minecraft.world.item.Tiers.NETHERITE));
     }
 }

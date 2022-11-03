@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.LootTables;
 import net.minecraft.world.level.storage.loot.ValidationContext;
@@ -24,7 +25,9 @@ public class MinejagoLootTables extends LootTableProvider
 
     @Override
     protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootContextParamSet>> getTables() {
-        return List.of(Pair.of(MinejagoChestLoot::new, LootContextParamSets.CHEST));
+        return List.of(
+                Pair.of(MinejagoChestLoot::new, LootContextParamSets.CHEST),
+                Pair.of(MinejagoBlockLoot::new, LootContextParamSets.BLOCK));
     }
 
     @Override

@@ -17,7 +17,7 @@ public abstract class ClientLevelMixin
     @Inject(at = @At("HEAD"), method = "getCloudColor", cancellable = true)
     private void getCloudColor(float pPartialTick, CallbackInfoReturnable<Vec3> callback)
     {
-        if (/*TODO: Make world capability boolean for skeleton event*/true)
+        if (/*TODO: Make world boolean for skeleton event*/true)
         {
             Minecraft.getInstance().options.cloudStatus().set(CloudStatus.FAST); //TODO: Fix fancy clouds
             /*TODO: Set time and stop time moving on server when event starts*/ //this.setDayTime(18000);

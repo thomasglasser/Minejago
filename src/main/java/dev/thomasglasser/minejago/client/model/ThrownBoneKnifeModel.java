@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class ThrownBoneKnifeModel extends Model {
 	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(Minejago.MODID, "bone_knife"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(Minejago.MOD_ID, "bone_knife"), "main");
 	private final ModelPart bb_main;
 
 	public ThrownBoneKnifeModel(ModelPart root) {

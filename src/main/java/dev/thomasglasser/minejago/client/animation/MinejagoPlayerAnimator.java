@@ -23,9 +23,9 @@ import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.function.Predicate;
 
-import static dev.thomasglasser.minejago.Minejago.MODID;
+import static dev.thomasglasser.minejago.Minejago.MOD_ID;
 
-@Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class MinejagoPlayerAnimator {
 
     /**

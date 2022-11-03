@@ -15,7 +15,7 @@ public class MinejagoBiomes
 {
     public static final ResourceKey<Biome> HIGH_MOUNTAINS = registerKey("high_mountains");
 
-    public static final DeferredRegister<Biome> BIOMES = DeferredRegister.create(Registry.BIOME_REGISTRY, Minejago.MODID);
+    public static final DeferredRegister<Biome> BIOMES = DeferredRegister.create(Registry.BIOME_REGISTRY, Minejago.MOD_ID);
 
     public static void registerBiomes(IEventBus bus)
     {
@@ -30,6 +30,6 @@ public class MinejagoBiomes
 
     private static ResourceKey<Biome> registerKey(String name)
     {
-        return ResourceKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(Minejago.MODID, name));
+        return ResourceKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(Minejago.MOD_ID, name));
     }
 }

@@ -2,13 +2,12 @@ package dev.thomasglasser.minejago.data.recipes;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
-import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.world.item.Items;
+import net.minecraftforge.common.Tags;
 
 import java.util.function.Consumer;
 
@@ -23,8 +22,25 @@ public class MinejagoRecipes extends RecipeProvider {
                 .pattern("x x")
                 .pattern(" x ")
                 .define('x', ItemTags.TERRACOTTA)
-                .group(Minejago.MODID)
-                .unlockedBy("has_terracotta", InventoryChangeTrigger.TriggerInstance.hasItems(Items.TERRACOTTA));
+                .group(Minejago.MOD_ID)
+                .unlockedBy("has_terracotta", has(ItemTags.TERRACOTTA));
         teacup.save(writer);
+        ShapedRecipeBuilder spear = ShapedRecipeBuilder.shaped(MinejagoItems.IRON_SPEAR.get(), 1)
+                .pattern("o  ")
+                .pattern(" x ")
+                .pattern("  x")
+                .define('x', Tags.Items.RODS_WOODEN)
+                .define('o', Tags.Items.INGOTS_IRON)
+                .group(Minejago.MOD_ID)
+                .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON));
+        spear.save(writer);
+        ShapedRecipeBuilder teapot = ShapedRecipeBuilder.shaped(MinejagoItems.TEAPOT.get(), 1)
+                .pattern("x  ")
+                .pattern("o  ")
+                .define('x', Tags.Items.RODS_WOODEN)
+                .define('o', ItemTags.TERRACOTTA)
+                .group(Minejago.MOD_ID)
+                .unlockedBy("has_terracotta", has(ItemTags.TERRACOTTA));
+        teapot.save(writer);
     }
 }

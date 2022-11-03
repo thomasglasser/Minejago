@@ -22,7 +22,7 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.Set;
 
-@Mod.EventBusSubscriber(modid = Minejago.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@Mod.EventBusSubscriber(modid = Minejago.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class GoldenWeaponItem extends SimpleFoiledItem
 {
     public GoldenWeaponItem(Properties pProperties)

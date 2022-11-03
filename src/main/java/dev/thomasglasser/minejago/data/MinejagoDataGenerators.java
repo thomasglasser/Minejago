@@ -1,10 +1,12 @@
 package dev.thomasglasser.minejago.data;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.data.blockstates.MinejagoBlockStates;
 import dev.thomasglasser.minejago.data.lang.MinejagoEnUsLanguage;
 import dev.thomasglasser.minejago.data.loot.MinejagoLootTables;
 import dev.thomasglasser.minejago.data.models.MinejagoItemModels;
 import dev.thomasglasser.minejago.data.recipes.MinejagoRecipes;
+import dev.thomasglasser.minejago.data.sounds.MinejagoSoundDefinitions;
 import dev.thomasglasser.minejago.data.tags.MinejagoBannerPatternTags;
 import dev.thomasglasser.minejago.data.tags.MinejagoBlockTags;
 import dev.thomasglasser.minejago.data.tags.MinejagoItemTags;
@@ -14,7 +16,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.data.event.GatherDataEvent;
 
-@Mod.EventBusSubscriber(modid = Minejago.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = Minejago.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class MinejagoDataGenerators
 {
     @SubscribeEvent
@@ -38,5 +40,7 @@ public class MinejagoDataGenerators
         //Client
         generator.addProvider(onClient, new MinejagoItemModels(generator, existingFileHelper));
         generator.addProvider(onClient, new MinejagoEnUsLanguage(generator));
+        generator.addProvider(onClient, new MinejagoBlockStates(generator, existingFileHelper));
+        generator.addProvider(onClient, new MinejagoSoundDefinitions(generator, existingFileHelper));
     }
 }

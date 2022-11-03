@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "minejago",
+  "key": {
+    "o": {
+      "tag": "minecraft:terracotta"
+    },
+    "x": {
+      "tag": "forge:rods/wooden"
+    }
+  },
+  "pattern": [
+    "x  ",
+    "o  "
+  ],
+  "result": {
+    "item": "minejago:teapot"
+  }
+}

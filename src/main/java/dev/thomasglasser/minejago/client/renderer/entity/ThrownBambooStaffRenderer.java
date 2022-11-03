@@ -16,7 +16,7 @@ import net.minecraft.util.Mth;
 
 public class ThrownBambooStaffRenderer extends EntityRenderer<ThrownBambooStaff>
 {
-    public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(Minejago.MODID, "textures/entity/bamboo_staff.png");
+    public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(Minejago.MOD_ID, "textures/entity/bamboo_staff.png");
     private final BambooStaffModel model;
 
     public ThrownBambooStaffRenderer(EntityRendererProvider.Context context) {

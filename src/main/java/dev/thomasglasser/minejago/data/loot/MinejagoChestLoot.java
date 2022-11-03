@@ -23,6 +23,6 @@ public class MinejagoChestLoot extends ChestLoot
 
     private ResourceLocation modLoc(String name)
     {
-        return new ResourceLocation(Minejago.MODID, "chests/" + name);
+        return new ResourceLocation(Minejago.MOD_ID, "chests/" + name);
     }
 }

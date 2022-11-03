@@ -29,7 +29,6 @@ public class ThrownBambooStaff extends AbstractArrow
     private ItemStack bambooStaffItem = new ItemStack(MinejagoItems.BAMBOO_STAFF.get());
 
     private boolean dealtDamage;
-    public int clientSideReturnBambooStaffTickCount;
 
     public ThrownBambooStaff(EntityType<? extends ThrownBambooStaff> entity, Level level) {
         super(entity, level);

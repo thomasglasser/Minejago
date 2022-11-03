@@ -27,7 +27,7 @@ public class MinejagoRegion extends Region
     {
         this.addModifiedVanillaOverworldBiomes(mapper, builder ->
         {
-            builder.replaceBiome(Biomes.BADLANDS, MinejagoBiomes.HIGH_MOUNTAINS);
+            builder.replaceBiome(Biomes.SNOWY_SLOPES, MinejagoBiomes.HIGH_MOUNTAINS);
         });
     }
 }

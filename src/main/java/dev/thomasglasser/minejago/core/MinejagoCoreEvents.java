@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.core;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotionBrewing;
 import dev.thomasglasser.minejago.world.level.biome.MinejagoRegion;
 import dev.thomasglasser.minejago.world.level.biome.MinejagoSurfaceRuleData;
 import net.minecraft.resources.ResourceLocation;
@@ -13,11 +14,11 @@ public class MinejagoCoreEvents {
     {
         event.enqueueWork(() ->
         {
-            // Given we only add two biomes, we should keep our weight relatively low.
-            Regions.register(new MinejagoRegion(new ResourceLocation(Minejago.MODID, "overworld"), 1));
+            Regions.register(new MinejagoRegion(new ResourceLocation(Minejago.MOD_ID, "overworld"), 1));
 
-            // Register our surface rules
-            SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, Minejago.MODID, MinejagoSurfaceRuleData.makeRules());
+            SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, Minejago.MOD_ID, MinejagoSurfaceRuleData.makeRules());
+
+            MinejagoPotionBrewing.addMixes();
         });
     }
 }

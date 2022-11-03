@@ -8,7 +8,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class MinejagoBannerPatterns
 {
-    public static final DeferredRegister<BannerPattern> BANNER_PATTERNS = DeferredRegister.create(Registry.BANNER_PATTERN_REGISTRY, Minejago.MODID);
+    public static final DeferredRegister<BannerPattern> BANNER_PATTERNS = DeferredRegister.create(Registry.BANNER_PATTERN_REGISTRY, Minejago.MOD_ID);
 
     public static final RegistryObject<BannerPattern> FOUR_WEAPONS_LEFT = BANNER_PATTERNS.register("four_weapons_left", () -> new BannerPattern("four_weapons_left"));
     public static final RegistryObject<BannerPattern> FOUR_WEAPONS_RIGHT = BANNER_PATTERNS.register("four_weapons_right", () -> new BannerPattern("four_weapons_right"));

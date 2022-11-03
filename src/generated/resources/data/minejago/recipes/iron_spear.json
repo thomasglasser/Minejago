@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "minejago",
+  "key": {
+    "o": {
+      "tag": "forge:ingots/iron"
+    },
+    "x": {
+      "tag": "forge:rods/wooden"
+    }
+  },
+  "pattern": [
+    "o  ",
+    " x ",
+    "  x"
+  ],
+  "result": {
+    "item": "minejago:iron_spear"
+  }
+}

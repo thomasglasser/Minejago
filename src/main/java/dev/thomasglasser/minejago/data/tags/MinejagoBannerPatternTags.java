@@ -13,10 +13,10 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
 public class MinejagoBannerPatternTags extends BannerPatternTagsProvider {
-    public static final TagKey<BannerPattern> PATTERN_ITEM_FOUR_WEAPONS = TagKey.create(Registry.BANNER_PATTERN_REGISTRY, new ResourceLocation(Minejago.MODID, "pattern_item/four_weapons"));
+    public static final TagKey<BannerPattern> PATTERN_ITEM_FOUR_WEAPONS = TagKey.create(Registry.BANNER_PATTERN_REGISTRY, new ResourceLocation(Minejago.MOD_ID, "pattern_item/four_weapons"));
 
     public MinejagoBannerPatternTags(DataGenerator p_236411_, @Nullable ExistingFileHelper existingFileHelper) {
-        super(p_236411_, Minejago.MODID, existingFileHelper);
+        super(p_236411_, Minejago.MOD_ID, existingFileHelper);
     }
 
     @Override

@@ -16,12 +16,12 @@ import org.jetbrains.annotations.Nullable;
 
 public class MinejagoItemTags extends ItemTagsProvider
 {
-    public static final TagKey<Item> GOLDEN_WEAPONS = ItemTags.create(new ResourceLocation(Minejago.MODID, "golden_weapons"));
+    public static final TagKey<Item> GOLDEN_WEAPONS = ItemTags.create(new ResourceLocation(Minejago.MOD_ID, "golden_weapons"));
 
     public static final String DYNAMIC_LIGHTS_MODID = "dynamiclights";
 
     public MinejagoItemTags(DataGenerator generator, BlockTagsProvider blockTags, @Nullable ExistingFileHelper helper) {
-        super(generator, blockTags, Minejago.MODID, helper);
+        super(generator, blockTags, Minejago.MOD_ID, helper);
     }
 
     @Override
@@ -31,13 +31,18 @@ public class MinejagoItemTags extends ItemTagsProvider
         tag(ItemTags.PIGLIN_LOVED)
                 .addTag(GOLDEN_WEAPONS);
         tag(Tags.Items.TOOLS_SWORDS)
-                .add(MinejagoItems.BONE_KNIFE.get());
+                .add(MinejagoItems.BONE_KNIFE.get())
+                .add(MinejagoItems.IRON_SPEAR.get());
         tag(GOLDEN_WEAPONS)
                 .add(MinejagoItems.SCYTHE_OF_QUAKES.get());
         tagDynamicLight("dropped", 10)
                 .addTag(GOLDEN_WEAPONS);
         tagDynamicLight("self", 10)
                 .addTag(GOLDEN_WEAPONS);
+        tag(Tags.Items.ARMORS)
+                .add(MinejagoItems.SKELETAL_CHESTPLATE.get());
+        tag(Tags.Items.ARMORS_CHESTPLATES)
+                .add(MinejagoItems.SKELETAL_CHESTPLATE.get());
     }
 
     public TagsProvider.TagAppender<Item> tagDynamicLight(String tag, int level)
@@ -49,6 +54,6 @@ public class MinejagoItemTags extends ItemTagsProvider
     @Override
     public String getName()
     {
-        return "Minejago Tags";
+        return "Minejago Item Tags";
     }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "minejago:item/scythe_of_quakes"
+    "layer0": "minejago:item/iron_shuriken"
   }
 }

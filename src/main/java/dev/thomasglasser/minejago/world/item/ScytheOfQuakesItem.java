@@ -5,6 +5,7 @@ import dev.thomasglasser.minejago.data.tags.MinejagoBlockTags;
 import dev.thomasglasser.minejago.util.MinejagoLevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -73,7 +74,8 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem
             BlockPos[] places = new BlockPos[] {pos.north(6), pos.north(4).east(4), pos.east(6), pos.east(4).south(4), pos.south(6), pos.south(4).west(4), pos.west(6), pos.west(4).north(4)};
             for (BlockPos place: places)
             {
-                MinejagoLevelUtils.explode(level, player, place.above(), 4);
+                if (!level.isClientSide)
+                    level.explode(null, place.getX(), place.getY() + 1, place.getZ(), 4, false, Explosion.BlockInteraction.BREAK);
             }
             if (!pContext.getPlayer().getAbilities().instabuild) pContext.getPlayer().getCooldowns().addCooldown(pContext.getItemInHand().getItem(), 1200);
         }
