@@ -33,14 +33,19 @@ import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.SupportType;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
-public class TeapotBlockEntity extends RandomizableContainerBlockEntity implements WorldlyContainer, Nameable
+public class TeapotBlockEntity extends BlockEntity implements IItemHandler, Nameable
 {
     public static final int[] SLOTS = new int[] {0};
     public static final int INPUT_SLOT = SLOTS[0];
@@ -86,18 +91,8 @@ public class TeapotBlockEntity extends RandomizableContainerBlockEntity implemen
         return item.isEmpty();
     }
 
-    @Override
-    public int getMaxStackSize() {
-        return 1;
-    }
-
     public static void serverTick(Level pLevel, BlockPos pPos, BlockState pState, TeapotBlockEntity pBlockEntity)
     {
-        System.out.println(pBlockEntity.temp);
-        System.out.println(pBlockEntity.heating);
-        System.out.println(pBlockEntity.boiling);
-        System.out.println(pBlockEntity.cups);
-        if (pBlockEntity.potion != null) System.out.println(pBlockEntity.potion.getName(""));
         if (!pLevel.getBlockState(pPos.above()).isFaceSturdy(pLevel, pPos.above(), Direction.DOWN, SupportType.CENTER) && (pLevel.getBlockState(pPos.below()).is(BlockTags.FIRE) || pLevel.getBlockState(pPos.below()).is(BlockTags.CAMPFIRES)))
         {
             pLevel.destroyBlock(pPos, true);
@@ -213,31 +208,6 @@ public class TeapotBlockEntity extends RandomizableContainerBlockEntity implemen
         pTag.putShort("Cups", (short) cups);
     }
 
-    @Override
-    protected Component getDefaultName() {
-        return Component.translatable("container.teapot");
-    }
-
-    @Override
-    protected AbstractContainerMenu createMenu(int pContainerId, Inventory pInventory) {
-        return null;
-    }
-
-    @Override
-    public ItemStack getItem(int pSlot) {
-        return item;
-    }
-
-    @Override
-    public ItemStack removeItem(int pSlot, int pAmount) {
-        if (potion == Potions.WATER) potion = MinejagoPotions.REGULAR_TEA.get();
-        return ContainerHelper.removeItem(NonNullList.withSize(1, item), pSlot, pAmount);
-    }
-
-    public ItemStack removeItemNoUpdate(int pIndex) {
-        return ContainerHelper.takeItem(NonNullList.withSize(1, item), pIndex);
-    }
-
     /**
      * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
      */
@@ -255,56 +225,11 @@ public class TeapotBlockEntity extends RandomizableContainerBlockEntity implemen
     }
 
     /**
-     * Don't rename this method to canInteractWith due to conflicts with Container
-     */
-    public boolean stillValid(Player pPlayer) {
-        if (this.level.getBlockEntity(this.worldPosition) != this) {
-            return false;
-        } else {
-            return !(pPlayer.distanceToSqr((double)this.worldPosition.getX() + 0.5D, (double)this.worldPosition.getY() + 0.5D, (double)this.worldPosition.getZ() + 0.5D) > 64.0D);
-        }
-    }
-
-    /**
      * Returns {@code true} if automation is allowed to insert the given stack (ignoring stack size) into the given slot.
      * For guis use Slot.isItemValid
      */
     public boolean canPlaceItem(int pIndex, ItemStack pStack) {
         return BrewingRecipeRegistry.isValidIngredient(pStack);
-    }
-
-    @Override
-    public int[] getSlotsForFace(Direction pSide) {
-        return new int[]{0};
-    }
-
-    /**
-     * Returns {@code true} if automation can insert the given item in the given slot from the given side.
-     */
-    public boolean canPlaceItemThroughFace(int pIndex, ItemStack pItemStack, @Nullable Direction pDirection) {
-        return pDirection == Direction.UP && this.canPlaceItem(pIndex, pItemStack);
-    }
-
-    /**
-     * Returns {@code true} if automation can extract the given item in the given slot from the given side.
-     */
-    public boolean canTakeItemThroughFace(int pIndex, ItemStack pStack, Direction pDirection) {
-        return false;
-    }
-
-    public void clearContent() {
-        item = ItemStack.EMPTY;
-        setChanged();
-    }
-
-    @Override
-    protected NonNullList<ItemStack> getItems() {
-        return NonNullList.withSize(1, item);
-    }
-
-    @Override
-    protected void setItems(NonNullList<ItemStack> pItemStacks) {
-        item = pItemStacks.get(0);
     }
 
     @Override
@@ -382,5 +307,45 @@ public class TeapotBlockEntity extends RandomizableContainerBlockEntity implemen
 
     public void setPotion(Potion potion) {
         this.potion = potion;
+    }
+
+    @Override
+    public Component getName() {
+        return this.hasCustomName() ? this.getCustomName() : Component.translatable("container.teapot");
+    }
+
+    @Override
+    public int getSlots() {
+        return 1;
+    }
+
+    @Override
+    public @NotNull ItemStack getStackInSlot(int slot) {
+        return slot == 0 ? item : ItemStack.EMPTY;
+    }
+
+    @Override
+    public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
+        if (slot == 0)
+        {
+            (item = stack.copy()).setCount(1);
+            return stack.copy().split(1);
+        }
+        return ItemStack.EMPTY;
+    }
+
+    @Override
+    public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
+        return slot == 0 && !item.isEmpty() && amount > 0 ? item.split(amount) : ItemStack.EMPTY;
+    }
+
+    @Override
+    public int getSlotLimit(int slot) {
+        return 1;
+    }
+
+    @Override
+    public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+        return false;
     }
 }

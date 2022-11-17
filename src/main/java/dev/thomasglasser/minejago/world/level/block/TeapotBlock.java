@@ -102,9 +102,9 @@ public class TeapotBlock extends BaseEntityBlock {
                     be.setItem(0, inHand);
                     MinejagoItemUtils.safeShrink(1, inHand, pPlayer);
                 }
-                else if (!be.getItem(0).isEmpty()) {
-                    pPlayer.addItem(be.getItem(0));
-                    be.removeItem(0, 1);
+                else if (!be.getStackInSlot(0).isEmpty()) {
+                    pPlayer.addItem(be.getStackInSlot(0));
+                    be.extractItem(0, 1, false);
                 }
                 else if (inHand.getItem() instanceof ITeapotLiquidHolder holder)
                 {
@@ -160,7 +160,7 @@ public class TeapotBlock extends BaseEntityBlock {
         if (blockentity instanceof TeapotBlockEntity be) {
             pBuilder = pBuilder.withDynamicDrop(CONTENTS, (p_56218_, p_56219_) -> {
                 for(int i = 0; i < be.getContainerSize(); ++i) {
-                    p_56219_.accept(be.getItem(i));
+                    p_56219_.accept(be.getStackInSlot(i));
                 }
 
             });
