@@ -86,5 +86,6 @@
   "item.minejago.scythe_of_quakes": "Scythe of Quakes",
   "item.minejago.skeletal_chestplate": "Skeletal Chestplate",
   "item.minejago.teacup": "Teacup",
-  "minejago.teapot_whistle.subtitle": "*teapot whistles*"
+  "minejago.teapot_whistle.subtitle": "*teapot whistles*",
+  "trigger.ninja_go": "Ninja go"
 }

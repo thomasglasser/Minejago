@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.core;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.core.network.MinejagoMainChannel;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotionBrewing;
 import dev.thomasglasser.minejago.world.level.biome.MinejagoRegion;
 import dev.thomasglasser.minejago.world.level.biome.MinejagoSurfaceRuleData;
@@ -14,6 +15,8 @@ public class MinejagoCoreEvents {
     {
         event.enqueueWork(() ->
         {
+            MinejagoMainChannel.register();
+
             Regions.register(new MinejagoRegion(new ResourceLocation(Minejago.MOD_ID, "overworld"), 1));
 
             SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, Minejago.MOD_ID, MinejagoSurfaceRuleData.makeRules());
