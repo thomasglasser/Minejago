@@ -17,12 +17,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SimpleFoiledItem;
 import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.Set;
 
-@Mod.EventBusSubscriber(modid = Minejago.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class GoldenWeaponItem extends SimpleFoiledItem
 {
     public GoldenWeaponItem(Properties pProperties)
@@ -57,7 +55,6 @@ public class GoldenWeaponItem extends SimpleFoiledItem
         return slot == EquipmentSlot.MAINHAND ? builder.build() : super.getAttributeModifiers(slot, stack);
     }
 
-    @SubscribeEvent
     public static void checkForAll(LivingEvent.LivingTickEvent event)
     {
         LivingEntity entity = event.getEntity();

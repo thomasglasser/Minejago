@@ -3,6 +3,7 @@ package dev.thomasglasser.minejago;
 import dev.thomasglasser.minejago.client.animation.definitions.SpinjitzuAnimation;
 import dev.thomasglasser.minejago.core.MinejagoCoreEvents;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
+import dev.thomasglasser.minejago.data.MinejagoDataGenerators;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
@@ -37,6 +38,21 @@ public class Minejago
     public Minejago() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        registerAssets(bus);
+
+        bus.addListener(MinejagoCoreEvents::onCommonSetup);
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> bus.addListener(MinejagoClientEvents::onClientSetup));
+
+        addModClientListeners(bus);
+
+        addForgeListeners();
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> this::addForgeClientListeners);
+
+        bus.addListener(MinejagoDataGenerators::gatherData);
+    }
+
+    private void registerAssets(IEventBus bus)
+    {
         MinejagoTiers.register();
 
         MinejagoEntityTypes.ENTITY_TYPES.register(bus);
@@ -50,19 +66,27 @@ public class Minejago
         MinejagoPotions.POTIONS.register(bus);
         MinejagoSoundEvents.SOUND_EVENTS.register(bus);
         MinejagoMobEffects.MOB_EFFECTS.register(bus);
+    }
 
-        bus.addListener(MinejagoCoreEvents::onCommonSetup);
+    private void addModClientListeners(IEventBus bus)
+    {
+        bus.addListener(MinejagoClientEvents::onRegisterParticleProviders);
+        bus.addListener(MinejagoClientEvents::onRegisterColorHandlers);
+        bus.addListener(MinejagoClientEvents::onRegisterRenderer);
+        bus.addListener(MinejagoClientEvents::onRegisterLayers);
+        bus.addListener(MinejagoClientEvents::registerModels);
+        bus.addListener(MinejagoClientEvents::registerClientReloadListeners);
+    }
 
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> bus.addListener(MinejagoClientEvents::onRegisterParticleProviders));
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> bus.addListener(MinejagoClientEvents::onRegisterColorHandlers));
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> bus.addListener(MinejagoClientEvents::onRegisterRenderer));
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> bus.addListener(MinejagoClientEvents::onRegisterLayers));
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> bus.addListener(MinejagoClientEvents::registerModels));
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> bus.addListener(MinejagoClientEvents::registerClientReloadListeners));
-
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> MinecraftForge.EVENT_BUS.addListener(SpinjitzuAnimation::onKeyPressed));
+    private void addForgeListeners()
+    {
         MinecraftForge.EVENT_BUS.addListener(GoldenWeaponItem::checkForAll);
         MinecraftForge.EVENT_BUS.addListener(MinejagoPaintingVariants::onInteract);
         MinecraftForge.EVENT_BUS.addListener(SpinjitzuAnimation::onServerChat);
+    }
+
+    private void addForgeClientListeners()
+    {
+        MinecraftForge.EVENT_BUS.addListener(SpinjitzuAnimation::onKeyPressed);
     }
 }

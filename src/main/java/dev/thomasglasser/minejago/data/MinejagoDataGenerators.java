@@ -12,14 +12,10 @@ import dev.thomasglasser.minejago.data.tags.MinejagoBlockTags;
 import dev.thomasglasser.minejago.data.tags.MinejagoItemTags;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.data.event.GatherDataEvent;
 
-@Mod.EventBusSubscriber(modid = Minejago.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class MinejagoDataGenerators
 {
-    @SubscribeEvent
     public static void gatherData(GatherDataEvent event)
     {
         DataGenerator generator = event.getGenerator();

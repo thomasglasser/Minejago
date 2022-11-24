@@ -1,6 +1,8 @@
 package dev.thomasglasser.minejago.client;
 
+import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.client.animation.MinejagoPlayerAnimator;
 import dev.thomasglasser.minejago.client.model.BambooStaffModel;
 import dev.thomasglasser.minejago.client.model.IronSpearModel;
 import dev.thomasglasser.minejago.client.model.ThrownIronShurikenModel;
@@ -21,8 +23,16 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 public class MinejagoClientEvents {
+
+    public static void onClientSetup(FMLClientSetupEvent event)
+    {
+        //Set the player construct callback. It can be a lambda function.
+        PlayerAnimationAccess.REGISTER_ANIMATION_EVENT.register(MinejagoPlayerAnimator::registerPlayerAnimation);
+    }
+
     public static void onRegisterLayers(EntityRenderersEvent.RegisterLayerDefinitions event)
     {
         event.registerLayerDefinition(ThrownBoneKnifeModel.LAYER_LOCATION, ThrownBoneKnifeModel::createBodyLayer);

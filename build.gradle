@@ -74,6 +74,8 @@ minecraft {
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
+            args('--username', 'Dev####')
+
             mods {
                 minejago {
                     source sourceSets.main
@@ -93,6 +95,8 @@ minecraft {
 
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+
+            args('--username', 'Dev####')
 
             mods {
                 minejago {
@@ -121,6 +125,8 @@ minecraft {
 
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             property 'forge.enabledGameTestNamespaces', 'minejago'
+
+            args('--username', 'Dev####')
 
             mods {
                 minejago {
