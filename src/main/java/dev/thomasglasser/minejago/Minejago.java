@@ -59,8 +59,8 @@ public class Minejago
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> bus.addListener(MinejagoClientEvents::onRegisterLayers));
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> bus.addListener(MinejagoClientEvents::registerModels));
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> bus.addListener(MinejagoClientEvents::registerClientReloadListeners));
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> bus.addListener(SpinjitzuAnimation::onKeyPressed));
 
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> MinecraftForge.EVENT_BUS.addListener(SpinjitzuAnimation::onKeyPressed));
         MinecraftForge.EVENT_BUS.addListener(GoldenWeaponItem::checkForAll);
         MinecraftForge.EVENT_BUS.addListener(MinejagoPaintingVariants::onInteract);
         MinecraftForge.EVENT_BUS.addListener(SpinjitzuAnimation::onServerChat);

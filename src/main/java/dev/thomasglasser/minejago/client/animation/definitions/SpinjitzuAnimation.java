@@ -52,7 +52,7 @@ public class SpinjitzuAnimation {
 
     public static void onKeyPressed(InputEvent.Key event)
     {
-        if (event.getKey() == InputConstants.KEY_LSHIFT && Minecraft.getInstance().player != null && !Minecraft.getInstance().player.hasContainerOpen() && Minecraft.getInstance().player.isCrouching())
+        if (Minecraft.getInstance().player != null && !Minecraft.getInstance().player.hasContainerOpen() && Minecraft.getInstance().player.isCrouching())
         {
             var animation = MinejagoPlayerAnimator.animationData.get(Minecraft.getInstance().player);
             animation.setAnimation(null);
