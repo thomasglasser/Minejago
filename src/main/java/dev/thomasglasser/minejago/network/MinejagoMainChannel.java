@@ -1,6 +1,8 @@
-package dev.thomasglasser.minejago.core.network;
+package dev.thomasglasser.minejago.network;
 
+import dev._100media.capabilitysyncer.network.SimpleEntityCapabilityStatusPacket;
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.world.level.storage.SpinjitzuCapabilityAttacher;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
@@ -32,6 +34,9 @@ public class MinejagoMainChannel
                 .encoder(MinejagoS2CPlayerAnimationPacket::toBytes)
                 .consumerMainThread(MinejagoS2CPlayerAnimationPacket::handle)
                 .add();
+
+        SimpleEntityCapabilityStatusPacket.register(net, id());
+        SimpleEntityCapabilityStatusPacket.registerRetriever(SpinjitzuCapabilityAttacher.SPINJITZU_CAPABILITY_RL, SpinjitzuCapabilityAttacher::getSpinjitzuCapabilityUnwrap);
     }
 
     public static <MSG> void sendToServer(MSG msg)
@@ -42,5 +47,9 @@ public class MinejagoMainChannel
     public static <MSG> void sendToClient(MSG msg, ServerPlayer player)
     {
         INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), msg);
+    }
+
+    public static SimpleChannel getChannel() {
+        return INSTANCE;
     }
 }

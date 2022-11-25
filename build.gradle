@@ -183,6 +183,9 @@ repositories {
     maven {
         url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
     }
+    maven {
+        url = 'https://maven.100media.dev/'
+    }
 }
 
 dependencies {
@@ -208,9 +211,10 @@ dependencies {
     implementation fg.deobf("curse.maven:ml-499980:${ml_id}")
     implementation fg.deobf("com.github.glitchfiend:TerraBlender-forge:${mc_version}-${tb_version}")
     implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${mc_version_major}:${gl_version}")
+    implementation fg.deobf("dev._100media.capabilitysyncer:capabilitysyncer:${mc_version_major}-${cs_version}")
 
     // JiJ
-    jarJar(group: "dev.kosmx.player-anim", name: "player-animation-lib-forge", version: "[${anim_version},${next_mc_version})")
+    jarJar(group: "dev._100media.capabilitysyncer", name: "capabilitysyncer", version: "[${cs_version},${next_mc_version})")
 }
 
 mixin {

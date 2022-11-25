@@ -2,15 +2,16 @@ package dev.thomasglasser.minejago.client.animation.definitions;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.mojang.blaze3d.platform.InputConstants;
 import dev.kosmx.playerAnim.api.layered.KeyframeAnimationPlayer;
 import dev.kosmx.playerAnim.api.layered.modifier.AbstractFadeModifier;
 import dev.kosmx.playerAnim.core.data.KeyframeAnimation;
 import dev.kosmx.playerAnim.core.data.gson.GeckoLibSerializer;
 import dev.kosmx.playerAnim.core.util.Ease;
 import dev.thomasglasser.minejago.client.animation.MinejagoPlayerAnimator;
-import dev.thomasglasser.minejago.core.network.MinejagoMainChannel;
-import dev.thomasglasser.minejago.core.network.MinejagoS2CPlayerAnimationPacket;
+import dev.thomasglasser.minejago.network.MinejagoMainChannel;
+import dev.thomasglasser.minejago.network.MinejagoS2CPlayerAnimationPacket;
+import dev.thomasglasser.minejago.world.level.storage.SpinjitzuCapability;
+import dev.thomasglasser.minejago.world.level.storage.SpinjitzuCapabilityAttacher;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.client.event.InputEvent;
@@ -28,6 +29,7 @@ public class SpinjitzuAnimation {
     public static void onServerChat(ServerChatEvent.Submitted event) {
         //Test if it is a player (main or other) and the message
         if (event.getMessage().contains(Component.translatable("trigger.ninja_go"))) {
+            event.getPlayer().getCapability(SpinjitzuCapabilityAttacher.SPINJITZU_CAPABILITY).ifPresent(cap -> cap.setActive(true, true));
             MinejagoMainChannel.sendToClient(new MinejagoS2CPlayerAnimationPacket(PlayerAnimations.SPINJITZU), event.getPlayer());
         }
     }
@@ -55,7 +57,7 @@ public class SpinjitzuAnimation {
         {
             var animation = MinejagoPlayerAnimator.animationData.get(Minecraft.getInstance().player);
             animation.setAnimation(null);
-            //TODO: Stop spinjitzu
+            Minecraft.getInstance().player.getCapability(SpinjitzuCapabilityAttacher.SPINJITZU_CAPABILITY).ifPresent(cap -> cap.setActive(false, true));
         }
     }
 }

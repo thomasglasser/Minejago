@@ -15,15 +15,34 @@ import java.util.Locale;
 public class SpinjitzuParticleOptions implements ParticleOptions {
     public static final float MIN_SCALE = 0.01F;
 
-    public static final Vector3f BLUE = new Vector3f(142, 76, 3);
-    public static final Vector3f BROWN = new Vector3f(157, 193, 240);
-    public static final Vector3f DARK_GOLD = new Vector3f(103, 126, 242);
-    public static final Vector3f LIGHT_BLUE = new Vector3f(78, 5, 2);
-    public static final Vector3f ORANGE = new Vector3f(37, 144, 211);
-    public static final Vector3f TAN = new Vector3f(25, 76, 138);
-    public static final Vector3f WHITE = new Vector3f(7, 2, 3);
-    public static final Vector3f YELLOW = new Vector3f(1, 21, 134);
-    public static final Vector3f GOLD = new Vector3f(); // TODO: Figure out TOC/Golden color
+    // ELEMENTAL COLORS
+    public static final Vector3f ELEMENT_BLUE = new Vector3f(142, 76, 3);
+    public static final Vector3f ELEMENT_BROWN = new Vector3f(157, 193, 240);
+    public static final Vector3f ELEMENT_DARK_GOLD = new Vector3f(103, 126, 242);
+    public static final Vector3f ELEMENT_LIGHT_BLUE = new Vector3f(78, 5, 2);
+    public static final Vector3f ELEMENT_ORANGE = new Vector3f(37, 144, 211);
+    public static final Vector3f ELEMENT_TAN = new Vector3f(25, 76, 138);
+    public static final Vector3f ELEMENT_WHITE = new Vector3f(7, 2, 3);
+    public static final Vector3f ELEMENT_YELLOW = new Vector3f(1, 21, 134);
+    public static final Vector3f ELEMENT_GOLD = new Vector3f(); // TODO: Figure out TOC/Golden color
+
+    // TEAM COLORS
+    public static final Vector3f TEAM_BLACK = new Vector3f(0, 0, 0);
+    public static final Vector3f TEAM_DARK_BLUE = new Vector3f(0, 0, 170);
+    public static final Vector3f TEAM_DARK_GREEN = new Vector3f(0, 170, 0);
+    public static final Vector3f TEAM_DARK_AQUA = new Vector3f(0, 170, 170);
+    public static final Vector3f TEAM_DARK_RED = new Vector3f(170, 0, 0);
+    public static final Vector3f TEAM_DARK_PURPLE = new Vector3f(170, 0, 170);
+    public static final Vector3f TEAM_GOLD = new Vector3f(128, 170, 0);
+    public static final Vector3f TEAM_GRAY = new Vector3f(85, 85, 85);
+    public static final Vector3f TEAM_DARK_GRAY = new Vector3f(170, 170, 170);
+    public static final Vector3f TEAM_BLUE = new Vector3f(255, 255, 85);
+    public static final Vector3f TEAM_GREEN = new Vector3f(255, 85, 255);
+    public static final Vector3f TEAM_AQUA = new Vector3f(255, 85, 85);
+    public static final Vector3f TEAM_RED = new Vector3f(85, 255, 255);
+    public static final Vector3f TEAM_LIGHT_PURPLE = new Vector3f(85, 255, 85);
+    public static final Vector3f TEAM_YELLOW = new Vector3f(85, 85, 255);
+    public static final Vector3f TEAM_WHITE = new Vector3f(1, 1, 1);
 
     protected final Vector3f color;
     protected final float scale;

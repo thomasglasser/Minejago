@@ -126,18 +126,18 @@ public class SpinjitzuParticle<T extends SpinjitzuParticleOptions> extends Textu
 
     public static void renderPlayerSpinjitzu(Entity entity, Vector3f color1, Vector3f color2, double height, boolean toc)
     {
-        float scale = toc && color1 == SpinjitzuParticleOptions.GOLD ? 2.2f : 2f;
+        float scale = toc && color1 == SpinjitzuParticleOptions.ELEMENT_GOLD ? 2.2f : 2f;
         float up = 0.0f;
         for (int i = 0; i < height; i++) {
             entity.getLevel().addParticle(new SpinjitzuParticleOptions(color1, scale), true, entity.getX(), entity.getY() + up, entity.getZ(), 0, 1, 0);
-            scale *= toc ? 1.1f : 1.15f;
+            scale *= toc ? 1.1f : 1.2f;
             up += 0.2f;
         }
-        scale = toc && color1 == SpinjitzuParticleOptions.GOLD ? 2.2f : 2f;
+        scale = toc && color1 == SpinjitzuParticleOptions.ELEMENT_GOLD ? 2.2f : 2f;
         up = 0.1f;
         for (int i = 0; i < height; i++) {
             entity.getLevel().addParticle(new SpinjitzuParticleOptions(color2, scale), true, entity.getX(), entity.getY() + up, entity.getZ(), 0, 1, 0);
-            scale *= toc ? 1.1f : 1.15f;
+            scale *= toc ? 1.1f : 1.2f;
             up += 0.2f;
         }
     }

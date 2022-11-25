@@ -6,6 +6,7 @@ import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import dev.thomasglasser.minejago.data.MinejagoDataGenerators;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
+import dev.thomasglasser.minejago.world.entity.MinejagoEntityEvents;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
 import dev.thomasglasser.minejago.world.item.GoldenWeaponItem;
@@ -17,6 +18,8 @@ import dev.thomasglasser.minejago.world.level.biome.MinejagoBiomes;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPatterns;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
+import dev.thomasglasser.minejago.world.level.storage.SpinjitzuCapabilityAttacher;
+import net.minecraft.world.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -47,6 +50,8 @@ public class Minejago
 
         addForgeListeners();
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> this::addForgeClientListeners);
+
+        registerCapabilities();
 
         bus.addListener(MinejagoDataGenerators::gatherData);
     }
@@ -84,10 +89,16 @@ public class Minejago
         MinecraftForge.EVENT_BUS.addListener(GoldenWeaponItem::checkForAll);
         MinecraftForge.EVENT_BUS.addListener(MinejagoPaintingVariants::onInteract);
         MinecraftForge.EVENT_BUS.addListener(SpinjitzuAnimation::onServerChat);
+        MinecraftForge.EVENT_BUS.addListener(MinejagoEntityEvents::onEntityTick);
     }
 
     private void addForgeClientListeners()
     {
         MinecraftForge.EVENT_BUS.addListener(SpinjitzuAnimation::onKeyPressed);
+    }
+
+    private void registerCapabilities()
+    {
+        SpinjitzuCapabilityAttacher.register();
     }
 }
