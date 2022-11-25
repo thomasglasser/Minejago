@@ -8,9 +8,6 @@ import dev.kosmx.playerAnim.core.data.KeyframeAnimation;
 import dev.kosmx.playerAnim.core.data.gson.GeckoLibSerializer;
 import dev.kosmx.playerAnim.core.util.Ease;
 import dev.thomasglasser.minejago.client.animation.MinejagoPlayerAnimator;
-import dev.thomasglasser.minejago.network.MinejagoMainChannel;
-import dev.thomasglasser.minejago.network.MinejagoS2CPlayerAnimationPacket;
-import dev.thomasglasser.minejago.world.level.storage.SpinjitzuCapability;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuCapabilityAttacher;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
@@ -30,7 +27,6 @@ public class SpinjitzuAnimation {
         //Test if it is a player (main or other) and the message
         if (event.getMessage().contains(Component.translatable("trigger.ninja_go"))) {
             event.getPlayer().getCapability(SpinjitzuCapabilityAttacher.SPINJITZU_CAPABILITY).ifPresent(cap -> cap.setActive(true, true));
-            MinejagoMainChannel.sendToClient(new MinejagoS2CPlayerAnimationPacket(PlayerAnimations.SPINJITZU), event.getPlayer());
         }
     }
 
@@ -57,7 +53,7 @@ public class SpinjitzuAnimation {
         {
             var animation = MinejagoPlayerAnimator.animationData.get(Minecraft.getInstance().player);
             animation.setAnimation(null);
-            Minecraft.getInstance().player.getCapability(SpinjitzuCapabilityAttacher.SPINJITZU_CAPABILITY).ifPresent(cap -> cap.setActive(false, true));
+            Minecraft.getInstance().player.getPersistentData().putBoolean("StartedSpinjitzu", false);
         }
     }
 }

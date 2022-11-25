@@ -1,11 +1,14 @@
 package dev.thomasglasser.minejago.world.entity;
 
+import dev.thomasglasser.minejago.client.animation.MinejagoPlayerAnimator;
+import dev.thomasglasser.minejago.client.animation.definitions.SpinjitzuAnimation;
 import dev.thomasglasser.minejago.client.particle.SpinjitzuParticle;
 import dev.thomasglasser.minejago.core.particles.SpinjitzuParticleOptions;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuCapability;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuCapabilityAttacher;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.fml.LogicalSide;
 
 public class MinejagoEntityEvents
 {
@@ -14,6 +17,15 @@ public class MinejagoEntityEvents
         Player player = event.player;
         if ((/* TODO: Check unlocked Spinjitzu */true) && player.getCapability(SpinjitzuCapabilityAttacher.SPINJITZU_CAPABILITY).orElse(new SpinjitzuCapability(player)).isActive())
         {
+            if (player.isCrouching())
+            {
+                player.getCapability(SpinjitzuCapabilityAttacher.SPINJITZU_CAPABILITY).orElse(new SpinjitzuCapability(player)).setActive(false, true);
+            }
+            if (event.side == LogicalSide.CLIENT && !player.getPersistentData().getBoolean("StartedSpinjitzu"))
+            {
+                SpinjitzuAnimation.startAnimation();
+                player.getPersistentData().putBoolean("StartedSpinjitzu", true);
+            }
             if (/* TODO: Check for element */ false)
             {
                 // TODO: Elemental spinjitzu

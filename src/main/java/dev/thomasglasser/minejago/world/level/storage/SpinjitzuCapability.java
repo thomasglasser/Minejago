@@ -41,8 +41,6 @@ public class SpinjitzuCapability extends PlayerCapability {
     public void deserializeNBT(CompoundTag nbt, boolean readingFromDisk) {
         if (nbt.contains("Active")) {
             this.active = nbt.getBoolean("Active");
-        } else {
-            this.active = false;
         }
     }
 

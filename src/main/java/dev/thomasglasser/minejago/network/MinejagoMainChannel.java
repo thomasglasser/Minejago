@@ -29,12 +29,6 @@ public class MinejagoMainChannel
 
         INSTANCE = net;
 
-        net.messageBuilder(MinejagoS2CPlayerAnimationPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(MinejagoS2CPlayerAnimationPacket::new)
-                .encoder(MinejagoS2CPlayerAnimationPacket::toBytes)
-                .consumerMainThread(MinejagoS2CPlayerAnimationPacket::handle)
-                .add();
-
         SimpleEntityCapabilityStatusPacket.register(net, id());
         SimpleEntityCapabilityStatusPacket.registerRetriever(SpinjitzuCapabilityAttacher.SPINJITZU_CAPABILITY_RL, SpinjitzuCapabilityAttacher::getSpinjitzuCapabilityUnwrap);
     }
