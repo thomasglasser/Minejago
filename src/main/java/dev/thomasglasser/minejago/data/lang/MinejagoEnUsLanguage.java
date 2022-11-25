@@ -87,7 +87,7 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add("effect.minecraft.harming", "Harming");
         add("effect.minecraft.leaping", "Leaping");
 
-        add("trigger.ninja_go", "Ninja go");
+        add("trigger.ninja_go", "Ninja, go!");
     }
 
     public void addDesc(Item item, String desc)
