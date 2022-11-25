@@ -25,5 +25,9 @@ public class MinejagoItemModels extends ItemModelProvider
         singleTexture(MinejagoItems.TEACUP.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/teacup"));
         singleTexture(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/four_weapons_banner_pattern"));
         singleTexture(MinejagoBlocks.TEAPOT.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/teapot"));
+        singleTexture(MinejagoItems.BLACK_GI_HELMET.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/black_gi_helmet"));
+        singleTexture(MinejagoItems.BLACK_GI_CHESTPLATE.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/black_gi_chestplate"));
+        singleTexture(MinejagoItems.BLACK_GI_LEGGINGS.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/black_gi_leggings"));
+        singleTexture(MinejagoItems.BLACK_GI_BOOTS.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/black_gi_boots"));
     }
 }

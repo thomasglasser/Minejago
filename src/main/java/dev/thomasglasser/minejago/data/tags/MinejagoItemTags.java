@@ -40,9 +40,20 @@ public class MinejagoItemTags extends ItemTagsProvider
         tagDynamicLight("self", 10)
                 .addTag(GOLDEN_WEAPONS);
         tag(Tags.Items.ARMORS)
-                .add(MinejagoItems.SKELETAL_CHESTPLATE.get());
+                .add(MinejagoItems.SKELETAL_CHESTPLATE.get())
+                .add(MinejagoItems.BLACK_GI_HELMET.get())
+                .add(MinejagoItems.BLACK_GI_CHESTPLATE.get())
+                .add(MinejagoItems.BLACK_GI_LEGGINGS.get())
+                .add(MinejagoItems.BLACK_GI_BOOTS.get());
         tag(Tags.Items.ARMORS_CHESTPLATES)
-                .add(MinejagoItems.SKELETAL_CHESTPLATE.get());
+                .add(MinejagoItems.SKELETAL_CHESTPLATE.get())
+                .add(MinejagoItems.BLACK_GI_CHESTPLATE.get());
+        tag(Tags.Items.ARMORS_BOOTS)
+                .add(MinejagoItems.BLACK_GI_BOOTS.get());
+        tag(Tags.Items.ARMORS_HELMETS)
+                .add(MinejagoItems.BLACK_GI_HELMET.get());
+        tag(Tags.Items.ARMORS_LEGGINGS)
+                .add(MinejagoItems.BLACK_GI_LEGGINGS.get());
     }
 
     public TagsProvider.TagAppender<Item> tagDynamicLight(String tag, int level)

@@ -1,5 +1,9 @@
 {
   "values": [
-    "minejago:skeletal_chestplate"
+    "minejago:skeletal_chestplate",
+    "minejago:black_gi_helmet",
+    "minejago:black_gi_chestplate",
+    "minejago:black_gi_leggings",
+    "minejago:black_gi_boots"
   ]
 }

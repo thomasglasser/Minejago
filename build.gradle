@@ -180,6 +180,10 @@ repositories {
     maven {
         url = 'https://maven.kosmx.dev/'
     }
+
+    maven {
+        url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+    }
 }
 
 dependencies {
@@ -204,6 +208,7 @@ dependencies {
     // implementation fg.deobf("maven.modrinth:playeranimator:${anim_version}-forge")
     implementation fg.deobf("curse.maven:ml-499980:${ml_id}")
     implementation fg.deobf("com.github.glitchfiend:TerraBlender-forge:${mc_version}-${tb_version}")
+    implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${mc_version_major}:${gl_version}")
 
     // JiJ
     jarJar(group: "dev.kosmx.player-anim", name: "player-animation-lib-forge", version: "[${anim_version},${next_mc_version})")

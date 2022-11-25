@@ -9,7 +9,7 @@ import net.minecraft.world.item.alchemy.Potions;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(BucketItem.class)
-public class BucketItemMixin implements ITeapotLiquidHolder {
+public class MinejagoBucketItemMixin implements ITeapotLiquidHolder {
     @Override
     public int getCups() {
         return 6;
