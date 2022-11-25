@@ -76,6 +76,7 @@ public class Minejago
         bus.addListener(MinejagoClientEvents::onRegisterLayers);
         bus.addListener(MinejagoClientEvents::registerModels);
         bus.addListener(MinejagoClientEvents::registerClientReloadListeners);
+        bus.addListener(MinejagoClientEvents::addEntityLayers);
     }
 
     private void addForgeListeners()

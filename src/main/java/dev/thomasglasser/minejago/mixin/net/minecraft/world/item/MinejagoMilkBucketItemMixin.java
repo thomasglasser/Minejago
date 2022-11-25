@@ -6,11 +6,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.MilkBucketItem;
 import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.alchemy.Potions;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(MilkBucketItem.class)
-public class MilkBucketItemMixin implements ITeapotLiquidHolder {
+public class MinejagoMilkBucketItemMixin implements ITeapotLiquidHolder {
     @Override
     public int getCups() {
         return 6;

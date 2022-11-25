@@ -4,13 +4,13 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "minejago.refmap.json",
   "mixins": [
-    "net.minecraft.client.multiplayer.ClientLevelMixin",
-    "net.minecraft.world.item.BucketItemMixin",
-    "net.minecraft.world.item.PotionItemMixin",
-    "net.minecraft.world.item.MilkBucketItemMixin"
+    "net.minecraft.client.multiplayer.MinejagoClientLevelMixin",
+    "net.minecraft.world.item.MinejagoBucketItemMixin",
+    "net.minecraft.world.item.MinejagoPotionItemMixin",
+    "net.minecraft.world.item.MinejagoMilkBucketItemMixin"
   ],
   "client": [
-    "net.minecraft.client.multiplayer.ClientLevelMixin"
+    "net.minecraft.client.multiplayer.MinejagoClientLevelMixin"
   ],
   "minVersion": "0.8"
 }

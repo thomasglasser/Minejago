@@ -12,9 +12,8 @@ import net.minecraft.world.item.crafting.Ingredient;
 import java.util.function.Supplier;
 
 public enum MinejagoArmorMaterials implements ArmorMaterial {
-    SKELETAL("skeletal", 10, new int[]{0, 0, 4, 0}, 6, SoundEvents.ARMOR_EQUIP_GENERIC, 0.0F, 0.0F, () -> {
-        return Ingredient.EMPTY;
-    });
+    SKELETAL("skeletal", 10, new int[]{0, 0, 4, 0}, 6, SoundEvents.ARMOR_EQUIP_GENERIC, 0.0F, 0.0F, () -> Ingredient.of(Items.BONE)),
+    BLACK_GI("black_gi", 10, new int[]{1, 2, 3, 1}, 0, SoundEvents.ARMOR_EQUIP_LEATHER, 0.5F, 0.5F, () -> Ingredient.EMPTY);
 
     private static final int[] HEALTH_PER_SLOT = new int[]{13, 15, 16, 11};
     private final String name;
