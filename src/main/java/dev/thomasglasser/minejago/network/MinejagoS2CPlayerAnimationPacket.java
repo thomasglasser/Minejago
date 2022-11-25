@@ -1,4 +1,4 @@
-package dev.thomasglasser.minejago.core.network;
+package dev.thomasglasser.minejago.network;
 
 import dev.thomasglasser.minejago.client.animation.definitions.PlayerAnimations;
 import dev.thomasglasser.minejago.client.animation.definitions.SpinjitzuAnimation;
@@ -27,7 +27,10 @@ public class MinejagoS2CPlayerAnimationPacket {
         ctx.get().enqueueWork(() -> {
             switch (anim)
             {
-                case SPINJITZU -> SpinjitzuAnimation.startAnimation();
+                case SPINJITZU ->
+                {
+                    SpinjitzuAnimation.startAnimation();
+                }
             }
         });
         ctx.get().setPacketHandled(true);

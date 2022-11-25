@@ -1,7 +1,7 @@
 package dev.thomasglasser.minejago.core;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.core.network.MinejagoMainChannel;
+import dev.thomasglasser.minejago.network.MinejagoMainChannel;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotionBrewing;
 import dev.thomasglasser.minejago.world.level.biome.MinejagoRegion;
 import dev.thomasglasser.minejago.world.level.biome.MinejagoSurfaceRuleData;
