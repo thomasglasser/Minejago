@@ -7,6 +7,7 @@ import dev.thomasglasser.minejago.world.level.storage.ActivatedSpinjitzuCapabili
 import dev.thomasglasser.minejago.world.level.storage.UnlockedSpinjitzuCapabilityAttacher;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
@@ -35,7 +36,7 @@ public class MinejagoMainChannel
         SimpleEntityCapabilityStatusPacket.registerRetriever(ActivatedSpinjitzuCapabilityAttacher.ACTIVATED_SPINJITZU_CAPABILITY_RL, ActivatedSpinjitzuCapabilityAttacher::getActivatedSpinjitzuCapabilityUnwrap);
         SimpleEntityCapabilityStatusPacket.registerRetriever(UnlockedSpinjitzuCapabilityAttacher.UNLOCKED_SPINJITZU_CAPABILITY_RL, UnlockedSpinjitzuCapabilityAttacher::getUnlockedSpinjitzuCapabilityUnwrap);
 
-        net.messageBuilder(ActivateSpinjitzuPacket.class, id())
+        net.messageBuilder(ActivateSpinjitzuPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(ActivateSpinjitzuPacket::new)
                 .encoder(ActivateSpinjitzuPacket::toBytes)
                 .consumerMainThread(ActivateSpinjitzuPacket::handle)
