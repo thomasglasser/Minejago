@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.data.lang;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
@@ -9,6 +10,7 @@ import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
 import dev.thomasglasser.minejago.world.level.biome.MinejagoBiomes;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPatterns;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.DyeColor;
@@ -88,6 +90,8 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add("effect.minecraft.leaping", "Leaping");
 
         add("trigger.ninja_go", "Ninja, go!");
+
+        add(MinejagoKeyMappings.ACTIVATE_SPINJITZU, "Activate Spinjitzu");
     }
 
     public void addDesc(Item item, String desc)
@@ -128,5 +132,10 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         {
             add(Items.TIPPED_ARROW, potion, "Arrow of " + name);
         }
+    }
+
+    public void add(KeyMapping key, String name)
+    {
+        add(key.getName(), name);
     }
 }

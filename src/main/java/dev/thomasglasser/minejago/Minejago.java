@@ -1,6 +1,5 @@
 package dev.thomasglasser.minejago;
 
-import dev.thomasglasser.minejago.client.animation.definitions.SpinjitzuAnimation;
 import dev.thomasglasser.minejago.core.MinejagoCoreEvents;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import dev.thomasglasser.minejago.data.MinejagoDataGenerators;
@@ -9,6 +8,7 @@ import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityEvents;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
+import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
 import dev.thomasglasser.minejago.world.item.GoldenWeaponItem;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.MinejagoTiers;
@@ -18,8 +18,9 @@ import dev.thomasglasser.minejago.world.level.biome.MinejagoBiomes;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPatterns;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
-import dev.thomasglasser.minejago.world.level.storage.SpinjitzuCapabilityAttacher;
-import net.minecraft.world.entity.Entity;
+import dev.thomasglasser.minejago.world.level.storage.PowerCapabilityAttacher;
+import dev.thomasglasser.minejago.world.level.storage.ActivatedSpinjitzuCapabilityAttacher;
+import dev.thomasglasser.minejago.world.level.storage.UnlockedSpinjitzuCapabilityAttacher;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -49,7 +50,6 @@ public class Minejago
         addModClientListeners(bus);
 
         addForgeListeners();
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> this::addForgeClientListeners);
 
         registerCapabilities();
 
@@ -71,6 +71,7 @@ public class Minejago
         MinejagoPotions.POTIONS.register(bus);
         MinejagoSoundEvents.SOUND_EVENTS.register(bus);
         MinejagoMobEffects.MOB_EFFECTS.register(bus);
+        MinejagoPowers.POWERS.register(bus);
     }
 
     private void addModClientListeners(IEventBus bus)
@@ -82,23 +83,20 @@ public class Minejago
         bus.addListener(MinejagoClientEvents::registerModels);
         bus.addListener(MinejagoClientEvents::registerClientReloadListeners);
         bus.addListener(MinejagoClientEvents::addEntityLayers);
+        bus.addListener(MinejagoClientEvents::onRegisterKeyMappings);
     }
 
     private void addForgeListeners()
     {
         MinecraftForge.EVENT_BUS.addListener(GoldenWeaponItem::checkForAll);
         MinecraftForge.EVENT_BUS.addListener(MinejagoPaintingVariants::onInteract);
-        MinecraftForge.EVENT_BUS.addListener(SpinjitzuAnimation::onServerChat);
         MinecraftForge.EVENT_BUS.addListener(MinejagoEntityEvents::onEntityTick);
-    }
-
-    private void addForgeClientListeners()
-    {
-        MinecraftForge.EVENT_BUS.addListener(SpinjitzuAnimation::onKeyPressed);
     }
 
     private void registerCapabilities()
     {
-        SpinjitzuCapabilityAttacher.register();
+        PowerCapabilityAttacher.register();
+        ActivatedSpinjitzuCapabilityAttacher.register();
+        UnlockedSpinjitzuCapabilityAttacher.register();
     }
 }

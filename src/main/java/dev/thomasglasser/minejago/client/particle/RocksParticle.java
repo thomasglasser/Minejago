@@ -45,14 +45,4 @@ public class RocksParticle extends TextureSheetParticle {
             return particle;
         }
     }
-
-    public static void renderPlayerSpinjitzuBorder(Entity entity, double height, boolean toc)
-    {
-        for (int i = 0; i < height / 4; i++) {
-            entity.getLevel().addParticle(MinejagoParticleTypes.ROCKS.get(), true, entity.getX(), entity.getY(), entity.getZ(), 0.5, 0.5, 0.5);
-            entity.getLevel().addParticle(MinejagoParticleTypes.ROCKS.get(), true, entity.getX(), entity.getY(), entity.getZ(), -0.5, 0.5, -0.5);
-            entity.getLevel().addParticle(MinejagoParticleTypes.ROCKS.get(), true, entity.getX(), entity.getY(), entity.getZ(), 0.5, 0.5, -0.5);
-            entity.getLevel().addParticle(MinejagoParticleTypes.ROCKS.get(), true, entity.getX(), entity.getY(), entity.getZ(), -0.5, 0.5, 0.5);
-        }
-    }
 }

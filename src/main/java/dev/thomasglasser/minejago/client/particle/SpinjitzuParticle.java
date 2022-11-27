@@ -3,10 +3,12 @@ package dev.thomasglasser.minejago.client.particle;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
+import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import dev.thomasglasser.minejago.core.particles.SpinjitzuParticleOptions;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
@@ -139,6 +141,16 @@ public class SpinjitzuParticle<T extends SpinjitzuParticleOptions> extends Textu
             entity.getLevel().addParticle(new SpinjitzuParticleOptions(color2, scale), true, entity.getX(), entity.getY() + up, entity.getZ(), 0, 1, 0);
             scale *= toc ? 1.1f : 1.2f;
             up += 0.2f;
+        }
+    }
+
+    public static void renderPlayerSpinjitzuBorder(ParticleOptions particle, Entity entity, double height, boolean toc)
+    {
+        for (int i = 0; i < height / 4; i++) {
+            entity.getLevel().addParticle(particle, true, entity.getX(), entity.getY(), entity.getZ(), 0.5, 0.5, 0.5);
+            entity.getLevel().addParticle(particle, true, entity.getX(), entity.getY(), entity.getZ(), -0.5, 0.5, -0.5);
+            entity.getLevel().addParticle(particle, true, entity.getX(), entity.getY(), entity.getZ(), 0.5, 0.5, -0.5);
+            entity.getLevel().addParticle(particle, true, entity.getX(), entity.getY(), entity.getZ(), -0.5, 0.5, 0.5);
         }
     }
 }

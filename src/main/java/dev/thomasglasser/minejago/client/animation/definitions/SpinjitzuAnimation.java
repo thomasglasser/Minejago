@@ -8,11 +8,7 @@ import dev.kosmx.playerAnim.core.data.KeyframeAnimation;
 import dev.kosmx.playerAnim.core.data.gson.GeckoLibSerializer;
 import dev.kosmx.playerAnim.core.util.Ease;
 import dev.thomasglasser.minejago.client.animation.MinejagoPlayerAnimator;
-import dev.thomasglasser.minejago.world.level.storage.SpinjitzuCapabilityAttacher;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.Component;
-import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.event.ServerChatEvent;
 
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -22,13 +18,6 @@ import java.util.Objects;
 public class SpinjitzuAnimation {
 
     public static final List<KeyframeAnimation> ANIMATIONS = GeckoLibSerializer.serialize((JsonObject) JsonParser.parseReader(new InputStreamReader(Objects.requireNonNull(SpinjitzuAnimation.class.getClassLoader().getResourceAsStream("assets/minejago/animations/spinjitzu.animation.json")), StandardCharsets.UTF_8)));
-
-    public static void onServerChat(ServerChatEvent.Submitted event) {
-        //Test if it is a player (main or other) and the message
-        if (event.getMessage().contains(Component.translatable("trigger.ninja_go"))) {
-            event.getPlayer().getCapability(SpinjitzuCapabilityAttacher.SPINJITZU_CAPABILITY).ifPresent(cap -> cap.setActive(true, true));
-        }
-    }
 
     public static void startAnimation()
     {
@@ -47,13 +36,10 @@ public class SpinjitzuAnimation {
         }
     }
 
-    public static void onKeyPressed(InputEvent.Key event)
+    public static void stopAnimation()
     {
-        if (Minecraft.getInstance().player != null && !Minecraft.getInstance().player.hasContainerOpen() && Minecraft.getInstance().player.isCrouching())
-        {
-            var animation = MinejagoPlayerAnimator.animationData.get(Minecraft.getInstance().player);
-            animation.setAnimation(null);
-            Minecraft.getInstance().player.getPersistentData().putBoolean("StartedSpinjitzu", false);
-        }
+        var animation = MinejagoPlayerAnimator.animationData.get(Minecraft.getInstance().player);
+        animation.setAnimation(null);
+        Minecraft.getInstance().player.getPersistentData().putBoolean("StartedSpinjitzu", false);
     }
 }

@@ -48,14 +48,4 @@ public class SparksParticle extends TextureSheetParticle {
             return sparks;
         }
     }
-
-    public static void renderPlayerSpinjitzuBorder(Entity entity, double height, boolean toc)
-    {
-        for (int i = 0; i < height / 4; i++) {
-            entity.getLevel().addParticle(MinejagoParticleTypes.SPARKS.get(), true, entity.getX(), entity.getY(), entity.getZ(), 0.5, 0.5, 0.5);
-            entity.getLevel().addParticle(MinejagoParticleTypes.SPARKS.get(), true, entity.getX(), entity.getY(), entity.getZ(), -0.5, 0.5, -0.5);
-            entity.getLevel().addParticle(MinejagoParticleTypes.SPARKS.get(), true, entity.getX(), entity.getY(), entity.getZ(), 0.5, 0.5, -0.5);
-            entity.getLevel().addParticle(MinejagoParticleTypes.SPARKS.get(), true, entity.getX(), entity.getY(), entity.getZ(), -0.5, 0.5, 0.5);
-        }
-    }
 }

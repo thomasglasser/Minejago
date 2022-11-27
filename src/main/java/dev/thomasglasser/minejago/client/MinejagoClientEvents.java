@@ -123,4 +123,9 @@ public class MinejagoClientEvents {
     {
         GeoArmorRenderer.registerArmorRenderer(BlackGiItem.class, BlackGiRenderer::new);
     }
+
+    public static void onRegisterKeyMappings(RegisterKeyMappingsEvent event)
+    {
+        event.register(MinejagoKeyMappings.ACTIVATE_SPINJITZU);
+    }
 }

@@ -2,10 +2,11 @@ package dev.thomasglasser.minejago.network;
 
 import dev._100media.capabilitysyncer.network.SimpleEntityCapabilityStatusPacket;
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.world.level.storage.SpinjitzuCapabilityAttacher;
+import dev.thomasglasser.minejago.world.level.storage.PowerCapabilityAttacher;
+import dev.thomasglasser.minejago.world.level.storage.ActivatedSpinjitzuCapabilityAttacher;
+import dev.thomasglasser.minejago.world.level.storage.UnlockedSpinjitzuCapabilityAttacher;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
@@ -30,7 +31,15 @@ public class MinejagoMainChannel
         INSTANCE = net;
 
         SimpleEntityCapabilityStatusPacket.register(net, id());
-        SimpleEntityCapabilityStatusPacket.registerRetriever(SpinjitzuCapabilityAttacher.SPINJITZU_CAPABILITY_RL, SpinjitzuCapabilityAttacher::getSpinjitzuCapabilityUnwrap);
+        SimpleEntityCapabilityStatusPacket.registerRetriever(PowerCapabilityAttacher.POWER_CAPABILITY_RL, PowerCapabilityAttacher::getPowerCapabilityUnwrap);
+        SimpleEntityCapabilityStatusPacket.registerRetriever(ActivatedSpinjitzuCapabilityAttacher.ACTIVATED_SPINJITZU_CAPABILITY_RL, ActivatedSpinjitzuCapabilityAttacher::getActivatedSpinjitzuCapabilityUnwrap);
+        SimpleEntityCapabilityStatusPacket.registerRetriever(UnlockedSpinjitzuCapabilityAttacher.UNLOCKED_SPINJITZU_CAPABILITY_RL, UnlockedSpinjitzuCapabilityAttacher::getUnlockedSpinjitzuCapabilityUnwrap);
+
+        net.messageBuilder(ActivateSpinjitzuPacket.class, id())
+                .decoder(ActivateSpinjitzuPacket::new)
+                .encoder(ActivateSpinjitzuPacket::toBytes)
+                .consumerMainThread(ActivateSpinjitzuPacket::handle)
+                .add();
     }
 
     public static <MSG> void sendToServer(MSG msg)
