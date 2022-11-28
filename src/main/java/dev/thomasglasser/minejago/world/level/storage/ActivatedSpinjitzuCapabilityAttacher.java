@@ -32,5 +32,5 @@ public class ActivatedSpinjitzuCapabilityAttacher extends CapabilityAttacher {
 
     public static void register() {
         CapabilityAttacher.registerCapability(CAPABILITY_CLASS);
-        CapabilityAttacher.registerPlayerAttacher(ActivatedSpinjitzuCapabilityAttacher::attach, ActivatedSpinjitzuCapabilityAttacher::getActivatedSpinjitzuCapability, true);
+        CapabilityAttacher.registerPlayerAttacher(ActivatedSpinjitzuCapabilityAttacher::attach, ActivatedSpinjitzuCapabilityAttacher::getActivatedSpinjitzuCapability, false);
     }}

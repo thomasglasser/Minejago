@@ -11,6 +11,9 @@ import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
+import org.lwjgl.system.windows.MSG;
+
+import java.util.List;
 
 public class MinejagoMainChannel
 {
@@ -36,10 +39,15 @@ public class MinejagoMainChannel
         SimpleEntityCapabilityStatusPacket.registerRetriever(ActivatedSpinjitzuCapabilityAttacher.ACTIVATED_SPINJITZU_CAPABILITY_RL, ActivatedSpinjitzuCapabilityAttacher::getActivatedSpinjitzuCapabilityUnwrap);
         SimpleEntityCapabilityStatusPacket.registerRetriever(UnlockedSpinjitzuCapabilityAttacher.UNLOCKED_SPINJITZU_CAPABILITY_RL, UnlockedSpinjitzuCapabilityAttacher::getUnlockedSpinjitzuCapabilityUnwrap);
 
-        net.messageBuilder(ActivateSpinjitzuPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(ActivateSpinjitzuPacket::new)
-                .encoder(ActivateSpinjitzuPacket::toBytes)
-                .consumerMainThread(ActivateSpinjitzuPacket::handle)
+        net.messageBuilder(ServerboundActivateSpinjitzuPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(ServerboundActivateSpinjitzuPacket::new)
+                .encoder(ServerboundActivateSpinjitzuPacket::toBytes)
+                .consumerMainThread(ServerboundActivateSpinjitzuPacket::handle)
+                .add();
+        net.messageBuilder(ClientboundDuringSpinjitzuPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(ClientboundDuringSpinjitzuPacket::new)
+                .encoder(ClientboundDuringSpinjitzuPacket::toBytes)
+                .consumerMainThread(ClientboundDuringSpinjitzuPacket::handle)
                 .add();
     }
 
@@ -51,6 +59,16 @@ public class MinejagoMainChannel
     public static <MSG> void sendToClient(MSG msg, ServerPlayer player)
     {
         INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), msg);
+    }
+
+    public static <MSG> void sendToAllClients(MSG msg, ServerPlayer player)
+    {
+        List<ServerPlayer> players = player.getLevel().getPlayers((player1 -> true));
+
+        for (ServerPlayer player1 : players)
+        {
+            sendToClient(msg, player1);
+        }
     }
 
     public static SimpleChannel getChannel() {

@@ -11,11 +11,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.simple.SimpleChannel;
 
 public class PowerCapability extends PlayerCapability {
-    private Power power = MinejagoPowers.EMPTY.get();
+    private Power power;
 
     public PowerCapability(Player player)
     {
         super(player);
+        power = MinejagoPowers.EMPTY.get();
     }
 
     public Power getPower() {

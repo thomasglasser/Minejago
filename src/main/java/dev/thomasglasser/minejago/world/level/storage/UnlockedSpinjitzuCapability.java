@@ -9,11 +9,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.simple.SimpleChannel;
 
 public class UnlockedSpinjitzuCapability extends PlayerCapability {
-    private boolean unlocked = false;
+    private boolean unlocked;
 
     public UnlockedSpinjitzuCapability(Player player)
     {
         super(player);
+        this.unlocked = false;
     }
 
     public boolean isUnlocked() {

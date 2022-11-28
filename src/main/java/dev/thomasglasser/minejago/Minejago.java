@@ -47,7 +47,7 @@ public class Minejago
         bus.addListener(MinejagoCoreEvents::onCommonSetup);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> bus.addListener(MinejagoClientEvents::onClientSetup));
 
-        addModClientListeners(bus);
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> addModClientListeners(bus));
 
         addForgeListeners();
 
@@ -90,7 +90,7 @@ public class Minejago
     {
         MinecraftForge.EVENT_BUS.addListener(GoldenWeaponItem::checkForAll);
         MinecraftForge.EVENT_BUS.addListener(MinejagoPaintingVariants::onInteract);
-        MinecraftForge.EVENT_BUS.addListener(MinejagoEntityEvents::onEntityTick);
+        MinecraftForge.EVENT_BUS.addListener(MinejagoEntityEvents::onPlayerTick);
     }
 
     private void registerCapabilities()

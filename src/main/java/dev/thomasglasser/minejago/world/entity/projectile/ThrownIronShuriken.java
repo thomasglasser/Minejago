@@ -17,6 +17,7 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -73,11 +74,10 @@ public class ThrownIronShuriken extends AbstractArrow
                 this.setNoGravity(false);
             }
         }
-        else
-        {
+        else {
             this.setNoGravity(!this.dealtDamage);
+            this.rotate(Rotation.CLOCKWISE_90);
         }
-
         super.tick();
     }
 

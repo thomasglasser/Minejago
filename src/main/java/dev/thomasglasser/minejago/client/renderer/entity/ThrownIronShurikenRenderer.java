@@ -18,7 +18,7 @@ import net.minecraft.util.Mth;
 
 public class ThrownIronShurikenRenderer extends EntityRenderer<ThrownIronShuriken>
 {
-    public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(Minejago.MOD_ID, "textures/entity/bamboo_staff.png");
+    public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(Minejago.MOD_ID, "textures/entity/iron_shuriken.png");
     private final ThrownIronShurikenModel model;
 
     public ThrownIronShurikenRenderer(EntityRendererProvider.Context context) {
