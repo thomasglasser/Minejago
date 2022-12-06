@@ -4,11 +4,13 @@ import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.client.animation.definitions.SpinjitzuAnimation;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleUtils;
 import dev.thomasglasser.minejago.core.particles.SpinjitzuParticleOptions;
+import dev.thomasglasser.minejago.network.ClientboundStopSpinjitzuPacket;
 import dev.thomasglasser.minejago.network.ServerboundActivateSpinjitzuPacket;
 import dev.thomasglasser.minejago.network.MinejagoMainChannel;
 import dev.thomasglasser.minejago.world.entity.powers.Power;
 import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
 import dev.thomasglasser.minejago.world.level.storage.*;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.TickEvent;
@@ -27,7 +29,7 @@ public class MinejagoEntityEvents
                 if (activated.isActive()) {
                     if (serverPlayer.isCrouching()) {
                         activated.setActive(false);
-//                        SpinjitzuAnimation.stopAnimation(); // TODO: Make packet
+                        MinejagoMainChannel.sendToAllClients(new ClientboundStopSpinjitzuPacket(serverPlayer.getUUID()), serverPlayer);
                     }
                     Power power = serverPlayer.getCapability(PowerCapabilityAttacher.POWER_CAPABILITY).orElse(new PowerCapability(serverPlayer)).getPower();
                     if (power != MinejagoPowers.EMPTY.get()) {
@@ -94,11 +96,10 @@ public class MinejagoEntityEvents
                 }
             } else if (activated.isActive()) {
                 activated.setActive(false);
-//                SpinjitzuAnimation.stopAnimation();
+                MinejagoMainChannel.sendToAllClients(new ClientboundStopSpinjitzuPacket(serverPlayer.getUUID()), serverPlayer);
             }
         } else if (MinejagoKeyMappings.ACTIVATE_SPINJITZU.isDown()) {
             MinejagoMainChannel.sendToServer(new ServerboundActivateSpinjitzuPacket());
-            SpinjitzuAnimation.startAnimation(); // TODO: Move to server
         }
     }
 }

@@ -25,7 +25,7 @@ public class MinejagoRecipes extends RecipeProvider {
                 .group(Minejago.MOD_ID)
                 .unlockedBy("has_terracotta", has(ItemTags.TERRACOTTA));
         teacup.save(writer);
-        ShapedRecipeBuilder spear = ShapedRecipeBuilder.shaped(MinejagoItems.IRON_SPEAR.get(), 1)
+        ShapedRecipeBuilder ironSpear = ShapedRecipeBuilder.shaped(MinejagoItems.IRON_SPEAR.get(), 1)
                 .pattern("o  ")
                 .pattern(" x ")
                 .pattern("  x")
@@ -33,7 +33,7 @@ public class MinejagoRecipes extends RecipeProvider {
                 .define('o', Tags.Items.INGOTS_IRON)
                 .group(Minejago.MOD_ID)
                 .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON));
-        spear.save(writer);
+        ironSpear.save(writer);
         ShapedRecipeBuilder teapot = ShapedRecipeBuilder.shaped(MinejagoItems.TEAPOT.get(), 1)
                 .pattern("x  ")
                 .pattern("o  ")
@@ -42,5 +42,23 @@ public class MinejagoRecipes extends RecipeProvider {
                 .group(Minejago.MOD_ID)
                 .unlockedBy("has_terracotta", has(ItemTags.TERRACOTTA));
         teapot.save(writer);
+        ShapedRecipeBuilder ironKatana = ShapedRecipeBuilder.shaped(MinejagoItems.IRON_KATANA.get(), 1)
+                .pattern("  x")
+                .pattern(" x ")
+                .pattern("o  ")
+                .define('x', Tags.Items.INGOTS_IRON)
+                .define('o', Tags.Items.RODS_WOODEN)
+                .group(Minejago.MOD_ID)
+                .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON));
+        ironKatana.save(writer);
+        ShapedRecipeBuilder ironScythe = ShapedRecipeBuilder.shaped(MinejagoItems.IRON_SCYTHE.get(), 1)
+                .pattern(" x ")
+                .pattern("xo ")
+                .pattern(" o ")
+                .define('x', Tags.Items.INGOTS_IRON)
+                .define('o', Tags.Items.RODS_WOODEN)
+                .group(Minejago.MOD_ID)
+                .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON));
+        ironScythe.save(writer);
     }
 }

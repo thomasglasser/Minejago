@@ -1,4 +1,4 @@
-// 1.19.2	2022-11-27T06:12:54.2709759	Minejago Item Tags
+// 1.19.2	2022-12-05T21:40:34.5124876	Minejago Item Tags
 5817946282b25393905bb7a5a843055208e6b7a5 data/dynamiclights/tags/items/dropped_10.json
 5817946282b25393905bb7a5a843055208e6b7a5 data/dynamiclights/tags/items/self_10.json
 9d5a2a1e2a852e8dfd81b783d7086deeedbaeee8 data/forge/tags/items/armors.json
@@ -6,7 +6,10 @@
 4e71420998ab077277ffed4762418dfe24d869d6 data/forge/tags/items/armors/chestplates.json
 68686fda06809e9c9fafa5c629fb94e6c7a32b29 data/forge/tags/items/armors/helmets.json
 1e7f4205663a096e14fdb04f1489915ec9f799e4 data/forge/tags/items/armors/leggings.json
-d8f45558d7a5d3f8bea21771466d1dba8147d1d1 data/forge/tags/items/tools.json
-201c56b15ced96a5fc1a262e248818753d32fe88 data/forge/tags/items/tools/swords.json
+ccc4f5d744e25678a6a9d06ccfdf09c798bebd09 data/forge/tags/items/tools.json
+d8f45558d7a5d3f8bea21771466d1dba8147d1d1 data/forge/tags/items/tools/axes.json
+d8f45558d7a5d3f8bea21771466d1dba8147d1d1 data/forge/tags/items/tools/pickaxes.json
+d8f45558d7a5d3f8bea21771466d1dba8147d1d1 data/forge/tags/items/tools/shovels.json
+60284d9d5ac50b63dfac60fc99df5142db9fd20e data/forge/tags/items/tools/swords.json
 5817946282b25393905bb7a5a843055208e6b7a5 data/minecraft/tags/items/piglin_loved.json
 d8f45558d7a5d3f8bea21771466d1dba8147d1d1 data/minejago/tags/items/golden_weapons.json

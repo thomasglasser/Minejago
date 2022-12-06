@@ -27,12 +27,20 @@ public class MinejagoItemTags extends ItemTagsProvider
     @Override
     protected void addTags() {
         tag(Tags.Items.TOOLS)
-                .add(MinejagoItems.SCYTHE_OF_QUAKES.get());
+                .add(MinejagoItems.SCYTHE_OF_QUAKES.get())
+                .add(MinejagoItems.IRON_SCYTHE.get());
         tag(ItemTags.PIGLIN_LOVED)
                 .addTag(GOLDEN_WEAPONS);
         tag(Tags.Items.TOOLS_SWORDS)
                 .add(MinejagoItems.BONE_KNIFE.get())
-                .add(MinejagoItems.IRON_SPEAR.get());
+                .add(MinejagoItems.IRON_SPEAR.get())
+                .add(MinejagoItems.IRON_KATANA.get());
+        tag(Tags.Items.TOOLS_AXES)
+                .add(MinejagoItems.SCYTHE_OF_QUAKES.get());
+        tag(Tags.Items.TOOLS_SHOVELS)
+                .add(MinejagoItems.SCYTHE_OF_QUAKES.get());
+        tag(Tags.Items.TOOLS_PICKAXES)
+                .add(MinejagoItems.SCYTHE_OF_QUAKES.get());
         tag(GOLDEN_WEAPONS)
                 .add(MinejagoItems.SCYTHE_OF_QUAKES.get());
         tagDynamicLight("dropped", 10)

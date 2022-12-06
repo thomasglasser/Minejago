@@ -19,20 +19,24 @@ import javax.annotation.Nullable;
 
 public class Power {
     @NotNull
+    private String name;
+    @NotNull
     protected Vector3f mainSpinjitzuColor;
     @NotNull
     protected Vector3f altSpinjitzuColor;
     @Nullable
     protected ParticleOptions borderParticle;
 
-    public Power()
+    public Power(@NotNull String name)
     {
+        this.name = name;
         mainSpinjitzuColor = SpinjitzuParticleOptions.DEFAULT_MAIN;
         altSpinjitzuColor = SpinjitzuParticleOptions.DEFAULT_ALT;
     }
 
-    public Power(@NotNull Vector3f mainSpinjitzuColor, @NotNull Vector3f altSpinjitzuColor, @Nullable ParticleOptions borderParticle)
+    public Power(@NotNull String name, @NotNull Vector3f mainSpinjitzuColor, @NotNull Vector3f altSpinjitzuColor, @Nullable ParticleOptions borderParticle)
     {
+        this.name = name;
         this.mainSpinjitzuColor = mainSpinjitzuColor;
         this.altSpinjitzuColor = altSpinjitzuColor;
         this.borderParticle = borderParticle;
@@ -40,6 +44,8 @@ public class Power {
 
     public Power(CompoundTag tag)
     {
+        name = tag.getString("Name");
+
         CompoundTag main = tag.getCompound("MainSpinjitzuColor");
         mainSpinjitzuColor = !main.isEmpty() ? new Vector3f(main.getFloat("x"), main.getFloat("y"), main.getFloat("z")) : SpinjitzuParticleOptions.DEFAULT_MAIN;
 
@@ -72,6 +78,8 @@ public class Power {
     {
         CompoundTag nbt = new CompoundTag();
 
+        nbt.putString("Name", name);
+
         CompoundTag mainColor = new CompoundTag();
         mainColor.putFloat("x", getMainSpinjitzuColor().x());
         mainColor.putFloat("y", getMainSpinjitzuColor().y());
@@ -94,5 +102,10 @@ public class Power {
         }
 
         return nbt;
+    }
+
+    @Override
+    public String toString() {
+        return "[" + super.toString() + "]: {particle:" + name + "}";
     }
 }

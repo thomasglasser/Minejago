@@ -47,6 +47,8 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add(MinejagoItems.BLACK_GI_CHESTPLATE.get(), "Black Gi Jacket");
         add(MinejagoItems.BLACK_GI_LEGGINGS.get(), "Black Gi Leggings");
         add(MinejagoItems.BLACK_GI_BOOTS.get(), "Black Gi Boots");
+        add(MinejagoItems.IRON_KATANA.get(), "Iron Katana");
+        add(MinejagoItems.IRON_SCYTHE.get(), "Iron Scythe");
 
         add(MinejagoBlocks.TEAPOT.get(), "Teapot");
 

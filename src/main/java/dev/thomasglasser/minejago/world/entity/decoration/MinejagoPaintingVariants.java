@@ -27,7 +27,7 @@ public class MinejagoPaintingVariants
 
     public static void onInteract(PlayerInteractEvent.EntityInteract event)
     {
-        if (event.getLevel() instanceof ServerLevel serverLevel && event.getHand() == InteractionHand.MAIN_HAND && event.getTarget() instanceof Painting painting && painting.getVariant().is(new ResourceLocation(Minejago.MOD_ID, "four_weapons")))
+        if (event.getLevel() instanceof ServerLevel serverLevel && event.getHand() == InteractionHand.MAIN_HAND && event.getTarget() instanceof Painting painting && painting.getVariant().is(new ResourceLocation(Minejago.MOD_ID, "four_weapons")) && !painting.getPersistentData().getBoolean("MapTaken"))
         {
             ItemStack itemstack = MapItem.create(event.getEntity().level, (int)event.getEntity().getX(), (int)event.getEntity().getZ(), (byte)4, true, true);
             MapItem.renderBiomePreviewMap((ServerLevel) event.getEntity().level, itemstack);
@@ -41,6 +41,7 @@ public class MinejagoPaintingVariants
             MapHelper.addDecorationToMap(itemstack, pos4, MinejagoMapDecorations.SHURIKENS, -1);
             itemstack.setHoverName(Component.translatable(Items.FILLED_MAP.getDescriptionId() + ".golden_weapons"));
             event.getEntity().addItem(itemstack);
+            painting.getPersistentData().putBoolean("MapTaken", true);
         }
     }
 }

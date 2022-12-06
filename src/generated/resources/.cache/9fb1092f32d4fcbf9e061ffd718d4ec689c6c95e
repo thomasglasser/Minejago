@@ -1,7 +1,11 @@
-// 1.19.2	2022-11-27T06:12:54.2697703	Recipes
+// 1.19.2	2022-12-05T20:54:03.8560903	Recipes
 c7e47c451dbecae6a3622a1ebe338fe30bb233c2 data/minejago/advancements/recipes/brewing/teapot.json
+c8943fea0e7fd34fbfab89c513070c565ce07550 data/minejago/advancements/recipes/combat/iron_katana.json
 670d7ffb144a90a427bcac392290403e12d3b6cd data/minejago/advancements/recipes/combat/iron_spear.json
 c1ead63367096cf0f3aa1b85db940453398a993b data/minejago/advancements/recipes/misc/teacup.json
+34b64348bf764dc6e3ac14b238cacb913f52451d data/minejago/advancements/recipes/tools/iron_scythe.json
+c55844c833a937eb1560281878a111721d43bdf4 data/minejago/recipes/iron_katana.json
+a34946152a4cec9c07a1e0bfa005799074869796 data/minejago/recipes/iron_scythe.json
 18bd75892ef87e85048fac448adca17ebe317d11 data/minejago/recipes/iron_spear.json
 8c5218db7f3ad21cc6376e858023e539877f1011 data/minejago/recipes/teacup.json
 ba707a8a4ae8aa0c6fac29faa0c70ed8b215d697 data/minejago/recipes/teapot.json

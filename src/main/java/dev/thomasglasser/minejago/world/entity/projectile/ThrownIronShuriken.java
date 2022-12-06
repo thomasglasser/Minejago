@@ -1,28 +1,39 @@
 package dev.thomasglasser.minejago.world.entity.projectile;
 
+import com.mojang.authlib.GameProfile;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.util.FakePlayer;
 
 import javax.annotation.Nullable;
+import java.util.UUID;
 
 public class ThrownIronShuriken extends AbstractArrow
 {
@@ -61,7 +72,7 @@ public class ThrownIronShuriken extends AbstractArrow
         if (!this.dealtDamage && this.tickCount > 40)
         {
             Vec3 vec3 = pos.subtract(this.position());
-            this.setPosRaw(this.getX(), this.getY(), this.getZ());
+            this.setPosRaw(this.getX(), this.getY() + vec3.y * 0.015D, this.getZ());
             if (this.level.isClientSide) {
                 this.yOld = this.getY();
             }
@@ -72,17 +83,20 @@ public class ThrownIronShuriken extends AbstractArrow
             if (this.position().closerThan(pos, 2))
             {
                 this.setNoGravity(false);
+                while (true)
+                {
+                    pos = pos.subtract(0, 1, 0);
+                    if (!level.getBlockState(new BlockPos(pos)).isAir())
+                    {
+                        break;
+                    }
+                }
             }
         }
         else {
-            this.setNoGravity(!this.dealtDamage);
-            this.rotate(Rotation.CLOCKWISE_90);
+            this.setNoGravity(!this.dealtDamage || !this.isInFluidType());
         }
         super.tick();
-    }
-
-    private boolean isAcceptibleReturnOwner() {
-        return true;
     }
 
     protected ItemStack getPickupItem() {
@@ -191,5 +205,9 @@ public class ThrownIronShuriken extends AbstractArrow
     public void onAddedToWorld() {
         this.pos = position();
         super.onAddedToWorld();
+    }
+
+    public boolean hasDealtDamage() {
+        return dealtDamage;
     }
 }

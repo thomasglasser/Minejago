@@ -25,6 +25,7 @@ public class ServerboundActivateSpinjitzuPacket {
     public void handle(Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
             ctx.get().getSender().getCapability(ActivatedSpinjitzuCapabilityAttacher.ACTIVATED_SPINJITZU_CAPABILITY).ifPresent(cap -> cap.setActive(true));
+            MinejagoMainChannel.sendToAllClients(new ClientboundActivateSpinjitzuPacket(ctx.get().getSender().getUUID()), ctx.get().getSender());
         });
         ctx.get().setPacketHandled(true);
     }

@@ -3,15 +3,12 @@ package dev.thomasglasser.minejago.client;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.animation.MinejagoPlayerAnimator;
-import dev.thomasglasser.minejago.client.model.BambooStaffModel;
-import dev.thomasglasser.minejago.client.model.IronSpearModel;
-import dev.thomasglasser.minejago.client.model.ThrownIronShurikenModel;
+import dev.thomasglasser.minejago.client.model.*;
 import dev.thomasglasser.minejago.client.model.armor.*;
 import dev.thomasglasser.minejago.client.particle.*;
 import dev.thomasglasser.minejago.client.renderer.armor.BlackGiRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.ThrownBambooStaffRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.ThrownBoneKnifeRenderer;
-import dev.thomasglasser.minejago.client.model.ThrownBoneKnifeModel;
 import dev.thomasglasser.minejago.client.renderer.entity.ThrownIronShurikenRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.ThrownIronSpearRenderer;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
@@ -43,6 +40,7 @@ public class MinejagoClientEvents {
         event.registerLayerDefinition(IronSpearModel.LAYER_LOCATION, IronSpearModel::createBodyLayer);
         event.registerLayerDefinition(ThrownIronShurikenModel.LAYER_LOCATION, ThrownIronShurikenModel::createBodyLayer);
         event.registerLayerDefinition(SkeletalChestplateModel.LAYER_LOCATION, SkeletalChestplateModel::createBodyLayer);
+        event.registerLayerDefinition(ScytheModel.LAYER_LOCATION, ScytheModel::createBodyLayer);
     }
 
     public static void onRegisterRenderer(EntityRenderersEvent.RegisterRenderers event)
@@ -57,6 +55,8 @@ public class MinejagoClientEvents {
     {
         event.register(new ResourceLocation(Minejago.MOD_ID, "item/bamboo_staff_inventory"));
         event.register(new ResourceLocation(Minejago.MOD_ID, "item/iron_spear_inventory"));
+        event.register(new ResourceLocation(Minejago.MOD_ID, "item/scythe_of_quakes_inventory"));
+        event.register(new ResourceLocation(Minejago.MOD_ID, "item/iron_scythe_inventory"));
     }
 
     public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event)
@@ -68,6 +68,8 @@ public class MinejagoClientEvents {
         event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.BLACK_GI_CHESTPLATE.get()).getCustomRenderer());
         event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.BLACK_GI_LEGGINGS.get()).getCustomRenderer());
         event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.BLACK_GI_BOOTS.get()).getCustomRenderer());
+        event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.SCYTHE_OF_QUAKES.get()).getCustomRenderer());
+        event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.IRON_SCYTHE.get()).getCustomRenderer());
     }
 
     public static void onRegisterParticleProviders(RegisterParticleProvidersEvent event)

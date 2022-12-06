@@ -1,8 +1,10 @@
 package dev.thomasglasser.minejago.world.item;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
 import dev.thomasglasser.minejago.data.tags.MinejagoBlockTags;
 import dev.thomasglasser.minejago.util.MinejagoLevelUtils;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -17,12 +19,29 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+
+import java.util.function.Consumer;
 
 public class ScytheOfQuakesItem extends GoldenWeaponItem
 {
 
     public ScytheOfQuakesItem(Properties pProperties) {
         super(pProperties);
+    }
+
+    @Override
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        super.initializeClient(consumer);
+        consumer.accept(new IClientItemExtensions() {
+
+            MinejagoBlockEntityWithoutLevelRenderer bewlr = new MinejagoBlockEntityWithoutLevelRenderer();
+
+            @Override
+            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                return bewlr;
+            }
+        });
     }
 
     @Override

@@ -39,15 +39,28 @@ public class MinejagoMainChannel
         SimpleEntityCapabilityStatusPacket.registerRetriever(ActivatedSpinjitzuCapabilityAttacher.ACTIVATED_SPINJITZU_CAPABILITY_RL, ActivatedSpinjitzuCapabilityAttacher::getActivatedSpinjitzuCapabilityUnwrap);
         SimpleEntityCapabilityStatusPacket.registerRetriever(UnlockedSpinjitzuCapabilityAttacher.UNLOCKED_SPINJITZU_CAPABILITY_RL, UnlockedSpinjitzuCapabilityAttacher::getUnlockedSpinjitzuCapabilityUnwrap);
 
+        // Server bound
         net.messageBuilder(ServerboundActivateSpinjitzuPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(ServerboundActivateSpinjitzuPacket::new)
                 .encoder(ServerboundActivateSpinjitzuPacket::toBytes)
                 .consumerMainThread(ServerboundActivateSpinjitzuPacket::handle)
                 .add();
+
+        // Client bound
+        net.messageBuilder(ClientboundActivateSpinjitzuPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(ClientboundActivateSpinjitzuPacket::new)
+                .encoder(ClientboundActivateSpinjitzuPacket::toBytes)
+                .consumerMainThread(ClientboundActivateSpinjitzuPacket::handle)
+                .add();
         net.messageBuilder(ClientboundDuringSpinjitzuPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
                 .decoder(ClientboundDuringSpinjitzuPacket::new)
                 .encoder(ClientboundDuringSpinjitzuPacket::toBytes)
                 .consumerMainThread(ClientboundDuringSpinjitzuPacket::handle)
+                .add();
+        net.messageBuilder(ClientboundStopSpinjitzuPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(ClientboundStopSpinjitzuPacket::new)
+                .encoder(ClientboundStopSpinjitzuPacket::toBytes)
+                .consumerMainThread(ClientboundStopSpinjitzuPacket::handle)
                 .add();
     }
 

@@ -119,7 +119,8 @@ public class ThrownIronShurikenModel extends Model {
 				.texOffs(12, 22).addBox(4.0F, -0.5F, -7.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
 				.texOffs(18, 22).addBox(4.0F, -0.5F, -8.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 8.0F, 0.0F, 0.0F, 0.0F, -1.5708F));
 
-		return LayerDefinition.create(meshdefinition, 32, 32);	}
+		return LayerDefinition.create(meshdefinition, 32, 32);
+	}
 
 	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {

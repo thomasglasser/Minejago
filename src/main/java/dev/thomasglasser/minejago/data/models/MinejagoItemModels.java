@@ -21,7 +21,6 @@ public class MinejagoItemModels extends ItemModelProvider
         singleTexture(MinejagoItems.BONE_KNIFE.getId().getPath(), mcLoc("item/handheld"), "layer0", modLoc("item/bone_knife"));
         singleTexture(MinejagoItems.IRON_SHURIKEN.getId().getPath(), mcLoc("item/handheld"), "layer0", modLoc("item/iron_shuriken"));
         singleTexture(MinejagoItems.SKELETAL_CHESTPLATE.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/skeletal_chestplate"));
-        /*TODO: Get new SOC texture*/ //singleTexture(MinejagoItems.SCYTHE_OF_QUAKES.getId().getPath(), mcLoc("item/handheld"), "layer0", modLoc("item/scythe_of_quakes"));
         singleTexture(MinejagoItems.TEACUP.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/teacup"));
         singleTexture(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/four_weapons_banner_pattern"));
         singleTexture(MinejagoBlocks.TEAPOT.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/teapot"));
@@ -29,5 +28,6 @@ public class MinejagoItemModels extends ItemModelProvider
         singleTexture(MinejagoItems.BLACK_GI_CHESTPLATE.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/black_gi_chestplate"));
         singleTexture(MinejagoItems.BLACK_GI_LEGGINGS.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/black_gi_leggings"));
         singleTexture(MinejagoItems.BLACK_GI_BOOTS.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/black_gi_boots"));
+        singleTexture(MinejagoItems.IRON_KATANA.getId().getPath(), mcLoc("item/handheld"), "layer0", modLoc("item/iron_katana"));
     }
 }
