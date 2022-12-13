@@ -1,19 +1,20 @@
 package dev.thomasglasser.minejago.world.entity;
 
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
-import dev.thomasglasser.minejago.client.animation.definitions.SpinjitzuAnimation;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleUtils;
 import dev.thomasglasser.minejago.core.particles.SpinjitzuParticleOptions;
-import dev.thomasglasser.minejago.network.ClientboundStopSpinjitzuPacket;
-import dev.thomasglasser.minejago.network.ServerboundActivateSpinjitzuPacket;
+import dev.thomasglasser.minejago.network.ClientboundRefreshVipDataPacket;
+import dev.thomasglasser.minejago.network.ClientboundStopAnimationPacket;
+import dev.thomasglasser.minejago.network.ServerboundStartSpinjitzuPacket;
 import dev.thomasglasser.minejago.network.MinejagoMainChannel;
 import dev.thomasglasser.minejago.world.entity.powers.Power;
 import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
 import dev.thomasglasser.minejago.world.level.storage.*;
-import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 
 public class MinejagoEntityEvents
 {
@@ -25,11 +26,11 @@ public class MinejagoEntityEvents
             UnlockedSpinjitzuCapability unlocked = serverPlayer.getCapability(UnlockedSpinjitzuCapabilityAttacher.UNLOCKED_SPINJITZU_CAPABILITY).orElse(new UnlockedSpinjitzuCapability(serverPlayer));
             ActivatedSpinjitzuCapability activated = serverPlayer.getCapability(ActivatedSpinjitzuCapabilityAttacher.ACTIVATED_SPINJITZU_CAPABILITY).orElse(new ActivatedSpinjitzuCapability(serverPlayer));
 
-            if (unlocked.isUnlocked() || true) {
+            if (unlocked.isUnlocked() || true /* TODO: Unlock system */) {
                 if (activated.isActive()) {
                     if (serverPlayer.isCrouching()) {
                         activated.setActive(false);
-                        MinejagoMainChannel.sendToAllClients(new ClientboundStopSpinjitzuPacket(serverPlayer.getUUID()), serverPlayer);
+                        MinejagoMainChannel.sendToAllClients(new ClientboundStopAnimationPacket(serverPlayer.getUUID()), serverPlayer);
                     }
                     Power power = serverPlayer.getCapability(PowerCapabilityAttacher.POWER_CAPABILITY).orElse(new PowerCapability(serverPlayer)).getPower();
                     if (power != MinejagoPowers.EMPTY.get()) {
@@ -96,10 +97,18 @@ public class MinejagoEntityEvents
                 }
             } else if (activated.isActive()) {
                 activated.setActive(false);
-                MinejagoMainChannel.sendToAllClients(new ClientboundStopSpinjitzuPacket(serverPlayer.getUUID()), serverPlayer);
+                MinejagoMainChannel.sendToAllClients(new ClientboundStopAnimationPacket(serverPlayer.getUUID()), serverPlayer);
             }
         } else if (MinejagoKeyMappings.ACTIVATE_SPINJITZU.isDown()) {
-            MinejagoMainChannel.sendToServer(new ServerboundActivateSpinjitzuPacket());
+            MinejagoMainChannel.sendToServer(new ServerboundStartSpinjitzuPacket());
+        }
+    }
+
+    public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event)
+    {
+        for (ServerPlayer player : ((ServerLevel) event.getEntity().getLevel()).getPlayers(serverPlayer -> true))
+        {
+            MinejagoMainChannel.sendToAllClients(new ClientboundRefreshVipDataPacket(), player);
         }
     }
 }

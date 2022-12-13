@@ -2,27 +2,34 @@ package dev.thomasglasser.minejago.data.tags;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.tags.BlockTagsProvider;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
-public class MinejagoBlockTags extends BlockTagsProvider
+import java.util.concurrent.CompletableFuture;
+
+public class MinejagoBlockTags extends IntrinsicHolderTagsProvider<Block>
 {
 
     public static final TagKey<Block> UNBREAKABLE = BlockTags.create(new ResourceLocation(Minejago.MOD_ID, "unbreakable"));
 
-    public MinejagoBlockTags(DataGenerator generator, @Nullable ExistingFileHelper existingFileHelper) {
-        super(generator, Minejago.MOD_ID, existingFileHelper);
+    public MinejagoBlockTags(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper)
+    {
+        super(output, Registries.BLOCK, lookupProvider, block -> block.builtInRegistryHolder().key(), Minejago.MOD_ID, existingFileHelper);
     }
 
     @Override
-    protected void addTags() {
+    protected void addTags(HolderLookup.Provider p_256380_) {
         tag(UNBREAKABLE)
                 .add(Blocks.BEDROCK)
                 .add(Blocks.BARRIER)

@@ -1,25 +1,33 @@
 package dev.thomasglasser.minejago.world.item;
 
+import com.google.common.collect.ImmutableMultimap;
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.client.animation.definitions.ItemAnimations;
 import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
 import dev.thomasglasser.minejago.data.tags.MinejagoBlockTags;
+import dev.thomasglasser.minejago.network.ClientboundStartScytheAnimationPacket;
+import dev.thomasglasser.minejago.network.ClientboundStopAnimationPacket;
+import dev.thomasglasser.minejago.network.MinejagoMainChannel;
 import dev.thomasglasser.minejago.util.MinejagoLevelUtils;
+import dev.thomasglasser.minejago.world.entity.powers.Power;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import org.joml.Math;
 
 import java.util.function.Consumer;
 
@@ -31,11 +39,16 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem
     }
 
     @Override
+    public boolean canPowerHandle(Power power) {
+        return true;
+    }
+
+    @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         super.initializeClient(consumer);
         consumer.accept(new IClientItemExtensions() {
 
-            MinejagoBlockEntityWithoutLevelRenderer bewlr = new MinejagoBlockEntityWithoutLevelRenderer();
+            final MinejagoBlockEntityWithoutLevelRenderer bewlr = new MinejagoBlockEntityWithoutLevelRenderer();
 
             @Override
             public BlockEntityWithoutLevelRenderer getCustomRenderer() {
@@ -50,7 +63,7 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem
     }
 
     @Override
-    public InteractionResult useOn(UseOnContext pContext) {
+    public InteractionResult doUseOn(UseOnContext pContext) {
         Player player = pContext.getPlayer();
         int r = (int) Math.min(player.getSpeed() * 100.0f, 100);
         Level level = pContext.getLevel();
@@ -90,29 +103,37 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem
         }
         else if (player.isShiftKeyDown())
         {
+            if (!level.isClientSide) MinejagoMainChannel.sendToAllClients(new ClientboundStartScytheAnimationPacket(player.getUUID(), ItemAnimations.Animations.SLAM_START, ItemAnimations.Animations.SLAM_RUMBLE), (ServerPlayer) player);
             BlockPos[] places = new BlockPos[] {pos.north(6), pos.north(4).east(4), pos.east(6), pos.east(4).south(4), pos.south(6), pos.south(4).west(4), pos.west(6), pos.west(4).north(4)};
             for (BlockPos place: places)
             {
                 if (!level.isClientSide)
-                    level.explode(null, place.getX(), place.getY() + 1, place.getZ(), 4, false, Explosion.BlockInteraction.BREAK);
+                    level.explode(null, place.getX(), place.getY() + 1, place.getZ(), 4, false, Level.ExplosionInteraction.BLOCK);
             }
             if (!pContext.getPlayer().getAbilities().instabuild) pContext.getPlayer().getCooldowns().addCooldown(pContext.getItemInHand().getItem(), 1200);
         }
         else
         {
             player.startUsingItem(pContext.getHand());
+            if (!level.isClientSide) MinejagoMainChannel.sendToAllClients(new ClientboundStartScytheAnimationPacket(player.getUUID(), ItemAnimations.Animations.BEAM_START, ItemAnimations.Animations.BEAM_ACTIVE), (ServerPlayer) player);
         }
         return InteractionResult.SUCCESS;
     }
 
+    ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
+
     @Override
-    public void releaseUsing(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity, int pTimeCharged) {
-        if (pLivingEntity instanceof Player player1 && !player1.getAbilities().instabuild) player1.getCooldowns().addCooldown(pStack.getItem(), 20 * (pStack.getUseDuration() - pTimeCharged));
-        super.releaseUsing(pStack, pLevel, pLivingEntity, pTimeCharged);
+    public void doReleaseUsing(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity, int pTimeCharged) {
+        if (pLivingEntity instanceof Player player1)
+        {
+            if (!player1.getAbilities().instabuild) player1.getCooldowns().addCooldown(pStack.getItem(), 20 * (pStack.getUseDuration() - pTimeCharged));
+            if (!pLevel.isClientSide) MinejagoMainChannel.sendToAllClients(new ClientboundStopAnimationPacket(pLivingEntity.getUUID()), (ServerPlayer) player1);
+            player1.getAttributes().removeAttributeModifiers(builder.build());
+        }
     }
 
     @Override
-    public void onUsingTick(ItemStack stack, LivingEntity player, int count) {
+    public void doOnUsingTick(ItemStack stack, LivingEntity player, int count) {
         Level level = player.getLevel();
         if (stack.getUseDuration() - count + 1 == stack.getUseDuration())
         {
@@ -261,8 +282,18 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem
             {
                 Minejago.LOGGER.error("Unknown/unsupported direction for scythe staircase");
             }
+            builder.put(Attributes.MOVEMENT_SPEED, new AttributeModifier("Movement modifier", -1, AttributeModifier.Operation.MULTIPLY_TOTAL));
+            player.getAttributes().addTransientAttributeModifiers(builder.build());
         }
-        super.onUsingTick(stack, player, count);
+    }
+
+    @Override
+    protected void goCrazy(Player player) {
+        if (!player.getLevel().isClientSide && !player.getAbilities().instabuild)
+        {
+            player.getLevel().explode(null, player.getX(), player.getY() + 1, player.getZ(), 8.0F, Level.ExplosionInteraction.TNT);
+            MinejagoMainChannel.sendToAllClients(new ClientboundStartScytheAnimationPacket(player.getUUID(), ItemAnimations.Animations.SLAM_START, ItemAnimations.Animations.EMPTY), (ServerPlayer) player);
+        }
     }
 
     @Override

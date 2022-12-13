@@ -1,26 +1,15 @@
 package dev.thomasglasser.minejago.network;
 
-import dev.thomasglasser.minejago.client.animation.definitions.SpinjitzuAnimation;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleUtils;
-import dev.thomasglasser.minejago.world.level.storage.ActivatedSpinjitzuCapabilityAttacher;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.game.ClientboundLevelParticlesPacket;
-import net.minecraft.world.entity.ai.targeting.TargetingConditions;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.phys.AABB;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.function.Supplier;
 
-public class ClientboundDuringSpinjitzuPacket {
+public class ClientboundSpawnParticlePacket {
     ParticleOptions particle;
     double x;
     double y;
@@ -29,7 +18,7 @@ public class ClientboundDuringSpinjitzuPacket {
     double ySpeed;
     double zSpeed;
 
-    public ClientboundDuringSpinjitzuPacket(ParticleOptions particle, double pPosX, double pPosY, double pPosZ, double xSpeed, double ySpeed, double zSpeed) {
+    public ClientboundSpawnParticlePacket(ParticleOptions particle, double pPosX, double pPosY, double pPosZ, double xSpeed, double ySpeed, double zSpeed) {
         this.particle = particle;
         x = pPosX;
         y = pPosY;
@@ -39,7 +28,7 @@ public class ClientboundDuringSpinjitzuPacket {
         this.zSpeed = zSpeed;
     }
 
-    public ClientboundDuringSpinjitzuPacket(FriendlyByteBuf buf) {
+    public ClientboundSpawnParticlePacket(FriendlyByteBuf buf) {
         ParticleType<?> particletype = buf.readRegistryIdUnsafe(ForgeRegistries.PARTICLE_TYPES);
         this.x = buf.readDouble();
         this.y = buf.readDouble();

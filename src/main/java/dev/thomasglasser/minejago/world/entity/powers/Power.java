@@ -1,19 +1,13 @@
 package dev.thomasglasser.minejago.world.entity.powers;
 
-import com.mojang.math.Vector3f;
-import com.mojang.serialization.Codec;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.core.particles.SpinjitzuParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
 
@@ -106,6 +100,6 @@ public class Power {
 
     @Override
     public String toString() {
-        return "[" + super.toString() + "]: {particle:" + name + "}";
+        return "[" + super.toString() + "]: {power:" + name + "}";
     }
 }

@@ -4,8 +4,10 @@ import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
-import net.minecraft.data.loot.BlockLoot;
+import net.minecraft.data.loot.BlockLootSubProvider;
+import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -17,20 +19,23 @@ import net.minecraft.world.level.storage.loot.functions.SetContainerContents;
 import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.BiConsumer;
+import java.util.function.Supplier;
 
-public class MinejagoBlockLoot extends BlockLoot
+public class MinejagoBlockLoot implements LootTableSubProvider
 {
-    public static final LootTable.Builder TEAPOT = createTeapotBlock(MinejagoBlocks.TEAPOT.get());
-
     @Override
-    public void accept(BiConsumer<ResourceLocation, LootTable.Builder> consumer) {
-        consumer.accept(modLoc("teapot"), TEAPOT);
+    public void generate(BiConsumer<ResourceLocation, LootTable.Builder> consumer) {
+        consumer.accept(MinejagoBlocks.TEAPOT.get().getLootTable(), createTeapotBlock(MinejagoBlocks.TEAPOT.get()));
     }
 
-    protected static LootTable.Builder createTeapotBlock(Block block)
+    protected LootTable.Builder createTeapotBlock(Block block)
     {
-        return LootTable.lootTable().withPool(applyExplosionCondition(block,
+        return LootTable.lootTable()
+                .withPool(
                 LootPool.lootPool().setRolls(ConstantValue.exactly(1))
                         .add(LootItem.lootTableItem(block)
                                 .apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY))
@@ -43,11 +48,6 @@ public class MinejagoBlockLoot extends BlockLoot
                                         .copy("HasLeaves", "BlockEntityTag.HasLeaves")
                                         .copy("Temperature", "BlockEntityTag.Temperature"))
                                 .apply(SetContainerContents.setContents(MinejagoBlockEntityTypes.TEAPOT.get()).withEntry(DynamicLoot.dynamicEntry(TeapotBlock.CONTENTS))))
-        ));
+        );
     }
-    
-    private ResourceLocation modLoc(String name)
-{
-    return new ResourceLocation(Minejago.MOD_ID, "blocks/" + name);
-}
 }

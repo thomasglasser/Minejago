@@ -6,24 +6,37 @@ import dev.thomasglasser.minejago.client.animation.MinejagoPlayerAnimator;
 import dev.thomasglasser.minejago.client.model.*;
 import dev.thomasglasser.minejago.client.model.armor.*;
 import dev.thomasglasser.minejago.client.particle.*;
-import dev.thomasglasser.minejago.client.renderer.armor.BlackGiRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.ThrownBambooStaffRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.ThrownBoneKnifeRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.ThrownIronShurikenRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.ThrownIronSpearRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.layers.BetaTesterLayer;
+import dev.thomasglasser.minejago.client.renderer.entity.layers.DevLayer;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
+import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
-import dev.thomasglasser.minejago.world.item.BlackGiItem;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.item.ItemColor;
+import net.minecraft.client.model.PlayerModel;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.minecraftforge.event.CreativeModeTabEvent;
+import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
+import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.Objects;
 
 public class MinejagoClientEvents {
 
@@ -41,6 +54,8 @@ public class MinejagoClientEvents {
         event.registerLayerDefinition(ThrownIronShurikenModel.LAYER_LOCATION, ThrownIronShurikenModel::createBodyLayer);
         event.registerLayerDefinition(SkeletalChestplateModel.LAYER_LOCATION, SkeletalChestplateModel::createBodyLayer);
         event.registerLayerDefinition(ScytheModel.LAYER_LOCATION, ScytheModel::createBodyLayer);
+        event.registerLayerDefinition(BambooHatModel.LAYER_LOCATION, BambooHatModel::createBodyLayer);
+        event.registerLayerDefinition(BeardModel.LAYER_LOCATION, BeardModel::createBodyLayer);
     }
 
     public static void onRegisterRenderer(EntityRenderersEvent.RegisterRenderers event)
@@ -120,14 +135,53 @@ public class MinejagoClientEvents {
             }
         }, Items.LINGERING_POTION);
     }
-
-    public static void addEntityLayers(EntityRenderersEvent.AddLayers event)
-    {
-        GeoArmorRenderer.registerArmorRenderer(BlackGiItem.class, BlackGiRenderer::new);
-    }
-
     public static void onRegisterKeyMappings(RegisterKeyMappingsEvent event)
     {
         event.register(MinejagoKeyMappings.ACTIVATE_SPINJITZU);
     }
+
+    public static void onAddLayers(EntityRenderersEvent.AddLayers event)
+    {
+        for (String skin : event.getSkins()) {
+            LivingEntityRenderer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> renderer = event.getSkin(skin);
+
+            renderer.addLayer(new BetaTesterLayer(renderer, event.getEntityModels()));
+            renderer.addLayer(new DevLayer(renderer, event.getEntityModels()));
+        }
+    }
+
+    public static void onBuildCreativeTabContent(CreativeModeTabEvent.BuildContents event)
+    {
+        MinejagoItems.getItemTabs().forEach((tab, itemLikes) -> {
+            if (event.getTab() == tab)
+            {
+                itemLikes.forEach((itemLike) -> event.accept(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(itemLike))));
+            }
+        });
+
+        if (event.getTab() == CreativeModeTabs.FOOD_AND_DRINKS)
+        {
+            for (Potion potion : ForgeRegistries.POTIONS) {
+                if (potion != Potions.EMPTY) {
+                    event.accept(PotionUtils.setPotion(new ItemStack(ForgeRegistries.ITEMS.getValue(MinejagoItems.FILLED_TEACUP.getId())), potion));
+                }
+            }
+        }
+    }
+
+    public static void onPlayerLoggedIn(ClientPlayerNetworkEvent.LoggingIn event)
+    {
+        MinejagoClientUtils.refreshVip();
+    }
+
+    public static void onConfigChanged(ModConfigEvent event)
+    {
+        if (event.getConfig().getType() == ModConfig.Type.CLIENT && Minecraft.getInstance().player != null)
+        {
+            MinejagoClientUtils.refreshVip();
+            System.out.println(Minecraft.getInstance().player.getUUID());
+        }
+    }
+
+
 }

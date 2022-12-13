@@ -29,7 +29,7 @@ displayURL="https://github.com/thomasglasser/Minejago/tree/1.19.2-forge" #option
 # A file name (in the root of the mod JAR) containing a logo for display
 logoFile="minejago_logo_1.0.png" #optional
 # A text field displayed in the mod UI
-credits="Includes textures by Pouffy, waifu_png_pl, and Sairako; structures by Comerciante" #optional
+credits="Includes textures and/or models by Pouffy, waifu_png_pl, and Sairako; structures by Comerciante. Special thanks to Tslat for the beta testing perk system" #optional
 # A text field displayed in the mod UI
 authors="Thomas Glasser" #optional
 # The description text for the mod (multi line!) (#mandatory)
@@ -84,7 +84,7 @@ Adds elements of the Ninjago franchise into Minecraft
     # Does this dependency have to exist - if not, ordering below must be specified
     mandatory=false #mandatory
     # The version range of the dependency
-    versionRange="[${dl_version},)" #mandatory
+    versionRange="[${mc_version}.${dl_version},)" #mandatory
     # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
     ordering="AFTER"
     # Side this dependency is applied on - BOTH, CLIENT or SERVER
@@ -102,7 +102,7 @@ Adds elements of the Ninjago franchise into Minecraft
     side="BOTH"
 [[dependencies.minejago]] #optional
     # the modid of the dependency
-    modId="geckolib3" #mandatory
+    modId="geckolib" #mandatory
     # Does this dependency have to exist - if not, ordering below must be specified
     mandatory=true #mandatory
     # The version range of the dependency

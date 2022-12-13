@@ -2,8 +2,9 @@ package dev.thomasglasser.minejago.data.recipes;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.tags.ItemTags;
@@ -12,20 +13,20 @@ import net.minecraftforge.common.Tags;
 import java.util.function.Consumer;
 
 public class MinejagoRecipes extends RecipeProvider {
-    public MinejagoRecipes(DataGenerator pGenerator) {
-        super(pGenerator);
+    public MinejagoRecipes(PackOutput output) {
+        super(output);
     }
 
     @Override
-    protected void buildCraftingRecipes(Consumer<FinishedRecipe> writer) {
-        ShapedRecipeBuilder teacup = ShapedRecipeBuilder.shaped(MinejagoItems.TEACUP.get(), 4)
+    protected void buildRecipes(Consumer<FinishedRecipe> writer) {
+        ShapedRecipeBuilder teacup = ShapedRecipeBuilder.shaped(RecipeCategory.BREWING, MinejagoItems.TEACUP.get(), 4)
                 .pattern("x x")
                 .pattern(" x ")
                 .define('x', ItemTags.TERRACOTTA)
                 .group(Minejago.MOD_ID)
                 .unlockedBy("has_terracotta", has(ItemTags.TERRACOTTA));
         teacup.save(writer);
-        ShapedRecipeBuilder ironSpear = ShapedRecipeBuilder.shaped(MinejagoItems.IRON_SPEAR.get(), 1)
+        ShapedRecipeBuilder ironSpear = ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, MinejagoItems.IRON_SPEAR.get(), 1)
                 .pattern("o  ")
                 .pattern(" x ")
                 .pattern("  x")
@@ -34,7 +35,7 @@ public class MinejagoRecipes extends RecipeProvider {
                 .group(Minejago.MOD_ID)
                 .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON));
         ironSpear.save(writer);
-        ShapedRecipeBuilder teapot = ShapedRecipeBuilder.shaped(MinejagoItems.TEAPOT.get(), 1)
+        ShapedRecipeBuilder teapot = ShapedRecipeBuilder.shaped(RecipeCategory.BREWING, MinejagoItems.TEAPOT.get(), 1)
                 .pattern("x  ")
                 .pattern("o  ")
                 .define('x', Tags.Items.RODS_WOODEN)
@@ -42,7 +43,7 @@ public class MinejagoRecipes extends RecipeProvider {
                 .group(Minejago.MOD_ID)
                 .unlockedBy("has_terracotta", has(ItemTags.TERRACOTTA));
         teapot.save(writer);
-        ShapedRecipeBuilder ironKatana = ShapedRecipeBuilder.shaped(MinejagoItems.IRON_KATANA.get(), 1)
+        ShapedRecipeBuilder ironKatana = ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, MinejagoItems.IRON_KATANA.get(), 1)
                 .pattern("  x")
                 .pattern(" x ")
                 .pattern("o  ")
@@ -51,7 +52,7 @@ public class MinejagoRecipes extends RecipeProvider {
                 .group(Minejago.MOD_ID)
                 .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON));
         ironKatana.save(writer);
-        ShapedRecipeBuilder ironScythe = ShapedRecipeBuilder.shaped(MinejagoItems.IRON_SCYTHE.get(), 1)
+        ShapedRecipeBuilder ironScythe = ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, MinejagoItems.IRON_SCYTHE.get(), 1)
                 .pattern(" x ")
                 .pattern("xo ")
                 .pattern(" o ")

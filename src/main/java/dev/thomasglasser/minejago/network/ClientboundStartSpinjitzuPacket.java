@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.network;
 
-import dev.thomasglasser.minejago.client.animation.definitions.SpinjitzuAnimation;
+import dev.thomasglasser.minejago.client.animation.definitions.SpinjitzuAnimations;
 import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
@@ -8,16 +8,16 @@ import net.minecraftforge.network.NetworkEvent;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-public class ClientboundStopSpinjitzuPacket {
+public class ClientboundStartSpinjitzuPacket {
 
     private UUID uuid;
 
-    public ClientboundStopSpinjitzuPacket(UUID uuid)
+    public ClientboundStartSpinjitzuPacket(UUID uuid)
     {
         this.uuid = uuid;
     }
 
-    public ClientboundStopSpinjitzuPacket(FriendlyByteBuf buf) {
+    public ClientboundStartSpinjitzuPacket(FriendlyByteBuf buf) {
         uuid = buf.readUUID();
     }
 
@@ -27,7 +27,7 @@ public class ClientboundStopSpinjitzuPacket {
 
     public void handle(Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            SpinjitzuAnimation.stopAnimation(MinejagoClientUtils.getClientPlayerByUUID(uuid));
+            MinejagoClientUtils.startAnimation(SpinjitzuAnimations.Animations.SPINJITZU_START.getAnimation(), SpinjitzuAnimations.Animations.SPINJITZU_ACTIVE.getAnimation(), MinejagoClientUtils.getClientPlayerByUUID(uuid));
         });
         ctx.get().setPacketHandled(true);
     }

@@ -11,5 +11,5 @@ public class MinejagoSoundEvents
 {
     public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Minejago.MOD_ID);
 
-    public static final RegistryObject<SoundEvent> TEAPOT_WHISTLE = SOUND_EVENTS.register("teapot_whistle", () -> new SoundEvent(new ResourceLocation(Minejago.MOD_ID, "teapot_whistle")));
+    public static final RegistryObject<SoundEvent> TEAPOT_WHISTLE = SOUND_EVENTS.register("teapot_whistle", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Minejago.MOD_ID, "teapot_whistle")));
 }

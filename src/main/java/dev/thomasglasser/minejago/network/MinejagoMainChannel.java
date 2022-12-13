@@ -11,7 +11,6 @@ import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
-import org.lwjgl.system.windows.MSG;
 
 import java.util.List;
 
@@ -40,27 +39,47 @@ public class MinejagoMainChannel
         SimpleEntityCapabilityStatusPacket.registerRetriever(UnlockedSpinjitzuCapabilityAttacher.UNLOCKED_SPINJITZU_CAPABILITY_RL, UnlockedSpinjitzuCapabilityAttacher::getUnlockedSpinjitzuCapabilityUnwrap);
 
         // Server bound
-        net.messageBuilder(ServerboundActivateSpinjitzuPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(ServerboundActivateSpinjitzuPacket::new)
-                .encoder(ServerboundActivateSpinjitzuPacket::toBytes)
-                .consumerMainThread(ServerboundActivateSpinjitzuPacket::handle)
+        net.messageBuilder(ServerboundStartSpinjitzuPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(ServerboundStartSpinjitzuPacket::new)
+                .encoder(ServerboundStartSpinjitzuPacket::toBytes)
+                .consumerMainThread(ServerboundStartSpinjitzuPacket::handle)
+                .add();
+        net.messageBuilder(ServerboundChangeVipDataPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(ServerboundChangeVipDataPacket::new)
+                .encoder(ServerboundChangeVipDataPacket::toBytes)
+                .consumerMainThread(ServerboundChangeVipDataPacket::handle)
                 .add();
 
         // Client bound
-        net.messageBuilder(ClientboundActivateSpinjitzuPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(ClientboundActivateSpinjitzuPacket::new)
-                .encoder(ClientboundActivateSpinjitzuPacket::toBytes)
-                .consumerMainThread(ClientboundActivateSpinjitzuPacket::handle)
+        net.messageBuilder(ClientboundStartSpinjitzuPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(ClientboundStartSpinjitzuPacket::new)
+                .encoder(ClientboundStartSpinjitzuPacket::toBytes)
+                .consumerMainThread(ClientboundStartSpinjitzuPacket::handle)
                 .add();
-        net.messageBuilder(ClientboundDuringSpinjitzuPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(ClientboundDuringSpinjitzuPacket::new)
-                .encoder(ClientboundDuringSpinjitzuPacket::toBytes)
-                .consumerMainThread(ClientboundDuringSpinjitzuPacket::handle)
+        net.messageBuilder(ClientboundSpawnParticlePacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(ClientboundSpawnParticlePacket::new)
+                .encoder(ClientboundSpawnParticlePacket::toBytes)
+                .consumerMainThread(ClientboundSpawnParticlePacket::handle)
                 .add();
-        net.messageBuilder(ClientboundStopSpinjitzuPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(ClientboundStopSpinjitzuPacket::new)
-                .encoder(ClientboundStopSpinjitzuPacket::toBytes)
-                .consumerMainThread(ClientboundStopSpinjitzuPacket::handle)
+        net.messageBuilder(ClientboundStopAnimationPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(ClientboundStopAnimationPacket::new)
+                .encoder(ClientboundStopAnimationPacket::toBytes)
+                .consumerMainThread(ClientboundStopAnimationPacket::handle)
+                .add();
+        net.messageBuilder(ClientboundChangeVipDataPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(ClientboundChangeVipDataPacket::new)
+                .encoder(ClientboundChangeVipDataPacket::toBytes)
+                .consumerMainThread(ClientboundChangeVipDataPacket::handle)
+                .add();
+        net.messageBuilder(ClientboundRefreshVipDataPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(ClientboundRefreshVipDataPacket::new)
+                .encoder(ClientboundRefreshVipDataPacket::toBytes)
+                .consumerMainThread(ClientboundRefreshVipDataPacket::handle)
+                .add();
+        net.messageBuilder(ClientboundStartScytheAnimationPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(ClientboundStartScytheAnimationPacket::new)
+                .encoder(ClientboundStartScytheAnimationPacket::toBytes)
+                .consumerMainThread(ClientboundStartScytheAnimationPacket::handle)
                 .add();
     }
 

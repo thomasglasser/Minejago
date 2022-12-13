@@ -11,7 +11,7 @@ import dev.thomasglasser.minejago.world.level.biome.MinejagoBiomes;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPatterns;
 import net.minecraft.client.KeyMapping;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
@@ -27,9 +27,9 @@ import net.minecraft.world.level.block.entity.BannerPattern;
 public class MinejagoEnUsLanguage extends LanguageProvider
 {
 
-    public MinejagoEnUsLanguage(DataGenerator generator)
+    public MinejagoEnUsLanguage(PackOutput output)
     {
-        super(generator, Minejago.MOD_ID, "en_us");
+        super(output, Minejago.MOD_ID, "en_us");
     }
 
     @Override

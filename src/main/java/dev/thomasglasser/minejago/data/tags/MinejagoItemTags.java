@@ -2,17 +2,19 @@ package dev.thomasglasser.minejago.data.tags;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.tags.BlockTagsProvider;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import org.jetbrains.annotations.Nullable;
+
+import java.util.concurrent.CompletableFuture;
 
 public class MinejagoItemTags extends ItemTagsProvider
 {
@@ -20,12 +22,13 @@ public class MinejagoItemTags extends ItemTagsProvider
 
     public static final String DYNAMIC_LIGHTS_MODID = "dynamiclights";
 
-    public MinejagoItemTags(DataGenerator generator, BlockTagsProvider blockTags, @Nullable ExistingFileHelper helper) {
-        super(generator, blockTags, Minejago.MOD_ID, helper);
+    public MinejagoItemTags(PackOutput output, CompletableFuture<HolderLookup.Provider> future, TagsProvider<Block> blockTagsProvider, ExistingFileHelper existingFileHelper) {
+        super(output, future, blockTagsProvider, Minejago.MOD_ID, existingFileHelper);
     }
 
     @Override
-    protected void addTags() {
+    protected void addTags(HolderLookup.Provider lookupProvider)
+    {
         tag(Tags.Items.TOOLS)
                 .add(MinejagoItems.SCYTHE_OF_QUAKES.get())
                 .add(MinejagoItems.IRON_SCYTHE.get());

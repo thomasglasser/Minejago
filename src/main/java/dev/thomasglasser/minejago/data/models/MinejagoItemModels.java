@@ -3,15 +3,15 @@ package dev.thomasglasser.minejago.data.models;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class MinejagoItemModels extends ItemModelProvider
 {
-    public MinejagoItemModels(DataGenerator generator, ExistingFileHelper helper)
+    public MinejagoItemModels(PackOutput output, ExistingFileHelper helper)
     {
-        super(generator, Minejago.MOD_ID, helper);
+        super(output, Minejago.MOD_ID, helper);
 
     }
 

@@ -2,15 +2,15 @@ package dev.thomasglasser.minejago.data.sounds;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.SoundDefinition;
 import net.minecraftforge.common.data.SoundDefinitionsProvider;
 
 public class MinejagoSoundDefinitions extends SoundDefinitionsProvider {
-    public MinejagoSoundDefinitions(DataGenerator generator, ExistingFileHelper helper) {
-        super(generator, Minejago.MOD_ID, helper);
+    public MinejagoSoundDefinitions(PackOutput output, ExistingFileHelper helper) {
+        super(output, Minejago.MOD_ID, helper);
     }
 
     @Override

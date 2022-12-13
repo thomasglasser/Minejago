@@ -2,13 +2,14 @@ package dev.thomasglasser.minejago.core.particles;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.math.Vector3f;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.particles.*;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.Mth;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.joml.Vector3f;
 
 import java.util.Locale;
 
@@ -90,7 +91,7 @@ public class SpinjitzuParticleOptions implements ParticleOptions {
     }
 
     public static final Codec<SpinjitzuParticleOptions> CODEC = RecordCodecBuilder.create((p_175793_) -> {
-        return p_175793_.group(Vector3f.CODEC.fieldOf("color").forGetter(SpinjitzuParticleOptions::getColor), Codec.FLOAT.fieldOf("scale").forGetter(SpinjitzuParticleOptions::getScale)).apply(p_175793_, SpinjitzuParticleOptions::new);
+        return p_175793_.group(ExtraCodecs.VECTOR3F.fieldOf("color").forGetter(SpinjitzuParticleOptions::getColor), Codec.FLOAT.fieldOf("scale").forGetter(SpinjitzuParticleOptions::getScale)).apply(p_175793_, SpinjitzuParticleOptions::new);
     });
     public static final ParticleOptions.Deserializer<SpinjitzuParticleOptions> DESERIALIZER = new ParticleOptions.Deserializer<SpinjitzuParticleOptions>() {
         public SpinjitzuParticleOptions fromCommand(ParticleType<SpinjitzuParticleOptions> p_123689_, StringReader p_123690_) throws CommandSyntaxException {

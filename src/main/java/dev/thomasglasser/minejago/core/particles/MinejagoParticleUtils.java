@@ -1,11 +1,11 @@
 package dev.thomasglasser.minejago.core.particles;
 
-import com.mojang.math.Vector3f;
-import dev.thomasglasser.minejago.network.ClientboundDuringSpinjitzuPacket;
+import dev.thomasglasser.minejago.network.ClientboundSpawnParticlePacket;
 import dev.thomasglasser.minejago.network.MinejagoMainChannel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerPlayer;
+import org.joml.Vector3f;
 
 public class MinejagoParticleUtils {
     public static void renderPlayerSpinjitzu(ServerPlayer player, Vector3f color1, Vector3f color2, double height, boolean toc) {
@@ -13,7 +13,7 @@ public class MinejagoParticleUtils {
         float up = 0.0f;
         for (int i = 0; i < height; i++) {
             ParticleOptions particle = new SpinjitzuParticleOptions(color1, scale);
-            MinejagoMainChannel.sendToAllClients(new ClientboundDuringSpinjitzuPacket(particle, player.getX(), player.getY() + up, player.getZ(), 0, 1, 0), player);
+            MinejagoMainChannel.sendToAllClients(new ClientboundSpawnParticlePacket(particle, player.getX(), player.getY() + up, player.getZ(), 0, 1, 0), player);
             scale *= toc ? 1.1f : 1.2f;
             up += 0.2f;
         }
@@ -21,7 +21,7 @@ public class MinejagoParticleUtils {
         up = 0.1f;
         for (int i = 0; i < height; i++) {
             ParticleOptions particle = new SpinjitzuParticleOptions(color2, scale);
-            MinejagoMainChannel.sendToAllClients(new ClientboundDuringSpinjitzuPacket(particle, player.getX(), player.getY() + up, player.getZ(), 0, 1, 0), player);
+            MinejagoMainChannel.sendToAllClients(new ClientboundSpawnParticlePacket(particle, player.getX(), player.getY() + up, player.getZ(), 0, 1, 0), player);
             scale *= toc ? 1.1f : 1.2f;
             up += 0.2f;
         }
@@ -29,10 +29,10 @@ public class MinejagoParticleUtils {
 
     public static void renderPlayerSpinjitzuBorder(ParticleOptions particle, ServerPlayer player, double height, boolean toc) {
         for (int i = 0; i < height / 4; i++) {
-            MinejagoMainChannel.sendToAllClients(new ClientboundDuringSpinjitzuPacket(particle, player.getX(), player.getY(), player.getZ(), 0.5, 0.5, 0.5), player);
-            MinejagoMainChannel.sendToAllClients(new ClientboundDuringSpinjitzuPacket(particle, player.getX(), player.getY(), player.getZ(), -0.5, 0.5, -0.5), player);
-            MinejagoMainChannel.sendToAllClients(new ClientboundDuringSpinjitzuPacket(particle, player.getX(), player.getY(), player.getZ(), 0.5, 0.5, -0.5), player);
-            MinejagoMainChannel.sendToAllClients(new ClientboundDuringSpinjitzuPacket(particle, player.getX(), player.getY(), player.getZ(), -0.5, 0.5, 0.5), player);
+            MinejagoMainChannel.sendToAllClients(new ClientboundSpawnParticlePacket(particle, player.getX(), player.getY(), player.getZ(), 0.5, 0.5, 0.5), player);
+            MinejagoMainChannel.sendToAllClients(new ClientboundSpawnParticlePacket(particle, player.getX(), player.getY(), player.getZ(), -0.5, 0.5, -0.5), player);
+            MinejagoMainChannel.sendToAllClients(new ClientboundSpawnParticlePacket(particle, player.getX(), player.getY(), player.getZ(), 0.5, 0.5, -0.5), player);
+            MinejagoMainChannel.sendToAllClients(new ClientboundSpawnParticlePacket(particle, player.getX(), player.getY(), player.getZ(), -0.5, 0.5, 0.5), player);
         }
     }
 

@@ -1,33 +1,25 @@
 package dev.thomasglasser.minejago.data.loot;
 
-import com.mojang.datafixers.util.Pair;
-import net.minecraft.data.DataGenerator;
+import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.LootTables;
 import net.minecraft.world.level.storage.loot.ValidationContext;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
+import java.util.Set;
 
 public class MinejagoLootTables extends LootTableProvider
 {
-    public MinejagoLootTables(DataGenerator pGenerator) {
-        super(pGenerator);
-    }
-
-    @Override
-    protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootContextParamSet>> getTables() {
-        return List.of(
-                Pair.of(MinejagoChestLoot::new, LootContextParamSets.CHEST),
-                Pair.of(MinejagoBlockLoot::new, LootContextParamSets.BLOCK));
+    public MinejagoLootTables(PackOutput packOutput) {
+        super(packOutput, Set.of(new ResourceLocation(Minejago.MOD_ID, "chests/four_weapons"), MinejagoBlocks.TEAPOT.get().getLootTable()), List.of(
+                new LootTableProvider.SubProviderEntry(MinejagoChestLoot::new, LootContextParamSets.CHEST),
+                new LootTableProvider.SubProviderEntry(MinejagoBlockLoot::new, LootContextParamSets.BLOCK)));
     }
 
     @Override

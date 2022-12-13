@@ -224,14 +224,6 @@ public class TeapotBlockEntity extends BlockEntity implements IItemHandler, Name
         }
     }
 
-    /**
-     * Returns {@code true} if automation is allowed to insert the given stack (ignoring stack size) into the given slot.
-     * For guis use Slot.isItemValid
-     */
-    public boolean canPlaceItem(int pIndex, ItemStack pStack) {
-        return BrewingRecipeRegistry.isValidIngredient(pStack);
-    }
-
     @Override
     public CompoundTag getUpdateTag() {
         CompoundTag compoundtag = new CompoundTag();
