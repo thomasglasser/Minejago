@@ -23,6 +23,7 @@ import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.common.data.LanguageProvider;
 import net.minecraft.world.level.block.entity.BannerPattern;
+import org.apache.commons.lang3.text.WordUtils;
 
 public class MinejagoEnUsLanguage extends LanguageProvider
 {
@@ -103,7 +104,7 @@ public class MinejagoEnUsLanguage extends LanguageProvider
     {
         for (DyeColor color: DyeColor.values())
         {
-            add("block.minecraft.banner." + Minejago.MOD_ID + "." + pattern.getHashname() + "." + color.getName(), color.getName().substring(0, 1).toUpperCase() + color.getName().substring(1) + " " + name);
+            add("block.minecraft.banner." + Minejago.MOD_ID + "." + pattern.getHashname() + "." + color.getName(), WordUtils.capitalize(color.getName().replace('_', ' ')) + " " + name);
         }
     }
 

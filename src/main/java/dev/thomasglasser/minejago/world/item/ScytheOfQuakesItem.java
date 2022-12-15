@@ -9,6 +9,7 @@ import dev.thomasglasser.minejago.network.ClientboundStartScytheAnimationPacket;
 import dev.thomasglasser.minejago.network.ClientboundStopAnimationPacket;
 import dev.thomasglasser.minejago.network.MinejagoMainChannel;
 import dev.thomasglasser.minejago.util.MinejagoLevelUtils;
+import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.powers.Power;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
@@ -40,7 +41,7 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem
 
     @Override
     public boolean canPowerHandle(Power power) {
-        return true;
+        return power == MinejagoPowers.EARTH.get();
     }
 
     @Override

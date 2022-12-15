@@ -102,4 +102,8 @@ public class Power {
     public String toString() {
         return "[" + super.toString() + "]: {power:" + name + "}";
     }
+
+    public String getName() {
+        return name;
+    }
 }
