@@ -1,97 +1,141 @@
+package dev.thomasglasser.minejago.data.lang;
+
+import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
+import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
+import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
+import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
+import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
+import dev.thomasglasser.minejago.world.level.biome.MinejagoBiomes;
+import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
+import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPatterns;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraftforge.common.data.LanguageProvider;
+import net.minecraft.world.level.block.entity.BannerPattern;
+
+public class MinejagoEnUsLanguage extends LanguageProvider
 {
-  "biome.minejago.high_mountains": "Mountains of Impossible Height",
-  "block.minecraft.banner.minejago.edge_lines.black": "Black Edge Lines",
-  "block.minecraft.banner.minejago.edge_lines.blue": "Blue Edge Lines",
-  "block.minecraft.banner.minejago.edge_lines.brown": "Brown Edge Lines",
-  "block.minecraft.banner.minejago.edge_lines.cyan": "Cyan Edge Lines",
-  "block.minecraft.banner.minejago.edge_lines.gray": "Gray Edge Lines",
-  "block.minecraft.banner.minejago.edge_lines.green": "Green Edge Lines",
-  "block.minecraft.banner.minejago.edge_lines.light_blue": "Light_blue Edge Lines",
-  "block.minecraft.banner.minejago.edge_lines.light_gray": "Light_gray Edge Lines",
-  "block.minecraft.banner.minejago.edge_lines.lime": "Lime Edge Lines",
-  "block.minecraft.banner.minejago.edge_lines.magenta": "Magenta Edge Lines",
-  "block.minecraft.banner.minejago.edge_lines.orange": "Orange Edge Lines",
-  "block.minecraft.banner.minejago.edge_lines.pink": "Pink Edge Lines",
-  "block.minecraft.banner.minejago.edge_lines.purple": "Purple Edge Lines",
-  "block.minecraft.banner.minejago.edge_lines.red": "Red Edge Lines",
-  "block.minecraft.banner.minejago.edge_lines.white": "White Edge Lines",
-  "block.minecraft.banner.minejago.edge_lines.yellow": "Yellow Edge Lines",
-  "block.minecraft.banner.minejago.four_weapons_left.black": "Black Four Weapons Left",
-  "block.minecraft.banner.minejago.four_weapons_left.blue": "Blue Four Weapons Left",
-  "block.minecraft.banner.minejago.four_weapons_left.brown": "Brown Four Weapons Left",
-  "block.minecraft.banner.minejago.four_weapons_left.cyan": "Cyan Four Weapons Left",
-  "block.minecraft.banner.minejago.four_weapons_left.gray": "Gray Four Weapons Left",
-  "block.minecraft.banner.minejago.four_weapons_left.green": "Green Four Weapons Left",
-  "block.minecraft.banner.minejago.four_weapons_left.light_blue": "Light_blue Four Weapons Left",
-  "block.minecraft.banner.minejago.four_weapons_left.light_gray": "Light_gray Four Weapons Left",
-  "block.minecraft.banner.minejago.four_weapons_left.lime": "Lime Four Weapons Left",
-  "block.minecraft.banner.minejago.four_weapons_left.magenta": "Magenta Four Weapons Left",
-  "block.minecraft.banner.minejago.four_weapons_left.orange": "Orange Four Weapons Left",
-  "block.minecraft.banner.minejago.four_weapons_left.pink": "Pink Four Weapons Left",
-  "block.minecraft.banner.minejago.four_weapons_left.purple": "Purple Four Weapons Left",
-  "block.minecraft.banner.minejago.four_weapons_left.red": "Red Four Weapons Left",
-  "block.minecraft.banner.minejago.four_weapons_left.white": "White Four Weapons Left",
-  "block.minecraft.banner.minejago.four_weapons_left.yellow": "Yellow Four Weapons Left",
-  "block.minecraft.banner.minejago.four_weapons_right.black": "Black Four Weapons Right",
-  "block.minecraft.banner.minejago.four_weapons_right.blue": "Blue Four Weapons Right",
-  "block.minecraft.banner.minejago.four_weapons_right.brown": "Brown Four Weapons Right",
-  "block.minecraft.banner.minejago.four_weapons_right.cyan": "Cyan Four Weapons Right",
-  "block.minecraft.banner.minejago.four_weapons_right.gray": "Gray Four Weapons Right",
-  "block.minecraft.banner.minejago.four_weapons_right.green": "Green Four Weapons Right",
-  "block.minecraft.banner.minejago.four_weapons_right.light_blue": "Light_blue Four Weapons Right",
-  "block.minecraft.banner.minejago.four_weapons_right.light_gray": "Light_gray Four Weapons Right",
-  "block.minecraft.banner.minejago.four_weapons_right.lime": "Lime Four Weapons Right",
-  "block.minecraft.banner.minejago.four_weapons_right.magenta": "Magenta Four Weapons Right",
-  "block.minecraft.banner.minejago.four_weapons_right.orange": "Orange Four Weapons Right",
-  "block.minecraft.banner.minejago.four_weapons_right.pink": "Pink Four Weapons Right",
-  "block.minecraft.banner.minejago.four_weapons_right.purple": "Purple Four Weapons Right",
-  "block.minecraft.banner.minejago.four_weapons_right.red": "Red Four Weapons Right",
-  "block.minecraft.banner.minejago.four_weapons_right.white": "White Four Weapons Right",
-  "block.minecraft.banner.minejago.four_weapons_right.yellow": "Yellow Four Weapons Right",
-  "block.minejago.teapot": "Teapot",
-  "container.teapot": "Teapot",
-  "effect.minecraft.harming": "Harming",
-  "effect.minecraft.healing": "Healing",
-  "effect.minecraft.leaping": "Leaping",
-  "effect.minecraft.swiftness": "Swiftness",
-  "effect.minejago.instant_cure": "Instant Cure",
-  "entity.minejago.thrown_bamboo_staff": "Bamboo Staff",
-  "entity.minejago.thrown_bone_knife": "Bone Knife",
-  "entity.minejago.thrown_iron_shuriken": "Iron Shuriken",
-  "entity.minejago.thrown_iron_spear": "Iron Spear",
-  "item.minecraft.filled_map.golden_weapons": "Golden Weapons Map",
-  "item.minecraft.lingering_potion.effect.milk": "Lingering Bottle of Milk",
-  "item.minecraft.lingering_potion.effect.regular_tea": "Lingering Bottle of Regular Tea",
-  "item.minecraft.potion.effect.milk": "Bottle of Milk",
-  "item.minecraft.potion.effect.regular_tea": "Bottle of Regular Tea",
-  "item.minecraft.splash_potion.effect.milk": "Splash Bottle of Milk",
-  "item.minecraft.splash_potion.effect.regular_tea": "Splash Bottle of Regular Tea",
-  "item.minecraft.tipped_arrow.effect.milk": "Arrow of Milk",
-  "item.minejago.bamboo_staff": "Bamboo Staff",
-  "item.minejago.black_gi_boots": "Black Gi Boots",
-  "item.minejago.black_gi_chestplate": "Black Gi Jacket",
-  "item.minejago.black_gi_helmet": "Black Gi Hood",
-  "item.minejago.black_gi_leggings": "Black Gi Leggings",
-  "item.minejago.bone_knife": "Bone Knife",
-  "item.minejago.filled_teacup": "Tea",
-  "item.minejago.filled_teacup.effect.awkward": "Awkward Tea",
-  "item.minejago.filled_teacup.effect.empty": "Uncraftable Tea",
-  "item.minejago.filled_teacup.effect.mundane": "Mundane Tea",
-  "item.minejago.filled_teacup.effect.thick": "Thick Tea",
-  "item.minejago.filled_teacup.effect.turtle_master": "Tea of the Turtle Master",
-  "item.minejago.filled_teacup.effect.water": "Cup of Water",
-  "item.minejago.filled_teacup.milk": "Cup of Milk",
-  "item.minejago.filled_teacup.potion": "Tea of %1$s",
-  "item.minejago.filled_teacup.regular_tea": "Regular Tea",
-  "item.minejago.four_weapons_banner_pattern": "Banner Pattern",
-  "item.minejago.four_weapons_banner_pattern.desc": "Four Weapons",
-  "item.minejago.iron_katana": "Iron Katana",
-  "item.minejago.iron_scythe": "Iron Scythe",
-  "item.minejago.iron_shuriken": "Iron Shuriken",
-  "item.minejago.iron_spear": "Iron Spear",
-  "item.minejago.scythe_of_quakes": "Scythe of Quakes",
-  "item.minejago.skeletal_chestplate": "Skeletal Chestplate",
-  "item.minejago.teacup": "Teacup",
-  "key.minejago.activate_spinjitzu": "Activate Spinjitzu",
-  "minejago.teapot_whistle.subtitle": "*teapot whistles*"
+
+    public MinejagoEnUsLanguage(PackOutput output)
+    {
+        super(output, Minejago.MOD_ID, "en_us");
+    }
+
+    @Override
+    protected void addTranslations() {
+        add(MinejagoItems.BONE_KNIFE.get(), "Bone Knife");
+        add(MinejagoItems.BAMBOO_STAFF.get(), "Bamboo Staff");
+        add(MinejagoItems.SCYTHE_OF_QUAKES.get(), "Scythe of Quakes");
+        add(MinejagoItems.TEACUP.get(), "Teacup");
+        add(MinejagoItems.FILLED_TEACUP.get(), "Tea");
+        add(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get(), "Banner Pattern");
+        add(MinejagoItems.IRON_SPEAR.get(), "Iron Spear");
+        add(MinejagoItems.IRON_SHURIKEN.get(), "Iron Shuriken");
+        add(MinejagoItems.SKELETAL_CHESTPLATE.get(), "Skeletal Chestplate");
+        add(MinejagoItems.BLACK_GI_HELMET.get(), "Black Gi Hood");
+        add(MinejagoItems.BLACK_GI_CHESTPLATE.get(), "Black Gi Jacket");
+        add(MinejagoItems.BLACK_GI_LEGGINGS.get(), "Black Gi Leggings");
+        add(MinejagoItems.BLACK_GI_BOOTS.get(), "Black Gi Boots");
+        add(MinejagoItems.IRON_KATANA.get(), "Iron Katana");
+        add(MinejagoItems.IRON_SCYTHE.get(), "Iron Scythe");
+
+        add(MinejagoBlocks.TEAPOT.get(), "Teapot");
+
+        addDesc(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get(), "Four Weapons");
+
+        add(MinejagoItems.FILLED_TEACUP.get().getDescriptionId() + ".potion", "Tea of %1$s");
+
+        add(MinejagoItems.FILLED_TEACUP.get(), Potions.EMPTY, "Uncraftable Tea");
+        add(MinejagoItems.FILLED_TEACUP.get(), Potions.MUNDANE, "Mundane Tea");
+        add(MinejagoItems.FILLED_TEACUP.get(), Potions.THICK, "Thick Tea");
+        add(MinejagoItems.FILLED_TEACUP.get(), Potions.AWKWARD, "Awkward Tea");
+        add(MinejagoItems.FILLED_TEACUP.get(), Potions.TURTLE_MASTER, "Tea of the Turtle Master");
+        add(MinejagoItems.FILLED_TEACUP.get(), Potions.WATER, "Cup of Water");
+
+        add(MinejagoEntityTypes.THROWN_BONE_KNIFE.get(), "Bone Knife");
+        add(MinejagoEntityTypes.THROWN_BAMBOO_STAFF.get(), "Bamboo Staff");
+        add(MinejagoEntityTypes.THROWN_IRON_SHURIKEN.get(), "Iron Shuriken");
+        add(MinejagoEntityTypes.THROWN_IRON_SPEAR.get(), "Iron Spear");
+
+        add(MinejagoBannerPatterns.FOUR_WEAPONS_LEFT.get(), "Four Weapons Left");
+        add(MinejagoBannerPatterns.FOUR_WEAPONS_RIGHT.get(), "Four Weapons Right");
+        add(MinejagoBannerPatterns.EDGE_LINES.get(), "Edge Lines");
+
+        add(Items.FILLED_MAP.getDescriptionId() + ".golden_weapons", "Golden Weapons Map");
+
+        add(MinejagoBiomes.HIGH_MOUNTAINS, "Mountains of Impossible Height");
+
+        add("container.teapot", "Teapot");
+
+        addTea(MinejagoPotions.REGULAR_TEA.get(), "Regular Tea");
+        add(MinejagoItems.FILLED_TEACUP.get().getDescriptionId() + ".milk", "Cup of Milk");
+        addPotions(MinejagoPotions.MILK.get(), "Milk");
+
+        add(MinejagoSoundEvents.TEAPOT_WHISTLE.get().getLocation().toLanguageKey() + ".subtitle", "*teapot whistles*");
+
+        add(MinejagoMobEffects.CURE.get(), "Instant Cure");
+
+        add("effect.minecraft.swiftness", "Swiftness");
+        add("effect.minecraft.healing", "Healing");
+        add("effect.minecraft.harming", "Harming");
+        add("effect.minecraft.leaping", "Leaping");
+
+        add(MinejagoKeyMappings.ACTIVATE_SPINJITZU, "Activate Spinjitzu");
+    }
+
+    public void addDesc(Item item, String desc)
+    {
+        add(item.getDescriptionId() + ".desc", desc);
+    }
+
+    public void add(BannerPattern pattern, String name)
+    {
+        for (DyeColor color: DyeColor.values())
+        {
+            add("block.minecraft.banner." + Minejago.MOD_ID + "." + pattern.getHashname() + "." + color.getName(), color.getName().substring(0, 1).toUpperCase() + color.getName().substring(1) + " " + name);
+        }
+    }
+
+    public void add(Item key, Potion potion, String name) {
+        add(PotionUtils.setPotion(new ItemStack(key), potion), name);
+    }
+
+    public void add(ResourceKey<Biome> biome, String name)
+    {
+        add("biome." + biome.location().getNamespace() + "." + biome.location().getPath(), name);
+    }
+
+    public void addTea(Potion tea, String name)
+    {
+        add(MinejagoItems.FILLED_TEACUP.get().getDescriptionId() + tea.getName("."), name);
+        addPotions(tea, name);
+    }
+
+    public void addPotions(Potion potion, String name)
+    {
+        add(Items.POTION, potion, "Bottle of " + name);
+        add(Items.SPLASH_POTION, potion, "Splash Bottle of " + name);
+        add(Items.LINGERING_POTION, potion, "Lingering Bottle of " + name);
+
+        if (!potion.getEffects().isEmpty())
+        {
+            add(Items.TIPPED_ARROW, potion, "Arrow of " + name);
+        }
+    }
+
+    public void add(KeyMapping key, String name)
+    {
+        add(key.getName(), name);
+    }
 }
