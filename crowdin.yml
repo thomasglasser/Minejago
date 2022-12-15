@@ -1,3 +1,3 @@
 files:
-  - source: lang
-    translation: '%locale_with_underscore%.json'
+  - source: src/generated/resources/assets/minejago/lang
+    translation: src/main/resources/assets/minejago/lang
