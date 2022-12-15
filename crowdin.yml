@@ -1,0 +1,3 @@
+files:
+  - source: src/generated/resources/assets/minejago/lang
+    translation: src/resources/assets/minejago/lang
