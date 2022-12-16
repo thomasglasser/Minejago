@@ -16,7 +16,7 @@ public class PowerCapability extends PlayerCapability {
     public PowerCapability(Player player)
     {
         super(player);
-        power = MinejagoPowers.EMPTY.get();
+        power = MinejagoPowers.NONE.get();
     }
 
     public Power getPower() {

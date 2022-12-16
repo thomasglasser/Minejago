@@ -1,6 +1,8 @@
 package dev.thomasglasser.minejago;
 
 import dev.thomasglasser.minejago.client.MinejagoClientConfig;
+import dev.thomasglasser.minejago.commands.MinejagoCommandEvents;
+import dev.thomasglasser.minejago.commands.arguments.MinejagoArguments;
 import dev.thomasglasser.minejago.core.MinejagoCoreEvents;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import dev.thomasglasser.minejago.data.MinejagoDataGenerators;
@@ -82,6 +84,7 @@ public class Minejago
         MinejagoSoundEvents.SOUND_EVENTS.register(bus);
         MinejagoMobEffects.MOB_EFFECTS.register(bus);
         MinejagoPowers.POWERS.register(bus);
+        MinejagoArguments.ARGUMENT_TYPES.register(bus);
     }
 
     private void registerConfigs()
@@ -114,6 +117,7 @@ public class Minejago
         MinecraftForge.EVENT_BUS.addListener(MinejagoPaintingVariants::onInteract);
         MinecraftForge.EVENT_BUS.addListener(MinejagoEntityEvents::onPlayerTick);
         MinecraftForge.EVENT_BUS.addListener(MinejagoEntityEvents::onPlayerLoggedIn);
+        MinecraftForge.EVENT_BUS.addListener(MinejagoCommandEvents::onCommandsRegister);
     }
 
     private void addForgeClientListeners()

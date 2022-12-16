@@ -23,6 +23,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SimpleFoiledItem;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -56,6 +57,11 @@ public abstract class GoldenWeaponItem extends SimpleFoiledItem
         return pDamageSource == DamageSource.OUT_OF_WORLD;
     }
 
+    @Override
+    public UseAnim getUseAnimation(ItemStack pStack) {
+        return UseAnim.NONE;
+    }
+
     public abstract boolean canPowerHandle(Power power);
 
     @Override
@@ -74,7 +80,7 @@ public abstract class GoldenWeaponItem extends SimpleFoiledItem
                 if (MinejagoPowersConfig.WEAPON_GOES_CRAZY.get()) {
                     goCrazy(pContext.getPlayer());
                 }
-                return InteractionResult.FAIL;
+                return InteractionResult.CONSUME_PARTIAL;
             }
         }
         return doUseOn(pContext);

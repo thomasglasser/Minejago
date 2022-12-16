@@ -2,6 +2,7 @@ package dev.thomasglasser.minejago.world.entity.powers;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.core.particles.SpinjitzuParticleOptions;
+import net.minecraft.Util;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -20,6 +21,8 @@ public class Power {
     protected Vector3f altSpinjitzuColor;
     @Nullable
     protected ParticleOptions borderParticle;
+
+    private String descriptionId;
 
     public Power(@NotNull String name)
     {
@@ -105,5 +108,17 @@ public class Power {
 
     public String getName() {
         return name;
+    }
+
+    protected String getOrCreateDescriptionId() {
+        if (this.descriptionId == null) {
+            this.descriptionId = Util.makeDescriptionId("power", MinejagoPowers.POWERS_REGISTRY.get().getKey(this));
+        }
+
+        return this.descriptionId;
+    }
+
+    public String getDescriptionId() {
+        return this.getOrCreateDescriptionId();
     }
 }

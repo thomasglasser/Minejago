@@ -2,9 +2,13 @@ package dev.thomasglasser.minejago.data.lang;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
+import dev.thomasglasser.minejago.commands.arguments.PowerArgument;
+import dev.thomasglasser.minejago.server.commands.PowerCommand;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
+import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
+import dev.thomasglasser.minejago.world.entity.powers.Power;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
 import dev.thomasglasser.minejago.world.level.biome.MinejagoBiomes;
@@ -55,7 +59,7 @@ public class MinejagoEnUsLanguage extends LanguageProvider
 
         addDesc(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get(), "Four Weapons");
 
-        add(MinejagoItems.FILLED_TEACUP.get().getDescriptionId() + ".potion", "Tea of %1$s");
+        add(MinejagoItems.FILLED_TEACUP.get().getDescriptionId() + ".potion", "Tea of %s");
 
         add(MinejagoItems.FILLED_TEACUP.get(), Potions.EMPTY, "Uncraftable Tea");
         add(MinejagoItems.FILLED_TEACUP.get(), Potions.MUNDANE, "Mundane Tea");
@@ -93,6 +97,19 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add("effect.minecraft.leaping", "Leaping");
 
         add(MinejagoKeyMappings.ACTIVATE_SPINJITZU, "Activate Spinjitzu");
+
+        add(PowerCommand.SUCCESS_SELF, "Set own power to %s");
+        add(PowerCommand.CHANGED, "Your power has been updated to %s");
+        add(PowerCommand.SUCCESS_OTHER, "Set %s's game mode to %s");
+        add(PowerCommand.QUERY, "Your power is currently set to: %s");
+
+        add(PowerArgument.NOT_FOUND, "Unknown Power");
+
+        add(MinejagoPowers.EARTH.get(), "Earth");
+        add(MinejagoPowers.FIRE.get(), "Fire");
+        add(MinejagoPowers.LIGHTNING.get(), "Lightning");
+        add(MinejagoPowers.ICE.get(), "Ice");
+        add(MinejagoPowers.NONE.get(), "None");
     }
 
     public void addDesc(Item item, String desc)
@@ -138,5 +155,10 @@ public class MinejagoEnUsLanguage extends LanguageProvider
     public void add(KeyMapping key, String name)
     {
         add(key.getName(), name);
+    }
+
+    public void add(Power power, String name)
+    {
+        add(power.getDescriptionId(), name);
     }
 }

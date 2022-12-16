@@ -33,7 +33,7 @@ public class MinejagoEntityEvents
                         MinejagoMainChannel.sendToAllClients(new ClientboundStopAnimationPacket(serverPlayer.getUUID()), serverPlayer);
                     }
                     Power power = serverPlayer.getCapability(PowerCapabilityAttacher.POWER_CAPABILITY).orElse(new PowerCapability(serverPlayer)).getPower();
-                    if (power != MinejagoPowers.EMPTY.get()) {
+                    if (power != MinejagoPowers.NONE.get()) {
                         MinejagoParticleUtils.renderPlayerSpinjitzu(serverPlayer, power.getMainSpinjitzuColor(), power.getAltSpinjitzuColor(), 10.5, false);
                         if (power.getBorderParticle() != null)
                             MinejagoParticleUtils.renderPlayerSpinjitzuBorder(power.getBorderParticle(), serverPlayer, 4, false);
