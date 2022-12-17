@@ -1,1 +1,12 @@
-{}
+{
+  "argument.minejago.power.not_found": "Unbekannte Kraft",
+  "biome.minejago.high_mountains": "Berge der unmöglichen Höhe",
+  "block.minecraft.banner.minejago.edge_lines.black": "Schwarze Kantenlinien",
+  "block.minecraft.banner.minejago.edge_lines.blue": "Blaue Kantenlinien",
+  "block.minecraft.banner.minejago.edge_lines.brown": "Braune Kantenlinien",
+  "block.minecraft.banner.minejago.edge_lines.cyan": "Türkise Kantenlinien",
+  "block.minecraft.banner.minejago.edge_lines.gray": "Graue Kantenlinien",
+  "block.minecraft.banner.minejago.edge_lines.green": "Grüne Kantenlinien",
+  "block.minecraft.banner.minejago.edge_lines.light_blue": "Hellblaue Kantenlinien",
+  "block.minecraft.banner.minejago.edge_lines.light_gray": "Hellgraue Kantenlinien"
+}
