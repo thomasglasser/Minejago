@@ -51,7 +51,6 @@
   "block.minecraft.banner.minejago.four_weapons_right.yellow": "Gelbe Vier Waffen Rechts",
   "block.minejago.teapot": "Teekanne",
   "commands.power.query": "Deine derzeitige Energie ist auf %s gesetzt",
-  "commands.power.success.other": "Der Spielmodus von %s wurde auf %s gesetzt",
   "commands.power.success.self": "Eigene Kraft auf %s gesetzt",
   "container.teapot": "Teekanne",
   "effect.minecraft.harming": "Schaden",
