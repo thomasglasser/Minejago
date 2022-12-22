@@ -72,6 +72,7 @@ public class MinejagoClientEvents {
         event.register(new ResourceLocation(Minejago.MOD_ID, "item/iron_spear_inventory"));
         event.register(new ResourceLocation(Minejago.MOD_ID, "item/scythe_of_quakes_inventory"));
         event.register(new ResourceLocation(Minejago.MOD_ID, "item/iron_scythe_inventory"));
+        event.register(new ResourceLocation(Minejago.MOD_ID, "item/wooden_nunchucks_inventory"));
     }
 
     public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event)
@@ -85,6 +86,7 @@ public class MinejagoClientEvents {
         event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.BLACK_GI_BOOTS.get()).getCustomRenderer());
         event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.SCYTHE_OF_QUAKES.get()).getCustomRenderer());
         event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.IRON_SCYTHE.get()).getCustomRenderer());
+        event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.WOODEN_NUNCHUCKS.get()).getCustomRenderer());
     }
 
     public static void onRegisterParticleProviders(RegisterParticleProvidersEvent event)
@@ -99,40 +101,28 @@ public class MinejagoClientEvents {
 
     public static void onRegisterColorHandlers(RegisterColorHandlersEvent.Item event)
     {
-        event.register(new ItemColor() {
-            @Override
-            public int getColor(ItemStack pStack, int pTintIndex) {
-                if (pTintIndex == 0)
-                    return PotionUtils.getPotion(pStack).getName("").contains("tea") ? 7028992 : PotionUtils.getColor(pStack);
-                return -1;
-            }
+        event.register((pStack, pTintIndex) -> {
+            if (pTintIndex == 0)
+                return PotionUtils.getPotion(pStack).getName("").contains("tea") ? 7028992 : PotionUtils.getColor(pStack);
+            return -1;
         }, MinejagoItems.FILLED_TEACUP.get());
 
-        event.register(new ItemColor() {
-            @Override
-            public int getColor(ItemStack pStack, int pTintIndex) {
-                if (pTintIndex == 0)
-                    return PotionUtils.getPotion(pStack).getName("").contains("tea") ? 7028992 : PotionUtils.getColor(pStack);
-                return -1;
-            }
+        event.register((pStack, pTintIndex) -> {
+            if (pTintIndex == 0)
+                return PotionUtils.getPotion(pStack).getName("").contains("tea") ? 7028992 : PotionUtils.getColor(pStack);
+            return -1;
         }, Items.POTION);
 
-        event.register(new ItemColor() {
-            @Override
-            public int getColor(ItemStack pStack, int pTintIndex) {
-                if (pTintIndex == 0)
-                    return PotionUtils.getPotion(pStack).getName("").contains("tea") ? 7028992 : PotionUtils.getColor(pStack);
-                return -1;
-            }
+        event.register((pStack, pTintIndex) -> {
+            if (pTintIndex == 0)
+                return PotionUtils.getPotion(pStack).getName("").contains("tea") ? 7028992 : PotionUtils.getColor(pStack);
+            return -1;
         }, Items.SPLASH_POTION);
 
-        event.register(new ItemColor() {
-            @Override
-            public int getColor(ItemStack pStack, int pTintIndex) {
-                if (pTintIndex == 0)
-                    return PotionUtils.getPotion(pStack).getName("").contains("tea") ? 7028992 : PotionUtils.getColor(pStack);
-                return -1;
-            }
+        event.register((pStack, pTintIndex) -> {
+            if (pTintIndex == 0)
+                return PotionUtils.getPotion(pStack).getName("").contains("tea") ? 7028992 : PotionUtils.getColor(pStack);
+            return -1;
         }, Items.LINGERING_POTION);
     }
     public static void onRegisterKeyMappings(RegisterKeyMappingsEvent event)

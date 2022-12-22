@@ -48,6 +48,11 @@
                   "op": "replace",
                   "source": "Temperature",
                   "target": "BlockEntityTag.Temperature"
+                },
+                {
+                  "op": "replace",
+                  "source": "Potion",
+                  "target": "BlockEntityTag.Potion"
                 }
               ],
               "source": "block_entity"

@@ -5,6 +5,7 @@ import dev.thomasglasser.minejago.commands.MinejagoCommandEvents;
 import dev.thomasglasser.minejago.commands.arguments.MinejagoArguments;
 import dev.thomasglasser.minejago.core.MinejagoCoreEvents;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
+import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.data.MinejagoDataGenerators;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
@@ -18,24 +19,18 @@ import dev.thomasglasser.minejago.world.item.MinejagoTiers;
 import dev.thomasglasser.minejago.client.MinejagoClientEvents;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
 import dev.thomasglasser.minejago.world.level.MinejagoServerConfig;
-import dev.thomasglasser.minejago.world.level.biome.MinejagoBiomes;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPatterns;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
 import dev.thomasglasser.minejago.world.level.storage.PowerCapabilityAttacher;
-import dev.thomasglasser.minejago.world.level.storage.ActivatedSpinjitzuCapabilityAttacher;
-import dev.thomasglasser.minejago.world.level.storage.UnlockedSpinjitzuCapabilityAttacher;
-import net.minecraft.core.registries.Registries;
+import dev.thomasglasser.minejago.world.level.storage.SpinjitzuCapabilityAttacher;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegisterEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -71,6 +66,8 @@ public class Minejago
 
     private void registerAssets(IEventBus bus)
     {
+        MinejagoRegistries.POWERS.get();
+
         MinejagoTiers.register();
 
         MinejagoEntityTypes.ENTITY_TYPES.register(bus);
@@ -118,6 +115,7 @@ public class Minejago
         MinecraftForge.EVENT_BUS.addListener(MinejagoEntityEvents::onPlayerTick);
         MinecraftForge.EVENT_BUS.addListener(MinejagoEntityEvents::onPlayerLoggedIn);
         MinecraftForge.EVENT_BUS.addListener(MinejagoCommandEvents::onCommandsRegister);
+        MinecraftForge.EVENT_BUS.addListener(MinejagoEntityEvents::onLivingAttack);
     }
 
     private void addForgeClientListeners()
@@ -128,8 +126,7 @@ public class Minejago
     private void registerCapabilities()
     {
         PowerCapabilityAttacher.register();
-        ActivatedSpinjitzuCapabilityAttacher.register();
-        UnlockedSpinjitzuCapabilityAttacher.register();
+        SpinjitzuCapabilityAttacher.register();
     }
 
     public static ResourceLocation modLoc(String name)

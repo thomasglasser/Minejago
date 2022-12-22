@@ -7,9 +7,9 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
+import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.powers.Power;
-import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.chat.Component;
@@ -39,7 +39,7 @@ public class PowerArgument implements ArgumentType<Power> {
     public Power parse(StringReader reader) throws CommandSyntaxException {
         int cursor = reader.getCursor();
         ResourceLocation id = ResourceLocation.read(reader);
-        Power power = MinejagoPowers.POWERS_REGISTRY.get().getValue(id);
+        Power power = MinejagoRegistries.POWERS.get().getValue(id);
 
         if (power == null) {
             reader.setCursor(cursor);
@@ -58,7 +58,7 @@ public class PowerArgument implements ArgumentType<Power> {
 
         builder = builder.createOffset(reader.getCursor());
 
-        SharedSuggestionProvider.suggestResource(MinejagoPowers.POWERS_REGISTRY.get().getKeys(), builder);
+        SharedSuggestionProvider.suggestResource(MinejagoRegistries.POWERS.get().getKeys(), builder);
 
         return builder.buildFuture();
     }

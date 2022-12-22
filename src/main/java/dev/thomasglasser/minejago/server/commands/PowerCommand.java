@@ -3,6 +3,7 @@ package dev.thomasglasser.minejago.server.commands;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import dev.thomasglasser.minejago.commands.arguments.PowerArgument;
+import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.powers.Power;
 import dev.thomasglasser.minejago.world.level.storage.PowerCapability;
 import dev.thomasglasser.minejago.world.level.storage.PowerCapabilityAttacher;
@@ -26,18 +27,18 @@ public class PowerCommand
     public static final String QUERY = "commands.power.query";
 
     public static void register(CommandDispatcher<CommandSourceStack> pDispatcher) {
-        pDispatcher.register(Commands.literal("power").executes(context ->
-        {
-            Power power = context.getSource().getPlayer().getCapability(PowerCapabilityAttacher.POWER_CAPABILITY).orElse(new PowerCapability(context.getSource().getPlayer())).getPower();
-            context.getSource().sendSuccess(Component.translatable(QUERY, Component.translatable(power.getDescriptionId())), false);
-            return 1;
-        }).requires((p_137736_) -> {
-            return p_137736_.hasPermission(2);
-        }).then(Commands.argument("power", PowerArgument.power()).executes((p_258228_) -> {
-            return setPower(p_258228_, Collections.singleton(p_258228_.getSource().getPlayerOrException()), PowerArgument.getPower(p_258228_, "power"));
-        }).then(Commands.argument("target", EntityArgument.players()).executes((p_258229_) -> {
-            return setPower(p_258229_, EntityArgument.getPlayers(p_258229_, "target"), PowerArgument.getPower(p_258229_, "power"));
-        }))));
+        pDispatcher.register(Commands.literal("power")
+                .requires((p_137736_) -> p_137736_.hasPermission(2))
+                .executes(context ->
+                {
+                    context.getSource().getPlayer().getCapability(PowerCapabilityAttacher.POWER_CAPABILITY).ifPresent(powerCapability ->
+                            context.getSource().sendSuccess(Component.translatable(QUERY, Component.translatable(powerCapability.getPower().getDescriptionId())), false));
+                    return 1;
+                })
+                .then(Commands.argument("power", PowerArgument.power())
+                        .executes((p_258228_) -> setPower(p_258228_, Collections.singleton(p_258228_.getSource().getPlayerOrException()), PowerArgument.getPower(p_258228_, "power")))
+                .then(Commands.argument("target", EntityArgument.players())
+                        .executes((p_258229_) -> setPower(p_258229_, EntityArgument.getPlayers(p_258229_, "target"), PowerArgument.getPower(p_258229_, "power"))))));
     }
 
     private static void logPowerChange(CommandSourceStack pSource, ServerPlayer pPlayer, Power power) {
@@ -57,8 +58,11 @@ public class PowerCommand
         int i = 0;
 
         for(ServerPlayer serverplayer : pPlayers) {
-            serverplayer.getCapability(PowerCapabilityAttacher.POWER_CAPABILITY).orElse(new PowerCapability(serverplayer)).setPower(power);
-            logPowerChange(pSource.getSource(), serverplayer, power);
+            serverplayer.getCapability(PowerCapabilityAttacher.POWER_CAPABILITY).ifPresent(powerCapability ->
+            {
+                powerCapability.setPower(power);
+                logPowerChange(pSource.getSource(), serverplayer, power);
+            });
             ++i;
         }
 

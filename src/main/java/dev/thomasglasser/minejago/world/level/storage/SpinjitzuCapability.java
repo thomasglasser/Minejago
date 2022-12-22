@@ -5,14 +5,14 @@ import dev._100media.capabilitysyncer.network.EntityCapabilityStatusPacket;
 import dev._100media.capabilitysyncer.network.SimpleEntityCapabilityStatusPacket;
 import dev.thomasglasser.minejago.network.MinejagoMainChannel;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.simple.SimpleChannel;
 
-public class ActivatedSpinjitzuCapability extends PlayerCapability {
+public class SpinjitzuCapability extends PlayerCapability {
     private boolean active = false;
+    private boolean unlocked = false;
 
-    public ActivatedSpinjitzuCapability(Player player)
+    public SpinjitzuCapability(Player player)
     {
         super(player);
     }
@@ -26,11 +26,20 @@ public class ActivatedSpinjitzuCapability extends PlayerCapability {
         this.updateTracking();
     }
 
+    public boolean isUnlocked() {
+        return unlocked;
+    }
+
+    public void setUnlocked(boolean unlocked) {
+        this.unlocked = unlocked;
+    }
+
     @Override
     public CompoundTag serializeNBT(boolean savingToDisk) {
         CompoundTag nbt = new CompoundTag();
 
         nbt.putBoolean("Active", this.active);
+        nbt.putBoolean("Unlocked", this.unlocked);
 
         return nbt;
     }
@@ -40,12 +49,15 @@ public class ActivatedSpinjitzuCapability extends PlayerCapability {
         if (nbt.contains("Active")) {
             this.active = nbt.getBoolean("Active");
         }
+        if (nbt.contains("Unlocked")) {
+            this.unlocked = nbt.getBoolean("Unlocked");
+        }
     }
 
     @Override
     public EntityCapabilityStatusPacket createUpdatePacket() {
         // Make sure to register this update packet to your network channel!
-        return new SimpleEntityCapabilityStatusPacket(this.player.getId(), ActivatedSpinjitzuCapabilityAttacher.ACTIVATED_SPINJITZU_CAPABILITY_RL, this);
+        return new SimpleEntityCapabilityStatusPacket(this.player.getId(), SpinjitzuCapabilityAttacher.SPINJITZU_CAPABILITY_RL, this);
     }
 
     @Override

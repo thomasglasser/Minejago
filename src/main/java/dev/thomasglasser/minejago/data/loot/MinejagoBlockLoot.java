@@ -46,7 +46,8 @@ public class MinejagoBlockLoot implements LootTableSubProvider
                                         .copy("LootTable", "BlockEntityTag.LootTable")
                                         .copy("LootTableSeed", "BlockEntityTag.LootTableSeed")
                                         .copy("HasLeaves", "BlockEntityTag.HasLeaves")
-                                        .copy("Temperature", "BlockEntityTag.Temperature"))
+                                        .copy("Temperature", "BlockEntityTag.Temperature")
+                                        .copy("Potion", "BlockEntityTag.Potion"))
                                 .apply(SetContainerContents.setContents(MinejagoBlockEntityTypes.TEAPOT.get()).withEntry(DynamicLoot.dynamicEntry(TeapotBlock.CONTENTS))))
         );
     }

@@ -3,11 +3,10 @@ package dev.thomasglasser.minejago.data.recipes;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.*;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.Tags;
 
 import java.util.function.Consumer;
@@ -61,5 +60,11 @@ public class MinejagoRecipes extends RecipeProvider {
                 .group(Minejago.MOD_ID)
                 .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON));
         ironScythe.save(writer);
+        ShapelessRecipeBuilder woodenNunchucks = ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, MinejagoItems.WOODEN_NUNCHUCKS.get(), 1)
+                .requires(Ingredient.of(Tags.Items.RODS_WOODEN), 2)
+                .requires(Items.CHAIN)
+                .group(Minejago.MOD_ID)
+                .unlockedBy("has_chain", has(Items.CHAIN));
+        woodenNunchucks.save(writer);
     }
 }

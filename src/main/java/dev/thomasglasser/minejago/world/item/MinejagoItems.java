@@ -4,15 +4,17 @@ import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.data.tags.MinejagoBannerPatternTags;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.*;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -35,7 +37,8 @@ public class MinejagoItems
     public static final RegistryObject<Item> BLACK_GI_CHESTPLATE = register("black_gi_chestplate", () -> new BlackGiItem(MinejagoArmorMaterials.BLACK_GI, EquipmentSlot.CHEST, new Item.Properties().stacksTo(1).setNoRepair()), CreativeModeTabs.COMBAT);
     public static final RegistryObject<Item> BLACK_GI_LEGGINGS = register("black_gi_leggings", () -> new BlackGiItem(MinejagoArmorMaterials.BLACK_GI, EquipmentSlot.LEGS, new Item.Properties().stacksTo(1).setNoRepair()), CreativeModeTabs.COMBAT);
     public static final RegistryObject<Item> BLACK_GI_BOOTS = register("black_gi_boots", () -> new BlackGiItem(MinejagoArmorMaterials.BLACK_GI, EquipmentSlot.FEET, new Item.Properties().stacksTo(1).setNoRepair()), CreativeModeTabs.COMBAT);
-    public static final RegistryObject<Item> IRON_SCYTHE = register("iron_scythe", () -> new IronScytheItem(Tiers.IRON, 8, -3.5F, new Item.Properties()), CreativeModeTabs.TOOLS_AND_UTILITIES, CreativeModeTabs.COMBAT);
+    public static final RegistryObject<Item> IRON_SCYTHE = register("iron_scythe", () -> new IronScytheItem(Tiers.IRON, 8, -3.5F, BlockTags.REPLACEABLE_PLANTS, new Item.Properties()), CreativeModeTabs.TOOLS_AND_UTILITIES, CreativeModeTabs.COMBAT);
+    public static final RegistryObject<Item> WOODEN_NUNCHUCKS = register("wooden_nunchucks", () -> new WoodenNunchucksItem(new Item.Properties().stacksTo(1)), CreativeModeTabs.COMBAT);
 
     // BLOCK ITEMS
     public static final RegistryObject<Item> TEAPOT = register("teapot", () -> new BlockItem(MinejagoBlocks.TEAPOT.get(), new Item.Properties().stacksTo(1)), CreativeModeTabs.FUNCTIONAL_BLOCKS);

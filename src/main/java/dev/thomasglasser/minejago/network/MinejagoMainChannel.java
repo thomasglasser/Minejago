@@ -3,8 +3,7 @@ package dev.thomasglasser.minejago.network;
 import dev._100media.capabilitysyncer.network.SimpleEntityCapabilityStatusPacket;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.level.storage.PowerCapabilityAttacher;
-import dev.thomasglasser.minejago.world.level.storage.ActivatedSpinjitzuCapabilityAttacher;
-import dev.thomasglasser.minejago.world.level.storage.UnlockedSpinjitzuCapabilityAttacher;
+import dev.thomasglasser.minejago.world.level.storage.SpinjitzuCapabilityAttacher;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
@@ -35,8 +34,7 @@ public class MinejagoMainChannel
 
         SimpleEntityCapabilityStatusPacket.register(net, id());
         SimpleEntityCapabilityStatusPacket.registerRetriever(PowerCapabilityAttacher.POWER_CAPABILITY_RL, PowerCapabilityAttacher::getPowerCapabilityUnwrap);
-        SimpleEntityCapabilityStatusPacket.registerRetriever(ActivatedSpinjitzuCapabilityAttacher.ACTIVATED_SPINJITZU_CAPABILITY_RL, ActivatedSpinjitzuCapabilityAttacher::getActivatedSpinjitzuCapabilityUnwrap);
-        SimpleEntityCapabilityStatusPacket.registerRetriever(UnlockedSpinjitzuCapabilityAttacher.UNLOCKED_SPINJITZU_CAPABILITY_RL, UnlockedSpinjitzuCapabilityAttacher::getUnlockedSpinjitzuCapabilityUnwrap);
+        SimpleEntityCapabilityStatusPacket.registerRetriever(SpinjitzuCapabilityAttacher.SPINJITZU_CAPABILITY_RL, SpinjitzuCapabilityAttacher::getSpinjitzuCapabilityUnwrap);
 
         // Server bound
         net.messageBuilder(ServerboundStartSpinjitzuPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)

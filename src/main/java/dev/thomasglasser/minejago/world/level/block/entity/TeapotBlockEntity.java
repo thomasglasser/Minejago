@@ -14,6 +14,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
@@ -47,28 +48,9 @@ import javax.annotation.Nullable;
 
 public class TeapotBlockEntity extends BlockEntity implements IItemHandler, Nameable
 {
-    public static final int[] SLOTS = new int[] {0};
-    public static final int INPUT_SLOT = SLOTS[0];
-
     private ItemStack item = ItemStack.EMPTY;
 
     private short brewTime;
-
-    protected final ContainerData dataAccess = new ContainerData() {
-        public int get(int index) {
-            return TeapotBlockEntity.this.brewTime;
-        }
-
-        public void set(int index, int newVal) {
-            TeapotBlockEntity.this.brewTime = (short) newVal;
-            setChanged();
-
-        }
-
-        public int getCount() {
-            return 1;
-        }
-    };
 
     private int cups = 0;
 
@@ -109,7 +91,7 @@ public class TeapotBlockEntity extends BlockEntity implements IItemHandler, Name
                 {
                     pBlockEntity.brewing = false;
                     pBlockEntity.done = true;
-                    pLevel.playSound((Player) null, pPos, MinejagoSoundEvents.TEAPOT_WHISTLE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+                    pLevel.playSound(null, pPos, MinejagoSoundEvents.TEAPOT_WHISTLE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 
                     ItemStack potionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), pBlockEntity.potion);
                     if (MinejagoPotionBrewing.hasTeaMix(PotionUtils.setPotion(new ItemStack(Items.POTION), pBlockEntity.potion), pBlockEntity.item))
@@ -188,20 +170,23 @@ public class TeapotBlockEntity extends BlockEntity implements IItemHandler, Name
         NonNullList<ItemStack> itemList = NonNullList.withSize(1, ItemStack.EMPTY);
         ContainerHelper.loadAllItems(pTag, itemList);
         item = itemList.get(0);
-        this.potion = PotionUtils.getPotion(pTag);
+        this.potion = ForgeRegistries.POTIONS.getValue(ResourceLocation.of(pTag.getString("Potion"), ':'));
         this.temp = pTag.getShort("Temperature");
         this.cups = pTag.getShort("Cups");
-        if (this.level.isClientSide)
+        if (this.level != null && this.level.isClientSide)
         {
             this.boiling = pTag.getBoolean("Boiling");
             this.done = pTag.getBoolean("Done");
         }
     }
 
+    @Override
     public void saveAdditional(CompoundTag pTag) {
         super.saveAdditional(pTag);
         ContainerHelper.saveAllItems(pTag, NonNullList.withSize(1, item));
-        pTag.putString("Potion", ForgeRegistries.POTIONS.getKey(potion).toString());
+        if (this.potion != Potions.EMPTY) {
+            pTag.putString("Potion", ForgeRegistries.POTIONS.getKey(this.potion).toString());
+        }
         pTag.putBoolean("Boiling", boiling);
         pTag.putBoolean("Done", done);
         pTag.putShort("Temperature", (short) temp);

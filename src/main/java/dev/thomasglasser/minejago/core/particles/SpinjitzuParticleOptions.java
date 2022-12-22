@@ -17,8 +17,7 @@ public class SpinjitzuParticleOptions implements ParticleOptions {
     public static final float MIN_SCALE = 0.01F;
 
     // DEFAULT COLORS
-    public static final Vector3f DEFAULT_MAIN = new Vector3f(58, 58, 58);
-    public static final Vector3f DEFAULT_ALT = new Vector3f(1, 1, 1);
+    public static final Vector3f DEFAULT = new Vector3f(58, 58, 58);
 
     // ELEMENTAL COLORS
     public static final Vector3f ELEMENT_BLUE = new Vector3f(142, 76, 3);

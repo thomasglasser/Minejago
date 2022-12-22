@@ -9,5 +9,11 @@ import software.bernie.geckolib.renderer.GeoArmorRenderer;
 public class BlackGiRenderer extends GeoArmorRenderer<BlackGiItem> {
 
     public BlackGiRenderer() {
-        super(new DefaultedItemGeoModel<>(new ResourceLocation(Minejago.MOD_ID, "armor/black_gi")));
-    }}
+        super(new DefaultedItemGeoModel<>(Minejago.modLoc("armor/black_gi")));
+    }
+
+    @Override
+    public ResourceLocation getTextureLocation(BlackGiItem animatable) {
+        return Minejago.modLoc("textures/models/armor/black_gi.png");
+    }
+}

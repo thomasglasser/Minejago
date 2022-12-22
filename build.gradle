@@ -35,8 +35,8 @@ jarJar.enable()
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
-//    mappings channel: 'sugarcane', version: '2022.11.27-' + mc_version
-    mappings channel: 'parchment', version: '1.19.2-2022.11.27-1.19.3'
+
+    mappings channel: 'sugarcane', version: '2022.12.18-' + mc_version
 
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg') // Currently, this location cannot be changed from the default.
 
@@ -184,14 +184,6 @@ repositories {
         url = 'https://maven.minecraftforge.net/'
     }
     maven {
-        // location of the maven that hosts JEI files
-        url = "https://dvs1.progwml6.com/files/maven/"
-    }
-    maven {
-        // location of a maven mirror for JEI files, as a fallback
-        url = "https://modmaven.dev"
-    }
-    maven {
         url = 'https://maven.kosmx.dev/'
     }
     maven {
@@ -200,20 +192,22 @@ repositories {
     maven {
         url = 'https://maven.100media.dev/'
     }
+    maven {
+        url = 'https://maven.shedaniel.me/'
+    }
 }
 
 dependencies {
     // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft', it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:'+ mc_version + '-44.0.23'
+    minecraft 'net.minecraftforge:forge:'+ mc_version + '-44.0.37'
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
-//    compileOnly fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}")
-//    compileOnly fg.deobf("mezz.jei:jei-${mc_version}-forge-api:${jei_version}")
-//
-//    runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
+    runtimeOnly fg.deobf("me.shedaniel:RoughlyEnoughItems-forge:$rei_version")
+    runtimeOnly fg.deobf("me.shedaniel.cloth:cloth-config-forge:$cc_version")
+    runtimeOnly fg.deobf("dev.architectury:architectury-forge:$arch_version")
     runtimeOnly fg.deobf("curse.maven:top-245211:${top_id}")
     runtimeOnly fg.deobf("maven.modrinth:huge-structure-blocks:${hsb_version}-forge")
     runtimeOnly fg.deobf("curse.maven:we-225608:${we_id}")

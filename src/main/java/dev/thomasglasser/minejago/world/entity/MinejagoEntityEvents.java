@@ -9,11 +9,15 @@ import dev.thomasglasser.minejago.network.ServerboundStartSpinjitzuPacket;
 import dev.thomasglasser.minejago.network.MinejagoMainChannel;
 import dev.thomasglasser.minejago.world.entity.powers.Power;
 import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
+import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import dev.thomasglasser.minejago.world.item.WoodenNunchucksItem;
 import dev.thomasglasser.minejago.world.level.storage.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 
 public class MinejagoEntityEvents
@@ -23,13 +27,12 @@ public class MinejagoEntityEvents
         Player player = event.player;
         if (player instanceof ServerPlayer serverPlayer)
         {
-            UnlockedSpinjitzuCapability unlocked = serverPlayer.getCapability(UnlockedSpinjitzuCapabilityAttacher.UNLOCKED_SPINJITZU_CAPABILITY).orElse(new UnlockedSpinjitzuCapability(serverPlayer));
-            ActivatedSpinjitzuCapability activated = serverPlayer.getCapability(ActivatedSpinjitzuCapabilityAttacher.ACTIVATED_SPINJITZU_CAPABILITY).orElse(new ActivatedSpinjitzuCapability(serverPlayer));
+            SpinjitzuCapability spinjitzu = serverPlayer.getCapability(SpinjitzuCapabilityAttacher.SPINJITZU_CAPABILITY).orElse(new SpinjitzuCapability(serverPlayer));
 
-            if (unlocked.isUnlocked() || true /* TODO: Unlock system */) {
-                if (activated.isActive()) {
+            if (spinjitzu.isUnlocked() || true /* TODO: Unlock system */) {
+                if (spinjitzu.isActive()) {
                     if (serverPlayer.isCrouching()) {
-                        activated.setActive(false);
+                        spinjitzu.setActive(false);
                         MinejagoMainChannel.sendToAllClients(new ClientboundStopAnimationPacket(serverPlayer.getUUID()), serverPlayer);
                     }
                     Power power = serverPlayer.getCapability(PowerCapabilityAttacher.POWER_CAPABILITY).orElse(new PowerCapability(serverPlayer)).getPower();
@@ -88,15 +91,15 @@ public class MinejagoEntityEvents
                                 MinejagoParticleUtils.renderPlayerSpinjitzu(serverPlayer, SpinjitzuParticleOptions.TEAM_LIGHT_PURPLE, SpinjitzuParticleOptions.TEAM_LIGHT_PURPLE, 12, false);
                             }
                             default -> {
-                                MinejagoParticleUtils.renderPlayerSpinjitzu(serverPlayer, SpinjitzuParticleOptions.DEFAULT_MAIN, SpinjitzuParticleOptions.DEFAULT_ALT, 12, false);
+                                MinejagoParticleUtils.renderPlayerSpinjitzu(serverPlayer, SpinjitzuParticleOptions.DEFAULT, SpinjitzuParticleOptions.DEFAULT, 12, false);
                             }
                         }
                     } else {
-                        MinejagoParticleUtils.renderPlayerSpinjitzu(serverPlayer, SpinjitzuParticleOptions.DEFAULT_MAIN, SpinjitzuParticleOptions.DEFAULT_ALT, 12, false);
+                        MinejagoParticleUtils.renderPlayerSpinjitzu(serverPlayer, SpinjitzuParticleOptions.DEFAULT, SpinjitzuParticleOptions.DEFAULT, 12, false);
                     }
                 }
-            } else if (activated.isActive()) {
-                activated.setActive(false);
+            } else if (spinjitzu.isActive()) {
+                spinjitzu.setActive(false);
                 MinejagoMainChannel.sendToAllClients(new ClientboundStopAnimationPacket(serverPlayer.getUUID()), serverPlayer);
             }
         } else if (MinejagoKeyMappings.ACTIVATE_SPINJITZU.isDown()) {
@@ -110,5 +113,11 @@ public class MinejagoEntityEvents
         {
             MinejagoMainChannel.sendToAllClients(new ClientboundRefreshVipDataPacket(), player);
         }
+    }
+
+    public static void onLivingAttack(LivingAttackEvent event)
+    {
+        if (event.getSource().getEntity() instanceof LivingEntity livingEntity && livingEntity.getMainHandItem().is(MinejagoItems.WOODEN_NUNCHUCKS.get()))
+            WoodenNunchucksItem.resetDamage(livingEntity.getMainHandItem());
     }
 }

@@ -54,6 +54,7 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add(MinejagoItems.BLACK_GI_BOOTS.get(), "Black Gi Boots");
         add(MinejagoItems.IRON_KATANA.get(), "Iron Katana");
         add(MinejagoItems.IRON_SCYTHE.get(), "Iron Scythe");
+        add(MinejagoItems.WOODEN_NUNCHUCKS.get(), "Wooden Nunchucks");
 
         add(MinejagoBlocks.TEAPOT.get(), "Teapot");
 
@@ -100,7 +101,7 @@ public class MinejagoEnUsLanguage extends LanguageProvider
 
         add(PowerCommand.SUCCESS_SELF, "Set own power to %s");
         add(PowerCommand.CHANGED, "Your power has been updated to %s");
-        add(PowerCommand.SUCCESS_OTHER, "Set %s's game mode to %s");
+        add(PowerCommand.SUCCESS_OTHER, "Set %s's power to %s");
         add(PowerCommand.QUERY, "Your power is currently set to: %s");
 
         add(PowerArgument.NOT_FOUND, "Unknown Power");

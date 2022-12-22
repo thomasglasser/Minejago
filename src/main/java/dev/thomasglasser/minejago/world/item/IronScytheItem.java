@@ -5,11 +5,14 @@ import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
@@ -21,9 +24,9 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 import java.util.function.Consumer;
 
-public class IronScytheItem extends SwordItem {
-    public IronScytheItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
-        super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
+public class IronScytheItem extends DiggerItem {
+    public IronScytheItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, TagKey<Block> blocks, Properties pProperties) {
+        super(pAttackDamageModifier, pAttackSpeedModifier, pTier, blocks, pProperties);
     }
 
     @Override
@@ -74,5 +77,10 @@ public class IronScytheItem extends SwordItem {
                 return bewlr;
             }
         });
+    }
+
+    @Override
+    public boolean isCorrectToolForDrops(ItemStack stack, BlockState state) {
+        return state.is(BlockTags.REPLACEABLE_PLANTS) || state.is(BlockTags.CROPS) || super.isCorrectToolForDrops(stack, state);
     }
 }

@@ -1,16 +1,14 @@
 package dev.thomasglasser.minejago.world.entity.powers;
 
-import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.core.particles.SpinjitzuParticleOptions;
+import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import net.minecraft.Util;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
+import java.util.function.Supplier;
 
 public class Power {
     @NotNull
@@ -20,39 +18,23 @@ public class Power {
     @NotNull
     protected Vector3f altSpinjitzuColor;
     @Nullable
-    protected ParticleOptions borderParticle;
+    protected Supplier<? extends ParticleOptions> borderParticle;
 
     private String descriptionId;
 
     public Power(@NotNull String name)
     {
         this.name = name;
-        mainSpinjitzuColor = SpinjitzuParticleOptions.DEFAULT_MAIN;
-        altSpinjitzuColor = SpinjitzuParticleOptions.DEFAULT_ALT;
+        mainSpinjitzuColor = SpinjitzuParticleOptions.DEFAULT;
+        altSpinjitzuColor = SpinjitzuParticleOptions.DEFAULT;
     }
 
-    public Power(@NotNull String name, @NotNull Vector3f mainSpinjitzuColor, @NotNull Vector3f altSpinjitzuColor, @Nullable ParticleOptions borderParticle)
+    public Power(@NotNull String name, @NotNull Vector3f mainSpinjitzuColor, @NotNull Vector3f altSpinjitzuColor, @Nullable Supplier<? extends ParticleOptions> borderParticle)
     {
         this.name = name;
         this.mainSpinjitzuColor = mainSpinjitzuColor;
         this.altSpinjitzuColor = altSpinjitzuColor;
         this.borderParticle = borderParticle;
-    }
-
-    public Power(CompoundTag tag)
-    {
-        name = tag.getString("Name");
-
-        CompoundTag main = tag.getCompound("MainSpinjitzuColor");
-        mainSpinjitzuColor = !main.isEmpty() ? new Vector3f(main.getFloat("x"), main.getFloat("y"), main.getFloat("z")) : SpinjitzuParticleOptions.DEFAULT_MAIN;
-
-        CompoundTag alt = tag.getCompound("AltSpinjitzuColor");
-        altSpinjitzuColor = !alt.isEmpty() ? new Vector3f(alt.getFloat("x"), alt.getFloat("y"), alt.getFloat("z")) : SpinjitzuParticleOptions.DEFAULT_ALT;
-
-        if (tag.contains("BorderParticle"))
-            borderParticle = ParticleTypes.CODEC.parse(NbtOps.INSTANCE, tag.get("BorderParticle"))
-                .resultOrPartial(s -> Minejago.LOGGER.error("Failed to load particle from " + tag.get("BorderParticle") + "\n" + s))
-                .orElseThrow();
     }
 
     @NotNull
@@ -68,37 +50,7 @@ public class Power {
     @Nullable
     public ParticleOptions getBorderParticle()
     {
-        return borderParticle;
-    }
-
-    public CompoundTag save()
-    {
-        CompoundTag nbt = new CompoundTag();
-
-        nbt.putString("Name", name);
-
-        CompoundTag mainColor = new CompoundTag();
-        mainColor.putFloat("x", getMainSpinjitzuColor().x());
-        mainColor.putFloat("y", getMainSpinjitzuColor().y());
-        mainColor.putFloat("z", getMainSpinjitzuColor().z());
-
-        nbt.put("MainSpinjitzuColor", mainColor);
-
-        CompoundTag altColor = new CompoundTag();
-        altColor.putFloat("x", getAltSpinjitzuColor().x());
-        altColor.putFloat("y", getAltSpinjitzuColor().y());
-        altColor.putFloat("z", getAltSpinjitzuColor().z());
-
-        nbt.put("AltSpinjitzuColor", altColor);
-
-        if (borderParticle != null)
-        {
-            nbt.put("BorderParticle", ParticleTypes.CODEC.encodeStart(NbtOps.INSTANCE, borderParticle)
-                    .resultOrPartial(s -> Minejago.LOGGER.error("Failed to save particle " + borderParticle.toString() + "\n" + s))
-                    .orElseThrow());
-        }
-
-        return nbt;
+        return borderParticle.get();
     }
 
     @Override
@@ -112,7 +64,7 @@ public class Power {
 
     protected String getOrCreateDescriptionId() {
         if (this.descriptionId == null) {
-            this.descriptionId = Util.makeDescriptionId("power", MinejagoPowers.POWERS_REGISTRY.get().getKey(this));
+            this.descriptionId = Util.makeDescriptionId("power", MinejagoRegistries.POWERS.get().getKey(this));
         }
 
         return this.descriptionId;

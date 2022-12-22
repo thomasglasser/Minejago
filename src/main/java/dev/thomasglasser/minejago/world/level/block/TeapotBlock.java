@@ -55,7 +55,6 @@ public class TeapotBlock extends BaseEntityBlock {
         super(pProperties);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public RenderShape getRenderShape(BlockState pState) {
         return RenderShape.MODEL;
@@ -93,11 +92,11 @@ public class TeapotBlock extends BaseEntityBlock {
                     be.take(1);
                     pLevel.playSound(null, pPos, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
                 }
-                else if ((be.isBoiling() || be.isDone()) && ((PotionBrewing.hasPotionMix(PotionUtils.setPotion(new ItemStack(Items.POTION), be.getPotion()), inHand) && be.getPotion() != Potions.WATER) || (PotionBrewing.hasPotionMix(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.WATER), inHand)) && be.getPotion() == MinejagoPotions.REGULAR_TEA.get()) || MinejagoPotionBrewing.hasTeaMix(PotionUtils.setPotion(new ItemStack(Items.POTION), be.getPotion()), inHand))
+                else if ((be.isBoiling() || be.isDone()) && ((PotionBrewing.hasPotionMix(PotionUtils.setPotion(new ItemStack(Items.POTION), be.getPotion()), inHand) && be.getPotion() != Potions.AWKWARD) || (PotionBrewing.hasPotionMix(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.AWKWARD), inHand)) && be.getPotion() == MinejagoPotions.REGULAR_TEA.get()) || MinejagoPotionBrewing.hasTeaMix(PotionUtils.setPotion(new ItemStack(Items.POTION), be.getPotion()), inHand))
                 {
-                    if ((PotionBrewing.hasPotionMix(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.WATER), inHand)) && be.getPotion() == MinejagoPotions.REGULAR_TEA.get())
+                    if ((PotionBrewing.hasPotionMix(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.AWKWARD), inHand)) && be.getPotion() == MinejagoPotions.REGULAR_TEA.get())
                     {
-                        be.setPotion(Potions.WATER);
+                        be.setPotion(Potions.AWKWARD);
                     }
                     be.setItem(0, inHand);
                     MinejagoItemUtils.safeShrink(1, inHand, pPlayer);
@@ -105,6 +104,8 @@ public class TeapotBlock extends BaseEntityBlock {
                 else if (!be.getStackInSlot(0).isEmpty()) {
                     pPlayer.addItem(be.getStackInSlot(0));
                     be.extractItem(0, 1, false);
+                    if (be.getPotion() == Potions.AWKWARD)
+                        be.setPotion(MinejagoPotions.REGULAR_TEA.get());
                 }
                 else if (inHand.getItem() instanceof ITeapotLiquidHolder holder)
                 {

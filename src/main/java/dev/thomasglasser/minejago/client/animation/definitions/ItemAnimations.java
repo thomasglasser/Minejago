@@ -1,18 +1,15 @@
 package dev.thomasglasser.minejago.client.animation.definitions;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import dev.kosmx.playerAnim.core.data.KeyframeAnimation;
-import dev.kosmx.playerAnim.core.data.gson.GeckoLibSerializer;
+import dev.kosmx.playerAnim.core.data.gson.AnimationSerializing;
 
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
 
 public class ItemAnimations
 {
-    private static final List<KeyframeAnimation> SCYTHE_OF_QUAKES = GeckoLibSerializer.serialize((JsonObject) JsonParser.parseReader(new InputStreamReader(Objects.requireNonNull(ItemAnimations.class.getClassLoader().getResourceAsStream("assets/minejago/animations/scythe_of_quakes.animation.json")), StandardCharsets.UTF_8)));
+    private static final List<KeyframeAnimation> SCYTHE_OF_QUAKES = AnimationSerializing.deserializeAnimation(new InputStreamReader(Objects.requireNonNull(ItemAnimations.class.getClassLoader().getResourceAsStream("assets/minejago/animations/scythe_of_quakes.animation.json"))));
 
     public enum Animations
     {

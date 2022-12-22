@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.network;
 
-import dev.thomasglasser.minejago.world.level.storage.ActivatedSpinjitzuCapabilityAttacher;
+import dev.thomasglasser.minejago.world.level.storage.SpinjitzuCapabilityAttacher;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -19,7 +19,7 @@ public class ServerboundStartSpinjitzuPacket {
 
     public void handle(Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            ctx.get().getSender().getCapability(ActivatedSpinjitzuCapabilityAttacher.ACTIVATED_SPINJITZU_CAPABILITY).ifPresent(cap -> cap.setActive(true));
+            ctx.get().getSender().getCapability(SpinjitzuCapabilityAttacher.SPINJITZU_CAPABILITY).ifPresent(cap -> cap.setActive(true));
             MinejagoMainChannel.sendToAllClients(new ClientboundStartSpinjitzuPacket(ctx.get().getSender().getUUID()), ctx.get().getSender());
         });
         ctx.get().setPacketHandled(true);
