@@ -93,6 +93,7 @@ public class Minejago
     private void addModListeners(IEventBus bus)
     {
         bus.addListener(MinejagoClientEvents::onConfigChanged);
+        bus.addListener(MinejagoEntityEvents::onEntityAttributeCreation);
     }
 
     private void addModClientListeners(IEventBus bus)

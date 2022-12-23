@@ -29,5 +29,6 @@ public class MinejagoItemModels extends ItemModelProvider
         singleTexture(MinejagoItems.BLACK_GI_LEGGINGS.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/black_gi_leggings"));
         singleTexture(MinejagoItems.BLACK_GI_BOOTS.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/black_gi_boots"));
         singleTexture(MinejagoItems.IRON_KATANA.getId().getPath(), mcLoc("item/handheld"), "layer0", modLoc("item/iron_katana"));
+        withExistingParent(MinejagoItems.WU_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
     }
 }

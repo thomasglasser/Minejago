@@ -111,3 +111,9 @@ Adds elements of the Ninjago franchise into Minecraft
     ordering="NONE"
     # Side this dependency is applied on - BOTH, CLIENT or SERVER
     side="BOTH"
+[[dependencies.minejago]]
+    modId="smartbrainlib"
+    mandatory=true
+    versionRange="[1.7,)"
+    ordering="NONE"
+    side="SERVER"

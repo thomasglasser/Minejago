@@ -17,39 +17,40 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
 
-public class DevLayer extends RenderLayer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> {
+public class DevLayer<T extends LivingEntity> extends RenderLayer<T, PlayerModel<T>> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(Minejago.MOD_ID, "textures/entity/player/beard.png");
 
     private final BeardModel model;
 
-    public DevLayer(RenderLayerParent<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> renderer, EntityModelSet modelSet) {
+    public DevLayer(RenderLayerParent<T, PlayerModel<T>> renderer, EntityModelSet modelSet) {
         super(renderer);
 
         this.model = new BeardModel(modelSet.bakeLayer(BeardModel.LAYER_LOCATION));
     }
 
     @Override
-    protected ResourceLocation getTextureLocation(AbstractClientPlayer entity) {
+    protected ResourceLocation getTextureLocation(T entity) {
         return TEXTURE;
     }
 
     @Override
-    public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, AbstractClientPlayer player, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
-        VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityTranslucent(getTextureLocation(player)));
+    public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
+        VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityTranslucent(getTextureLocation(entity)));
 
         model.body.copyFrom(getParentModel().getHead());
 
-        float f = Mth.lerp(partialTick, player.yRotO, player.getYRot()) - Mth.lerp(partialTick, player.yBodyRotO, player.yBodyRot);
-        float f1 = Mth.lerp(partialTick, player.xRotO, player.getXRot());
+        float f = Mth.lerp(partialTick, entity.yRotO, entity.getYRot()) - Mth.lerp(partialTick, entity.yBodyRotO, entity.yBodyRot);
+        float f1 = Mth.lerp(partialTick, entity.xRotO, entity.getXRot());
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(f));
         poseStack.mulPose(Axis.XP.rotationDegrees(f1));
-        poseStack.translate(0.0D, -0.05D, 0.085);
+        poseStack.translate(0.0D, -0.00D, 0.085);
         poseStack.mulPose(Axis.XP.rotationDegrees(-f1));
         poseStack.mulPose(Axis.YP.rotationDegrees(-f));
         poseStack.scale(1.3333334F, 1.3333334F, 1.3333334F);
-        if (MinejagoClientUtils.renderDevLayer(player))
+        if (!(entity instanceof AbstractClientPlayer) || MinejagoClientUtils.renderDevLayer((AbstractClientPlayer) entity))
             model.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         poseStack.popPose();
     }

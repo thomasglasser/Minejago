@@ -7,6 +7,7 @@ import dev.thomasglasser.minejago.network.ClientboundRefreshVipDataPacket;
 import dev.thomasglasser.minejago.network.ClientboundStopAnimationPacket;
 import dev.thomasglasser.minejago.network.ServerboundStartSpinjitzuPacket;
 import dev.thomasglasser.minejago.network.MinejagoMainChannel;
+import dev.thomasglasser.minejago.world.entity.npc.Character;
 import dev.thomasglasser.minejago.world.entity.powers.Power;
 import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
@@ -17,6 +18,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 
@@ -119,5 +121,9 @@ public class MinejagoEntityEvents
     {
         if (event.getSource().getEntity() instanceof LivingEntity livingEntity && livingEntity.getMainHandItem().is(MinejagoItems.WOODEN_NUNCHUCKS.get()))
             WoodenNunchucksItem.resetDamage(livingEntity.getMainHandItem());
+    }
+
+    public static void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
+        event.put(MinejagoEntityTypes.WU.get(), Character.prepareAttributes().build());
     }
 }

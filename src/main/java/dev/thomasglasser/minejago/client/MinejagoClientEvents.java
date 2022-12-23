@@ -6,19 +6,17 @@ import dev.thomasglasser.minejago.client.animation.MinejagoPlayerAnimator;
 import dev.thomasglasser.minejago.client.model.*;
 import dev.thomasglasser.minejago.client.model.armor.*;
 import dev.thomasglasser.minejago.client.particle.*;
-import dev.thomasglasser.minejago.client.renderer.entity.ThrownBambooStaffRenderer;
-import dev.thomasglasser.minejago.client.renderer.entity.ThrownBoneKnifeRenderer;
-import dev.thomasglasser.minejago.client.renderer.entity.ThrownIronShurikenRenderer;
-import dev.thomasglasser.minejago.client.renderer.entity.ThrownIronSpearRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.*;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.BetaTesterLayer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.DevLayer;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
+import dev.thomasglasser.minejago.world.entity.npc.Character;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.model.PlayerModel;
+import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -35,6 +33,7 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -64,6 +63,14 @@ public class MinejagoClientEvents {
         event.registerEntityRenderer(MinejagoEntityTypes.THROWN_BAMBOO_STAFF.get(), ThrownBambooStaffRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.THROWN_IRON_SPEAR.get(), ThrownIronSpearRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.THROWN_IRON_SHURIKEN.get(), ThrownIronShurikenRenderer::new);
+
+        event.registerEntityRenderer(MinejagoEntityTypes.WU.get(), (context) -> new CharacterRenderer<>(context) {
+            @NotNull
+            @Override
+            public ResourceLocation getTextureLocation(Character entity) {
+                return Minejago.modLoc("textures/entity/wu.png");
+            }
+        });
     }
 
     public static void registerModels(ModelEvent.RegisterAdditional event)
@@ -132,12 +139,17 @@ public class MinejagoClientEvents {
 
     public static void onAddLayers(EntityRenderersEvent.AddLayers event)
     {
+        EntityModelSet models = event.getEntityModels();
         for (String skin : event.getSkins()) {
-            LivingEntityRenderer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> renderer = event.getSkin(skin);
+            LivingEntityRenderer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> player = event.getSkin(skin);
 
-            renderer.addLayer(new BetaTesterLayer(renderer, event.getEntityModels()));
-            renderer.addLayer(new DevLayer(renderer, event.getEntityModels()));
+            player.addLayer(new BetaTesterLayer<>(player, models));
+            player.addLayer(new DevLayer(player, models));
         }
+
+        LivingEntityRenderer<Character, PlayerModel<Character>> wu = event.getRenderer(MinejagoEntityTypes.WU.get());
+        wu.addLayer(new BetaTesterLayer<>(wu, models));
+        wu.addLayer(new DevLayer<>(wu, models));
     }
 
     public static void onBuildCreativeTabContent(CreativeModeTabEvent.BuildContents event)

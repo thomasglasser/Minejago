@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.world.entity;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.world.entity.npc.Character;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownBambooStaff;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownBoneKnife;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownIronShuriken;
@@ -40,4 +41,10 @@ public class MinejagoEntityTypes
             .updateInterval(20)
             .setShouldReceiveVelocityUpdates(true)
             .build("thrown_iron_spear"));
+
+    public static final RegistryObject<EntityType<Character>> WU = ENTITY_TYPES.register("wu", () -> EntityType.Builder.of(Character::new, MobCategory.CREATURE)
+            .sized(0.6f, 1.95f)
+            .clientTrackingRange(8)
+            .setShouldReceiveVelocityUpdates(false)
+            .build("wu"));
 }

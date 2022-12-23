@@ -218,6 +218,7 @@ dependencies {
     implementation fg.deobf("com.github.glitchfiend:TerraBlender-forge:${mc_version}-${tb_version}")
     implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${mc_version}:${gl_version}")
     implementation fg.deobf("dev._100media.capabilitysyncer:capabilitysyncer:${mc_version_major}-${cs_version}")
+    implementation fg.deobf("curse.maven:sbl-661293:${sbl_id}-sources-${sbl_src_id}")
 
     // JiJ
     jarJar(group: "dev._100media.capabilitysyncer", name: "capabilitysyncer", version: "[${cs_version},${next_mc_version})")
