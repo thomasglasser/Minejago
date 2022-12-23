@@ -59,7 +59,7 @@ public class BetaTesterLayer extends RenderLayer<AbstractClientPlayer, PlayerMod
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(f));
         poseStack.mulPose(Axis.XP.rotationDegrees(f1));
-        poseStack.translate(0.0D, -0.26D, 0.0D);
+        poseStack.translate(0.0D, 0.24D, 0.0D);
         poseStack.mulPose(Axis.XP.rotationDegrees(-f1));
         poseStack.mulPose(Axis.YP.rotationDegrees(-f));
         poseStack.scale(1.3333334F, 1.3333334F, 1.3333334F);
