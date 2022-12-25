@@ -64,13 +64,9 @@ public class MinejagoClientEvents {
         event.registerEntityRenderer(MinejagoEntityTypes.THROWN_IRON_SPEAR.get(), ThrownIronSpearRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.THROWN_IRON_SHURIKEN.get(), ThrownIronShurikenRenderer::new);
 
-        event.registerEntityRenderer(MinejagoEntityTypes.WU.get(), (context) -> new CharacterRenderer<>(context) {
-            @NotNull
-            @Override
-            public ResourceLocation getTextureLocation(Character entity) {
-                return Minejago.modLoc("textures/entity/wu.png");
-            }
-        });
+        event.registerEntityRenderer(MinejagoEntityTypes.WU.get(), CharacterRenderer::new);
+        event.registerEntityRenderer(MinejagoEntityTypes.KAI.get(), CharacterRenderer::new);
+        event.registerEntityRenderer(MinejagoEntityTypes.NYA.get(), (context) -> new CharacterRenderer<>(context, true));
     }
 
     public static void registerModels(ModelEvent.RegisterAdditional event)

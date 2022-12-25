@@ -42,7 +42,9 @@ public class MinejagoItems
     public static final RegistryObject<Item> WOODEN_NUNCHUCKS = register("wooden_nunchucks", () -> new WoodenNunchucksItem(new Item.Properties().stacksTo(1)), CreativeModeTabs.COMBAT);
 
     // SPAWN EGGS
-    public static final RegistryObject<Item> WU_SPAWN_EGG = register("wu_spawn_egg", () -> new ForgeSpawnEggItem(MinejagoEntityTypes.WU, 16777215, 16777045, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
+    public static final RegistryObject<Item> WU_SPAWN_EGG = register("wu_spawn_egg", () -> new ForgeSpawnEggItem(MinejagoEntityTypes.WU, 16645363, 15517489, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
+    public static final RegistryObject<Item> KAI_SPAWN_EGG = register("kai_spawn_egg", () -> new ForgeSpawnEggItem(MinejagoEntityTypes.KAI, 14689295, 6698273, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
+    public static final RegistryObject<Item> NYA_SPAWN_EGG = register("nya_spawn_egg", () -> new ForgeSpawnEggItem(MinejagoEntityTypes.NYA, 14689295, 1184274, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
 
     // BLOCK ITEMS
     public static final RegistryObject<Item> TEAPOT = register("teapot", () -> new BlockItem(MinejagoBlocks.TEAPOT.get(), new Item.Properties().stacksTo(1)), CreativeModeTabs.FUNCTIONAL_BLOCKS);

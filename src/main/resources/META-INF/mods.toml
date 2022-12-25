@@ -114,6 +114,6 @@ Adds elements of the Ninjago franchise into Minecraft
 [[dependencies.minejago]]
     modId="smartbrainlib"
     mandatory=true
-    versionRange="[1.7,)"
+    versionRange="[${sbl_version},)"
     ordering="NONE"
     side="SERVER"

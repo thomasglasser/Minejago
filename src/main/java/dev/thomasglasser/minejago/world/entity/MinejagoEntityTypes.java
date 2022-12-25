@@ -16,6 +16,7 @@ public class MinejagoEntityTypes
 {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, Minejago.MOD_ID);
 
+    // PROJECTILES
     public static final RegistryObject<EntityType<ThrownBambooStaff>> THROWN_BAMBOO_STAFF = ENTITY_TYPES.register("thrown_bamboo_staff", () -> EntityType.Builder.<ThrownBambooStaff>of(ThrownBambooStaff::new, MobCategory.MISC)
             .sized(0.5F, 0.5F)
             .clientTrackingRange(4)
@@ -34,7 +35,6 @@ public class MinejagoEntityTypes
             .updateInterval(20)
             .setShouldReceiveVelocityUpdates(true)
             .build("thrown_iron_spear"));
-
     public static final RegistryObject<EntityType<ThrownIronShuriken>> THROWN_IRON_SHURIKEN = ENTITY_TYPES.register("thrown_iron_shuriken", () -> EntityType.Builder.<ThrownIronShuriken>of(ThrownIronShuriken::new, MobCategory.MISC)
             .sized(0.5F, 0.5F)
             .clientTrackingRange(4)
@@ -42,9 +42,20 @@ public class MinejagoEntityTypes
             .setShouldReceiveVelocityUpdates(true)
             .build("thrown_iron_spear"));
 
+    // MOBS
     public static final RegistryObject<EntityType<Character>> WU = ENTITY_TYPES.register("wu", () -> EntityType.Builder.of(Character::new, MobCategory.CREATURE)
             .sized(0.6f, 1.95f)
             .clientTrackingRange(8)
             .setShouldReceiveVelocityUpdates(false)
             .build("wu"));
+    public static final RegistryObject<EntityType<Character>> KAI = ENTITY_TYPES.register("kai", () -> EntityType.Builder.of(Character::new, MobCategory.CREATURE)
+            .sized(0.6f, 1.95f)
+            .clientTrackingRange(8)
+            .setShouldReceiveVelocityUpdates(false)
+            .build("kai"));
+    public static final RegistryObject<EntityType<Character>> NYA = ENTITY_TYPES.register("nya", () -> EntityType.Builder.of(Character::new, MobCategory.CREATURE)
+            .sized(0.6f, 1.95f)
+            .clientTrackingRange(8)
+            .setShouldReceiveVelocityUpdates(false)
+            .build("nya"));
 }

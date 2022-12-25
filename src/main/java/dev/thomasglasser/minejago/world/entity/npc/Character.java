@@ -2,9 +2,8 @@ package dev.thomasglasser.minejago.world.entity.npc;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -26,8 +25,11 @@ import net.tslat.smartbrainlib.api.core.behaviour.custom.target.TargetOrRetaliat
 import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.HurtBySensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyPlayersSensor;
+import net.tslat.smartbrainlib.util.BrainUtils;
+import net.tslat.smartbrainlib.util.EntityRetrievalUtil;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class Character extends AgeableMob implements SmartBrainOwner<Character>
@@ -80,7 +82,21 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>
     public BrainActivityGroup<Character> getIdleTasks() {
         return BrainActivityGroup.idleTasks(
                 new FirstApplicableBehaviour<Character>( 				// Run only one of the below behaviours, trying each one in order. Include explicit generic typing because javac is silly
-                        new TargetOrRetaliate<>(),						// Set the attack target
+                        new TargetOrRetaliate<Character>().whenStarting((entity) ->
+                        {
+                            double d0 = entity.getAttributeValue(Attributes.FOLLOW_RANGE);
+                            List<? extends Character> list = EntityRetrievalUtil.getEntities(entity, d0, (entity1 -> entity1 instanceof Character));
+                            Iterator<? extends Character> iterator = list.iterator();
+
+                            while(iterator.hasNext()) {
+                                Character mob = iterator.next();
+                                if (entity != mob && mob.getTarget() == null && !mob.isAlliedTo(entity.getLastHurtByMob())) {
+                                    BrainUtils.setTargetOfEntity(mob, entity.getLastHurtByMob());
+                                }
+                            }
+
+                            entity.swing(InteractionHand.MAIN_HAND, true);
+                        }),						// Set the attack target
                         new SetPlayerLookTarget<>(),					// Set the look target to a nearby player if available
                         new SetRandomLookTarget<>()), 					// Set the look target to a random nearby location
                 new OneRandomBehaviour<>( 								// Run only one of the below behaviours, picked at random

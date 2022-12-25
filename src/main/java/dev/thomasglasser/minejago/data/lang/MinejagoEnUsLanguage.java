@@ -56,6 +56,8 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add(MinejagoItems.IRON_SCYTHE.get(), "Iron Scythe");
         add(MinejagoItems.WOODEN_NUNCHUCKS.get(), "Wooden Nunchucks");
         add(MinejagoItems.WU_SPAWN_EGG.get(), "Wu Spawn Egg");
+        add(MinejagoItems.KAI_SPAWN_EGG.get(), "Kai Spawn Egg");
+        add(MinejagoItems.NYA_SPAWN_EGG.get(), "Nya Spawn Egg");
 
         add(MinejagoBlocks.TEAPOT.get(), "Teapot");
 
@@ -75,6 +77,8 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add(MinejagoEntityTypes.THROWN_IRON_SHURIKEN.get(), "Iron Shuriken");
         add(MinejagoEntityTypes.THROWN_IRON_SPEAR.get(), "Iron Spear");
         add(MinejagoEntityTypes.WU.get(), "Wu");
+        add(MinejagoEntityTypes.KAI.get(), "Kai");
+        add(MinejagoEntityTypes.NYA.get(), "Nya");
 
         add(MinejagoBannerPatterns.FOUR_WEAPONS_LEFT.get(), "Four Weapons Left");
         add(MinejagoBannerPatterns.FOUR_WEAPONS_RIGHT.get(), "Four Weapons Right");

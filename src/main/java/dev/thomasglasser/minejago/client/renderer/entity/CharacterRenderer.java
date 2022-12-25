@@ -7,15 +7,23 @@ import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 
-public abstract class CharacterRenderer<T extends Character> extends LivingEntityRenderer<T, PlayerModel<T>> {
+public class CharacterRenderer<T extends Character> extends LivingEntityRenderer<T, PlayerModel<T>> {
+    public CharacterRenderer(EntityRendererProvider.Context context, boolean slim) {
+        super(context, new PlayerModel<>(context.bakeLayer(slim ? ModelLayers.PLAYER_SLIM : ModelLayers.PLAYER), slim), 0.5f);
+    }
+
     public CharacterRenderer(EntityRendererProvider.Context context) {
         super(context, new PlayerModel<>(context.bakeLayer(ModelLayers.PLAYER), false), 0.5f);
     }
 
     @Nonnull
     @Override
-    public abstract ResourceLocation getTextureLocation(T entity);
+    public ResourceLocation getTextureLocation(T entity)
+    {
+        return Minejago.modLoc("textures/entity/" + ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).getPath() + ".png");
+    }
 }
