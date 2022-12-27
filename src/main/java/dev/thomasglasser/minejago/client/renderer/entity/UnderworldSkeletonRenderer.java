@@ -6,8 +6,8 @@ import net.minecraft.client.renderer.entity.SkeletonRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
 
-public class UndeworldSkeletonRenderer extends SkeletonRenderer {
-    public UndeworldSkeletonRenderer(EntityRendererProvider.Context context) {
+public class UnderworldSkeletonRenderer extends SkeletonRenderer {
+    public UnderworldSkeletonRenderer(EntityRendererProvider.Context context) {
         super(context);
     }
 

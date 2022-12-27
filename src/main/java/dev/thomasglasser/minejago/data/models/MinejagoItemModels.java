@@ -37,5 +37,7 @@ public class MinejagoItemModels extends ItemModelProvider
         withExistingParent(MinejagoItems.KAI_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(MinejagoItems.NYA_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(MinejagoItems.UNDERWORLD_SKELETON_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        withExistingParent(MinejagoItems.KRUNCHA_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        withExistingParent(MinejagoItems.NUCKAL_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
     }
 }

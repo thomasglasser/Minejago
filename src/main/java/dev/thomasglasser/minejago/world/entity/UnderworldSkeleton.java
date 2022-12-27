@@ -6,18 +6,12 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.*;
-import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetWalkTargetToAttackTarget;
-import net.tslat.smartbrainlib.example.SBLSkeleton;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
-public class UnderworldSkeleton extends SBLSkeleton {
+public class UnderworldSkeleton extends MeleeSkeleton {
     private final Variant variant;
 
     public UnderworldSkeleton(EntityType<? extends UnderworldSkeleton> entityType, Level level) {
@@ -59,13 +53,6 @@ public class UnderworldSkeleton extends SBLSkeleton {
                 this.setItemSlot(EquipmentSlot.MAINHAND, MinejagoItems.BONE_KNIFE.get().getDefaultInstance());
             }
         }
-    }
-
-    @Override
-    public BrainActivityGroup<SBLSkeleton> getCoreTasks() {
-        return super.getCoreTasks().behaviours(
-                new SetWalkTargetToAttackTarget<>().startCondition((entity) -> !(entity.isHolding(stack -> stack.getItem() instanceof BowItem)))
-        );
     }
 
     public enum Variant

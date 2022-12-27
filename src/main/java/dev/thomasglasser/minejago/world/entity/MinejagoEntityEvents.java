@@ -124,9 +124,11 @@ public class MinejagoEntityEvents
     }
 
     public static void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
-        event.put(MinejagoEntityTypes.WU.get(), Character.prepareAttributes().build());
-        event.put(MinejagoEntityTypes.KAI.get(), Character.prepareAttributes().build());
-        event.put(MinejagoEntityTypes.NYA.get(), Character.prepareAttributes().build());
+        event.put(MinejagoEntityTypes.WU.get(), Character.createAttributes().build());
+        event.put(MinejagoEntityTypes.KAI.get(), Character.createAttributes().build());
+        event.put(MinejagoEntityTypes.NYA.get(), Character.createAttributes().build());
         event.put(MinejagoEntityTypes.UNDERWORLD_SKELETON.get(), UnderworldSkeleton.createAttributes().build());
+        event.put(MinejagoEntityTypes.KRUNCHA.get(), Kruncha.createAttributes().build());
+        event.put(MinejagoEntityTypes.NUCKAL.get(), Nuckal.createAttributes().build());
     }
 }

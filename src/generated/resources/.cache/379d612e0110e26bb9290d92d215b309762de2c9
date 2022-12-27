@@ -1,4 +1,4 @@
-// 1.19.3	2022-12-26T20:40:09.7066077	Item Models: minejago
+// 1.19.3	2022-12-27T02:18:12.8458496	Item Models: minejago
 0862bf1836526a1739706556dde80e2717eed1df assets/minejago/models/item/black_gi_boots.json
 4fdbff6f176e24c7a2bd9886dd6ae4ded798894d assets/minejago/models/item/black_gi_chestplate.json
 97e61eb60d8d916e27ac24ec75e2fc7d403201cf assets/minejago/models/item/black_gi_helmet.json
@@ -10,6 +10,8 @@ fb5df5cf0139810b92b3e262955f83db0694d38d assets/minejago/models/item/blue_skelet
 fe8ee0d405f6c8ffa8d1877579170a16ac5430ff assets/minejago/models/item/iron_katana.json
 61bcc09dbcbeb7024b6282bce7d6de0379c902d7 assets/minejago/models/item/iron_shuriken.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/minejago/models/item/kai_spawn_egg.json
+63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/minejago/models/item/kruncha_spawn_egg.json
+63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/minejago/models/item/nuckal_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/minejago/models/item/nya_spawn_egg.json
 fccf7334db027e591be5d684b8f3413ffe8c4cad assets/minejago/models/item/red_skeletal_chestplate.json
 6c7677fcef68547206053441b3da88f22a416932 assets/minejago/models/item/teacup.json

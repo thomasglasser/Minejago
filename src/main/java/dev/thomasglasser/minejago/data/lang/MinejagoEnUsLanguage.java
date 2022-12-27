@@ -63,6 +63,8 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add(MinejagoItems.KAI_SPAWN_EGG.get(), "Kai Spawn Egg");
         add(MinejagoItems.NYA_SPAWN_EGG.get(), "Nya Spawn Egg");
         add(MinejagoItems.UNDERWORLD_SKELETON_SPAWN_EGG.get(), "Underworld Skeleton Spawn Egg");
+        add(MinejagoItems.KRUNCHA_SPAWN_EGG.get(), "Kruncha Spawn Egg");
+        add(MinejagoItems.NUCKAL_SPAWN_EGG.get(), "Nuckal Spawn Egg");
 
         add(MinejagoBlocks.TEAPOT.get(), "Teapot");
 
@@ -89,6 +91,8 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add(MinejagoEntityTypes.KAI.get(), "Kai");
         add(MinejagoEntityTypes.NYA.get(), "Nya");
         add(MinejagoEntityTypes.UNDERWORLD_SKELETON.get(), "Underworld Skeleton");
+        add(MinejagoEntityTypes.KRUNCHA.get(), "Kruncha");
+        add(MinejagoEntityTypes.NUCKAL.get(), "Nuckal");
 
         add(MinejagoBannerPatterns.FOUR_WEAPONS_LEFT.get(), "Four Weapons Left");
         add(MinejagoBannerPatterns.FOUR_WEAPONS_RIGHT.get(), "Four Weapons Right");

@@ -32,7 +32,6 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -53,6 +52,8 @@ public class MinejagoClientEvents {
         event.registerLayerDefinition(ScytheModel.LAYER_LOCATION, ScytheModel::createBodyLayer);
         event.registerLayerDefinition(BambooHatModel.LAYER_LOCATION, BambooHatModel::createBodyLayer);
         event.registerLayerDefinition(BeardModel.LAYER_LOCATION, BeardModel::createBodyLayer);
+        event.registerLayerDefinition(KrunchaModel.LAYER_LOCATION, KrunchaModel::createBodyLayer);
+        event.registerLayerDefinition(NuckalModel.LAYER_LOCATION, NuckalModel::createBodyLayer);
     }
 
     public static void onRegisterRenderer(EntityRenderersEvent.RegisterRenderers event)
@@ -65,7 +66,9 @@ public class MinejagoClientEvents {
         event.registerEntityRenderer(MinejagoEntityTypes.WU.get(), CharacterRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.KAI.get(), CharacterRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.NYA.get(), (context) -> new CharacterRenderer<>(context, true));
-        event.registerEntityRenderer(MinejagoEntityTypes.UNDERWORLD_SKELETON.get(), UndeworldSkeletonRenderer::new);
+        event.registerEntityRenderer(MinejagoEntityTypes.UNDERWORLD_SKELETON.get(), UnderworldSkeletonRenderer::new);
+        event.registerEntityRenderer(MinejagoEntityTypes.KRUNCHA.get(), KrunchaRenderer::new);
+        event.registerEntityRenderer(MinejagoEntityTypes.NUCKAL.get(), NuckalRenderer::new);
     }
 
     public static void registerModels(ModelEvent.RegisterAdditional event)
