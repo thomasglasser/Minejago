@@ -1,4 +1,4 @@
-package dev.thomasglasser.minejago.world.level;
+package dev.thomasglasser.minejago.server;
 
 import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowersConfig;
 import net.minecraftforge.common.ForgeConfigSpec;
