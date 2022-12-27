@@ -58,4 +58,9 @@ public class MinejagoEntityTypes
             .clientTrackingRange(8)
             .setShouldReceiveVelocityUpdates(false)
             .build("nya"));
+    public static final RegistryObject<EntityType<UnderworldSkeleton>> UNDERWORLD_SKELETON = ENTITY_TYPES.register("underworld_skeleton", () -> EntityType.Builder.of(UnderworldSkeleton::new, MobCategory.MONSTER)
+            .sized(0.6f, 1.95f)
+            .clientTrackingRange(8)
+            .setShouldReceiveVelocityUpdates(false)
+            .build("underworld_skeleton"));
 }

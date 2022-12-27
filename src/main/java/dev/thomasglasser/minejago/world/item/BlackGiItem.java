@@ -1,10 +1,7 @@
 package dev.thomasglasser.minejago.world.item;
 
-import dev.thomasglasser.minejago.client.model.armor.*;
 import dev.thomasglasser.minejago.client.renderer.armor.BlackGiRenderer;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.Model;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
@@ -22,7 +19,6 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.function.Consumer;
 
 public class BlackGiItem extends ArmorItem implements GeoItem {
-
     private AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public BlackGiItem(ArmorMaterial pMaterial, EquipmentSlot pSlot, Item.Properties pProperties) {

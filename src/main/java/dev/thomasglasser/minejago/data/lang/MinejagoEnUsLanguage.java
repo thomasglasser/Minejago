@@ -47,7 +47,10 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get(), "Banner Pattern");
         add(MinejagoItems.IRON_SPEAR.get(), "Iron Spear");
         add(MinejagoItems.IRON_SHURIKEN.get(), "Iron Shuriken");
-        add(MinejagoItems.SKELETAL_CHESTPLATE.get(), "Skeletal Chestplate");
+        add(MinejagoItems.RED_SKELETAL_CHESTPLATE.get(), "Skeletal Chestplate");
+        add(MinejagoItems.BLUE_SKELETAL_CHESTPLATE.get(), "Skeletal Chestplate");
+        add(MinejagoItems.WHITE_SKELETAL_CHESTPLATE.get(), "Skeletal Chestplate");
+        add(MinejagoItems.BLACK_SKELETAL_CHESTPLATE.get(), "Skeletal Chestplate");
         add(MinejagoItems.BLACK_GI_HELMET.get(), "Black Gi Hood");
         add(MinejagoItems.BLACK_GI_CHESTPLATE.get(), "Black Gi Jacket");
         add(MinejagoItems.BLACK_GI_LEGGINGS.get(), "Black Gi Leggings");
@@ -55,13 +58,19 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add(MinejagoItems.IRON_KATANA.get(), "Iron Katana");
         add(MinejagoItems.IRON_SCYTHE.get(), "Iron Scythe");
         add(MinejagoItems.WOODEN_NUNCHUCKS.get(), "Wooden Nunchucks");
+
         add(MinejagoItems.WU_SPAWN_EGG.get(), "Wu Spawn Egg");
         add(MinejagoItems.KAI_SPAWN_EGG.get(), "Kai Spawn Egg");
         add(MinejagoItems.NYA_SPAWN_EGG.get(), "Nya Spawn Egg");
+        add(MinejagoItems.UNDERWORLD_SKELETON_SPAWN_EGG.get(), "Underworld Skeleton Spawn Egg");
 
         add(MinejagoBlocks.TEAPOT.get(), "Teapot");
 
         addDesc(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get(), "Four Weapons");
+        addDesc(MinejagoItems.RED_SKELETAL_CHESTPLATE.get(), "Red");
+        addDesc(MinejagoItems.BLUE_SKELETAL_CHESTPLATE.get(), "Blue");
+        addDesc(MinejagoItems.WHITE_SKELETAL_CHESTPLATE.get(), "White");
+        addDesc(MinejagoItems.BLACK_SKELETAL_CHESTPLATE.get(), "Black");
 
         add(MinejagoItems.FILLED_TEACUP.get().getDescriptionId() + ".potion", "Tea of %s");
 

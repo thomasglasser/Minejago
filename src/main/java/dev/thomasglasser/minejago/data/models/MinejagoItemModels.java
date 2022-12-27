@@ -20,7 +20,10 @@ public class MinejagoItemModels extends ItemModelProvider
     {
         singleTexture(MinejagoItems.BONE_KNIFE.getId().getPath(), mcLoc("item/handheld"), "layer0", modLoc("item/bone_knife"));
         singleTexture(MinejagoItems.IRON_SHURIKEN.getId().getPath(), mcLoc("item/handheld"), "layer0", modLoc("item/iron_shuriken"));
-        singleTexture(MinejagoItems.SKELETAL_CHESTPLATE.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/skeletal_chestplate"));
+        singleTexture(MinejagoItems.RED_SKELETAL_CHESTPLATE.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/skeletal_chestplate_red"));
+        singleTexture(MinejagoItems.BLUE_SKELETAL_CHESTPLATE.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/skeletal_chestplate_blue"));
+        singleTexture(MinejagoItems.WHITE_SKELETAL_CHESTPLATE.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/skeletal_chestplate_white"));
+        singleTexture(MinejagoItems.BLACK_SKELETAL_CHESTPLATE.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/skeletal_chestplate_black"));
         singleTexture(MinejagoItems.TEACUP.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/teacup"));
         singleTexture(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/four_weapons_banner_pattern"));
         singleTexture(MinejagoBlocks.TEAPOT.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/teapot"));
@@ -33,5 +36,6 @@ public class MinejagoItemModels extends ItemModelProvider
         withExistingParent(MinejagoItems.WU_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(MinejagoItems.KAI_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(MinejagoItems.NYA_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        withExistingParent(MinejagoItems.UNDERWORLD_SKELETON_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
     }
 }

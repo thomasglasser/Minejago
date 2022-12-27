@@ -1,9 +1,9 @@
-// 1.19.3	2022-12-24T01:41:07.9197496	Minejago Item Tags
+// 1.19.3	2022-12-26T20:40:09.7127564	Minejago Item Tags
 5817946282b25393905bb7a5a843055208e6b7a5 data/dynamiclights/tags/items/dropped_10.json
 5817946282b25393905bb7a5a843055208e6b7a5 data/dynamiclights/tags/items/self_10.json
-9d5a2a1e2a852e8dfd81b783d7086deeedbaeee8 data/forge/tags/items/armors.json
+b27ed778924784c87e6fdde904e50ff66eea272c data/forge/tags/items/armors.json
 1d1873b398b0699a40f63232011776ca480a93c4 data/forge/tags/items/armors/boots.json
-4e71420998ab077277ffed4762418dfe24d869d6 data/forge/tags/items/armors/chestplates.json
+8907489c691f8326c1b75573776b2bd8d0e2b4f9 data/forge/tags/items/armors/chestplates.json
 68686fda06809e9c9fafa5c629fb94e6c7a32b29 data/forge/tags/items/armors/helmets.json
 1e7f4205663a096e14fdb04f1489915ec9f799e4 data/forge/tags/items/armors/leggings.json
 ccc4f5d744e25678a6a9d06ccfdf09c798bebd09 data/forge/tags/items/tools.json

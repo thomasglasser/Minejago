@@ -4,7 +4,6 @@ import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.animation.MinejagoPlayerAnimator;
 import dev.thomasglasser.minejago.client.model.*;
-import dev.thomasglasser.minejago.client.model.armor.*;
 import dev.thomasglasser.minejago.client.particle.*;
 import dev.thomasglasser.minejago.client.renderer.entity.*;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.BetaTesterLayer;
@@ -51,7 +50,6 @@ public class MinejagoClientEvents {
         event.registerLayerDefinition(BambooStaffModel.LAYER_LOCATION, BambooStaffModel::createBodyLayer);
         event.registerLayerDefinition(IronSpearModel.LAYER_LOCATION, IronSpearModel::createBodyLayer);
         event.registerLayerDefinition(ThrownIronShurikenModel.LAYER_LOCATION, ThrownIronShurikenModel::createBodyLayer);
-        event.registerLayerDefinition(SkeletalChestplateModel.LAYER_LOCATION, SkeletalChestplateModel::createBodyLayer);
         event.registerLayerDefinition(ScytheModel.LAYER_LOCATION, ScytheModel::createBodyLayer);
         event.registerLayerDefinition(BambooHatModel.LAYER_LOCATION, BambooHatModel::createBodyLayer);
         event.registerLayerDefinition(BeardModel.LAYER_LOCATION, BeardModel::createBodyLayer);
@@ -67,6 +65,7 @@ public class MinejagoClientEvents {
         event.registerEntityRenderer(MinejagoEntityTypes.WU.get(), CharacterRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.KAI.get(), CharacterRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.NYA.get(), (context) -> new CharacterRenderer<>(context, true));
+        event.registerEntityRenderer(MinejagoEntityTypes.UNDERWORLD_SKELETON.get(), UndeworldSkeletonRenderer::new);
     }
 
     public static void registerModels(ModelEvent.RegisterAdditional event)
@@ -82,7 +81,10 @@ public class MinejagoClientEvents {
     {
         event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.BAMBOO_STAFF.get()).getCustomRenderer());
         event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.IRON_SPEAR.get()).getCustomRenderer());
-        event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.SKELETAL_CHESTPLATE.get()).getCustomRenderer());
+        event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.RED_SKELETAL_CHESTPLATE.get()).getCustomRenderer());
+        event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.BLUE_SKELETAL_CHESTPLATE.get()).getCustomRenderer());
+        event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.WHITE_SKELETAL_CHESTPLATE.get()).getCustomRenderer());
+        event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.BLACK_SKELETAL_CHESTPLATE.get()).getCustomRenderer());
         event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.BLACK_GI_HELMET.get()).getCustomRenderer());
         event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.BLACK_GI_CHESTPLATE.get()).getCustomRenderer());
         event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.BLACK_GI_LEGGINGS.get()).getCustomRenderer());

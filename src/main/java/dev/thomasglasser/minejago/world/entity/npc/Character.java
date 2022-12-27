@@ -82,21 +82,7 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>
     public BrainActivityGroup<Character> getIdleTasks() {
         return BrainActivityGroup.idleTasks(
                 new FirstApplicableBehaviour<Character>( 				// Run only one of the below behaviours, trying each one in order. Include explicit generic typing because javac is silly
-                        new TargetOrRetaliate<Character>().whenStarting((entity) ->
-                        {
-                            double d0 = entity.getAttributeValue(Attributes.FOLLOW_RANGE);
-                            List<? extends Character> list = EntityRetrievalUtil.getEntities(entity, d0, (entity1 -> entity1 instanceof Character));
-                            Iterator<? extends Character> iterator = list.iterator();
-
-                            while(iterator.hasNext()) {
-                                Character mob = iterator.next();
-                                if (entity != mob && mob.getTarget() == null && !mob.isAlliedTo(entity.getLastHurtByMob())) {
-                                    BrainUtils.setTargetOfEntity(mob, entity.getLastHurtByMob());
-                                }
-                            }
-
-                            entity.swing(InteractionHand.MAIN_HAND, true);
-                        }),						// Set the attack target
+                        new TargetOrRetaliate<Character>().alertAlliesWhen((owner, attacker) -> true),						// Set the attack target
                         new SetPlayerLookTarget<>(),					// Set the look target to a nearby player if available
                         new SetRandomLookTarget<>()), 					// Set the look target to a random nearby location
                 new OneRandomBehaviour<>( 								// Run only one of the below behaviours, picked at random

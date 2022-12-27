@@ -39,7 +39,8 @@ public class BetaTesterLayer<T extends LivingEntity> extends RenderLayer<T, Play
 
             case BAMBOO_HAT ->
             {
-                if (Calendar.getInstance().get(Calendar.MONTH) == Calendar.DECEMBER)
+                Calendar calendar = Calendar.getInstance();
+                if (calendar.get(Calendar.MONTH) + 1 == 12 && calendar.get(Calendar.DATE) >= 24 && calendar.get(Calendar.DATE) <= 26)
                     yield HOLIDAY_HAT_TEXTURE;
                 else
                     yield BAMBOO_HAT_TEXTURE;

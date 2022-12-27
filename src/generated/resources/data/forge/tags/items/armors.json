@@ -1,6 +1,9 @@
 {
   "values": [
-    "minejago:skeletal_chestplate",
+    "minejago:red_skeletal_chestplate",
+    "minejago:blue_skeletal_chestplate",
+    "minejago:white_skeletal_chestplate",
+    "minejago:black_skeletal_chestplate",
     "minejago:black_gi_helmet",
     "minejago:black_gi_chestplate",
     "minejago:black_gi_leggings",
