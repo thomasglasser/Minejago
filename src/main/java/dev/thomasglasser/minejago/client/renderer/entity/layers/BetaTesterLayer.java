@@ -25,11 +25,15 @@ public class BetaTesterLayer<T extends LivingEntity> extends RenderLayer<T, Play
     private static final ResourceLocation HOLIDAY_HAT_TEXTURE = new ResourceLocation(Minejago.MOD_ID, "textures/entity/player/holiday_hat.png");
 
     private final BambooHatModel bambooHatModel;
+    private boolean xmasTextures = false;
 
     public BetaTesterLayer(RenderLayerParent<T, PlayerModel<T>> renderer, EntityModelSet modelSet) {
         super(renderer);
 
         this.bambooHatModel = new BambooHatModel(modelSet.bakeLayer(BambooHatModel.LAYER_LOCATION));
+
+        Calendar calendar = Calendar.getInstance();
+        this.xmasTextures = (calendar.get(Calendar.MONTH) + 1 == 12 && calendar.get(Calendar.DATE) >= 24 && calendar.get(Calendar.DATE) <= 26);
     }
 
     @Override
@@ -39,8 +43,7 @@ public class BetaTesterLayer<T extends LivingEntity> extends RenderLayer<T, Play
 
             case BAMBOO_HAT ->
             {
-                Calendar calendar = Calendar.getInstance();
-                if (calendar.get(Calendar.MONTH) + 1 == 12 && calendar.get(Calendar.DATE) >= 24 && calendar.get(Calendar.DATE) <= 26)
+                if (xmasTextures)
                     yield HOLIDAY_HAT_TEXTURE;
                 else
                     yield BAMBOO_HAT_TEXTURE;
