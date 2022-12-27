@@ -88,6 +88,7 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add(MinejagoEntityTypes.WU.get(), "Wu");
         add(MinejagoEntityTypes.KAI.get(), "Kai");
         add(MinejagoEntityTypes.NYA.get(), "Nya");
+        add(MinejagoEntityTypes.UNDERWORLD_SKELETON.get(), "Underworld Skeleton");
 
         add(MinejagoBannerPatterns.FOUR_WEAPONS_LEFT.get(), "Four Weapons Left");
         add(MinejagoBannerPatterns.FOUR_WEAPONS_RIGHT.get(), "Four Weapons Right");
