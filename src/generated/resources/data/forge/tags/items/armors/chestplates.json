@@ -1,9 +1,13 @@
 {
   "values": [
-    "minejago:red_skeletal_chestplate",
-    "minejago:blue_skeletal_chestplate",
-    "minejago:white_skeletal_chestplate",
-    "minejago:black_skeletal_chestplate",
-    "minejago:black_gi_chestplate"
+    "minejago:black_gi_chestplate",
+    "minejago:fire_training_gi_chestplate",
+    "minejago:earth_training_gi_chestplate",
+    "minejago:lightning_training_gi_chestplate",
+    "minejago:ice_training_gi_chestplate",
+    "minejago:skeletal_chestplate_red",
+    "minejago:skeletal_chestplate_blue",
+    "minejago:skeletal_chestplate_white",
+    "minejago:skeletal_chestplate_black"
   ]
 }

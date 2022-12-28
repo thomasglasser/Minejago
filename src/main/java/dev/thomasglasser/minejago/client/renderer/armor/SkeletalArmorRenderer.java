@@ -1,7 +1,7 @@
 package dev.thomasglasser.minejago.client.renderer.armor;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.world.item.SkeletalChestplateItem;
+import dev.thomasglasser.minejago.world.item.armor.SkeletalChestplateItem;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.model.DefaultedItemGeoModel;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;

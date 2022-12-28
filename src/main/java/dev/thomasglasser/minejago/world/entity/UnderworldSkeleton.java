@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.world.entity;
 
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
 import net.minecraft.ChatFormatting;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -35,23 +36,13 @@ public class UnderworldSkeleton extends MeleeSkeleton {
     @Override
     protected void populateDefaultEquipmentSlots(RandomSource pRandom, DifficultyInstance pDifficulty) {
         super.populateDefaultEquipmentSlots(pRandom, pDifficulty);
-        this.setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
+        this.setItemSlot(EquipmentSlot.CHEST, MinejagoArmor.SKELETAL_CHESTPLATE_SET.getForVariant(this.variant).get().getDefaultInstance());
         this.setItemSlot(EquipmentSlot.LEGS, ItemStack.EMPTY);
-        this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
         switch (variant)
         {
-            case STRENGTH -> this.setItemSlot(EquipmentSlot.CHEST, MinejagoItems.RED_SKELETAL_CHESTPLATE.get().getDefaultInstance());
-            case SPEED -> this.setItemSlot(EquipmentSlot.CHEST, MinejagoItems.BLUE_SKELETAL_CHESTPLATE.get().getDefaultInstance());
-            case BOW ->
-            {
-                this.setItemSlot(EquipmentSlot.CHEST, MinejagoItems.WHITE_SKELETAL_CHESTPLATE.get().getDefaultInstance());
-                this.setItemSlot(EquipmentSlot.MAINHAND, Items.BOW.getDefaultInstance());
-            }
-            case KNIFE ->
-            {
-                this.setItemSlot(EquipmentSlot.CHEST, MinejagoItems.BLACK_SKELETAL_CHESTPLATE.get().getDefaultInstance());
-                this.setItemSlot(EquipmentSlot.MAINHAND, MinejagoItems.BONE_KNIFE.get().getDefaultInstance());
-            }
+            case BOW -> this.setItemSlot(EquipmentSlot.MAINHAND, Items.BOW.getDefaultInstance());
+            case KNIFE -> this.setItemSlot(EquipmentSlot.MAINHAND, MinejagoItems.BONE_KNIFE.get().getDefaultInstance());
+            default -> this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
         }
     }
 

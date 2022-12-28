@@ -10,6 +10,8 @@ import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.powers.Power;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
+import dev.thomasglasser.minejago.world.item.armor.SkeletalChestplateItem;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
 import dev.thomasglasser.minejago.world.level.biome.MinejagoBiomes;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
@@ -47,14 +49,38 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get(), "Banner Pattern");
         add(MinejagoItems.IRON_SPEAR.get(), "Iron Spear");
         add(MinejagoItems.IRON_SHURIKEN.get(), "Iron Shuriken");
-        add(MinejagoItems.RED_SKELETAL_CHESTPLATE.get(), "Skeletal Chestplate");
-        add(MinejagoItems.BLUE_SKELETAL_CHESTPLATE.get(), "Skeletal Chestplate");
-        add(MinejagoItems.WHITE_SKELETAL_CHESTPLATE.get(), "Skeletal Chestplate");
-        add(MinejagoItems.BLACK_SKELETAL_CHESTPLATE.get(), "Skeletal Chestplate");
-        add(MinejagoItems.BLACK_GI_HELMET.get(), "Black Gi Hood");
-        add(MinejagoItems.BLACK_GI_CHESTPLATE.get(), "Black Gi Jacket");
-        add(MinejagoItems.BLACK_GI_LEGGINGS.get(), "Black Gi Leggings");
-        add(MinejagoItems.BLACK_GI_BOOTS.get(), "Black Gi Boots");
+        MinejagoArmor.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
+                add(item.get(), "Skeletal Chestplate"));
+        MinejagoArmor.SETS.forEach(set ->
+                {
+                    set.getAll().forEach(item ->
+                    {
+                        String nameForSlot = switch (set.getForItem(item)) {
+                            case FEET -> "Boots";
+                            case LEGS -> "Leggings";
+                            case CHEST -> "Jacket";
+                            case HEAD -> "Hood";
+                            default -> null;
+                        };
+
+                        add(item.get(), WordUtils.capitalize(set.getName().replace('_', ' ')) + " " + nameForSlot);
+                    });
+                });
+        MinejagoArmor.POWERED_SETS.forEach(set ->
+                {
+                    set.getAll().forEach(item ->
+                    {
+                        String nameForSlot = switch (set.getForItem(item)) {
+                            case FEET -> "Boots";
+                            case LEGS -> "Leggings";
+                            case CHEST -> "Jacket";
+                            case HEAD -> "Hood";
+                            default -> null;
+                        };
+
+                        add(item.get(), WordUtils.capitalize(set.getName().replace('_', ' ')) + " " + nameForSlot);
+                    });
+                });
         add(MinejagoItems.IRON_KATANA.get(), "Iron Katana");
         add(MinejagoItems.IRON_SCYTHE.get(), "Iron Scythe");
         add(MinejagoItems.WOODEN_NUNCHUCKS.get(), "Wooden Nunchucks");
@@ -69,10 +95,22 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add(MinejagoBlocks.TEAPOT.get(), "Teapot");
 
         addDesc(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get(), "Four Weapons");
-        addDesc(MinejagoItems.RED_SKELETAL_CHESTPLATE.get(), "Red");
-        addDesc(MinejagoItems.BLUE_SKELETAL_CHESTPLATE.get(), "Blue");
-        addDesc(MinejagoItems.WHITE_SKELETAL_CHESTPLATE.get(), "White");
-        addDesc(MinejagoItems.BLACK_SKELETAL_CHESTPLATE.get(), "Black");
+        MinejagoArmor.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
+        {
+            if (item.get() instanceof SkeletalChestplateItem chestplate)
+            {
+                String nameForVariant = switch (chestplate.getVariant())
+                        {
+                            case STRENGTH -> "Red";
+                            case SPEED -> "Blue";
+                            case BOW -> "White";
+                            case KNIFE -> "Black";
+                        };
+
+                addDesc(item.get(), nameForVariant);
+            }
+        });
+
 
         add(MinejagoItems.FILLED_TEACUP.get().getDescriptionId() + ".potion", "Tea of %s");
 

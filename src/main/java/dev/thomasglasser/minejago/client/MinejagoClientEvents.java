@@ -13,6 +13,8 @@ import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.npc.Character;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
+import dev.thomasglasser.minejago.world.item.armor.ModeledArmorItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.EntityModelSet;
@@ -20,6 +22,7 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
@@ -32,6 +35,7 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.util.Objects;
 
@@ -84,14 +88,11 @@ public class MinejagoClientEvents {
     {
         event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.BAMBOO_STAFF.get()).getCustomRenderer());
         event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.IRON_SPEAR.get()).getCustomRenderer());
-        event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.RED_SKELETAL_CHESTPLATE.get()).getCustomRenderer());
-        event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.BLUE_SKELETAL_CHESTPLATE.get()).getCustomRenderer());
-        event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.WHITE_SKELETAL_CHESTPLATE.get()).getCustomRenderer());
-        event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.BLACK_SKELETAL_CHESTPLATE.get()).getCustomRenderer());
-        event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.BLACK_GI_HELMET.get()).getCustomRenderer());
-        event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.BLACK_GI_CHESTPLATE.get()).getCustomRenderer());
-        event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.BLACK_GI_LEGGINGS.get()).getCustomRenderer());
-        event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.BLACK_GI_BOOTS.get()).getCustomRenderer());
+        MinejagoArmor.ARMOR.getEntries().forEach(armor ->
+        {
+            if (armor.get() instanceof ModeledArmorItem)
+                event.registerReloadListener(IClientItemExtensions.of(armor.get()).getCustomRenderer());
+        });
         event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.SCYTHE_OF_QUAKES.get()).getCustomRenderer());
         event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.IRON_SCYTHE.get()).getCustomRenderer());
         event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.WOODEN_NUNCHUCKS.get()).getCustomRenderer());
@@ -168,6 +169,14 @@ public class MinejagoClientEvents {
                 if (potion != Potions.EMPTY) {
                     event.accept(PotionUtils.setPotion(new ItemStack(ForgeRegistries.ITEMS.getValue(MinejagoItems.FILLED_TEACUP.getId())), potion));
                 }
+            }
+        }
+
+        if (event.getTab() == CreativeModeTabs.COMBAT)
+        {
+            for (RegistryObject<Item> item : MinejagoArmor.ARMOR.getEntries())
+            {
+                event.accept(item);
             }
         }
     }

@@ -17,6 +17,7 @@ import dev.thomasglasser.minejago.world.item.GoldenWeaponItem;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.MinejagoTiers;
 import dev.thomasglasser.minejago.client.MinejagoClientEvents;
+import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
@@ -69,12 +70,12 @@ public class Minejago
 
     private void registerAssets(IEventBus bus)
     {
-        MinejagoRegistries.POWERS.get();
-
         MinejagoTiers.register();
 
+        MinejagoPowers.POWERS.register(bus);
         MinejagoEntityTypes.ENTITY_TYPES.register(bus);
         MinejagoItems.ITEMS.register(bus);
+        MinejagoArmor.ARMOR.register(bus);
         MinejagoParticleTypes.PARTICLE_TYPES.register(bus);
         MinejagoPaintingVariants.PAINTING_VARIANTS.register(bus);
         MinejagoBannerPatterns.BANNER_PATTERNS.register(bus);
@@ -83,7 +84,6 @@ public class Minejago
         MinejagoPotions.POTIONS.register(bus);
         MinejagoSoundEvents.SOUND_EVENTS.register(bus);
         MinejagoMobEffects.MOB_EFFECTS.register(bus);
-        MinejagoPowers.POWERS.register(bus);
         MinejagoArguments.ARGUMENT_TYPES.register(bus);
     }
 

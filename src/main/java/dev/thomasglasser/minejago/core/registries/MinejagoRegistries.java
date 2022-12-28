@@ -8,5 +8,5 @@ import net.minecraftforge.registries.RegistryBuilder;
 import java.util.function.Supplier;
 
 public class MinejagoRegistries {
-    public static Supplier<IForgeRegistry<Power>> POWERS = MinejagoPowers.POWERS.makeRegistry(RegistryBuilder::new);
+    public static Supplier<IForgeRegistry<Power>> POWERS = MinejagoPowers.REGISTRY;
 }

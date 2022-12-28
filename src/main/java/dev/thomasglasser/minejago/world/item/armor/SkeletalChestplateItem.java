@@ -1,4 +1,4 @@
-package dev.thomasglasser.minejago.world.item;
+package dev.thomasglasser.minejago.world.item.armor;
 
 import dev.thomasglasser.minejago.client.renderer.armor.SkeletalArmorRenderer;
 import dev.thomasglasser.minejago.world.entity.UnderworldSkeleton;
@@ -24,42 +24,12 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class SkeletalChestplateItem extends ArmorItem implements GeoItem {
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-
+public class SkeletalChestplateItem extends ModeledArmorItem {
     private final UnderworldSkeleton.Variant variant;
 
-    public SkeletalChestplateItem(UnderworldSkeleton.Variant variant, ArmorMaterial pMaterial, EquipmentSlot pSlot, Properties pProperties) {
-        super(pMaterial, pSlot, pProperties);
+    public SkeletalChestplateItem(UnderworldSkeleton.Variant variant, ArmorMaterial pMaterial, Properties pProperties) {
+        super(pMaterial, EquipmentSlot.CHEST, pProperties);
         this.variant = variant;
-    }
-
-    @Override
-    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-        super.initializeClient(consumer);
-        consumer.accept(new IClientItemExtensions() {
-            private GeoArmorRenderer<?> renderer;
-
-            @Override
-            public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, HumanoidModel<?> original) {
-                if (this.renderer == null)
-                    this.renderer = new SkeletalArmorRenderer();
-
-                // This prepares our GeoArmorRenderer for the current render frame.
-                // These parameters may be null however, so we don't do anything further with them
-                this.renderer.prepForRender(livingEntity, itemStack, equipmentSlot, original);
-
-                return this.renderer;
-            }
-        });
-    }
-
-    @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return cache;
     }
 
     public UnderworldSkeleton.Variant getVariant() {
@@ -68,5 +38,10 @@ public class SkeletalChestplateItem extends ArmorItem implements GeoItem {
 
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
         pTooltip.add(Component.translatable(this.getDescriptionId() + ".desc").withStyle(ChatFormatting.GRAY));
+    }
+
+    @Override
+    protected GeoArmorRenderer newRenderer() {
+        return new SkeletalArmorRenderer();
     }
 }

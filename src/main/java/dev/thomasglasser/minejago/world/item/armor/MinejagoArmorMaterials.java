@@ -1,4 +1,4 @@
-package dev.thomasglasser.minejago.world.item;
+package dev.thomasglasser.minejago.world.item.armor;
 
 import dev.thomasglasser.minejago.Minejago;
 import net.minecraft.sounds.SoundEvent;
@@ -13,7 +13,8 @@ import java.util.function.Supplier;
 
 public enum MinejagoArmorMaterials implements ArmorMaterial {
     SKELETAL("skeletal", 10, new int[]{0, 0, 4, 0}, 6, SoundEvents.ARMOR_EQUIP_GENERIC, 0.0F, 0.0F, () -> Ingredient.EMPTY),
-    BLACK_GI("black_gi", 10, new int[]{1, 2, 3, 1}, 0, SoundEvents.ARMOR_EQUIP_LEATHER, 0.5F, 0.5F, () -> Ingredient.EMPTY);
+    BLACK_GI("black_gi", 10, new int[]{1, 2, 3, 1}, 0, SoundEvents.ARMOR_EQUIP_LEATHER, 0.1F, 0.1F, () -> Ingredient.EMPTY),
+    TRAINING_GI("training_gi", 20, new int[]{2, 4, 6, 2}, 0, SoundEvents.ARMOR_EQUIP_LEATHER, 0.2F, 0.2F, () -> Ingredient.EMPTY);
 
     private static final int[] HEALTH_PER_SLOT = new int[]{13, 15, 16, 11};
     private final String name;

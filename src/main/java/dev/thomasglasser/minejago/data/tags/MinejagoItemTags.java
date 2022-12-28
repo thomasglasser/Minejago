@@ -2,6 +2,7 @@ package dev.thomasglasser.minejago.data.tags;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -50,27 +51,39 @@ public class MinejagoItemTags extends ItemTagsProvider
                 .addTag(GOLDEN_WEAPONS);
         tagDynamicLight("self", 10)
                 .addTag(GOLDEN_WEAPONS);
-        tag(Tags.Items.ARMORS)
-                .add(MinejagoItems.RED_SKELETAL_CHESTPLATE.get())
-                .add(MinejagoItems.BLUE_SKELETAL_CHESTPLATE.get())
-                .add(MinejagoItems.WHITE_SKELETAL_CHESTPLATE.get())
-                .add(MinejagoItems.BLACK_SKELETAL_CHESTPLATE.get())
-                .add(MinejagoItems.BLACK_GI_HELMET.get())
-                .add(MinejagoItems.BLACK_GI_CHESTPLATE.get())
-                .add(MinejagoItems.BLACK_GI_LEGGINGS.get())
-                .add(MinejagoItems.BLACK_GI_BOOTS.get());
-        tag(Tags.Items.ARMORS_CHESTPLATES)
-                .add(MinejagoItems.RED_SKELETAL_CHESTPLATE.get())
-                .add(MinejagoItems.BLUE_SKELETAL_CHESTPLATE.get())
-                .add(MinejagoItems.WHITE_SKELETAL_CHESTPLATE.get())
-                .add(MinejagoItems.BLACK_SKELETAL_CHESTPLATE.get())
-                .add(MinejagoItems.BLACK_GI_CHESTPLATE.get());
-        tag(Tags.Items.ARMORS_BOOTS)
-                .add(MinejagoItems.BLACK_GI_BOOTS.get());
-        tag(Tags.Items.ARMORS_HELMETS)
-                .add(MinejagoItems.BLACK_GI_HELMET.get());
-        tag(Tags.Items.ARMORS_LEGGINGS)
-                .add(MinejagoItems.BLACK_GI_LEGGINGS.get());
+        MinejagoArmor.SETS.forEach(set ->
+                {
+                    set.getAll().forEach(item ->
+                    {
+                        tag(Tags.Items.ARMORS).add(item.get());
+
+                        switch (set.getForItem(item)) {
+                            case HEAD -> tag(Tags.Items.ARMORS_HELMETS).add(item.get());
+                            case CHEST -> tag(Tags.Items.ARMORS_CHESTPLATES).add(item.get());
+                            case LEGS -> tag(Tags.Items.ARMORS_LEGGINGS).add(item.get());
+                            case FEET -> tag(Tags.Items.ARMORS_BOOTS).add(item.get());
+                        }
+                    });
+                });
+        MinejagoArmor.POWERED_SETS.forEach(set ->
+                {
+                    set.getAll().forEach(item ->
+                    {
+                        tag(Tags.Items.ARMORS).add(item.get());
+
+                        switch (set.getForItem(item)) {
+                            case HEAD -> tag(Tags.Items.ARMORS_HELMETS).add(item.get());
+                            case CHEST -> tag(Tags.Items.ARMORS_CHESTPLATES).add(item.get());
+                            case LEGS -> tag(Tags.Items.ARMORS_LEGGINGS).add(item.get());
+                            case FEET -> tag(Tags.Items.ARMORS_BOOTS).add(item.get());
+                        }
+                    });
+                });
+        MinejagoArmor.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
+        {
+            tag(Tags.Items.ARMORS).add(item.get());
+            tag(Tags.Items.ARMORS_CHESTPLATES).add(item.get());
+        });
     }
 
     public TagsProvider.TagAppender<Item> tagDynamicLight(String tag, int level)

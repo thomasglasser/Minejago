@@ -1,4 +1,4 @@
-package dev.thomasglasser.minejago.world.item;
+package dev.thomasglasser.minejago.world.item.armor;
 
 import dev.thomasglasser.minejago.client.renderer.armor.BlackGiRenderer;
 import net.minecraft.client.model.HumanoidModel;
@@ -18,10 +18,11 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
 
-public class BlackGiItem extends ArmorItem implements GeoItem {
+public abstract class ModeledArmorItem extends ArmorItem implements GeoItem
+{
     private AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public BlackGiItem(ArmorMaterial pMaterial, EquipmentSlot pSlot, Item.Properties pProperties) {
+    public ModeledArmorItem(ArmorMaterial pMaterial, EquipmentSlot pSlot, Item.Properties pProperties) {
         super(pMaterial, pSlot, pProperties);
     }
 
@@ -34,7 +35,7 @@ public class BlackGiItem extends ArmorItem implements GeoItem {
             @Override
             public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, HumanoidModel<?> original) {
                 if (this.renderer == null)
-                    this.renderer = new BlackGiRenderer();
+                    this.renderer = newRenderer();
 
                 // This prepares our GeoArmorRenderer for the current render frame.
                 // These parameters may be null however, so we don't do anything further with them
@@ -44,6 +45,8 @@ public class BlackGiItem extends ArmorItem implements GeoItem {
             }
         });
     }
+
+    protected abstract GeoArmorRenderer newRenderer();
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}

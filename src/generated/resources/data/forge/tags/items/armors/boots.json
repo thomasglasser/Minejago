@@ -1,5 +1,9 @@
 {
   "values": [
-    "minejago:black_gi_boots"
+    "minejago:black_gi_boots",
+    "minejago:fire_training_gi_boots",
+    "minejago:earth_training_gi_boots",
+    "minejago:lightning_training_gi_boots",
+    "minejago:ice_training_gi_boots"
   ]
 }
