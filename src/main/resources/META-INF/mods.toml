@@ -29,7 +29,7 @@ displayURL="https://github.com/thomasglasser/Minejago/tree/1.19.2-forge" #option
 # A file name (in the root of the mod JAR) containing a logo for display
 logoFile="minejago_logo_1.0.png" #optional
 # A text field displayed in the mod UI
-credits="Includes textures and/or models by Pouffy, waifu_png_pl, and Sairako; structures by Comerciante. Special thanks to Tslat for the beta testing perk system" #optional
+credits="Includes assets by waifu_png_pl, Comerciante, Elysia, Watommeeeeeeeeee, Albert_1403, and ChippiHeppu. Special thanks to Tslat for lots of help, including the entirety of the beta system" #optional
 # A text field displayed in the mod UI
 authors="Thomas Glasser" #optional
 # The description text for the mod (multi line!) (#mandatory)
