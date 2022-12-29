@@ -127,6 +127,9 @@ public class MinejagoEntityEvents
         event.put(MinejagoEntityTypes.WU.get(), Character.createAttributes().build());
         event.put(MinejagoEntityTypes.KAI.get(), Character.createAttributes().build());
         event.put(MinejagoEntityTypes.NYA.get(), Character.createAttributes().build());
+        event.put(MinejagoEntityTypes.COLE.get(), Character.createAttributes().build());
+        event.put(MinejagoEntityTypes.JAY.get(), Character.createAttributes().build());
+        event.put(MinejagoEntityTypes.ZANE.get(), Character.createAttributes().build());
         event.put(MinejagoEntityTypes.UNDERWORLD_SKELETON.get(), UnderworldSkeleton.createAttributes().build());
         event.put(MinejagoEntityTypes.KRUNCHA.get(), Kruncha.createAttributes().build());
         event.put(MinejagoEntityTypes.NUCKAL.get(), Nuckal.createAttributes().build());

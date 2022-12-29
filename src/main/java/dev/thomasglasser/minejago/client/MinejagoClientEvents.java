@@ -70,6 +70,9 @@ public class MinejagoClientEvents {
         event.registerEntityRenderer(MinejagoEntityTypes.WU.get(), CharacterRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.KAI.get(), CharacterRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.NYA.get(), (context) -> new CharacterRenderer<>(context, true));
+        event.registerEntityRenderer(MinejagoEntityTypes.JAY.get(), CharacterRenderer::new);
+        event.registerEntityRenderer(MinejagoEntityTypes.COLE.get(), CharacterRenderer::new);
+        event.registerEntityRenderer(MinejagoEntityTypes.ZANE.get(), CharacterRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.UNDERWORLD_SKELETON.get(), UnderworldSkeletonRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.KRUNCHA.get(), KrunchaRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.NUCKAL.get(), NuckalRenderer::new);

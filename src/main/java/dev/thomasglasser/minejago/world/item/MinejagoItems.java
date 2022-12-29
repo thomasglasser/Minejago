@@ -35,12 +35,15 @@ public class MinejagoItems
     public static final RegistryObject<Item> WOODEN_NUNCHUCKS = register("wooden_nunchucks", () -> new WoodenNunchucksItem(new Item.Properties().stacksTo(1)), CreativeModeTabs.COMBAT);
 
     // SPAWN EGGS
-    public static final RegistryObject<Item> WU_SPAWN_EGG = register("wu_spawn_egg", () -> new ForgeSpawnEggItem(MinejagoEntityTypes.WU, 16645363, 15517489, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
-    public static final RegistryObject<Item> KAI_SPAWN_EGG = register("kai_spawn_egg", () -> new ForgeSpawnEggItem(MinejagoEntityTypes.KAI, 14689295, 6698273, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
-    public static final RegistryObject<Item> NYA_SPAWN_EGG = register("nya_spawn_egg", () -> new ForgeSpawnEggItem(MinejagoEntityTypes.NYA, 14689295, 1184274, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
+    public static final RegistryObject<Item> WU_SPAWN_EGG = register("wu_spawn_egg", () -> new ForgeSpawnEggItem(MinejagoEntityTypes.WU, 16645363, 14689295, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
+    public static final RegistryObject<Item> KAI_SPAWN_EGG = register("kai_spawn_egg", () -> new ForgeSpawnEggItem(MinejagoEntityTypes.KAI, 9507597, 5185296, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
+    public static final RegistryObject<Item> NYA_SPAWN_EGG = register("nya_spawn_egg", () -> new ForgeSpawnEggItem(MinejagoEntityTypes.NYA, 9507597, 3223857, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
+    public static final RegistryObject<Item> COLE_SPAWN_EGG = register("cole_spawn_egg", () -> new ForgeSpawnEggItem(MinejagoEntityTypes.COLE, 1647949, 2697513, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
+    public static final RegistryObject<Item> JAY_SPAWN_EGG = register("jay_spawn_egg", () -> new ForgeSpawnEggItem(MinejagoEntityTypes.JAY, 10057, 4854026, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
+    public static final RegistryObject<Item> ZANE_SPAWN_EGG = register("zane_spawn_egg", () -> new ForgeSpawnEggItem(MinejagoEntityTypes.ZANE, 2697513, 16769956, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
     public static final RegistryObject<Item> UNDERWORLD_SKELETON_SPAWN_EGG = register("underworld_skeleton_spawn_egg", () -> new ForgeSpawnEggItem(MinejagoEntityTypes.UNDERWORLD_SKELETON, 12698049, 11348013, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
-    public static final RegistryObject<Item> KRUNCHA_SPAWN_EGG = register("kruncha_spawn_egg", () -> new ForgeSpawnEggItem(MinejagoEntityTypes.KRUNCHA, 12698049, 5592405, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
-    public static final RegistryObject<Item> NUCKAL_SPAWN_EGG = register("nuckal_spawn_egg", () -> new ForgeSpawnEggItem(MinejagoEntityTypes.NUCKAL, 12698049, 828282, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
+    public static final RegistryObject<Item> KRUNCHA_SPAWN_EGG = register("kruncha_spawn_egg", () -> new ForgeSpawnEggItem(MinejagoEntityTypes.KRUNCHA, 12698049, 4802889, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
+    public static final RegistryObject<Item> NUCKAL_SPAWN_EGG = register("nuckal_spawn_egg", () -> new ForgeSpawnEggItem(MinejagoEntityTypes.NUCKAL, 12698049, 6974058, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
 
     // BLOCK ITEMS
     public static final RegistryObject<Item> TEAPOT = register("teapot", () -> new BlockItem(MinejagoBlocks.TEAPOT.get(), new Item.Properties().stacksTo(1)), CreativeModeTabs.FUNCTIONAL_BLOCKS);

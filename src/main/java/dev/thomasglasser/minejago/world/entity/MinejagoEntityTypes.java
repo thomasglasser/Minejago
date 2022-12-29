@@ -58,6 +58,21 @@ public class MinejagoEntityTypes
             .clientTrackingRange(8)
             .setShouldReceiveVelocityUpdates(false)
             .build("nya"));
+    public static final RegistryObject<EntityType<Character>> COLE = ENTITY_TYPES.register("cole", () -> EntityType.Builder.of(Character::new, MobCategory.CREATURE)
+            .sized(0.6f, 1.95f)
+            .clientTrackingRange(8)
+            .setShouldReceiveVelocityUpdates(false)
+            .build("cole"));
+    public static final RegistryObject<EntityType<Character>> JAY = ENTITY_TYPES.register("jay", () -> EntityType.Builder.of(Character::new, MobCategory.CREATURE)
+            .sized(0.6f, 1.95f)
+            .clientTrackingRange(8)
+            .setShouldReceiveVelocityUpdates(false)
+            .build("jay"));
+    public static final RegistryObject<EntityType<Character>> ZANE = ENTITY_TYPES.register("zane", () -> EntityType.Builder.of(Character::new, MobCategory.CREATURE)
+            .sized(0.6f, 1.95f)
+            .clientTrackingRange(8)
+            .setShouldReceiveVelocityUpdates(false)
+            .build("zane"));
     public static final RegistryObject<EntityType<UnderworldSkeleton>> UNDERWORLD_SKELETON = ENTITY_TYPES.register("underworld_skeleton", () -> EntityType.Builder.of(UnderworldSkeleton::new, MobCategory.MONSTER)
             .sized(0.6f, 1.95f)
             .clientTrackingRange(8)

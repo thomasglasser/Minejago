@@ -88,6 +88,9 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add(MinejagoItems.WU_SPAWN_EGG.get(), "Wu Spawn Egg");
         add(MinejagoItems.KAI_SPAWN_EGG.get(), "Kai Spawn Egg");
         add(MinejagoItems.NYA_SPAWN_EGG.get(), "Nya Spawn Egg");
+        add(MinejagoItems.COLE_SPAWN_EGG.get(), "Cole Spawn Egg");
+        add(MinejagoItems.JAY_SPAWN_EGG.get(), "Jay Spawn Egg");
+        add(MinejagoItems.ZANE_SPAWN_EGG.get(), "Zane Spawn Egg");
         add(MinejagoItems.UNDERWORLD_SKELETON_SPAWN_EGG.get(), "Underworld Skeleton Spawn Egg");
         add(MinejagoItems.KRUNCHA_SPAWN_EGG.get(), "Kruncha Spawn Egg");
         add(MinejagoItems.NUCKAL_SPAWN_EGG.get(), "Nuckal Spawn Egg");
@@ -128,6 +131,9 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add(MinejagoEntityTypes.WU.get(), "Wu");
         add(MinejagoEntityTypes.KAI.get(), "Kai");
         add(MinejagoEntityTypes.NYA.get(), "Nya");
+        add(MinejagoEntityTypes.JAY.get(), "Jay");
+        add(MinejagoEntityTypes.COLE.get(), "Cole");
+        add(MinejagoEntityTypes.ZANE.get(), "Zane");
         add(MinejagoEntityTypes.UNDERWORLD_SKELETON.get(), "Underworld Skeleton");
         add(MinejagoEntityTypes.KRUNCHA.get(), "Kruncha");
         add(MinejagoEntityTypes.NUCKAL.get(), "Nuckal");
