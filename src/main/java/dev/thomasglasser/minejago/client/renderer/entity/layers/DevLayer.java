@@ -39,17 +39,9 @@ public class DevLayer<T extends LivingEntity> extends RenderLayer<T, PlayerModel
     public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
         VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityTranslucent(getTextureLocation(entity)));
 
-        model.body.copyFrom(getParentModel().getHead());
-
-        float f = Mth.lerp(partialTick, entity.yRotO, entity.getYRot()) - Mth.lerp(partialTick, entity.yBodyRotO, entity.yBodyRot);
-        float f1 = Mth.lerp(partialTick, entity.xRotO, entity.getXRot());
         poseStack.pushPose();
-        poseStack.mulPose(Axis.YP.rotationDegrees(f));
-        poseStack.mulPose(Axis.XP.rotationDegrees(f1));
-        poseStack.translate(0.0D, -0.00D, 0.085);
-        poseStack.mulPose(Axis.XP.rotationDegrees(-f1));
-        poseStack.mulPose(Axis.YP.rotationDegrees(-f));
-        poseStack.scale(1.3333334F, 1.3333334F, 1.3333334F);
+        getParentModel().getHead().translateAndRotate(poseStack);
+        poseStack.scale(1.3333334F, 1.3333334F, 1.0F);
         if (!(entity instanceof AbstractClientPlayer) || MinejagoClientUtils.renderDevLayer((AbstractClientPlayer) entity))
             model.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         poseStack.popPose();

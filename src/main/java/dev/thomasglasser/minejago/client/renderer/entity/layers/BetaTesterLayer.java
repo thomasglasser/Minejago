@@ -25,7 +25,7 @@ public class BetaTesterLayer<T extends LivingEntity> extends RenderLayer<T, Play
     private static final ResourceLocation HOLIDAY_HAT_TEXTURE = new ResourceLocation(Minejago.MOD_ID, "textures/entity/player/holiday_hat.png");
 
     private final BambooHatModel bambooHatModel;
-    private boolean xmasTextures = false;
+    private boolean xmasTextures;
 
     public BetaTesterLayer(RenderLayerParent<T, PlayerModel<T>> renderer, EntityModelSet modelSet) {
         super(renderer);
@@ -48,8 +48,6 @@ public class BetaTesterLayer<T extends LivingEntity> extends RenderLayer<T, Play
                 else
                     yield BAMBOO_HAT_TEXTURE;
             }
-
-            default -> new ResourceLocation("");
         };
     }
 
