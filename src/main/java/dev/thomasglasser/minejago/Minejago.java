@@ -5,7 +5,6 @@ import dev.thomasglasser.minejago.commands.MinejagoCommandEvents;
 import dev.thomasglasser.minejago.commands.arguments.MinejagoArguments;
 import dev.thomasglasser.minejago.core.MinejagoCoreEvents;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
-import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.data.MinejagoDataGenerators;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
@@ -13,7 +12,6 @@ import dev.thomasglasser.minejago.world.entity.MinejagoEntityEvents;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
 import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
-import dev.thomasglasser.minejago.world.item.GoldenWeaponItem;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.MinejagoTiers;
 import dev.thomasglasser.minejago.client.MinejagoClientEvents;
@@ -114,7 +112,7 @@ public class Minejago
 
     private void addForgeListeners()
     {
-        MinecraftForge.EVENT_BUS.addListener(GoldenWeaponItem::checkForAll);
+        MinecraftForge.EVENT_BUS.addListener(MinejagoEntityEvents::onLivingTick);
         MinecraftForge.EVENT_BUS.addListener(MinejagoPaintingVariants::onInteract);
         MinecraftForge.EVENT_BUS.addListener(MinejagoEntityEvents::onPlayerTick);
         MinecraftForge.EVENT_BUS.addListener(MinejagoEntityEvents::onPlayerLoggedIn);
