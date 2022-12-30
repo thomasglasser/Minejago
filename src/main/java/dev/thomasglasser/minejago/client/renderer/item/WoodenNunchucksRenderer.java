@@ -13,7 +13,7 @@ import software.bernie.geckolib.renderer.GeoItemRenderer;
 
 public class WoodenNunchucksRenderer extends GeoItemRenderer<WoodenNunchucksItem> {
     public WoodenNunchucksRenderer() {
-        super(new DefaultedItemGeoModel<>(Minejago.modLoc("wooden_nunchucks")));
+        super(new DefaultedItemGeoModel<>(Minejago.modLoc("nunchucks")));
     }
 
 

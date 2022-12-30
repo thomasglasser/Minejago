@@ -8,6 +8,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -31,7 +32,7 @@ import java.util.function.Consumer;
 
 public class WoodenNunchucksItem extends Item implements GeoItem
 {
-    AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     private Multimap<Attribute, AttributeModifier> defaultModifiers;
 
@@ -46,7 +47,8 @@ public class WoodenNunchucksItem extends Item implements GeoItem
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "use_controller", state -> PlayState.CONTINUE)
                 .triggerableAnim("charge", DefaultAnimations.ATTACK_CHARGE)
-                .triggerableAnim("swing", DefaultAnimations.ATTACK_SWING));
+                .triggerableAnim("swing", DefaultAnimations.ATTACK_SWING)
+                .triggerableAnim("idle", DefaultAnimations.IDLE));
     }
 
     @Override
@@ -117,6 +119,18 @@ public class WoodenNunchucksItem extends Item implements GeoItem
                 return this.renderer;
             }
         });
+    }
+
+    @Override
+    public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected) {
+        if (pEntity instanceof Player player && !player.isUsingItem() && !player.getCooldowns().isOnCooldown(this))
+        {
+            if (pLevel instanceof ServerLevel)
+                triggerAnim(pEntity, GeoItem.getOrAssignId(pStack, (ServerLevel) pLevel), "use_controller", "idle");
+            resetDamage(pStack);
+        }
+
+        super.inventoryTick(pStack, pLevel, pEntity, pSlotId, pIsSelected);
     }
 
     public static void resetDamage(ItemStack stack)
