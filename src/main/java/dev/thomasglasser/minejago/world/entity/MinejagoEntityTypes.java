@@ -1,7 +1,6 @@
 package dev.thomasglasser.minejago.world.entity;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.world.entity.npc.Character;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownBambooStaff;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownBoneKnife;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownIronShuriken;
@@ -43,12 +42,12 @@ public class MinejagoEntityTypes
             .build("thrown_iron_spear"));
 
     // MOBS
-    public static final RegistryObject<EntityType<Character>> WU = ENTITY_TYPES.register("wu", () -> EntityType.Builder.of(Character::new, MobCategory.CREATURE)
+    public static final RegistryObject<EntityType<Wu>> WU = ENTITY_TYPES.register("wu", () -> EntityType.Builder.of(Wu::new, MobCategory.CREATURE)
             .sized(0.6f, 1.95f)
             .clientTrackingRange(8)
             .setShouldReceiveVelocityUpdates(false)
             .build("wu"));
-    public static final RegistryObject<EntityType<Character>> KAI = ENTITY_TYPES.register("kai", () -> EntityType.Builder.of(Character::new, MobCategory.CREATURE)
+    public static final RegistryObject<EntityType<Kai>> KAI = ENTITY_TYPES.register("kai", () -> EntityType.Builder.of(Kai::new, MobCategory.CREATURE)
             .sized(0.6f, 1.95f)
             .clientTrackingRange(8)
             .setShouldReceiveVelocityUpdates(false)
@@ -58,17 +57,17 @@ public class MinejagoEntityTypes
             .clientTrackingRange(8)
             .setShouldReceiveVelocityUpdates(false)
             .build("nya"));
-    public static final RegistryObject<EntityType<Character>> COLE = ENTITY_TYPES.register("cole", () -> EntityType.Builder.of(Character::new, MobCategory.CREATURE)
+    public static final RegistryObject<EntityType<Cole>> COLE = ENTITY_TYPES.register("cole", () -> EntityType.Builder.of(Cole::new, MobCategory.CREATURE)
             .sized(0.6f, 1.95f)
             .clientTrackingRange(8)
             .setShouldReceiveVelocityUpdates(false)
             .build("cole"));
-    public static final RegistryObject<EntityType<Character>> JAY = ENTITY_TYPES.register("jay", () -> EntityType.Builder.of(Character::new, MobCategory.CREATURE)
+    public static final RegistryObject<EntityType<Jay>> JAY = ENTITY_TYPES.register("jay", () -> EntityType.Builder.of(Jay::new, MobCategory.CREATURE)
             .sized(0.6f, 1.95f)
             .clientTrackingRange(8)
             .setShouldReceiveVelocityUpdates(false)
             .build("jay"));
-    public static final RegistryObject<EntityType<Character>> ZANE = ENTITY_TYPES.register("zane", () -> EntityType.Builder.of(Character::new, MobCategory.CREATURE)
+    public static final RegistryObject<EntityType<Zane>> ZANE = ENTITY_TYPES.register("zane", () -> EntityType.Builder.of(Zane::new, MobCategory.CREATURE)
             .sized(0.6f, 1.95f)
             .clientTrackingRange(8)
             .setShouldReceiveVelocityUpdates(false)

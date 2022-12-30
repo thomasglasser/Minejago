@@ -7,7 +7,6 @@ import dev.thomasglasser.minejago.network.ClientboundRefreshVipDataPacket;
 import dev.thomasglasser.minejago.network.ClientboundStopAnimationPacket;
 import dev.thomasglasser.minejago.network.ServerboundStartSpinjitzuPacket;
 import dev.thomasglasser.minejago.network.MinejagoMainChannel;
-import dev.thomasglasser.minejago.world.entity.npc.Character;
 import dev.thomasglasser.minejago.world.entity.powers.Power;
 import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
@@ -124,12 +123,12 @@ public class MinejagoEntityEvents
     }
 
     public static void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
-        event.put(MinejagoEntityTypes.WU.get(), Character.createAttributes().build());
-        event.put(MinejagoEntityTypes.KAI.get(), Character.createAttributes().build());
+        event.put(MinejagoEntityTypes.WU.get(), Wu.createAttributes().build());
+        event.put(MinejagoEntityTypes.KAI.get(), Kai.createAttributes().build());
         event.put(MinejagoEntityTypes.NYA.get(), Character.createAttributes().build());
-        event.put(MinejagoEntityTypes.COLE.get(), Character.createAttributes().build());
-        event.put(MinejagoEntityTypes.JAY.get(), Character.createAttributes().build());
-        event.put(MinejagoEntityTypes.ZANE.get(), Character.createAttributes().build());
+        event.put(MinejagoEntityTypes.COLE.get(), Cole.createAttributes().build());
+        event.put(MinejagoEntityTypes.JAY.get(), Jay.createAttributes().build());
+        event.put(MinejagoEntityTypes.ZANE.get(), Zane.createAttributes().build());
         event.put(MinejagoEntityTypes.UNDERWORLD_SKELETON.get(), UnderworldSkeleton.createAttributes().build());
         event.put(MinejagoEntityTypes.KRUNCHA.get(), Kruncha.createAttributes().build());
         event.put(MinejagoEntityTypes.NUCKAL.get(), Nuckal.createAttributes().build());

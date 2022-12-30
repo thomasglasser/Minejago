@@ -1,4 +1,4 @@
-package dev.thomasglasser.minejago.world.entity.npc;
+package dev.thomasglasser.minejago.world.entity;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.server.level.ServerLevel;
@@ -15,6 +15,7 @@ import net.tslat.smartbrainlib.api.core.behaviour.FirstApplicableBehaviour;
 import net.tslat.smartbrainlib.api.core.behaviour.OneRandomBehaviour;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.attack.AnimatableMeleeAttack;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.misc.Idle;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.move.FloatToSurfaceOfFluid;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.move.MoveToWalkTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetWalkTargetToAttackTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.target.InvalidateAttackTarget;
@@ -35,12 +36,10 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return LivingEntity.createLivingAttributes()
-                .add(Attributes.ATTACK_DAMAGE, 1.0)
-                .add(Attributes.MAX_HEALTH, 20.0)
-                .add(Attributes.FOLLOW_RANGE, 40.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.3)
-                .add(Attributes.ATTACK_KNOCKBACK, 1.0);
+        return Mob.createMobAttributes()
+                .add(Attributes.ATTACK_DAMAGE)
+                .add(Attributes.FOLLOW_RANGE)
+                .add(Attributes.MOVEMENT_SPEED, 0.3);
     }
 
     @Nullable
@@ -71,14 +70,15 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>
         return BrainActivityGroup.coreTasks(
                 new SetWalkTargetToAttackTarget<>(),
                 new LookAtTargetSink(40, 300), 														// Look at the look target
-                new MoveToWalkTarget<>());																					// Move to the current walk target
+                new MoveToWalkTarget<>(),
+                new FloatToSurfaceOfFluid<Character>().startCondition(this::shouldFloatToSurfaceOfFluid));																					// Move to the current walk target
     }
 
     @Override
     public BrainActivityGroup<Character> getIdleTasks() {
         return BrainActivityGroup.idleTasks(
                 new FirstApplicableBehaviour<Character>( 				// Run only one of the below behaviours, trying each one in order. Include explicit generic typing because javac is silly
-                        new TargetOrRetaliate<>().alertAlliesWhen((owner, attacker) -> true).isAllyIf((character, livingEntity) -> livingEntity instanceof Character),						// Set the attack target
+                        new TargetOrRetaliate<Character>().alertAlliesWhen((owner, attacker) -> true).isAllyIf((character, livingEntity) -> livingEntity instanceof Character).whenStarting(this::onTargetOrRetaliate),						// Set the attack target
                         new SetPlayerLookTarget<>(),					// Set the look target to a nearby player if available
                         new SetRandomLookTarget<>()), 					// Set the look target to a random nearby location
                 new OneRandomBehaviour<>( 								// Run only one of the below behaviours, picked at random
@@ -92,5 +92,12 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>
                 new FirstApplicableBehaviour<>( 																							  	 // Run only one of the below behaviours, trying each one in order
                         new AnimatableMeleeAttack<>(0).whenStarting(entity -> setAggressive(true)).whenStarting(entity -> setAggressive(false)))// Melee attack
         );
+    }
+
+    public void onTargetOrRetaliate(Character character) {}
+
+    public boolean shouldFloatToSurfaceOfFluid(Character character)
+    {
+        return true;
     }
 }
