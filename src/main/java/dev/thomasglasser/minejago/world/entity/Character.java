@@ -1,13 +1,16 @@
 package dev.thomasglasser.minejago.world.entity;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.behavior.LookAtTargetSink;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.tslat.smartbrainlib.api.SmartBrainOwner;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
 import net.tslat.smartbrainlib.api.core.SmartBrainProvider;
@@ -99,5 +102,11 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>
     public boolean shouldFloatToSurfaceOfFluid(Character character)
     {
         return true;
+    }
+
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
+        this.setCanPickUpLoot(true);
+        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
     }
 }
