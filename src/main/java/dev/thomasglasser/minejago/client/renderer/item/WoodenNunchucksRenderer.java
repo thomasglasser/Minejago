@@ -16,24 +16,6 @@ public class WoodenNunchucksRenderer extends GeoItemRenderer<WoodenNunchucksItem
         super(new DefaultedItemGeoModel<>(Minejago.modLoc("nunchucks")));
     }
 
-
-    @Override
-    public void renderByItem(ItemStack stack, ItemTransforms.TransformType transformType, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-        if (renderNormal(transformType))
-        {
-            poseStack.translate(0.5D, 0.5D, 0.5D);
-            Minecraft.getInstance().getItemRenderer().render(stack, transformType, false, poseStack, bufferSource, packedLight, packedOverlay, Minecraft.getInstance().getModelManager().getModel(Minejago.modLoc("item/wooden_nunchucks_inventory")));
-        }
-        else
-            super.renderByItem(stack, transformType, poseStack, bufferSource, packedLight, packedOverlay);
-    }
-
-    @Override
-    protected void renderInGui(ItemTransforms.TransformType transformType, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-        poseStack.translate(0.5D, 0.5D, 0.5D);
-        Minecraft.getInstance().getItemRenderer().render(currentItemStack, transformType, false, poseStack, bufferSource, packedLight, packedOverlay, Minecraft.getInstance().getModelManager().getModel(Minejago.modLoc("item/wooden_nunchucks_inventory")));
-    }
-
     @Override
     public ResourceLocation getTextureLocation(WoodenNunchucksItem animatable) {
         return Minejago.modLoc("textures/item/geo/wooden_nunchucks.png");

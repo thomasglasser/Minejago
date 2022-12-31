@@ -28,6 +28,7 @@ import net.tslat.smartbrainlib.api.core.behaviour.custom.target.TargetOrRetaliat
 import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.HurtBySensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyPlayersSensor;
+import net.tslat.smartbrainlib.util.BrainUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -81,7 +82,7 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>
     public BrainActivityGroup<Character> getIdleTasks() {
         return BrainActivityGroup.idleTasks(
                 new FirstApplicableBehaviour<Character>( 				// Run only one of the below behaviours, trying each one in order. Include explicit generic typing because javac is silly
-                        new TargetOrRetaliate<Character>().alertAlliesWhen((owner, attacker) -> true).isAllyIf((character, livingEntity) -> livingEntity instanceof Character).whenStarting(this::onTargetOrRetaliate),						// Set the attack target
+                        new TargetOrRetaliate<Character>().alertAlliesWhen((owner, attacker) -> true).isAllyIf(this::shouldHelp).whenStarting(this::onTargetOrRetaliate),						// Set the attack target
                         new SetPlayerLookTarget<>(),					// Set the look target to a nearby player if available
                         new SetRandomLookTarget<>()), 					// Set the look target to a random nearby location
                 new OneRandomBehaviour<>( 								// Run only one of the below behaviours, picked at random
@@ -108,5 +109,21 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
         this.setCanPickUpLoot(true);
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
+    }
+
+    public boolean shouldHelp(Character victim, LivingEntity helper)
+    {
+        LivingEntity helperTarget = null;
+
+        if (helper instanceof SmartBrainOwner<?>)
+        {
+            helperTarget = BrainUtils.getTargetOfEntity(helper);
+        }
+        else if (helper instanceof Mob mob)
+        {
+            helperTarget = mob.getTarget();
+        }
+
+        return helperTarget == null && helper instanceof Character;
     }
 }
