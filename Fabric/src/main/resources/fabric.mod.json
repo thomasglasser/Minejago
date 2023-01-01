@@ -1,0 +1,47 @@
+{
+    "schemaVersion": 1,
+    "id": "minejago",
+    "version": "${version}",
+  
+    "name": "Minejago",
+    "description": "Adds elements of the Ninjago franchise into Minecraft",
+    "authors": [
+      "Thomas Glasser"
+    ],
+    "contributors": [
+      "waifu_png_pl",
+      "Comerciante",
+      "Elysia",
+      "Watommeeeeeeeeee",
+      "Albert_1403",
+      "ChippiHeppu",
+      "Tslat"
+    ],
+    "contact": {
+      "homepage": "https://github.com/thomasglasser/Minejago",
+      "issues": "https://github.com/thomasglasser/Minejago/issues"
+    },
+  
+    "license": "All Rights Reserved",
+    "icon": "assets/minejago/logo_1.0.png",
+  
+    "environment": "*",
+    "entrypoints": {
+      "main": [
+        "dev.thomasglasser.minejago.Minejago"
+      ]
+    },
+    "mixins": [
+      "minejago.mixins.json"
+    ],
+  
+    "depends": {
+      "fabricloader": ">=${fabric_loader_version}",
+      "fabric": "*",
+      "minecraft": "${minecraft_version}",
+      "java": ">=17"
+    },
+    "suggests": {
+    }
+  }
+  
