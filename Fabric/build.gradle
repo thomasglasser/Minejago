@@ -44,17 +44,6 @@ loom {
 
 processResources {
     from project(":Common").sourceSets.main.resources
-
-    Map<String, String> properties = new HashMap<>()
-    properties.put("version", version)
-    properties.put("minecraft_version", minecraft_version)
-    properties.put("fabric_loader_version", fabric_loader_version)
-
-    properties.forEach((k, v) -> inputs.property(k, v))
-
-    filesMatching("mods.toml") {
-        expand properties
-    }
 }
 
 tasks.withType(JavaCompile) {

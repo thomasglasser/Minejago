@@ -1,7 +1,7 @@
 {
     "schemaVersion": 1,
     "id": "minejago",
-    "version": "${version}",
+    "version": "0.1.0",
   
     "name": "Minejago",
     "description": "Adds elements of the Ninjago franchise into Minecraft",
@@ -36,9 +36,9 @@
     ],
   
     "depends": {
-      "fabricloader": ">=${fabric_loader_version}",
+      "fabricloader": ">=0.14.12",
       "fabric": "*",
-      "minecraft": "${minecraft_version}",
+      "minecraft": "1.19.3",
       "java": ">=17"
     },
     "suggests": {
