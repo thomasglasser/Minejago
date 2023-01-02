@@ -14,14 +14,29 @@ archivesBaseName = "${mod_name}-fabric-${minecraft_version}"
 
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
+
     mappings loom.layered() {
         officialMojangMappings()
         parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip")
     }
+
+    modRuntimeOnly "dev.lambdaurora:spruceui:${spruceui_version}+${minecraft_version}"
+
+    implementation project(":Common")
+    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
+
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}+${minecraft_version}"
-    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
-    implementation project(":Common")
+    modImplementation "com.github.glitchfiend:TerraBlender-fabric:${minecraft_version}-${terrablender_version}"
+    modImplementation "maven.modrinth:lambdynamiclights:${lambdynamiclights_version}+${minecraft_version}"
+//    modImplementation "curse.maven:moonlight-499980:${moonlight_fabric_id}" Waiting on Fabric update
+    modImplementation "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}"
+    modImplementation "curse.maven:smartbrainlib-661293:${smartbrainlib_fabric_id}-sources-${smartbrainlib_sources_fabric_id}"
+    modImplementation "maven.modrinth:jade:${jade_fabric_version}"
+
+    include modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${playeranimator_version}+${minecraft_version}")
+    include modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-api:${cca_version}")
+    include modImplementation("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forgeconfigapiport_version}")
 }
 
 loom {

@@ -55,3 +55,58 @@ mandatory=true
 versionRange="[${minecraft_version}, ${next_minecraft_version})"
 ordering="NONE"
 side="BOTH"
+[[dependencies.minejago]] #optional
+# the modid of the dependency
+modId="playeranimator" #mandatory
+# Does this dependency have to exist - if not, ordering below must be specified
+mandatory=false #mandatory
+# The version range of the dependency
+versionRange="[${playeranimator_version}+${minecraft_version},)" #mandatory
+# An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
+ordering="NONE"
+# Side this dependency is applied on - BOTH, CLIENT or SERVER
+side="CLIENT"
+[[dependencies.minejago]] #optional
+# the modid of the dependency
+modId="terrablender" #mandatory
+# Does this dependency have to exist - if not, ordering below must be specified
+mandatory=true #mandatory
+# The version range of the dependency
+versionRange="[${terrablender_version},)" #mandatory
+# An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
+ordering="NONE"
+# Side this dependency is applied on - BOTH, CLIENT or SERVER
+side="BOTH"
+[[dependencies.minejago]] #optional
+# the modid of the dependency
+modId="dynamiclights" #mandatory
+# Does this dependency have to exist - if not, ordering below must be specified
+mandatory=false #mandatory
+# The version range of the dependency
+versionRange="[${minecraft_version}.${dynamiclights_version},)" #mandatory
+# An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
+ordering="NONE"
+# Side this dependency is applied on - BOTH, CLIENT or SERVER
+side="CLIENT"
+[[dependencies.minejago]] #optional
+# the modid of the dependency
+modId="moonlight" #mandatory
+# Does this dependency have to exist - if not, ordering below must be specified
+mandatory=false #mandatory
+# The version range of the dependency
+versionRange="[${minecraft_version}-${moonlight_version},)" #mandatory
+# An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
+ordering="NONE"
+# Side this dependency is applied on - BOTH, CLIENT or SERVER
+side="CLIENT"
+[[dependencies.minejago]] #optional
+# the modid of the dependency
+modId="smartbrainlib" #mandatory
+# Does this dependency have to exist - if not, ordering below must be specified
+mandatory=true #mandatory
+# The version range of the dependency
+versionRange="[${smartbrainlib_version},)" #mandatory
+# An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
+ordering="NONE"
+# Side this dependency is applied on - BOTH, CLIENT or SERVER
+side="SERVER"
