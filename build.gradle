@@ -92,6 +92,12 @@ subprojects {
             name 'Gegy'
             url 'https://maven.gegy.dev'
         }
+        maven {
+            url "https://maven.architectury.dev/"
+        }
+        maven {
+            url "https://maven.terraformersmc.com/releases/"
+        }
     }
 
     tasks.withType(JavaCompile).configureEach {

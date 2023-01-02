@@ -84,6 +84,12 @@ dependencies {
 
     compileOnly project(":Common")
 
+    runtimeOnly fg.deobf("me.shedaniel:RoughlyEnoughItems-forge:$rei_version")
+    runtimeOnly fg.deobf("me.shedaniel.cloth:cloth-config-forge:$cloth_config_version")
+    runtimeOnly fg.deobf("dev.architectury:architectury-forge:$architectury_version")
+    runtimeOnly fg.deobf("maven.modrinth:huge-structure-blocks:${hugestructureblocks_version}")
+    runtimeOnly fg.deobf("curse.maven:worldedit-225608:${worldedit_id}")
+
     implementation fg.deobf("dev.kosmx.player-anim:player-animation-lib-forge:${playeranimator_version}+${minecraft_version}")
     implementation fg.deobf("com.github.glitchfiend:TerraBlender-forge:${minecraft_version}-${terrablender_version}")
     implementation fg.deobf("curse.maven:dynamiclights-227874:${dynamiclights_id}")
