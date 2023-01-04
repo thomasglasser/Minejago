@@ -4,6 +4,7 @@ buildscript {
     }
     dependencies {
         classpath 'org.parchmentmc:librarian:1.+'
+        classpath 'org.spongepowered:mixingradle:0.7.+'
     }
 }
 
@@ -15,6 +16,7 @@ plugins {
 }
 
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
+apply plugin: 'org.spongepowered.mixin'
 
 archivesBaseName = "${mod_name}-forge-${minecraft_version}"
 
@@ -60,7 +62,7 @@ minecraft {
         data {
             workingDirectory project.file('run')
             ideaModule "${rootProject.name}.${project.name}.main"
-            args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            args '--mod', mod_id, '--all', '--output', project(":Common").file('src/generated/resources/'), '--existing', project(":Common").file('src/generated/resources/')
             taskName 'Data'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
@@ -82,7 +84,9 @@ dependencies {
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    compileOnly project(":Common")
+    implementation project(':Common')
+
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
     runtimeOnly fg.deobf("me.shedaniel:RoughlyEnoughItems-forge:$rei_version")
     runtimeOnly fg.deobf("me.shedaniel.cloth:cloth-config-forge:$cloth_config_version")
@@ -100,6 +104,13 @@ dependencies {
     implementation fg.deobf("maven.modrinth:jade:${jade_forge_version}")
 
     jarJar(group: "dev._100media.capabilitysyncer", name: "capabilitysyncer", version: "[${capabilitysyncer_version},${next_minecraft_version})")
+}
+
+mixin {
+    add sourceSets.main, "minejago.refmap.json"
+
+    config "minejago_forge.mixins.json"
+    config "minejago_common.mixins.json"
 }
 
 tasks.withType(JavaCompile) {

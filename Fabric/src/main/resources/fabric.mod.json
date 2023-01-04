@@ -28,11 +28,12 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "dev.thomasglasser.minejago.Minejago"
+      "dev.thomasglasser.minejago.MinejagoFabric"
     ]
   },
   "mixins": [
-    "minejago.mixins.json"
+    "minejago_fabric.mixins.json",
+    "minejago_common.mixins.json"
   ],
 
   "depends": {
@@ -46,10 +47,12 @@
     "forgeconfigapiport": ">=5.0.3"
   },
   "recommends": {
-    "playeranimator": ">=0.4.1+1.19.3"
+    "playeranimator": ">=0.4.1+1.19.3",
+    "reach-entity-attributes": "2.3.0"
   },
   "suggests": {
     "lambdynamiclights": ">=2.2.0+1.19.3"
-  }
+  },
+  "accessWidener" : "minejago.accesswidener"
 }
   

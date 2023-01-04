@@ -98,6 +98,13 @@ subprojects {
         maven {
             url "https://maven.terraformersmc.com/releases/"
         }
+        maven {
+            name 'Quilt (Release)'
+            url 'https://maven.quiltmc.org/repository/release/'
+        }
+        maven {
+            url "https://maven.jamieswhiteshirt.com/libs-release"
+        }
     }
 
     tasks.withType(JavaCompile).configureEach {

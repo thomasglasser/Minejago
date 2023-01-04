@@ -1,7 +1,7 @@
 package dev.thomasglasser.minejago.platform;
 
-import dev.thomasglasser.minejago.Constants;
-import dev.thomasglasser.minejago.platform.services.IPlatformHelper;
+import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.platform.services.*;
 
 import java.util.ServiceLoader;
 
@@ -14,6 +14,15 @@ public class Services {
     // For example this can be used to check if the code is running on Forge vs Fabric, or to ask the modloader if another
     // mod is loaded.
     public static final IPlatformHelper PLATFORM = load(IPlatformHelper.class);
+    public static final IConfigHelper CONFIG = load(IConfigHelper.class);
+    public static final ICommandHelper COMMAND = load(ICommandHelper.class);
+    public static final IParticleHelper PARTICLE = load(IParticleHelper.class);
+    public static final IRegistryHelper REGISTRY = load(IRegistryHelper.class);
+    public static final IDataHelper DATA = load(IDataHelper.class);
+    public static final INetworkHelper NETWORK = load(INetworkHelper.class);
+    public static final IBlockEntityHelper BLOCK_ENTITY = load(IBlockEntityHelper.class);
+    public static final IItemHelper ITEM = load(IItemHelper.class);
+    public static final IPotionHelper POTION = load(IPotionHelper.class);
 
     // This code is used to load a service for the current environment. Your implementation of the service must be defined
     // manually by including a text file in META-INF/services named with the fully qualified class name of the service.
@@ -24,7 +33,7 @@ public class Services {
         final T loadedService = ServiceLoader.load(clazz)
                 .findFirst()
                 .orElseThrow(() -> new NullPointerException("Failed to load service for " + clazz.getName()));
-        Constants.LOGGER.debug("Loaded {} for service {}", loadedService, clazz);
+        Minejago.LOGGER.debug("Loaded {} for service {}", loadedService, clazz);
         return loadedService;
     }
 }

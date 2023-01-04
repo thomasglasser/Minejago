@@ -1,33 +1,58 @@
 plugins {
-    id 'java'
-    id 'org.spongepowered.gradle.vanilla' version '0.2.1-SNAPSHOT'
+    id 'org.quiltmc.loom' version '1.+'
     id 'maven-publish'
 }
 
 archivesBaseName = "${mod_name}-common-${minecraft_version}"
 
-minecraft {
-    version(minecraft_version)
-    runs {
-        if (project.hasProperty('common_runs_enabled') ? project.findProperty('common_runs_enabled').toBoolean() : true) {
-            server(project.hasProperty('common_server_run_name') ? project.findProperty('common_server_run_name') : 'vanilla_server') {
-                workingDirectory(this.file("run"))
-            }
-            client(project.hasProperty('common_client_run_name') ? project.findProperty('common_client_run_name') : 'vanilla_client') {
-                workingDirectory(this.file("run"))
-            }
-        }
+repositories {
+    maven {
+        name = 'Forge / Mixin'
+        url = 'https://maven.minecraftforge.net'
     }
 }
 
-dependencies {
-    compileOnly group:'org.spongepowered', name:'mixin', version:'0.8.5'
+loom {
+    runConfigs.configureEach {
+        ideConfigGenerated = false
+    }
 
-    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
+    accessWidenerPath = file("src/main/resources/minejago.accesswidener")
+}
+
+configurations {
+    testCompileOnly.extendsFrom(compileOnly)
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${minecraft_version}"
+    mappings loom.layered() {
+        officialMojangMappings()
+        parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip")
+    }
+
+    //DO NOT USE IN PROJECT
+    //Provides necessary stuff for project to compile
+    modCompileOnly("org.quiltmc:quilt-loader:${quilt_loader_version}")
+
+    compileOnly group:'org.spongepowered', name:'mixin', version:'0.8.5'
+    modCompileOnly "dev.kosmx.player-anim:player-animation-lib:${playeranimator_version}+${minecraft_version}"
+    compileOnly "dev.kosmx.player-anim:anim-core:${playeranimator_version}+${minecraft_version}"
+    modCompileOnly "software.bernie.geckolib:geckolib-forge-1.19.3:${geckolib_version}"
+    modCompileOnly "curse.maven:smartbrainlib-661293:${smartbrainlib_fabric_id}-sources-${smartbrainlib_sources_fabric_id}"
+    modCompileOnly "com.github.glitchfiend:TerraBlender-forge:${minecraft_version}-${terrablender_version}"
+    modCompileOnly "curse.maven:moonlight-499980:${moonlight_forge_id}"
+    compileOnly "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forgeconfigapiport_version}"
+
+    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
+}
+
+import net.fabricmc.loom.task.AbstractRemapJarTask
+tasks.withType(AbstractRemapJarTask).each {
+    it.targetNamespace = "named"
 }
 
 processResources {
-
     def buildProps = project.properties.clone()
 
     filesMatching(['pack.mcmeta']) {
@@ -47,8 +72,5 @@ publishing {
     }
 
     repositories {
-        maven {
-            url "file://" + System.getenv("local_maven")
-        }
     }
 }
