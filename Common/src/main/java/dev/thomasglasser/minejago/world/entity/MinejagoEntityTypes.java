@@ -39,39 +39,39 @@ public class MinejagoEntityTypes
             .build("thrown_iron_spear"));
 
     // MOBS
-    public static final RegistryObject<EntityType<? extends Mob>> WU = ENTITY_TYPES.register("wu", () -> EntityType.Builder.of(Wu::new, MobCategory.CREATURE)
+    public static final RegistryObject<EntityType<Wu>> WU = ENTITY_TYPES.register("wu", () -> EntityType.Builder.of(Wu::new, MobCategory.CREATURE)
             .sized(0.6f, 1.95f)
             .clientTrackingRange(8)
             .build("wu"));
-    public static final RegistryObject<EntityType<? extends Mob>> KAI = ENTITY_TYPES.register("kai", () -> EntityType.Builder.of(Kai::new, MobCategory.CREATURE)
+    public static final RegistryObject<EntityType<Kai>> KAI = ENTITY_TYPES.register("kai", () -> EntityType.Builder.of(Kai::new, MobCategory.CREATURE)
             .sized(0.6f, 1.95f)
             .clientTrackingRange(8)
             .build("kai"));
-    public static final RegistryObject<EntityType<? extends Mob>> NYA = ENTITY_TYPES.register("nya", () -> EntityType.Builder.of(Character::new, MobCategory.CREATURE)
+    public static final RegistryObject<EntityType<Character>> NYA = ENTITY_TYPES.register("nya", () -> EntityType.Builder.of(Character::new, MobCategory.CREATURE)
             .sized(0.6f, 1.95f)
             .clientTrackingRange(8)
             .build("nya"));
-    public static final RegistryObject<EntityType<? extends Mob>> COLE = ENTITY_TYPES.register("cole", () -> EntityType.Builder.of(Cole::new, MobCategory.CREATURE)
+    public static final RegistryObject<EntityType<Cole>> COLE = ENTITY_TYPES.register("cole", () -> EntityType.Builder.of(Cole::new, MobCategory.CREATURE)
             .sized(0.6f, 1.95f)
             .clientTrackingRange(8)
             .build("cole"));
-    public static final RegistryObject<EntityType<? extends Mob>> JAY = ENTITY_TYPES.register("jay", () -> EntityType.Builder.of(Jay::new, MobCategory.CREATURE)
+    public static final RegistryObject<EntityType<Jay>> JAY = ENTITY_TYPES.register("jay", () -> EntityType.Builder.of(Jay::new, MobCategory.CREATURE)
             .sized(0.6f, 1.95f)
             .clientTrackingRange(8)
             .build("jay"));
-    public static final RegistryObject<EntityType<? extends Mob>> ZANE = ENTITY_TYPES.register("zane", () -> EntityType.Builder.of(Zane::new, MobCategory.CREATURE)
+    public static final RegistryObject<EntityType<Zane>> ZANE = ENTITY_TYPES.register("zane", () -> EntityType.Builder.of(Zane::new, MobCategory.CREATURE)
             .sized(0.6f, 1.95f)
             .clientTrackingRange(8)
             .build("zane"));
-    public static final RegistryObject<EntityType<? extends Mob>> UNDERWORLD_SKELETON = ENTITY_TYPES.register("underworld_skeleton", () -> EntityType.Builder.of(UnderworldSkeleton::new, MobCategory.MONSTER)
+    public static final RegistryObject<EntityType<UnderworldSkeleton>> UNDERWORLD_SKELETON = ENTITY_TYPES.register("underworld_skeleton", () -> EntityType.Builder.of(UnderworldSkeleton::new, MobCategory.MONSTER)
             .sized(0.6f, 1.95f)
             .clientTrackingRange(8)
             .build("underworld_skeleton"));
-    public static final RegistryObject<EntityType<? extends Mob>> KRUNCHA = ENTITY_TYPES.register("kruncha", () -> EntityType.Builder.of(Kruncha::new, MobCategory.MONSTER)
+    public static final RegistryObject<EntityType<Kruncha>> KRUNCHA = ENTITY_TYPES.register("kruncha", () -> EntityType.Builder.of(Kruncha::new, MobCategory.MONSTER)
             .sized(0.6f, 1.95f)
             .clientTrackingRange(8)
             .build("kruncha"));
-    public static final RegistryObject<EntityType<? extends Mob>> NUCKAL = ENTITY_TYPES.register("nuckal", () -> EntityType.Builder.of(Nuckal::new, MobCategory.MONSTER)
+    public static final RegistryObject<EntityType<Nuckal>> NUCKAL = ENTITY_TYPES.register("nuckal", () -> EntityType.Builder.of(Nuckal::new, MobCategory.MONSTER)
             .sized(0.6f, 1.95f)
             .clientTrackingRange(8)
             .build("nuckal"));

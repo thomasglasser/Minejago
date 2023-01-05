@@ -10,11 +10,14 @@ import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmorMaterials;
 import dev.thomasglasser.minejago.world.item.armor.TrainingGiItem;
+import net.minecraft.core.Registry;
 
 import java.util.function.Supplier;
 
 public class MinejagoPowers {
-    public static final RegistrationProvider<Power> POWERS = RegistrationProvider.get(MinejagoRegistries.POWER.get(), Minejago.MOD_ID);
+    public static final RegistrationProvider<Power> POWERS = RegistrationProvider.get(Minejago.modLoc("power"), Minejago.MOD_ID);
+    public static final Supplier<Registry<Power>> REGISTRY = POWERS.registryBuilder().build();
+
     public static RegistryObject<Power> NONE = register("none", () -> new Power("none"), false);
     public static RegistryObject<Power> FIRE = register("fire", () -> new Power("fire", SpinjitzuParticleOptions.ELEMENT_ORANGE, SpinjitzuParticleOptions.ELEMENT_YELLOW, MinejagoParticleTypes.SPARKS), true);
     public static RegistryObject<Power> EARTH = register("earth", () -> new Power("earth", SpinjitzuParticleOptions.ELEMENT_BROWN, SpinjitzuParticleOptions.ELEMENT_TAN, MinejagoParticleTypes.ROCKS), true);

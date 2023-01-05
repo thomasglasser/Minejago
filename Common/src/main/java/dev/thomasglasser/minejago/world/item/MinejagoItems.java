@@ -10,6 +10,8 @@ import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.*;
 
 import java.util.ArrayList;
@@ -35,15 +37,15 @@ public class MinejagoItems
     public static final RegistryObject<Item> WOODEN_NUNCHUCKS = register("wooden_nunchucks", () -> new WoodenNunchucksItem(new Item.Properties().stacksTo(1)), CreativeModeTabs.COMBAT);
 
     // SPAWN EGGS
-    public static final RegistryObject<Item> WU_SPAWN_EGG = register("wu_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.WU, 16645363, 14689295, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
-    public static final RegistryObject<Item> KAI_SPAWN_EGG = register("kai_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.KAI, 9507597, 5185296, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
-    public static final RegistryObject<Item> NYA_SPAWN_EGG = register("nya_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.NYA, 9507597, 3223857, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
-    public static final RegistryObject<Item> COLE_SPAWN_EGG = register("cole_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.COLE, 1647949, 2697513, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
-    public static final RegistryObject<Item> JAY_SPAWN_EGG = register("jay_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.JAY, 10057, 4854026, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
-    public static final RegistryObject<Item> ZANE_SPAWN_EGG = register("zane_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.ZANE, 2697513, 16769956, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
-    public static final RegistryObject<Item> UNDERWORLD_SKELETON_SPAWN_EGG = register("underworld_skeleton_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.UNDERWORLD_SKELETON, 12698049, 11348013, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
-    public static final RegistryObject<Item> KRUNCHA_SPAWN_EGG = register("kruncha_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.KRUNCHA, 12698049, 4802889, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
-    public static final RegistryObject<Item> NUCKAL_SPAWN_EGG = register("nuckal_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.NUCKAL, 12698049, 6974058, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
+    public static final RegistryObject<Item> WU_SPAWN_EGG = register("wu_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.WU::get, 16645363, 14689295, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
+    public static final RegistryObject<Item> KAI_SPAWN_EGG = register("kai_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.KAI::get, 9507597, 5185296, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
+    public static final RegistryObject<Item> NYA_SPAWN_EGG = register("nya_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.NYA::get, 9507597, 3223857, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
+    public static final RegistryObject<Item> COLE_SPAWN_EGG = register("cole_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.COLE::get, 1647949, 2697513, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
+    public static final RegistryObject<Item> JAY_SPAWN_EGG = register("jay_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.JAY::get, 10057, 4854026, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
+    public static final RegistryObject<Item> ZANE_SPAWN_EGG = register("zane_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.ZANE::get, 2697513, 16769956, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
+    public static final RegistryObject<Item> UNDERWORLD_SKELETON_SPAWN_EGG = register("underworld_skeleton_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.UNDERWORLD_SKELETON::get, 12698049, 11348013, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
+    public static final RegistryObject<Item> KRUNCHA_SPAWN_EGG = register("kruncha_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.KRUNCHA::get, 12698049, 4802889, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
+    public static final RegistryObject<Item> NUCKAL_SPAWN_EGG = register("nuckal_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.NUCKAL::get, 12698049, 6974058, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
 
     // BLOCK ITEMS
     public static final RegistryObject<Item> TEAPOT = register("teapot", () -> new BlockItem(MinejagoBlocks.TEAPOT.get(), new Item.Properties().stacksTo(1)), CreativeModeTabs.FUNCTIONAL_BLOCKS);

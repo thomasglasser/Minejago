@@ -75,6 +75,8 @@ processResources {
     from project(":Common").sourceSets.main.resources
 }
 
+sourceSets.main.resources.srcDir '../Common/src/generated/resources'
+
 tasks.withType(JavaCompile) {
     source(project(":Common").sourceSets.main.allSource)
 }

@@ -12,4 +12,6 @@ public class MinejagoBlockEntityTypes
     public static final RegistrationProvider<BlockEntityType<?>> BLOCK_ENTITY_TYPES = RegistrationProvider.get(Registries.BLOCK_ENTITY_TYPE, Minejago.MOD_ID);
 
     public static final RegistryObject<BlockEntityType<TeapotBlockEntity>> TEAPOT = BLOCK_ENTITY_TYPES.register("teapot", () -> BlockEntityType.Builder.of(TeapotBlockEntity::new, MinejagoBlocks.TEAPOT.get()).build(null));
+
+    public static void init() {}
 }

@@ -33,7 +33,7 @@ public class MinejagoPaintingVariants
 
     public static final RegistryObject<PaintingVariant> FOUR_WEAPONS = PAINTING_VARIANTS.register("four_weapons", () -> new PaintingVariant(32, 16));
 
-    public static void onInteract(Player player, Level world, InteractionHand hand, Entity entity, @Nullable EntityHitResult hitResult)
+    public static void onInteract(Player player, Level world, InteractionHand hand, Entity entity)
     {
         if (world instanceof ServerLevel serverLevel && hand == InteractionHand.MAIN_HAND && entity instanceof Painting painting && painting.getVariant().is(new ResourceLocation(Minejago.MOD_ID, "four_weapons")) && !((IDataHolder)painting).getPersistentData().getBoolean("MapTaken"))
         {

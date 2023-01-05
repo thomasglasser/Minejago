@@ -13,4 +13,6 @@ public class MinejagoBannerPatterns
     public static final RegistryObject<BannerPattern> FOUR_WEAPONS_LEFT = BANNER_PATTERNS.register("four_weapons_left", () -> new BannerPattern("four_weapons_left"));
     public static final RegistryObject<BannerPattern> FOUR_WEAPONS_RIGHT = BANNER_PATTERNS.register("four_weapons_right", () -> new BannerPattern("four_weapons_right"));
     public static final RegistryObject<BannerPattern> EDGE_LINES = BANNER_PATTERNS.register("edge_lines", () -> new BannerPattern("edge_lines"));
+
+    public static void init() {}
 }

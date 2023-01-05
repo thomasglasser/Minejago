@@ -2,6 +2,7 @@ package dev.thomasglasser.minejago.platform;
 
 import dev.thomasglasser.minejago.platform.services.IItemHelper;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attribute;

@@ -17,7 +17,6 @@ public class Services {
     public static final IConfigHelper CONFIG = load(IConfigHelper.class);
     public static final ICommandHelper COMMAND = load(ICommandHelper.class);
     public static final IParticleHelper PARTICLE = load(IParticleHelper.class);
-    public static final IRegistryHelper REGISTRY = load(IRegistryHelper.class);
     public static final IDataHelper DATA = load(IDataHelper.class);
     public static final INetworkHelper NETWORK = load(INetworkHelper.class);
     public static final IBlockEntityHelper BLOCK_ENTITY = load(IBlockEntityHelper.class);

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "group": "minejago",
+  "key": {
+    "o": {
+      "tag": "forge:rods/wooden"
+    },
+    "x": {
+      "tag": "forge:ingots/iron"
+    }
+  },
+  "pattern": [
+    " x ",
+    "xo ",
+    " o "
+  ],
+  "result": {
+    "item": "minejago:iron_scythe"
+  }
+}

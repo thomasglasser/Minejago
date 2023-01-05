@@ -48,4 +48,6 @@ public enum MinejagoTiers implements Tier {
     public Ingredient getRepairIngredient() {
         return (Ingredient)this.repairIngredient.get();
     }
+
+    public static void init() {}
 }
