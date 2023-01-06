@@ -12,7 +12,6 @@ import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
-import dev.thomasglasser.minejago.world.entity.Character;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.IModeledArmorItem;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
@@ -52,7 +51,7 @@ public class MinejagoClientEvents {
     {
         event.registerLayerDefinition(ThrownBoneKnifeModel.LAYER_LOCATION, ThrownBoneKnifeModel::createBodyLayer);
         event.registerLayerDefinition(BambooStaffModel.LAYER_LOCATION, BambooStaffModel::createBodyLayer);
-        event.registerLayerDefinition(IronSpearModel.LAYER_LOCATION, IronSpearModel::createBodyLayer);
+        event.registerLayerDefinition(SpearModel.LAYER_LOCATION, SpearModel::createBodyLayer);
         event.registerLayerDefinition(ThrownIronShurikenModel.LAYER_LOCATION, ThrownIronShurikenModel::createBodyLayer);
         event.registerLayerDefinition(ScytheModel.LAYER_LOCATION, ScytheModel::createBodyLayer);
         event.registerLayerDefinition(BambooHatModel.LAYER_LOCATION, BambooHatModel::createBodyLayer);
@@ -81,11 +80,11 @@ public class MinejagoClientEvents {
 
     public static void registerModels(ModelEvent.RegisterAdditional event)
     {
-        event.register(new ResourceLocation(Minejago.MOD_ID, "item/bamboo_staff_in_hand"));
-        event.register(new ResourceLocation(Minejago.MOD_ID, "item/iron_spear_in_hand"));
-        event.register(new ResourceLocation(Minejago.MOD_ID, "item/scythe_of_quakes_in_hand"));
-        event.register(new ResourceLocation(Minejago.MOD_ID, "item/iron_scythe_in_hand"));
-        event.register(new ResourceLocation(Minejago.MOD_ID, "item/wooden_nunchucks_in_hand"));
+        event.register(Minejago.modLoc("item/iron_scythe_inventory"));
+        event.register(Minejago.modLoc("item/scythe_of_quakes_inventory"));
+        event.register(Minejago.modLoc("item/iron_spear_inventory"));
+        event.register(Minejago.modLoc("item/wooden_nunchucks_inventory"));
+        event.register(Minejago.modLoc("item/bamboo_staff_inventory"));
     }
 
     public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event)

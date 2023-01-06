@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.client.model.IronSpearModel;
+import dev.thomasglasser.minejago.client.model.SpearModel;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownIronSpear;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -17,11 +17,11 @@ import net.minecraft.util.Mth;
 public class ThrownIronSpearRenderer extends EntityRenderer<ThrownIronSpear>
 {
     public static final ResourceLocation TEXTURE_LOCATION = Minejago.modLoc("textures/entity/iron_spear.png");
-    private final IronSpearModel model;
+    private final SpearModel model;
 
     public ThrownIronSpearRenderer(EntityRendererProvider.Context context) {
         super(context);
-        this.model = new IronSpearModel(context.bakeLayer(IronSpearModel.LAYER_LOCATION));
+        this.model = new SpearModel(context.bakeLayer(SpearModel.LAYER_LOCATION));
     }
 
     public void render(ThrownIronSpear pEntity, float pEntityYaw, float pPartialTicks, PoseStack pMatrixStack, MultiBufferSource pBuffer, int pPackedLight) {

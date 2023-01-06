@@ -47,11 +47,4 @@ public class BambooStaffItem extends ThrowableSwordItem implements IModeledItem
             }
         }
     }
-
-    @Override
-    public MinejagoBlockEntityWithoutLevelRenderer getBEWLR() {
-        if (bewlr == null)
-            bewlr = new MinejagoBlockEntityWithoutLevelRenderer();
-        return bewlr;
-    }
 }

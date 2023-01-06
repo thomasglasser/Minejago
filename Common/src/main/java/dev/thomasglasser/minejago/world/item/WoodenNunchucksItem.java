@@ -116,11 +116,4 @@ public class WoodenNunchucksItem extends Item implements IModeledItem, IFabricGe
     {
         stack.getOrCreateTag().putInt("AttackDamage", 0);
     }
-
-    @Override
-    public MinejagoBlockEntityWithoutLevelRenderer getBEWLR() {
-        if (bewlr == null)
-            bewlr = new MinejagoBlockEntityWithoutLevelRenderer();
-        return bewlr;
-    }
 }

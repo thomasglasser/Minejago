@@ -14,11 +14,11 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 
-public class IronSpearModel extends Model {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(Minejago.MOD_ID, "iron_spear"), "main");
+public class SpearModel extends Model {
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(Minejago.MOD_ID, "spear"), "in_hand");
 	private final ModelPart body;
 
-	public IronSpearModel(ModelPart root) {
+	public SpearModel(ModelPart root) {
 		super(RenderType::entitySolid);
 		this.body = root.getChild("body");
 	}

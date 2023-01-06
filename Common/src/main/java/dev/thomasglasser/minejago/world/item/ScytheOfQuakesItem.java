@@ -295,11 +295,4 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem implements IModeledItem
     public float getDestroySpeed(ItemStack pStack, BlockState pState) {
         return 25.0f;
     }
-
-    @Override
-    public MinejagoBlockEntityWithoutLevelRenderer getBEWLR() {
-        if (bewlr == null)
-            bewlr = new MinejagoBlockEntityWithoutLevelRenderer();
-        return bewlr;
-    }
 }
