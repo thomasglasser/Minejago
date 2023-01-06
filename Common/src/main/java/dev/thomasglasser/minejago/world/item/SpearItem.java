@@ -24,7 +24,7 @@ public class SpearItem extends ThrowableSwordItem implements IModeledItem {
     /** Modifiers applied when the item is in the mainhand of a user. */
     private final Multimap<Attribute, AttributeModifier> defaultModifiers;
 
-    private BlockEntityWithoutLevelRenderer bewlr;
+    private MinejagoBlockEntityWithoutLevelRenderer bewlr;
 
     public SpearItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
         super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
@@ -69,7 +69,7 @@ public class SpearItem extends ThrowableSwordItem implements IModeledItem {
     }
 
     @Override
-    public BlockEntityWithoutLevelRenderer getBEWLR() {
+    public MinejagoBlockEntityWithoutLevelRenderer getBEWLR() {
         if (bewlr == null)
             bewlr = new MinejagoBlockEntityWithoutLevelRenderer();
         return bewlr;

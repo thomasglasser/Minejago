@@ -81,11 +81,11 @@ public class MinejagoClientEvents {
 
     public static void registerModels(ModelEvent.RegisterAdditional event)
     {
-        event.register(new ResourceLocation(Minejago.MOD_ID, "item/bamboo_staff_inventory"));
-        event.register(new ResourceLocation(Minejago.MOD_ID, "item/iron_spear_inventory"));
-        event.register(new ResourceLocation(Minejago.MOD_ID, "item/scythe_of_quakes_inventory"));
-        event.register(new ResourceLocation(Minejago.MOD_ID, "item/iron_scythe_inventory"));
-        event.register(new ResourceLocation(Minejago.MOD_ID, "item/wooden_nunchucks_inventory"));
+        event.register(new ResourceLocation(Minejago.MOD_ID, "item/bamboo_staff_in_hand"));
+        event.register(new ResourceLocation(Minejago.MOD_ID, "item/iron_spear_in_hand"));
+        event.register(new ResourceLocation(Minejago.MOD_ID, "item/scythe_of_quakes_in_hand"));
+        event.register(new ResourceLocation(Minejago.MOD_ID, "item/iron_scythe_in_hand"));
+        event.register(new ResourceLocation(Minejago.MOD_ID, "item/wooden_nunchucks_in_hand"));
     }
 
     public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event)

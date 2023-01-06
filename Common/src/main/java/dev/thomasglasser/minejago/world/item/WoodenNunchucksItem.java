@@ -32,7 +32,7 @@ import java.util.function.Supplier;
 public class WoodenNunchucksItem extends Item implements IModeledItem, IFabricGeoItem
 {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    private BlockEntityWithoutLevelRenderer bewlr;
+    private MinejagoBlockEntityWithoutLevelRenderer bewlr;
 
     private Multimap<Attribute, AttributeModifier> defaultModifiers;
 
@@ -118,7 +118,7 @@ public class WoodenNunchucksItem extends Item implements IModeledItem, IFabricGe
     }
 
     @Override
-    public BlockEntityWithoutLevelRenderer getBEWLR() {
+    public MinejagoBlockEntityWithoutLevelRenderer getBEWLR() {
         if (bewlr == null)
             bewlr = new MinejagoBlockEntityWithoutLevelRenderer();
         return bewlr;

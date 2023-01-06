@@ -51,6 +51,7 @@ minecraft {
             taskName 'Server'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+            arg("-Dmixin.debug=true")
             mods {
                 modServerRun {
                     source sourceSets.main
@@ -66,6 +67,7 @@ minecraft {
             taskName 'Data'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+            arg("-Dmixin.debug=true")
             mods {
                 modDataRun {
                     source sourceSets.main

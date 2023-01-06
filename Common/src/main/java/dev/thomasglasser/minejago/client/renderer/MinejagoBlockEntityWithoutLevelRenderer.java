@@ -15,6 +15,8 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.data.models.ItemModelGenerators;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.world.item.ItemStack;
@@ -37,11 +39,6 @@ public class MinejagoBlockEntityWithoutLevelRenderer extends BlockEntityWithoutL
     public void renderByItem(ItemStack pStack, ItemTransforms.TransformType pTransformType, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
         if (pStack.is(MinejagoItems.BAMBOO_STAFF.get())) {
             if (pTransformType == ItemTransforms.TransformType.FIXED || pTransformType == ItemTransforms.TransformType.GROUND || pTransformType == ItemTransforms.TransformType.GUI)
-            {
-                pPoseStack.translate(0.5D, 0.5D, 0.5D);
-                Minecraft.getInstance().getItemRenderer().render(pStack, pTransformType, false, pPoseStack, pBuffer, pPackedLight, pPackedOverlay, Minecraft.getInstance().getModelManager().getModel(new ModelResourceLocation(Minejago.MOD_ID, "bamboo_staff", "inventory")));
-            }
-            else
             {
                 pPoseStack.pushPose();
                 if (!Minecraft.getInstance().player.isUsingItem())

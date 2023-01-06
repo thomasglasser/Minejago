@@ -31,7 +31,7 @@ import org.joml.Math;
 
 public class ScytheOfQuakesItem extends GoldenWeaponItem implements IModeledItem
 {
-    private BlockEntityWithoutLevelRenderer bewlr;
+    private MinejagoBlockEntityWithoutLevelRenderer bewlr;
 
     public ScytheOfQuakesItem(Properties pProperties) {
         super(pProperties);
@@ -297,7 +297,7 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem implements IModeledItem
     }
 
     @Override
-    public BlockEntityWithoutLevelRenderer getBEWLR() {
+    public MinejagoBlockEntityWithoutLevelRenderer getBEWLR() {
         if (bewlr == null)
             bewlr = new MinejagoBlockEntityWithoutLevelRenderer();
         return bewlr;

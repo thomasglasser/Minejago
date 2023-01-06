@@ -7,6 +7,7 @@ import dev.thomasglasser.minejago.network.ClientboundRefreshVipDataPacket;
 import dev.thomasglasser.minejago.network.ClientboundStopAnimationPacket;
 import dev.thomasglasser.minejago.network.MinejagoMainChannel;
 import dev.thomasglasser.minejago.network.ServerboundStartSpinjitzuPacket;
+import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
 import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.powers.Power;
 import dev.thomasglasser.minejago.world.item.GoldenWeaponItem;
@@ -29,6 +30,7 @@ import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 import java.util.Set;
 
@@ -210,5 +212,10 @@ public class MinejagoEntityEvents
             if (f && e && i && l)
                 GoldenWeaponItem.overload(entity);
         }
+    }
+
+    public static void onPlayerEntityInteract(PlayerInteractEvent.EntityInteract event)
+    {
+        MinejagoPaintingVariants.onInteract(event.getEntity(), event.getLevel(), event.getHand(), event.getTarget());
     }
 }

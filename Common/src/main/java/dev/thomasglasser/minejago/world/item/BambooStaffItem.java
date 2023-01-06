@@ -1,5 +1,6 @@
 package dev.thomasglasser.minejago.world.item;
 
+import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownBambooStaff;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -15,7 +16,7 @@ import net.minecraft.world.level.Level;
 
 public class BambooStaffItem extends ThrowableSwordItem implements IModeledItem
 {
-    private BlockEntityWithoutLevelRenderer bewlr;
+    private MinejagoBlockEntityWithoutLevelRenderer bewlr;
 
     public BambooStaffItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
         super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
@@ -48,7 +49,7 @@ public class BambooStaffItem extends ThrowableSwordItem implements IModeledItem
     }
 
     @Override
-    public BlockEntityWithoutLevelRenderer getBEWLR() {
+    public MinejagoBlockEntityWithoutLevelRenderer getBEWLR() {
         if (bewlr == null)
             bewlr = new MinejagoBlockEntityWithoutLevelRenderer();
         return bewlr;

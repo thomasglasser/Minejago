@@ -1,8 +1,10 @@
 package dev.thomasglasser.minejago;
 
 import dev.thomasglasser.minejago.client.MinejagoClientEvents;
+import dev.thomasglasser.minejago.commands.MinejagoCommandEvents;
 import dev.thomasglasser.minejago.core.MinejagoCoreEvents;
 import dev.thomasglasser.minejago.data.MinejagoDataGenerators;
+import dev.thomasglasser.minejago.world.entity.MinejagoEntityEvents;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
 import dev.thomasglasser.minejago.world.level.storage.PowerCapabilityAttacher;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuCapabilityAttacher;
@@ -40,7 +42,7 @@ public class MinejagoForge
     private void addModListeners(IEventBus bus)
     {
         bus.addListener(MinejagoClientEvents::onConfigChanged);
-//        bus.addListener(MinejagoEntityEvents::onEntityAttributeCreation);
+        bus.addListener(MinejagoEntityEvents::onEntityAttributeCreation);
     }
 
     private void addModClientListeners(IEventBus bus)
@@ -58,18 +60,12 @@ public class MinejagoForge
 
     private void addForgeListeners()
     {
-//        MinecraftForge.EVENT_BUS.addListener(MinejagoEntityEvents::onLivingTick);
-        MinecraftForge.EVENT_BUS.addListener((event ->
-        {
-            if (event instanceof PlayerInteractEvent.EntityInteract interact)
-            {
-                MinejagoPaintingVariants.onInteract(interact.getEntity(), interact.getLevel(), interact.getHand(), interact.getTarget());
-            }
-        }));
-//        MinecraftForge.EVENT_BUS.addListener(MinejagoEntityEvents::onPlayerTick);
-//        MinecraftForge.EVENT_BUS.addListener(MinejagoEntityEvents::onPlayerLoggedIn);
-//        MinecraftForge.EVENT_BUS.addListener(MinejagoCommandEvents::onCommandsRegister);
-//        MinecraftForge.EVENT_BUS.addListener(MinejagoEntityEvents::onLivingAttack);
+        MinecraftForge.EVENT_BUS.addListener(MinejagoEntityEvents::onLivingTick);
+        MinecraftForge.EVENT_BUS.addListener(MinejagoEntityEvents::onPlayerEntityInteract);
+        MinecraftForge.EVENT_BUS.addListener(MinejagoEntityEvents::onPlayerTick);
+        MinecraftForge.EVENT_BUS.addListener(MinejagoEntityEvents::onPlayerLoggedIn);
+        MinecraftForge.EVENT_BUS.addListener(MinejagoCommandEvents::onCommandsRegister);
+        MinecraftForge.EVENT_BUS.addListener(MinejagoEntityEvents::onLivingAttack);
     }
 
     private void addForgeClientListeners()

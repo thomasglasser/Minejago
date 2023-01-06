@@ -38,7 +38,7 @@ public class MinejagoMainChannel
 
         // Server bound
         net.messageBuilder(ServerboundStartSpinjitzuPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder((buf) -> null)
+                .decoder((buf) -> new ServerboundStartSpinjitzuPacket())
                 .encoder((packet, buf) -> {})
                 .consumerMainThread((packet, context) -> packet.handle(context.get().getSender()))
                 .add();
