@@ -147,7 +147,7 @@ public class MinejagoArmor
         private final String SET_NAME;
         private final String POWER_NAME;
 
-        public PoweredArmorSet(String powerName, String setName, ArmorMaterial material, Class<? extends PoweredArmorItem> armorClass) {
+        private PoweredArmorSet(String powerName, String setName, ArmorMaterial material, Class<? extends PoweredArmorItem> armorClass) {
             SET_NAME = setName;
             POWER_NAME = powerName;
 
@@ -179,8 +179,13 @@ public class MinejagoArmor
                     throw new RuntimeException(e);
                 }
             });
+        }
 
-            POWERED_SETS.add(this);
+        public static PoweredArmorSet create(String powerName, String setName, ArmorMaterial material, Class<? extends PoweredArmorItem> clazz)
+        {
+            PoweredArmorSet set = new PoweredArmorSet(powerName, setName, material, clazz);
+            POWERED_SETS.add(set);
+            return set;
         }
 
         public RegistryObject<ArmorItem> getForSlot(EquipmentSlot slot) {

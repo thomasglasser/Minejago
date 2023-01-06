@@ -27,7 +27,7 @@ public class MinejagoPowers {
     public static RegistryObject<Power> register(String name, Supplier<Power> powerSupplier, boolean makeSets)
     {
         RegistryObject<Power> power = POWERS.register(name, powerSupplier);
-        if (makeSets) new MinejagoArmor.PoweredArmorSet(name, "training_gi", MinejagoArmorMaterials.TRAINING_GI, TrainingGiItem.class);
+        if (makeSets) MinejagoArmor.PoweredArmorSet.create(name, "training_gi", MinejagoArmorMaterials.TRAINING_GI, TrainingGiItem.class);
         return power;
     }
 
