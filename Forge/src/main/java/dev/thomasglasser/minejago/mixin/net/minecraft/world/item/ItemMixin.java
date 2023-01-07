@@ -39,11 +39,14 @@ public class ItemMixin
         else if (this instanceof IModeledArmorItem iModeledArmorItem)
         {
             consumer.accept(new IClientItemExtensions() {
-                GeoArmorRenderer renderer;
+                GeoArmorRenderer<?> renderer;
 
                 @Override
                 public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, HumanoidModel<?> original) {
                     if (renderer == null) renderer = iModeledArmorItem.newRenderer();
+
+                    this.renderer.prepForRender(livingEntity, itemStack, equipmentSlot, original);
+
                     return renderer;
                 }
             });
