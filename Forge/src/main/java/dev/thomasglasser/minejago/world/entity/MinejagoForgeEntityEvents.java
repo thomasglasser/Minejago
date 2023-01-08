@@ -59,7 +59,7 @@ public class MinejagoForgeEntityEvents
     {
         LivingEntity entity = event.getEntity();
 
-
+        MinejagoEntityEvents.onLivingTick(entity);
     }
 
     public static void onPlayerEntityInteract(PlayerInteractEvent.EntityInteract event)

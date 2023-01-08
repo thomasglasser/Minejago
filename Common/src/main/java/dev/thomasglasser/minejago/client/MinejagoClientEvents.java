@@ -22,6 +22,7 @@ public class MinejagoClientEvents
     public static void registerAnimations()
     {
         //Set the player construct callback. It can be a lambda function.
+        // TODO: Fix missing class error
 //        PlayerAnimationAccess.REGISTER_ANIMATION_EVENT.register(MinejagoPlayerAnimator::registerPlayerAnimation);
     }
 
