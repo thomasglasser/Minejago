@@ -1,55 +1,61 @@
 package dev.thomasglasser.minejago.world.entity;
 
+import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleUtils;
 import dev.thomasglasser.minejago.core.particles.SpinjitzuParticleOptions;
 import dev.thomasglasser.minejago.network.ClientboundRefreshVipDataPacket;
 import dev.thomasglasser.minejago.network.ClientboundStopAnimationPacket;
-import dev.thomasglasser.minejago.network.MinejagoMainChannel;
 import dev.thomasglasser.minejago.network.ServerboundStartSpinjitzuPacket;
+import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
 import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.powers.Power;
 import dev.thomasglasser.minejago.world.item.GoldenWeaponItem;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.WoodenNunchucksItem;
-import dev.thomasglasser.minejago.world.level.storage.PowerCapability;
-import dev.thomasglasser.minejago.world.level.storage.PowerCapabilityAttacher;
-import dev.thomasglasser.minejago.world.level.storage.SpinjitzuCapability;
-import dev.thomasglasser.minejago.world.level.storage.SpinjitzuCapabilityAttacher;
+import dev.thomasglasser.minejago.world.level.saveddata.maps.MinejagoMapDecorations;
+import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
+import net.mehvahdjukaar.moonlight.api.map.MapHelper;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.StructureTags;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.decoration.Painting;
 import net.minecraft.world.entity.npc.InventoryCarrier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.MapItem;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.saveddata.maps.MapDecoration;
+import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 
 import java.util.Set;
 
 public class MinejagoEntityEvents
 {
-    public static void onPlayerTick(TickEvent.PlayerTickEvent event)
+    public static void onPlayerTick(Player player)
     {
-        Player player = event.player;
         if (player instanceof ServerPlayer serverPlayer)
         {
-            SpinjitzuCapability spinjitzu = serverPlayer.getCapability(SpinjitzuCapabilityAttacher.SPINJITZU_CAPABILITY).orElse(new SpinjitzuCapability(serverPlayer));
+            SpinjitzuData spinjitzu = Services.DATA.getSpinjitzuData(player);
 
-            if (spinjitzu.isUnlocked() || true /* TODO: Unlock system */) {
-                if (spinjitzu.isActive()) {
+            if (spinjitzu.unlocked() || true /* TODO: Unlock system */) {
+                if (spinjitzu.active()) {
                     if (serverPlayer.isCrouching()) {
-                        spinjitzu.setActive(false);
-                        MinejagoMainChannel.sendToAllClients(new ClientboundStopAnimationPacket(serverPlayer.getUUID()), serverPlayer);
+                        Services.DATA.setSpinjitzuData(new SpinjitzuData(spinjitzu.unlocked(), false), serverPlayer);
+                        Services.NETWORK.sendToAllClients(new ClientboundStopAnimationPacket(serverPlayer.getUUID()), serverPlayer);
                     }
-                    Power power = serverPlayer.getCapability(PowerCapabilityAttacher.POWER_CAPABILITY).orElse(new PowerCapability(serverPlayer)).getPower();
+                    Power power = Services.DATA.getPowerData(player).power();
                     if (power != MinejagoPowers.NONE.get()) {
                         MinejagoParticleUtils.renderPlayerSpinjitzu(serverPlayer, power.getMainSpinjitzuColor(), power.getAltSpinjitzuColor(), 10.5, false);
                         if (power.getBorderParticle() != null)
@@ -112,44 +118,31 @@ public class MinejagoEntityEvents
                         MinejagoParticleUtils.renderPlayerSpinjitzu(serverPlayer, SpinjitzuParticleOptions.DEFAULT, SpinjitzuParticleOptions.DEFAULT, 12, false);
                     }
                 }
-            } else if (spinjitzu.isActive()) {
-                spinjitzu.setActive(false);
-                MinejagoMainChannel.sendToAllClients(new ClientboundStopAnimationPacket(serverPlayer.getUUID()), serverPlayer);
+            } else if (spinjitzu.active()) {
+                Services.DATA.setSpinjitzuData(new SpinjitzuData(spinjitzu.unlocked(), false), serverPlayer);
+                Services.NETWORK.sendToAllClients(new ClientboundStopAnimationPacket(serverPlayer.getUUID()), serverPlayer);
             }
         } else if (MinejagoKeyMappings.ACTIVATE_SPINJITZU.isDown()) {
-            MinejagoMainChannel.sendToServer(new ServerboundStartSpinjitzuPacket());
+            Services.NETWORK.sendToServer(new ServerboundStartSpinjitzuPacket());
         }
     }
 
-    public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event)
+    public static void onPlayerLoggedIn(Player player)
     {
-        for (ServerPlayer player : ((ServerLevel) event.getEntity().getLevel()).getPlayers(serverPlayer -> true))
+        for (ServerPlayer serverPlayer : ((ServerLevel) player.getLevel()).getPlayers(serverPlayer -> true))
         {
-            MinejagoMainChannel.sendToAllClients(new ClientboundRefreshVipDataPacket(), player);
+            Services.NETWORK.sendToAllClients(new ClientboundRefreshVipDataPacket(), serverPlayer);
         }
     }
 
-    public static void onLivingAttack(LivingAttackEvent event)
+    public static void onLivingAttack(DamageSource source)
     {
-        if (event.getSource().getEntity() instanceof LivingEntity livingEntity && livingEntity.getMainHandItem().is(MinejagoItems.WOODEN_NUNCHUCKS.get()))
+        if (source.getEntity() instanceof LivingEntity livingEntity && livingEntity.getMainHandItem().is(MinejagoItems.WOODEN_NUNCHUCKS.get()))
             WoodenNunchucksItem.resetDamage(livingEntity.getMainHandItem());
     }
 
-    public static void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
-        event.put(MinejagoEntityTypes.WU.get(), Wu.createAttributes().build());
-        event.put(MinejagoEntityTypes.KAI.get(), Kai.createAttributes().build());
-        event.put(MinejagoEntityTypes.NYA.get(), Character.createAttributes().build());
-        event.put(MinejagoEntityTypes.COLE.get(), Cole.createAttributes().build());
-        event.put(MinejagoEntityTypes.JAY.get(), Jay.createAttributes().build());
-        event.put(MinejagoEntityTypes.ZANE.get(), Zane.createAttributes().build());
-        event.put(MinejagoEntityTypes.UNDERWORLD_SKELETON.get(), UnderworldSkeleton.createAttributes().build());
-        event.put(MinejagoEntityTypes.KRUNCHA.get(), Kruncha.createAttributes().build());
-        event.put(MinejagoEntityTypes.NUCKAL.get(), Nuckal.createAttributes().build());
-    }
-
-    public static void onLivingTick(LivingEvent.LivingTickEvent event)
+    public static void onLivingTick(LivingEntity entity)
     {
-        LivingEntity entity = event.getEntity();
         if (entity instanceof Player player)
         {
             Inventory i = player.getInventory();
@@ -214,8 +207,33 @@ public class MinejagoEntityEvents
         }
     }
 
-    public static void onPlayerEntityInteract(PlayerInteractEvent.EntityInteract event)
+    public static void onPlayerEntityInteract(Player player, Level world, InteractionHand hand, Entity entity)
     {
-        MinejagoPaintingVariants.onInteract(event.getEntity(), event.getLevel(), event.getHand(), event.getTarget());
+        if (world instanceof ServerLevel serverLevel && hand == InteractionHand.MAIN_HAND && entity instanceof Painting painting && painting.getVariant().is(new ResourceLocation(Minejago.MOD_ID, "four_weapons")) && !((IDataHolder)painting).getPersistentData().getBoolean("MapTaken"))
+        {
+            ItemStack itemstack = MapItem.create(world, (int)entity.getX(), (int)entity.getZ(), (byte)4, true, true);
+            MapItem.renderBiomePreviewMap((ServerLevel) world, itemstack);
+            /* TODO: Find lightning */ BlockPos pos1 = serverLevel.findNearestMapStructure(StructureTags.VILLAGE, player.getOnPos(), Integer.MAX_VALUE, false);
+            /* TODO: Find fire */ BlockPos pos2 = serverLevel.findNearestMapStructure(StructureTags.RUINED_PORTAL, player.getOnPos(), Integer.MAX_VALUE, false);
+            /* TODO: Find earth */ BlockPos pos3 = serverLevel.findNearestMapStructure(StructureTags.SHIPWRECK, player.getOnPos(), Integer.MAX_VALUE, false);
+            /* TODO: Find ice */ BlockPos pos4 = serverLevel.findNearestMapStructure(StructureTags.MINESHAFT, player.getOnPos(), Integer.MAX_VALUE, false);
+            if (Services.PLATFORM.isModLoaded(Minejago.Dependencies.MOONLIGHT_LIB.getModId()))
+            {
+                MapHelper.addDecorationToMap(itemstack, pos1, MinejagoMapDecorations.NUNCHUCKS, -1);
+                MapHelper.addDecorationToMap(itemstack, pos2, MinejagoMapDecorations.SWORD, -1);
+                MapHelper.addDecorationToMap(itemstack, pos3, MinejagoMapDecorations.SCYTHE, -1);
+                MapHelper.addDecorationToMap(itemstack, pos4, MinejagoMapDecorations.SHURIKENS, -1);
+            }
+            else
+            {
+                MapItemSavedData.addTargetDecoration(itemstack, pos1, "lightning", MapDecoration.Type.BANNER_BLUE);
+                MapItemSavedData.addTargetDecoration(itemstack, pos2, "fire", MapDecoration.Type.BANNER_RED);
+                MapItemSavedData.addTargetDecoration(itemstack, pos3, "earth", MapDecoration.Type.BANNER_BROWN);
+                MapItemSavedData.addTargetDecoration(itemstack, pos4, "ice", MapDecoration.Type.BANNER_WHITE);
+            }
+            itemstack.setHoverName(Component.translatable(Items.FILLED_MAP.getDescriptionId() + ".golden_weapons"));
+            player.addItem(itemstack);
+            ((IDataHolder)painting).getPersistentData().putBoolean("MapTaken", true);
+        }
     }
 }

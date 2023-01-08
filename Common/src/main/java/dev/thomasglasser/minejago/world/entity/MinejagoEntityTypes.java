@@ -9,8 +9,12 @@ import dev.thomasglasser.minejago.world.entity.projectile.ThrownIronShuriken;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownIronSpear;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
 
 public class MinejagoEntityTypes
 {
@@ -75,6 +79,22 @@ public class MinejagoEntityTypes
             .sized(0.6f, 1.95f)
             .clientTrackingRange(8)
             .build("nuckal"));
+    
+    public static Map<EntityType, AttributeSupplier> getAllAttributes() {
+        Map<EntityType, AttributeSupplier> map = new HashMap<>();
+
+        map.put(MinejagoEntityTypes.WU.get(), Wu.createAttributes().build());
+        map.put(MinejagoEntityTypes.KAI.get(), Kai.createAttributes().build());
+        map.put(MinejagoEntityTypes.NYA.get(), Character.createAttributes().build());
+        map.put(MinejagoEntityTypes.COLE.get(), Cole.createAttributes().build());
+        map.put(MinejagoEntityTypes.JAY.get(), Jay.createAttributes().build());
+        map.put(MinejagoEntityTypes.ZANE.get(), Zane.createAttributes().build());
+        map.put(MinejagoEntityTypes.UNDERWORLD_SKELETON.get(), UnderworldSkeleton.createAttributes().build());
+        map.put(MinejagoEntityTypes.KRUNCHA.get(), Kruncha.createAttributes().build());
+        map.put(MinejagoEntityTypes.NUCKAL.get(), Nuckal.createAttributes().build());
+
+        return map;
+    }
 
     public static void init() {}
 }

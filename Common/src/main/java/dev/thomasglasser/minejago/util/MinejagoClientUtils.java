@@ -74,7 +74,6 @@ public class MinejagoClientUtils {
 
     public static void setVipData(Player player, VipData data) {
         vipData.put(player, data);
-        System.out.println(data);
     }
 
     private static boolean isVip(UUID uuid, String type) {

@@ -6,17 +6,20 @@ import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.registration.RegistrationProvider;
 import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
+import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Supplier;
 
 public class MinejagoItems
@@ -64,4 +67,35 @@ public class MinejagoItems
     }
 
     public static void init() {}
+
+    public static List<ItemStack> getItemsForTab(CreativeModeTab tab)
+    {
+        List<ItemStack> items = new ArrayList<>();
+
+        getItemTabs().forEach((itemTab, itemLikes) -> {
+            if (tab == itemTab)
+            {
+                itemLikes.forEach((itemLike) -> items.add(Objects.requireNonNull(BuiltInRegistries.ITEM.get(itemLike)).getDefaultInstance()));
+            }
+        });
+
+        if (tab == CreativeModeTabs.FOOD_AND_DRINKS)
+        {
+            for (Potion potion : BuiltInRegistries.POTION) {
+                if (potion != Potions.EMPTY) {
+                    items.add(PotionUtils.setPotion(new ItemStack(BuiltInRegistries.ITEM.get(MinejagoItems.FILLED_TEACUP.getId())), potion));
+                }
+            }
+        }
+
+        if (tab == CreativeModeTabs.COMBAT)
+        {
+            for (RegistryObject<Item> item : MinejagoArmor.ARMOR.getEntries())
+            {
+                items.add(item.get().getDefaultInstance());
+            }
+        }
+
+        return items;
+    }
 }

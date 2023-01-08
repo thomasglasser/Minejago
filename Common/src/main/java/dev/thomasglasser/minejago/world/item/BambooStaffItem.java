@@ -16,7 +16,7 @@ import net.minecraft.world.level.Level;
 
 public class BambooStaffItem extends ThrowableSwordItem implements IModeledItem
 {
-    private MinejagoBlockEntityWithoutLevelRenderer bewlr;
+    private BlockEntityWithoutLevelRenderer bewlr;
 
     public BambooStaffItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
         super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
@@ -46,5 +46,11 @@ public class BambooStaffItem extends ThrowableSwordItem implements IModeledItem
                 player.awardStat(Stats.ITEM_USED.get(this));
             }
         }
+    }
+
+    @Override
+    public BlockEntityWithoutLevelRenderer getBEWLR() {
+        if (bewlr == null) bewlr = new MinejagoBlockEntityWithoutLevelRenderer();
+        return bewlr;
     }
 }

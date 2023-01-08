@@ -2,7 +2,8 @@ package dev.thomasglasser.minejago.world.item;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
+import dev.thomasglasser.minejago.client.renderer.item.WoodenNunchucksRenderer;
+import dev.thomasglasser.minejago.annotations.LoaderOverride;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -27,14 +28,12 @@ import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.function.Supplier;
-
 public class WoodenNunchucksItem extends Item implements IModeledItem, IFabricGeoItem
 {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    private MinejagoBlockEntityWithoutLevelRenderer bewlr;
 
     private Multimap<Attribute, AttributeModifier> defaultModifiers;
+    private BlockEntityWithoutLevelRenderer bewlr;
 
     public WoodenNunchucksItem(Properties pProperties) {
         super(pProperties);
@@ -56,17 +55,17 @@ public class WoodenNunchucksItem extends Item implements IModeledItem, IFabricGe
         return cache;
     }
 
-    private Multimap<Attribute, AttributeModifier> getAttributeModifiersInternal(EquipmentSlot slot, ItemStack stack) {
+    @LoaderOverride
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
         CompoundTag tag = stack.getOrCreateTag();
 
         if (!tag.contains("AttackDamage"))
-            tag.putInt("AttackDamage", 1);
+            tag.putInt("AttackDamage", 0);
 
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-        if (slot == EquipmentSlot.MAINHAND)
-            builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", tag.getInt("AttackDamage"), AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", tag.getInt("AttackDamage"), AttributeModifier.Operation.ADDITION));
 
-        return builder.build();
+        return slot == EquipmentSlot.MAINHAND ? builder.build() : super.getDefaultAttributeModifiers(slot);
     }
 
     @Override
@@ -115,5 +114,11 @@ public class WoodenNunchucksItem extends Item implements IModeledItem, IFabricGe
     public static void resetDamage(ItemStack stack)
     {
         stack.getOrCreateTag().putInt("AttackDamage", 0);
+    }
+
+    @Override
+    public BlockEntityWithoutLevelRenderer getBEWLR() {
+        if (bewlr == null) bewlr = new WoodenNunchucksRenderer();
+        return bewlr;
     }
 }

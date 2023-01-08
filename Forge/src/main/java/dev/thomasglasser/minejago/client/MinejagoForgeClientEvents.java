@@ -19,9 +19,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -37,13 +41,15 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
-public class MinejagoClientEvents {
+public class MinejagoForgeClientEvents {
 
     public static void onClientSetup(FMLClientSetupEvent event)
     {
-        //Set the player construct callback. It can be a lambda function.
+        MinejagoClientEvents.registerAnimations();
         PlayerAnimationAccess.REGISTER_ANIMATION_EVENT.register(MinejagoPlayerAnimator::registerPlayerAnimation);
     }
 
@@ -145,48 +151,22 @@ public class MinejagoClientEvents {
     public static void onAddLayers(EntityRenderersEvent.AddLayers event)
     {
         EntityModelSet models = event.getEntityModels();
-        for (String skin : event.getSkins()) {
-            LivingEntityRenderer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> player = event.getSkin(skin);
 
-            player.addLayer(new BetaTesterLayer<>(player, models));
-            player.addLayer(new DevLayer(player, models));
+        Map<EntityType<?>, EntityRenderer<?>> renderers = new HashMap<>();
+
+        renderers.put(MinejagoEntityTypes.WU.get(), event.getRenderer(MinejagoEntityTypes.WU.get()));
+
+        Map<String, EntityRenderer<? extends Player>> skins = new HashMap<>();
+        for (String skin : event.getSkins()) {
+            skins.put(skin, event.getSkin(skin));
         }
 
-        LivingEntityRenderer<Mob, PlayerModel<Mob>> wu = event.getRenderer(MinejagoEntityTypes.WU.get());
-        wu.addLayer(new BetaTesterLayer<>(wu, models));
-        wu.addLayer(new DevLayer<>(wu, models));
+        MinejagoClientEvents.onAddLayers(models, renderers, skins);
     }
 
     public static void onBuildCreativeTabContent(CreativeModeTabEvent.BuildContents event)
     {
-        MinejagoItems.getItemTabs().forEach((tab, itemLikes) -> {
-            if (event.getTab() == tab)
-            {
-                itemLikes.forEach((itemLike) -> event.accept(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(itemLike))));
-            }
-        });
-
-        if (event.getTab() == CreativeModeTabs.FOOD_AND_DRINKS)
-        {
-            for (Potion potion : ForgeRegistries.POTIONS) {
-                if (potion != Potions.EMPTY) {
-                    event.accept(PotionUtils.setPotion(new ItemStack(ForgeRegistries.ITEMS.getValue(MinejagoItems.FILLED_TEACUP.getId())), potion));
-                }
-            }
-        }
-
-        if (event.getTab() == CreativeModeTabs.COMBAT)
-        {
-            for (RegistryObject<Item> item : MinejagoArmor.ARMOR.getEntries())
-            {
-                event.accept(item);
-            }
-        }
-    }
-
-    public static void onPlayerLoggedIn(ClientPlayerNetworkEvent.LoggingIn event)
-    {
-        MinejagoClientUtils.refreshVip();
+        event.acceptAll(MinejagoItems.getItemsForTab(event.getTab()));
     }
 
     public static void onConfigChanged(ModConfigEvent event)
@@ -194,7 +174,6 @@ public class MinejagoClientEvents {
         if (event.getConfig().getType() == ModConfig.Type.CLIENT && Minecraft.getInstance().player != null)
         {
             MinejagoClientUtils.refreshVip();
-            System.out.println(Minecraft.getInstance().player.getUUID());
         }
     }
 

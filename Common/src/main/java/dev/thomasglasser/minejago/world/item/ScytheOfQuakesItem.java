@@ -31,7 +31,7 @@ import org.joml.Math;
 
 public class ScytheOfQuakesItem extends GoldenWeaponItem implements IModeledItem
 {
-    private MinejagoBlockEntityWithoutLevelRenderer bewlr;
+    private BlockEntityWithoutLevelRenderer bewlr;
 
     public ScytheOfQuakesItem(Properties pProperties) {
         super(pProperties);
@@ -294,5 +294,11 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem implements IModeledItem
     @Override
     public float getDestroySpeed(ItemStack pStack, BlockState pState) {
         return 25.0f;
+    }
+
+    @Override
+    public BlockEntityWithoutLevelRenderer getBEWLR() {
+        if (bewlr == null) bewlr = new MinejagoBlockEntityWithoutLevelRenderer();
+        return bewlr;
     }
 }

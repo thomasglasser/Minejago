@@ -38,10 +38,13 @@ public class ClientboundSpawnParticlePacket {
 
     public void toBytes(FriendlyByteBuf buf) {
         buf.writeResourceLocation(BuiltInRegistries.PARTICLE_TYPE.getKey(this.particle.getType()));
+        this.particle.writeToNetwork(buf);
         buf.writeDouble(this.x);
         buf.writeDouble(this.y);
         buf.writeDouble(this.z);
-        this.particle.writeToNetwork(buf);
+        buf.writeDouble(this.xSpeed);
+        buf.writeDouble(this.ySpeed);
+        buf.writeDouble(this.zSpeed);
     }
 
     // ON CLIENT

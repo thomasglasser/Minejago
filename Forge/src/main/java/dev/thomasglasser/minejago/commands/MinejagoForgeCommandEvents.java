@@ -4,11 +4,11 @@ import dev.thomasglasser.minejago.server.commands.PowerCommand;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.server.command.ConfigCommand;
 
-public class MinejagoCommandEvents
+public class MinejagoForgeCommandEvents
 {
     public static void onCommandsRegister(RegisterCommandsEvent event)
     {
-        PowerCommand.register(event.getDispatcher());
+        MinejagoCommandEvents.onCommandsRegister(event.getDispatcher());
 
         ConfigCommand.register(event.getDispatcher());
     }

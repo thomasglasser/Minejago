@@ -37,7 +37,7 @@ dependencies {
 
     compileOnly group:'org.spongepowered', name:'mixin', version:'0.8.5'
     modCompileOnly "dev.kosmx.player-anim:player-animation-lib:${playeranimator_version}+${minecraft_version}"
-    compileOnly "dev.kosmx.player-anim:anim-core:${playeranimator_version}+${minecraft_version}"
+    modCompileOnly "dev.kosmx.player-anim:anim-core:${playeranimator_version}+${minecraft_version}"
     modCompileOnly "software.bernie.geckolib:geckolib-forge-1.19.3:${geckolib_version}"
     modCompileOnly "curse.maven:smartbrainlib-661293:${smartbrainlib_fabric_id}-sources-${smartbrainlib_sources_fabric_id}"
     modCompileOnly "com.github.glitchfiend:TerraBlender-forge:${minecraft_version}-${terrablender_version}"

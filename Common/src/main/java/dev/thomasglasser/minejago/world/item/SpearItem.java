@@ -3,6 +3,7 @@ package dev.thomasglasser.minejago.world.item;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
+import dev.thomasglasser.minejago.client.renderer.item.WoodenNunchucksRenderer;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownIronSpear;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -24,7 +25,7 @@ public class SpearItem extends ThrowableSwordItem implements IModeledItem {
     /** Modifiers applied when the item is in the mainhand of a user. */
     private final Multimap<Attribute, AttributeModifier> defaultModifiers;
 
-    private MinejagoBlockEntityWithoutLevelRenderer bewlr;
+    private BlockEntityWithoutLevelRenderer bewlr;
 
     public SpearItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
         super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
@@ -66,5 +67,11 @@ public class SpearItem extends ThrowableSwordItem implements IModeledItem {
                 player.awardStat(Stats.ITEM_USED.get(this));
             }
         }
+    }
+
+    @Override
+    public BlockEntityWithoutLevelRenderer getBEWLR() {
+        if (bewlr == null) bewlr = new MinejagoBlockEntityWithoutLevelRenderer();
+        return bewlr;
     }
 }

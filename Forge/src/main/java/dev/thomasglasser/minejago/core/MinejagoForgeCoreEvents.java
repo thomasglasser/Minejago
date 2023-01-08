@@ -10,7 +10,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import terrablender.api.Regions;
 import terrablender.api.SurfaceRuleManager;
 
-public class MinejagoCoreEvents {
+public class MinejagoForgeCoreEvents {
     public static void onCommonSetup(FMLCommonSetupEvent event)
     {
         event.enqueueWork(() ->

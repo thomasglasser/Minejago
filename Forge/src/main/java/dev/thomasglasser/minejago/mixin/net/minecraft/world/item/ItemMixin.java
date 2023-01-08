@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.mixin.net.minecraft.world.item;
 
 import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
+import dev.thomasglasser.minejago.client.renderer.item.WoodenNunchucksRenderer;
 import dev.thomasglasser.minejago.world.item.IModeledItem;
 import dev.thomasglasser.minejago.world.item.armor.IModeledArmorItem;
 import net.minecraft.client.model.HumanoidModel;
@@ -25,14 +26,17 @@ public class ItemMixin
     @Inject(method = "initializeClient", at = @At("TAIL"), remap = false)
     void initializeClient(Consumer<IClientItemExtensions> consumer, CallbackInfo ci)
     {
-        if (this instanceof IModeledItem)
+        if (this instanceof IModeledItem iModeledItem)
         {
             consumer.accept(new IClientItemExtensions() {
-                private final MinejagoBlockEntityWithoutLevelRenderer bewlr = new MinejagoBlockEntityWithoutLevelRenderer();
+                private BlockEntityWithoutLevelRenderer renderer;
 
                 @Override
                 public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                    return bewlr;
+                    if (this.renderer == null)
+                        this.renderer = iModeledItem.getBEWLR();
+
+                    return this.renderer;
                 }
             });
         }

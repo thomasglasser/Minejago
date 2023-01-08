@@ -1,5 +1,7 @@
 package dev.thomasglasser.minejago.world.item;
 
+import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
@@ -15,6 +17,8 @@ import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class IronScytheItem extends DiggerItem implements IModeledItem {
+    private BlockEntityWithoutLevelRenderer bewlr;
+
     public IronScytheItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, TagKey<Block> blocks, Properties pProperties) {
         super(pAttackDamageModifier, pAttackSpeedModifier, pTier, blocks, pProperties);
     }
@@ -58,5 +62,11 @@ public class IronScytheItem extends DiggerItem implements IModeledItem {
     @Override
     public boolean isCorrectToolForDrops(BlockState state) {
         return state.is(BlockTags.REPLACEABLE_PLANTS) || state.is(BlockTags.CROPS) || super.isCorrectToolForDrops(state);
+    }
+
+    @Override
+    public BlockEntityWithoutLevelRenderer getBEWLR() {
+        if (bewlr == null) bewlr = new MinejagoBlockEntityWithoutLevelRenderer();
+        return bewlr;
     }
 }
