@@ -2,10 +2,7 @@ package dev.thomasglasser.minejago.world.item.brewing;
 
 import com.google.common.collect.Lists;
 import dev.thomasglasser.minejago.platform.Services;
-import dev.thomasglasser.minejago.platform.services.IPlatformHelper;
-import net.minecraft.core.Holder;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.Potion;
@@ -18,7 +15,7 @@ import java.util.List;
 
 public class MinejagoPotionBrewing
 {
-    private static final List<PotionBrewing.Mix> TEA_MIXES = Lists.newArrayList();
+    private static final List<PotionBrewing.Mix<Potion>> TEA_MIXES = Lists.newArrayList();
 
     public static void addMixes()
     {
@@ -30,12 +27,10 @@ public class MinejagoPotionBrewing
         int i = 0;
 
         for(int j = TEA_MIXES.size(); i < j; ++i) {
-            PotionBrewing.Mix<Potion> mix = TEA_MIXES.get(i);
-            if (mix.from.equals(potion) && mix.ingredient.test(pReagent)) {
+            if (Services.POTION.isTeaMix(TEA_MIXES.get(i), potion, pReagent)) {
                 return true;
             }
         }
-
         return false;
     }
 
@@ -47,13 +42,8 @@ public class MinejagoPotionBrewing
 
             for(int k = TEA_MIXES.size(); i < k; ++i) {
                 PotionBrewing.Mix<Potion> mix1 = TEA_MIXES.get(i);
-                if (mix1.from.equals(potion) && mix1.ingredient.test(pReagent)) {
-                    Potion to;
-                    if (Services.PLATFORM.getPlatformName().equals("Forge"))
-                        to = (Potion)((Holder.Reference)((Object)mix1.to)).value();
-                    else
-                        to = (Potion)(Object)(mix1.to);
-                    return PotionUtils.setPotion(new ItemStack(item), to);
+                if (Services.POTION.isTeaMix(mix1, potion, pReagent)) {
+                    return Services.POTION.mix(mix1, pPotion);
                 }
             }
         }

@@ -49,7 +49,6 @@ public class MinejagoForgeClientEvents {
 
     public static void onClientSetup(FMLClientSetupEvent event)
     {
-        MinejagoClientEvents.registerAnimations();
         PlayerAnimationAccess.REGISTER_ANIMATION_EVENT.register(MinejagoPlayerAnimator::registerPlayerAnimation);
     }
 
@@ -152,16 +151,22 @@ public class MinejagoForgeClientEvents {
     {
         EntityModelSet models = event.getEntityModels();
 
-        Map<EntityType<?>, EntityRenderer<?>> renderers = new HashMap<>();
-
-        renderers.put(MinejagoEntityTypes.WU.get(), event.getRenderer(MinejagoEntityTypes.WU.get()));
-
-        Map<String, EntityRenderer<? extends Player>> skins = new HashMap<>();
         for (String skin : event.getSkins()) {
-            skins.put(skin, event.getSkin(skin));
+            LivingEntityRenderer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> player = event.getSkin(skin);
+
+            if (player != null)
+            {
+                player.addLayer(new BetaTesterLayer<>(player, models));
+                player.addLayer(new DevLayer<>(player, models));
+            }
         }
 
-        MinejagoClientEvents.onAddLayers(models, renderers, skins);
+        LivingEntityRenderer<Mob, PlayerModel<Mob>> wu = event.getRenderer(MinejagoEntityTypes.WU.get());
+        if (wu != null)
+        {
+            wu.addLayer(new BetaTesterLayer<>(wu, models));
+            wu.addLayer(new DevLayer<>(wu, models));
+        }
     }
 
     public static void onBuildCreativeTabContent(CreativeModeTabEvent.BuildContents event)

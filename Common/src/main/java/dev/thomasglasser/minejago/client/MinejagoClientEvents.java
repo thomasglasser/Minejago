@@ -19,35 +19,8 @@ import java.util.Map;
 
 public class MinejagoClientEvents
 {
-    public static void registerAnimations()
-    {
-        //Set the player construct callback. It can be a lambda function.
-        // TODO: Fix missing class error
-//        PlayerAnimationAccess.REGISTER_ANIMATION_EVENT.register(MinejagoPlayerAnimator::registerPlayerAnimation);
-    }
-
     public static void onPlayerLoggedIn()
     {
         MinejagoClientUtils.refreshVip();
-    }
-
-    public static void onAddLayers(EntityModelSet models, Map<EntityType<?>, EntityRenderer<?>> renderers, Map<String, EntityRenderer<? extends Player>> playerRenderers)
-    {
-        for (String skin : playerRenderers.keySet()) {
-            LivingEntityRenderer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> player = (LivingEntityRenderer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>>) playerRenderers.get(skin);
-
-            if (player != null)
-            {
-                player.addLayer(new BetaTesterLayer<>(player, models));
-                player.addLayer(new DevLayer(player, models));
-            }
-        }
-
-        LivingEntityRenderer<Mob, PlayerModel<Mob>> wu = (LivingEntityRenderer<Mob, PlayerModel<Mob>>) renderers.get(MinejagoEntityTypes.WU.get());
-        if (wu != null)
-        {
-            wu.addLayer(new BetaTesterLayer<>(wu, models));
-            wu.addLayer(new DevLayer<>(wu, models));
-        }
     }
 }

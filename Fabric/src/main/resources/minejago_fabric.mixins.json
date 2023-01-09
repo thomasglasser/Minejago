@@ -7,7 +7,9 @@
     "dev.thomasglasser.minejago.world.item.WoodenNunchucksItemMixin",
     "dev.thomasglasser.minejago.world.item.armor.BlackGiItemMixin",
     "dev.thomasglasser.minejago.world.item.armor.SkeletalChestplateItemMixin",
-    "dev.thomasglasser.minejago.world.item.armor.TrainingGiItemMixin"
+    "dev.thomasglasser.minejago.world.item.armor.TrainingGiItemMixin",
+    "net.minecraft.servers.players.PlayerListMixin",
+    "net.minecraft.world.entity.EntityMixinFabric"
   ],
   "client": [
   ],

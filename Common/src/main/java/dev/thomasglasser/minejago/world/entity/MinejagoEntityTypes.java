@@ -9,12 +9,12 @@ import dev.thomasglasser.minejago.world.entity.projectile.ThrownIronShuriken;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownIronSpear;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Supplier;
 
 public class MinejagoEntityTypes
 {
@@ -80,8 +80,8 @@ public class MinejagoEntityTypes
             .clientTrackingRange(8)
             .build("nuckal"));
     
-    public static Map<EntityType, AttributeSupplier> getAllAttributes() {
-        Map<EntityType, AttributeSupplier> map = new HashMap<>();
+    public static Map<EntityType<? extends LivingEntity>, AttributeSupplier> getAllAttributes() {
+        Map<EntityType<? extends LivingEntity>, AttributeSupplier> map = new HashMap<>();
 
         map.put(MinejagoEntityTypes.WU.get(), Wu.createAttributes().build());
         map.put(MinejagoEntityTypes.KAI.get(), Kai.createAttributes().build());

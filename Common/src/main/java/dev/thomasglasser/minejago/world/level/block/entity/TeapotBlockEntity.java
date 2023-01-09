@@ -9,7 +9,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -93,7 +92,7 @@ public class TeapotBlockEntity extends BlockEntity implements IItemHolder, Namea
                     pBlockEntity.brewTime = 0;
                     pBlockEntity.brewing = false;
                     pBlockEntity.boiling = true;
-                    pLevel.playSound((Player) null, pPos, MinejagoSoundEvents.TEAPOT_WHISTLE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+                    pLevel.playSound(null, pPos, MinejagoSoundEvents.TEAPOT_WHISTLE.get(), SoundSource.BLOCKS, 100.0F, 1.0F);
                 } else if (pBlockEntity.temp < 100) {
                     pBlockEntity.brewing = false;
                 }

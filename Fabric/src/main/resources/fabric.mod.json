@@ -29,6 +29,15 @@
   "entrypoints": {
     "main": [
       "dev.thomasglasser.minejago.MinejagoFabric"
+    ],
+    "client": [
+      "dev.thomasglasser.minejago.MinejagoFabricClient"
+    ],
+    "terrablender": [
+      "dev.thomasglasser.minejago.world.level.biome.MinejagoFabricTerraBlenderApi"
+    ],
+    "cardinal-components": [
+      "dev.thomasglasser.minejago.world.level.storage.MinejagoFabricEntityComponents"
     ]
   },
   "mixins": [
@@ -53,6 +62,14 @@
   "suggests": {
     "lambdynamiclights": ">=2.2.0+1.19.3"
   },
-  "accessWidener" : "minejago.accesswidener"
+
+  "accessWidener" : "minejago.accesswidener",
+
+  "custom": {
+    "cardinal-components": [
+      "minejago:power",
+      "minejago:spinjitzu"
+    ]
+  }
 }
   

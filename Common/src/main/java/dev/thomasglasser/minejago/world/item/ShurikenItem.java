@@ -26,7 +26,6 @@ public class ShurikenItem extends SwordItem
             stack.hurtAndBreak(1, player, (p_43388_) -> {
                 p_43388_.broadcastBreakEvent(player.getUsedItemHand());
             });
-            //TODO: Thrown Shuriken
             ThrownIronShuriken thrownIronShuriken = new ThrownIronShuriken(pLevel, player, stack);
             thrownIronShuriken.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2.5F, 1.0F);
             if (player.getAbilities().instabuild) {
