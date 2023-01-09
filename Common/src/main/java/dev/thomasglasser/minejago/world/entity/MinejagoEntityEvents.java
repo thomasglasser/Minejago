@@ -6,7 +6,6 @@ import dev.thomasglasser.minejago.core.particles.MinejagoParticleUtils;
 import dev.thomasglasser.minejago.core.particles.SpinjitzuParticleOptions;
 import dev.thomasglasser.minejago.network.ClientboundRefreshVipDataPacket;
 import dev.thomasglasser.minejago.network.ClientboundStopAnimationPacket;
-import dev.thomasglasser.minejago.util.MinejagoPacketUtils;
 import dev.thomasglasser.minejago.network.ServerboundStartSpinjitzuPacket;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
@@ -18,7 +17,6 @@ import dev.thomasglasser.minejago.world.level.saveddata.maps.MinejagoMapDecorati
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
 import net.mehvahdjukaar.moonlight.api.map.MapHelper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;

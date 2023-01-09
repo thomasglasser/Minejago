@@ -127,7 +127,7 @@ processResources {
     properties.put("minecraft_version", minecraft_version)
     properties.put("next_minecraft_version", next_minecraft_version)
     properties.put("forge_version", forge_version)
-    properties.put("major_forge_version", major_forge_version)
+    properties.put("fml_version", fml_version)
     properties.put("playeranimator_version", playeranimator_version)
     properties.put("terrablender_version", terrablender_version)
     properties.put("dynamiclights_version", dynamiclights_version)
