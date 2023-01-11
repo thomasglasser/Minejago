@@ -121,26 +121,6 @@ tasks.withType(JavaCompile) {
 
 processResources {
     from project(":Common").sourceSets.main.resources
-
-    Map<String, String> properties = new HashMap<>()
-    properties.put("version", version)
-    properties.put("minecraft_version", minecraft_version)
-    properties.put("next_minecraft_version", next_minecraft_version)
-    properties.put("forge_version", forge_version)
-    properties.put("fml_version", fml_version)
-    properties.put("playeranimator_version", playeranimator_version)
-    properties.put("terrablender_version", terrablender_version)
-    properties.put("dynamiclights_version", dynamiclights_version)
-    properties.put("moonlight_version", moonlight_version)
-    properties.put("geckolib_version", geckolib_version)
-    properties.put("smartbrainlib_version", smartbrainlib_version)
-    properties.put("capabilitysyncer_version", capabilitysyncer_version)
-
-    properties.forEach((k, v) -> inputs.property(k, v))
-
-    filesMatching("META-INF/mods.toml") {
-        expand properties
-    }
 }
 
 

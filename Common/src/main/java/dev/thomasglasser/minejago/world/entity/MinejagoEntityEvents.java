@@ -52,7 +52,7 @@ public class MinejagoEntityEvents
                 if (spinjitzu.active()) {
                     if (serverPlayer.isCrouching()) {
                         Services.DATA.setSpinjitzuData(new SpinjitzuData(spinjitzu.unlocked(), false), serverPlayer);
-                        Services.NETWORK.sendToAllClients(new ClientboundStopAnimationPacket(serverPlayer.getUUID()), serverPlayer);
+                        Services.NETWORK.sendToAllClients(ClientboundStopAnimationPacket.class, ClientboundStopAnimationPacket.toBytes(serverPlayer.getUUID()), serverPlayer);
                     }
                     Power power = Services.DATA.getPowerData(player).power();
                     if (power != MinejagoPowers.NONE.get()) {
@@ -119,10 +119,10 @@ public class MinejagoEntityEvents
                 }
             } else if (spinjitzu.active()) {
                 Services.DATA.setSpinjitzuData(new SpinjitzuData(spinjitzu.unlocked(), false), serverPlayer);
-                Services.NETWORK.sendToAllClients(new ClientboundStopAnimationPacket(serverPlayer.getUUID()), serverPlayer);
+                Services.NETWORK.sendToAllClients(ClientboundStopAnimationPacket.class, ClientboundStopAnimationPacket.toBytes(serverPlayer.getUUID()), serverPlayer);
             }
         } else if (MinejagoKeyMappings.ACTIVATE_SPINJITZU.isDown()) {
-            Services.NETWORK.sendToServer(new ServerboundStartSpinjitzuPacket());
+            Services.NETWORK.sendToServer(ServerboundStartSpinjitzuPacket.class);
         }
     }
 
@@ -130,7 +130,7 @@ public class MinejagoEntityEvents
     {
         for (ServerPlayer serverPlayer : ((ServerLevel) player.getLevel()).getPlayers(serverPlayer -> true))
         {
-            Services.NETWORK.sendToAllClients(new ClientboundRefreshVipDataPacket(), serverPlayer);
+            Services.NETWORK.sendToAllClients(ClientboundRefreshVipDataPacket.class, serverPlayer);
         }
     }
 

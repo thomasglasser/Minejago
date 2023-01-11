@@ -11,6 +11,7 @@
     "net.minecraft.world.item.enchantment.EnchantmentMixin"
   ],
   "client": [
+    "net.minecraft.client.OptionsMixin",
     "net.minecraft.client.multiplayer.MinejagoClientLevelMixin"
   ],
   "injectors": {

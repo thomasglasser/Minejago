@@ -57,7 +57,7 @@ public class MinejagoClientUtils {
         displayDev = LayersConfig.DISPLAY_DEV.get() && MinejagoClientUtils.checkDev(uuid);
         displayBeta = LayersConfig.DISPLAY_BETA.get() && MinejagoClientUtils.checkBetaTester(uuid);
 
-        Services.NETWORK.sendToServer(new ServerboundChangeVipDataPacket(uuid, displayBeta, LayersConfig.BETA_CHOICE.get(), displayDev));
+        Services.NETWORK.sendToServer(ServerboundChangeVipDataPacket.class, ServerboundChangeVipDataPacket.toBytes(uuid, displayBeta, LayersConfig.BETA_CHOICE.get(), displayDev));
 
     }
 

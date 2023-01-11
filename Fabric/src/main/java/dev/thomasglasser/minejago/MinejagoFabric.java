@@ -1,13 +1,18 @@
 package dev.thomasglasser.minejago;
 
+import dev.thomasglasser.minejago.commands.MinejagoCommandEvents;
+import dev.thomasglasser.minejago.network.*;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityEvents;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotionBrewing;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -24,6 +29,8 @@ public class MinejagoFabric implements ModInitializer {
         registerEntityAttributes();
 
         MinejagoPotionBrewing.addMixes();
+
+        registerPackets();
     }
 
     private void registerEvents()
@@ -41,6 +48,10 @@ public class MinejagoFabric implements ModInitializer {
             MinejagoEntityEvents.onLivingAttack(DamageSource.playerAttack(player));
             return InteractionResult.PASS;
         }));
+        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) ->
+        {
+            MinejagoCommandEvents.onCommandsRegister(dispatcher);
+        });
     }
 
     private void registerEntityAttributes()
@@ -49,5 +60,12 @@ public class MinejagoFabric implements ModInitializer {
         {
             FabricDefaultAttributeRegistry.register(type, MinejagoEntityTypes.getAllAttributes().get(type));
         }
+    }
+
+    private void registerPackets() {
+        ServerPlayNetworking.registerGlobalReceiver(ServerboundChangeVipDataPacket.ID, (server, player, handler, buf, responseSender) ->
+                new ServerboundChangeVipDataPacket(buf).handle(player));
+        ServerPlayNetworking.registerGlobalReceiver(ServerboundStartSpinjitzuPacket.ID, (server, player, handler, buf, responseSender) ->
+                new ServerboundStartSpinjitzuPacket().handle(player));
     }
 }

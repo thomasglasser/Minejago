@@ -142,10 +142,6 @@ public class MinejagoForgeClientEvents {
             return -1;
         }, Items.LINGERING_POTION);
     }
-    public static void onRegisterKeyMappings(RegisterKeyMappingsEvent event)
-    {
-        event.register(MinejagoKeyMappings.ACTIVATE_SPINJITZU);
-    }
 
     public static void onAddLayers(EntityRenderersEvent.AddLayers event)
     {

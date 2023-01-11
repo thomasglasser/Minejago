@@ -53,7 +53,6 @@ public class MinejagoForge
         bus.addListener(MinejagoForgeClientEvents::onRegisterLayers);
         bus.addListener(MinejagoForgeClientEvents::registerModels);
         bus.addListener(MinejagoForgeClientEvents::registerClientReloadListeners);
-        bus.addListener(MinejagoForgeClientEvents::onRegisterKeyMappings);
         bus.addListener(MinejagoForgeClientEvents::onAddLayers);
         bus.addListener(MinejagoForgeClientEvents::onBuildCreativeTabContent);
     }
