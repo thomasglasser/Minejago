@@ -8,6 +8,7 @@
     "dev.thomasglasser.minejago.world.item.armor.BlackGiItemMixin",
     "dev.thomasglasser.minejago.world.item.armor.SkeletalChestplateItemMixin",
     "dev.thomasglasser.minejago.world.item.armor.TrainingGiItemMixin",
+    "net.minecraft.commands.CommandsMixin",
     "net.minecraft.servers.players.PlayerListMixin",
     "net.minecraft.world.entity.EntityMixinFabric"
   ],
