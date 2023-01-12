@@ -79,16 +79,6 @@ public class MinejagoFabricClient implements ClientModInitializer {
         registerEvents();
 
         registerPackets();
-
-        ClientPlayNetworking.registerGlobalReceiver(ClientboundSpawnParticlePacket.ID, (client, handler, buf, responseSender) ->
-        {
-            buf.retain();
-            client.execute(() ->
-            {
-                new ClientboundSpawnParticlePacket(buf).handle();
-                buf.release();
-            });
-        });
     }
 
     private void registerRenderers()
