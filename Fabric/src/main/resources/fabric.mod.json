@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "id": "minejago",
+  "version": "0.1.0",
+
+  "name": "Minejago",
+  "description": "Adds elements of the Ninjago franchise into Minecraft",
+  "authors": [
+    "Thomas Glasser"
+  ],
+  "contributors": [
+    "waifu_png_pl",
+    "Comerciante",
+    "Elysia",
+    "Watommeeeeeeeeee",
+    "Albert_1403",
+    "ChippiHeppu",
+    "Tslat"
+  ],
+  "contact": {
+    "homepage": "https://github.com/thomasglasser/Minejago",
+    "issues": "https://github.com/thomasglasser/Minejago/issues"
+  },
+
+  "license": "All Rights Reserved",
+  "icon": "assets/minejago/logo_1.0.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "dev.thomasglasser.minejago.MinejagoFabric"
+    ],
+    "client": [
+      "dev.thomasglasser.minejago.MinejagoFabricClient"
+    ],
+    "terrablender": [
+      "dev.thomasglasser.minejago.world.level.biome.MinejagoFabricTerraBlenderApi"
+    ],
+    "cardinal-components": [
+      "dev.thomasglasser.minejago.world.level.storage.MinejagoFabricEntityComponents"
+    ]
+  },
+  "mixins": [
+    "minejago_fabric.mixins.json",
+    "minejago_common.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.14.12",
+    "fabric": "*",
+    "minecraft": "1.19.3",
+    "java": ">=17",
+    "terrablender": ">=2.1.0.139",
+    "cardinal-components": ">=5.1.0",
+    "smartbrainlib": ">=1.7.4",
+    "forgeconfigapiport": ">=5.0.3"
+  },
+  "recommends": {
+    "player-animator": ">=0.4.1+1.19.3",
+    "reach-entity-attributes": ">=2.3.1"
+  },
+  "suggests": {
+    "lambdynamiclights": ">=2.2.0+1.19.3"
+  },
+
+  "accessWidener" : "minejago.accesswidener",
+
+  "custom": {
+    "cardinal-components": [
+      "minejago:power",
+      "minejago:spinjitzu"
+    ]
+  }
+}
+  

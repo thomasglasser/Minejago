@@ -1,0 +1,45 @@
+package dev.thomasglasser.minejago.network;
+
+import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.client.animation.definitions.ItemAnimations;
+import dev.thomasglasser.minejago.util.MinejagoClientUtils;
+import dev.thomasglasser.minejago.util.MinejagoPacketUtils;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+
+import java.util.UUID;
+
+public class ClientboundStartScytheAnimationPacket {
+    public static final ResourceLocation ID = Minejago.modLoc("clientbound_start_scythe_animation");
+
+    UUID uuid;
+    ItemAnimations.Animations startAnim;
+    ItemAnimations.Animations goAnim;
+
+    public ClientboundStartScytheAnimationPacket(FriendlyByteBuf buf) {
+        this.uuid = buf.readUUID();
+        this.startAnim = buf.readEnum(ItemAnimations.Animations.class);
+        this.goAnim = buf.readEnum(ItemAnimations.Animations.class);
+    }
+
+    public void toBytes(FriendlyByteBuf buf) {
+        buf.writeUUID(uuid);
+        buf.writeEnum(startAnim);
+        buf.writeEnum(goAnim);
+    }
+
+    public static FriendlyByteBuf toBytes(UUID uuid, ItemAnimations.Animations startAnim, ItemAnimations.Animations goAnim) {
+        FriendlyByteBuf buf = MinejagoPacketUtils.create();
+
+        buf.writeUUID(uuid);
+        buf.writeEnum(startAnim);
+        buf.writeEnum(goAnim);
+
+        return buf;
+    }
+
+    // ON CLIENT
+    public void handle() {
+        MinejagoClientUtils.startAnimation(startAnim.getAnimation(), goAnim != null ? goAnim.getAnimation() : null, MinejagoClientUtils.getClientPlayerByUUID(uuid));
+    }
+}

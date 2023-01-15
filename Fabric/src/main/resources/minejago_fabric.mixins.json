@@ -1,0 +1,21 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dev.thomasglasser.minejago.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "dev.thomasglasser.minejago.world.item.WoodenNunchucksItemMixin",
+    "dev.thomasglasser.minejago.world.item.armor.BlackGiItemMixin",
+    "dev.thomasglasser.minejago.world.item.armor.SkeletalChestplateItemMixin",
+    "dev.thomasglasser.minejago.world.item.armor.TrainingGiItemMixin",
+    "net.minecraft.commands.CommandsMixin",
+    "net.minecraft.servers.players.PlayerListMixin",
+    "net.minecraft.world.entity.EntityMixinFabric"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+  }
+  
