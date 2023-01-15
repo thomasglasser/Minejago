@@ -1,5 +1,6 @@
 package dev.thomasglasser.minejago.platform;
 
+import com.jamieswhiteshirt.reachentityattributes.ReachEntityAttributes;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.platform.services.IItemHelper;
@@ -21,7 +22,7 @@ public class FabricItemHelper implements IItemHelper
 
     @Override
     public Attribute getAttackRangeAttribute() {
-        return null; // TODO: Update when 1.19.3 version is released
+        return ReachEntityAttributes.ATTACK_RANGE;
     }
 
     @Override

@@ -17,7 +17,7 @@ public class MinejagoParticleUtils {
             ParticleOptions particle = new SpinjitzuParticleOptions(color1, scale);
             FriendlyByteBuf buf = ClientboundSpawnParticlePacket.toBytes(particle, player.getX(), player.getY() + up, player.getZ(), 0, 1, 0);
             Services.NETWORK.sendToAllClients(ClientboundSpawnParticlePacket.class, buf, player);
-            scale *= toc ? 1.1f : 1.2f;
+            scale *= toc ? 1.1f : 1.18f;
             up += 0.2f;
         }
         scale = toc && color1 == SpinjitzuParticleOptions.ELEMENT_GOLD ? 2.2f : 2f;
@@ -26,7 +26,7 @@ public class MinejagoParticleUtils {
             ParticleOptions particle = new SpinjitzuParticleOptions(color2, scale);
             FriendlyByteBuf buf = ClientboundSpawnParticlePacket.toBytes(particle, player.getX(), player.getY() + up, player.getZ(), 0, 1, 0);
             Services.NETWORK.sendToAllClients(ClientboundSpawnParticlePacket.class, buf, player);
-            scale *= toc ? 1.1f : 1.2f;
+            scale *= toc ? 1.1f : 1.18f;
             up += 0.2f;
         }
     }

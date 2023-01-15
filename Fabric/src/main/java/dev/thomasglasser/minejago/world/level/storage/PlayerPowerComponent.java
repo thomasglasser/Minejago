@@ -35,13 +35,11 @@ public class PlayerPowerComponent implements PowerComponent, PlayerComponent {
         if (tag.contains("Power")) {
             Power power = MinejagoRegistries.POWER.get().get(ResourceLocation.of(tag.getString("Power"), ':'));
             this.power = power != null ? power : MinejagoPowers.NONE.get();
-            System.out.println("read " + power);
         }
     }
 
     @Override
     public void writeToNbt(CompoundTag tag) {
-        System.out.println("write " + MinejagoRegistries.POWER.get().getKey(power).toString());
         tag.putString("Power", MinejagoRegistries.POWER.get().getKey(power).toString());
     }
 
