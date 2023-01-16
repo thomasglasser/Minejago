@@ -27,6 +27,8 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.decoration.Painting;
 import net.minecraft.world.entity.npc.InventoryCarrier;
 import net.minecraft.world.entity.player.Inventory;
@@ -50,9 +52,13 @@ public class MinejagoEntityEvents
 
             if (spinjitzu.unlocked() || true /* TODO: Unlock system */) {
                 if (spinjitzu.active()) {
-                    if (serverPlayer.isCrouching()) {
+                    if (serverPlayer.isCrouching() || serverPlayer.getVehicle() != null || serverPlayer.isVisuallySwimming() || serverPlayer.isUnderWater()) {
                         Services.DATA.setSpinjitzuData(new SpinjitzuData(spinjitzu.unlocked(), false), serverPlayer);
                         Services.NETWORK.sendToAllClients(ClientboundStopAnimationPacket.class, ClientboundStopAnimationPacket.toBytes(serverPlayer.getUUID()), serverPlayer);
+                        AttributeInstance speed = serverPlayer.getAttribute(Attributes.MOVEMENT_SPEED);
+                        if (speed != null && speed.hasModifier(SpinjitzuData.SPEED_MODIFIER)) speed.removeModifier(SpinjitzuData.SPEED_MODIFIER);
+                        AttributeInstance kb = serverPlayer.getAttribute(Attributes.ATTACK_KNOCKBACK);
+                        if (kb != null && kb.hasModifier(SpinjitzuData.KNOCKBACK_MODIFIER)) kb.removeModifier(SpinjitzuData.KNOCKBACK_MODIFIER);
                     }
                     Power power = Services.DATA.getPowerData(player).power();
                     if (power != MinejagoPowers.NONE.get()) {
@@ -120,6 +126,8 @@ public class MinejagoEntityEvents
             } else if (spinjitzu.active()) {
                 Services.DATA.setSpinjitzuData(new SpinjitzuData(spinjitzu.unlocked(), false), serverPlayer);
                 Services.NETWORK.sendToAllClients(ClientboundStopAnimationPacket.class, ClientboundStopAnimationPacket.toBytes(serverPlayer.getUUID()), serverPlayer);
+                serverPlayer.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(SpinjitzuData.SPEED_MODIFIER);
+                serverPlayer.getAttribute(Attributes.ATTACK_KNOCKBACK).removeModifier(SpinjitzuData.KNOCKBACK_MODIFIER);
             }
         } else if (MinejagoKeyMappings.ACTIVATE_SPINJITZU.isDown()) {
             Services.NETWORK.sendToServer(ServerboundStartSpinjitzuPacket.class);

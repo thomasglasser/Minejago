@@ -1,6 +1,10 @@
 package dev.thomasglasser.minejago.world.level.storage;
 
-import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
-import dev.thomasglasser.minejago.world.entity.powers.Power;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
-public record SpinjitzuData(boolean unlocked, boolean active) {}
+import java.util.UUID;
+
+public record SpinjitzuData(boolean unlocked, boolean active) {
+    public static final AttributeModifier SPEED_MODIFIER = new AttributeModifier(UUID.randomUUID(), "Spinjitzu speed", 1.5, AttributeModifier.Operation.MULTIPLY_BASE);
+    public static final AttributeModifier KNOCKBACK_MODIFIER = new AttributeModifier(UUID.randomUUID(), "Spinjitzu knockback", 5.0, AttributeModifier.Operation.ADDITION);
+}

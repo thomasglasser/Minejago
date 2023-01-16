@@ -10,7 +10,8 @@
     "dev.thomasglasser.minejago.world.item.armor.TrainingGiItemMixin",
     "net.minecraft.commands.CommandsMixin",
     "net.minecraft.servers.players.PlayerListMixin",
-    "net.minecraft.world.entity.EntityMixinFabric"
+    "net.minecraft.world.entity.EntityMixinFabric",
+    "net.minecraft.world.entity.PlayerMixinFabric"
   ],
   "client": [
   ],
