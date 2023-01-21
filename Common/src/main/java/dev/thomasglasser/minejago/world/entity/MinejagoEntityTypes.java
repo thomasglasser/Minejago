@@ -83,15 +83,15 @@ public class MinejagoEntityTypes
     public static Map<EntityType<? extends LivingEntity>, AttributeSupplier> getAllAttributes() {
         Map<EntityType<? extends LivingEntity>, AttributeSupplier> map = new HashMap<>();
 
-        map.put(MinejagoEntityTypes.WU.get(), Wu.createAttributes().build());
-        map.put(MinejagoEntityTypes.KAI.get(), Kai.createAttributes().build());
-        map.put(MinejagoEntityTypes.NYA.get(), Character.createAttributes().build());
-        map.put(MinejagoEntityTypes.COLE.get(), Cole.createAttributes().build());
-        map.put(MinejagoEntityTypes.JAY.get(), Jay.createAttributes().build());
-        map.put(MinejagoEntityTypes.ZANE.get(), Zane.createAttributes().build());
-        map.put(MinejagoEntityTypes.UNDERWORLD_SKELETON.get(), UnderworldSkeleton.createAttributes().build());
-        map.put(MinejagoEntityTypes.KRUNCHA.get(), Kruncha.createAttributes().build());
-        map.put(MinejagoEntityTypes.NUCKAL.get(), Nuckal.createAttributes().build());
+        map.put(WU.get(), Wu.createAttributes().build());
+        map.put(KAI.get(), Kai.createAttributes().build());
+        map.put(NYA.get(), Character.createAttributes().build());
+        map.put(COLE.get(), Cole.createAttributes().build());
+        map.put(JAY.get(), Jay.createAttributes().build());
+        map.put(ZANE.get(), Zane.createAttributes().build());
+        map.put(UNDERWORLD_SKELETON.get(), UnderworldSkeleton.createAttributes().build());
+        map.put(KRUNCHA.get(), Kruncha.createAttributes().build());
+        map.put(NUCKAL.get(), Nuckal.createAttributes().build());
 
         return map;
     }

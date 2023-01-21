@@ -41,7 +41,7 @@ public class MinejagoForge
 
     private void addModListeners(IEventBus bus)
     {
-        bus.addListener(MinejagoForgeClientEvents::onConfigChanged);
+        bus.addListener(MinejagoForgeClientEvents::onClientConfigChanged);
         bus.addListener(MinejagoForgeEntityEvents::onEntityAttributeCreation);
     }
 

@@ -9,7 +9,6 @@ import dev.thomasglasser.minejago.client.renderer.entity.*;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.BetaTesterLayer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.DevLayer;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
-import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
@@ -19,31 +18,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
-import net.minecraft.world.item.alchemy.Potions;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.registries.ForgeRegistries;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 public class MinejagoForgeClientEvents {
 
@@ -170,7 +154,7 @@ public class MinejagoForgeClientEvents {
         event.acceptAll(MinejagoItems.getItemsForTab(event.getTab()));
     }
 
-    public static void onConfigChanged(ModConfigEvent event)
+    public static void onClientConfigChanged(ModConfigEvent event)
     {
         if (event.getConfig().getType() == ModConfig.Type.CLIENT && Minecraft.getInstance().player != null)
         {
