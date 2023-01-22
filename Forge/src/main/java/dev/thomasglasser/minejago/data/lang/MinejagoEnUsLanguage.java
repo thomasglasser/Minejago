@@ -3,6 +3,8 @@ package dev.thomasglasser.minejago.data.lang;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.commands.arguments.PowerArgument;
+import dev.thomasglasser.minejago.data.advancements.packs.MinejagoAdventureAdvancementKeys;
+import dev.thomasglasser.minejago.data.advancements.packs.MinejagoStoryAdvancementKeys;
 import dev.thomasglasser.minejago.server.commands.PowerCommand;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
@@ -175,6 +177,11 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add(MinejagoPowers.LIGHTNING.get(), "Lightning");
         add(MinejagoPowers.ICE.get(), "Ice");
         add(MinejagoPowers.NONE.get(), "None");
+
+        addAdvancement(MinejagoAdventureAdvancementKeys.CATEGORY, MinejagoAdventureAdvancementKeys.KILL_A_SKULKIN, "Redead", "Kill a Skulkin Warrior");
+        addAdvancement(MinejagoAdventureAdvancementKeys.CATEGORY, MinejagoAdventureAdvancementKeys.COLLECT_ALL_SKELETAL_CHESTPLATES, "It's Always You Four Colors", "Collect all 4 Skeletal Chestplate variants");
+        addAdvancement(MinejagoStoryAdvancementKeys.CATEGORY, MinejagoStoryAdvancementKeys.ROOT, "Minejago", "Long before time had a name...");
+        addAdvancement(MinejagoStoryAdvancementKeys.CATEGORY, MinejagoStoryAdvancementKeys.INTERACT_WITH_MAIN_SIX, "Meet N' Greet", "Interact with Wu, Nya, and the Four Ninja");
     }
 
     public void addDesc(Item item, String desc)
@@ -225,5 +232,13 @@ public class MinejagoEnUsLanguage extends LanguageProvider
     public void add(Power power, String name)
     {
         add(power.getDescriptionId(), name);
+    }
+
+    public void addAdvancement(String category, String key, String titleString, String descString) {
+        String title = "advancement." + Minejago.MOD_ID + "." + category + "." + key + ".title";
+        String desc = "advancement." + Minejago.MOD_ID + "." + category + "." + key + ".desc";
+
+        add(title, titleString);
+        add(desc, descString);
     }
 }

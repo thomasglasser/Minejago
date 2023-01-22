@@ -16,4 +16,4 @@ accessible  field   net/minecraft/world/item/CreativeModeTabs                   
 accessible  field   net/minecraft/world/item/CreativeModeTabs                               SPAWN_EGGS          Lnet/minecraft/world/item/CreativeModeTab;
 accessible  field   net/minecraft/world/item/CreativeModeTabs                               OP_BLOCKS           Lnet/minecraft/world/item/CreativeModeTab;
 accessible  class   net/minecraft/world/level/block/entity/BlockEntityType$BlockEntitySupplier
-accessible  method  net/minecraft/client/renderer/entity/LivingEntityRenderer               addLayer           (Lnet/minecraft/client/renderer/entity/layers/RenderLayer;)Z
+accessible  method  net/minecraft/client/renderer/entity/LivingEntityRenderer               addLayer            (Lnet/minecraft/client/renderer/entity/layers/RenderLayer;)Z

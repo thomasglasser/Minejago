@@ -1,5 +1,6 @@
 package dev.thomasglasser.minejago.data;
 
+import dev.thomasglasser.minejago.data.advancements.MinejagoAdvancementProvider;
 import dev.thomasglasser.minejago.data.blockstates.MinejagoBlockStates;
 import dev.thomasglasser.minejago.data.lang.MinejagoEnUsLanguage;
 import dev.thomasglasser.minejago.data.loot.MinejagoLootTables;
@@ -8,6 +9,7 @@ import dev.thomasglasser.minejago.data.recipes.MinejagoRecipes;
 import dev.thomasglasser.minejago.data.sounds.MinejagoSoundDefinitions;
 import dev.thomasglasser.minejago.data.tags.MinejagoBannerPatternTagsProvider;
 import dev.thomasglasser.minejago.data.tags.MinejagoBlockTagsProvider;
+import dev.thomasglasser.minejago.data.tags.MinejagoEntityTypeTagsProvider;
 import dev.thomasglasser.minejago.data.tags.MinejagoItemTagsProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
@@ -38,6 +40,8 @@ public class MinejagoDataGenerators
         generator.addProvider(onServer, blockTags);
         generator.addProvider(onServer, new MinejagoBannerPatternTagsProvider(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(onServer, new MinejagoLootTables(packOutput));
+        generator.addProvider(onServer, new MinejagoAdvancementProvider(packOutput, lookupProvider, existingFileHelper));
+        generator.addProvider(onServer, new MinejagoEntityTypeTagsProvider(packOutput, lookupProvider, existingFileHelper));
 
         //Client
         generator.addProvider(onClient, new MinejagoItemModels(packOutput, existingFileHelper));
