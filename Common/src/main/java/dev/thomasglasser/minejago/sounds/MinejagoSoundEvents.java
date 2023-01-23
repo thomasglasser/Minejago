@@ -11,7 +11,7 @@ public class MinejagoSoundEvents
 {
     public static final RegistrationProvider<SoundEvent> SOUND_EVENTS = RegistrationProvider.get(Registries.SOUND_EVENT, Minejago.MOD_ID);
 
-    public static final RegistryObject<SoundEvent> TEAPOT_WHISTLE = SOUND_EVENTS.register("teapot_whistle", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Minejago.MOD_ID, "teapot_whistle")));
+    public static final RegistryObject<SoundEvent> TEAPOT_WHISTLE = SOUND_EVENTS.register("teapot_whistle", () -> SoundEvent.createVariableRangeEvent(Minejago.modLoc("teapot_whistle")));
 
     public static void init() {}
 }
