@@ -1,4 +1,11 @@
 {
+  "advancement.minejago.adventure.collect_all_skeletal_chestplates.desc": "Sammle alle 4 Skelett-Brustplattenvarianten",
+  "advancement.minejago.adventure.collect_all_skeletal_chestplates.title": "Es sind immer 4 Farben",
+  "advancement.minejago.adventure.kill_a_skulkin.desc": "Töte einen Skelettkrieger",
+  "advancement.minejago.story.interact_with_main_six.desc": "Rede mit Wu, Nya und den vier Ninja",
+  "advancement.minejago.story.interact_with_main_six.title": "Meet N´Greet",
+  "advancement.minejago.story.root.desc": "Lange bevor die Zeit einen Namen hatte...",
+  "advancement.minejago.story.root.title": "Minejago",
   "argument.minejago.power.not_found": "Unbekannte Kraft",
   "biome.minejago.high_mountains": "Berge der unmöglichen Höhe",
   "block.minecraft.banner.minejago.edge_lines.black": "Schwarze Kantenlinien",
