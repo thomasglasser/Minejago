@@ -27,6 +27,8 @@ import java.util.UUID;
 public class MinejagoClientUtils {
     private static final HashMap<Player, VipData> vipData = new HashMap<>();
 
+    private MinejagoClientUtils() {}
+
     public static AbstractClientPlayer getClientPlayerByUUID(UUID uuid) {
         return (AbstractClientPlayer) Minecraft.getInstance().level.getPlayerByUUID(uuid);
     }

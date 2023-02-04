@@ -25,4 +25,9 @@ public class TrainingGiItem extends PoweredArmorItem implements IFabricGeoItem
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return cache;
     }
+
+    @Override
+    public boolean isSkintight() {
+        return true;
+    }
 }

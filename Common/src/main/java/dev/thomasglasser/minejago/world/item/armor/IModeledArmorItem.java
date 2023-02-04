@@ -14,4 +14,6 @@ public interface IModeledArmorItem extends GeoItem
 
     @Override
     AnimatableInstanceCache getAnimatableInstanceCache();
+
+    boolean isSkintight();
 }

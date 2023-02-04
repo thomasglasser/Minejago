@@ -12,6 +12,8 @@
   ],
   "client": [
     "net.minecraft.client.OptionsMixin",
+    "net.minecraft.client.model.HumanoidModelMixin",
+    "net.minecraft.client.model.PlayerModelMixin",
     "net.minecraft.client.multiplayer.MinejagoClientLevelMixin"
   ],
   "injectors": {

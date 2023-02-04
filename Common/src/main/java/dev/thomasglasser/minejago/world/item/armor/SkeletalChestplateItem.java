@@ -46,6 +46,11 @@ public class SkeletalChestplateItem extends ArmorItem implements IModeledArmorIt
         return cache;
     }
 
+    @Override
+    public boolean isSkintight() {
+        return false;
+    }
+
     public Supplier<Object> getRenderProvider() {
         return null;
     }

@@ -9,9 +9,6 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-
 public class BlackGiItem extends ArmorItem implements IModeledArmorItem, IFabricGeoItem {
     private AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
@@ -27,5 +24,10 @@ public class BlackGiItem extends ArmorItem implements IModeledArmorItem, IFabric
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return cache;
+    }
+
+    @Override
+    public boolean isSkintight() {
+        return true;
     }
 }
