@@ -38,7 +38,7 @@ public class MinejagoBlockEntityWithoutLevelRenderer extends BlockEntityWithoutL
             if (!(transformType == ItemTransforms.TransformType.GUI || transformType == ItemTransforms.TransformType.FIXED || transformType == ItemTransforms.TransformType.GROUND))
             {
                 poseStack.scale(1.0F, -1.0F, -1.0F);
-                VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, this.scytheModel.renderType(Minejago.modLoc("textures/entity/iron_scythe.png")), true, stack.hasFoil());
+                VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, this.scytheModel.renderType(Minejago.modLoc("textures/entity/iron_scythe.png")), false, stack.hasFoil());
                 this.scytheModel.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay, 1.0F, 1.0F, 1.0F, 1.0F);
             }
             else
@@ -51,7 +51,7 @@ public class MinejagoBlockEntityWithoutLevelRenderer extends BlockEntityWithoutL
             if (!(transformType == ItemTransforms.TransformType.GUI || transformType == ItemTransforms.TransformType.FIXED || transformType == ItemTransforms.TransformType.GROUND))
             {
                 poseStack.scale(1.0F, -1.0F, -1.0F);
-                VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, this.bambooStaffModel.renderType(Minejago.modLoc("textures/entity/bamboo_staff.png")), true, stack.hasFoil());
+                VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, this.bambooStaffModel.renderType(Minejago.modLoc("textures/entity/bamboo_staff.png")), false, stack.hasFoil());
                 this.bambooStaffModel.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay, 1.0F, 1.0F, 1.0F, 1.0F);
             }
             else
@@ -64,7 +64,7 @@ public class MinejagoBlockEntityWithoutLevelRenderer extends BlockEntityWithoutL
             if (!(transformType == ItemTransforms.TransformType.GUI || transformType == ItemTransforms.TransformType.FIXED || transformType == ItemTransforms.TransformType.GROUND))
             {
                 poseStack.scale(1.0F, -1.0F, -1.0F);
-                VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, this.scytheModel.renderType(Minejago.modLoc("textures/entity/scythe_of_quakes.png")), true, stack.hasFoil());
+                VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, this.scytheModel.renderType(Minejago.modLoc("textures/entity/scythe_of_quakes.png")), false, stack.hasFoil());
                 this.scytheModel.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay, 1.0F, 1.0F, 1.0F, 1.0F);
             }
             else
@@ -77,7 +77,7 @@ public class MinejagoBlockEntityWithoutLevelRenderer extends BlockEntityWithoutL
             if (!(transformType == ItemTransforms.TransformType.GUI || transformType == ItemTransforms.TransformType.FIXED || transformType == ItemTransforms.TransformType.GROUND))
             {
                 poseStack.scale(1.0F, -1.0F, -1.0F);
-                VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, this.spearModel.renderType(Minejago.modLoc("textures/entity/iron_spear.png")), true, stack.hasFoil());
+                VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, this.spearModel.renderType(Minejago.modLoc("textures/entity/iron_spear.png")), false, stack.hasFoil());
                 this.spearModel.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay, 1.0F, 1.0F, 1.0F, 1.0F);
             }
             else
