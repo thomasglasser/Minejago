@@ -3,6 +3,7 @@
   "minVersion": "0.8",
   "package": "dev.thomasglasser.minejago.mixin",
   "compatibilityLevel": "JAVA_17",
+  "refmap": "minejago.refmap.json",
   "mixins": [
     "dev.thomasglasser.minejago.world.item.WoodenNunchucksItemMixin",
     "dev.thomasglasser.minejago.world.item.armor.BlackGiItemMixin",

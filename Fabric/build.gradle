@@ -43,9 +43,12 @@ dependencies {
     modImplementation "maven.modrinth:jade:${jade_fabric_version}"
 
     include modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${playeranimator_version}+${minecraft_version}")
-    include modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-api:${cca_version}")
     include modImplementation("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forgeconfigapiport_version}")
     include modImplementation("com.jamieswhiteshirt:reach-entity-attributes:$reachentityattributes_version")
+    include modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-api:${cca_version}")
+
+    include("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cca_version}")
+    include("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cca_version}")
 }
 
 loom {

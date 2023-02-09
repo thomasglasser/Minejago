@@ -66,5 +66,13 @@ public class MinejagoRecipes extends RecipeProvider {
                 .group(Minejago.MOD_ID)
                 .unlockedBy("has_chain", has(Items.CHAIN));
         woodenNunchucks.save(writer);
+        ShapedRecipeBuilder bambooStaff = ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, MinejagoItems.BAMBOO_STAFF.get(), 1)
+                .pattern(" o ")
+                .pattern(" o ")
+                .pattern(" o ")
+                .define('o', Items.BAMBOO)
+                .group(Minejago.MOD_ID)
+                .unlockedBy("has_bamboo", has(Items.BAMBOO));
+        bambooStaff.save(writer);
     }
 }

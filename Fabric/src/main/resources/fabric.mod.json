@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "minejago",
-  "version": "00e01a",
+  "version": "00e01a-dev",
 
   "name": "Minejago",
   "description": "Adds elements of the Ninjago franchise into Minecraft",
@@ -11,7 +11,7 @@
   "contributors": [
     "waifu_png_pl",
     "Comerciante",
-    "Elysia",
+    "Tir-Far-Thoinn",
     "Watommeeeeeeeeee",
     "Albert_1403",
     "ChippiHeppu",
@@ -53,6 +53,7 @@
     "terrablender": ">=2.1.0.139",
     "cardinal-components": ">=5.1.0",
     "smartbrainlib": ">=1.7.4",
+    "geckolib": ">=4.0.3",
     "forgeconfigapiport": ">=5.0.7"
   },
   "recommends": {

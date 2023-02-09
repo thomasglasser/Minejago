@@ -11,7 +11,6 @@ registrationUtils {
     }
 }
 
-
 subprojects {
     
     apply plugin: 'java'

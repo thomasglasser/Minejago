@@ -17,6 +17,12 @@ public class PlayerModelMixin<T extends LivingEntity> extends HumanoidModel<T> {
 
     @Shadow @Final public ModelPart rightSleeve;
 
+    @Shadow @Final public ModelPart jacket;
+
+    @Shadow @Final public ModelPart rightPants;
+
+    @Shadow @Final public ModelPart leftPants;
+
     public PlayerModelMixin(ModelPart modelPart) {
         super(modelPart);
     }
@@ -27,6 +33,16 @@ public class PlayerModelMixin<T extends LivingEntity> extends HumanoidModel<T> {
         {
             this.leftSleeve.visible = false;
             this.rightSleeve.visible = false;
+            this.jacket.visible = false;
+        }
+        if (entity.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof IModeledArmorItem iModeledArmorItem && iModeledArmorItem.isSkintight())
+        {
+            this.hat.visible = false;
+        }
+        if (entity.getItemBySlot(EquipmentSlot.FEET).getItem() instanceof IModeledArmorItem iModeledArmorBoots && iModeledArmorBoots.isSkintight() || entity.getItemBySlot(EquipmentSlot.LEGS).getItem() instanceof IModeledArmorItem iModeledArmorLeggings && iModeledArmorLeggings.isSkintight())
+        {
+            this.rightPants.visible = false;
+            this.leftPants.visible = false;
         }
         super.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTick);
     }

@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(Enchantment.class)
 public class EnchantmentMixin
 {
-    @Inject(method = "canEnchant", at = @At(value = "RETURN"), cancellable = true)
+    @Inject(method = "canEnchant", at = @At(value = "HEAD"), cancellable = true)
     void canEnchant(ItemStack stack, CallbackInfoReturnable<Boolean> callback)
     {
         if (stack.getItem() instanceof IEnchantable enchantable && enchantable.canEnchant((Enchantment)(Object)this, stack))

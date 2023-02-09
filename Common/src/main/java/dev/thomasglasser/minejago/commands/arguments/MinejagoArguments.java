@@ -6,6 +6,7 @@ import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.registration.RegistrationProvider;
 import dev.thomasglasser.minejago.registration.RegistryObject;
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
+import net.minecraft.commands.synchronization.ArgumentTypeInfos;
 import net.minecraft.commands.synchronization.SingletonArgumentInfo;
 import net.minecraft.core.registries.Registries;
 
@@ -17,7 +18,7 @@ public class MinejagoArguments
     public static final RegistryObject<SingletonArgumentInfo<PowerArgument>> POWER_ARGUMENT = register("power", PowerArgument.class, () -> SingletonArgumentInfo.contextFree(PowerArgument::power));
 
     private static <A extends ArgumentType<?>, T extends ArgumentTypeInfo.Template<A>, I extends ArgumentTypeInfo<A, T>> RegistryObject<I> register(String id, Class<A> argumentClass, Supplier<I> argumentType) {
-        Services.COMMAND.registerArgument(id, argumentClass, argumentType::get);
+        ArgumentTypeInfos.BY_CLASS.put(argumentClass, argumentType.get());
         return ARGUMENTS.register(id, argumentType);
     }
 

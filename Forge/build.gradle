@@ -79,6 +79,10 @@ minecraft {
     }
 }
 
+jarJar.enable()
+
+reg.configureJarTask(tasks.jarJar)
+
 dependencies {
     // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft', it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
@@ -104,7 +108,7 @@ dependencies {
     implementation fg.deobf("curse.maven:smartbrainlib-661293:${smartbrainlib_forge_id}-sources-${smartbrainlib_sources_forge_id}")
     implementation fg.deobf("maven.modrinth:jade:${jade_forge_version}")
 
-    jarJar(group: "dev._100media.capabilitysyncer", name: "capabilitysyncer", version: "[${capabilitysyncer_version},${next_minecraft_version})")
+    jarJar(group: "dev._100media.capabilitysyncer", name: "capabilitysyncer", version: "[${major_minecraft_version}-${capabilitysyncer_version},1.20-4.0.0)")
 }
 
 mixin {
@@ -122,10 +126,6 @@ processResources {
     from project(":Common").sourceSets.main.resources
 }
 
-
-
-jar.finalizedBy('reobfJar')
-
 publishing {
     publications {
         mavenJava(MavenPublication) {
@@ -141,3 +141,14 @@ publishing {
         }
     }
 }
+
+jar{
+    classifier = 'slim'
+}
+jar.finalizedBy('reobfJar')
+
+reobf { jarJar {} }
+tasks.jarJar {
+    classifier = ''
+}
+tasks.jarJar.finalizedBy('reobfJarJar')
