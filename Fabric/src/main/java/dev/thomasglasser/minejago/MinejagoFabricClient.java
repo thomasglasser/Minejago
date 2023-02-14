@@ -88,7 +88,7 @@ public class MinejagoFabricClient implements ClientModInitializer {
 
         EntityRendererRegistry.register(MinejagoEntityTypes.WU.get(), CharacterRenderer::new);
         EntityRendererRegistry.register(MinejagoEntityTypes.KAI.get(), CharacterRenderer::new);
-        EntityRendererRegistry.register(MinejagoEntityTypes.NYA.get(), CharacterRenderer::new);
+        EntityRendererRegistry.register(MinejagoEntityTypes.NYA.get(), (context) -> new CharacterRenderer<>(context, true));
         EntityRendererRegistry.register(MinejagoEntityTypes.JAY.get(), CharacterRenderer::new);
         EntityRendererRegistry.register(MinejagoEntityTypes.COLE.get(), CharacterRenderer::new);
         EntityRendererRegistry.register(MinejagoEntityTypes.ZANE.get(), CharacterRenderer::new);
