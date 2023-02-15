@@ -56,6 +56,7 @@ public class ThrownIronShuriken extends AbstractArrow
 
         if (this.inGroundTime > 4) {
             this.dealtDamage = true;
+            level.broadcastEntityEvent(this, (byte) 100);
         }
 
         if (!this.dealtDamage && this.tickCount > 40)
@@ -72,14 +73,9 @@ public class ThrownIronShuriken extends AbstractArrow
             if (this.position().closerThan(pos, 2))
             {
                 this.setNoGravity(false);
-                while (true)
-                {
+                do {
                     pos = pos.subtract(0, 1, 0);
-                    if (!level.getBlockState(new BlockPos(pos)).isAir())
-                    {
-                        break;
-                    }
-                }
+                } while (level.getBlockState(new BlockPos(pos)).isAir());
             }
         }
         else {
@@ -192,5 +188,15 @@ public class ThrownIronShuriken extends AbstractArrow
 
     public boolean hasDealtDamage() {
         return dealtDamage;
+    }
+
+    @Override
+    public void handleEntityEvent(byte id) {
+        if (id == 100)
+        {
+            this.dealtDamage = true;
+        }
+        else
+            super.handleEntityEvent(id);
     }
 }
