@@ -93,16 +93,20 @@ dependencies {
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
+    compileOnly fg.deobf("vazkii.patchouli:Patchouli:${minecraft_version}-${patchouli_version}:api")
+
     runtimeOnly fg.deobf("me.shedaniel:RoughlyEnoughItems-forge:$rei_version")
     runtimeOnly fg.deobf("me.shedaniel.cloth:cloth-config-forge:$cloth_config_version")
     runtimeOnly fg.deobf("dev.architectury:architectury-forge:$architectury_version")
     runtimeOnly fg.deobf("maven.modrinth:huge-structure-blocks:${hugestructureblocks_version}")
     runtimeOnly fg.deobf("curse.maven:worldedit-225608:${worldedit_id}")
+    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${minecraft_version}-${patchouli_version}")
 
     implementation fg.deobf("dev.kosmx.player-anim:player-animation-lib-forge:${playeranimator_version}+${minecraft_version}")
     implementation fg.deobf("com.github.glitchfiend:TerraBlender-forge:${minecraft_version}-${terrablender_version}")
     implementation fg.deobf("curse.maven:dynamiclights-227874:${dynamiclights_id}")
     implementation fg.deobf("curse.maven:moonlight-499980:${moonlight_forge_id}")
+    implementation fg.deobf("curse.maven:ptd-585667:${ptd_id}")
     implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}")
     implementation fg.deobf("dev._100media.capabilitysyncer:capabilitysyncer:${major_minecraft_version}-${capabilitysyncer_version}")
     implementation fg.deobf("curse.maven:smartbrainlib-661293:${smartbrainlib_forge_id}-sources-${smartbrainlib_sources_forge_id}")

@@ -41,6 +41,7 @@ dependencies {
     modImplementation "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}"
     modImplementation "curse.maven:smartbrainlib-661293:${smartbrainlib_fabric_id}-sources-${smartbrainlib_sources_fabric_id}"
     modImplementation "maven.modrinth:jade:${jade_fabric_version}"
+    modImplementation "vazkii.patchouli:Patchouli:${minecraft_version}-${patchouli_version}-FABRIC"
 
     include modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${playeranimator_version}+${minecraft_version}")
     include modImplementation("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forgeconfigapiport_version}")
