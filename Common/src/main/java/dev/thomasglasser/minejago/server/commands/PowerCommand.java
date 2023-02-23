@@ -29,7 +29,7 @@ public class PowerCommand
                 .executes(context ->
                 {
                     PowerData powerData = Services.DATA.getPowerData(context.getSource().getPlayer());
-                    context.getSource().sendSuccess(Component.translatable(QUERY, Component.translatable(powerData.power().getDescriptionId())), false);
+                    context.getSource().sendSuccess(Component.translatable(QUERY, Component.translatable(powerData.power().getId().toLanguageKey("power"))), false);
                     return 1;
                 })
                 .then(Commands.argument("power", PowerArgument.power())
@@ -40,13 +40,13 @@ public class PowerCommand
 
     private static void logPowerChange(CommandSourceStack pSource, ServerPlayer pPlayer, Power power) {
         if (pSource.getEntity() == pPlayer) {
-            pSource.sendSuccess(Component.translatable(SUCCESS_SELF, Component.translatable(power.getDescriptionId())), true);
+            pSource.sendSuccess(Component.translatable(SUCCESS_SELF, Component.translatable(power.getId().toLanguageKey("power"))), true);
         } else {
             if (pSource.getLevel().getGameRules().getBoolean(GameRules.RULE_SENDCOMMANDFEEDBACK)) {
-                pPlayer.sendSystemMessage(Component.translatable(CHANGED, Component.translatable(power.getDescriptionId())));
+                pPlayer.sendSystemMessage(Component.translatable(CHANGED, Component.translatable(power.getId().toLanguageKey("power"))));
             }
 
-            pSource.sendSuccess(Component.translatable(SUCCESS_OTHER, pPlayer.getDisplayName(), Component.translatable(power.getDescriptionId())), true);
+            pSource.sendSuccess(Component.translatable(SUCCESS_OTHER, pPlayer.getDisplayName(), Component.translatable(power.getId().toLanguageKey("power"))), true);
         }
 
     }

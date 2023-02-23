@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowersConfig;
 import dev.thomasglasser.minejago.world.entity.powers.Power;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;

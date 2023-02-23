@@ -1,0 +1,14 @@
+{
+  "alt_spinjitzu_color": [
+    170.0,
+    0.0,
+    170.0
+  ],
+  "border_particle": "minecraft:sculk_charge_pop",
+  "id": "minejago:magic",
+  "main_spinjitzu_color": [
+    25.0,
+    76.0,
+    138.0
+  ]
+}

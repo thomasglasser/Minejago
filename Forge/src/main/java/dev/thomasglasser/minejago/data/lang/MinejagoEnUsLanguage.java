@@ -231,7 +231,7 @@ public class MinejagoEnUsLanguage extends LanguageProvider
 
     public void add(Power power, String name)
     {
-        add(power.getDescriptionId(), name);
+        add(power.getId().toLanguageKey("power"), name);
     }
 
     public void addAdvancement(String category, String key, String titleString, String descString) {

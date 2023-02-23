@@ -18,11 +18,11 @@ public class MinejagoPowers {
     public static final RegistrationProvider<Power> POWERS = RegistrationProvider.get(Minejago.modLoc("power"), Minejago.MOD_ID);
     public static final Supplier<Registry<Power>> REGISTRY = POWERS.registryBuilder().build();
 
-    public static RegistryObject<Power> NONE = register("none", () -> new Power("none"), false);
-    public static RegistryObject<Power> FIRE = register("fire", () -> new Power("fire", SpinjitzuParticleOptions.ELEMENT_ORANGE, SpinjitzuParticleOptions.ELEMENT_YELLOW, MinejagoParticleTypes.SPARKS), true);
-    public static RegistryObject<Power> EARTH = register("earth", () -> new Power("earth", SpinjitzuParticleOptions.ELEMENT_BROWN, SpinjitzuParticleOptions.ELEMENT_TAN, MinejagoParticleTypes.ROCKS), true);
-    public static RegistryObject<Power> LIGHTNING = register("lightning", () -> new Power("lightning", SpinjitzuParticleOptions.ELEMENT_BLUE, SpinjitzuParticleOptions.ELEMENT_LIGHT_BLUE, MinejagoParticleTypes.BOLTS), true);
-    public static RegistryObject<Power> ICE = register("ice", () -> new Power("ice", SpinjitzuParticleOptions.ELEMENT_LIGHT_BLUE, SpinjitzuParticleOptions.ELEMENT_WHITE, MinejagoParticleTypes.SNOWS), true);
+    public static RegistryObject<Power> NONE = register("none", () -> new Power(Minejago.modLoc("none")), false);
+    public static RegistryObject<Power> FIRE = register("fire", () -> new Power(Minejago.modLoc("fire"), SpinjitzuParticleOptions.ELEMENT_ORANGE, SpinjitzuParticleOptions.ELEMENT_YELLOW, MinejagoParticleTypes.SPARKS, true), true);
+    public static RegistryObject<Power> EARTH = register("earth", () -> new Power(Minejago.modLoc("earth"), SpinjitzuParticleOptions.ELEMENT_BROWN, SpinjitzuParticleOptions.ELEMENT_TAN, MinejagoParticleTypes.ROCKS, true), true);
+    public static RegistryObject<Power> LIGHTNING = register("lightning", () -> new Power(Minejago.modLoc("lightning"), SpinjitzuParticleOptions.ELEMENT_BLUE, SpinjitzuParticleOptions.ELEMENT_LIGHT_BLUE, MinejagoParticleTypes.BOLTS, true), true);
+    public static RegistryObject<Power> ICE = register("ice", () -> new Power(Minejago.modLoc("ice"), SpinjitzuParticleOptions.ELEMENT_LIGHT_BLUE, SpinjitzuParticleOptions.ELEMENT_WHITE, MinejagoParticleTypes.SNOWS, true), true);
 
     public static RegistryObject<Power> register(String name, Supplier<Power> powerSupplier, boolean makeSets)
     {
