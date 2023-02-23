@@ -1,5 +1,6 @@
 package dev.thomasglasser.minejago.data;
 
+import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.data.advancements.MinejagoAdvancementProvider;
 import dev.thomasglasser.minejago.data.blockstates.MinejagoBlockStates;
 import dev.thomasglasser.minejago.data.lang.MinejagoEnUsLanguage;
@@ -40,8 +41,8 @@ public class MinejagoDataGenerators
         generator.addProvider(onServer, new MinejagoLootTables(packOutput));
         generator.addProvider(onServer, new MinejagoAdvancementProvider(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(onServer, new MinejagoEntityTypeTagsProvider(packOutput, lookupProvider, existingFileHelper));
-        generator.addProvider(onServer, new MinejagoPowerProvider(packOutput));
-        generator.addProvider(onServer, new PowerTagsProvider(packOutput, lookupProvider, existingFileHelper));
+        generator.addProvider(onServer, new MinejagoPowerProvider(packOutput, existingFileHelper));
+        generator.addProvider(onServer, new PowerTagsProvider(packOutput, lookupProvider, Minejago.MOD_ID, existingFileHelper));
 
         //Client
         generator.addProvider(onClient, new MinejagoItemModels(packOutput, existingFileHelper));

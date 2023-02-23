@@ -5,42 +5,42 @@ import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.powers.Power;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 
 public class PlayerPowerComponent implements PowerComponent, PlayerComponent {
-    private Power power;
+    private ResourceKey<Power> power;
 
     public PlayerPowerComponent()
     {
-        power = MinejagoPowers.NONE.get();
+        power = MinejagoPowers.NONE;
     }
 
-    public PlayerPowerComponent(Power basePower)
+    public PlayerPowerComponent(ResourceKey<Power> basePower)
     {
         power = basePower;
     }
 
     @Override
-    public Power getPower() {
+    public ResourceKey<Power> getPower() {
         return power;
     }
 
     @Override
-    public void setPower(Power newPower) {
+    public void setPower(ResourceKey<Power> newPower) {
         power = newPower;
     }
 
     @Override
     public void readFromNbt(CompoundTag tag) {
         if (tag.contains("Power")) {
-            Power power = MinejagoRegistries.POWER.get().get(ResourceLocation.of(tag.getString("Power"), ':'));
-            this.power = power != null ? power : MinejagoPowers.NONE.get();
+            power = ResourceKey.create(MinejagoRegistries.POWER, ResourceLocation.of(tag.getString("Power"), ':'));
         }
     }
 
     @Override
     public void writeToNbt(CompoundTag tag) {
-        tag.putString("Power", MinejagoRegistries.POWER.get().getKey(power).toString());
+        tag.putString("Power", power.location().toString());
     }
 
     @Override

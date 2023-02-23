@@ -38,7 +38,7 @@ public class UnderworldSkeleton extends MeleeSkeleton {
     @Override
     protected void populateDefaultEquipmentSlots(RandomSource pRandom, DifficultyInstance pDifficulty) {
         super.populateDefaultEquipmentSlots(pRandom, pDifficulty);
-        this.setItemSlot(EquipmentSlot.CHEST, MinejagoArmor.SKELETAL_CHESTPLATE_SET.getForVariant(this.variant).get().getDefaultInstance());
+//        this.setItemSlot(EquipmentSlot.CHEST, MinejagoArmor.SKELETAL_CHESTPLATE_SET.getForVariant(this.variant).get().getDefaultInstance());
         this.setItemSlot(EquipmentSlot.LEGS, ItemStack.EMPTY);
         switch (variant)
         {

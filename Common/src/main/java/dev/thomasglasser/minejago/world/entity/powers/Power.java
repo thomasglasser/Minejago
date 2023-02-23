@@ -4,9 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.thomasglasser.minejago.core.particles.SpinjitzuParticleOptions;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
-import dev.thomasglasser.minejago.core.registries.MinejagoRegistryKeys;
-import dev.thomasglasser.minejago.data.tags.MinejagoPowerTags;
-import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -74,12 +72,14 @@ public class Power {
     @Nullable
     public ParticleOptions getBorderParticle()
     {
-        return borderParticle.get();
+        return borderParticle == null ? null : borderParticle.get();
     }
 
     @Nullable
     public ParticleType<? extends ParticleOptions> getBorderParticleType()
     {
+        if (borderParticle == null)
+            return null;
         return borderParticle.get().getType();
     }
 
@@ -96,9 +96,9 @@ public class Power {
         return makeSets;
     }
 
-    public boolean is(TagKey<Power> tag)
+    public boolean is(TagKey<Power> tag, Registry<Power> registry)
     {
-        return MinejagoRegistries.POWER.get().getTag(tag).get().contains(MinejagoRegistries.POWER.get().getHolderOrThrow(ResourceKey.create(MinejagoRegistryKeys.POWER, getId())));
+        return registry.getTag(tag).get().contains(registry.getHolderOrThrow(ResourceKey.create(registry.key(), getId())));
     }
 
     public boolean is(Power power)
@@ -113,6 +113,6 @@ public class Power {
 
     public boolean is(ResourceKey<Power> key)
     {
-        return key == ResourceKey.create(MinejagoRegistryKeys.POWER, getId());
+        return key == ResourceKey.create(MinejagoRegistries.POWER, getId());
     }
 }

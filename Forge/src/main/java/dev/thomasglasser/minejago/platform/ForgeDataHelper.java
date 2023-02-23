@@ -3,7 +3,6 @@ package dev.thomasglasser.minejago.platform;
 import dev.thomasglasser.minejago.platform.services.IDataHelper;
 import dev.thomasglasser.minejago.world.level.storage.*;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 
 public class ForgeDataHelper implements IDataHelper
 {

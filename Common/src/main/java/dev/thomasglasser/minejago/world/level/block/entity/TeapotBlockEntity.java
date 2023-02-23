@@ -261,10 +261,7 @@ public class TeapotBlockEntity extends BlockEntity implements IItemHolder, Namea
     }
 
     protected static void setChanged(Level pLevel, BlockPos pPos, BlockState pState) {
-        pLevel.blockEntityChanged(pPos);
-        if (!pState.isAir()) {
-            pLevel.updateNeighbourForOutputSignal(pPos, pState.getBlock());
-        }
+        BlockEntity.setChanged(pLevel, pPos, pState);
         pLevel.sendBlockUpdated(pPos, pLevel.getBlockState(pPos), pState, 3);
     }
 

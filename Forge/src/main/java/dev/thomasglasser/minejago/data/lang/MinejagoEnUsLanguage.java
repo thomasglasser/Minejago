@@ -2,7 +2,6 @@ package dev.thomasglasser.minejago.data.lang;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
-import dev.thomasglasser.minejago.commands.arguments.PowerArgument;
 import dev.thomasglasser.minejago.data.advancements.packs.MinejagoAdventureAdvancementKeys;
 import dev.thomasglasser.minejago.data.advancements.packs.MinejagoStoryAdvancementKeys;
 import dev.thomasglasser.minejago.server.commands.PowerCommand;
@@ -12,8 +11,6 @@ import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.powers.Power;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
-import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
-import dev.thomasglasser.minejago.world.item.armor.SkeletalChestplateItem;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
 import dev.thomasglasser.minejago.world.level.biome.MinejagoBiomes;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
@@ -51,38 +48,38 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get(), "Banner Pattern");
         add(MinejagoItems.IRON_SPEAR.get(), "Iron Spear");
         add(MinejagoItems.IRON_SHURIKEN.get(), "Iron Shuriken");
-        MinejagoArmor.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
-                add(item.get(), "Skeletal Chestplate"));
-        MinejagoArmor.SETS.forEach(set ->
-                {
-                    set.getAll().forEach(item ->
-                    {
-                        String nameForSlot = switch (set.getForItem(item)) {
-                            case FEET -> "Boots";
-                            case LEGS -> "Leggings";
-                            case CHEST -> "Jacket";
-                            case HEAD -> "Hood";
-                            default -> null;
-                        };
-
-                        add(item.get(), WordUtils.capitalize(set.getName().replace('_', ' ')) + " " + nameForSlot);
-                    });
-                });
-        MinejagoArmor.POWERED_SETS.forEach(set ->
-                {
-                    set.getAll().forEach(item ->
-                    {
-                        String nameForSlot = switch (set.getForItem(item)) {
-                            case FEET -> "Boots";
-                            case LEGS -> "Leggings";
-                            case CHEST -> "Jacket";
-                            case HEAD -> "Hood";
-                            default -> null;
-                        };
-
-                        add(item.get(), WordUtils.capitalize(set.getName().replace('_', ' ')) + " " + nameForSlot);
-                    });
-                });
+//        MinejagoArmor.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
+//                add(item.get(), "Skeletal Chestplate"));
+//        MinejagoArmor.SETS.forEach(set ->
+//                {
+//                    set.getAll().forEach(item ->
+//                    {
+//                        String nameForSlot = switch (set.getForItem(item)) {
+//                            case FEET -> "Boots";
+//                            case LEGS -> "Leggings";
+//                            case CHEST -> "Jacket";
+//                            case HEAD -> "Hood";
+//                            default -> null;
+//                        };
+//
+//                        add(item.get(), WordUtils.capitalize(set.getName().replace('_', ' ')) + " " + nameForSlot);
+//                    });
+//                });
+//        MinejagoArmor.POWERED_SETS.forEach(set ->
+//                {
+//                    set.getAll().forEach(item ->
+//                    {
+//                        String nameForSlot = switch (set.getForItem(item)) {
+//                            case FEET -> "Boots";
+//                            case LEGS -> "Leggings";
+//                            case CHEST -> "Jacket";
+//                            case HEAD -> "Hood";
+//                            default -> null;
+//                        };
+//
+//                        add(item.get(), WordUtils.capitalize(set.getName().replace('_', ' ')) + " " + nameForSlot);
+//                    });
+//                });
         add(MinejagoItems.IRON_KATANA.get(), "Iron Katana");
         add(MinejagoItems.IRON_SCYTHE.get(), "Iron Scythe");
         add(MinejagoItems.WOODEN_NUNCHUCKS.get(), "Wooden Nunchucks");
@@ -100,21 +97,21 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add(MinejagoBlocks.TEAPOT.get(), "Teapot");
 
         addDesc(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get(), "Four Weapons");
-        MinejagoArmor.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
-        {
-            if (item.get() instanceof SkeletalChestplateItem chestplate)
-            {
-                String nameForVariant = switch (chestplate.getVariant())
-                        {
-                            case STRENGTH -> "Red";
-                            case SPEED -> "Blue";
-                            case BOW -> "White";
-                            case KNIFE -> "Black";
-                        };
-
-                addDesc(item.get(), nameForVariant);
-            }
-        });
+//        MinejagoArmor.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
+//        {
+//            if (item.get() instanceof SkeletalChestplateItem chestplate)
+//            {
+//                String nameForVariant = switch (chestplate.getVariant())
+//                        {
+//                            case STRENGTH -> "Red";
+//                            case SPEED -> "Blue";
+//                            case BOW -> "White";
+//                            case KNIFE -> "Black";
+//                        };
+//
+//                addDesc(item.get(), nameForVariant);
+//            }
+//        });
 
 
         add(MinejagoItems.FILLED_TEACUP.get().getDescriptionId() + ".potion", "Tea of %s");
@@ -146,7 +143,7 @@ public class MinejagoEnUsLanguage extends LanguageProvider
 
         add(Items.FILLED_MAP.getDescriptionId() + ".golden_weapons", "Golden Weapons Map");
 
-        add(MinejagoBiomes.HIGH_MOUNTAINS, "Mountains of Impossible Height");
+        addBiome(MinejagoBiomes.HIGH_MOUNTAINS, "Mountains of Impossible Height");
 
         add("container.teapot", "Teapot");
 
@@ -170,13 +167,11 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add(PowerCommand.SUCCESS_OTHER, "Set %s's power to %s");
         add(PowerCommand.QUERY, "Your power is currently set to: %s");
 
-        add(PowerArgument.NOT_FOUND, "Unknown Power");
-
-        add(MinejagoPowers.EARTH.get(), "Earth");
-        add(MinejagoPowers.FIRE.get(), "Fire");
-        add(MinejagoPowers.LIGHTNING.get(), "Lightning");
-        add(MinejagoPowers.ICE.get(), "Ice");
-        add(MinejagoPowers.NONE.get(), "None");
+        addPower(MinejagoPowers.EARTH, "Earth");
+        addPower(MinejagoPowers.FIRE, "Fire");
+        addPower(MinejagoPowers.LIGHTNING, "Lightning");
+        addPower(MinejagoPowers.ICE, "Ice");
+        addPower(MinejagoPowers.NONE, "None");
 
         addAdvancement(MinejagoAdventureAdvancementKeys.CATEGORY, MinejagoAdventureAdvancementKeys.KILL_A_SKULKIN, "Redead", "Kill a Skulkin Warrior");
         addAdvancement(MinejagoAdventureAdvancementKeys.CATEGORY, MinejagoAdventureAdvancementKeys.COLLECT_ALL_SKELETAL_CHESTPLATES, "It's Always You Four Colors", "Collect all 4 Skeletal Chestplate variants");
@@ -201,7 +196,7 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add(PotionUtils.setPotion(new ItemStack(key), potion), name);
     }
 
-    public void add(ResourceKey<Biome> biome, String name)
+    public void addBiome(ResourceKey<Biome> biome, String name)
     {
         add("biome." + biome.location().getNamespace() + "." + biome.location().getPath(), name);
     }
@@ -229,9 +224,9 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add(key.getName(), name);
     }
 
-    public void add(Power power, String name)
+    public void addPower(ResourceKey<Power> power, String name)
     {
-        add(power.getId().toLanguageKey("power"), name);
+        add(power.location().toLanguageKey("power"), name);
     }
 
     public void addAdvancement(String category, String key, String titleString, String descString) {

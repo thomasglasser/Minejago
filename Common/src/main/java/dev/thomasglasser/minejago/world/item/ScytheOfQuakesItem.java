@@ -4,19 +4,17 @@ import com.google.common.collect.ImmutableMultimap;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.animation.definitions.ItemAnimations;
 import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
-import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.data.tags.MinejagoBlockTags;
 import dev.thomasglasser.minejago.data.tags.MinejagoPowerTags;
 import dev.thomasglasser.minejago.network.ClientboundStartScytheAnimationPacket;
 import dev.thomasglasser.minejago.network.ClientboundStopAnimationPacket;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.util.MinejagoLevelUtils;
-import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.powers.Power;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -41,8 +39,8 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem implements IModeledItem
     }
 
     @Override
-    public boolean canPowerHandle(Power power) {
-        return power.is(MinejagoPowerTags.EARTH);
+    public boolean canPowerHandle(Power power, Registry<Power> registry) {
+        return power.is(MinejagoPowerTags.EARTH, registry);
     }
 
     @Override

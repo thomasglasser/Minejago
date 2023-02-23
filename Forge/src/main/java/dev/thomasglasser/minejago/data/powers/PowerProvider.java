@@ -2,54 +2,49 @@ package dev.thomasglasser.minejago.data.powers;
 
 import com.mojang.serialization.JsonOps;
 import dev.thomasglasser.minejago.world.entity.powers.Power;
-import net.minecraft.data.CachedOutput;
-import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
+import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.data.JsonCodecProvider;
 
-import java.nio.file.Path;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
+import java.util.function.BiConsumer;
 
-public abstract class PowerProvider implements DataProvider {
-    private final PackOutput.PathProvider pathProvider;
-    private final Map<ResourceLocation, Power> powers = new HashMap<>();
-    private final String modId;
+public abstract class PowerProvider extends JsonCodecProvider<Power> {
 
-    public PowerProvider(String modId, PackOutput pOutput) {
-        this.modId = modId;
-        this.pathProvider = pOutput.createPathProvider(PackOutput.Target.DATA_PACK, "powers");
+    private static final List<Power> POWERS = new ArrayList<>();
+
+    /**
+     * @param output             {@linkplain PackOutput} provided by the {@link DataGenerator}.
+     * @param existingFileHelper
+     * @param modid
+     */
+    public PowerProvider(PackOutput output, ExistingFileHelper existingFileHelper, String modid) {
+        super(output, existingFileHelper, modid, JsonOps.INSTANCE, PackType.SERVER_DATA, "minejago/power", Power.CODEC, Map.of());
     }
 
     @Override
-    public CompletableFuture<?> run(CachedOutput pOutput) {
-        this.generate();
-        return CompletableFuture.allOf(powers.entrySet().stream().map((entry) -> {
-                ResourceLocation resourcelocation1 = entry.getKey();
-                Power power = entry.getValue();
-                Path path = this.pathProvider.json(resourcelocation1);
-                return DataProvider.saveStable(pOutput, Power.CODEC.encodeStart(JsonOps.INSTANCE, power).getOrThrow(false, LOGGER::error), path);
-            }).toArray(CompletableFuture[]::new));
-    }
-
-    @Override
-    public String getName() {
-        return "Powers";
-    }
-
-    protected void add(Power... power)
-    {
-        for (Power power1 : power)
+    protected final void gather(BiConsumer<ResourceLocation, Power> consumer) {
+        generate();
+        POWERS.forEach(power ->
         {
-            powers.put(power1.getId(), power1);
-        }
+            consumer.accept(power.getId(), power);
+        });
     }
 
     protected abstract void generate();
 
+    protected void add(Power... powers)
+    {
+        Collections.addAll(POWERS, powers);
+    }
+
     protected ResourceLocation modLoc(String path)
     {
-        return new ResourceLocation(modId, path);
+        return new ResourceLocation(super.modid, path);
     }
 }

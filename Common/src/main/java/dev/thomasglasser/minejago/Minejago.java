@@ -2,7 +2,6 @@ package dev.thomasglasser.minejago;
 
 import dev.thomasglasser.minejago.client.MinejagoClientConfig;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
-import dev.thomasglasser.minejago.commands.arguments.MinejagoArguments;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
@@ -77,7 +76,6 @@ public class Minejago {
 		MinejagoPotions.init();
 		MinejagoSoundEvents.init();
 		MinejagoMobEffects.init();
-		MinejagoArguments.init();
 		MinejagoKeyMappings.init();
 	}
 

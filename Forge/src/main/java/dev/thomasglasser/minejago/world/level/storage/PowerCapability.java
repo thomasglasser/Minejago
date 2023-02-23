@@ -1,7 +1,6 @@
 package dev.thomasglasser.minejago.world.level.storage;
 
 import dev._100media.capabilitysyncer.core.LivingEntityCapability;
-import dev._100media.capabilitysyncer.core.PlayerCapability;
 import dev._100media.capabilitysyncer.network.EntityCapabilityStatusPacket;
 import dev._100media.capabilitysyncer.network.SimpleEntityCapabilityStatusPacket;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
@@ -9,27 +8,27 @@ import dev.thomasglasser.minejago.network.MinejagoMainChannel;
 import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.powers.Power;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.simple.SimpleChannel;
 import org.jetbrains.annotations.NotNull;
 
 public class PowerCapability extends LivingEntityCapability {
     @NotNull
-    private Power power;
+    private ResourceKey<Power> power;
 
     public PowerCapability(LivingEntity entity)
     {
         super(entity);
-        power = MinejagoPowers.NONE.get();
+        power = MinejagoPowers.NONE;
     }
 
-    public @NotNull Power getPower() {
+    public @NotNull ResourceKey<Power> getPower() {
         return power;
     }
 
-    public void setPower(Power power) {
+    public void setPower(ResourceKey<Power> power) {
         this.power = power;
         this.updateTracking();
     }
@@ -38,7 +37,7 @@ public class PowerCapability extends LivingEntityCapability {
     public CompoundTag serializeNBT(boolean savingToDisk) {
         CompoundTag nbt = new CompoundTag();
 
-        nbt.putString("Power", MinejagoRegistries.POWER.get().getKey(power).toString());
+        nbt.putString("Power", power.location().toString());
 
         return nbt;
     }
@@ -46,8 +45,7 @@ public class PowerCapability extends LivingEntityCapability {
     @Override
     public void deserializeNBT(CompoundTag nbt, boolean readingFromDisk) {
         if (nbt.contains("Power")) {
-            Power power = MinejagoRegistries.POWER.get().get(ResourceLocation.of(nbt.getString("Power"), ':'));
-            this.power = power != null ? power : MinejagoPowers.NONE.get();
+            this.power = ResourceKey.create(MinejagoRegistries.POWER, ResourceLocation.of(nbt.getString("Power"), ':'));
         }
     }
 

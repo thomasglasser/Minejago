@@ -1,0 +1,15 @@
+{
+  "alt_spinjitzu_color": [
+    1.0,
+    21.0,
+    134.0
+  ],
+  "border_particle": "minejago:sparks",
+  "id": "minejago:fire",
+  "main_spinjitzu_color": [
+    37.0,
+    144.0,
+    211.0
+  ],
+  "make_sets": true
+}
