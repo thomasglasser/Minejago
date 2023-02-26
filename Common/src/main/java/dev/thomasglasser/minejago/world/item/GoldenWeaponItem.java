@@ -62,7 +62,7 @@ public abstract class GoldenWeaponItem extends SimpleFoiledItem
     public final InteractionResult useOn(UseOnContext pContext) {
         if (MinejagoPowersConfig.REQUIRE_FOR_GOLDEN_WEAPON.get())
         {
-            if (!canPowerHandle(MinejagoPowers.POWERS.apply(pContext.getLevel().registryAccess()).get(Services.DATA.getPowerData(pContext.getPlayer()).power()), MinejagoPowers.POWERS.apply(pContext.getLevel().registryAccess())))
+            if (!canPowerHandle(MinejagoPowers.POWERS.get(pContext.getLevel().registryAccess()).get(Services.DATA.getPowerData(pContext.getPlayer()).power()), MinejagoPowers.POWERS.get(pContext.getLevel().registryAccess())))
             {
                 if (MinejagoPowersConfig.WEAPON_GOES_CRAZY.get()) {
                     goCrazy(pContext.getPlayer());
@@ -79,7 +79,7 @@ public abstract class GoldenWeaponItem extends SimpleFoiledItem
     public final void releaseUsing(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity, int pTimeCharged) {
         if (pLivingEntity instanceof Player &&  MinejagoPowersConfig.REQUIRE_FOR_GOLDEN_WEAPON.get())
         {
-            if (!canPowerHandle(MinejagoPowers.POWERS.apply(pLevel.registryAccess()).get(Services.DATA.getPowerData(pLivingEntity).power()), MinejagoPowers.POWERS.apply(pLevel.registryAccess())))
+            if (!canPowerHandle(MinejagoPowers.POWERS.get(pLevel.registryAccess()).get(Services.DATA.getPowerData(pLivingEntity).power()), MinejagoPowers.POWERS.get(pLevel.registryAccess())))
             {
                 if (MinejagoPowersConfig.WEAPON_GOES_CRAZY.get()) {
                     goCrazy((Player) pLivingEntity);
@@ -96,7 +96,7 @@ public abstract class GoldenWeaponItem extends SimpleFoiledItem
     public final void onUseTick(Level level, LivingEntity livingEntity, ItemStack stack, int remainingUseDuration) {
         if (livingEntity instanceof Player &&  MinejagoPowersConfig.REQUIRE_FOR_GOLDEN_WEAPON.get())
         {
-            if (!canPowerHandle(MinejagoPowers.POWERS.apply(level.registryAccess()).get(Services.DATA.getPowerData(livingEntity).power()), MinejagoPowers.POWERS.apply(level.registryAccess())))
+            if (!canPowerHandle(MinejagoPowers.POWERS.get(level.registryAccess()).get(Services.DATA.getPowerData(livingEntity).power()), MinejagoPowers.POWERS.get(level.registryAccess())))
             {
                 if (MinejagoPowersConfig.WEAPON_GOES_CRAZY.get()) {
                     goCrazy((Player) livingEntity);

@@ -62,7 +62,7 @@ public class MinejagoEntityEvents
                         if (kb != null && kb.hasModifier(SpinjitzuData.KNOCKBACK_MODIFIER)) kb.removeModifier(SpinjitzuData.KNOCKBACK_MODIFIER);
                     }
                     Power power = player.level.registryAccess().registryOrThrow(MinejagoRegistries.POWER).getHolderOrThrow(Services.DATA.getPowerData(player).power()).value();
-                    if (power.is(MinejagoPowers.NONE)) {
+                    if (!power.is(MinejagoPowers.NONE)) {
                         MinejagoParticleUtils.renderPlayerSpinjitzu(serverPlayer, power.getMainSpinjitzuColor(), power.getAltSpinjitzuColor(), 10.5, false);
                         if (power.getBorderParticle() != null)
                             MinejagoParticleUtils.renderPlayerSpinjitzuBorder(power.getBorderParticle(), serverPlayer, 4, false);

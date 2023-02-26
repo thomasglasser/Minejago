@@ -12,6 +12,9 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 
 import java.util.function.BiConsumer;
 
+/**
+ * Example implementation of datagen for powers
+ */
 public class MinejagoPowerProvider extends PowerProvider
 {
     /**
@@ -25,11 +28,7 @@ public class MinejagoPowerProvider extends PowerProvider
     @Override
     protected void generate() {
         add(
-                new Power(Minejago.modLoc("none")),
-                new Power(Minejago.modLoc("fire"), SpinjitzuParticleOptions.ELEMENT_ORANGE, SpinjitzuParticleOptions.ELEMENT_YELLOW, MinejagoParticleTypes.SPARKS, true),
-                new Power(Minejago.modLoc("earth"), SpinjitzuParticleOptions.ELEMENT_BROWN, SpinjitzuParticleOptions.ELEMENT_TAN, MinejagoParticleTypes.ROCKS, true),
-                new Power(Minejago.modLoc("lightning"), SpinjitzuParticleOptions.ELEMENT_BLUE, SpinjitzuParticleOptions.ELEMENT_LIGHT_BLUE, MinejagoParticleTypes.BOLTS, true),
-                new Power(Minejago.modLoc("ice"), SpinjitzuParticleOptions.ELEMENT_LIGHT_BLUE, SpinjitzuParticleOptions.ELEMENT_WHITE, MinejagoParticleTypes.SNOWS, true)
+                new Power(modLoc("magic"), SpinjitzuParticleOptions.ELEMENT_YELLOW, SpinjitzuParticleOptions.TEAM_LIGHT_PURPLE, ParticleTypes.DRIPPING_DRIPSTONE_LAVA, false)
         );
     }
 }

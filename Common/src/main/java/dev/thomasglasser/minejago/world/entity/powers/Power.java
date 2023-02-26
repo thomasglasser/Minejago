@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 public class Power {
@@ -23,7 +24,7 @@ public class Power {
             ResourceLocation.CODEC.fieldOf("id").forGetter(Power::getId),
             ExtraCodecs.VECTOR3F.optionalFieldOf("main_spinjitzu_color", SpinjitzuParticleOptions.DEFAULT).forGetter(Power::getMainSpinjitzuColor),
             ExtraCodecs.VECTOR3F.optionalFieldOf("alt_spinjitzu_color", SpinjitzuParticleOptions.DEFAULT).forGetter(Power::getAltSpinjitzuColor),
-            BuiltInRegistries.PARTICLE_TYPE.byNameCodec().optionalFieldOf("border_particle", null).forGetter(Power::getBorderParticleType),
+            BuiltInRegistries.PARTICLE_TYPE.byNameCodec().optionalFieldOf("border_particle").forGetter(Power::getBorderParticleType),
             Codec.BOOL.optionalFieldOf("make_sets", false).forGetter(Power::doMakeSets)
     ).apply(instance, Power::new));
 
@@ -59,6 +60,11 @@ public class Power {
         this(id, mainSpinjitzuColor, altSpinjitzuColor, borderParticle instanceof ParticleOptions ? () -> (ParticleOptions) borderParticle : null, makeSets);
     }
 
+    public Power(@NotNull ResourceLocation id, @NotNull Vector3f mainSpinjitzuColor, @NotNull Vector3f altSpinjitzuColor, @NotNull Optional<ParticleType<?>> borderParticle, boolean makeSets)
+    {
+        this(id, mainSpinjitzuColor, altSpinjitzuColor, borderParticle.orElse(null), makeSets);
+    }
+
     @NotNull
     public Vector3f getMainSpinjitzuColor()
     {
@@ -76,11 +82,9 @@ public class Power {
     }
 
     @Nullable
-    public ParticleType<? extends ParticleOptions> getBorderParticleType()
+    public Optional<ParticleType<?>> getBorderParticleType()
     {
-        if (borderParticle == null)
-            return null;
-        return borderParticle.get().getType();
+        return borderParticle != null ? Optional.of(borderParticle.get().getType()) : Optional.empty();
     }
 
     @Override

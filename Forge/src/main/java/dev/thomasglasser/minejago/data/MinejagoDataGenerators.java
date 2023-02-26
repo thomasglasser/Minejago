@@ -6,16 +6,22 @@ import dev.thomasglasser.minejago.data.blockstates.MinejagoBlockStates;
 import dev.thomasglasser.minejago.data.lang.MinejagoEnUsLanguage;
 import dev.thomasglasser.minejago.data.loot.MinejagoLootTables;
 import dev.thomasglasser.minejago.data.models.MinejagoItemModels;
-import dev.thomasglasser.minejago.data.powers.MinejagoPowerProvider;
 import dev.thomasglasser.minejago.data.recipes.MinejagoRecipes;
 import dev.thomasglasser.minejago.data.sounds.MinejagoSoundDefinitions;
 import dev.thomasglasser.minejago.data.tags.*;
+import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
+import net.minecraft.Util;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.RegistrySetBuilder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
+import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 public class MinejagoDataGenerators
@@ -41,8 +47,18 @@ public class MinejagoDataGenerators
         generator.addProvider(onServer, new MinejagoLootTables(packOutput));
         generator.addProvider(onServer, new MinejagoAdvancementProvider(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(onServer, new MinejagoEntityTypeTagsProvider(packOutput, lookupProvider, existingFileHelper));
-        generator.addProvider(onServer, new MinejagoPowerProvider(packOutput, existingFileHelper));
-        generator.addProvider(onServer, new PowerTagsProvider(packOutput, lookupProvider, Minejago.MOD_ID, existingFileHelper));
+        generator.addProvider(onServer, new DatapackBuiltinEntriesProvider(packOutput,
+                CompletableFuture.supplyAsync(() -> {
+                final RegistryAccess.Frozen access = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
+                final RegistrySetBuilder builder = new RegistrySetBuilder();
+                MinejagoPowers.POWERS.addToSet(builder);
+                return builder.build(access);
+            }, Util.backgroundExecutor()),
+            Set.of(Minejago.MOD_ID)));
+        generator.addProvider(onServer, new PowerTagsProvider(packOutput, Minejago.MOD_ID, existingFileHelper));
+
+//        Example call for datagenning powers
+//        generator.addProvider(onServer, new MinejagoPowerProvider(packOutput, existingFileHelper));
 
         //Client
         generator.addProvider(onClient, new MinejagoItemModels(packOutput, existingFileHelper));

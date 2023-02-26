@@ -1,7 +1,10 @@
 package dev.thomasglasser.minejago.platform;
 
 import dev.thomasglasser.minejago.platform.services.IDataHelper;
+import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
+import dev.thomasglasser.minejago.world.entity.powers.Power;
 import dev.thomasglasser.minejago.world.level.storage.*;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.LivingEntity;
 
 public class ForgeDataHelper implements IDataHelper
@@ -9,8 +12,9 @@ public class ForgeDataHelper implements IDataHelper
 
     @Override
     public PowerData getPowerData(LivingEntity entity) {
-        PowerCapability capability = entity.getCapability(PowerCapabilityAttacher.POWER_CAPABILITY).orElse(new PowerCapability(entity));
-        return new PowerData(capability.getPower());
+        ResourceKey<Power> key = entity.getCapability(PowerCapabilityAttacher.POWER_CAPABILITY).orElse(new PowerCapability(entity)).getPower();
+        Power power = MinejagoPowers.POWERS.get(entity.level.registryAccess()).get(key);
+        return new PowerData(power != null ? key : MinejagoPowers.NONE);
     }
 
     @Override
