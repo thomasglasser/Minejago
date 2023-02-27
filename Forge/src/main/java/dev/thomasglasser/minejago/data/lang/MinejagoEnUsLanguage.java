@@ -11,6 +11,8 @@ import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.powers.Power;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
+import dev.thomasglasser.minejago.world.item.armor.SkeletalChestplateItem;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
 import dev.thomasglasser.minejago.world.level.biome.MinejagoBiomes;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
@@ -48,38 +50,38 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get(), "Banner Pattern");
         add(MinejagoItems.IRON_SPEAR.get(), "Iron Spear");
         add(MinejagoItems.IRON_SHURIKEN.get(), "Iron Shuriken");
-//        MinejagoArmor.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
-//                add(item.get(), "Skeletal Chestplate"));
-//        MinejagoArmor.SETS.forEach(set ->
-//                {
-//                    set.getAll().forEach(item ->
-//                    {
-//                        String nameForSlot = switch (set.getForItem(item)) {
-//                            case FEET -> "Boots";
-//                            case LEGS -> "Leggings";
-//                            case CHEST -> "Jacket";
-//                            case HEAD -> "Hood";
-//                            default -> null;
-//                        };
-//
-//                        add(item.get(), WordUtils.capitalize(set.getName().replace('_', ' ')) + " " + nameForSlot);
-//                    });
-//                });
-//        MinejagoArmor.POWERED_SETS.forEach(set ->
-//                {
-//                    set.getAll().forEach(item ->
-//                    {
-//                        String nameForSlot = switch (set.getForItem(item)) {
-//                            case FEET -> "Boots";
-//                            case LEGS -> "Leggings";
-//                            case CHEST -> "Jacket";
-//                            case HEAD -> "Hood";
-//                            default -> null;
-//                        };
-//
-//                        add(item.get(), WordUtils.capitalize(set.getName().replace('_', ' ')) + " " + nameForSlot);
-//                    });
-//                });
+        MinejagoArmor.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
+                add(item.get(), "Skeletal Chestplate"));
+        MinejagoArmor.SETS.forEach(set ->
+                {
+                    set.getAll().forEach(item ->
+                    {
+                        String nameForSlot = switch (set.getForItem(item)) {
+                            case FEET -> "Boots";
+                            case LEGS -> "Leggings";
+                            case CHEST -> "Jacket";
+                            case HEAD -> "Hood";
+                            default -> null;
+                        };
+
+                        add(item.get(), WordUtils.capitalize(set.getName().replace('_', ' ')) + " " + nameForSlot);
+                    });
+                });
+        MinejagoArmor.POWERED_SETS.forEach(set ->
+                {
+                    set.getAll().forEach(item ->
+                    {
+                        String nameForSlot = switch (set.getForItem(item)) {
+                            case FEET -> "Boots";
+                            case LEGS -> "Leggings";
+                            case CHEST -> "Jacket";
+                            case HEAD -> "Hood";
+                            default -> "";
+                        };
+
+                        add(item.get(), WordUtils.capitalize(set.getName().replace('_', ' ')) + " " + nameForSlot);
+                    });
+                });
         add(MinejagoItems.IRON_KATANA.get(), "Iron Katana");
         add(MinejagoItems.IRON_SCYTHE.get(), "Iron Scythe");
         add(MinejagoItems.WOODEN_NUNCHUCKS.get(), "Wooden Nunchucks");
@@ -97,21 +99,21 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add(MinejagoBlocks.TEAPOT.get(), "Teapot");
 
         addDesc(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get(), "Four Weapons");
-//        MinejagoArmor.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
-//        {
-//            if (item.get() instanceof SkeletalChestplateItem chestplate)
-//            {
-//                String nameForVariant = switch (chestplate.getVariant())
-//                        {
-//                            case STRENGTH -> "Red";
-//                            case SPEED -> "Blue";
-//                            case BOW -> "White";
-//                            case KNIFE -> "Black";
-//                        };
-//
-//                addDesc(item.get(), nameForVariant);
-//            }
-//        });
+        MinejagoArmor.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
+        {
+            if (item.get() instanceof SkeletalChestplateItem chestplate)
+            {
+                String nameForVariant = switch (chestplate.getVariant())
+                        {
+                            case STRENGTH -> "Red";
+                            case SPEED -> "Blue";
+                            case BOW -> "White";
+                            case KNIFE -> "Black";
+                        };
+
+                addDesc(item.get(), nameForVariant);
+            }
+        });
 
 
         add(MinejagoItems.FILLED_TEACUP.get().getDescriptionId() + ".potion", "Tea of %s");
@@ -166,6 +168,7 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add(PowerCommand.CHANGED, "Your power has been updated to %s");
         add(PowerCommand.SUCCESS_OTHER, "Set %s's power to %s");
         add(PowerCommand.QUERY, "Your power is currently set to: %s");
+        add(PowerCommand.INVALID, "Power not found in world. Check enabled data packs.");
 
         addPower(MinejagoPowers.EARTH, "Earth");
         addPower(MinejagoPowers.FIRE, "Fire");

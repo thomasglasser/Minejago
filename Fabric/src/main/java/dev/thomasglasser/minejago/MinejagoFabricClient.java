@@ -20,6 +20,7 @@ import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.*;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.client.model.PlayerModel;
@@ -171,9 +172,9 @@ public class MinejagoFabricClient implements ClientModInitializer {
         });
         PlayerAnimationAccess.REGISTER_ANIMATION_EVENT.register(MinejagoPlayerAnimator::registerPlayerAnimation);
         ModConfigEvents.reloading(Minejago.MOD_ID).register((config) ->
-        {
-            MinejagoClientUtils.refreshVip();
-        });
+                MinejagoClientUtils.refreshVip());
+        ItemGroupEvents.MODIFY_ENTRIES_ALL.register((group, entries) ->
+                entries.acceptAll(MinejagoItems.getItemsForTab(group)));
     }
 
     private void registerPackets()

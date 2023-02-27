@@ -5,6 +5,13 @@ import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import dev.thomasglasser.minejago.core.particles.SpinjitzuParticleOptions;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.registration.registries.DatapackRegistry;
+import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
+import dev.thomasglasser.minejago.world.item.armor.MinejagoArmorMaterials;
+import dev.thomasglasser.minejago.world.item.armor.TrainingGiItem;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.RegistrySetBuilder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
 
@@ -23,7 +30,20 @@ public class MinejagoPowers {
         return ResourceKey.create(MinejagoRegistries.POWER, Minejago.modLoc(id));
     }
 
-    public static void init() {}
+    public static void init() {
+        final RegistryAccess.Frozen access = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
+        final RegistrySetBuilder builder = new RegistrySetBuilder();
+        MinejagoPowers.POWERS.addToSet(builder);
+        HolderLookup.Provider access1 = builder.build(access);
+
+        access1.lookupOrThrow(MinejagoRegistries.POWER).listElements().forEach(powerReference ->
+        {
+            if (powerReference.value().makeSets)
+            {
+                MinejagoArmor.PoweredArmorSet.create(powerReference.value().getId(), "training", MinejagoArmorMaterials.TRAINING_GI, TrainingGiItem.class);
+            }
+        });
+    }
 
     public static void bootstrap(BootstapContext<Power> context)
     {

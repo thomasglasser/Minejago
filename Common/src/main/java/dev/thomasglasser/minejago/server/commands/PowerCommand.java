@@ -27,9 +27,10 @@ public class PowerCommand
     public static final String CHANGED = "power.changed";
     public static final String SUCCESS_OTHER = "commands.power.success.other";
     public static final String QUERY = "commands.power.query";
+    public static final String INVALID = "commands.power.power.invalid";
 
     private static final DynamicCommandExceptionType ERROR_INVALID_POWER = new DynamicCommandExceptionType(
-            object -> Component.translatable("commands.power.power.invalid", object)
+            object -> Component.translatable(INVALID, object)
     );
 
     public static void register(CommandDispatcher<CommandSourceStack> pDispatcher) {
