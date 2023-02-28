@@ -53,7 +53,7 @@ public class MinejagoEntityEvents
 
         if (player instanceof ServerPlayer serverPlayer)
         {
-            if (spinjitzu.unlocked() || true /* TODO: Unlock system */) {
+            if (spinjitzu.unlocked()) {
                 if (spinjitzu.active()) {
                     if (serverPlayer.isCrouching() || serverPlayer.getVehicle() != null || serverPlayer.isVisuallySwimming() || serverPlayer.isUnderWater()) {
                         stopSpinjitzu(spinjitzu, serverPlayer);
