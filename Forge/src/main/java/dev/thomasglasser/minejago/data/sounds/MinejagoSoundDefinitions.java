@@ -15,9 +15,14 @@ public class MinejagoSoundDefinitions extends SoundDefinitionsProvider {
 
     @Override
     public void registerSounds() {
-        add(MinejagoSoundEvents.TEAPOT_WHISTLE.get(), SoundDefinition.definition().with(SoundDefinition.Sound.sound(Minejago.modLoc("teapot_whistle"), SoundDefinition.SoundType.SOUND)).subtitle(MinejagoSoundEvents.TEAPOT_WHISTLE.get().getLocation().toLanguageKey("sound") + ".subtitle"));
+        // TODO: New teapot whistle
+//        add(MinejagoSoundEvents.TEAPOT_WHISTLE.get(), SoundDefinition.definition().with(SoundDefinition.Sound.sound(Minejago.modLoc("teapot_whistle"), SoundDefinition.SoundType.SOUND)).subtitle(MinejagoSoundEvents.TEAPOT_WHISTLE.get().getLocation().toLanguageKey("sound") + ".subtitle"));
         add(MinejagoSoundEvents.SPINJITZU_START.get(), SoundDefinition.definition().with(SoundDefinition.Sound.sound(Minejago.modLoc("spinjitzu_start"), SoundDefinition.SoundType.SOUND)).subtitle(MinejagoSoundEvents.SPINJITZU_START.get().getLocation().toLanguageKey("sound") + ".subtitle"));
         add(MinejagoSoundEvents.SPINJITZU_STOP.get(), SoundDefinition.definition().with(SoundDefinition.Sound.sound(Minejago.modLoc("spinjitzu_stop"), SoundDefinition.SoundType.SOUND)).subtitle(MinejagoSoundEvents.SPINJITZU_STOP.get().getLocation().toLanguageKey("sound") + ".subtitle"));
         add(MinejagoSoundEvents.SPINJITZU_ACTIVE.get(), SoundDefinition.definition().with(SoundDefinition.Sound.sound(Minejago.modLoc("spinjitzu_active"), SoundDefinition.SoundType.SOUND)).subtitle(MinejagoSoundEvents.SPINJITZU_ACTIVE.get().getLocation().toLanguageKey("sound") + ".subtitle"));
+        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_PATH.get(), SoundDefinition.definition().with(SoundDefinition.Sound.sound(Minejago.modLoc("scythe_of_quakes_path"), SoundDefinition.SoundType.SOUND)).subtitle(MinejagoSoundEvents.SCYTHE_OF_QUAKES_PATH.get().getLocation().toLanguageKey("sound") + ".subtitle"));
+        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_CASCADE.get(), SoundDefinition.definition().with(SoundDefinition.Sound.sound(Minejago.modLoc("scythe_of_quakes_cascade"), SoundDefinition.SoundType.SOUND)).subtitle(MinejagoSoundEvents.SCYTHE_OF_QUAKES_CASCADE.get().getLocation().toLanguageKey("sound") + ".subtitle"));
+        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_FAIL.get(), SoundDefinition.definition().with(SoundDefinition.Sound.sound(Minejago.modLoc("scythe_of_quakes_fail"), SoundDefinition.SoundType.SOUND)).subtitle(MinejagoSoundEvents.SCYTHE_OF_QUAKES_FAIL.get().getLocation().toLanguageKey("sound") + ".subtitle"));
+        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_EXPLOSION.get(), SoundDefinition.definition().with(SoundDefinition.Sound.sound(Minejago.modLoc("scythe_of_quakes_explosion"), SoundDefinition.SoundType.SOUND)).subtitle(MinejagoSoundEvents.SCYTHE_OF_QUAKES_EXPLOSION.get().getLocation().toLanguageKey("sound") + ".subtitle"));
     }
 }

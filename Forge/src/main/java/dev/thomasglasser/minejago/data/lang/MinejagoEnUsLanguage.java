@@ -157,6 +157,10 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add(MinejagoSoundEvents.SPINJITZU_START.get().getLocation().toLanguageKey("sound") + ".subtitle", "*Spinjitzu activates*");
         add(MinejagoSoundEvents.SPINJITZU_ACTIVE.get().getLocation().toLanguageKey("sound") + ".subtitle", "*Spinjitzu wooshes*");
         add(MinejagoSoundEvents.SPINJITZU_STOP.get().getLocation().toLanguageKey("sound") + ".subtitle", "*Spinjitzu fades*");
+        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_FAIL.get().getLocation().toLanguageKey("sound") + ".subtitle", "*Scythe flickers*");
+        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_EXPLOSION.get().getLocation().toLanguageKey("sound") + ".subtitle", "*Ground quakes*");
+        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_CASCADE.get().getLocation().toLanguageKey("sound") + ".subtitle", "*Scythe drags*");
+        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_PATH.get().getLocation().toLanguageKey("sound") + ".subtitle", "*Scythe beams*");
 
         add(MinejagoMobEffects.CURE.get(), "Instant Cure");
 

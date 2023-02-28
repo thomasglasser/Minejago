@@ -1,4 +1,28 @@
 {
+  "scythe_of_quakes_cascade": {
+    "sounds": [
+      "minejago:scythe_of_quakes_cascade"
+    ],
+    "subtitle": "sound.minejago.scythe_of_quakes_cascade.subtitle"
+  },
+  "scythe_of_quakes_explosion": {
+    "sounds": [
+      "minejago:scythe_of_quakes_explosion"
+    ],
+    "subtitle": "sound.minejago.scythe_of_quakes_explosion.subtitle"
+  },
+  "scythe_of_quakes_fail": {
+    "sounds": [
+      "minejago:scythe_of_quakes_fail"
+    ],
+    "subtitle": "sound.minejago.scythe_of_quakes_fail.subtitle"
+  },
+  "scythe_of_quakes_path": {
+    "sounds": [
+      "minejago:scythe_of_quakes_path"
+    ],
+    "subtitle": "sound.minejago.scythe_of_quakes_path.subtitle"
+  },
   "spinjitzu_active": {
     "sounds": [
       "minejago:spinjitzu_active"
@@ -16,11 +40,5 @@
       "minejago:spinjitzu_stop"
     ],
     "subtitle": "sound.minejago.spinjitzu_stop.subtitle"
-  },
-  "teapot_whistle": {
-    "sounds": [
-      "minejago:teapot_whistle"
-    ],
-    "subtitle": "sound.minejago.teapot_whistle.subtitle"
   }
 }

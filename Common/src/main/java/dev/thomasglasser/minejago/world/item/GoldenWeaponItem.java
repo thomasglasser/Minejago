@@ -8,6 +8,8 @@ import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowersConfig;
 import dev.thomasglasser.minejago.world.entity.powers.Power;
 import net.minecraft.core.Registry;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -21,6 +23,7 @@ import net.minecraft.world.item.SimpleFoiledItem;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class GoldenWeaponItem extends SimpleFoiledItem
 {
@@ -67,6 +70,10 @@ public abstract class GoldenWeaponItem extends SimpleFoiledItem
                 if (MinejagoPowersConfig.WEAPON_GOES_CRAZY.get()) {
                     goCrazy(pContext.getPlayer());
                 }
+                if (this.getFailSound() != null)
+                {
+                    pContext.getLevel().playSound(null, pContext.getPlayer().blockPosition(), getFailSound(), SoundSource.PLAYERS);
+                }
                 return InteractionResult.CONSUME_PARTIAL;
             }
         }
@@ -84,6 +91,11 @@ public abstract class GoldenWeaponItem extends SimpleFoiledItem
                 if (MinejagoPowersConfig.WEAPON_GOES_CRAZY.get()) {
                     goCrazy((Player) pLivingEntity);
                 }
+                if (this.getFailSound() != null)
+                {
+                    pLevel.playSound(null, pLivingEntity.blockPosition(), getFailSound(), SoundSource.PLAYERS);
+                }
+                return;
             }
         }
         doReleaseUsing(pStack, pLevel, pLivingEntity, pTimeCharged);
@@ -101,6 +113,11 @@ public abstract class GoldenWeaponItem extends SimpleFoiledItem
                 if (MinejagoPowersConfig.WEAPON_GOES_CRAZY.get()) {
                     goCrazy((Player) livingEntity);
                 }
+                if (this.getFailSound() != null)
+                {
+                    level.playSound(null, livingEntity.blockPosition(), getFailSound(), SoundSource.PLAYERS);
+                }
+                return;
             }
         }
         doOnUsingTick(stack, livingEntity, remainingUseDuration);
@@ -114,5 +131,11 @@ public abstract class GoldenWeaponItem extends SimpleFoiledItem
     public static void overload(LivingEntity entity)
     {
         // TODO: Weapons portal event
+    }
+
+    @Nullable
+    public SoundEvent getFailSound()
+    {
+        return null;
     }
 }
