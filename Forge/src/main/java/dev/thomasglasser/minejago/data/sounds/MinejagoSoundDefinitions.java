@@ -16,5 +16,8 @@ public class MinejagoSoundDefinitions extends SoundDefinitionsProvider {
     @Override
     public void registerSounds() {
         add(MinejagoSoundEvents.TEAPOT_WHISTLE.get(), SoundDefinition.definition().with(SoundDefinition.Sound.sound(Minejago.modLoc("teapot_whistle"), SoundDefinition.SoundType.SOUND)).subtitle(MinejagoSoundEvents.TEAPOT_WHISTLE.get().getLocation().toLanguageKey("sound") + ".subtitle"));
+        add(MinejagoSoundEvents.SPINJITZU_START.get(), SoundDefinition.definition().with(SoundDefinition.Sound.sound(Minejago.modLoc("spinjitzu_start"), SoundDefinition.SoundType.SOUND)).subtitle(MinejagoSoundEvents.SPINJITZU_START.get().getLocation().toLanguageKey("sound") + ".subtitle"));
+        add(MinejagoSoundEvents.SPINJITZU_STOP.get(), SoundDefinition.definition().with(SoundDefinition.Sound.sound(Minejago.modLoc("spinjitzu_stop"), SoundDefinition.SoundType.SOUND)).subtitle(MinejagoSoundEvents.SPINJITZU_STOP.get().getLocation().toLanguageKey("sound") + ".subtitle"));
+        add(MinejagoSoundEvents.SPINJITZU_ACTIVE.get(), SoundDefinition.definition().with(SoundDefinition.Sound.sound(Minejago.modLoc("spinjitzu_active"), SoundDefinition.SoundType.SOUND)).subtitle(MinejagoSoundEvents.SPINJITZU_ACTIVE.get().getLocation().toLanguageKey("sound") + ".subtitle"));
     }
 }

@@ -9,6 +9,7 @@ import dev.thomasglasser.minejago.network.ClientboundRefreshVipDataPacket;
 import dev.thomasglasser.minejago.network.ClientboundStopAnimationPacket;
 import dev.thomasglasser.minejago.network.ServerboundStartSpinjitzuPacket;
 import dev.thomasglasser.minejago.platform.Services;
+import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.powers.Power;
 import dev.thomasglasser.minejago.world.item.GoldenWeaponItem;
@@ -22,6 +23,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.StructureTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
@@ -47,19 +49,19 @@ public class MinejagoEntityEvents
 {
     public static void onPlayerTick(Player player)
     {
+        SpinjitzuData spinjitzu = Services.DATA.getSpinjitzuData(player);
+
         if (player instanceof ServerPlayer serverPlayer)
         {
-            SpinjitzuData spinjitzu = Services.DATA.getSpinjitzuData(player);
-
             if (spinjitzu.unlocked() || true /* TODO: Unlock system */) {
                 if (spinjitzu.active()) {
                     if (serverPlayer.isCrouching() || serverPlayer.getVehicle() != null || serverPlayer.isVisuallySwimming() || serverPlayer.isUnderWater()) {
-                        Services.DATA.setSpinjitzuData(new SpinjitzuData(spinjitzu.unlocked(), false), serverPlayer);
-                        Services.NETWORK.sendToAllClients(ClientboundStopAnimationPacket.class, ClientboundStopAnimationPacket.toBytes(serverPlayer.getUUID()), serverPlayer);
-                        AttributeInstance speed = serverPlayer.getAttribute(Attributes.MOVEMENT_SPEED);
-                        if (speed != null && speed.hasModifier(SpinjitzuData.SPEED_MODIFIER)) speed.removeModifier(SpinjitzuData.SPEED_MODIFIER);
-                        AttributeInstance kb = serverPlayer.getAttribute(Attributes.ATTACK_KNOCKBACK);
-                        if (kb != null && kb.hasModifier(SpinjitzuData.KNOCKBACK_MODIFIER)) kb.removeModifier(SpinjitzuData.KNOCKBACK_MODIFIER);
+                        stopSpinjitzu(spinjitzu, serverPlayer);
+                        return;
+                    }
+                    if (player.tickCount % 20 == 0)
+                    {
+                        serverPlayer.level.playSound(null, serverPlayer.blockPosition(), MinejagoSoundEvents.SPINJITZU_ACTIVE.get(), SoundSource.PLAYERS);
                     }
                     Power power = player.level.registryAccess().registryOrThrow(MinejagoRegistries.POWER).getHolderOrThrow(Services.DATA.getPowerData(player).power()).value();
                     if (!power.is(MinejagoPowers.NONE)) {
@@ -125,12 +127,9 @@ public class MinejagoEntityEvents
                     }
                 }
             } else if (spinjitzu.active()) {
-                Services.DATA.setSpinjitzuData(new SpinjitzuData(spinjitzu.unlocked(), false), serverPlayer);
-                Services.NETWORK.sendToAllClients(ClientboundStopAnimationPacket.class, ClientboundStopAnimationPacket.toBytes(serverPlayer.getUUID()), serverPlayer);
-                serverPlayer.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(SpinjitzuData.SPEED_MODIFIER);
-                serverPlayer.getAttribute(Attributes.ATTACK_KNOCKBACK).removeModifier(SpinjitzuData.KNOCKBACK_MODIFIER);
+                stopSpinjitzu(spinjitzu, serverPlayer);
             }
-        } else if (MinejagoKeyMappings.ACTIVATE_SPINJITZU.isDown()) {
+        } else if (!spinjitzu.active() && MinejagoKeyMappings.ACTIVATE_SPINJITZU.isDown()) {
             Services.NETWORK.sendToServer(ServerboundStartSpinjitzuPacket.class);
         }
     }
@@ -243,5 +242,16 @@ public class MinejagoEntityEvents
             player.addItem(itemstack);
             ((IDataHolder)painting).getPersistentData().putBoolean("MapTaken", true);
         }
+    }
+
+    private static void stopSpinjitzu(SpinjitzuData spinjitzu, ServerPlayer serverPlayer)
+    {
+        Services.DATA.setSpinjitzuData(new SpinjitzuData(spinjitzu.unlocked(), false), serverPlayer);
+        Services.NETWORK.sendToAllClients(ClientboundStopAnimationPacket.class, ClientboundStopAnimationPacket.toBytes(serverPlayer.getUUID()), serverPlayer);
+        AttributeInstance speed = serverPlayer.getAttribute(Attributes.MOVEMENT_SPEED);
+        if (speed != null && speed.hasModifier(SpinjitzuData.SPEED_MODIFIER)) speed.removeModifier(SpinjitzuData.SPEED_MODIFIER);
+        AttributeInstance kb = serverPlayer.getAttribute(Attributes.ATTACK_KNOCKBACK);
+        if (kb != null && kb.hasModifier(SpinjitzuData.KNOCKBACK_MODIFIER)) kb.removeModifier(SpinjitzuData.KNOCKBACK_MODIFIER);
+        serverPlayer.level.playSound(null, serverPlayer.blockPosition(), MinejagoSoundEvents.SPINJITZU_STOP.get(), SoundSource.PLAYERS);
     }
 }

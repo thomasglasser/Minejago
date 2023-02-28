@@ -153,7 +153,10 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add(MinejagoItems.FILLED_TEACUP.get().getDescriptionId() + ".milk", "Cup of Milk");
         addPotions(MinejagoPotions.MILK.get(), "Milk");
 
-        add(MinejagoSoundEvents.TEAPOT_WHISTLE.get().getLocation().toLanguageKey() + ".subtitle", "*teapot whistles*");
+        add(MinejagoSoundEvents.TEAPOT_WHISTLE.get().getLocation().toLanguageKey("sound") + ".subtitle", "*teapot whistles*");
+        add(MinejagoSoundEvents.SPINJITZU_START.get().getLocation().toLanguageKey("sound") + ".subtitle", "*Spinjitzu activates*");
+        add(MinejagoSoundEvents.SPINJITZU_ACTIVE.get().getLocation().toLanguageKey("sound") + ".subtitle", "*Spinjitzu wooshes*");
+        add(MinejagoSoundEvents.SPINJITZU_STOP.get().getLocation().toLanguageKey("sound") + ".subtitle", "*Spinjitzu fades*");
 
         add(MinejagoMobEffects.CURE.get(), "Instant Cure");
 

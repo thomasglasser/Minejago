@@ -1,4 +1,22 @@
 {
+  "spinjitzu_active": {
+    "sounds": [
+      "minejago:spinjitzu_active"
+    ],
+    "subtitle": "sound.minejago.spinjitzu_active.subtitle"
+  },
+  "spinjitzu_start": {
+    "sounds": [
+      "minejago:spinjitzu_start"
+    ],
+    "subtitle": "sound.minejago.spinjitzu_start.subtitle"
+  },
+  "spinjitzu_stop": {
+    "sounds": [
+      "minejago:spinjitzu_stop"
+    ],
+    "subtitle": "sound.minejago.spinjitzu_stop.subtitle"
+  },
   "teapot_whistle": {
     "sounds": [
       "minejago:teapot_whistle"
