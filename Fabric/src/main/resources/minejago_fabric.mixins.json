@@ -5,14 +5,15 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "minejago.refmap.json",
   "mixins": [
-    "dev.thomasglasser.minejago.world.item.WoodenNunchucksItemMixin",
-    "dev.thomasglasser.minejago.world.item.armor.BlackGiItemMixin",
-    "dev.thomasglasser.minejago.world.item.armor.SkeletalChestplateItemMixin",
-    "dev.thomasglasser.minejago.world.item.armor.TrainingGiItemMixin",
-    "net.minecraft.commands.CommandsMixin",
-    "net.minecraft.servers.players.PlayerListMixin",
-    "net.minecraft.world.entity.EntityMixinFabric",
-    "net.minecraft.world.entity.PlayerMixinFabric"
+    "minecraft.commands.CommandsMixin",
+    "minecraft.server.players.PlayerListMixin",
+    "minecraft.tags.TagManagerMixin",
+    "minecraft.world.entity.EntityMixinFabric",
+    "minecraft.world.entity.PlayerMixinFabric",
+    "minejago.world.item.WoodenNunchucksItemMixin",
+    "minejago.world.item.armor.BlackGiItemMixin",
+    "minejago.world.item.armor.SkeletalChestplateItemMixin",
+    "minejago.world.item.armor.TrainingGiItemMixin"
   ],
   "client": [
   ],
