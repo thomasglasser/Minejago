@@ -25,9 +25,6 @@ public class MinejagoItemTagsProvider extends ItemTagsProvider
     @Override
     protected void addTags(HolderLookup.Provider lookupProvider)
     {
-        tag(Tags.Items.TOOLS)
-                .add(MinejagoItems.SCYTHE_OF_QUAKES.get())
-                .add(MinejagoItems.IRON_SCYTHE.get());
         tag(ItemTags.PIGLIN_LOVED)
                 .addTag(MinejagoItemTags.GOLDEN_WEAPONS);
         tag(Tags.Items.TOOLS_SWORDS)
@@ -46,39 +43,18 @@ public class MinejagoItemTagsProvider extends ItemTagsProvider
                 .addTag(MinejagoItemTags.GOLDEN_WEAPONS);
         tagDynamicLight("self", 10)
                 .addTag(MinejagoItemTags.GOLDEN_WEAPONS);
-//        MinejagoArmor.SETS.forEach(set ->
-//                {
-//                    set.getAll().forEach(item ->
-//                    {
-//                        tag(Tags.Items.ARMORS).add(item.get());
-//
-//                        switch (set.getForItem(item)) {
-//                            case HEAD -> tag(Tags.Items.ARMORS_HELMETS).add(item.get());
-//                            case CHEST -> tag(Tags.Items.ARMORS_CHESTPLATES).add(item.get());
-//                            case LEGS -> tag(Tags.Items.ARMORS_LEGGINGS).add(item.get());
-//                            case FEET -> tag(Tags.Items.ARMORS_BOOTS).add(item.get());
-//                        }
-//                    });
-//                });
-//        MinejagoArmor.POWERED_SETS.forEach(set ->
-//                {
-//                    set.getAll().forEach(item ->
-//                    {
-//                        tag(Tags.Items.ARMORS).add(item.get());
-//
-//                        switch (set.getForItem(item)) {
-//                            case HEAD -> tag(Tags.Items.ARMORS_HELMETS).add(item.get());
-//                            case CHEST -> tag(Tags.Items.ARMORS_CHESTPLATES).add(item.get());
-//                            case LEGS -> tag(Tags.Items.ARMORS_LEGGINGS).add(item.get());
-//                            case FEET -> tag(Tags.Items.ARMORS_BOOTS).add(item.get());
-//                        }
-//                    });
-//                });
-//        MinejagoArmor.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
-//        {
-//            tag(Tags.Items.ARMORS).add(item.get());
-//            tag(Tags.Items.ARMORS_CHESTPLATES).add(item.get());
-//        });
+        MinejagoArmor.ARMOR_SETS.forEach(set ->
+                set.getAll().forEach(item ->
+                {
+                    switch (set.getForItem(item.get())) {
+                        case HEAD -> tag(Tags.Items.ARMORS_HELMETS).add(item.get());
+                        case CHEST -> tag(Tags.Items.ARMORS_CHESTPLATES).add(item.get());
+                        case LEGS -> tag(Tags.Items.ARMORS_LEGGINGS).add(item.get());
+                        case FEET -> tag(Tags.Items.ARMORS_BOOTS).add(item.get());
+                    }
+                }));
+        MinejagoArmor.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
+                tag(Tags.Items.ARMORS_CHESTPLATES).add(item.get()));
     }
 
     public TagAppender<Item> tagDynamicLight(String tag, int level)

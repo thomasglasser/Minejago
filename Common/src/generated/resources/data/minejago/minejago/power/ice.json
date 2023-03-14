@@ -11,5 +11,6 @@
     5.0,
     2.0
   ],
-  "make_sets": true
+  "make_sets": true,
+  "power_color": "white"
 }

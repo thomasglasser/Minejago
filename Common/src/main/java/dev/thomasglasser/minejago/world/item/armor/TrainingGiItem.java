@@ -13,8 +13,8 @@ public class TrainingGiItem extends PoweredArmorItem implements IFabricGeoItem
 {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public TrainingGiItem(ResourceLocation powerId, ArmorMaterial pMaterial, EquipmentSlot pSlot, Properties pProperties) {
-        super(powerId, pMaterial, pSlot, pProperties);
+    public TrainingGiItem(ArmorMaterial pMaterial, EquipmentSlot pSlot, Properties pProperties) {
+        super(pMaterial, pSlot, pProperties);
     }
 
     @Override

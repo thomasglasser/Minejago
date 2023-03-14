@@ -92,7 +92,7 @@ public class TeapotBlockEntity extends BlockEntity implements IItemHolder, Namea
                     pBlockEntity.brewTime = 0;
                     pBlockEntity.brewing = false;
                     pBlockEntity.boiling = true;
-                    pLevel.playSound(null, pPos, MinejagoSoundEvents.TEAPOT_WHISTLE.get(), SoundSource.BLOCKS, 100.0F, 1.0F);
+                    pLevel.playSound(null, pPos, MinejagoSoundEvents.TEAPOT_WHISTLE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
                 } else if (pBlockEntity.temp < 100) {
                     pBlockEntity.brewing = false;
                 }
@@ -100,13 +100,13 @@ public class TeapotBlockEntity extends BlockEntity implements IItemHolder, Namea
             } else if (pBlockEntity.heating) {
                 pBlockEntity.temp += 0.1;
                 setChanged(pLevel, pPos, pState);
-                if (pBlockEntity.temp >= 100) {
+                if (pBlockEntity.temp >= 100.0) {
                     pBlockEntity.heating = false;
                     pBlockEntity.boiling = true;
                     pLevel.playSound((Player) null, pPos, MinejagoSoundEvents.TEAPOT_WHISTLE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
                     setChanged(pLevel, pPos, pState);
                 }
-            } else if (pBlockEntity.temp >= 100 && !pBlockEntity.item.isEmpty() && (PotionBrewing.hasPotionMix(PotionUtils.setPotion(new ItemStack(Items.POTION), pBlockEntity.potion), pBlockEntity.item) || MinejagoPotionBrewing.hasTeaMix(PotionUtils.setPotion(new ItemStack(Items.POTION), pBlockEntity.potion), pBlockEntity.item))) {
+            } else if (pBlockEntity.temp >= 100 && (pBlockEntity.potion == Potions.WATER || !pBlockEntity.item.isEmpty() && (PotionBrewing.hasPotionMix(PotionUtils.setPotion(new ItemStack(Items.POTION), pBlockEntity.potion), pBlockEntity.item) || MinejagoPotionBrewing.hasTeaMix(PotionUtils.setPotion(new ItemStack(Items.POTION), pBlockEntity.potion), pBlockEntity.item)))) {
                 pBlockEntity.brewTime = (short) RandomSource.create().nextIntBetweenInclusive(1200, 2400);
                 pBlockEntity.brewing = true;
                 pBlockEntity.boiling = false;

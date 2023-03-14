@@ -40,5 +40,11 @@
       "minejago:spinjitzu_stop"
     ],
     "subtitle": "sound.minejago.spinjitzu_stop.subtitle"
+  },
+  "teapot_whistle": {
+    "sounds": [
+      "minejago:teapot_whistle"
+    ],
+    "subtitle": "sound.minejago.teapot_whistle.subtitle"
   }
 }

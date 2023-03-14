@@ -47,6 +47,7 @@ public class MinejagoDataGenerators
         generator.addProvider(onServer, new MinejagoLootTables(packOutput));
         generator.addProvider(onServer, new MinejagoAdvancementProvider(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(onServer, new MinejagoEntityTypeTagsProvider(packOutput, lookupProvider, existingFileHelper));
+        generator.addProvider(onServer, new MinejagoPaintingVariantTagsProvider(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(onServer, new DatapackBuiltinEntriesProvider(packOutput,
                 CompletableFuture.supplyAsync(() -> {
                 final RegistryAccess.Frozen access = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);

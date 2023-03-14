@@ -6,14 +6,14 @@ import dev.thomasglasser.minejago.core.particles.SpinjitzuParticleOptions;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.registration.registries.DatapackRegistry;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
-import dev.thomasglasser.minejago.world.item.armor.MinejagoArmorMaterials;
-import dev.thomasglasser.minejago.world.item.armor.TrainingGiItem;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.RegistrySetBuilder;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.ItemStack;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MinejagoPowers {
 
@@ -30,27 +30,31 @@ public class MinejagoPowers {
         return ResourceKey.create(MinejagoRegistries.POWER, Minejago.modLoc(id));
     }
 
-    public static void init() {
-        final RegistryAccess.Frozen access = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
-        final RegistrySetBuilder builder = new RegistrySetBuilder();
-        MinejagoPowers.POWERS.addToSet(builder);
-        HolderLookup.Provider access1 = builder.build(access);
-
-        access1.lookupOrThrow(MinejagoRegistries.POWER).listElements().forEach(powerReference ->
-        {
-            if (powerReference.value().makeSets)
-            {
-                MinejagoArmor.PoweredArmorSet.create(powerReference.value().getId(), "training", MinejagoArmorMaterials.TRAINING_GI, TrainingGiItem.class);
-            }
-        });
-    }
+    public static void init() {}
 
     public static void bootstrap(BootstapContext<Power> context)
     {
         context.register(NONE, new Power(Minejago.modLoc("none")));
-        context.register(ICE, new Power(Minejago.modLoc("ice"), SpinjitzuParticleOptions.ELEMENT_LIGHT_BLUE, SpinjitzuParticleOptions.ELEMENT_WHITE, MinejagoParticleTypes.SNOWS, true));
-        context.register(EARTH, new Power(Minejago.modLoc("earth"), SpinjitzuParticleOptions.ELEMENT_BROWN, SpinjitzuParticleOptions.ELEMENT_TAN, MinejagoParticleTypes.ROCKS, true));
-        context.register(FIRE, new Power(Minejago.modLoc("fire"), SpinjitzuParticleOptions.ELEMENT_ORANGE, SpinjitzuParticleOptions.ELEMENT_YELLOW, MinejagoParticleTypes.SPARKS, true));
-        context.register(LIGHTNING, new Power(Minejago.modLoc("lightning"), SpinjitzuParticleOptions.ELEMENT_BLUE, SpinjitzuParticleOptions.ELEMENT_LIGHT_BLUE, MinejagoParticleTypes.BOLTS, true));
+        context.register(ICE, new Power(Minejago.modLoc("ice"), ChatFormatting.WHITE, SpinjitzuParticleOptions.ELEMENT_LIGHT_BLUE, SpinjitzuParticleOptions.ELEMENT_WHITE, MinejagoParticleTypes.SNOWS, true));
+        context.register(EARTH, new Power(Minejago.modLoc("earth"), ChatFormatting.YELLOW, SpinjitzuParticleOptions.ELEMENT_BROWN, SpinjitzuParticleOptions.ELEMENT_TAN, MinejagoParticleTypes.ROCKS, true));
+        context.register(FIRE, new Power(Minejago.modLoc("fire"), ChatFormatting.RED, SpinjitzuParticleOptions.ELEMENT_ORANGE, SpinjitzuParticleOptions.ELEMENT_YELLOW, MinejagoParticleTypes.SPARKS, true));
+        context.register(LIGHTNING, new Power(Minejago.modLoc("lightning"), ChatFormatting.BLUE, SpinjitzuParticleOptions.ELEMENT_BLUE, SpinjitzuParticleOptions.ELEMENT_LIGHT_BLUE, MinejagoParticleTypes.BOLTS, true));
+    }
+
+    public static List<ItemStack> getArmorForAll(HolderLookup.Provider access)
+    {
+        List<ItemStack> list = new ArrayList<>();
+        access.lookupOrThrow(MinejagoRegistries.POWER).listElements().forEach(powerReference ->
+        {
+            Power power = powerReference.value();
+            if (power.makeSets)
+            {
+                MinejagoArmor.POWER_SETS.forEach(armorSet ->
+                        armorSet.getAll().forEach(item ->
+                            list.add(PowerUtils.setPower(new ItemStack(item.get()), powerReference.key()))
+                        ));
+            }
+        });
+        return list;
     }
 }

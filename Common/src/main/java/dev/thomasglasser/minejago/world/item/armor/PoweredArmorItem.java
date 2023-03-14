@@ -1,21 +1,50 @@
 package dev.thomasglasser.minejago.world.item.armor;
 
+import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
+import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
+import dev.thomasglasser.minejago.world.entity.powers.Power;
+import dev.thomasglasser.minejago.world.item.IModeledItem;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
-public abstract class PoweredArmorItem extends ArmorItem implements IModeledArmorItem
+import java.util.List;
+
+public abstract class PoweredArmorItem extends ArmorItem implements IGeoArmorItem, IModeledItem
 {
-    private ResourceLocation powerId;
+    BlockEntityWithoutLevelRenderer bewlr;
 
-    public PoweredArmorItem(ResourceLocation powerId, ArmorMaterial pMaterial, EquipmentSlot pSlot, Properties pProperties) {
+    public PoweredArmorItem(ArmorMaterial pMaterial, EquipmentSlot pSlot, Properties pProperties) {
         super(pMaterial, pSlot, pProperties);
-        this.powerId = powerId;
     }
 
-    public ResourceLocation getPowerId()
-    {
-        return powerId;
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
+        if (level != null && stack.getOrCreateTag().contains("Power"))
+        {
+            ResourceLocation location = ResourceLocation.of(stack.getOrCreateTag().getString("Power"), ':');
+            Power power = MinejagoPowers.POWERS.get(level.registryAccess()).get(location);
+            tooltipComponents.add(Component.translatable(location.toLanguageKey("power")).withStyle(ChatFormatting.ITALIC, power.getColor()));
+        }
+        super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
+    }
+
+    @Override
+    public BlockEntityWithoutLevelRenderer getBEWLR() {
+        if (bewlr == null) bewlr = new MinejagoBlockEntityWithoutLevelRenderer();
+        return bewlr;
+    }
+
+    @Override
+    public boolean isGi() {
+        return true;
     }
 }

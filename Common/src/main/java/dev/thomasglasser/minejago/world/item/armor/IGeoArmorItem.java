@@ -5,7 +5,7 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 
-public interface IModeledArmorItem extends GeoItem
+public interface IGeoArmorItem extends GeoItem
 {
     GeoArmorRenderer newRenderer();
 
@@ -16,4 +16,9 @@ public interface IModeledArmorItem extends GeoItem
     AnimatableInstanceCache getAnimatableInstanceCache();
 
     boolean isSkintight();
+
+    default boolean isGi()
+    {
+        return false;
+    }
 }

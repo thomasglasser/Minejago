@@ -14,7 +14,6 @@ import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.powers.Power;
 import dev.thomasglasser.minejago.world.item.GoldenWeaponItem;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
-import dev.thomasglasser.minejago.world.item.WoodenNunchucksItem;
 import dev.thomasglasser.minejago.world.level.saveddata.maps.MinejagoMapDecorations;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
 import net.mehvahdjukaar.moonlight.api.map.MapHelper;
@@ -27,7 +26,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.StructureTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -55,7 +54,7 @@ public class MinejagoEntityEvents
         {
             if (spinjitzu.unlocked()) {
                 if (spinjitzu.active()) {
-                    if (serverPlayer.isCrouching() || serverPlayer.getVehicle() != null || serverPlayer.isVisuallySwimming() || serverPlayer.isUnderWater()) {
+                    if (serverPlayer.isCrouching() || serverPlayer.getVehicle() != null || serverPlayer.isVisuallySwimming() || serverPlayer.isUnderWater() || player.isSleeping() || player.isFreezing() || player.isNoGravity() || player.isInLava() || player.isFallFlying() || player.isBlocking() || player.hasEffect(MobEffects.LEVITATION)) {
                         stopSpinjitzu(spinjitzu, serverPlayer);
                         return;
                     }
@@ -140,12 +139,6 @@ public class MinejagoEntityEvents
         {
             Services.NETWORK.sendToAllClients(ClientboundRefreshVipDataPacket.class, serverPlayer);
         }
-    }
-
-    public static void onLivingAttack(DamageSource source)
-    {
-        if (source.getEntity() instanceof LivingEntity livingEntity && livingEntity.getMainHandItem().is(MinejagoItems.WOODEN_NUNCHUCKS.get()))
-            WoodenNunchucksItem.resetDamage(livingEntity.getMainHandItem());
     }
 
     public static void onLivingTick(LivingEntity entity)

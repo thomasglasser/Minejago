@@ -6,6 +6,7 @@ import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.registration.RegistrationProvider;
 import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
+import dev.thomasglasser.minejago.world.item.armor.IGeoArmorItem;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -90,7 +91,10 @@ public class MinejagoItems
         {
             for (RegistryObject<Item> item : MinejagoArmor.ARMOR.getEntries())
             {
-                items.add(item.get().getDefaultInstance());
+                if (!(item.get() instanceof IGeoArmorItem iGeoArmorItem && iGeoArmorItem.isGi()))
+                {
+                    items.add(item.get().getDefaultInstance());
+                }
             }
         }
 

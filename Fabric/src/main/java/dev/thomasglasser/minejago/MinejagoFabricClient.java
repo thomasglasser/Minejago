@@ -13,6 +13,7 @@ import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.item.IModeledItem;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import fuzs.forgeconfigapiport.api.config.v2.ModConfigEvents;
 import net.fabricmc.api.ClientModInitializer;
@@ -30,6 +31,7 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.EntityType;
@@ -39,6 +41,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
 
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
@@ -64,6 +67,14 @@ public class MinejagoFabricClient implements ClientModInitializer {
         });
 
         for (RegistryObject<Item> item : MinejagoItems.ITEMS.getEntries())
+        {
+            if (item.get() instanceof IModeledItem)
+            {
+                BuiltinItemRendererRegistry.INSTANCE.register(item.get(), (bewlr::renderByItem));
+            }
+        }
+
+        for (RegistryObject<Item> item : MinejagoArmor.ARMOR.getEntries())
         {
             if (item.get() instanceof IModeledItem)
             {
@@ -118,6 +129,15 @@ public class MinejagoFabricClient implements ClientModInitializer {
         ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, consumer) -> consumer.accept(new ModelResourceLocation(Minejago.MOD_ID, "iron_spear_inventory", "inventory")));
         ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, consumer) -> consumer.accept(new ModelResourceLocation(Minejago.MOD_ID, "wooden_nunchucks_inventory", "inventory")));
         ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, consumer) -> consumer.accept(new ModelResourceLocation(Minejago.MOD_ID, "bamboo_staff_inventory", "inventory")));
+        ModelLoadingRegistry.INSTANCE.registerModelProvider(((manager, consumer) ->
+        {
+            Map<ResourceLocation, Resource> map = manager.listResources("models/item/minejago_armor", (location -> location.getPath().endsWith(".json")));
+            for (ResourceLocation rl : map.keySet())
+            {
+                ResourceLocation stripped = new ResourceLocation(rl.getNamespace(), rl.getPath().substring("models/item/".length(), rl.getPath().indexOf(".json")));
+                consumer.accept(new ModelResourceLocation(stripped, "inventory"));
+            }
+        }));
     }
 
     private void registerItemColors()

@@ -55,6 +55,7 @@ public class MinejagoForge
         bus.addListener(MinejagoForgeClientEvents::registerClientReloadListeners);
         bus.addListener(MinejagoForgeClientEvents::onAddLayers);
         bus.addListener(MinejagoForgeClientEvents::onBuildCreativeTabContent);
+        bus.addListener(MinejagoForgeClientEvents::onRegisterCreativeTab);
     }
 
     private void addForgeListeners()
@@ -64,7 +65,6 @@ public class MinejagoForge
         MinecraftForge.EVENT_BUS.addListener(MinejagoForgeEntityEvents::onPlayerTick);
         MinecraftForge.EVENT_BUS.addListener(MinejagoForgeEntityEvents::onServerPlayerLoggedIn);
         MinecraftForge.EVENT_BUS.addListener(MinejagoForgeCommandEvents::onCommandsRegister);
-        MinecraftForge.EVENT_BUS.addListener(MinejagoForgeEntityEvents::onLivingAttack);
     }
 
     private void addForgeClientListeners()

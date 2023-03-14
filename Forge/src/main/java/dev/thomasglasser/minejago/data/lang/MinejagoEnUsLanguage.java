@@ -20,6 +20,7 @@ import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPattern
 import net.minecraft.client.KeyMapping;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -52,34 +53,19 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add(MinejagoItems.IRON_SHURIKEN.get(), "Iron Shuriken");
         MinejagoArmor.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
                 add(item.get(), "Skeletal Chestplate"));
-        MinejagoArmor.SETS.forEach(set ->
+        MinejagoArmor.ARMOR_SETS.forEach(set ->
                 {
                     set.getAll().forEach(item ->
                     {
-                        String nameForSlot = switch (set.getForItem(item)) {
+                        String nameForSlot = switch (set.getForItem(item.get())) {
                             case FEET -> "Boots";
-                            case LEGS -> "Leggings";
+                            case LEGS -> "Pants";
                             case CHEST -> "Jacket";
                             case HEAD -> "Hood";
                             default -> null;
                         };
 
-                        add(item.get(), WordUtils.capitalize(set.getName().replace('_', ' ')) + " " + nameForSlot);
-                    });
-                });
-        MinejagoArmor.POWERED_SETS.forEach(set ->
-                {
-                    set.getAll().forEach(item ->
-                    {
-                        String nameForSlot = switch (set.getForItem(item)) {
-                            case FEET -> "Boots";
-                            case LEGS -> "Leggings";
-                            case CHEST -> "Jacket";
-                            case HEAD -> "Hood";
-                            default -> "";
-                        };
-
-                        add(item.get(), WordUtils.capitalize(set.getName().replace('_', ' ')) + " " + nameForSlot);
+                        add(item.get(), set.getDisplayName() + " " + nameForSlot);
                     });
                 });
         add(MinejagoItems.IRON_KATANA.get(), "Iron Katana");
@@ -99,6 +85,7 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add(MinejagoBlocks.TEAPOT.get(), "Teapot");
 
         addDesc(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get(), "Four Weapons");
+
         MinejagoArmor.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
         {
             if (item.get() instanceof SkeletalChestplateItem chestplate)
@@ -114,7 +101,6 @@ public class MinejagoEnUsLanguage extends LanguageProvider
                 addDesc(item.get(), nameForVariant);
             }
         });
-
 
         add(MinejagoItems.FILLED_TEACUP.get().getDescriptionId() + ".potion", "Tea of %s");
 
@@ -153,14 +139,14 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add(MinejagoItems.FILLED_TEACUP.get().getDescriptionId() + ".milk", "Cup of Milk");
         addPotions(MinejagoPotions.MILK.get(), "Milk");
 
-        add(MinejagoSoundEvents.TEAPOT_WHISTLE.get().getLocation().toLanguageKey("sound") + ".subtitle", "*teapot whistles*");
-        add(MinejagoSoundEvents.SPINJITZU_START.get().getLocation().toLanguageKey("sound") + ".subtitle", "*Spinjitzu activates*");
-        add(MinejagoSoundEvents.SPINJITZU_ACTIVE.get().getLocation().toLanguageKey("sound") + ".subtitle", "*Spinjitzu wooshes*");
-        add(MinejagoSoundEvents.SPINJITZU_STOP.get().getLocation().toLanguageKey("sound") + ".subtitle", "*Spinjitzu fades*");
-        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_FAIL.get().getLocation().toLanguageKey("sound") + ".subtitle", "*Scythe flickers*");
-        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_EXPLOSION.get().getLocation().toLanguageKey("sound") + ".subtitle", "*Ground quakes*");
-        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_CASCADE.get().getLocation().toLanguageKey("sound") + ".subtitle", "*Scythe drags*");
-        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_PATH.get().getLocation().toLanguageKey("sound") + ".subtitle", "*Scythe beams*");
+        add(MinejagoSoundEvents.TEAPOT_WHISTLE.get().getLocation().toLanguageKey("sound") + ".subtitle", "Teapot whistles");
+        add(MinejagoSoundEvents.SPINJITZU_START.get().getLocation().toLanguageKey("sound") + ".subtitle", "Spinjitzu activates");
+        add(MinejagoSoundEvents.SPINJITZU_ACTIVE.get().getLocation().toLanguageKey("sound") + ".subtitle", "Spinjitzu whooshes");
+        add(MinejagoSoundEvents.SPINJITZU_STOP.get().getLocation().toLanguageKey("sound") + ".subtitle", "Spinjitzu fades*");
+        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_FAIL.get().getLocation().toLanguageKey("sound") + ".subtitle", "Scythe flickers");
+        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_EXPLOSION.get().getLocation().toLanguageKey("sound") + ".subtitle", "Ground quakes");
+        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_CASCADE.get().getLocation().toLanguageKey("sound") + ".subtitle", "Scythe drags");
+        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_PATH.get().getLocation().toLanguageKey("sound") + ".subtitle", "Scythe beams");
 
         add(MinejagoMobEffects.CURE.get(), "Instant Cure");
 
@@ -182,6 +168,8 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         addPower(MinejagoPowers.LIGHTNING, "Lightning");
         addPower(MinejagoPowers.ICE, "Ice");
         addPower(MinejagoPowers.NONE, "None");
+
+        addCreativeTab(Minejago.modLoc("gi"), "Gi");
 
         addAdvancement(MinejagoAdventureAdvancementKeys.CATEGORY, MinejagoAdventureAdvancementKeys.KILL_A_SKULKIN, "Redead", "Kill a Skulkin Warrior");
         addAdvancement(MinejagoAdventureAdvancementKeys.CATEGORY, MinejagoAdventureAdvancementKeys.COLLECT_ALL_SKELETAL_CHESTPLATES, "It's Always You Four Colors", "Collect all 4 Skeletal Chestplate variants");
@@ -245,5 +233,10 @@ public class MinejagoEnUsLanguage extends LanguageProvider
 
         add(title, titleString);
         add(desc, descString);
+    }
+
+    public void addCreativeTab(ResourceLocation location, String name)
+    {
+        add(location.toLanguageKey("item_group"), name);
     }
 }

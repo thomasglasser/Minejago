@@ -61,7 +61,9 @@
     "reach-entity-attributes": ">=2.3.1"
   },
   "suggests": {
-    "lambdynamiclights": ">=2.2.0+1.19.3"
+    "lambdynamiclights": ">=2.2.0+1.19.3",
+    "firstpersonmod": "*",
+    "modmenu": "*"
   },
 
   "accessWidener" : "minejago.accesswidener",
