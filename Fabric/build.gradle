@@ -41,6 +41,7 @@ dependencies {
     modImplementation "maven.modrinth:lambdynamiclights:${lambdynamiclights_version}+${minecraft_version}"
 //    modImplementation "curse.maven:moonlight-499980:${moonlight_fabric_id}" Waiting on Fabric update
     modCompileOnly "curse.maven:moonlight-499980:${moonlight_forge_id}"
+    testCompileOnly("curse.maven:moonlight-499980:${moonlight_forge_id}")
     modImplementation "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}"
     modImplementation "curse.maven:smartbrainlib-661293:${smartbrainlib_fabric_id}-sources-${smartbrainlib_sources_fabric_id}"
     modImplementation "maven.modrinth:jade:${jade_fabric_version}"

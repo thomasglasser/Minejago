@@ -53,7 +53,7 @@
     "terrablender": ">=2.1.0.139",
     "cardinal-components": ">=5.1.0",
     "smartbrainlib": ">=1.7.4",
-    "geckolib": ">=4.0.3",
+    "geckolib": ">=4.0.4",
     "forgeconfigapiport": ">=5.0.7"
   },
   "recommends": {
