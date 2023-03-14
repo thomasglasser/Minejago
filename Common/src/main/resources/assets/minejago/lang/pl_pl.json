@@ -114,7 +114,7 @@
   "item.minejago.scythe_of_quakes": "Kosa Wstrząsów",
   "item.minejago.teacup": "Kubek",
   "item.minejago.underworld_skeleton_spawn_egg": "Jajo przyzywające podziemnego szkieleta",
-  "item.minejago.wooden_nunchucks": "Drewniane Nunchako",
+  "item.minejago.wooden_nunchucks": "Drewniane nunchako",
   "item.minejago.wu_spawn_egg": "Jajo przyzywające Wu",
   "item.minejago.zane_spawn_egg": "Jajo przyzywające Zane'a",
   "key.minejago.activate_spinjitzu": "Aktywuj Spinjitzu",
@@ -123,5 +123,6 @@
   "power.minejago.fire": "Ogień",
   "power.minejago.ice": "Lód",
   "power.minejago.lightning": "Błyskawice",
-  "power.minejago.none": "Nic"
+  "power.minejago.none": "Nic",
+  "sound.minejago.teapot_whistle.subtitle": "Czajniczek gwiżdże"
 }
