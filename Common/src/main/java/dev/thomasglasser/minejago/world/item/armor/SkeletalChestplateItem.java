@@ -19,7 +19,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class SkeletalChestplateItem extends ArmorItem implements IModeledArmorItem, IFabricGeoItem {
+public class SkeletalChestplateItem extends ArmorItem implements IGeoArmorItem, IFabricGeoItem {
     private final UnderworldSkeleton.Variant variant;
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
@@ -44,6 +44,11 @@ public class SkeletalChestplateItem extends ArmorItem implements IModeledArmorIt
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return cache;
+    }
+
+    @Override
+    public boolean isSkintight() {
+        return false;
     }
 
     public Supplier<Object> getRenderProvider() {

@@ -18,7 +18,7 @@ issueTrackerURL="https://github.com/thomasglasser/Minejago/issues" #optional
 modId="minejago" #mandatory
 # The version number of the mod - there's a few well known ${} variables useable here or just hardcode it
 # see the associated build.gradle script for how to populate this completely automatically during a build
-version="00e01a" #mandatory
+version="00e01a-dev" #mandatory
 # A display name for the mod
 displayName="Minejago" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification https://mcforge.readthedocs.io/en/latest/gettingstarted/autoupdate/
@@ -28,7 +28,7 @@ displayURL="https://github.com/thomasglasser/Minejago" #optional
 # A file name (in the root of the mod JAR) containing a logo for display
 logoFile="assets/minejago/logo_1.0.png" #optional
 # A text field displayed in the mod UI
-credits="Includes assets by waifu_png_pl, Comerciante, Elysia, Watommeeeeeeeeee, Albert_1403, and ChippiHeppu. Special thanks to Tslat for lots of help, including the entirety of the beta system" #optional
+credits="Includes assets by waifu_png_pl, Comerciante, Watommeeeeeeeeee, Albert_1403, ChippiHeppu, and Tir-Far-Thoinn. Special thanks to Tslat for lots of help, including the entirety of the beta system" #optional
 # A text field displayed in the mod UI
 authors="Thomas Glasser" #optional
 # The description text for the mod (multi line!) (#mandatory)
@@ -42,7 +42,7 @@ modId="forge" #mandatory
 # Does this dependency have to exist - if not, ordering below must be specified
 mandatory=true #mandatory
 # The version range of the dependency
-versionRange="[44.1.4,)" #mandatory
+versionRange="[44.1.9,)" #mandatory
 # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
 ordering="NONE"
 # Side this dependency is applied on - BOTH, CLIENT or SERVER
@@ -110,3 +110,25 @@ versionRange="[1.8,)" #mandatory
 ordering="NONE"
 # Side this dependency is applied on - BOTH, CLIENT or SERVER
 side="SERVER"
+[[dependencies.minejago]] #optional
+# the modid of the dependency
+modId="geckolib" #mandatory
+# Does this dependency have to exist - if not, ordering below must be specified
+mandatory=true #mandatory
+# The version range of the dependency
+versionRange="[4.0.3,)" #mandatory
+# An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
+ordering="NONE"
+# Side this dependency is applied on - BOTH, CLIENT or SERVER
+side="BOTH"
+[[dependencies.minejago]] #optional
+# the modid of the dependency
+modId="firstpersonmod" #mandatory
+# Does this dependency have to exist - if not, ordering below must be specified
+mandatory=false #mandatory
+# The version range of the dependency
+versionRange="[0,)" #mandatory
+# An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
+ordering="NONE"
+# Side this dependency is applied on - BOTH, CLIENT or SERVER
+side="CLIENT"

@@ -1,5 +1,6 @@
 package dev.thomasglasser.minejago.world.item;
 
+import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownIronShuriken;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -33,7 +34,7 @@ public class ShurikenItem extends SwordItem
             }
 
             pLevel.addFreshEntity(thrownIronShuriken);
-            pLevel.playSound(null, thrownIronShuriken, SoundEvents.TRIDENT_THROW, SoundSource.PLAYERS, 1.0F, 1.0F);
+            pLevel.playSound(null, thrownIronShuriken, MinejagoSoundEvents.SHURIKEN_THROW.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
             if (!player.getAbilities().instabuild) {
                 player.getInventory().removeItem(stack);
             }

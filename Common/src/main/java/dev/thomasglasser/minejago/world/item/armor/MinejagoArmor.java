@@ -4,7 +4,6 @@ import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.registration.RegistrationProvider;
 import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.world.entity.UnderworldSkeleton;
-import dev.thomasglasser.minejago.world.entity.powers.Power;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
@@ -13,97 +12,20 @@ import net.minecraft.world.item.Item;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class MinejagoArmor
 {
     public static final RegistrationProvider<Item> ARMOR = RegistrationProvider.get(Registries.ITEM, Minejago.MOD_ID);
-    public static final List<ArmorSet> SETS = new ArrayList<>();
-    public static final List<PoweredArmorSet> POWERED_SETS = new ArrayList<>();
+    public static final List<ArmorSet> ARMOR_SETS = new ArrayList<>();
+    public static final List<ArmorSet> POWER_SETS = new ArrayList<>();
 
     private static final Item.Properties DEFAULT_PROPERTIES = new Item.Properties().stacksTo(1);
 
-    public static final ArmorSet BLACK_GI_SET = new ArmorSet("black_gi", MinejagoArmorMaterials.BLACK_GI, BlackGiItem.class);
     public static final SkeletalChestplateSet SKELETAL_CHESTPLATE_SET = new SkeletalChestplateSet();
 
-    public static class ArmorSet
-    {
-        private final RegistryObject<ArmorItem> HELMET;
-        private final RegistryObject<ArmorItem> CHESTPLATE;
-        private final RegistryObject<ArmorItem> LEGGINGS;
-        private final RegistryObject<ArmorItem> BOOTS;
-
-        private final String name;
-
-        public ArmorSet(String setName, ArmorMaterial material, Class<? extends ArmorItem> armorClass) {
-            name = setName;
-
-            HELMET = ARMOR.register(setName + "_helmet", () -> {
-                try {
-                    return armorClass.getDeclaredConstructor(ArmorMaterial.class, EquipmentSlot.class, Item.Properties.class).newInstance(material, EquipmentSlot.HEAD, DEFAULT_PROPERTIES);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            });
-            CHESTPLATE = ARMOR.register(setName + "_chestplate", () -> {
-                try {
-                    return armorClass.getDeclaredConstructor(ArmorMaterial.class, EquipmentSlot.class, Item.Properties.class).newInstance(material, EquipmentSlot.CHEST, DEFAULT_PROPERTIES);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            });
-            LEGGINGS = ARMOR.register(setName + "_leggings", () -> {
-                try {
-                    return armorClass.getDeclaredConstructor(ArmorMaterial.class, EquipmentSlot.class, Item.Properties.class).newInstance(material, EquipmentSlot.LEGS, DEFAULT_PROPERTIES);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            });
-            BOOTS = ARMOR.register(setName + "_boots", () -> {
-                try {
-                    return armorClass.getDeclaredConstructor(ArmorMaterial.class, EquipmentSlot.class, Item.Properties.class).newInstance(material, EquipmentSlot.FEET, DEFAULT_PROPERTIES);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            });
-
-            SETS.add(this);
-        }
-
-        public RegistryObject<ArmorItem> getForSlot(EquipmentSlot slot) {
-            return switch (slot)
-                    {
-
-                        case MAINHAND, OFFHAND -> null;
-                        case FEET -> BOOTS;
-                        case LEGS -> LEGGINGS;
-                        case CHEST -> CHESTPLATE;
-                        case HEAD -> HELMET;
-                    };
-        }
-
-        public EquipmentSlot getForItem(RegistryObject<ArmorItem> item)
-        {
-            if (item == HELMET)
-                return EquipmentSlot.HEAD;
-            else if (item == CHESTPLATE)
-                return EquipmentSlot.CHEST;
-            else if (item == LEGGINGS)
-                return EquipmentSlot.LEGS;
-            else if (item == BOOTS)
-                return EquipmentSlot.FEET;
-
-            return null;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public List<RegistryObject<ArmorItem>> getAll()
-        {
-            return new ArrayList<>(List.of(HELMET, CHESTPLATE, LEGGINGS, BOOTS));
-        }
-    }
+    public static final ArmorSet BLACK_GI_SET = create("black_gi", "Black Gi", false, BlackGiItem.class, MinejagoArmorMaterials.BLACK_GI, DEFAULT_PROPERTIES);
+    public static final ArmorSet TRAINING_GI_SET = create("training_gi", "Training Gi", true, TrainingGiItem.class, MinejagoArmorMaterials.TRAINING_GI, DEFAULT_PROPERTIES);
 
     public static class SkeletalChestplateSet
     {
@@ -138,109 +60,123 @@ public class MinejagoArmor
         }
     }
 
-    public static class PoweredArmorSet {
-        private final RegistryObject<ArmorItem> HELMET;
-        private final RegistryObject<ArmorItem> CHESTPLATE;
-        private final RegistryObject<ArmorItem> LEGGINGS;
-        private final RegistryObject<ArmorItem> BOOTS;
+    public static class ArmorSet
+    {
+        public final RegistryObject<ArmorItem> HEAD;
+        public final RegistryObject<ArmorItem> CHEST;
+        public final RegistryObject<ArmorItem> LEGS;
+        public final RegistryObject<ArmorItem> FEET;
 
-        private final String SET_NAME;
-        private final String POWER_NAME;
+        private final String name;
+        private final String displayName;
 
-        private PoweredArmorSet(String powerName, String setName, ArmorMaterial material, Class<? extends PoweredArmorItem> armorClass) {
-            SET_NAME = setName;
-            POWER_NAME = powerName;
-
-            HELMET = ARMOR.register(powerName + "_" + setName + "_helmet", () -> {
-                try {
-                    return armorClass.getDeclaredConstructor(String.class, ArmorMaterial.class, EquipmentSlot.class, Item.Properties.class).newInstance(powerName, material, EquipmentSlot.HEAD, DEFAULT_PROPERTIES);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            });
-            CHESTPLATE = ARMOR.register(powerName + "_" + setName + "_chestplate", () -> {
-                try {
-                    return armorClass.getDeclaredConstructor(String.class, ArmorMaterial.class, EquipmentSlot.class, Item.Properties.class).newInstance(powerName, material, EquipmentSlot.CHEST, DEFAULT_PROPERTIES);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            });
-            LEGGINGS = ARMOR.register(powerName + "_" + setName + "_leggings", () -> {
-                try {
-                    return armorClass.getDeclaredConstructor(String.class, ArmorMaterial.class, EquipmentSlot.class, Item.Properties.class).newInstance(powerName, material, EquipmentSlot.LEGS, DEFAULT_PROPERTIES);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            });
-            BOOTS = ARMOR.register(powerName + "_" + setName + "_boots", () -> {
-                try {
-                    return armorClass.getDeclaredConstructor(String.class, ArmorMaterial.class, EquipmentSlot.class, Item.Properties.class).newInstance(powerName, material, EquipmentSlot.FEET, DEFAULT_PROPERTIES);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            });
-        }
-
-        public static PoweredArmorSet create(String powerName, String setName, ArmorMaterial material, Class<? extends PoweredArmorItem> clazz)
+        public ArmorSet(String name, String displayName, RegistryObject<ArmorItem> head, RegistryObject<ArmorItem> chest, RegistryObject<ArmorItem> legs, RegistryObject<ArmorItem> feet)
         {
-            PoweredArmorSet set = new PoweredArmorSet(powerName, setName, material, clazz);
-            POWERED_SETS.add(set);
-            return set;
+            this.name = name;
+            this.displayName = displayName;
+
+            HEAD = head;
+            CHEST = chest;
+            LEGS = legs;
+            FEET = feet;
         }
 
-        public RegistryObject<ArmorItem> getForSlot(EquipmentSlot slot) {
+        public RegistryObject<ArmorItem> getForSlot(EquipmentSlot slot)
+        {
             return switch (slot)
                     {
 
                         case MAINHAND, OFFHAND -> null;
-                        case FEET -> BOOTS;
-                        case LEGS -> LEGGINGS;
-                        case CHEST -> CHESTPLATE;
-                        case HEAD -> HELMET;
+                        case FEET -> FEET;
+                        case LEGS -> LEGS;
+                        case CHEST -> CHEST;
+                        case HEAD -> HEAD;
                     };
         }
 
-        public EquipmentSlot getForItem(RegistryObject<ArmorItem> item)
+        public EquipmentSlot getForItem(ArmorItem item)
         {
-            if (item == HELMET)
+            if (item == HEAD.get())
+            {
                 return EquipmentSlot.HEAD;
-            else if (item == CHESTPLATE)
+            }
+            else if (item == CHEST.get())
+            {
                 return EquipmentSlot.CHEST;
-            else if (item == LEGGINGS)
+            } else if (item == LEGS.get()) {
                 return EquipmentSlot.LEGS;
-            else if (item == BOOTS)
+            } else if (item == FEET.get()) {
                 return EquipmentSlot.FEET;
-
-            return null;
-        }
-
-        public String getPowerName() {
-            return POWER_NAME;
-        }
-
-        public String getSetName() {
-            return SET_NAME;
-        }
-
-        public String getName()
-        {
-            return POWER_NAME + "_" + SET_NAME;
-        }
-
-        public List<RegistryObject<ArmorItem>> getAll()
-        {
-            return new ArrayList<>(List.of(HELMET, CHESTPLATE, LEGGINGS, BOOTS));
-        }
-
-
-        public static PoweredArmorSet getSetForPower(Power power, List<PoweredArmorSet> sets) {
-            for (PoweredArmorSet set : sets) {
-                if (set.POWER_NAME.equals(power.getName()))
-                    return set;
             }
 
             return null;
         }
+
+        public List<RegistryObject<ArmorItem>> getAll()
+        {
+            return List.of(HEAD, CHEST, LEGS, FEET);
+        }
+
+        public String getDisplayName()
+        {
+            return displayName;
+        }
+
+        public String getName()
+        {
+            return name;
+        }
+    }
+
+    private static ArmorSet create(String name, String displayName, boolean powered, Class<? extends ArmorItem> clazz, ArmorMaterial material, Item.Properties properties)
+    {
+        Supplier<ArmorItem> headItem;
+        Supplier<ArmorItem> chestItem;
+        Supplier<ArmorItem> legsItem;
+        Supplier<ArmorItem> feetItem;
+
+        headItem = () -> {
+            try {
+                return clazz.getDeclaredConstructor(ArmorMaterial.class, EquipmentSlot.class, Item.Properties.class).newInstance(material, EquipmentSlot.HEAD, properties);
+            } catch (Exception e) {
+                throw new RuntimeException("Armor construction failed! Error: " + e);
+            }
+        };
+        chestItem = () -> {
+            try {
+                return clazz.getDeclaredConstructor(ArmorMaterial.class, EquipmentSlot.class, Item.Properties.class).newInstance(material, EquipmentSlot.CHEST, properties);
+            } catch (Exception e) {
+                throw new RuntimeException("Armor construction failed! Error: " + e);
+            }
+        };
+        legsItem = () -> {
+            try {
+                return clazz.getDeclaredConstructor(ArmorMaterial.class, EquipmentSlot.class, Item.Properties.class).newInstance(material, EquipmentSlot.LEGS, properties);
+            } catch (Exception e) {
+                throw new RuntimeException("Armor construction failed! Error: " + e);
+            }
+        };
+        feetItem = () -> {
+            try {
+                return clazz.getDeclaredConstructor(ArmorMaterial.class, EquipmentSlot.class, Item.Properties.class).newInstance(material, EquipmentSlot.FEET, properties);
+            } catch (Exception e) {
+                throw new RuntimeException("Armor construction failed! Error: " + e);
+            }
+        };
+
+        RegistryObject<ArmorItem> head = ARMOR.register(name + "_hood", headItem);
+        RegistryObject<ArmorItem> chest = ARMOR.register(name + "_jacket", chestItem);
+        RegistryObject<ArmorItem> legs = ARMOR.register(name + "_pants", legsItem);
+        RegistryObject<ArmorItem> feet = ARMOR.register(name + "_boots", feetItem);
+
+        ArmorSet set = new ArmorSet(name, displayName, head, chest, legs, feet);
+
+        ARMOR_SETS.add(set);
+
+        if (powered)
+            POWER_SETS.add(set);
+
+        return set;
     }
 
     public static void init() {}

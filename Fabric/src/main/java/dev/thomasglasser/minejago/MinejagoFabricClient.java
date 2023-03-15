@@ -13,6 +13,7 @@ import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.item.IModeledItem;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import fuzs.forgeconfigapiport.api.config.v2.ModConfigEvents;
 import net.fabricmc.api.ClientModInitializer;
@@ -20,6 +21,7 @@ import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.*;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.client.model.PlayerModel;
@@ -29,6 +31,7 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.EntityType;
@@ -38,6 +41,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
 
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
@@ -70,6 +74,14 @@ public class MinejagoFabricClient implements ClientModInitializer {
             }
         }
 
+        for (RegistryObject<Item> item : MinejagoArmor.ARMOR.getEntries())
+        {
+            if (item.get() instanceof IModeledItem)
+            {
+                BuiltinItemRendererRegistry.INSTANCE.register(item.get(), (bewlr::renderByItem));
+            }
+        }
+
         registerItemColors();
 
         BlockRenderLayerMap.INSTANCE.putBlock(MinejagoBlocks.TEAPOT.get(), RenderType.translucent());
@@ -88,7 +100,7 @@ public class MinejagoFabricClient implements ClientModInitializer {
 
         EntityRendererRegistry.register(MinejagoEntityTypes.WU.get(), CharacterRenderer::new);
         EntityRendererRegistry.register(MinejagoEntityTypes.KAI.get(), CharacterRenderer::new);
-        EntityRendererRegistry.register(MinejagoEntityTypes.NYA.get(), CharacterRenderer::new);
+        EntityRendererRegistry.register(MinejagoEntityTypes.NYA.get(), (context) -> new CharacterRenderer<>(context, true));
         EntityRendererRegistry.register(MinejagoEntityTypes.JAY.get(), CharacterRenderer::new);
         EntityRendererRegistry.register(MinejagoEntityTypes.COLE.get(), CharacterRenderer::new);
         EntityRendererRegistry.register(MinejagoEntityTypes.ZANE.get(), CharacterRenderer::new);
@@ -117,6 +129,15 @@ public class MinejagoFabricClient implements ClientModInitializer {
         ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, consumer) -> consumer.accept(new ModelResourceLocation(Minejago.MOD_ID, "iron_spear_inventory", "inventory")));
         ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, consumer) -> consumer.accept(new ModelResourceLocation(Minejago.MOD_ID, "wooden_nunchucks_inventory", "inventory")));
         ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, consumer) -> consumer.accept(new ModelResourceLocation(Minejago.MOD_ID, "bamboo_staff_inventory", "inventory")));
+        ModelLoadingRegistry.INSTANCE.registerModelProvider(((manager, consumer) ->
+        {
+            Map<ResourceLocation, Resource> map = manager.listResources("models/item/minejago_armor", (location -> location.getPath().endsWith(".json")));
+            for (ResourceLocation rl : map.keySet())
+            {
+                ResourceLocation stripped = new ResourceLocation(rl.getNamespace(), rl.getPath().substring("models/item/".length(), rl.getPath().indexOf(".json")));
+                consumer.accept(new ModelResourceLocation(stripped, "inventory"));
+            }
+        }));
     }
 
     private void registerItemColors()
@@ -171,9 +192,9 @@ public class MinejagoFabricClient implements ClientModInitializer {
         });
         PlayerAnimationAccess.REGISTER_ANIMATION_EVENT.register(MinejagoPlayerAnimator::registerPlayerAnimation);
         ModConfigEvents.reloading(Minejago.MOD_ID).register((config) ->
-        {
-            MinejagoClientUtils.refreshVip();
-        });
+                MinejagoClientUtils.refreshVip());
+        ItemGroupEvents.MODIFY_ENTRIES_ALL.register((group, entries) ->
+                entries.acceptAll(MinejagoItems.getItemsForTab(group)));
     }
 
     private void registerPackets()

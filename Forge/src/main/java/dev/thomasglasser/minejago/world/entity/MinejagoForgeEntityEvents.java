@@ -24,11 +24,6 @@ public class MinejagoForgeEntityEvents
         MinejagoEntityEvents.onServerPlayerLoggedIn(event.getEntity());
     }
 
-    public static void onLivingAttack(LivingAttackEvent event)
-    {
-        MinejagoEntityEvents.onLivingAttack(event.getSource());
-    }
-
     public static void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
         for (EntityType<? extends LivingEntity> type : MinejagoEntityTypes.getAllAttributes().keySet())
         {

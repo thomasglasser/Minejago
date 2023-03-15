@@ -7,7 +7,7 @@
       "tag": "minecraft:terracotta"
     },
     "x": {
-      "tag": "forge:rods/wooden"
+      "tag": "minejago:wooden_rods"
     }
   },
   "pattern": [

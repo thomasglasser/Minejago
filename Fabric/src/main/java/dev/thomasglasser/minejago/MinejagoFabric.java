@@ -40,14 +40,6 @@ public class MinejagoFabric implements ModInitializer {
             MinejagoEntityEvents.onPlayerEntityInteract(player, world, hand, entity);
             return InteractionResult.PASS;
         });
-
-        ItemGroupEvents.MODIFY_ENTRIES_ALL.register((group, entries) ->
-                entries.acceptAll(MinejagoItems.getItemsForTab(group)));
-        AttackEntityCallback.EVENT.register(((player, world, hand, entity, hitResult) ->
-        {
-            MinejagoEntityEvents.onLivingAttack(DamageSource.playerAttack(player));
-            return InteractionResult.PASS;
-        }));
     }
 
     private void registerEntityAttributes()

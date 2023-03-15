@@ -5,16 +5,20 @@ import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.animation.definitions.ItemAnimations;
 import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
 import dev.thomasglasser.minejago.data.tags.MinejagoBlockTags;
+import dev.thomasglasser.minejago.data.tags.MinejagoPowerTags;
 import dev.thomasglasser.minejago.network.ClientboundStartScytheAnimationPacket;
 import dev.thomasglasser.minejago.network.ClientboundStopAnimationPacket;
 import dev.thomasglasser.minejago.platform.Services;
+import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.util.MinejagoLevelUtils;
-import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.powers.Power;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -27,6 +31,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Math;
 
 public class ScytheOfQuakesItem extends GoldenWeaponItem implements IModeledItem
@@ -38,8 +43,8 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem implements IModeledItem
     }
 
     @Override
-    public boolean canPowerHandle(Power power) {
-        return power == MinejagoPowers.EARTH.get();
+    public boolean canPowerHandle(Power power, Registry<Power> registry) {
+        return power.is(MinejagoPowerTags.EARTH, registry);
     }
 
     @Override
@@ -85,6 +90,7 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem implements IModeledItem
                 }
             }
             if (!pContext.getPlayer().getAbilities().instabuild) pContext.getPlayer().getCooldowns().addCooldown(pContext.getItemInHand().getItem(), 600);
+            pContext.getLevel().playSound(null, pContext.getPlayer().blockPosition(), MinejagoSoundEvents.SCYTHE_OF_QUAKES_CASCADE.get(), SoundSource.PLAYERS);
         }
         else if (player.isShiftKeyDown())
         {
@@ -96,6 +102,7 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem implements IModeledItem
                     level.explode(null, place.getX(), place.getY() + 1, place.getZ(), 4, false, Level.ExplosionInteraction.BLOCK);
             }
             if (!pContext.getPlayer().getAbilities().instabuild) pContext.getPlayer().getCooldowns().addCooldown(pContext.getItemInHand().getItem(), 1200);
+            pContext.getLevel().playSound(null, pContext.getPlayer().blockPosition(), MinejagoSoundEvents.SCYTHE_OF_QUAKES_EXPLOSION.get(), SoundSource.PLAYERS);
         }
         else
         {
@@ -269,6 +276,7 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem implements IModeledItem
             }
             builder.put(Attributes.MOVEMENT_SPEED, new AttributeModifier("Movement modifier", -1, AttributeModifier.Operation.MULTIPLY_TOTAL));
             player.getAttributes().addTransientAttributeModifiers(builder.build());
+            level.playSound(null, player.blockPosition(), MinejagoSoundEvents.SCYTHE_OF_QUAKES_PATH.get(), SoundSource.PLAYERS);
         }
     }
 
@@ -300,5 +308,10 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem implements IModeledItem
     public BlockEntityWithoutLevelRenderer getBEWLR() {
         if (bewlr == null) bewlr = new MinejagoBlockEntityWithoutLevelRenderer();
         return bewlr;
+    }
+
+    @Override
+    public @Nullable SoundEvent getFailSound() {
+        return MinejagoSoundEvents.SCYTHE_OF_QUAKES_FAIL.get();
     }
 }

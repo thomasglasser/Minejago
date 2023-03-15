@@ -96,7 +96,7 @@ public class WoodenNunchucksItem extends Item implements IModeledItem, IFabricGe
 
         pStack.getOrCreateTag().putInt("AttackDamage", ((getUseDuration(pStack) - pTimeCharged) / 10));
 
-        ((Player)pLivingEntity).getCooldowns().addCooldown(this, 60);
+        ((Player)pLivingEntity).getCooldowns().addCooldown(this, 100);
     }
 
     @Override

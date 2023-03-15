@@ -6,14 +6,13 @@ import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.registration.RegistrationProvider;
 import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
+import dev.thomasglasser.minejago.world.item.armor.IGeoArmorItem;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
@@ -92,7 +91,10 @@ public class MinejagoItems
         {
             for (RegistryObject<Item> item : MinejagoArmor.ARMOR.getEntries())
             {
-                items.add(item.get().getDefaultInstance());
+                if (!(item.get() instanceof IGeoArmorItem iGeoArmorItem && iGeoArmorItem.isGi()))
+                {
+                    items.add(item.get().getDefaultInstance());
+                }
             }
         }
 

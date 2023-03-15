@@ -1,13 +1,13 @@
 package dev.thomasglasser.minejago.data.recipes;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.data.tags.MinejagoItemTags;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.common.Tags;
 
 import java.util.function.Consumer;
 
@@ -29,15 +29,15 @@ public class MinejagoRecipes extends RecipeProvider {
                 .pattern("o  ")
                 .pattern(" x ")
                 .pattern("  x")
-                .define('x', Tags.Items.RODS_WOODEN)
-                .define('o', Tags.Items.INGOTS_IRON)
+                .define('x', MinejagoItemTags.WOODEN_RODS)
+                .define('o', MinejagoItemTags.IRON_INGOTS)
                 .group(Minejago.MOD_ID)
-                .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON));
+                .unlockedBy("has_iron", has(MinejagoItemTags.IRON_INGOTS));
         ironSpear.save(writer);
         ShapedRecipeBuilder teapot = ShapedRecipeBuilder.shaped(RecipeCategory.BREWING, MinejagoItems.TEAPOT.get(), 1)
                 .pattern("x  ")
                 .pattern("o  ")
-                .define('x', Tags.Items.RODS_WOODEN)
+                .define('x', MinejagoItemTags.WOODEN_RODS)
                 .define('o', ItemTags.TERRACOTTA)
                 .group(Minejago.MOD_ID)
                 .unlockedBy("has_terracotta", has(ItemTags.TERRACOTTA));
@@ -46,25 +46,33 @@ public class MinejagoRecipes extends RecipeProvider {
                 .pattern("  x")
                 .pattern(" x ")
                 .pattern("o  ")
-                .define('x', Tags.Items.INGOTS_IRON)
-                .define('o', Tags.Items.RODS_WOODEN)
+                .define('x', MinejagoItemTags.IRON_INGOTS)
+                .define('o', MinejagoItemTags.WOODEN_RODS)
                 .group(Minejago.MOD_ID)
-                .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON));
+                .unlockedBy("has_iron", has(MinejagoItemTags.IRON_INGOTS));
         ironKatana.save(writer);
         ShapedRecipeBuilder ironScythe = ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, MinejagoItems.IRON_SCYTHE.get(), 1)
                 .pattern(" x ")
                 .pattern("xo ")
                 .pattern(" o ")
-                .define('x', Tags.Items.INGOTS_IRON)
-                .define('o', Tags.Items.RODS_WOODEN)
+                .define('x', MinejagoItemTags.IRON_INGOTS)
+                .define('o', MinejagoItemTags.WOODEN_RODS)
                 .group(Minejago.MOD_ID)
-                .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON));
+                .unlockedBy("has_iron", has(MinejagoItemTags.IRON_INGOTS));
         ironScythe.save(writer);
         ShapelessRecipeBuilder woodenNunchucks = ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, MinejagoItems.WOODEN_NUNCHUCKS.get(), 1)
-                .requires(Ingredient.of(Tags.Items.RODS_WOODEN), 2)
+                .requires(Ingredient.of(MinejagoItemTags.WOODEN_RODS), 2)
                 .requires(Items.CHAIN)
                 .group(Minejago.MOD_ID)
                 .unlockedBy("has_chain", has(Items.CHAIN));
         woodenNunchucks.save(writer);
+        ShapedRecipeBuilder bambooStaff = ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, MinejagoItems.BAMBOO_STAFF.get(), 1)
+                .pattern(" o ")
+                .pattern(" o ")
+                .pattern(" o ")
+                .define('o', Items.BAMBOO)
+                .group(Minejago.MOD_ID)
+                .unlockedBy("has_bamboo", has(Items.BAMBOO));
+        bambooStaff.save(writer);
     }
 }

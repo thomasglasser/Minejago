@@ -1,0 +1,16 @@
+{
+  "alt_spinjitzu_color": [
+    25.0,
+    76.0,
+    138.0
+  ],
+  "border_particle": "minejago:rocks",
+  "id": "minejago:earth",
+  "main_spinjitzu_color": [
+    157.0,
+    193.0,
+    240.0
+  ],
+  "make_sets": true,
+  "power_color": "yellow"
+}

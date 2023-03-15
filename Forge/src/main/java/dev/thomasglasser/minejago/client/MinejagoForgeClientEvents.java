@@ -9,17 +9,27 @@ import dev.thomasglasser.minejago.client.renderer.entity.*;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.BetaTesterLayer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.DevLayer;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
+import dev.thomasglasser.minejago.platform.ForgeItemHelper;
+import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
+import dev.thomasglasser.minejago.world.item.IModeledItem;
+import dev.thomasglasser.minejago.world.item.MinejagoCreativeModeTabs;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
-import dev.thomasglasser.minejago.world.item.armor.IModeledArmorItem;
+import dev.thomasglasser.minejago.world.item.armor.IGeoArmorItem;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.Resource;
+import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraftforge.client.event.*;
@@ -28,6 +38,9 @@ import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+
+import java.util.Map;
+import java.util.function.Supplier;
 
 public class MinejagoForgeClientEvents {
 
@@ -74,20 +87,28 @@ public class MinejagoForgeClientEvents {
         event.register(Minejago.modLoc("item/iron_spear_inventory"));
         event.register(Minejago.modLoc("item/wooden_nunchucks_inventory"));
         event.register(Minejago.modLoc("item/bamboo_staff_inventory"));
+
+        ResourceManager manager = Minecraft.getInstance().getResourceManager();
+        Map<ResourceLocation, Resource> map = manager.listResources("models/item/minejago_armor", (location -> location.getPath().endsWith(".json")));
+        for (ResourceLocation rl : map.keySet())
+        {
+            ResourceLocation stripped = new ResourceLocation(rl.getNamespace(), rl.getPath().substring("models/".length(), rl.getPath().indexOf(".json")));
+            event.register(stripped);
+        }
     }
 
     public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event)
     {
-        event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.BAMBOO_STAFF.get()).getCustomRenderer());
-        event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.IRON_SPEAR.get()).getCustomRenderer());
         MinejagoArmor.ARMOR.getEntries().forEach(armor ->
         {
-            if (armor.get() instanceof IModeledArmorItem)
+            if (armor.get() instanceof IGeoArmorItem || armor.get() instanceof IModeledItem)
                 event.registerReloadListener(IClientItemExtensions.of(armor.get()).getCustomRenderer());
         });
-        event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.SCYTHE_OF_QUAKES.get()).getCustomRenderer());
-        event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.IRON_SCYTHE.get()).getCustomRenderer());
-        event.registerReloadListener(IClientItemExtensions.of(MinejagoItems.WOODEN_NUNCHUCKS.get()).getCustomRenderer());
+        MinejagoItems.ITEMS.getEntries().forEach(item ->
+        {
+            if (item.get() instanceof IModeledItem)
+                event.registerReloadListener(IClientItemExtensions.of(item.get()).getCustomRenderer());
+        });
     }
 
     public static void onRegisterParticleProviders(RegisterParticleProvidersEvent event)
@@ -98,6 +119,7 @@ public class MinejagoForgeClientEvents {
         event.register(MinejagoParticleTypes.SNOWS.get(), SnowsParticle.Provider::new);
         event.register(MinejagoParticleTypes.ROCKS.get(), RocksParticle.Provider::new);
         event.register(MinejagoParticleTypes.BOLTS.get(), BoltsParticle.Provider::new);
+        event.register(MinejagoParticleTypes.VAPORS.get(), VaporsParticle.Provider::new);
     }
 
     public static void onRegisterColorHandlers(RegisterColorHandlersEvent.Item event)
@@ -152,6 +174,20 @@ public class MinejagoForgeClientEvents {
     public static void onBuildCreativeTabContent(CreativeModeTabEvent.BuildContents event)
     {
         event.acceptAll(MinejagoItems.getItemsForTab(event.getTab()));
+    }
+
+    public static void onRegisterCreativeTab(CreativeModeTabEvent.Register event)
+    {
+        ((ForgeItemHelper)(Services.ITEM)).TABS.forEach(list ->
+        {
+            if (list.get(0).equals(Minejago.modLoc("gi")))
+            {
+                MinejagoCreativeModeTabs.GI = event.registerCreativeModeTab((ResourceLocation) list.get(0), (builder ->
+                {
+                    builder.title((Component) list.get(1)).icon((Supplier<ItemStack>) list.get(2)).displayItems((CreativeModeTab.DisplayItemsGenerator) list.get(3)).build();
+                }));
+            }
+        });
     }
 
     public static void onClientConfigChanged(ModConfigEvent event)

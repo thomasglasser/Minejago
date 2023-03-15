@@ -15,7 +15,6 @@ public class Services {
     // mod is loaded.
     public static final IPlatformHelper PLATFORM = load(IPlatformHelper.class);
     public static final IConfigHelper CONFIG = load(IConfigHelper.class);
-    public static final ICommandHelper COMMAND = load(ICommandHelper.class);
     public static final IParticleHelper PARTICLE = load(IParticleHelper.class);
     public static final IDataHelper DATA = load(IDataHelper.class);
     public static final INetworkHelper NETWORK = load(INetworkHelper.class);

@@ -1,0 +1,16 @@
+{
+  "alt_spinjitzu_color": [
+    78.0,
+    5.0,
+    2.0
+  ],
+  "border_particle": "minejago:bolts",
+  "id": "minejago:lightning",
+  "main_spinjitzu_color": [
+    142.0,
+    76.0,
+    3.0
+  ],
+  "make_sets": true,
+  "power_color": "blue"
+}

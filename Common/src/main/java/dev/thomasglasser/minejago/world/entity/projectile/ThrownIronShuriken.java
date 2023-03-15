@@ -1,5 +1,6 @@
 package dev.thomasglasser.minejago.world.entity.projectile;
 
+import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import net.minecraft.core.BlockPos;
@@ -7,6 +8,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -56,6 +58,7 @@ public class ThrownIronShuriken extends AbstractArrow
 
         if (this.inGroundTime > 4) {
             this.dealtDamage = true;
+            level.broadcastEntityEvent(this, (byte) 100);
         }
 
         if (!this.dealtDamage && this.tickCount > 40)
@@ -72,14 +75,9 @@ public class ThrownIronShuriken extends AbstractArrow
             if (this.position().closerThan(pos, 2))
             {
                 this.setNoGravity(false);
-                while (true)
-                {
+                do {
                     pos = pos.subtract(0, 1, 0);
-                    if (!level.getBlockState(new BlockPos(pos)).isAir())
-                    {
-                        break;
-                    }
-                }
+                } while (level.getBlockState(new BlockPos(pos)).isAir());
             }
         }
         else {
@@ -134,8 +132,7 @@ public class ThrownIronShuriken extends AbstractArrow
         }
 
         this.setDeltaMovement(this.getDeltaMovement().multiply(-0.01D, -0.1D, -0.01D));
-
-        super.onHitEntity(pResult);
+        this.playSound(getDefaultHitGroundSoundEvent());
     }
 
     protected boolean tryPickup(Player p_150196_) {
@@ -192,5 +189,20 @@ public class ThrownIronShuriken extends AbstractArrow
 
     public boolean hasDealtDamage() {
         return dealtDamage;
+    }
+
+    @Override
+    public void handleEntityEvent(byte id) {
+        if (id == 100)
+        {
+            this.dealtDamage = true;
+        }
+        else
+            super.handleEntityEvent(id);
+    }
+
+    @Override
+    protected SoundEvent getDefaultHitGroundSoundEvent() {
+        return MinejagoSoundEvents.SHURIKEN_IMPACT.get();
     }
 }

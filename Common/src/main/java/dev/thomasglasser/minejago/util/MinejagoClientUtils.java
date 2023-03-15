@@ -1,5 +1,6 @@
 package dev.thomasglasser.minejago.util;
 
+import dev.kosmx.playerAnim.api.firstPerson.FirstPersonMode;
 import dev.kosmx.playerAnim.api.layered.KeyframeAnimationPlayer;
 import dev.kosmx.playerAnim.api.layered.modifier.AbstractFadeModifier;
 import dev.kosmx.playerAnim.core.data.KeyframeAnimation;
@@ -26,6 +27,8 @@ import java.util.UUID;
 
 public class MinejagoClientUtils {
     private static final HashMap<Player, VipData> vipData = new HashMap<>();
+
+    private MinejagoClientUtils() {}
 
     public static AbstractClientPlayer getClientPlayerByUUID(UUID uuid) {
         return (AbstractClientPlayer) Minecraft.getInstance().level.getPlayerByUUID(uuid);
@@ -129,16 +132,16 @@ public class MinejagoClientUtils {
         return false;
     }
 
-    public static void startAnimation(KeyframeAnimation startAnim, @Nullable KeyframeAnimation goAnim, AbstractClientPlayer player)
+    public static void startAnimation(KeyframeAnimation startAnim, @Nullable KeyframeAnimation goAnim, AbstractClientPlayer player, FirstPersonMode firstPersonMode)
     {
         var animation = MinejagoPlayerAnimator.animationData.get(player);
         //Get the animation for that player
         if (animation != null) {
             //You can set an animation from anywhere ON THE CLIENT
             //Do not attempt to do this on a server, that will only fail
-            animation.setAnimation(new KeyframeAnimationPlayer(startAnim));
+            animation.setAnimation(new KeyframeAnimationPlayer(startAnim).setFirstPersonMode(firstPersonMode));
             if (goAnim != null)
-                animation.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(30, Ease.CONSTANT), new KeyframeAnimationPlayer(goAnim));
+                animation.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(30, Ease.CONSTANT), new KeyframeAnimationPlayer(goAnim).setFirstPersonMode(firstPersonMode));
         }
 
     }

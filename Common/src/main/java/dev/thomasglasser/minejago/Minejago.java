@@ -2,7 +2,6 @@ package dev.thomasglasser.minejago;
 
 import dev.thomasglasser.minejago.client.MinejagoClientConfig;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
-import dev.thomasglasser.minejago.commands.arguments.MinejagoArguments;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
@@ -11,6 +10,7 @@ import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
 import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
+import dev.thomasglasser.minejago.world.item.MinejagoCreativeModeTabs;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.MinejagoTiers;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
@@ -64,11 +64,11 @@ public class Minejago {
 	{
 		MinejagoRegistries.init();
 
+		MinejagoArmor.init();
 		MinejagoTiers.init();
 		MinejagoPowers.init();
 		MinejagoEntityTypes.init();
 		MinejagoItems.init();
-		MinejagoArmor.init();
 		MinejagoParticleTypes.init();
 		MinejagoPaintingVariants.init();
 		MinejagoBannerPatterns.init();
@@ -77,8 +77,8 @@ public class Minejago {
 		MinejagoPotions.init();
 		MinejagoSoundEvents.init();
 		MinejagoMobEffects.init();
-		MinejagoArguments.init();
 		MinejagoKeyMappings.init();
+		MinejagoCreativeModeTabs.init();
 	}
 
 	private static void registerConfigs()

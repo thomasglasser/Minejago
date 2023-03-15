@@ -1,13 +1,15 @@
-// 1.19.3	2023-01-22T13:46:09.3257929	Recipes
+// 1.19.3	2023-03-15T04:57:14.7900834	Recipes
 c1ead63367096cf0f3aa1b85db940453398a993b data/minejago/advancements/recipes/brewing/teacup.json
 c7e47c451dbecae6a3622a1ebe338fe30bb233c2 data/minejago/advancements/recipes/brewing/teapot.json
-c8943fea0e7fd34fbfab89c513070c565ce07550 data/minejago/advancements/recipes/combat/iron_katana.json
-670d7ffb144a90a427bcac392290403e12d3b6cd data/minejago/advancements/recipes/combat/iron_spear.json
+12b19357940c71ccf4a5462d6b1599718cc105eb data/minejago/advancements/recipes/combat/bamboo_staff.json
+556f96723c0feafe388488b65ac2a3c28a499374 data/minejago/advancements/recipes/combat/iron_katana.json
+d3c88fb6f66c2af13855467c0e5f1cf135955540 data/minejago/advancements/recipes/combat/iron_spear.json
 16903eb3f5af66abda488d6298e2981ea94efac2 data/minejago/advancements/recipes/combat/wooden_nunchucks.json
-34b64348bf764dc6e3ac14b238cacb913f52451d data/minejago/advancements/recipes/tools/iron_scythe.json
-087774cdb064fce6f531eea51bc570420225229f data/minejago/recipes/iron_katana.json
-44a9687e01d77f092c05ec923474860bda99c77b data/minejago/recipes/iron_scythe.json
-728e0cf0c8b12083f8e710ca1accdab35331d56c data/minejago/recipes/iron_spear.json
+2cec34c3d4c7b4a033f4d65e4e0f1cdb80c3515e data/minejago/advancements/recipes/tools/iron_scythe.json
+225590462ad1af4c5b137a41dc1f33c852502442 data/minejago/recipes/bamboo_staff.json
+0c8e4fd73cc129a055781033d06c5ba017e88dd4 data/minejago/recipes/iron_katana.json
+95b740636d121e6c083eea320a2a87fa242f46b1 data/minejago/recipes/iron_scythe.json
+bd09d1397135b1c4fc7a2ad7aaaefcfb040296e2 data/minejago/recipes/iron_spear.json
 589a32ec7cde758fe84f40e53cc4adb47b9a80d0 data/minejago/recipes/teacup.json
-1328aba3ee5b25e8c5c7e271368b183ffa3f0b3a data/minejago/recipes/teapot.json
-3b788306bec27f0e71c27ce91d6af32aaf712d32 data/minejago/recipes/wooden_nunchucks.json
+21cd0aa296dcaa410dc33c031226af30f28ec9d4 data/minejago/recipes/teapot.json
+279a4992123824d97b80fe05ca9fd798d54e31cc data/minejago/recipes/wooden_nunchucks.json

@@ -1,5 +1,6 @@
 package dev.thomasglasser.minejago.world.entity.projectile;
 
+import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import net.minecraft.nbt.CompoundTag;
@@ -7,6 +8,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -135,6 +137,7 @@ public class ThrownIronSpear extends AbstractArrow
         }
 
         this.setDeltaMovement(this.getDeltaMovement().multiply(-0.01D, -0.1D, -0.01D));
+        this.playSound(getDefaultHitGroundSoundEvent());
     }
 
     protected boolean tryPickup(Player p_150196_) {
@@ -180,5 +183,10 @@ public class ThrownIronSpear extends AbstractArrow
 
     public boolean shouldRender(double pX, double pY, double pZ) {
         return true;
+    }
+
+    @Override
+    protected SoundEvent getDefaultHitGroundSoundEvent() {
+        return MinejagoSoundEvents.SPEAR_IMPACT.get();
     }
 }

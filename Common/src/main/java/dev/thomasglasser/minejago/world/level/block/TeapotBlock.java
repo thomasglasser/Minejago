@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.world.level.block;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import dev.thomasglasser.minejago.util.MinejagoItemUtils;
 import dev.thomasglasser.minejago.world.item.ITeapotLiquidHolder;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
@@ -10,7 +11,6 @@ import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTy
 import dev.thomasglasser.minejago.world.level.block.entity.TeapotBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
@@ -41,7 +41,6 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
@@ -143,7 +142,7 @@ public class TeapotBlock extends BaseEntityBlock {
             double d0 = (double)pPos.getX() - 0.03D + (double)pRandom.nextFloat() * 0.2D;
             double d1 = (double)pPos.getY() + 0.53D + (double)pRandom.nextFloat() * 0.3D;
             double d2 = (double)pPos.getZ() + 0.44D + (double)pRandom.nextFloat() * 0.2D;
-            pLevel.addParticle(ParticleTypes.SMOKE, d0, d1, d2, 0.0D, 0.0D, 0.0D);
+            pLevel.addParticle(MinejagoParticleTypes.VAPORS.get(), d0, d1, d2, 0.0D, 0.0D, 0.0D);
         }
     }
 

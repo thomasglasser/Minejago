@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:ingots/iron"
+            "tag": "minejago:iron_ingots"
           }
         ]
       },

@@ -32,6 +32,7 @@ public class MinejagoParticleTypes
     public static final RegistryObject<SimpleParticleType> ROCKS = PARTICLE_TYPES.register("rocks", () -> Services.PARTICLE.simple("rocks", false));
     public static final RegistryObject<SimpleParticleType> BOLTS = PARTICLE_TYPES.register("bolts", () -> Services.PARTICLE.simple("bolts", false));
     public static final RegistryObject<SimpleParticleType> SPARKLES = PARTICLE_TYPES.register("sparkles", () -> Services.PARTICLE.simple("sparkles", false));
+    public static final RegistryObject<SimpleParticleType> VAPORS = PARTICLE_TYPES.register("vapors", () -> Services.PARTICLE.simple("vapors", false));
 
     public static void init() {}
 }

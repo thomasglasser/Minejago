@@ -31,6 +31,7 @@ public class FabricParticleHelper implements IParticleHelper {
             case "rocks" -> RocksParticle.Provider::new;
             case "sparkles" -> SparklesParticle.Provider::new;
             case "spinjitzu" -> SpinjitzuParticle.Provider::new;
+            case "vapors" -> VaporsParticle.Provider::new;
 
             default -> null;
         };

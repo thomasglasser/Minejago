@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "group": "minejago",
+  "key": {
+    "o": {
+      "item": "minecraft:bamboo"
+    }
+  },
+  "pattern": [
+    " o ",
+    " o ",
+    " o "
+  ],
+  "result": {
+    "item": "minejago:bamboo_staff"
+  }
+}
