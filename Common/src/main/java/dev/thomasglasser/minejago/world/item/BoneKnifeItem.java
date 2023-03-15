@@ -1,5 +1,6 @@
 package dev.thomasglasser.minejago.world.item;
 
+import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownBoneKnife;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -32,7 +33,7 @@ public class BoneKnifeItem extends ThrowableSwordItem
                         }
 
                         pLevel.addFreshEntity(thrownBoneKnife);
-                        pLevel.playSound(null, thrownBoneKnife, SoundEvents.TRIDENT_THROW, SoundSource.PLAYERS, 1.0F, 1.0F);
+                        pLevel.playSound(null, thrownBoneKnife, MinejagoSoundEvents.BONE_KNIFE_THROW.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
                         if (!player.getAbilities().instabuild) {
                             player.getInventory().removeItem(pStack);
                         }

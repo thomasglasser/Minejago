@@ -2,6 +2,7 @@ package dev.thomasglasser.minejago.world.item;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
+import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownBambooStaff;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.sounds.SoundEvents;
@@ -37,7 +38,7 @@ public class BambooStaffItem extends ThrowableSwordItem implements IModeledItem
                     }
 
                     pLevel.addFreshEntity(thrownBambooStaff);
-                    pLevel.playSound(null, thrownBambooStaff, SoundEvents.TRIDENT_THROW, SoundSource.PLAYERS, 1.0F, 1.0F);
+                    pLevel.playSound(null, thrownBambooStaff, MinejagoSoundEvents.BAMBOO_STAFF_THROW.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
                     if (!player.getAbilities().instabuild) {
                         player.getInventory().removeItem(pStack);
                     }

@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap;
 import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
 import dev.thomasglasser.minejago.client.renderer.item.WoodenNunchucksRenderer;
 import dev.thomasglasser.minejago.platform.Services;
+import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownIronSpear;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.sounds.SoundEvents;
@@ -58,7 +59,7 @@ public class SpearItem extends ThrowableSwordItem implements IModeledItem {
                     }
 
                     pLevel.addFreshEntity(thrownIronSpear);
-                    pLevel.playSound(null, thrownIronSpear, SoundEvents.TRIDENT_THROW, SoundSource.PLAYERS, 1.0F, 1.0F);
+                    pLevel.playSound(null, thrownIronSpear, MinejagoSoundEvents.SPEAR_THROW.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
                     if (!player.getAbilities().instabuild) {
                         player.getInventory().removeItem(pStack);
                     }

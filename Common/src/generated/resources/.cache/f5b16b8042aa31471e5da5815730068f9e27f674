@@ -1,13 +1,17 @@
-// 1.19.3	2023-03-14T02:44:30.7465475	Minejago Item Tags
+// 1.19.3	2023-03-15T05:08:00.7017779	Minejago Item Tags
+d3ddeb94cda4993a295b354e104db0ab8f97c8e1 data/c/tags/items/boots.json
+09177c8c3b8bdbf3d40fbe9e052b99f1265aec54 data/c/tags/items/chestplates.json
+78f9f798e56fad13fc6db07f47b464666188eaa3 data/c/tags/items/helmets.json
+3b0598dfcef447d99f22155e4c7085b6094f0df6 data/c/tags/items/leggings.json
+5a5df559d4201352452eccf8584d927338714fd1 data/c/tags/items/swords.json
 5817946282b25393905bb7a5a843055208e6b7a5 data/dynamiclights/tags/items/dropped_10.json
 5817946282b25393905bb7a5a843055208e6b7a5 data/dynamiclights/tags/items/self_10.json
 d3ddeb94cda4993a295b354e104db0ab8f97c8e1 data/forge/tags/items/armors/boots.json
 09177c8c3b8bdbf3d40fbe9e052b99f1265aec54 data/forge/tags/items/armors/chestplates.json
 78f9f798e56fad13fc6db07f47b464666188eaa3 data/forge/tags/items/armors/helmets.json
 3b0598dfcef447d99f22155e4c7085b6094f0df6 data/forge/tags/items/armors/leggings.json
-d8f45558d7a5d3f8bea21771466d1dba8147d1d1 data/forge/tags/items/tools/axes.json
-d8f45558d7a5d3f8bea21771466d1dba8147d1d1 data/forge/tags/items/tools/pickaxes.json
-d8f45558d7a5d3f8bea21771466d1dba8147d1d1 data/forge/tags/items/tools/shovels.json
-60284d9d5ac50b63dfac60fc99df5142db9fd20e data/forge/tags/items/tools/swords.json
+5a5df559d4201352452eccf8584d927338714fd1 data/forge/tags/items/tools/swords.json
 5817946282b25393905bb7a5a843055208e6b7a5 data/minecraft/tags/items/piglin_loved.json
 d8f45558d7a5d3f8bea21771466d1dba8147d1d1 data/minejago/tags/items/golden_weapons.json
+c8d7101a0778868817fedf388d817164e8909605 data/minejago/tags/items/iron_ingots.json
+37a407ce585cd0c1f20828c3eb579429ab305160 data/minejago/tags/items/wooden_rods.json

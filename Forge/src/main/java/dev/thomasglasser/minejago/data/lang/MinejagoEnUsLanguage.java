@@ -4,6 +4,7 @@ import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.data.advancements.packs.MinejagoAdventureAdvancementKeys;
 import dev.thomasglasser.minejago.data.advancements.packs.MinejagoStoryAdvancementKeys;
+import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.server.commands.PowerCommand;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
@@ -21,6 +22,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -139,14 +141,22 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add(MinejagoItems.FILLED_TEACUP.get().getDescriptionId() + ".milk", "Cup of Milk");
         addPotions(MinejagoPotions.MILK.get(), "Milk");
 
-        add(MinejagoSoundEvents.TEAPOT_WHISTLE.get().getLocation().toLanguageKey("sound") + ".subtitle", "Teapot whistles");
-        add(MinejagoSoundEvents.SPINJITZU_START.get().getLocation().toLanguageKey("sound") + ".subtitle", "Spinjitzu activates");
-        add(MinejagoSoundEvents.SPINJITZU_ACTIVE.get().getLocation().toLanguageKey("sound") + ".subtitle", "Spinjitzu whooshes");
-        add(MinejagoSoundEvents.SPINJITZU_STOP.get().getLocation().toLanguageKey("sound") + ".subtitle", "Spinjitzu fades*");
-        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_FAIL.get().getLocation().toLanguageKey("sound") + ".subtitle", "Scythe flickers");
-        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_EXPLOSION.get().getLocation().toLanguageKey("sound") + ".subtitle", "Ground quakes");
-        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_CASCADE.get().getLocation().toLanguageKey("sound") + ".subtitle", "Scythe drags");
-        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_PATH.get().getLocation().toLanguageKey("sound") + ".subtitle", "Scythe beams");
+        add(MinejagoSoundEvents.TEAPOT_WHISTLE, "Teapot whistles");
+        add(MinejagoSoundEvents.SPINJITZU_START, "Spinjitzu activates");
+        add(MinejagoSoundEvents.SPINJITZU_ACTIVE, "Spinjitzu whooshes");
+        add(MinejagoSoundEvents.SPINJITZU_STOP, "Spinjitzu fades*");
+        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_FAIL, "Scythe flickers");
+        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_EXPLOSION, "Ground quakes");
+        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_CASCADE, "Scythe drags");
+        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_PATH, "Scythe beams");
+        add(MinejagoSoundEvents.BONE_KNIFE_THROW, "Knife flies");
+        add(MinejagoSoundEvents.BONE_KNIFE_IMPACT, "Knife sticks");
+        add(MinejagoSoundEvents.BAMBOO_STAFF_THROW, "Staff tosses");
+        add(MinejagoSoundEvents.BAMBOO_STAFF_IMPACT, "Staff lands");
+        add(MinejagoSoundEvents.SHURIKEN_THROW, "Shuriken flies");
+        add(MinejagoSoundEvents.SHURIKEN_IMPACT, "Shuriken sticks");
+        add(MinejagoSoundEvents.SPEAR_THROW, "Spear tosses");
+        add(MinejagoSoundEvents.SPEAR_IMPACT, "Spear lands");
 
         add(MinejagoMobEffects.CURE.get(), "Instant Cure");
 
@@ -238,5 +248,10 @@ public class MinejagoEnUsLanguage extends LanguageProvider
     public void addCreativeTab(ResourceLocation location, String name)
     {
         add(location.toLanguageKey("item_group"), name);
+    }
+    
+    public void add(RegistryObject<SoundEvent> sound, String name)
+    {
+        add("subtitles." + sound.getId().getPath(), name);
     }
 }

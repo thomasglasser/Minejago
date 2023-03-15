@@ -4,10 +4,10 @@
   "group": "minejago",
   "ingredients": [
     {
-      "tag": "forge:rods/wooden"
+      "tag": "minejago:wooden_rods"
     },
     {
-      "tag": "forge:rods/wooden"
+      "tag": "minejago:wooden_rods"
     },
     {
       "item": "minecraft:chain"

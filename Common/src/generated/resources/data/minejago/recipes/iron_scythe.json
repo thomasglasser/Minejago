@@ -4,10 +4,10 @@
   "group": "minejago",
   "key": {
     "o": {
-      "tag": "forge:rods/wooden"
+      "tag": "minejago:wooden_rods"
     },
     "x": {
-      "tag": "forge:ingots/iron"
+      "tag": "minejago:iron_ingots"
     }
   },
   "pattern": [

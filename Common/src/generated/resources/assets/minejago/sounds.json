@@ -1,50 +1,98 @@
 {
-  "scythe_of_quakes_cascade": {
+  "block.teapot.teapot_whistle": {
     "sounds": [
-      "minejago:scythe_of_quakes_cascade"
+      "minejago:block/teapot/teapot_whistle"
     ],
-    "subtitle": "sound.minejago.scythe_of_quakes_cascade.subtitle"
+    "subtitle": "subtitles.teapot_whistle"
   },
-  "scythe_of_quakes_explosion": {
+  "item.bamboo_staff.bamboo_staff_impact": {
     "sounds": [
-      "minejago:scythe_of_quakes_explosion"
+      "minejago:item/bamboo_staff/bamboo_staff_impact"
     ],
-    "subtitle": "sound.minejago.scythe_of_quakes_explosion.subtitle"
+    "subtitle": "subtitles.bamboo_staff_impact"
   },
-  "scythe_of_quakes_fail": {
+  "item.bamboo_staff.bamboo_staff_throw": {
     "sounds": [
-      "minejago:scythe_of_quakes_fail"
+      "minejago:item/bamboo_staff/bamboo_staff_throw"
     ],
-    "subtitle": "sound.minejago.scythe_of_quakes_fail.subtitle"
+    "subtitle": "subtitles.bamboo_staff_throw"
   },
-  "scythe_of_quakes_path": {
+  "item.bone_knife.bone_knife_impact": {
     "sounds": [
-      "minejago:scythe_of_quakes_path"
+      "minejago:item/bone_knife/bone_knife_impact"
     ],
-    "subtitle": "sound.minejago.scythe_of_quakes_path.subtitle"
+    "subtitle": "subtitles.bone_knife_impact"
   },
-  "spinjitzu_active": {
+  "item.bone_knife.bone_knife_throw": {
     "sounds": [
-      "minejago:spinjitzu_active"
+      "minejago:item/bone_knife/bone_knife_throw"
     ],
-    "subtitle": "sound.minejago.spinjitzu_active.subtitle"
+    "subtitle": "subtitles.bone_knife_throw"
   },
-  "spinjitzu_start": {
+  "item.scythe_of_quakes.scythe_of_quakes_cascade": {
     "sounds": [
-      "minejago:spinjitzu_start"
+      "minejago:item/scythe_of_quakes/scythe_of_quakes_cascade"
     ],
-    "subtitle": "sound.minejago.spinjitzu_start.subtitle"
+    "subtitle": "subtitles.scythe_of_quakes_cascade"
   },
-  "spinjitzu_stop": {
+  "item.scythe_of_quakes.scythe_of_quakes_explosion": {
     "sounds": [
-      "minejago:spinjitzu_stop"
+      "minejago:item/scythe_of_quakes/scythe_of_quakes_explosion"
     ],
-    "subtitle": "sound.minejago.spinjitzu_stop.subtitle"
+    "subtitle": "subtitles.scythe_of_quakes_explosion"
   },
-  "teapot_whistle": {
+  "item.scythe_of_quakes.scythe_of_quakes_fail": {
     "sounds": [
-      "minejago:teapot_whistle"
+      "minejago:item/scythe_of_quakes/scythe_of_quakes_fail"
     ],
-    "subtitle": "sound.minejago.teapot_whistle.subtitle"
+    "subtitle": "subtitles.scythe_of_quakes_fail"
+  },
+  "item.scythe_of_quakes.scythe_of_quakes_path": {
+    "sounds": [
+      "minejago:item/scythe_of_quakes/scythe_of_quakes_path"
+    ],
+    "subtitle": "subtitles.scythe_of_quakes_path"
+  },
+  "item.shuriken.shuriken_impact": {
+    "sounds": [
+      "minejago:item/shuriken/shuriken_impact"
+    ],
+    "subtitle": "subtitles.shuriken_impact"
+  },
+  "item.shuriken.shuriken_throw": {
+    "sounds": [
+      "minejago:item/shuriken/shuriken_throw"
+    ],
+    "subtitle": "subtitles.shuriken_throw"
+  },
+  "item.spear.spear_impact": {
+    "sounds": [
+      "minejago:item/spear/spear_impact"
+    ],
+    "subtitle": "subtitles.spear_impact"
+  },
+  "item.spear.spear_throw": {
+    "sounds": [
+      "minejago:item/spear/spear_throw"
+    ],
+    "subtitle": "subtitles.spear_throw"
+  },
+  "spinjitzu.spinjitzu_active": {
+    "sounds": [
+      "minejago:spinjitzu/spinjitzu_active"
+    ],
+    "subtitle": "subtitles.spinjitzu_active"
+  },
+  "spinjitzu.spinjitzu_start": {
+    "sounds": [
+      "minejago:spinjitzu/spinjitzu_start"
+    ],
+    "subtitle": "subtitles.spinjitzu_start"
+  },
+  "spinjitzu.spinjitzu_stop": {
+    "sounds": [
+      "minejago:spinjitzu/spinjitzu_stop"
+    ],
+    "subtitle": "subtitles.spinjitzu_stop"
   }
 }

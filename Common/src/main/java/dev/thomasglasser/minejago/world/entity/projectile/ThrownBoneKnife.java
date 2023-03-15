@@ -1,5 +1,6 @@
 package dev.thomasglasser.minejago.world.entity.projectile;
 
+import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import net.minecraft.nbt.CompoundTag;
@@ -7,6 +8,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -18,6 +20,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
@@ -29,7 +32,6 @@ public class ThrownBoneKnife extends AbstractArrow
     private ItemStack boneKnifeItem = new ItemStack(MinejagoItems.BONE_KNIFE.get());
 
     private boolean dealtDamage;
-    public int clientSideReturnBoneKnifeTickCount;
 
     public ThrownBoneKnife(EntityType<? extends ThrownBoneKnife> entity, Level level) {
         super(entity, level);
@@ -91,7 +93,7 @@ public class ThrownBoneKnife extends AbstractArrow
         }
     }
 
-    protected ItemStack getPickupItem() {
+    protected @NotNull ItemStack getPickupItem() {
         return this.boneKnifeItem.copy();
     }
 
@@ -136,6 +138,7 @@ public class ThrownBoneKnife extends AbstractArrow
         }
 
         this.setDeltaMovement(this.getDeltaMovement().multiply(-0.01D, -0.1D, -0.01D));
+        this.playSound(getDefaultHitGroundSoundEvent());
     }
 
     protected boolean tryPickup(Player p_150196_) {
@@ -181,5 +184,10 @@ public class ThrownBoneKnife extends AbstractArrow
 
     public boolean shouldRender(double pX, double pY, double pZ) {
         return true;
+    }
+
+    @Override
+    protected SoundEvent getDefaultHitGroundSoundEvent() {
+        return MinejagoSoundEvents.BONE_KNIFE_IMPACT.get();
     }
 }
