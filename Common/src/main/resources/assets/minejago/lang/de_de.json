@@ -141,13 +141,5 @@
   "power.minejago.fire": "Feuer",
   "power.minejago.ice": "Eis",
   "power.minejago.lightning": "Blitz",
-  "power.minejago.none": "Keine",
-  "sound.minejago.scythe_of_quakes_cascade.subtitle": "Sense zieht",
-  "sound.minejago.scythe_of_quakes_explosion.subtitle": "Boden bebt",
-  "sound.minejago.scythe_of_quakes_fail.subtitle": "Sense flackert",
-  "sound.minejago.scythe_of_quakes_path.subtitle": "Sense strahlt",
-  "sound.minejago.spinjitzu_active.subtitle": "Spinjitzu wirbelt",
-  "sound.minejago.spinjitzu_start.subtitle": "Spinjitzu aktiviert",
-  "sound.minejago.spinjitzu_stop.subtitle": "Spinjitzu vergeht*",
-  "sound.minejago.teapot_whistle.subtitle": "Teekanne pfeift"
+  "power.minejago.none": "Keine"
 }
