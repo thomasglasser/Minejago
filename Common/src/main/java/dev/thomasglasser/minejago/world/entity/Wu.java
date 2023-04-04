@@ -2,9 +2,11 @@ package dev.thomasglasser.minejago.world.entity;
 
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.MobSpawnType;
@@ -29,7 +31,7 @@ public class Wu extends Character {
 
     @Override
     public boolean isInvulnerableTo(DamageSource pSource) {
-        if (!(pSource == DamageSource.OUT_OF_WORLD))
+        if (!(pSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)))
             return true;
         return super.isInvulnerableTo(pSource);
     }

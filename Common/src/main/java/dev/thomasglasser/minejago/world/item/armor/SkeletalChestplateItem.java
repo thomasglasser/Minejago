@@ -24,7 +24,7 @@ public class SkeletalChestplateItem extends ArmorItem implements IGeoArmorItem, 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public SkeletalChestplateItem(UnderworldSkeleton.Variant variant, ArmorMaterial pMaterial, Properties pProperties) {
-        super(pMaterial, EquipmentSlot.CHEST, pProperties);
+        super(pMaterial, Type.CHESTPLATE, pProperties);
         this.variant = variant;
     }
 

@@ -10,6 +10,7 @@ import dev.thomasglasser.minejago.world.entity.powers.Power;
 import net.minecraft.core.Registry;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -44,7 +45,7 @@ public abstract class GoldenWeaponItem extends SimpleFoiledItem
 
     @Override
     public boolean canBeHurtBy(DamageSource pDamageSource) {
-        return pDamageSource == DamageSource.OUT_OF_WORLD;
+        return pDamageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY);
     }
 
     @Override

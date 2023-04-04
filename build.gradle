@@ -1,5 +1,6 @@
 plugins {
-    id 'com.matyrobbrt.mc.registrationutils' version "${minecraft_version}-${registration_utils_version}"
+    id 'com.matyrobbrt.mc.registrationutils' version "${previous_minecraft_version}-${registration_utils_version}"
+//    id 'com.matyrobbrt.mc.registrationutils' version "${minecraft_version}-${registration_utils_version}" Waiting on 1.19.4
     id "io.github.pacifistmc.forgix" version "1.2.6"
 }
 
@@ -109,6 +110,10 @@ subprojects {
         }
         maven {
             url "https://maven.jamieswhiteshirt.com/libs-release"
+        }
+        maven {
+            name = "SmartBrainLib (SBL) Maven Repo"
+            url = "https://dl.cloudsmith.io/public/tslat/sbl/maven/"
         }
     }
 

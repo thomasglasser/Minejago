@@ -137,28 +137,28 @@ public class MinejagoArmor
 
         headItem = () -> {
             try {
-                return clazz.getDeclaredConstructor(ArmorMaterial.class, EquipmentSlot.class, Item.Properties.class).newInstance(material, EquipmentSlot.HEAD, properties);
+                return clazz.getDeclaredConstructor(ArmorMaterial.class, ArmorItem.Type.class, Item.Properties.class).newInstance(material, ArmorItem.Type.HELMET, properties);
             } catch (Exception e) {
                 throw new RuntimeException("Armor construction failed! Error: " + e);
             }
         };
         chestItem = () -> {
             try {
-                return clazz.getDeclaredConstructor(ArmorMaterial.class, EquipmentSlot.class, Item.Properties.class).newInstance(material, EquipmentSlot.CHEST, properties);
+                return clazz.getDeclaredConstructor(ArmorMaterial.class, ArmorItem.Type.class, Item.Properties.class).newInstance(material, ArmorItem.Type.CHESTPLATE, properties);
             } catch (Exception e) {
                 throw new RuntimeException("Armor construction failed! Error: " + e);
             }
         };
         legsItem = () -> {
             try {
-                return clazz.getDeclaredConstructor(ArmorMaterial.class, EquipmentSlot.class, Item.Properties.class).newInstance(material, EquipmentSlot.LEGS, properties);
+                return clazz.getDeclaredConstructor(ArmorMaterial.class, ArmorItem.Type.class, Item.Properties.class).newInstance(material, ArmorItem.Type.LEGGINGS, properties);
             } catch (Exception e) {
                 throw new RuntimeException("Armor construction failed! Error: " + e);
             }
         };
         feetItem = () -> {
             try {
-                return clazz.getDeclaredConstructor(ArmorMaterial.class, EquipmentSlot.class, Item.Properties.class).newInstance(material, EquipmentSlot.FEET, properties);
+                return clazz.getDeclaredConstructor(ArmorMaterial.class, ArmorItem.Type.class, Item.Properties.class).newInstance(material, ArmorItem.Type.BOOTS, properties);
             } catch (Exception e) {
                 throw new RuntimeException("Armor construction failed! Error: " + e);
             }

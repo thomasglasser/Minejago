@@ -1,5 +1,6 @@
 package dev.thomasglasser.minejago.world.entity;
 
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.schedule.Activity;
@@ -13,7 +14,7 @@ public class Zane extends Character
 
     @Override
     public boolean isInvulnerableTo(DamageSource pSource) {
-        if (pSource == DamageSource.DROWN)
+        if (pSource.is(DamageTypeTags.IS_DROWNING))
             return true;
         return super.isInvulnerableTo(pSource);
     }

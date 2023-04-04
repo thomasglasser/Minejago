@@ -136,7 +136,7 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem implements IModeledItem
         if (count % 10 == 0 && !level.isClientSide())
         {
             Vec3 loc = player.pick(Double.MAX_EXPONENT, 0.0F, false).getLocation();
-            BlockPos pos = new BlockPos(loc);
+            BlockPos pos = new BlockPos((int) loc.x, (int) loc.y, (int) loc.z);
             Direction direction = player.getDirection();
             if (direction == Direction.EAST)
             {

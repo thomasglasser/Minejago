@@ -15,7 +15,7 @@ import net.minecraft.world.item.CreativeModeTab;
 
 public class MinejagoCreativeModeTabs
 {
-    public static CreativeModeTab GI = Services.ITEM.newTab(Minejago.modLoc("gi"), Component.translatable(Minejago.modLoc("gi").toLanguageKey("item_group")), () -> MinejagoArmor.BLACK_GI_SET.HEAD.get().getDefaultInstance(), (featureFlagSet, output, bl) ->
+    public static CreativeModeTab GI = Services.ITEM.newTab(Minejago.modLoc("gi"), Component.translatable(Minejago.modLoc("gi").toLanguageKey("item_group")), () -> MinejagoArmor.BLACK_GI_SET.HEAD.get().getDefaultInstance(), (parameters, output) ->
     {
         MinejagoArmor.ARMOR_SETS.forEach(armorSet ->
         {

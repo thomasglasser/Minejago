@@ -119,7 +119,7 @@ public class ThrownIronSpear extends AbstractArrow
         }
 
         Entity entity1 = this.getOwner();
-        DamageSource damagesource = DamageSource.trident(this, (entity1 == null ? this : entity1));
+        DamageSource damagesource = damageSources().trident(this, (entity1 == null ? this : entity1));
         this.dealtDamage = true;
         if (entity.hurt(damagesource, f)) {
             if (entity.getType() == EntityType.ENDERMAN) {

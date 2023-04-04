@@ -4,6 +4,7 @@ import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -77,7 +78,7 @@ public class ThrownIronShuriken extends AbstractArrow
                 this.setNoGravity(false);
                 do {
                     pos = pos.subtract(0, 1, 0);
-                } while (level.getBlockState(new BlockPos(pos)).isAir());
+                } while (level.getBlockState(new BlockPos((int) pos.x, (int) pos.y, (int) pos.z)).isAir());
             }
         }
         else {
@@ -113,7 +114,7 @@ public class ThrownIronShuriken extends AbstractArrow
         }
 
         Entity entity1 = this.getOwner();
-        DamageSource damagesource = DamageSource.trident(this, (entity1 == null ? this : entity1));
+        DamageSource damagesource = damageSources().trident(this, (entity1 == null ? this : entity1));
         this.dealtDamage = true;
         this.setNoGravity(false);
         if (entity.hurt(damagesource, f)) {

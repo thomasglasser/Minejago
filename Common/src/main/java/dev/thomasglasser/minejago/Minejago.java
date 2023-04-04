@@ -37,7 +37,8 @@ public class Minejago {
 	public enum Dependencies
 	{
 		MOONLIGHT_LIB("moonlight"),
-		DYNAMIC_LIGHTS("dynamiclights");
+		DYNAMIC_LIGHTS("dynamiclights"),
+		REACH_ENTITY_ATTRIBUTES("reach-entity-attributes");
 
 		private final String modid;
 

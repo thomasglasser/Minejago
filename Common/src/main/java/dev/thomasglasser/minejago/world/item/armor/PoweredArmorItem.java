@@ -22,8 +22,8 @@ public abstract class PoweredArmorItem extends ArmorItem implements IGeoArmorIte
 {
     BlockEntityWithoutLevelRenderer bewlr;
 
-    public PoweredArmorItem(ArmorMaterial pMaterial, EquipmentSlot pSlot, Properties pProperties) {
-        super(pMaterial, pSlot, pProperties);
+    public PoweredArmorItem(ArmorMaterial pMaterial, Type type, Properties pProperties) {
+        super(pMaterial, type, pProperties);
     }
 
     @Override
