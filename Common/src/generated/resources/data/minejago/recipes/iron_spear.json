@@ -17,5 +17,6 @@
   ],
   "result": {
     "item": "minejago:iron_spear"
-  }
+  },
+  "show_notification": true
 }

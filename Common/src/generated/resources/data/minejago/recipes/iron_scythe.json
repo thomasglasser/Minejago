@@ -17,5 +17,6 @@
   ],
   "result": {
     "item": "minejago:iron_scythe"
-  }
+  },
+  "show_notification": true
 }

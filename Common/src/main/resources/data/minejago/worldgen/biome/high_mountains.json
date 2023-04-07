@@ -1,7 +1,6 @@
 {
   "temperature": 0.5,
   "downfall": 0,
-  "precipitation": "none",
   "temperature_modifier": "frozen",
   "creature_spawn_probability": 0,
   "effects": {
@@ -13,5 +12,6 @@
   "spawners": {},
   "spawn_costs": {},
   "carvers": {},
-  "features": []
+  "features": [],
+  "has_precipitation": false
 }

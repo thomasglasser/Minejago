@@ -16,5 +16,6 @@
   ],
   "result": {
     "item": "minejago:teapot"
-  }
+  },
+  "show_notification": true
 }

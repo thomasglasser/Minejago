@@ -1,4 +1,4 @@
-// 1.19.3	2023-03-15T04:57:14.7900834	Recipes
+// 1.19.4	2023-04-06T21:24:04.6258635	Recipes
 c1ead63367096cf0f3aa1b85db940453398a993b data/minejago/advancements/recipes/brewing/teacup.json
 c7e47c451dbecae6a3622a1ebe338fe30bb233c2 data/minejago/advancements/recipes/brewing/teapot.json
 12b19357940c71ccf4a5462d6b1599718cc105eb data/minejago/advancements/recipes/combat/bamboo_staff.json
@@ -6,10 +6,10 @@ c7e47c451dbecae6a3622a1ebe338fe30bb233c2 data/minejago/advancements/recipes/brew
 d3c88fb6f66c2af13855467c0e5f1cf135955540 data/minejago/advancements/recipes/combat/iron_spear.json
 16903eb3f5af66abda488d6298e2981ea94efac2 data/minejago/advancements/recipes/combat/wooden_nunchucks.json
 2cec34c3d4c7b4a033f4d65e4e0f1cdb80c3515e data/minejago/advancements/recipes/tools/iron_scythe.json
-225590462ad1af4c5b137a41dc1f33c852502442 data/minejago/recipes/bamboo_staff.json
-0c8e4fd73cc129a055781033d06c5ba017e88dd4 data/minejago/recipes/iron_katana.json
-95b740636d121e6c083eea320a2a87fa242f46b1 data/minejago/recipes/iron_scythe.json
-bd09d1397135b1c4fc7a2ad7aaaefcfb040296e2 data/minejago/recipes/iron_spear.json
-589a32ec7cde758fe84f40e53cc4adb47b9a80d0 data/minejago/recipes/teacup.json
-21cd0aa296dcaa410dc33c031226af30f28ec9d4 data/minejago/recipes/teapot.json
+90d29d0e77495d357c12d2e2e9e57703b1432a69 data/minejago/recipes/bamboo_staff.json
+8e10ce5678a666eb98b721121aeddd268eb27f5d data/minejago/recipes/iron_katana.json
+85ef1359084b3241c0090f859209d25497c77755 data/minejago/recipes/iron_scythe.json
+6178d1fa337660f6ec71926d7672a2603abb0262 data/minejago/recipes/iron_spear.json
+0607009f84341e4f90be652437743f718278bcb6 data/minejago/recipes/teacup.json
+f78e3c7a6ed658a22b7524587e3e61f47f616dd7 data/minejago/recipes/teapot.json
 279a4992123824d97b80fe05ca9fd798d54e31cc data/minejago/recipes/wooden_nunchucks.json

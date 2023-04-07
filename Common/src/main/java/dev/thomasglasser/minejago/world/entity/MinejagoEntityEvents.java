@@ -209,7 +209,7 @@ public class MinejagoEntityEvents
 
     public static void onPlayerEntityInteract(Player player, Level world, InteractionHand hand, Entity entity)
     {
-        if (world instanceof ServerLevel serverLevel && hand == InteractionHand.MAIN_HAND && entity instanceof Painting painting && painting.getVariant().is(new ResourceLocation(Minejago.MOD_ID, "four_weapons")) && !((IDataHolder)painting).getPersistentData().getBoolean("MapTaken"))
+        if (world instanceof ServerLevel serverLevel && hand == InteractionHand.MAIN_HAND && entity instanceof Painting painting && painting.getVariant().is(Minejago.modLoc( "four_weapons")) && !((IDataHolder)painting).getPersistentData().getBoolean("MapTaken"))
         {
             ItemStack itemstack = MapItem.create(world, (int)entity.getX(), (int)entity.getZ(), (byte)4, true, true);
             MapItem.renderBiomePreviewMap((ServerLevel) world, itemstack);

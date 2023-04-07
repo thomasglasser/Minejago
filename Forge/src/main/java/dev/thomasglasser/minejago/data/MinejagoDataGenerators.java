@@ -40,9 +40,9 @@ public class MinejagoDataGenerators
         MinejagoBlockTagsProvider blockTags = new MinejagoBlockTagsProvider(packOutput, lookupProvider, existingFileHelper);
 
         //Server
-        generator.addProvider(onServer, new MinejagoItemTagsProvider(packOutput, lookupProvider, blockTags, existingFileHelper));
-        generator.addProvider(onServer, new MinejagoRecipes(packOutput));
         generator.addProvider(onServer, blockTags);
+        generator.addProvider(onServer, new MinejagoItemTagsProvider(packOutput, lookupProvider, blockTags.contentsGetter(), existingFileHelper));
+        generator.addProvider(onServer, new MinejagoRecipes(packOutput));
         generator.addProvider(onServer, new MinejagoBannerPatternTagsProvider(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(onServer, new MinejagoLootTables(packOutput));
         generator.addProvider(onServer, new MinejagoAdvancementProvider(packOutput, lookupProvider, existingFileHelper));

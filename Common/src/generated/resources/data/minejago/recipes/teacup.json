@@ -14,5 +14,6 @@
   "result": {
     "count": 4,
     "item": "minejago:teacup"
-  }
+  },
+  "show_notification": true
 }

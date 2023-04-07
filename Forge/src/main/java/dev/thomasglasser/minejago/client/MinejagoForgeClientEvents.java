@@ -113,13 +113,13 @@ public class MinejagoForgeClientEvents {
 
     public static void onRegisterParticleProviders(RegisterParticleProvidersEvent event)
     {
-        event.register(MinejagoParticleTypes.SPINJITZU.get(), SpinjitzuParticle.Provider::new);
-        event.register(MinejagoParticleTypes.SPARKS.get(), SparksParticle.Provider::new);
-        event.register(MinejagoParticleTypes.SPARKLES.get(), SparklesParticle.Provider::new);
-        event.register(MinejagoParticleTypes.SNOWS.get(), SnowsParticle.Provider::new);
-        event.register(MinejagoParticleTypes.ROCKS.get(), RocksParticle.Provider::new);
-        event.register(MinejagoParticleTypes.BOLTS.get(), BoltsParticle.Provider::new);
-        event.register(MinejagoParticleTypes.VAPORS.get(), VaporsParticle.Provider::new);
+        event.registerSpriteSet(MinejagoParticleTypes.SPINJITZU.get(), SpinjitzuParticle.Provider::new);
+        event.registerSpriteSet(MinejagoParticleTypes.SPARKS.get(), SparksParticle.Provider::new);
+        event.registerSpriteSet(MinejagoParticleTypes.SPARKLES.get(), SparklesParticle.Provider::new);
+        event.registerSpriteSet(MinejagoParticleTypes.SNOWS.get(), SnowsParticle.Provider::new);
+        event.registerSpriteSet(MinejagoParticleTypes.ROCKS.get(), RocksParticle.Provider::new);
+        event.registerSpriteSet(MinejagoParticleTypes.BOLTS.get(), BoltsParticle.Provider::new);
+        event.registerSpriteSet(MinejagoParticleTypes.VAPORS.get(), VaporsParticle.Provider::new);
     }
 
     public static void onRegisterColorHandlers(RegisterColorHandlersEvent.Item event)

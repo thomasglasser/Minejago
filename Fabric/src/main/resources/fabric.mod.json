@@ -46,22 +46,22 @@
   ],
 
   "depends": {
-    "fabricloader": ">=0.14.12",
+    "fabricloader": ">=0.14.19",
     "fabric": "*",
-    "minecraft": "1.19.3",
+    "minecraft": "1.19.4",
     "java": ">=17",
-    "terrablender": ">=2.1.0.139",
+    "terrablender": ">=2.2.0.154",
     "cardinal-components": ">=5.1.0",
-    "smartbrainlib": ">=1.7.4",
-    "geckolib": ">=4.0.4",
-    "forgeconfigapiport": ">=5.0.7"
+    "smartbrainlib": ">=1.9",
+    "geckolib": ">=4.1.2",
+    "forgeconfigapiport": ">=6.0.2"
   },
   "recommends": {
-    "player-animator": ">=0.4.1+1.19.3",
+    "player-animator": ">=1.0.2+1.19.4",
     "reach-entity-attributes": ">=2.3.1"
   },
   "suggests": {
-    "lambdynamiclights": ">=2.2.0+1.19.3",
+    "lambdynamiclights": ">=2.3.0+1.19.4",
     "firstpersonmod": "*",
     "modmenu": "*"
   },

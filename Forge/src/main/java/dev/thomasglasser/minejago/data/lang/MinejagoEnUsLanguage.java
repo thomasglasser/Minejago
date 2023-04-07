@@ -9,6 +9,7 @@ import dev.thomasglasser.minejago.server.commands.PowerCommand;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
+import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
 import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.powers.Power;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
@@ -23,6 +24,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.decoration.PaintingVariant;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -185,6 +187,20 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         addAdvancement(MinejagoAdventureAdvancementKeys.CATEGORY, MinejagoAdventureAdvancementKeys.COLLECT_ALL_SKELETAL_CHESTPLATES, "It's Always You Four Colors", "Collect all 4 Skeletal Chestplate variants");
         addAdvancement(MinejagoStoryAdvancementKeys.CATEGORY, MinejagoStoryAdvancementKeys.ROOT, "Minejago", "Long before time had a name...");
         addAdvancement(MinejagoStoryAdvancementKeys.CATEGORY, MinejagoStoryAdvancementKeys.INTERACT_WITH_MAIN_SIX, "Meet N' Greet", "Interact with Wu, Nya, and the Four Ninja");
+
+        add(MinejagoPaintingVariants.A_MORNING_BREW, "A Morning Brew", "waifu_png_pl");
+        add(MinejagoPaintingVariants.NEEDS_HAIR_GEL, "Needs Hair Gel", "waifu_png_pl");
+        add(MinejagoPaintingVariants.AMBUSHED, "Ambushed", "waifu_png_pl");
+        add(MinejagoPaintingVariants.BEFORE_THE_STORM, "Before the Storm", "waifu_png_pl");
+        add(MinejagoPaintingVariants.CREATION, "Creation", "waifu_png_pl");
+        add(MinejagoPaintingVariants.EARTH, "Earth", "waifu_png_pl");
+        add(MinejagoPaintingVariants.FIRE, "Fire", "waifu_png_pl");
+        add(MinejagoPaintingVariants.FRUIT_COLORED_NINJA, "Fruit Colored Ninja", "waifu_png_pl");
+        add(MinejagoPaintingVariants.ICE, "Ice", "waifu_png_pl");
+        add(MinejagoPaintingVariants.LIGHTNING, "Lightning", "waifu_png_pl");
+        add(MinejagoPaintingVariants.NOT_FOR_FURNITURE, "Not for Furniture", "waifu_png_pl");
+        add(MinejagoPaintingVariants.FOUR_WEAPONS, "Four Weapons", "Saikaro");
+        add(MinejagoPaintingVariants.THE_FOURTH_MOUNTAIN, "The Fourth Mountain", "waifu_png_pl");
     }
 
     public void addDesc(Item item, String desc)
@@ -253,5 +269,11 @@ public class MinejagoEnUsLanguage extends LanguageProvider
     public void add(RegistryObject<SoundEvent> sound, String name)
     {
         add("subtitles." + sound.getId().getPath(), name);
+    }
+
+    public void add(RegistryObject<PaintingVariant> painting, String title, String author)
+    {
+        add(painting.getId().toLanguageKey("painting") + ".title", title);
+        add(painting.getId().toLanguageKey("painting") + ".author", author);
     }
 }
