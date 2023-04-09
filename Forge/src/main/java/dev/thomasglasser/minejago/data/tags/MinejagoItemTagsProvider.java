@@ -66,6 +66,14 @@ public class MinejagoItemTagsProvider extends ItemTagsProvider
                 .add(Items.IRON_INGOT)
                 .addOptionalTag(forgeLoc("ingots/iron"))
                 .addOptionalTag(cLoc("iron_ingots"));
+        tag(ItemTags.DECORATED_POT_SHARDS)
+                .add(MinejagoItems.POTTERY_SHARD_ICE_CUBE.get())
+                .add(MinejagoItems.POTTERY_SHARD_THUNDER.get())
+                .add(MinejagoItems.POTTERY_SHARD_PEAKS.get())
+                .add(MinejagoItems.POTTERY_SHARD_MASTER.get())
+                .add(MinejagoItems.POTTERY_SHARD_YIN_YANG.get())
+                .add(MinejagoItems.POTTERY_SHARD_DRAGONS_HEAD.get())
+                .add(MinejagoItems.POTTERY_SHARD_DRAGONS_TAIL.get());
     }
 
     public TagAppender<Item> tagDynamicLight(String tag, int level)

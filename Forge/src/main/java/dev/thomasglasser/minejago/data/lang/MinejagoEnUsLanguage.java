@@ -24,11 +24,9 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.decoration.PaintingVariant;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
@@ -76,16 +74,6 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add(MinejagoItems.IRON_SCYTHE.get(), "Iron Scythe");
         add(MinejagoItems.WOODEN_NUNCHUCKS.get(), "Wooden Nunchucks");
 
-        add(MinejagoItems.WU_SPAWN_EGG.get(), "Wu Spawn Egg");
-        add(MinejagoItems.KAI_SPAWN_EGG.get(), "Kai Spawn Egg");
-        add(MinejagoItems.NYA_SPAWN_EGG.get(), "Nya Spawn Egg");
-        add(MinejagoItems.COLE_SPAWN_EGG.get(), "Cole Spawn Egg");
-        add(MinejagoItems.JAY_SPAWN_EGG.get(), "Jay Spawn Egg");
-        add(MinejagoItems.ZANE_SPAWN_EGG.get(), "Zane Spawn Egg");
-        add(MinejagoItems.UNDERWORLD_SKELETON_SPAWN_EGG.get(), "Underworld Skeleton Spawn Egg");
-        add(MinejagoItems.KRUNCHA_SPAWN_EGG.get(), "Kruncha Spawn Egg");
-        add(MinejagoItems.NUCKAL_SPAWN_EGG.get(), "Nuckal Spawn Egg");
-
         add(MinejagoBlocks.TEAPOT.get(), "Teapot");
 
         addDesc(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get(), "Four Weapons");
@@ -119,15 +107,15 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add(MinejagoEntityTypes.THROWN_BAMBOO_STAFF.get(), "Bamboo Staff");
         add(MinejagoEntityTypes.THROWN_IRON_SHURIKEN.get(), "Iron Shuriken");
         add(MinejagoEntityTypes.THROWN_IRON_SPEAR.get(), "Iron Spear");
-        add(MinejagoEntityTypes.WU.get(), "Wu");
-        add(MinejagoEntityTypes.KAI.get(), "Kai");
-        add(MinejagoEntityTypes.NYA.get(), "Nya");
-        add(MinejagoEntityTypes.JAY.get(), "Jay");
-        add(MinejagoEntityTypes.COLE.get(), "Cole");
-        add(MinejagoEntityTypes.ZANE.get(), "Zane");
-        add(MinejagoEntityTypes.UNDERWORLD_SKELETON.get(), "Underworld Skeleton");
-        add(MinejagoEntityTypes.KRUNCHA.get(), "Kruncha");
-        add(MinejagoEntityTypes.NUCKAL.get(), "Nuckal");
+        add(MinejagoEntityTypes.WU.get(), "Wu", MinejagoItems.WU_SPAWN_EGG.get());
+        add(MinejagoEntityTypes.KAI.get(), "Kai", MinejagoItems.KAI_SPAWN_EGG.get());
+        add(MinejagoEntityTypes.NYA.get(), "Nya", MinejagoItems.NYA_SPAWN_EGG.get());
+        add(MinejagoEntityTypes.JAY.get(), "Jay", MinejagoItems.JAY_SPAWN_EGG.get());
+        add(MinejagoEntityTypes.COLE.get(), "Cole", MinejagoItems.COLE_SPAWN_EGG.get());
+        add(MinejagoEntityTypes.ZANE.get(), "Zane", MinejagoItems.ZANE_SPAWN_EGG.get());
+        add(MinejagoEntityTypes.UNDERWORLD_SKELETON.get(), "Underworld Skeleton", MinejagoItems.UNDERWORLD_SKELETON_SPAWN_EGG.get());
+        add(MinejagoEntityTypes.KRUNCHA.get(), "Kruncha", MinejagoItems.KRUNCHA_SPAWN_EGG.get());
+        add(MinejagoEntityTypes.NUCKAL.get(), "Nuckal", MinejagoItems.NUCKAL_SPAWN_EGG.get());
 
         add(MinejagoBannerPatterns.FOUR_WEAPONS_LEFT.get(), "Four Weapons Left");
         add(MinejagoBannerPatterns.FOUR_WEAPONS_RIGHT.get(), "Four Weapons Right");
@@ -199,8 +187,16 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add(MinejagoPaintingVariants.ICE, "Ice", "waifu_png_pl");
         add(MinejagoPaintingVariants.LIGHTNING, "Lightning", "waifu_png_pl");
         add(MinejagoPaintingVariants.NOT_FOR_FURNITURE, "Not for Furniture", "waifu_png_pl");
-        add(MinejagoPaintingVariants.FOUR_WEAPONS, "Four Weapons", "Saikaro");
+        add(MinejagoPaintingVariants.FOUR_WEAPONS, "Four Weapons", "waifu_png_pl");
         add(MinejagoPaintingVariants.THE_FOURTH_MOUNTAIN, "The Fourth Mountain", "waifu_png_pl");
+
+        addShard(MinejagoItems.POTTERY_SHARD_ICE_CUBE.get(), "Ice Cube");
+        addShard(MinejagoItems.POTTERY_SHARD_THUNDER.get(), "Thunder");
+        addShard(MinejagoItems.POTTERY_SHARD_PEAKS.get(), "Peaks");
+        addShard(MinejagoItems.POTTERY_SHARD_MASTER.get(), "Master");
+        addShard(MinejagoItems.POTTERY_SHARD_YIN_YANG.get(), "Yin Yang");
+        addShard(MinejagoItems.POTTERY_SHARD_DRAGONS_HEAD.get(), "Dragon's Head");
+        addShard(MinejagoItems.POTTERY_SHARD_DRAGONS_TAIL.get(), "Dragon's Tail");
     }
 
     public void addDesc(Item item, String desc)
@@ -236,11 +232,7 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add(Items.POTION, potion, "Bottle of " + name);
         add(Items.SPLASH_POTION, potion, "Splash Bottle of " + name);
         add(Items.LINGERING_POTION, potion, "Lingering Bottle of " + name);
-
-        if (!potion.getEffects().isEmpty())
-        {
-            add(Items.TIPPED_ARROW, potion, "Arrow of " + name);
-        }
+        add(Items.TIPPED_ARROW, potion, "Arrow of " + name);
     }
 
     public void add(KeyMapping key, String name)
@@ -275,5 +267,15 @@ public class MinejagoEnUsLanguage extends LanguageProvider
     {
         add(painting.getId().toLanguageKey("painting") + ".title", title);
         add(painting.getId().toLanguageKey("painting") + ".author", author);
+    }
+
+    public void add(EntityType<?> key, String name, Item egg) {
+        add(key.getDescriptionId(), name);
+        add(egg, name + " Spawn Egg");
+    }
+
+    public void addShard(Item item, String name)
+    {
+        add(item, name + " Pottery Shard");
     }
 }

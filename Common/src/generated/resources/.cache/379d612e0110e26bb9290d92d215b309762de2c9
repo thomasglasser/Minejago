@@ -1,4 +1,4 @@
-// 1.19.4	2023-04-06T21:24:04.6198799	Item Models: minejago
+// 1.19.4	2023-04-09T04:23:36.5399488	Item Models: minejago
 0862bf1836526a1739706556dde80e2717eed1df assets/minejago/models/item/black_gi_boots.json
 162144231986a4f7892750f437ecdfee089e3b4e assets/minejago/models/item/black_gi_hood.json
 5ec82ae30e407e99f4adc6d0352c631fc0c45214 assets/minejago/models/item/black_gi_jacket.json
@@ -29,6 +29,13 @@ ea1055ffbbe6a23f8815f92735339d7c94934074 assets/minejago/models/item/minejago_ar
 220d56ce4dd53967b17042b1e3c4e0ed10a9f2e5 assets/minejago/models/item/minejago_armor/lightning_training_gi_pants.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/minejago/models/item/nuckal_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/minejago/models/item/nya_spawn_egg.json
+d89ed867da05b828b21540c38662a8b85bad4caf assets/minejago/models/item/pottery_shard_dragons_head.json
+04e51be1fb48db58da0c23f3b4a3796f066abcdb assets/minejago/models/item/pottery_shard_dragons_tail.json
+70d1b875d5fe2e8cc239b2bd08c7630dc5a8b1aa assets/minejago/models/item/pottery_shard_ice_cube.json
+6e7877019064996e01750a74afe8571d78c02515 assets/minejago/models/item/pottery_shard_master.json
+c12af52a8b8845e2de0d391a4aaaea41d6b60180 assets/minejago/models/item/pottery_shard_peaks.json
+d04da7d998d8412adaa66e82816db37499064999 assets/minejago/models/item/pottery_shard_thunder.json
+649b00d0bde334c316345c37f74c4e419d6cc524 assets/minejago/models/item/pottery_shard_yin_yang.json
 0b7169264cfb4bbec90a21a2ab5bc02c5f0e21e9 assets/minejago/models/item/skeletal_chestplate_black.json
 fb5df5cf0139810b92b3e262955f83db0694d38d assets/minejago/models/item/skeletal_chestplate_blue.json
 fccf7334db027e591be5d684b8f3413ffe8c4cad assets/minejago/models/item/skeletal_chestplate_red.json

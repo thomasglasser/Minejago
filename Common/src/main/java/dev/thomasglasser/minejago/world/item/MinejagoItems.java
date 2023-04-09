@@ -9,10 +9,12 @@ import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.item.armor.IGeoArmorItem;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
+import dev.thomasglasser.shardsapi.api.PotteryShardRegistry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
@@ -38,6 +40,15 @@ public class MinejagoItems
     public static final RegistryObject<Item> IRON_SCYTHE = register("iron_scythe", () -> new IronScytheItem(Tiers.IRON, 8, -3.5F, BlockTags.REPLACEABLE_PLANTS, new Item.Properties()), CreativeModeTabs.TOOLS_AND_UTILITIES, CreativeModeTabs.COMBAT);
     public static final RegistryObject<Item> WOODEN_NUNCHUCKS = register("wooden_nunchucks", () -> new WoodenNunchucksItem(new Item.Properties().stacksTo(1)), CreativeModeTabs.COMBAT);
 
+    // POTTERY SHARDS
+    public static final RegistryObject<Item> POTTERY_SHARD_ICE_CUBE = registerShard("pottery_shard_ice_cube");
+    public static final RegistryObject<Item> POTTERY_SHARD_THUNDER = registerShard("pottery_shard_thunder");
+    public static final RegistryObject<Item> POTTERY_SHARD_PEAKS = registerShard("pottery_shard_peaks");
+    public static final RegistryObject<Item> POTTERY_SHARD_MASTER = registerShard("pottery_shard_master");
+    public static final RegistryObject<Item> POTTERY_SHARD_YIN_YANG = registerShard("pottery_shard_yin_yang");
+    public static final RegistryObject<Item> POTTERY_SHARD_DRAGONS_HEAD = registerShard("pottery_shard_dragons_head");
+    public static final RegistryObject<Item> POTTERY_SHARD_DRAGONS_TAIL = registerShard("pottery_shard_dragons_tail");
+
     // SPAWN EGGS
     public static final RegistryObject<Item> WU_SPAWN_EGG = register("wu_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.WU::get, 16645363, 14689295, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
     public static final RegistryObject<Item> KAI_SPAWN_EGG = register("kai_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.KAI::get, 9507597, 5185296, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
@@ -59,6 +70,13 @@ public class MinejagoItems
             list.add(new ResourceLocation(Minejago.MOD_ID, name));
         }
         return ITEMS.register(name, supplier);
+    }
+
+    private static RegistryObject<Item> registerShard(String name)
+    {
+        RegistryObject<Item> shard = register(name, () -> new Item(new Item.Properties().requiredFeatures(FeatureFlags.UPDATE_1_20)), CreativeModeTabs.INGREDIENTS);
+        PotteryShardRegistry.register(shard.getId(), shard.getId());
+        return shard;
     }
 
     public static Map<CreativeModeTab, ArrayList<ResourceLocation>> getItemTabs() {

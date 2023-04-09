@@ -12,6 +12,7 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
@@ -26,8 +27,8 @@ public class MinejagoItemModels extends ItemModelProvider
     @Override
     protected void registerModels()
     {
-        singleTexture(MinejagoItems.BONE_KNIFE.getId().getPath(), mcLoc("item/handheld"), "layer0", modLoc("item/bone_knife"));
-        singleTexture(MinejagoItems.IRON_SHURIKEN.getId().getPath(), mcLoc("item/handheld"), "layer0", modLoc("item/iron_shuriken"));
+        singleTextureHandheld(MinejagoItems.BONE_KNIFE.getId().getPath());
+        singleTextureHandheld(MinejagoItems.IRON_SHURIKEN.getId().getPath());
         MinejagoArmor.BLACK_GI_SET.getAll().forEach(item ->
         {
             String nameForSlot = switch (MinejagoArmor.BLACK_GI_SET.getForItem(item.get())) {
@@ -42,11 +43,18 @@ public class MinejagoItemModels extends ItemModelProvider
         });
         MinejagoArmor.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
                 singleTexture(item.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/skeletal_chestplate_" + ((SkeletalChestplateItem)item.get()).getVariant().getColor().getName())));
-        singleTexture(MinejagoItems.TEACUP.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/teacup"));
-        singleTexture(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/four_weapons_banner_pattern"));
-        singleTexture(MinejagoBlocks.TEAPOT.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/teapot"));
-        singleTexture(MinejagoItems.IRON_KATANA.getId().getPath(), mcLoc("item/handheld"), "layer0", modLoc("item/iron_katana"));
-
+        singleTexture(MinejagoItems.TEACUP.getId().getPath());
+        singleTexture(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.getId().getPath());
+        singleTexture(MinejagoBlocks.TEAPOT.getId().getPath());
+        singleTextureHandheld(MinejagoItems.IRON_KATANA.getId().getPath());
+        singleTexture(MinejagoItems.POTTERY_SHARD_ICE_CUBE.getId().getPath());
+        singleTexture(MinejagoItems.POTTERY_SHARD_THUNDER.getId().getPath());
+        singleTexture(MinejagoItems.POTTERY_SHARD_PEAKS.getId().getPath());
+        singleTexture(MinejagoItems.POTTERY_SHARD_MASTER.getId().getPath());
+        singleTexture(MinejagoItems.POTTERY_SHARD_YIN_YANG.getId().getPath());
+        singleTexture(MinejagoItems.POTTERY_SHARD_DRAGONS_HEAD.getId().getPath());
+        singleTexture(MinejagoItems.POTTERY_SHARD_DRAGONS_TAIL.getId().getPath());
+        
         final RegistryAccess.Frozen access = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
         final RegistrySetBuilder builder = new RegistrySetBuilder();
         MinejagoPowers.POWERS.addToSet(builder);
@@ -65,14 +73,29 @@ public class MinejagoItemModels extends ItemModelProvider
                     }
                 });
 
-        withExistingParent(MinejagoItems.WU_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
-        withExistingParent(MinejagoItems.KAI_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
-        withExistingParent(MinejagoItems.NYA_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
-        withExistingParent(MinejagoItems.COLE_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
-        withExistingParent(MinejagoItems.JAY_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
-        withExistingParent(MinejagoItems.ZANE_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
-        withExistingParent(MinejagoItems.UNDERWORLD_SKELETON_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
-        withExistingParent(MinejagoItems.KRUNCHA_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
-        withExistingParent(MinejagoItems.NUCKAL_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        spawnEgg(MinejagoItems.WU_SPAWN_EGG.getId().getPath());
+        spawnEgg(MinejagoItems.KAI_SPAWN_EGG.getId().getPath());
+        spawnEgg(MinejagoItems.NYA_SPAWN_EGG.getId().getPath());
+        spawnEgg(MinejagoItems.COLE_SPAWN_EGG.getId().getPath());
+        spawnEgg(MinejagoItems.JAY_SPAWN_EGG.getId().getPath());
+        spawnEgg(MinejagoItems.ZANE_SPAWN_EGG.getId().getPath());
+        spawnEgg(MinejagoItems.UNDERWORLD_SKELETON_SPAWN_EGG.getId().getPath());
+        spawnEgg(MinejagoItems.KRUNCHA_SPAWN_EGG.getId().getPath());
+        spawnEgg(MinejagoItems.NUCKAL_SPAWN_EGG.getId().getPath());
+    }
+
+    private void singleTexture(String path)
+    {
+        singleTexture(path, mcLoc("item/generated"), "layer0", modLoc("item/" + path));
+    }
+
+    private void singleTextureHandheld(String path)
+    {
+        singleTexture(path, mcLoc("item/handheld"), "layer0", modLoc("item/" + path));
+    }
+
+    private void spawnEgg(String path)
+    {
+        withExistingParent(path, mcLoc("item/template_spawn_egg"));
     }
 }

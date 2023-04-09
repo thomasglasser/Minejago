@@ -1,3 +1,9 @@
+buildscript {
+    repositories {
+        maven { url = 'https://maven.parchmentmc.org' }
+    }
+}
+
 plugins {
     id 'com.matyrobbrt.mc.registrationutils' version "${previous_minecraft_version}-${registration_utils_version}"
 //    id 'com.matyrobbrt.mc.registrationutils' version "${minecraft_version}-${registration_utils_version}" Waiting on 1.19.4
@@ -55,6 +61,7 @@ subprojects {
     repositories {
 
         mavenCentral()
+        mavenLocal()
 
         maven {
             name = 'Sponge / Mixin'
@@ -114,6 +121,9 @@ subprojects {
         maven {
             name = "SmartBrainLib (SBL) Maven Repo"
             url = "https://dl.cloudsmith.io/public/tslat/sbl/maven/"
+        }
+        repositories {
+            maven { url = 'https://maven.parchmentmc.org' }
         }
     }
 
