@@ -2,13 +2,14 @@ package dev.thomasglasser.minejago.world.item;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
-import dev.thomasglasser.minejago.client.renderer.item.WoodenNunchucksRenderer;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownIronSpear;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
-import net.minecraft.sounds.SoundEvents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -20,7 +21,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+
+import static dev.thomasglasser.minejago.world.item.MinejagoItems.MOD_NEEDED;
 
 public class SpearItem extends ThrowableSwordItem implements IModeledItem {
     /** Modifiers applied when the item is in the mainhand of a user. */
@@ -74,5 +81,15 @@ public class SpearItem extends ThrowableSwordItem implements IModeledItem {
     public BlockEntityWithoutLevelRenderer getBEWLR() {
         if (bewlr == null) bewlr = new MinejagoBlockEntityWithoutLevelRenderer();
         return bewlr;
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
+        super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
+        if (isAdvanced.isAdvanced())
+        {
+            if (!Services.PLATFORM.isModLoaded(Minejago.Dependencies.REACH_ENTITY_ATTRIBUTES.getModId()))
+                tooltipComponents.add(Component.translatable(MOD_NEEDED, Minejago.Dependencies.REACH_ENTITY_ATTRIBUTES.getModId()).withStyle(ChatFormatting.RED));
+        }
     }
 }

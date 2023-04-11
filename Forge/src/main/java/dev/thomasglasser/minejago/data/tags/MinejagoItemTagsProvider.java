@@ -74,6 +74,8 @@ public class MinejagoItemTagsProvider extends ItemTagsProvider
                 .add(MinejagoItems.POTTERY_SHARD_YIN_YANG.get())
                 .add(MinejagoItems.POTTERY_SHARD_DRAGONS_HEAD.get())
                 .add(MinejagoItems.POTTERY_SHARD_DRAGONS_TAIL.get());
+        tag(ItemTags.TRIM_TEMPLATES)
+                .add(MinejagoItems.FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE.get());
     }
 
     public TagAppender<Item> tagDynamicLight(String tag, int level)

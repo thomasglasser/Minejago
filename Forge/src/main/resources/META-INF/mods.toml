@@ -18,7 +18,7 @@ issueTrackerURL="https://github.com/thomasglasser/Minejago/issues" #optional
 modId="minejago" #mandatory
 # The version number of the mod - there's a few well known ${} variables useable here or just hardcode it
 # see the associated build.gradle script for how to populate this completely automatically during a build
-version="00e01a-dev" #mandatory
+version="1.0.0-00e01a" #mandatory
 # A display name for the mod
 displayName="Minejago" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification https://mcforge.readthedocs.io/en/latest/gettingstarted/autoupdate/
@@ -142,4 +142,15 @@ versionRange="[2.0.0,)" #mandatory
 # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
 ordering="NONE"
 # Side this dependency is applied on - BOTH, CLIENT or SERVER
-side="BOTH"
+side="CLIENT"
+[[dependencies.minejago]] #optional
+# the modid of the dependency
+modId="trimmed" #mandatory
+# Does this dependency have to exist - if not, ordering below must be specified
+mandatory=true #mandatory
+# The version range of the dependency
+versionRange="[1.0.0,)" #mandatory
+# An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
+ordering="NONE"
+# Side this dependency is applied on - BOTH, CLIENT or SERVER
+side="CLIENT"

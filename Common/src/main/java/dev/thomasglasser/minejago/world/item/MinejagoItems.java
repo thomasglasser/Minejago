@@ -8,10 +8,12 @@ import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.item.armor.IGeoArmorItem;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
+import dev.thomasglasser.minejago.world.item.armortrim.MinejagoTrimPatterns;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.shardsapi.api.PotteryShardRegistry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.flag.FeatureFlags;
@@ -19,6 +21,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.item.armortrim.TrimPattern;
 
 import java.util.*;
 import java.util.function.Supplier;
@@ -27,6 +30,7 @@ public class MinejagoItems
 {
     public static final RegistrationProvider<Item> ITEMS = RegistrationProvider.get(Registries.ITEM, Minejago.MOD_ID);
     private static final HashMap<CreativeModeTab, ArrayList<ResourceLocation>> ITEM_TABS = new HashMap<>();
+    public static final String MOD_NEEDED = "error.mod_needed";
 
     public static final RegistryObject<Item> BAMBOO_STAFF = register("bamboo_staff", () -> new BambooStaffItem(Tiers.WOOD, 2, -1, new Item.Properties()), CreativeModeTabs.COMBAT);
     public static final RegistryObject<Item> BONE_KNIFE = register("bone_knife", () -> new BoneKnifeItem(MinejagoTiers.BONE, 3, -2, new Item.Properties()), CreativeModeTabs.COMBAT);
@@ -48,6 +52,9 @@ public class MinejagoItems
     public static final RegistryObject<Item> POTTERY_SHARD_YIN_YANG = registerShard("pottery_shard_yin_yang");
     public static final RegistryObject<Item> POTTERY_SHARD_DRAGONS_HEAD = registerShard("pottery_shard_dragons_head");
     public static final RegistryObject<Item> POTTERY_SHARD_DRAGONS_TAIL = registerShard("pottery_shard_dragons_tail");
+    
+    // SMITHING TEMPLATES
+    public static final RegistryObject<Item> FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE = registerSmithingTemplate(MinejagoTrimPatterns.FOUR_WEAPONS);
 
     // SPAWN EGGS
     public static final RegistryObject<Item> WU_SPAWN_EGG = register("wu_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.WU::get, 16645363, 14689295, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
@@ -75,8 +82,15 @@ public class MinejagoItems
     private static RegistryObject<Item> registerShard(String name)
     {
         RegistryObject<Item> shard = register(name, () -> new Item(new Item.Properties().requiredFeatures(FeatureFlags.UPDATE_1_20)), CreativeModeTabs.INGREDIENTS);
-        PotteryShardRegistry.register(shard.getId(), shard.getId());
+
+        if (Services.PLATFORM.isModLoaded(Minejago.Dependencies.SHARDSAPI.getModId())) PotteryShardRegistry.register(shard.getId(), shard.getId());
+
         return shard;
+    }
+
+    private static RegistryObject<Item> registerSmithingTemplate(ResourceKey<TrimPattern> key)
+    {
+        return register(key.location().getPath() + "_armor_trim_smithing_template", () -> (SmithingTemplateItem.createArmorTrimTemplate(key)), CreativeModeTabs.INGREDIENTS);
     }
 
     public static Map<CreativeModeTab, ArrayList<ResourceLocation>> getItemTabs() {

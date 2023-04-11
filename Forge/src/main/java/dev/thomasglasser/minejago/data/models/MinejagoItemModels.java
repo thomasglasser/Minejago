@@ -13,8 +13,10 @@ import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class MinejagoItemModels extends ItemModelProvider
 {
@@ -27,8 +29,8 @@ public class MinejagoItemModels extends ItemModelProvider
     @Override
     protected void registerModels()
     {
-        singleTextureHandheld(MinejagoItems.BONE_KNIFE.getId().getPath());
-        singleTextureHandheld(MinejagoItems.IRON_SHURIKEN.getId().getPath());
+        basicItemHandheld(MinejagoItems.BONE_KNIFE.get());
+        basicItemHandheld(MinejagoItems.IRON_SHURIKEN.get());
         MinejagoArmor.BLACK_GI_SET.getAll().forEach(item ->
         {
             String nameForSlot = switch (MinejagoArmor.BLACK_GI_SET.getForItem(item.get())) {
@@ -43,17 +45,18 @@ public class MinejagoItemModels extends ItemModelProvider
         });
         MinejagoArmor.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
                 singleTexture(item.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/skeletal_chestplate_" + ((SkeletalChestplateItem)item.get()).getVariant().getColor().getName())));
-        singleTexture(MinejagoItems.TEACUP.getId().getPath());
-        singleTexture(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.getId().getPath());
-        singleTexture(MinejagoBlocks.TEAPOT.getId().getPath());
-        singleTextureHandheld(MinejagoItems.IRON_KATANA.getId().getPath());
-        singleTexture(MinejagoItems.POTTERY_SHARD_ICE_CUBE.getId().getPath());
-        singleTexture(MinejagoItems.POTTERY_SHARD_THUNDER.getId().getPath());
-        singleTexture(MinejagoItems.POTTERY_SHARD_PEAKS.getId().getPath());
-        singleTexture(MinejagoItems.POTTERY_SHARD_MASTER.getId().getPath());
-        singleTexture(MinejagoItems.POTTERY_SHARD_YIN_YANG.getId().getPath());
-        singleTexture(MinejagoItems.POTTERY_SHARD_DRAGONS_HEAD.getId().getPath());
-        singleTexture(MinejagoItems.POTTERY_SHARD_DRAGONS_TAIL.getId().getPath());
+        basicItem(MinejagoItems.TEACUP.get());
+        basicItem(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get());
+        basicItem(MinejagoBlocks.TEAPOT.get().asItem());
+        basicItemHandheld(MinejagoItems.IRON_KATANA.get());
+        basicItem(MinejagoItems.POTTERY_SHARD_ICE_CUBE.get());
+        basicItem(MinejagoItems.POTTERY_SHARD_THUNDER.get());
+        basicItem(MinejagoItems.POTTERY_SHARD_PEAKS.get());
+        basicItem(MinejagoItems.POTTERY_SHARD_MASTER.get());
+        basicItem(MinejagoItems.POTTERY_SHARD_YIN_YANG.get());
+        basicItem(MinejagoItems.POTTERY_SHARD_DRAGONS_HEAD.get());
+        basicItem(MinejagoItems.POTTERY_SHARD_DRAGONS_TAIL.get());
+        basicItem(MinejagoItems.FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE.get());
         
         final RegistryAccess.Frozen access = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
         final RegistrySetBuilder builder = new RegistrySetBuilder();
@@ -83,15 +86,15 @@ public class MinejagoItemModels extends ItemModelProvider
         spawnEgg(MinejagoItems.KRUNCHA_SPAWN_EGG.getId().getPath());
         spawnEgg(MinejagoItems.NUCKAL_SPAWN_EGG.getId().getPath());
     }
-
-    private void singleTexture(String path)
+    
+    protected void basicItemHandheld(ResourceLocation item)
     {
-        singleTexture(path, mcLoc("item/generated"), "layer0", modLoc("item/" + path));
+        singleTexture(item.getPath(), mcLoc("item/handheld"), new ResourceLocation(item.getNamespace(), "item/" + item.getPath()));
     }
 
-    private void singleTextureHandheld(String path)
+    protected void basicItemHandheld(Item item)
     {
-        singleTexture(path, mcLoc("item/handheld"), "layer0", modLoc("item/" + path));
+        basicItemHandheld(ForgeRegistries.ITEMS.getKey(item));
     }
 
     private void spawnEgg(String path)

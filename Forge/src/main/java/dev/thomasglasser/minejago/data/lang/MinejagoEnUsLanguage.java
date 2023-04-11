@@ -15,10 +15,12 @@ import dev.thomasglasser.minejago.world.entity.powers.Power;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
 import dev.thomasglasser.minejago.world.item.armor.SkeletalChestplateItem;
+import dev.thomasglasser.minejago.world.item.armortrim.MinejagoTrimPatterns;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
 import dev.thomasglasser.minejago.world.level.biome.MinejagoBiomes;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPatterns;
+import net.minecraft.Util;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
@@ -30,6 +32,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.item.armortrim.TrimPattern;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraftforge.common.data.LanguageProvider;
@@ -197,6 +200,10 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         addShard(MinejagoItems.POTTERY_SHARD_YIN_YANG.get(), "Yin Yang");
         addShard(MinejagoItems.POTTERY_SHARD_DRAGONS_HEAD.get(), "Dragon's Head");
         addShard(MinejagoItems.POTTERY_SHARD_DRAGONS_TAIL.get(), "Dragon's Tail");
+
+        addPattern(MinejagoTrimPatterns.FOUR_WEAPONS, "Four Weapons");
+
+        add(MinejagoItems.MOD_NEEDED, "To get the full functionality of this item, please install the %s mod.");
     }
 
     public void addDesc(Item item, String desc)
@@ -277,5 +284,10 @@ public class MinejagoEnUsLanguage extends LanguageProvider
     public void addShard(Item item, String name)
     {
         add(item, name + " Pottery Shard");
+    }
+
+    public void addPattern(ResourceKey<TrimPattern> pattern, String name)
+    {
+        add(Util.makeDescriptionId("trim_pattern", pattern.location()), name + " Armor Trim");
     }
 }

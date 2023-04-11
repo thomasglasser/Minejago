@@ -1,4 +1,4 @@
-// 1.19.4	2023-04-09T04:06:39.1874558	Minejago Item Tags
+// 1.19.4	2023-04-10T20:43:51.7369572	Minejago Item Tags
 d3ddeb94cda4993a295b354e104db0ab8f97c8e1 data/c/tags/items/boots.json
 09177c8c3b8bdbf3d40fbe9e052b99f1265aec54 data/c/tags/items/chestplates.json
 78f9f798e56fad13fc6db07f47b464666188eaa3 data/c/tags/items/helmets.json
@@ -13,6 +13,7 @@ d3ddeb94cda4993a295b354e104db0ab8f97c8e1 data/forge/tags/items/armors/boots.json
 5a5df559d4201352452eccf8584d927338714fd1 data/forge/tags/items/tools/swords.json
 7e30c00999fc6ba14876558f867e4d21a2ad46fc data/minecraft/tags/items/decorated_pot_shards.json
 5817946282b25393905bb7a5a843055208e6b7a5 data/minecraft/tags/items/piglin_loved.json
+d6e9302a883ddaefdbed2925acf6d04fe32f2799 data/minecraft/tags/items/trim_templates.json
 d8f45558d7a5d3f8bea21771466d1dba8147d1d1 data/minejago/tags/items/golden_weapons.json
 c8d7101a0778868817fedf388d817164e8909605 data/minejago/tags/items/iron_ingots.json
 37a407ce585cd0c1f20828c3eb579429ab305160 data/minejago/tags/items/wooden_rods.json

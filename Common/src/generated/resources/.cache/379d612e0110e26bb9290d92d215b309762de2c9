@@ -1,13 +1,14 @@
-// 1.19.4	2023-04-09T04:23:36.5399488	Item Models: minejago
+// 1.19.4	2023-04-11T00:25:19.7789945	Item Models: minejago
 0862bf1836526a1739706556dde80e2717eed1df assets/minejago/models/item/black_gi_boots.json
 162144231986a4f7892750f437ecdfee089e3b4e assets/minejago/models/item/black_gi_hood.json
 5ec82ae30e407e99f4adc6d0352c631fc0c45214 assets/minejago/models/item/black_gi_jacket.json
 e3aa065d5b7ee011510e139e82c017c95b4e8fad assets/minejago/models/item/black_gi_pants.json
-3049109d9d51a1db880a92cd7fbf9869c1a7762f assets/minejago/models/item/bone_knife.json
+c15780c3938b06fde801fe7f0e483212f41abd0d assets/minejago/models/item/bone_knife.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/minejago/models/item/cole_spawn_egg.json
+c282cad8c8fa98924d81414fd0f123dfae09f592 assets/minejago/models/item/four_weapons_armor_trim_smithing_template.json
 01b3239e2ff98dcb5c378489ac0511b745ea6b9b assets/minejago/models/item/four_weapons_banner_pattern.json
-fe8ee0d405f6c8ffa8d1877579170a16ac5430ff assets/minejago/models/item/iron_katana.json
-61bcc09dbcbeb7024b6282bce7d6de0379c902d7 assets/minejago/models/item/iron_shuriken.json
+f310f6df87e0f611b70c6a95c266aadee8a02ffe assets/minejago/models/item/iron_katana.json
+e908e9078cdec64d89a9e30833aeb64b1dbdf7b2 assets/minejago/models/item/iron_shuriken.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/minejago/models/item/jay_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/minejago/models/item/kai_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/minejago/models/item/kruncha_spawn_egg.json

@@ -6,6 +6,8 @@ import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 
@@ -18,6 +20,12 @@ public class MinejagoRecipes extends RecipeProvider {
 
     @Override
     protected void buildRecipes(Consumer<FinishedRecipe> writer) {
+        buildCrafting(writer);
+        buildSmithing(writer);
+    }
+
+    private void buildCrafting(Consumer<FinishedRecipe> writer)
+    {
         ShapedRecipeBuilder teacup = ShapedRecipeBuilder.shaped(RecipeCategory.BREWING, MinejagoItems.TEACUP.get(), 4)
                 .pattern("x x")
                 .pattern(" x ")
@@ -74,5 +82,22 @@ public class MinejagoRecipes extends RecipeProvider {
                 .group(Minejago.MOD_ID)
                 .unlockedBy("has_bamboo", has(Items.BAMBOO));
         bambooStaff.save(writer);
+    }
+
+    private void buildSmithing(Consumer<FinishedRecipe> writer)
+    {
+        smithing(writer, MinejagoItems.FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE.get(), Items.IRON_BLOCK);
+    }
+
+    private void smithing(Consumer<FinishedRecipe> writer, Item template, TagKey<Item> dup)
+    {
+        trimSmithing(writer, template);
+        copySmithingTemplate(writer, template, dup);
+    }
+
+    private void smithing(Consumer<FinishedRecipe> writer, Item template, Item dup)
+    {
+        trimSmithing(writer, template);
+        copySmithingTemplate(writer, template, dup);
     }
 }

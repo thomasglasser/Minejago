@@ -13,6 +13,7 @@ import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -37,6 +38,9 @@ public class MinejagoForge
         registerCapabilities();
 
         bus.addListener(MinejagoDataGenerators::gatherData);
+
+        Minejago.LOGGER.info("Installed mods: ");
+        ModList.get().getMods().forEach(iModInfo -> Minejago.LOGGER.info(iModInfo.getModId()));
     }
 
     private void addModListeners(IEventBus bus)

@@ -4,6 +4,7 @@ import dev.thomasglasser.minejago.client.MinejagoClientConfig;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
+import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
@@ -37,18 +38,27 @@ public class Minejago {
 	public enum Dependencies
 	{
 		MOONLIGHT_LIB("moonlight"),
-		DYNAMIC_LIGHTS("dynamiclights"),
-		REACH_ENTITY_ATTRIBUTES("reach-entity-attributes");
+		DYNAMIC_LIGHTS("dynamiclights", "lambdynlights"),
+		TRIMMED("trimmed"),
+		SHARDSAPI("shardsapi"),
+		PLAYER_ANIMATOR("playeranimator", "player-animator"),
+		REACH_ENTITY_ATTRIBUTES("forge", "reach-entity-attributes");
 
-		private final String modid;
+		private final String forge;
+		private final String fabric;
 
 		Dependencies(String modid)
 		{
-			this.modid = modid;
+			this(modid, modid);
+		}
+		Dependencies(String forge, String fabric)
+		{
+			this.forge = forge;
+			this.fabric = fabric;
 		}
 
 		public String getModId() {
-			return modid;
+			return Services.PLATFORM.getPlatformName().equals("Forge") ? forge : fabric;
 		}
 	}
 
