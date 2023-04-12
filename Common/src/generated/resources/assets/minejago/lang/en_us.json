@@ -80,6 +80,7 @@
   "entity.minejago.underworld_skeleton": "Underworld Skeleton",
   "entity.minejago.wu": "Wu",
   "entity.minejago.zane": "Zane",
+  "error.mod_needed": "To get the full functionality of this item, please install the %s mod.",
   "item.minecraft.filled_map.golden_weapons": "Golden Weapons Map",
   "item.minecraft.lingering_potion.effect.milk": "Lingering Bottle of Milk",
   "item.minecraft.lingering_potion.effect.regular_tea": "Lingering Bottle of Regular Tea",
@@ -191,5 +192,6 @@
   "subtitles.spinjitzu_active": "Spinjitzu whooshes",
   "subtitles.spinjitzu_start": "Spinjitzu activates",
   "subtitles.spinjitzu_stop": "Spinjitzu fades*",
-  "subtitles.teapot_whistle": "Teapot whistles"
+  "subtitles.teapot_whistle": "Teapot whistles",
+  "trim_pattern.minejago.four_weapons": "Four Weapons Armor Trim"
 }
