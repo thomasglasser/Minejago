@@ -20,7 +20,6 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Nameable;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
@@ -74,7 +73,7 @@ public class TeapotBlockEntity extends BlockEntity implements IItemHolder, Namea
             if (pBlockEntity.brewing)
             {
                 pBlockEntity.brewTime--;
-                if (pBlockEntity.brewTime == 0)
+                if (pBlockEntity.brewTime <= 0)
                 {
                     pBlockEntity.brewing = false;
                     pBlockEntity.done = true;
@@ -103,10 +102,10 @@ public class TeapotBlockEntity extends BlockEntity implements IItemHolder, Namea
                 if (pBlockEntity.temp >= 100.0) {
                     pBlockEntity.heating = false;
                     pBlockEntity.boiling = true;
-                    pLevel.playSound((Player) null, pPos, MinejagoSoundEvents.TEAPOT_WHISTLE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+                    if (!pLevel.isClientSide) pLevel.playSound(null, pPos, MinejagoSoundEvents.TEAPOT_WHISTLE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
                     setChanged(pLevel, pPos, pState);
                 }
-            } else if (pBlockEntity.temp >= 100 && (pBlockEntity.potion == Potions.WATER || !pBlockEntity.item.isEmpty() && (PotionBrewing.hasPotionMix(PotionUtils.setPotion(new ItemStack(Items.POTION), pBlockEntity.potion), pBlockEntity.item) || MinejagoPotionBrewing.hasTeaMix(PotionUtils.setPotion(new ItemStack(Items.POTION), pBlockEntity.potion), pBlockEntity.item)))) {
+            } else if (pBlockEntity.temp >= 100 && ((pBlockEntity.potion == Potions.WATER || !pBlockEntity.item.isEmpty()) && (PotionBrewing.hasPotionMix(PotionUtils.setPotion(new ItemStack(Items.POTION), pBlockEntity.potion), pBlockEntity.item) || MinejagoPotionBrewing.hasTeaMix(PotionUtils.setPotion(new ItemStack(Items.POTION), pBlockEntity.potion), pBlockEntity.item)))) {
                 pBlockEntity.brewTime = (short) RandomSource.create().nextIntBetweenInclusive(1200, 2400);
                 pBlockEntity.brewing = true;
                 pBlockEntity.boiling = false;
