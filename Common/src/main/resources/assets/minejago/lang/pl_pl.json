@@ -80,6 +80,7 @@
   "entity.minejago.underworld_skeleton": "Podziemny szkielet",
   "entity.minejago.wu": "Wu",
   "entity.minejago.zane": "Zane",
+  "error.mod_needed": "Aby uzyskać pełną funkcjonalność tego przedmiotu, zainstaluj modyfikację o nazwie %s.",
   "item.minecraft.filled_map.golden_weapons": "Mapa Złotych Broni",
   "item.minecraft.lingering_potion.effect.milk": "Trwała butelka mleka",
   "item.minecraft.lingering_potion.effect.regular_tea": "Trwała butelka zwykłej herbaty",
