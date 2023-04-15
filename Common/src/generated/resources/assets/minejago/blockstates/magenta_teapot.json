@@ -1,9 +1,9 @@
 {
   "variants": {
-    "tea_filled=false": {
+    "filled=false": {
       "model": "minejago:block/magenta_teapot"
     },
-    "tea_filled=true": {
+    "filled=true": {
       "model": "minejago:block/magenta_teapot_filled"
     }
   }

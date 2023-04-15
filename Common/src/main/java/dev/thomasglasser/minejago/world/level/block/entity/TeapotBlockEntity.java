@@ -71,10 +71,10 @@ public class TeapotBlockEntity extends BlockEntity implements IItemHolder, Namea
         {
             pBlockEntity.cups = Math.min(pBlockEntity.cups, 6);
 
-            if (pBlockEntity.cups < 3 || pBlockEntity.potion == Potions.WATER)
-                pLevel.setBlock(pPos, pState.setValue(TeapotBlock.TEA_FILLED, false), Block.UPDATE_ALL);
+            if (pBlockEntity.cups < 3)
+                pLevel.setBlock(pPos, pState.setValue(TeapotBlock.FILLED, false), Block.UPDATE_ALL);
             else
-                pLevel.setBlock(pPos, pState.setValue(TeapotBlock.TEA_FILLED, true), Block.UPDATE_ALL);
+                pLevel.setBlock(pPos, pState.setValue(TeapotBlock.FILLED, true), Block.UPDATE_ALL);
 
             if (pBlockEntity.brewing)
             {
@@ -86,13 +86,13 @@ public class TeapotBlockEntity extends BlockEntity implements IItemHolder, Namea
                     pLevel.playSound(null, pPos, MinejagoSoundEvents.TEAPOT_WHISTLE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 
                     ItemStack potionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), pBlockEntity.potion);
-                    if (MinejagoPotionBrewing.hasTeaMix(PotionUtils.setPotion(new ItemStack(Items.POTION), pBlockEntity.potion), pBlockEntity.item))
-                    {
+                    if (MinejagoPotionBrewing.hasTeaMix(PotionUtils.setPotion(new ItemStack(Items.POTION), pBlockEntity.potion), pBlockEntity.item)) {
                         pBlockEntity.potion = PotionUtils.getPotion(MinejagoPotionBrewing.mix(pBlockEntity.item, potionStack));
                     }
                     else if (PotionBrewing.hasPotionMix(PotionUtils.setPotion(new ItemStack(Items.POTION), pBlockEntity.potion), pBlockEntity.item))
                         pBlockEntity.potion = PotionUtils.getPotion(PotionBrewing.mix(pBlockEntity.item, potionStack));
                     pBlockEntity.item.shrink(1);
+                    setChanged(pLevel, pPos, pState);
                 } else if (pBlockEntity.item.isEmpty()) {
                     pBlockEntity.brewTime = 0;
                     pBlockEntity.brewing = false;
@@ -162,7 +162,13 @@ public class TeapotBlockEntity extends BlockEntity implements IItemHolder, Namea
         NonNullList<ItemStack> itemList = NonNullList.withSize(1, ItemStack.EMPTY);
         ContainerHelper.loadAllItems(pTag, itemList);
         item = itemList.get(0);
-        this.potion = BuiltInRegistries.POTION.get(ResourceLocation.of(pTag.getString("Potion"), ':'));
+        Potion newPotion = BuiltInRegistries.POTION.get(ResourceLocation.of(pTag.getString("Potion"), ':'));
+        if (newPotion != potion)
+        {
+            potion = newPotion;
+            if (this.level != null && this.level.isClientSide)
+                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_ALL);
+        }
         this.temp = pTag.getShort("Temperature");
         this.cups = pTag.getShort("Cups");
         if (this.level != null && this.level.isClientSide)
@@ -267,7 +273,7 @@ public class TeapotBlockEntity extends BlockEntity implements IItemHolder, Namea
 
     protected static void setChanged(Level pLevel, BlockPos pPos, BlockState pState) {
         BlockEntity.setChanged(pLevel, pPos, pState);
-        pLevel.sendBlockUpdated(pPos, pLevel.getBlockState(pPos), pState, 3);
+        pLevel.sendBlockUpdated(pPos, pLevel.getBlockState(pPos), pState, Block.UPDATE_ALL);
     }
 
 

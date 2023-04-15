@@ -21,11 +21,11 @@ public class MinejagoBlockStates extends BlockStateProvider {
     protected void registerStatesAndModels() {
         getVariantBuilder(MinejagoBlocks.TEAPOT.get()).forAllStates(blockState ->
                 ConfiguredModel.builder()
-                        .modelFile(blockState.getValue(TeapotBlock.TEA_FILLED) ? models().withExistingParent("teapot_filled", blockModel("teapot_filled_base")) : models().withExistingParent("teapot", blockModel("teapot_base")))
+                        .modelFile(blockState.getValue(TeapotBlock.FILLED) ? models().withExistingParent("teapot_filled", blockModel("teapot_filled_base")) : models().withExistingParent("teapot", blockModel("teapot_base")))
                         .build());
         getVariantBuilder(MinejagoBlocks.JASPOT.get()).forAllStates(blockState ->
                 ConfiguredModel.builder()
-                        .modelFile(blockState.getValue(TeapotBlock.TEA_FILLED) ? models().withExistingParent("jaspot_filled", blockModel("teapot_filled_base")).texture("pot", blockModel("jaspot")).texture("particle", blockModel("jaspot")) : models().withExistingParent("jaspot", blockModel("teapot_base")).texture("pot", blockModel("jaspot")).texture("particle", blockModel("jaspot")))
+                        .modelFile(blockState.getValue(TeapotBlock.FILLED) ? models().withExistingParent("jaspot_filled", blockModel("teapot_filled_base")).texture("pot", blockModel("jaspot")).texture("particle", blockModel("jaspot")) : models().withExistingParent("jaspot", blockModel("teapot_base")).texture("pot", blockModel("jaspot")).texture("particle", blockModel("jaspot")))
                         .build());
         MinejagoBlocks.TEAPOTS.forEach((dyeColor, blockBlockRegistryObject) ->
         {
@@ -33,7 +33,7 @@ public class MinejagoBlockStates extends BlockStateProvider {
             {
                 getVariantBuilder(blockBlockRegistryObject.get()).forAllStates(blockState ->
                         ConfiguredModel.builder()
-                                .modelFile(blockState.getValue(TeapotBlock.TEA_FILLED) ? models().withExistingParent(dyeColor.getName() + "_teapot_filled", blockModel("teapot_filled_base")).texture("pot", blockModel(dyeColor.getName() + "_teapot")).texture("particle", blockModel(dyeColor.getName() + "_teapot")) : models().withExistingParent(dyeColor.getName() + "_teapot", blockModel("teapot_base")).texture("pot", blockModel(dyeColor.getName() + "_teapot")).texture("particle", blockModel(dyeColor.getName() + "_teapot")))
+                                .modelFile(blockState.getValue(TeapotBlock.FILLED) ? models().withExistingParent(dyeColor.getName() + "_teapot_filled", blockModel("teapot_filled_base")).texture("pot", blockModel(dyeColor.getName() + "_teapot")).texture("particle", blockModel(dyeColor.getName() + "_teapot")) : models().withExistingParent(dyeColor.getName() + "_teapot", blockModel("teapot_base")).texture("pot", blockModel(dyeColor.getName() + "_teapot")).texture("particle", blockModel(dyeColor.getName() + "_teapot")))
                                 .build());
             }
         });

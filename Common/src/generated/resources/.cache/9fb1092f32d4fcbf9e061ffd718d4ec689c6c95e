@@ -1,4 +1,4 @@
-// 1.19.4	2023-04-13T23:07:00.5782593	Recipes
+// 1.19.4	2023-04-15T14:30:00.6037591	Recipes
 6600347f2e80bbe13b09094fc74754740bfbc3ce data/minecraft/advancements/recipes/misc/four_weapons_armor_trim_smithing_template_smithing_trim.json
 0e9575d5a771c47efff82eec22da7da2d7bf49b3 data/minecraft/recipes/four_weapons_armor_trim_smithing_template_smithing_trim.json
 f329d945848b94449fbbeeac5a22efbd7ec71db5 data/minejago/advancements/recipes/brewing/black_teapot.json
@@ -59,7 +59,7 @@ cfc71014d60c29e9852cd9c607e1d341af8c0555 data/minejago/recipes/green_teapot.json
 5d201fd524494d6196119eebf0bda6ea6af7046f data/minejago/recipes/iron_katana.json
 e157755af888d191c2aa3be073508e615a918514 data/minejago/recipes/iron_scythe.json
 5e57eda2ea28d0bd9fd84c0b0993b423085c1967 data/minejago/recipes/iron_spear.json
-4afc3a033f08ed5b4268c4e77e11bbfbe53184f8 data/minejago/recipes/jaspot.json
+662831dedf9ac3690fb0932b3c416c0b210755dc data/minejago/recipes/jaspot.json
 1401d87a30f26c417345946f882864ac75def0f9 data/minejago/recipes/light_blue_teapot.json
 750d970bd323e6ab9aa49d928f8436f76e77d07a data/minejago/recipes/light_blue_teapot_from_dye.json
 c06ead4945072283dae66d36314de420354eaa0f data/minejago/recipes/light_gray_teapot.json

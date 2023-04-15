@@ -11,7 +11,9 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -37,6 +39,15 @@ public class MinejagoBlocks
             map.put(color, registerAndWrap(color.getName() + "_teapot", () -> new TeapotBlock(BlockBehaviour.Properties.of(Material.CLAY, color).instabreak().noOcclusion())));
         }
         return map;
+    }
+
+    public static List<Block> allPots()
+    {
+        List<Block> pots = new ArrayList<>();
+        pots.add(MinejagoBlocks.TEAPOT.get());
+        pots.add(MinejagoBlocks.JASPOT.get());
+        MinejagoBlocks.TEAPOTS.values().forEach(blockBlockRegistryObject -> pots.add(blockBlockRegistryObject.get()));
+        return pots;
     }
 
     public static void init() {}

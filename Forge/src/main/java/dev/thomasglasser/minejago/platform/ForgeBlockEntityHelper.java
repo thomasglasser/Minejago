@@ -6,7 +6,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class ForgeBlockEntityHelper implements IBlockEntityHelper {
     @Override
-    public void handleUpdateTag(BlockEntity item, CompoundTag tag) {
-        item.handleUpdateTag(tag);
+    public void handleUpdateTag(BlockEntity be, CompoundTag tag) {
+        be.handleUpdateTag(tag);
     }
 }

@@ -17,6 +17,8 @@ import dev.thomasglasser.minejago.world.item.IModeledItem;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
+import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
+import dev.thomasglasser.minejago.world.level.block.entity.TeapotBlockEntity;
 import fuzs.forgeconfigapiport.api.config.v2.ModConfigEvents;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
@@ -43,8 +45,10 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.level.block.Block;
 
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -177,6 +181,17 @@ public class MinejagoFabricClient implements ClientModInitializer {
                 return PotionUtils.getPotion(pStack).getName("").contains("tea") ? 7028992 : PotionUtils.getColor(pStack);
             return -1;
         }, Items.LINGERING_POTION);
+
+        ColorProviderRegistry.BLOCK.register(((blockState, blockAndTintGetter, blockPos, i) ->
+        {
+            if (blockPos == null || blockAndTintGetter == null)
+                return -1;
+            if (i == 1 && blockAndTintGetter.getBlockEntity(blockPos) instanceof TeapotBlockEntity teapotBlockEntity && blockState.getValue(TeapotBlock.FILLED))
+            {
+                return teapotBlockEntity.getPotion().getName("").contains("tea") || teapotBlockEntity.getPotion().getName("").contains("awkward") ? 7028992 : PotionUtils.getColor(PotionUtils.setPotion(new ItemStack(Items.POTION), teapotBlockEntity.getPotion()));
+            }
+            return -1;
+        }), MinejagoBlocks.allPots().toArray(new Block[0]));
     }
 
     private void registerEvents()

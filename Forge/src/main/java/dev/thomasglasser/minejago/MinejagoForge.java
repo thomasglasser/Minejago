@@ -52,7 +52,8 @@ public class MinejagoForge
     private void addModClientListeners(IEventBus bus)
     {
         bus.addListener(MinejagoForgeClientEvents::onRegisterParticleProviders);
-        bus.addListener(MinejagoForgeClientEvents::onRegisterColorHandlers);
+        bus.addListener(MinejagoForgeClientEvents::onRegisterItemColorHandlers);
+        bus.addListener(MinejagoForgeClientEvents::onRegisterBlockColorHandlers);
         bus.addListener(MinejagoForgeClientEvents::onRegisterRenderer);
         bus.addListener(MinejagoForgeClientEvents::onRegisterLayers);
         bus.addListener(MinejagoForgeClientEvents::registerModels);

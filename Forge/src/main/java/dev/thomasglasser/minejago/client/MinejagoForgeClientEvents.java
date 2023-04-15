@@ -20,6 +20,9 @@ import dev.thomasglasser.minejago.world.item.MinejagoCreativeModeTabs;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.IGeoArmorItem;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
+import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
+import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
+import dev.thomasglasser.minejago.world.level.block.entity.TeapotBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.EntityModelSet;
@@ -36,6 +39,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.event.AddPackFindersEvent;
@@ -129,7 +133,7 @@ public class MinejagoForgeClientEvents {
         event.registerSpriteSet(MinejagoParticleTypes.VAPORS.get(), VaporsParticle.Provider::new);
     }
 
-    public static void onRegisterColorHandlers(RegisterColorHandlersEvent.Item event)
+    public static void onRegisterItemColorHandlers(RegisterColorHandlersEvent.Item event)
     {
         event.register((pStack, pTintIndex) -> {
             if (pTintIndex == 0)
@@ -154,6 +158,20 @@ public class MinejagoForgeClientEvents {
                 return PotionUtils.getPotion(pStack).getName("").contains("tea") ? 7028992 : PotionUtils.getColor(pStack);
             return -1;
         }, Items.LINGERING_POTION);
+    }
+
+    public static void onRegisterBlockColorHandlers(RegisterColorHandlersEvent.Block event)
+    {
+        event.register(((blockState, blockAndTintGetter, blockPos, i) ->
+        {
+            if (blockPos == null || blockAndTintGetter == null)
+                return -1;
+            if (i == 1 && blockAndTintGetter.getBlockEntity(blockPos) instanceof TeapotBlockEntity teapotBlockEntity && blockState.getValue(TeapotBlock.FILLED))
+            {
+                return teapotBlockEntity.getPotion().getName("").contains("tea") || teapotBlockEntity.getPotion().getName("").contains("awkward") ? 7028992 : PotionUtils.getColor(PotionUtils.setPotion(new ItemStack(Items.POTION), teapotBlockEntity.getPotion()));
+            }
+            return -1;
+        }), MinejagoBlocks.allPots().toArray(new Block[0]));
     }
 
     public static void onAddLayers(EntityRenderersEvent.AddLayers event)

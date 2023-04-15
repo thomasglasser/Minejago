@@ -52,17 +52,17 @@ import java.util.List;
 public class TeapotBlock extends BaseEntityBlock {
     public static final VoxelShape SHAPE = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 10.0D, 13.0D);
     public static final ResourceLocation CONTENTS = new ResourceLocation(Minejago.MOD_ID, "teapot_contents");
-    public static final BooleanProperty TEA_FILLED = BooleanProperty.create("tea_filled");
+    public static final BooleanProperty FILLED = BooleanProperty.create("filled");
 
     public TeapotBlock(Properties pProperties) {
         super(pProperties);
-        this.registerDefaultState(this.getStateDefinition().any().setValue(TEA_FILLED, Boolean.FALSE));
+        this.registerDefaultState(this.getStateDefinition().any().setValue(FILLED, Boolean.FALSE));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
-        builder.add(TEA_FILLED);
+        builder.add(FILLED);
     }
 
     @Override
@@ -102,7 +102,7 @@ public class TeapotBlock extends BaseEntityBlock {
                     be.take(1);
                     pLevel.playSound(null, pPos, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
                 }
-                else if ((be.isBoiling() || be.isDone()) && ((PotionBrewing.hasPotionMix(PotionUtils.setPotion(new ItemStack(Items.POTION), be.getPotion()), inHand) && be.getPotion() != Potions.AWKWARD) || (PotionBrewing.hasPotionMix(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.AWKWARD), inHand)) && be.getPotion() == MinejagoPotions.REGULAR_TEA.get()) || MinejagoPotionBrewing.hasTeaMix(PotionUtils.setPotion(new ItemStack(Items.POTION), be.getPotion()), inHand))
+                else if ((be.isBoiling() || be.isDone()) && (((PotionBrewing.hasPotionMix(PotionUtils.setPotion(new ItemStack(Items.POTION), be.getPotion()), inHand) && be.getPotion() != Potions.AWKWARD) || (PotionBrewing.hasPotionMix(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.AWKWARD), inHand)) && be.getPotion() == MinejagoPotions.REGULAR_TEA.get()) || MinejagoPotionBrewing.hasTeaMix(PotionUtils.setPotion(new ItemStack(Items.POTION), be.getPotion()), inHand)))
                 {
                     if ((PotionBrewing.hasPotionMix(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.AWKWARD), inHand)) && be.getPotion() == MinejagoPotions.REGULAR_TEA.get())
                     {
