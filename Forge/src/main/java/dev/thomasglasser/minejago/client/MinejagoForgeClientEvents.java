@@ -9,6 +9,8 @@ import dev.thomasglasser.minejago.client.renderer.entity.*;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.BetaTesterLayer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.DevLayer;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
+import dev.thomasglasser.minejago.packs.MinejagoPacks;
+import dev.thomasglasser.minejago.packs.PackHolder;
 import dev.thomasglasser.minejago.platform.ForgeItemHelper;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.util.MinejagoClientUtils;
@@ -25,6 +27,8 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.repository.Pack;
+import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.entity.Mob;
@@ -34,10 +38,13 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.event.CreativeModeTabEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.resource.PathPackResources;
 
 import java.util.Map;
 import java.util.function.Supplier;
@@ -198,5 +205,17 @@ public class MinejagoForgeClientEvents {
         }
     }
 
-
+    public static void onAddPackFinders(AddPackFindersEvent event)
+    {
+        for (PackHolder holder : MinejagoPacks.getPacks())
+        {
+            if (event.getPackType() == holder.type())
+            {
+                var resourcePath = ModList.get().getModFileById(Minejago.MOD_ID).getFile().findResource("resourcepacks/" + holder.id().getPath());
+                var pack = Pack.readMetaAndCreate("builtin/" + holder.id().getPath(), Component.translatable(holder.titleKey()), holder.required(),
+                        (path) -> new PathPackResources(path, false, resourcePath), holder.type(), Pack.Position.BOTTOM, PackSource.BUILT_IN);
+                event.addRepositorySource((packConsumer) -> packConsumer.accept(pack));
+            }
+        }
+    }
 }

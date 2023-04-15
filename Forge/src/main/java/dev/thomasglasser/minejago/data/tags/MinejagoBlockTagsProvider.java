@@ -1,14 +1,13 @@
 package dev.thomasglasser.minejago.data.tags;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.registration.BlockRegistryObject;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -36,7 +35,14 @@ public class MinejagoBlockTagsProvider extends IntrinsicHolderTagsProvider<Block
                 .add(Blocks.JIGSAW)
                 .add(Blocks.LIGHT);
         tag(BlockTags.ENDERMAN_HOLDABLE)
-                .add(MinejagoBlocks.TEAPOT.get());
+                .addTag(MinejagoBlockTags.TEAPOTS);
+
+        IntrinsicTagAppender<Block> pots = tag(MinejagoBlockTags.TEAPOTS);
+        pots.add(MinejagoBlocks.TEAPOT.get(), MinejagoBlocks.JASPOT.get());
+        for (BlockRegistryObject<Block> pot : MinejagoBlocks.TEAPOTS.values())
+        {
+            pots.add(pot.get());
+        }
     }
 
     @Override

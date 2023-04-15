@@ -55,6 +55,7 @@ public class MinejagoBlockEntityWithoutLevelRenderer extends BlockEntityWithoutL
             if (!(displayContext == ItemDisplayContext.GUI || displayContext == ItemDisplayContext.FIXED || displayContext == ItemDisplayContext.GROUND))
             {
                 poseStack.scale(1.0F, -1.0F, -1.0F);
+                poseStack.translate(0.0D, -0.7D, 0.0D);
                 VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, this.bambooStaffModel.renderType(Minejago.modLoc("textures/entity/bamboo_staff.png")), false, stack.hasFoil());
                 this.bambooStaffModel.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay, 1.0F, 1.0F, 1.0F, 1.0F);
             }

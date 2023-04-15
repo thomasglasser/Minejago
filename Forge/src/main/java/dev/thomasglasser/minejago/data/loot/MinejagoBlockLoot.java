@@ -1,5 +1,6 @@
 package dev.thomasglasser.minejago.data.loot;
 
+import dev.thomasglasser.minejago.registration.BlockRegistryObject;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
@@ -23,6 +24,10 @@ public class MinejagoBlockLoot implements LootTableSubProvider
     @Override
     public void generate(BiConsumer<ResourceLocation, LootTable.Builder> consumer) {
         consumer.accept(MinejagoBlocks.TEAPOT.get().getLootTable(), createTeapotBlock(MinejagoBlocks.TEAPOT.get()));
+        consumer.accept(MinejagoBlocks.JASPOT.get().getLootTable(), createTeapotBlock(MinejagoBlocks.JASPOT.get()));
+
+        for (BlockRegistryObject<Block> pot : MinejagoBlocks.TEAPOTS.values())
+            consumer.accept(pot.get().getLootTable(), createTeapotBlock(pot.get()));
     }
 
     protected LootTable.Builder createTeapotBlock(Block block)

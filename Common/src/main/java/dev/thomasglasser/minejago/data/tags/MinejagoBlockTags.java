@@ -8,6 +8,7 @@ import net.minecraft.world.level.block.Block;
 public class MinejagoBlockTags
 {
     public static final TagKey<Block> UNBREAKABLE = create("unbreakable");
+    public static final TagKey<Block> TEAPOTS = create("teapots");
 
     private static TagKey<Block> create(String name)
     {

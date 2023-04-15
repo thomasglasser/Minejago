@@ -69,6 +69,8 @@ public class MinejagoItems
 
     // BLOCK ITEMS
     public static final RegistryObject<Item> TEAPOT = register("teapot", () -> new BlockItem(MinejagoBlocks.TEAPOT.get(), new Item.Properties().stacksTo(1)), CreativeModeTabs.FUNCTIONAL_BLOCKS);
+    public static final RegistryObject<Item> JASPOT = register("jaspot", () -> new BlockItem(MinejagoBlocks.JASPOT.get(), new Item.Properties().stacksTo(1)), CreativeModeTabs.FUNCTIONAL_BLOCKS);
+    public static final Map<DyeColor, RegistryObject<Item>> TEAPOTS = teapots();
 
     private static RegistryObject<Item> register(String name, Supplier<? extends Item> supplier, CreativeModeTab... tabs)
     {
@@ -131,5 +133,15 @@ public class MinejagoItems
         }
 
         return items;
+    }
+
+    private static Map<DyeColor, RegistryObject<Item>> teapots()
+    {
+        Map<DyeColor, RegistryObject<Item>> map = new HashMap<>();
+        for (DyeColor color : DyeColor.values())
+        {
+            map.put(color, register(color.getName() + "_teapot", () -> new BlockItem(MinejagoBlocks.TEAPOTS.get(color).get(), new Item.Properties().stacksTo(1)), CreativeModeTabs.FUNCTIONAL_BLOCKS));
+        }
+        return map;
     }
 }

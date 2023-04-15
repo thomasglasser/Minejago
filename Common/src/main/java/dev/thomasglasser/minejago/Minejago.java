@@ -35,33 +35,6 @@ public class Minejago {
 		return new ResourceLocation(MOD_ID, path);
 	}
 
-	public enum Dependencies
-	{
-		MOONLIGHT_LIB("moonlight"),
-		DYNAMIC_LIGHTS("dynamiclights", "lambdynlights"),
-		TRIMMED("trimmed"),
-		SHARDSAPI("shardsapi"),
-		PLAYER_ANIMATOR("playeranimator", "player-animator"),
-		REACH_ENTITY_ATTRIBUTES("forge", "reach-entity-attributes");
-
-		private final String forge;
-		private final String fabric;
-
-		Dependencies(String modid)
-		{
-			this(modid, modid);
-		}
-		Dependencies(String forge, String fabric)
-		{
-			this.forge = forge;
-			this.fabric = fabric;
-		}
-
-		public String getModId() {
-			return Services.PLATFORM.getPlatformName().equals("Forge") ? forge : fabric;
-		}
-	}
-
 	public static void init()
 	{
 		initRegistries();
@@ -96,5 +69,32 @@ public class Minejago {
 	{
 		MinejagoServerConfig.register();
 		MinejagoClientConfig.register();
+	}
+
+	public enum Dependencies
+	{
+		MOONLIGHT_LIB("moonlight"),
+		DYNAMIC_LIGHTS("dynamiclights", "lambdynlights"),
+		TRIMMED("trimmed"),
+		SHARDSAPI("shardsapi"),
+		PLAYER_ANIMATOR("playeranimator", "player-animator"),
+		REACH_ENTITY_ATTRIBUTES("forge", "reach-entity-attributes");
+
+		private final String forge;
+		private final String fabric;
+
+		Dependencies(String modid)
+		{
+			this(modid, modid);
+		}
+		Dependencies(String forge, String fabric)
+		{
+			this.forge = forge;
+			this.fabric = fabric;
+		}
+
+		public String getModId() {
+			return Services.PLATFORM.getPlatformName().equals("Forge") ? forge : fabric;
+		}
 	}
 }

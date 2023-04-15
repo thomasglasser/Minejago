@@ -1,0 +1,13 @@
+{
+  "values": [
+    "minecraft:lime_dye",
+    {
+      "id": "#forge:dyes/lime",
+      "required": false
+    },
+    {
+      "id": "#c:lime_dyes",
+      "required": false
+    }
+  ]
+}

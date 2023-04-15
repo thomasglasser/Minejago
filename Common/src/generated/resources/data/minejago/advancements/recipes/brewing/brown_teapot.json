@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_teapot": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "minejago:teapots"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_terracotta": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "minecraft:terracotta"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minejago:brown_teapot"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_terracotta",
+      "has_teapot",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minejago:brown_teapot"
+    ]
+  }
+}

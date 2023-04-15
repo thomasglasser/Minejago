@@ -30,7 +30,6 @@ dependencies {
     modRuntimeOnly "curse.maven:worldedit-225608:${worldedit_id}"
     modRuntimeOnly "curse.maven:tes-830420:${tes_fabric_id}"
     modRuntimeOnly "maven.modrinth:midnightlib:${midnightlib_version}-fabric"
-//    modRuntimeOnly "maven.modrinth:first-person-model:${firstperson_fabric_id}"
     modRuntimeOnly "com.terraformersmc:modmenu:${modmenu_version}"
 
     implementation project(":Common")
@@ -52,7 +51,7 @@ dependencies {
 
     include modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${playeranimator_version}+${minecraft_version}")
     include modImplementation("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forgeconfigapiport_version}")
-//    include modImplementation("com.jamieswhiteshirt:reach-entity-attributes:$reachentityattributes_version")
+    include modImplementation("com.jamieswhiteshirt:reach-entity-attributes:$reachentityattributes_version")
     modCompileOnly("com.jamieswhiteshirt:reach-entity-attributes:$reachentityattributes_version") // So mod compiles
     include modImplementation("dev.thomasglasser.shardsapi:shardsapi-fabric-${minecraft_version}:${shardsapi_version}")
 

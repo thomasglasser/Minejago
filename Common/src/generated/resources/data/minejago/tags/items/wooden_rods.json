@@ -6,6 +6,10 @@
       "required": false
     },
     {
+      "id": "#c:wood_sticks",
+      "required": false
+    },
+    {
       "id": "#c:wooden_rods",
       "required": false
     }

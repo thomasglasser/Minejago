@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "teapot",
+  "ingredients": [
+    {
+      "item": "minejago:teapot"
+    },
+    {
+      "tag": "minejago:red_dyes"
+    }
+  ],
+  "result": {
+    "item": "minejago:red_teapot"
+  }
+}

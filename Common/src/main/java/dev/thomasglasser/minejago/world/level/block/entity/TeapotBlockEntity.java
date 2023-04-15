@@ -27,6 +27,7 @@ import net.minecraft.world.item.alchemy.PotionBrewing;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SupportType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -69,6 +70,11 @@ public class TeapotBlockEntity extends BlockEntity implements IItemHolder, Namea
         if (pBlockEntity.cups > 0)
         {
             pBlockEntity.cups = Math.min(pBlockEntity.cups, 6);
+
+            if (pBlockEntity.cups < 3 || pBlockEntity.potion == Potions.WATER)
+                pLevel.setBlock(pPos, pState.setValue(TeapotBlock.TEA_FILLED, false), Block.UPDATE_ALL);
+            else
+                pLevel.setBlock(pPos, pState.setValue(TeapotBlock.TEA_FILLED, true), Block.UPDATE_ALL);
 
             if (pBlockEntity.brewing)
             {

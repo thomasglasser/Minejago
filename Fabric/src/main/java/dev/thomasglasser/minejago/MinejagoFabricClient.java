@@ -8,6 +8,8 @@ import dev.thomasglasser.minejago.client.renderer.entity.*;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.BetaTesterLayer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.DevLayer;
 import dev.thomasglasser.minejago.network.*;
+import dev.thomasglasser.minejago.packs.MinejagoPacks;
+import dev.thomasglasser.minejago.packs.PackHolder;
 import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
@@ -24,11 +26,14 @@ import net.fabricmc.fabric.api.client.rendering.v1.*;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.Resource;
@@ -84,11 +89,18 @@ public class MinejagoFabricClient implements ClientModInitializer {
 
         registerItemColors();
 
-        BlockRenderLayerMap.INSTANCE.putBlock(MinejagoBlocks.TEAPOT.get(), RenderType.translucent());
+        BlockRenderLayerMap.INSTANCE.putBlock(MinejagoBlocks.TEAPOT.get(), RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(MinejagoBlocks.JASPOT.get(), RenderType.cutout());
+        MinejagoBlocks.TEAPOTS.forEach((dyeColor, blockBlockRegistryObject) -> BlockRenderLayerMap.INSTANCE.putBlock(blockBlockRegistryObject.get(), RenderType.cutout()));
 
         registerEvents();
 
         registerPackets();
+
+        for (PackHolder holder : MinejagoPacks.getPacks())
+        {
+            if (holder.type() == PackType.CLIENT_RESOURCES) ResourceManagerHelper.registerBuiltinResourcePack(holder.id(), FabricLoader.getInstance().getModContainer(Minejago.MOD_ID).get(), Component.translatable(holder.titleKey()), ResourcePackActivationType.NORMAL);
+        }
     }
 
     private void registerRenderers()

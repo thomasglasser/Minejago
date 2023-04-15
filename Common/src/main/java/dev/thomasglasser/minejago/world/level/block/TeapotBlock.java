@@ -37,6 +37,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -49,11 +51,18 @@ import java.util.List;
 
 public class TeapotBlock extends BaseEntityBlock {
     public static final VoxelShape SHAPE = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 10.0D, 13.0D);
-
     public static final ResourceLocation CONTENTS = new ResourceLocation(Minejago.MOD_ID, "teapot_contents");
+    public static final BooleanProperty TEA_FILLED = BooleanProperty.create("tea_filled");
 
     public TeapotBlock(Properties pProperties) {
         super(pProperties);
+        this.registerDefaultState(this.getStateDefinition().any().setValue(TEA_FILLED, Boolean.FALSE));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
+        builder.add(TEA_FILLED);
     }
 
     @Override

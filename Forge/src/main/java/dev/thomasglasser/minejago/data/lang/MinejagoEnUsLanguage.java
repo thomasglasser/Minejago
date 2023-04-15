@@ -4,6 +4,7 @@ import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.data.advancements.packs.MinejagoAdventureAdvancementKeys;
 import dev.thomasglasser.minejago.data.advancements.packs.MinejagoStoryAdvancementKeys;
+import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.server.commands.PowerCommand;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
@@ -28,7 +29,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.decoration.PaintingVariant;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
@@ -78,6 +82,10 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add(MinejagoItems.WOODEN_NUNCHUCKS.get(), "Wooden Nunchucks");
 
         add(MinejagoBlocks.TEAPOT.get(), "Teapot");
+        add(MinejagoBlocks.JASPOT.get(), "Jaspot");
+
+        MinejagoBlocks.TEAPOTS.forEach((color, pot) ->
+                add(pot.get(), WordUtils.capitalize(color.getName().replace('_', ' ')) + " Teapot"));
 
         addDesc(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get(), "Four Weapons");
 
@@ -204,6 +212,8 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         addPattern(MinejagoTrimPatterns.FOUR_WEAPONS, "Four Weapons");
 
         add(MinejagoItems.MOD_NEEDED, "To get the full functionality of this item, please install the %s mod.");
+
+        add(MinejagoPacks.IMMERSION.titleKey(), "Minejago Immersion Pack");
     }
 
     public void addDesc(Item item, String desc)

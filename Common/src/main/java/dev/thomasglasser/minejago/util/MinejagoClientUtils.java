@@ -52,16 +52,18 @@ public class MinejagoClientUtils {
 
     public static void refreshVip()
     {
-        UUID uuid = Minecraft.getInstance().player.getUUID();
+        if (Minecraft.getInstance().player != null)
+        {
+            UUID uuid = Minecraft.getInstance().player.getUUID();
 
-        boolean displayDev;
-        boolean displayBeta;
+            boolean displayDev;
+            boolean displayBeta;
 
-        displayDev = LayersConfig.DISPLAY_DEV.get() && MinejagoClientUtils.checkDev(uuid);
-        displayBeta = LayersConfig.DISPLAY_BETA.get() && MinejagoClientUtils.checkBetaTester(uuid);
+            displayDev = LayersConfig.DISPLAY_DEV.get() && MinejagoClientUtils.checkDev(uuid);
+            displayBeta = LayersConfig.DISPLAY_BETA.get() && MinejagoClientUtils.checkBetaTester(uuid);
 
-        Services.NETWORK.sendToServer(ServerboundChangeVipDataPacket.class, ServerboundChangeVipDataPacket.toBytes(uuid, displayBeta, LayersConfig.BETA_CHOICE.get(), displayDev));
-
+            Services.NETWORK.sendToServer(ServerboundChangeVipDataPacket.class, ServerboundChangeVipDataPacket.toBytes(uuid, displayBeta, LayersConfig.BETA_CHOICE.get(), displayDev));
+        }
     }
 
 

@@ -1,15 +1,20 @@
 package dev.thomasglasser.minejago.data.recipes;
 
-import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.data.tags.MinejagoItemTags;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.function.Consumer;
 
@@ -26,62 +31,62 @@ public class MinejagoRecipes extends RecipeProvider {
 
     private void buildCrafting(Consumer<FinishedRecipe> writer)
     {
-        ShapedRecipeBuilder teacup = ShapedRecipeBuilder.shaped(RecipeCategory.BREWING, MinejagoItems.TEACUP.get(), 4)
+        ShapedRecipeBuilder.shaped(RecipeCategory.BREWING, MinejagoItems.TEACUP.get(), 4)
                 .pattern("x x")
                 .pattern(" x ")
                 .define('x', ItemTags.TERRACOTTA)
-                .group(Minejago.MOD_ID)
-                .unlockedBy("has_terracotta", has(ItemTags.TERRACOTTA));
-        teacup.save(writer);
-        ShapedRecipeBuilder ironSpear = ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, MinejagoItems.IRON_SPEAR.get(), 1)
+                .unlockedBy("has_terracotta", has(ItemTags.TERRACOTTA))
+                .save(writer);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, MinejagoItems.IRON_SPEAR.get(), 1)
                 .pattern("o  ")
                 .pattern(" x ")
                 .pattern("  x")
                 .define('x', MinejagoItemTags.WOODEN_RODS)
                 .define('o', MinejagoItemTags.IRON_INGOTS)
-                .group(Minejago.MOD_ID)
-                .unlockedBy("has_iron", has(MinejagoItemTags.IRON_INGOTS));
-        ironSpear.save(writer);
-        ShapedRecipeBuilder teapot = ShapedRecipeBuilder.shaped(RecipeCategory.BREWING, MinejagoItems.TEAPOT.get(), 1)
-                .pattern("x  ")
-                .pattern("o  ")
-                .define('x', MinejagoItemTags.WOODEN_RODS)
-                .define('o', ItemTags.TERRACOTTA)
-                .group(Minejago.MOD_ID)
-                .unlockedBy("has_terracotta", has(ItemTags.TERRACOTTA));
-        teapot.save(writer);
-        ShapedRecipeBuilder ironKatana = ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, MinejagoItems.IRON_KATANA.get(), 1)
+                .unlockedBy("has_iron", has(MinejagoItemTags.IRON_INGOTS))
+                .save(writer);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, MinejagoItems.IRON_KATANA.get(), 1)
                 .pattern("  x")
                 .pattern(" x ")
                 .pattern("o  ")
                 .define('x', MinejagoItemTags.IRON_INGOTS)
                 .define('o', MinejagoItemTags.WOODEN_RODS)
-                .group(Minejago.MOD_ID)
-                .unlockedBy("has_iron", has(MinejagoItemTags.IRON_INGOTS));
-        ironKatana.save(writer);
-        ShapedRecipeBuilder ironScythe = ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, MinejagoItems.IRON_SCYTHE.get(), 1)
+                .unlockedBy("has_iron", has(MinejagoItemTags.IRON_INGOTS))
+                .save(writer);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, MinejagoItems.IRON_SCYTHE.get(), 1)
                 .pattern(" x ")
                 .pattern("xo ")
                 .pattern(" o ")
                 .define('x', MinejagoItemTags.IRON_INGOTS)
                 .define('o', MinejagoItemTags.WOODEN_RODS)
-                .group(Minejago.MOD_ID)
-                .unlockedBy("has_iron", has(MinejagoItemTags.IRON_INGOTS));
-        ironScythe.save(writer);
-        ShapelessRecipeBuilder woodenNunchucks = ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, MinejagoItems.WOODEN_NUNCHUCKS.get(), 1)
+                .unlockedBy("has_iron", has(MinejagoItemTags.IRON_INGOTS))
+                .save(writer);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, MinejagoItems.WOODEN_NUNCHUCKS.get(), 1)
                 .requires(Ingredient.of(MinejagoItemTags.WOODEN_RODS), 2)
                 .requires(Items.CHAIN)
-                .group(Minejago.MOD_ID)
-                .unlockedBy("has_chain", has(Items.CHAIN));
-        woodenNunchucks.save(writer);
-        ShapedRecipeBuilder bambooStaff = ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, MinejagoItems.BAMBOO_STAFF.get(), 1)
+                .unlockedBy("has_chain", has(Items.CHAIN))
+                .save(writer);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, MinejagoItems.BAMBOO_STAFF.get(), 1)
                 .pattern(" o ")
                 .pattern(" o ")
                 .pattern(" o ")
                 .define('o', Items.BAMBOO)
-                .group(Minejago.MOD_ID)
-                .unlockedBy("has_bamboo", has(Items.BAMBOO));
-        bambooStaff.save(writer);
+                .unlockedBy("has_bamboo", has(Items.BAMBOO))
+                .save(writer);
+
+        coloredTeapotFromColoredTerracotta(writer, MinejagoItems.TEAPOT.get(), Blocks.TERRACOTTA);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BREWING, MinejagoItems.JASPOT.get(), 1)
+                .requires(MinejagoItems.TEAPOTS.get(DyeColor.CYAN).get())
+                .requires(ItemTags.FISHES)
+                .group("teapot")
+                .unlockedBy("has_self", has(MinejagoBlocks.JASPOT.get()))
+                .save(writer);
+
+        MinejagoItems.TEAPOTS.forEach((color, pot) ->
+        {
+            coloredTeapotFromColoredTerracotta(writer, pot.get(), ForgeRegistries.BLOCKS.getValue(new ResourceLocation(color.getName() + "_terracotta")));
+            coloredTeapotFromTeapotAndDye(writer, pot.get(), MinejagoItemTags.DYES_TAGS.get(color));
+        });
     }
 
     private void buildSmithing(Consumer<FinishedRecipe> writer)
@@ -89,15 +94,33 @@ public class MinejagoRecipes extends RecipeProvider {
         smithing(writer, MinejagoItems.FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE.get(), Items.IRON_BLOCK);
     }
 
-    private void smithing(Consumer<FinishedRecipe> writer, Item template, TagKey<Item> dup)
+    private void smithing(Consumer<FinishedRecipe> writer, Item template, Item dup)
     {
         trimSmithing(writer, template);
         copySmithingTemplate(writer, template, dup);
     }
 
-    private void smithing(Consumer<FinishedRecipe> writer, Item template, Item dup)
+    protected void coloredTeapotFromColoredTerracotta(Consumer<FinishedRecipe> writer, ItemLike pot, ItemLike color)
     {
-        trimSmithing(writer, template);
-        copySmithingTemplate(writer, template, dup);
+        ShapedRecipeBuilder.shaped(RecipeCategory.BREWING, pot, 1)
+                .pattern("x")
+                .pattern("o")
+                .define('x', MinejagoItemTags.WOODEN_RODS)
+                .define('o', color)
+                .group("teapot")
+                .unlockedBy("has_terracotta", has(ItemTags.TERRACOTTA))
+                .unlockedBy("has_teapot", has(MinejagoItemTags.TEAPOTS))
+                .save(writer);
+    }
+
+    protected void coloredTeapotFromTeapotAndDye(Consumer<FinishedRecipe> writer, ItemLike pColoredTeapot, TagKey<Item> pDye)
+    {
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BREWING, pColoredTeapot, 1)
+                .requires(MinejagoItems.TEAPOT.get())
+                .requires(pDye)
+                .group("teapot")
+                .unlockedBy("has_teapot", has(MinejagoItemTags.TEAPOTS))
+                .unlockedBy("has_dye", has(pDye))
+                .save(writer, RecipeBuilder.getDefaultRecipeId(pColoredTeapot) + "_from_dye");
     }
 }

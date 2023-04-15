@@ -12,6 +12,7 @@ import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -61,11 +62,18 @@ public class MinejagoItemTagsProvider extends ItemTagsProvider
         tag(MinejagoItemTags.WOODEN_RODS)
                 .add(Items.STICK)
                 .addOptionalTag(forgeLoc("rods/wooden"))
+                .addOptionalTag(cLoc("wood_sticks"))
                 .addOptionalTag(cLoc("wooden_rods"));
         tag(MinejagoItemTags.IRON_INGOTS)
                 .add(Items.IRON_INGOT)
                 .addOptionalTag(forgeLoc("ingots/iron"))
                 .addOptionalTag(cLoc("iron_ingots"));
+        MinejagoItemTags.DYES_TAGS.forEach((dyeColor, itemTagKey) ->
+                tag(itemTagKey)
+                        .add(DyeItem.byColor(dyeColor))
+                        .addOptionalTag(forgeLoc("dyes/" + dyeColor.getName()))
+                        .addOptionalTag(cLoc(dyeColor.getName() + "_dyes")));
+
         tag(ItemTags.DECORATED_POT_SHARDS)
                 .add(MinejagoItems.POTTERY_SHARD_ICE_CUBE.get())
                 .add(MinejagoItems.POTTERY_SHARD_THUNDER.get())
@@ -74,8 +82,13 @@ public class MinejagoItemTagsProvider extends ItemTagsProvider
                 .add(MinejagoItems.POTTERY_SHARD_YIN_YANG.get())
                 .add(MinejagoItems.POTTERY_SHARD_DRAGONS_HEAD.get())
                 .add(MinejagoItems.POTTERY_SHARD_DRAGONS_TAIL.get());
+
         tag(ItemTags.TRIM_TEMPLATES)
                 .add(MinejagoItems.FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE.get());
+
+        IntrinsicTagAppender<Item> pots = tag(MinejagoItemTags.TEAPOTS);
+        pots.add(MinejagoItems.TEAPOT.get(), MinejagoItems.JASPOT.get());
+        MinejagoItems.TEAPOTS.forEach((color, pot) -> pots.add(pot.get()));
     }
 
     public TagAppender<Item> tagDynamicLight(String tag, int level)

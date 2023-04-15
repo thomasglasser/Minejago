@@ -1,0 +1,13 @@
+{
+  "values": [
+    "minecraft:yellow_dye",
+    {
+      "id": "#forge:dyes/yellow",
+      "required": false
+    },
+    {
+      "id": "#c:yellow_dyes",
+      "required": false
+    }
+  ]
+}

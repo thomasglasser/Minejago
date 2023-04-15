@@ -6,13 +6,13 @@ import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
 import dev.thomasglasser.minejago.world.item.armor.SkeletalChestplateItem;
-import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -47,7 +47,6 @@ public class MinejagoItemModels extends ItemModelProvider
                 singleTexture(item.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/skeletal_chestplate_" + ((SkeletalChestplateItem)item.get()).getVariant().getColor().getName())));
         basicItem(MinejagoItems.TEACUP.get());
         basicItem(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get());
-        basicItem(MinejagoBlocks.TEAPOT.get().asItem());
         basicItemHandheld(MinejagoItems.IRON_KATANA.get());
         basicItem(MinejagoItems.POTTERY_SHARD_ICE_CUBE.get());
         basicItem(MinejagoItems.POTTERY_SHARD_THUNDER.get());
@@ -57,7 +56,15 @@ public class MinejagoItemModels extends ItemModelProvider
         basicItem(MinejagoItems.POTTERY_SHARD_DRAGONS_HEAD.get());
         basicItem(MinejagoItems.POTTERY_SHARD_DRAGONS_TAIL.get());
         basicItem(MinejagoItems.FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE.get());
-        
+        basicItem(MinejagoItems.TEAPOT.get());
+        basicItem(MinejagoItems.JASPOT.get());
+
+        MinejagoItems.TEAPOTS.forEach((dyeColor, itemRegistryObject) ->
+        {
+            if (existingFileHelper.exists(Minejago.modLoc("textures/item/" + dyeColor.getName() + "_teapot.png"), PackType.CLIENT_RESOURCES))
+                basicItem(itemRegistryObject.get());
+        });
+
         final RegistryAccess.Frozen access = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
         final RegistrySetBuilder builder = new RegistrySetBuilder();
         MinejagoPowers.POWERS.addToSet(builder);
