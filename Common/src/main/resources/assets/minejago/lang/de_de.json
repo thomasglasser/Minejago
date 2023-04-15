@@ -80,6 +80,7 @@
   "entity.minejago.underworld_skeleton": "Unterwelt Skelett",
   "entity.minejago.wu": "Wu",
   "entity.minejago.zane": "Zane",
+  "error.mod_needed": "Um die volle Funktionalität dieses Gegenstands zu erhalten, installiere bitte den %s Mod.",
   "item.minecraft.filled_map.golden_weapons": "Karte der goldenen Waffen",
   "item.minecraft.lingering_potion.effect.milk": "Verweilende Milchflasche",
   "item.minecraft.lingering_potion.effect.regular_tea": "Verweilende normale Teeflasche",
@@ -191,5 +192,6 @@
   "subtitles.spinjitzu_active": "Spinjitzu wirbelt",
   "subtitles.spinjitzu_start": "Spinjitzu wird aktiviert",
   "subtitles.spinjitzu_stop": "Spinjitzu vergeht*",
-  "subtitles.teapot_whistle": "Teekanne pfeift"
+  "subtitles.teapot_whistle": "Teekanne pfeift",
+  "trim_pattern.minejago.four_weapons": "Vier-Waffen-Rüstungsbesatz"
 }
