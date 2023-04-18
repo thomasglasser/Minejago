@@ -1,11 +1,11 @@
-// 1.19.4	2023-04-14T23:53:16.3887648	Item Models: minejago
+// 1.19.4	2023-04-16T04:22:15.9365805	Item Models: minejago
 0862bf1836526a1739706556dde80e2717eed1df assets/minejago/models/item/black_gi_boots.json
 162144231986a4f7892750f437ecdfee089e3b4e assets/minejago/models/item/black_gi_hood.json
 5ec82ae30e407e99f4adc6d0352c631fc0c45214 assets/minejago/models/item/black_gi_jacket.json
 e3aa065d5b7ee011510e139e82c017c95b4e8fad assets/minejago/models/item/black_gi_pants.json
 644998c5c5f71b75bff9edfae889cd0eb211f52c assets/minejago/models/item/black_teapot.json
 2e999b87daaa005de608cdfa71d135f055ab44e5 assets/minejago/models/item/blue_teapot.json
-c15780c3938b06fde801fe7f0e483212f41abd0d assets/minejago/models/item/bone_knife.json
+3049109d9d51a1db880a92cd7fbf9869c1a7762f assets/minejago/models/item/bone_knife.json
 74879dc2da60cedee3fe46d15124b61bb951b06f assets/minejago/models/item/brown_teapot.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/minejago/models/item/cole_spawn_egg.json
 3a7ab1c75cdc2f59d68329ee5f8e03e1ef5d27a5 assets/minejago/models/item/cyan_teapot.json
@@ -13,8 +13,8 @@ c282cad8c8fa98924d81414fd0f123dfae09f592 assets/minejago/models/item/four_weapon
 01b3239e2ff98dcb5c378489ac0511b745ea6b9b assets/minejago/models/item/four_weapons_banner_pattern.json
 814e0ee98d84f415cf22628b6b0c920c17ad4691 assets/minejago/models/item/gray_teapot.json
 e5f8c917aa8524c93907c434773273c1897c8ca6 assets/minejago/models/item/green_teapot.json
-f310f6df87e0f611b70c6a95c266aadee8a02ffe assets/minejago/models/item/iron_katana.json
-e908e9078cdec64d89a9e30833aeb64b1dbdf7b2 assets/minejago/models/item/iron_shuriken.json
+fe8ee0d405f6c8ffa8d1877579170a16ac5430ff assets/minejago/models/item/iron_katana.json
+61bcc09dbcbeb7024b6282bce7d6de0379c902d7 assets/minejago/models/item/iron_shuriken.json
 0f41631dca7ddbf5db64b2d2f7ab3400e5054730 assets/minejago/models/item/jaspot.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/minejago/models/item/jay_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/minejago/models/item/kai_spawn_egg.json

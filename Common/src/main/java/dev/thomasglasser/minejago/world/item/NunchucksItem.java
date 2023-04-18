@@ -28,14 +28,14 @@ import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class WoodenNunchucksItem extends Item implements IModeledItem, IFabricGeoItem
+public class NunchucksItem extends Item implements IModeledItem, IFabricGeoItem
 {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     private Multimap<Attribute, AttributeModifier> defaultModifiers;
     private BlockEntityWithoutLevelRenderer bewlr;
 
-    public WoodenNunchucksItem(Properties pProperties) {
+    public NunchucksItem(Properties pProperties) {
         super(pProperties);
 
         SingletonGeoAnimatable.registerSyncedAnimatable(this);

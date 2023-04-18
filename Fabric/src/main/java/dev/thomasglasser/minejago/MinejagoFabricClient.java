@@ -10,6 +10,7 @@ import dev.thomasglasser.minejago.client.renderer.entity.layers.DevLayer;
 import dev.thomasglasser.minejago.network.*;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import dev.thomasglasser.minejago.packs.PackHolder;
+import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
@@ -91,7 +92,7 @@ public class MinejagoFabricClient implements ClientModInitializer {
             }
         }
 
-        registerItemColors();
+        registerItemAndBlockColors();
 
         BlockRenderLayerMap.INSTANCE.putBlock(MinejagoBlocks.TEAPOT.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(MinejagoBlocks.JASPOT.get(), RenderType.cutout());
@@ -156,31 +157,13 @@ public class MinejagoFabricClient implements ClientModInitializer {
         }));
     }
 
-    private void registerItemColors()
+    private void registerItemAndBlockColors()
     {
         ColorProviderRegistry.ITEM.register((pStack, pTintIndex) -> {
             if (pTintIndex == 0)
-                return PotionUtils.getPotion(pStack).getName("").contains("tea") ? 7028992 : PotionUtils.getColor(pStack);
+                return PotionUtils.getColor(pStack);
             return -1;
         }, MinejagoItems.FILLED_TEACUP.get());
-
-        ColorProviderRegistry.ITEM.register((pStack, pTintIndex) -> {
-            if (pTintIndex == 0)
-                return PotionUtils.getPotion(pStack).getName("").contains("tea") ? 7028992 : PotionUtils.getColor(pStack);
-            return -1;
-        }, Items.POTION);
-
-        ColorProviderRegistry.ITEM.register((pStack, pTintIndex) -> {
-            if (pTintIndex == 0)
-                return PotionUtils.getPotion(pStack).getName("").contains("tea") ? 7028992 : PotionUtils.getColor(pStack);
-            return -1;
-        }, Items.SPLASH_POTION);
-
-        ColorProviderRegistry.ITEM.register((pStack, pTintIndex) -> {
-            if (pTintIndex == 0)
-                return PotionUtils.getPotion(pStack).getName("").contains("tea") ? 7028992 : PotionUtils.getColor(pStack);
-            return -1;
-        }, Items.LINGERING_POTION);
 
         ColorProviderRegistry.BLOCK.register(((blockState, blockAndTintGetter, blockPos, i) ->
         {
@@ -217,7 +200,7 @@ public class MinejagoFabricClient implements ClientModInitializer {
                 }
             }
         });
-        PlayerAnimationAccess.REGISTER_ANIMATION_EVENT.register(MinejagoPlayerAnimator::registerPlayerAnimation);
+        if (Services.PLATFORM.isModLoaded(Minejago.Dependencies.PLAYER_ANIMATOR.getModId())) PlayerAnimationAccess.REGISTER_ANIMATION_EVENT.register(MinejagoPlayerAnimator::registerPlayerAnimation);
         ModConfigEvents.reloading(Minejago.MOD_ID).register((config) ->
                 MinejagoClientUtils.refreshVip());
         ItemGroupEvents.MODIFY_ENTRIES_ALL.register((group, entries) ->

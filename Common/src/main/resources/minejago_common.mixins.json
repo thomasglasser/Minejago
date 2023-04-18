@@ -9,6 +9,7 @@
     "minecraft.world.item.MinejagoBucketItemMixin",
     "minecraft.world.item.MinejagoMilkBucketItemMixin",
     "minecraft.world.item.MinejagoPotionItemMixin",
+    "minecraft.world.item.alchemy.PotionUtilsMixin",
     "minecraft.world.item.enchantment.EnchantmentMixin"
   ],
   "client": [

@@ -57,7 +57,7 @@ public class MinejagoForgeClientEvents {
 
     public static void onClientSetup(FMLClientSetupEvent event)
     {
-        PlayerAnimationAccess.REGISTER_ANIMATION_EVENT.register(MinejagoPlayerAnimator::registerPlayerAnimation);
+        if (Services.PLATFORM.isModLoaded(Minejago.Dependencies.PLAYER_ANIMATOR.getModId())) PlayerAnimationAccess.REGISTER_ANIMATION_EVENT.register(MinejagoPlayerAnimator::registerPlayerAnimation);
     }
 
     public static void onRegisterLayers(EntityRenderersEvent.RegisterLayerDefinitions event)
@@ -137,27 +137,9 @@ public class MinejagoForgeClientEvents {
     {
         event.register((pStack, pTintIndex) -> {
             if (pTintIndex == 0)
-                return PotionUtils.getPotion(pStack).getName("").contains("tea") ? 7028992 : PotionUtils.getColor(pStack);
+                return PotionUtils.getColor(pStack);
             return -1;
         }, MinejagoItems.FILLED_TEACUP.get());
-
-        event.register((pStack, pTintIndex) -> {
-            if (pTintIndex == 0)
-                return PotionUtils.getPotion(pStack).getName("").contains("tea") ? 7028992 : PotionUtils.getColor(pStack);
-            return -1;
-        }, Items.POTION);
-
-        event.register((pStack, pTintIndex) -> {
-            if (pTintIndex == 0)
-                return PotionUtils.getPotion(pStack).getName("").contains("tea") ? 7028992 : PotionUtils.getColor(pStack);
-            return -1;
-        }, Items.SPLASH_POTION);
-
-        event.register((pStack, pTintIndex) -> {
-            if (pTintIndex == 0)
-                return PotionUtils.getPotion(pStack).getName("").contains("tea") ? 7028992 : PotionUtils.getColor(pStack);
-            return -1;
-        }, Items.LINGERING_POTION);
     }
 
     public static void onRegisterBlockColorHandlers(RegisterColorHandlersEvent.Block event)

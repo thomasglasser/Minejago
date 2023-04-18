@@ -12,7 +12,7 @@ public class MinejagoPotions
 {
     public static final RegistrationProvider<Potion> POTIONS = RegistrationProvider.get(Registries.POTION, Minejago.MOD_ID);
 
-    public static final RegistryObject<Potion> REGULAR_TEA = POTIONS.register("regular_tea", Potion::new);
+    public static final RegistryObject<Potion> REGULAR_TEA = POTIONS.register("regular_tea", () -> new Potion(new MobEffectInstance(MinejagoMobEffects.TEA.get())));
     public static final RegistryObject<Potion> MILK = POTIONS.register("milk", () -> new Potion(new MobEffectInstance(MinejagoMobEffects.CURE.get())));
 
     public static void init() {}

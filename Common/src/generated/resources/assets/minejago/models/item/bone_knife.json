@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "texture": "minejago:item/bone_knife"
+    "layer0": "minejago:item/bone_knife"
   }
 }

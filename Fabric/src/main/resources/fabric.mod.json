@@ -65,7 +65,8 @@
     "player-animator": ">=1.0.2+1.19.4",
     "lambdynamiclights": ">=2.3.0+1.19.4",
     "firstpersonmod": "*",
-    "modmenu": "*"
+    "modmenu": "*",
+    "configured": ">=2.1.1"
   },
 
   "accessWidener" : "minejago.accesswidener",

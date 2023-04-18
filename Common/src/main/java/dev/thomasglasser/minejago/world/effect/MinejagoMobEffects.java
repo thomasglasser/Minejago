@@ -33,5 +33,7 @@ public class MinejagoMobEffects
         }
     });
 
+    public static final RegistryObject<MobEffect> TEA = MOB_EFFECTS.register("tea", () -> new MobEffect(MobEffectCategory.NEUTRAL, 7028992));
+
     public static void init() {}
 }

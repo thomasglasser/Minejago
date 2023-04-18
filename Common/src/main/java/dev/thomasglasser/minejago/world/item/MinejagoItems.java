@@ -42,7 +42,7 @@ public class MinejagoItems
     public static final RegistryObject<Item> FILLED_TEACUP = register("filled_teacup", () -> new FilledTeacupItem(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> FOUR_WEAPONS_BANNER_PATTERN = register("four_weapons_banner_pattern", () -> new BannerPatternItem(MinejagoBannerPatternTags.PATTERN_ITEM_FOUR_WEAPONS, (new Item.Properties()).stacksTo(1).rarity(Rarity.EPIC)), CreativeModeTabs.INGREDIENTS);
     public static final RegistryObject<Item> IRON_SCYTHE = register("iron_scythe", () -> new IronScytheItem(Tiers.IRON, 8, -3.5F, BlockTags.REPLACEABLE_PLANTS, new Item.Properties()), CreativeModeTabs.TOOLS_AND_UTILITIES, CreativeModeTabs.COMBAT);
-    public static final RegistryObject<Item> WOODEN_NUNCHUCKS = register("wooden_nunchucks", () -> new WoodenNunchucksItem(new Item.Properties().stacksTo(1)), CreativeModeTabs.COMBAT);
+    public static final RegistryObject<Item> WOODEN_NUNCHUCKS = register("wooden_nunchucks", () -> new NunchucksItem(new Item.Properties().stacksTo(1)), CreativeModeTabs.COMBAT);
 
     // POTTERY SHARDS
     public static final RegistryObject<Item> POTTERY_SHARD_ICE_CUBE = registerShard("pottery_shard_ice_cube");

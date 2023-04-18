@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "texture": "minejago:item/iron_katana"
+    "layer0": "minejago:item/iron_katana"
   }
 }

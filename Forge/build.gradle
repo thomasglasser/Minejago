@@ -113,10 +113,12 @@ dependencies {
     implementation fg.deobf("maven.modrinth:jade:${jade_version}")
     implementation(fg.deobf("me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}"))
     implementation fg.deobf("dev.thomasglasser.shardsapi:shardsapi-forge-${minecraft_version}:${shardsapi_version}")
-    implementation fg.deobf("dhyces:trimmed-forge-${minecraft_version}:${trimmed_version}")
+    implementation fg.deobf("dev.dhyces.trimmed:trimmed-forge-${minecraft_version}:${trimmed_version}")
+    implementation fg.deobf("curse.maven:configured-457570:${configured_forge_id}")
+
 
     jarJar(group: "dev.thomasglasser.shardsapi", name: "shardsapi-forge-${minecraft_version}", version: "[${shardsapi_version},${shardsapi_next_major_version})")
-    jarJar(group: "dhyces", name: "trimmed-forge-${minecraft_version}", version: "[${trimmed_version},${trimmed_next_major_version})")
+    jarJar(group: "dev.dhyces.trimmed", name: "trimmed-forge-${minecraft_version}", version: "[${trimmed_version},${trimmed_next_major_version})")
     jarJar(group: "dev._100media.capabilitysyncer", name: "capabilitysyncer", version: "[${major_minecraft_version}-${capabilitysyncer_version},${major_minecraft_version}-${capabilitysyncer_next_major_version})")
 }
 

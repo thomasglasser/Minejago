@@ -10,7 +10,7 @@
     "minecraft.tags.TagManagerMixin",
     "minecraft.world.entity.EntityMixinFabric",
     "minecraft.world.entity.PlayerMixinFabric",
-    "minejago.world.item.WoodenNunchucksItemMixin",
+    "minejago.world.item.NunchucksItemMixin",
     "minejago.world.item.armor.BlackGiItemMixin",
     "minejago.world.item.armor.SkeletalChestplateItemMixin",
     "minejago.world.item.armor.TrainingGiItemMixin"

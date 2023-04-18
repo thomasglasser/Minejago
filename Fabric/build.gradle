@@ -48,6 +48,7 @@ dependencies {
         exclude(group: "net.fabricmc.fabric-api")
     }
     modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-api:${cca_version}")
+    modImplementation("curse.maven:configured-667378:${configured_fabric_id}")
 
     include modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${playeranimator_version}+${minecraft_version}")
     include modImplementation("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forgeconfigapiport_version}")

@@ -150,7 +150,10 @@ public class MinejagoClientUtils {
 
     public static void stopAnimation(AbstractClientPlayer player)
     {
-        var animation = MinejagoPlayerAnimator.animationData.get(player);
+        if (Services.PLATFORM.isModLoaded(Minejago.Dependencies.PLAYER_ANIMATOR.getModId()))
+        {
+            var animation = MinejagoPlayerAnimator.animationData.get(player);
             animation.setAnimation(null);
+        }
     }
 }

@@ -96,7 +96,7 @@ public class MinejagoItemModels extends ItemModelProvider
     
     protected void basicItemHandheld(ResourceLocation item)
     {
-        singleTexture(item.getPath(), mcLoc("item/handheld"), new ResourceLocation(item.getNamespace(), "item/" + item.getPath()));
+        singleTexture(item.getPath(), mcLoc("item/handheld"), "layer0", new ResourceLocation(item.getNamespace(), "item/" + item.getPath()));
     }
 
     protected void basicItemHandheld(Item item)
