@@ -19,6 +19,7 @@ import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPatterns;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
+import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,6 +64,7 @@ public class Minejago {
 		MinejagoMobEffects.init();
 		MinejagoKeyMappings.init();
 		MinejagoCreativeModeTabs.init();
+		MinejagoGameEvents.init();
 	}
 
 	private static void registerConfigs()

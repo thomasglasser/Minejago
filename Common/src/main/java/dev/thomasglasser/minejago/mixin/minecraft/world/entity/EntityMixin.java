@@ -7,7 +7,10 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -27,7 +30,7 @@ public class EntityMixin implements IDataHolder
     }
 
     @Inject(method = "playerTouch", at = @At("TAIL"))
-    private void playerTouch(Player player, CallbackInfo ci)
+    private void minejago_playerTouch(Player player, CallbackInfo ci)
     {
         if (Services.DATA.getSpinjitzuData(player).active() && INSTANCE instanceof LivingEntity livingEntity)
         {

@@ -1,4 +1,4 @@
-// 1.19.4	2023-04-16T04:22:15.9405695	Minejago Item Tags
+// 1.19.4	2023-04-18T00:21:45.4986155	Minejago Item Tags
 d3ddeb94cda4993a295b354e104db0ab8f97c8e1 data/c/tags/items/boots.json
 09177c8c3b8bdbf3d40fbe9e052b99f1265aec54 data/c/tags/items/chestplates.json
 78f9f798e56fad13fc6db07f47b464666188eaa3 data/c/tags/items/helmets.json
@@ -30,7 +30,7 @@ d0a946cc181cf9c78d4a7f4edbf8a61f26376488 data/minejago/tags/items/orange_dyes.js
 7a026daa8a659ce61f4eb0db50d110c00d9c4a2b data/minejago/tags/items/pink_dyes.json
 14854a654f3d2b1e3149ba00f089fc17e725dd2f data/minejago/tags/items/purple_dyes.json
 d235d60396b39a29477047eb5f57178d7225c541 data/minejago/tags/items/red_dyes.json
-e3d55761393c0c4c23c39416e9889fbf6466a2fd data/minejago/tags/items/teapots.json
+5cf71d97a649b42bee690c4e4a1444604f3669ff data/minejago/tags/items/teapots.json
 25661af0f47bee1ede8c8995b668276ebb8e16ff data/minejago/tags/items/white_dyes.json
 050918caf8830c25831255ffc88d6300634b5d8a data/minejago/tags/items/wooden_rods.json
 f40aae91a2f4af2c708a68923400270b2cb9f3f6 data/minejago/tags/items/yellow_dyes.json

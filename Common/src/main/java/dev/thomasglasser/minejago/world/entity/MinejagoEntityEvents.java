@@ -14,19 +14,19 @@ import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.powers.Power;
 import dev.thomasglasser.minejago.world.item.GoldenWeaponItem;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
 import dev.thomasglasser.minejago.world.level.saveddata.maps.MinejagoMapDecorations;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
 import net.mehvahdjukaar.moonlight.api.map.MapHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.StructureTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -43,24 +43,45 @@ import net.minecraft.world.level.saveddata.maps.MapDecoration;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 
 import java.util.Set;
+import java.util.function.Predicate;
 
 public class MinejagoEntityEvents
 {
+    public static final Predicate<ServerPlayer> NO_SPINJITZU = (player ->
+            player.isCrouching() ||
+            player.getVehicle() != null ||
+            player.isVisuallySwimming() ||
+            player.isUnderWater() ||
+            player.isSleeping() ||
+            player.isFreezing() ||
+            player.isNoGravity() ||
+            player.isInLava() ||
+            player.isFallFlying() ||
+            player.isBlocking() ||
+            player.getActiveEffects().stream().anyMatch((mobEffectInstance -> mobEffectInstance.getEffect().getCategory() == MobEffectCategory.HARMFUL)) ||
+            player.isInWater() ||
+            ((IDataHolder)player).getPersistentData().getInt("OffGroundTicks") > 20);
+
     public static void onPlayerTick(Player player)
     {
         SpinjitzuData spinjitzu = Services.DATA.getSpinjitzuData(player);
 
         if (player instanceof ServerPlayer serverPlayer)
         {
+            if (!player.isOnGround())
+                ((IDataHolder)player).getPersistentData().putInt("OffGroundTicks", ((IDataHolder)player).getPersistentData().getInt("OffGroundTicks") + 1);
+            else
+                ((IDataHolder)player).getPersistentData().putInt("OffGroundTicks", 0);
             if (spinjitzu.unlocked()) {
                 if (spinjitzu.active()) {
-                    if (serverPlayer.isCrouching() || serverPlayer.getVehicle() != null || serverPlayer.isVisuallySwimming() || serverPlayer.isUnderWater() || player.isSleeping() || player.isFreezing() || player.isNoGravity() || player.isInLava() || player.isFallFlying() || player.isBlocking() || player.hasEffect(MobEffects.LEVITATION)) {
+                    if (NO_SPINJITZU.test(serverPlayer)) {
                         stopSpinjitzu(spinjitzu, serverPlayer);
                         return;
                     }
                     if (player.tickCount % 20 == 0)
                     {
                         serverPlayer.level.playSound(null, serverPlayer.blockPosition(), MinejagoSoundEvents.SPINJITZU_ACTIVE.get(), SoundSource.PLAYERS);
+                        serverPlayer.level.gameEvent(serverPlayer, MinejagoGameEvents.SPINJITZU.get(), serverPlayer.blockPosition());
                     }
                     Power power = player.level.registryAccess().registryOrThrow(MinejagoRegistries.POWER).getHolderOrThrow(Services.DATA.getPowerData(player).power()).value();
                     if (!power.is(MinejagoPowers.NONE)) {
@@ -237,14 +258,19 @@ public class MinejagoEntityEvents
         }
     }
 
-    private static void stopSpinjitzu(SpinjitzuData spinjitzu, ServerPlayer serverPlayer)
+    public static void stopSpinjitzu(SpinjitzuData spinjitzu, ServerPlayer serverPlayer)
     {
-        Services.DATA.setSpinjitzuData(new SpinjitzuData(spinjitzu.unlocked(), false), serverPlayer);
-        Services.NETWORK.sendToAllClients(ClientboundStopAnimationPacket.class, ClientboundStopAnimationPacket.toBytes(serverPlayer.getUUID()), serverPlayer);
-        AttributeInstance speed = serverPlayer.getAttribute(Attributes.MOVEMENT_SPEED);
-        if (speed != null && speed.hasModifier(SpinjitzuData.SPEED_MODIFIER)) speed.removeModifier(SpinjitzuData.SPEED_MODIFIER);
-        AttributeInstance kb = serverPlayer.getAttribute(Attributes.ATTACK_KNOCKBACK);
-        if (kb != null && kb.hasModifier(SpinjitzuData.KNOCKBACK_MODIFIER)) kb.removeModifier(SpinjitzuData.KNOCKBACK_MODIFIER);
-        serverPlayer.level.playSound(null, serverPlayer.blockPosition(), MinejagoSoundEvents.SPINJITZU_STOP.get(), SoundSource.PLAYERS);
+        if (spinjitzu.active())
+        {
+            Services.DATA.setSpinjitzuData(new SpinjitzuData(spinjitzu.unlocked(), false), serverPlayer);
+            Services.NETWORK.sendToAllClients(ClientboundStopAnimationPacket.class, ClientboundStopAnimationPacket.toBytes(serverPlayer.getUUID()), serverPlayer);
+            AttributeInstance speed = serverPlayer.getAttribute(Attributes.MOVEMENT_SPEED);
+            if (speed != null && speed.hasModifier(SpinjitzuData.SPEED_MODIFIER))
+                speed.removeModifier(SpinjitzuData.SPEED_MODIFIER);
+            AttributeInstance kb = serverPlayer.getAttribute(Attributes.ATTACK_KNOCKBACK);
+            if (kb != null && kb.hasModifier(SpinjitzuData.KNOCKBACK_MODIFIER))
+                kb.removeModifier(SpinjitzuData.KNOCKBACK_MODIFIER);
+            serverPlayer.level.playSound(null, serverPlayer.blockPosition(), MinejagoSoundEvents.SPINJITZU_STOP.get(), SoundSource.PLAYERS);
+        }
     }
 }

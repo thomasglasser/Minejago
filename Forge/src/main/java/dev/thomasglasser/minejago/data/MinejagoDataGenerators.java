@@ -53,6 +53,7 @@ public class MinejagoDataGenerators
         generator.addProvider(onServer, new MinejagoEntityTypeTagsProvider(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(onServer, new MinejagoPaintingVariantTagsProvider(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(onServer, new PowerTagsProvider(packOutput, Minejago.MOD_ID, existingFileHelper));
+        generator.addProvider(onServer, new MinejagoGameEventTagsProvider(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(onServer, new DatapackBuiltinEntriesProvider(packOutput, lookupProvider, BUILDER, Set.of(Minejago.MOD_ID)));
 
         //Client
