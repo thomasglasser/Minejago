@@ -143,7 +143,7 @@ public class MinejagoClientUtils {
             //Do not attempt to do this on a server, that will only fail
             animation.setAnimation(new KeyframeAnimationPlayer(startAnim).setFirstPersonMode(firstPersonMode));
             if (goAnim != null)
-                animation.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(30, Ease.CONSTANT), new KeyframeAnimationPlayer(goAnim).setFirstPersonMode(firstPersonMode));
+                animation.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(20, Ease.CONSTANT), new KeyframeAnimationPlayer(goAnim).setFirstPersonMode(firstPersonMode));
         }
 
     }

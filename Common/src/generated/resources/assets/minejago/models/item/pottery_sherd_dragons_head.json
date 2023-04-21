@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "minejago:item/pottery_shard_yin_yang"
+    "layer0": "minejago:item/pottery_sherd_dragons_head"
   }
 }

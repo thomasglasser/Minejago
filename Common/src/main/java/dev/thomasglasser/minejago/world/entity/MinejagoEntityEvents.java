@@ -47,7 +47,7 @@ import java.util.function.Predicate;
 
 public class MinejagoEntityEvents
 {
-    public static final Predicate<ServerPlayer> NO_SPINJITZU = (player ->
+    public static final Predicate<LivingEntity> NO_SPINJITZU = (player ->
             player.isCrouching() ||
             player.getVehicle() != null ||
             player.isVisuallySwimming() ||

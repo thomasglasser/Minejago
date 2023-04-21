@@ -201,13 +201,13 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add(MinejagoPaintingVariants.FOUR_WEAPONS, "Four Weapons", "waifu_png_pl");
         add(MinejagoPaintingVariants.THE_FOURTH_MOUNTAIN, "The Fourth Mountain", "waifu_png_pl");
 
-        addShard(MinejagoItems.POTTERY_SHARD_ICE_CUBE.get(), "Ice Cube");
-        addShard(MinejagoItems.POTTERY_SHARD_THUNDER.get(), "Thunder");
-        addShard(MinejagoItems.POTTERY_SHARD_PEAKS.get(), "Peaks");
-        addShard(MinejagoItems.POTTERY_SHARD_MASTER.get(), "Master");
-        addShard(MinejagoItems.POTTERY_SHARD_YIN_YANG.get(), "Yin Yang");
-        addShard(MinejagoItems.POTTERY_SHARD_DRAGONS_HEAD.get(), "Dragon's Head");
-        addShard(MinejagoItems.POTTERY_SHARD_DRAGONS_TAIL.get(), "Dragon's Tail");
+        addSherd(MinejagoItems.POTTERY_SHERD_ICE_CUBE.get(), "Ice Cube");
+        addSherd(MinejagoItems.POTTERY_SHERD_THUNDER.get(), "Thunder");
+        addSherd(MinejagoItems.POTTERY_SHERD_PEAKS.get(), "Peaks");
+        addSherd(MinejagoItems.POTTERY_SHERD_MASTER.get(), "Master");
+        addSherd(MinejagoItems.POTTERY_SHERD_YIN_YANG.get(), "Yin Yang");
+        addSherd(MinejagoItems.POTTERY_SHERD_DRAGONS_HEAD.get(), "Dragon's Head");
+        addSherd(MinejagoItems.POTTERY_SHERD_DRAGONS_TAIL.get(), "Dragon's Tail");
 
         addPattern(MinejagoTrimPatterns.FOUR_WEAPONS, "Four Weapons");
 
@@ -291,9 +291,9 @@ public class MinejagoEnUsLanguage extends LanguageProvider
         add(egg, name + " Spawn Egg");
     }
 
-    public void addShard(Item item, String name)
+    public void addSherd(Item item, String name)
     {
-        add(item, name + " Pottery Shard");
+        add(item, name + " Pottery Sherd");
     }
 
     public void addPattern(ResourceKey<TrimPattern> pattern, String name)

@@ -44,14 +44,14 @@ public class MinejagoItems
     public static final RegistryObject<Item> IRON_SCYTHE = register("iron_scythe", () -> new IronScytheItem(Tiers.IRON, 8, -3.5F, BlockTags.REPLACEABLE_PLANTS, new Item.Properties()), CreativeModeTabs.TOOLS_AND_UTILITIES, CreativeModeTabs.COMBAT);
     public static final RegistryObject<Item> WOODEN_NUNCHUCKS = register("wooden_nunchucks", () -> new NunchucksItem(new Item.Properties().stacksTo(1)), CreativeModeTabs.COMBAT);
 
-    // POTTERY SHARDS
-    public static final RegistryObject<Item> POTTERY_SHARD_ICE_CUBE = registerShard("pottery_shard_ice_cube");
-    public static final RegistryObject<Item> POTTERY_SHARD_THUNDER = registerShard("pottery_shard_thunder");
-    public static final RegistryObject<Item> POTTERY_SHARD_PEAKS = registerShard("pottery_shard_peaks");
-    public static final RegistryObject<Item> POTTERY_SHARD_MASTER = registerShard("pottery_shard_master");
-    public static final RegistryObject<Item> POTTERY_SHARD_YIN_YANG = registerShard("pottery_shard_yin_yang");
-    public static final RegistryObject<Item> POTTERY_SHARD_DRAGONS_HEAD = registerShard("pottery_shard_dragons_head");
-    public static final RegistryObject<Item> POTTERY_SHARD_DRAGONS_TAIL = registerShard("pottery_shard_dragons_tail");
+    // POTTERY SHERDS
+    public static final RegistryObject<Item> POTTERY_SHERD_ICE_CUBE = registerSherd("pottery_sherd_ice_cube");
+    public static final RegistryObject<Item> POTTERY_SHERD_THUNDER = registerSherd("pottery_sherd_thunder");
+    public static final RegistryObject<Item> POTTERY_SHERD_PEAKS = registerSherd("pottery_sherd_peaks");
+    public static final RegistryObject<Item> POTTERY_SHERD_MASTER = registerSherd("pottery_sherd_master");
+    public static final RegistryObject<Item> POTTERY_SHERD_YIN_YANG = registerSherd("pottery_sherd_yin_yang");
+    public static final RegistryObject<Item> POTTERY_SHERD_DRAGONS_HEAD = registerSherd("pottery_sherd_dragons_head");
+    public static final RegistryObject<Item> POTTERY_SHERD_DRAGONS_TAIL = registerSherd("pottery_sherd_dragons_tail");
     
     // SMITHING TEMPLATES
     public static final RegistryObject<Item> FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE = registerSmithingTemplate(MinejagoTrimPatterns.FOUR_WEAPONS);
@@ -81,13 +81,13 @@ public class MinejagoItems
         return ITEMS.register(name, supplier);
     }
 
-    private static RegistryObject<Item> registerShard(String name)
+    private static RegistryObject<Item> registerSherd(String name)
     {
-        RegistryObject<Item> shard = register(name, () -> new Item(new Item.Properties().requiredFeatures(FeatureFlags.UPDATE_1_20)), CreativeModeTabs.INGREDIENTS);
+        RegistryObject<Item> sherd = register(name, () -> new Item(new Item.Properties().requiredFeatures(FeatureFlags.UPDATE_1_20)), CreativeModeTabs.INGREDIENTS);
 
-        if (Services.PLATFORM.isModLoaded(Minejago.Dependencies.SHARDSAPI.getModId())) PotteryShardRegistry.register(shard.getId(), shard.getId());
+        if (Services.PLATFORM.isModLoaded(Minejago.Dependencies.SHARDSAPI.getModId())) PotteryShardRegistry.register(sherd.getId(), sherd.getId());
 
-        return shard;
+        return sherd;
     }
 
     private static RegistryObject<Item> registerSmithingTemplate(ResourceKey<TrimPattern> key)

@@ -75,13 +75,13 @@ public class MinejagoItemTagsProvider extends ItemTagsProvider
                         .addOptionalTag(cLoc(dyeColor.getName() + "_dyes")));
 
         tag(ItemTags.DECORATED_POT_SHARDS)
-                .add(MinejagoItems.POTTERY_SHARD_ICE_CUBE.get())
-                .add(MinejagoItems.POTTERY_SHARD_THUNDER.get())
-                .add(MinejagoItems.POTTERY_SHARD_PEAKS.get())
-                .add(MinejagoItems.POTTERY_SHARD_MASTER.get())
-                .add(MinejagoItems.POTTERY_SHARD_YIN_YANG.get())
-                .add(MinejagoItems.POTTERY_SHARD_DRAGONS_HEAD.get())
-                .add(MinejagoItems.POTTERY_SHARD_DRAGONS_TAIL.get());
+                .add(MinejagoItems.POTTERY_SHERD_ICE_CUBE.get())
+                .add(MinejagoItems.POTTERY_SHERD_THUNDER.get())
+                .add(MinejagoItems.POTTERY_SHERD_PEAKS.get())
+                .add(MinejagoItems.POTTERY_SHERD_MASTER.get())
+                .add(MinejagoItems.POTTERY_SHERD_YIN_YANG.get())
+                .add(MinejagoItems.POTTERY_SHERD_DRAGONS_HEAD.get())
+                .add(MinejagoItems.POTTERY_SHERD_DRAGONS_TAIL.get());
 
         tag(ItemTags.TRIM_TEMPLATES)
                 .add(MinejagoItems.FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE.get());

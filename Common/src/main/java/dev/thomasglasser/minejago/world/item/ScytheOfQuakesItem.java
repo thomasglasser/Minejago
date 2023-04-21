@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMultimap;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.animation.definitions.ItemAnimations;
 import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
+import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import dev.thomasglasser.minejago.data.tags.MinejagoBlockTags;
 import dev.thomasglasser.minejago.data.tags.MinejagoPowerTags;
 import dev.thomasglasser.minejago.network.ClientboundStartScytheAnimationPacket;
@@ -118,7 +119,7 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem implements IModeledItem
     public void doReleaseUsing(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity, int pTimeCharged) {
         if (pLivingEntity instanceof Player player1)
         {
-            if (!player1.getAbilities().instabuild) player1.getCooldowns().addCooldown(pStack.getItem(), 20 * (pStack.getUseDuration() - pTimeCharged));
+            if (!player1.getAbilities().instabuild) player1.getCooldowns().addCooldown(pStack.getItem(), 20 * (pTimeCharged > 10? (pStack.getUseDuration() - pTimeCharged) : 1));
             if (!pLevel.isClientSide) Services.NETWORK.sendToAllClients(ClientboundStopAnimationPacket.class, ClientboundStopAnimationPacket.toBytes(pLivingEntity.getUUID()), (ServerPlayer) player1);
             player1.getAttributes().removeAttributeModifiers(builder.build());
         }
@@ -133,8 +134,9 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem implements IModeledItem
             stack.releaseUsing(player.getLevel(), player, count);
             return;
         }
-        if (count % 10 == 0 && !level.isClientSide())
+        if (count % 10 == 0)
         {
+            MinejagoLevelUtils.beamParticles(MinejagoParticleTypes.ROCKS.get(), level, player);
             Vec3 loc = player.pick(Double.MAX_EXPONENT, 0.0F, false).getLocation();
             BlockPos pos = new BlockPos((int) loc.x, (int) loc.y, (int) loc.z);
             Direction direction = player.getDirection();
