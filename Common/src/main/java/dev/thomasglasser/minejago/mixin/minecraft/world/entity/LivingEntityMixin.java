@@ -21,6 +21,6 @@ public class LivingEntityMixin
     private void minejago_doHurtTarget(Entity target, CallbackInfoReturnable<Boolean> cir)
     {
         if (cir.getReturnValue() && target instanceof ServerPlayer sp && ((INSTANCE.getAttributeValue(Attributes.ATTACK_KNOCKBACK) + EnchantmentHelper.getKnockbackBonus(INSTANCE)) > 2))
-            MinejagoEntityEvents.stopSpinjitzu(Services.DATA.getSpinjitzuData(sp), sp);
+            MinejagoEntityEvents.stopSpinjitzu(Services.DATA.getSpinjitzuData(sp), sp, true);
     }
 }

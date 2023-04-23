@@ -17,7 +17,8 @@ public class SpinjitzuAnimations {
     public enum Animations
     {
         SPINJITZU_START(SPINJITZU.get(0)),
-        SPINJITZU_ACTIVE(SPINJITZU.get(1));
+        SPINJITZU_ACTIVE(SPINJITZU.get(1)),
+        SPINJITZU_WOBBLE(SPINJITZU.get(2));
 
         private final KeyframeAnimation animation;
 

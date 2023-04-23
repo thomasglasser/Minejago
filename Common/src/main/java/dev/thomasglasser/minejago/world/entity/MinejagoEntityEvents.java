@@ -5,6 +5,7 @@ import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleUtils;
 import dev.thomasglasser.minejago.core.particles.SpinjitzuParticleOptions;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
+import dev.thomasglasser.minejago.network.ClientboundFailSpinjitzuPacket;
 import dev.thomasglasser.minejago.network.ClientboundRefreshVipDataPacket;
 import dev.thomasglasser.minejago.network.ClientboundStopAnimationPacket;
 import dev.thomasglasser.minejago.network.ServerboundStartSpinjitzuPacket;
@@ -75,7 +76,7 @@ public class MinejagoEntityEvents
             if (spinjitzu.unlocked()) {
                 if (spinjitzu.active()) {
                     if (NO_SPINJITZU.test(serverPlayer)) {
-                        stopSpinjitzu(spinjitzu, serverPlayer);
+                        stopSpinjitzu(spinjitzu, serverPlayer, !serverPlayer.isCrouching());
                         return;
                     }
                     if (player.tickCount % 20 == 0)
@@ -147,7 +148,7 @@ public class MinejagoEntityEvents
                     }
                 }
             } else if (spinjitzu.active()) {
-                stopSpinjitzu(spinjitzu, serverPlayer);
+                stopSpinjitzu(spinjitzu, serverPlayer, true);
             }
         } else if (!spinjitzu.active() && MinejagoKeyMappings.ACTIVATE_SPINJITZU.isDown()) {
             Services.NETWORK.sendToServer(ServerboundStartSpinjitzuPacket.class);
@@ -258,12 +259,15 @@ public class MinejagoEntityEvents
         }
     }
 
-    public static void stopSpinjitzu(SpinjitzuData spinjitzu, ServerPlayer serverPlayer)
+    public static void stopSpinjitzu(SpinjitzuData spinjitzu, ServerPlayer serverPlayer, boolean fail)
     {
         if (spinjitzu.active())
         {
             Services.DATA.setSpinjitzuData(new SpinjitzuData(spinjitzu.unlocked(), false), serverPlayer);
-            Services.NETWORK.sendToAllClients(ClientboundStopAnimationPacket.class, ClientboundStopAnimationPacket.toBytes(serverPlayer.getUUID()), serverPlayer);
+            if (fail)
+                Services.NETWORK.sendToAllClients(ClientboundFailSpinjitzuPacket.class, ClientboundFailSpinjitzuPacket.toBytes(serverPlayer.getUUID()), serverPlayer);
+            else
+                Services.NETWORK.sendToAllClients(ClientboundStopAnimationPacket.class, ClientboundStopAnimationPacket.toBytes(serverPlayer.getUUID()), serverPlayer);
             AttributeInstance speed = serverPlayer.getAttribute(Attributes.MOVEMENT_SPEED);
             if (speed != null && speed.hasModifier(SpinjitzuData.SPEED_MODIFIER))
                 speed.removeModifier(SpinjitzuData.SPEED_MODIFIER);

@@ -77,6 +77,11 @@ public class MinejagoMainChannel
                 .encoder(ClientboundStartScytheAnimationPacket::toBytes)
                 .consumerMainThread((packet, context) -> packet.handle())
                 .add();
+        INSTANCE.messageBuilder(ClientboundFailSpinjitzuPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(ClientboundFailSpinjitzuPacket::new)
+                .encoder(ClientboundFailSpinjitzuPacket::toBytes)
+                .consumerMainThread((packet, context) -> packet.handle())
+                .add();
     }
 
     public static <MSG> void sendToServer(MSG msg)

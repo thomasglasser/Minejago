@@ -20,20 +20,20 @@ public class ServerPlayerMixin
     private void minejago_attack(Entity target, CallbackInfo ci)
     {
         if (target instanceof ServerPlayer sp && (INSTANCE.getAttributeValue(Attributes.ATTACK_KNOCKBACK) + EnchantmentHelper.getKnockbackBonus(INSTANCE)) > 2)
-            MinejagoEntityEvents.stopSpinjitzu(Services.DATA.getSpinjitzuData(sp), sp);
+            MinejagoEntityEvents.stopSpinjitzu(Services.DATA.getSpinjitzuData(sp), sp, true);
     }
 
     @Inject(method = "crit", at = @At("HEAD"))
     private void minejago_crit(Entity entityHit, CallbackInfo ci)
     {
         if (entityHit instanceof ServerPlayer sp)
-            MinejagoEntityEvents.stopSpinjitzu(Services.DATA.getSpinjitzuData(sp), sp);
+            MinejagoEntityEvents.stopSpinjitzu(Services.DATA.getSpinjitzuData(sp), sp, true);
     }
 
     @Inject(method = "magicCrit", at = @At("HEAD"))
     private void minejago_magicCrit(Entity entityHit, CallbackInfo ci)
     {
         if (entityHit instanceof ServerPlayer sp)
-            MinejagoEntityEvents.stopSpinjitzu(Services.DATA.getSpinjitzuData(sp), sp);
+            MinejagoEntityEvents.stopSpinjitzu(Services.DATA.getSpinjitzuData(sp), sp, true);
     }
 }
