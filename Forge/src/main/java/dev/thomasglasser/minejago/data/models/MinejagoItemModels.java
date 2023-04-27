@@ -58,6 +58,7 @@ public class MinejagoItemModels extends ItemModelProvider
         basicItem(MinejagoItems.FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE.get());
         basicItem(MinejagoItems.TEAPOT.get());
         basicItem(MinejagoItems.JASPOT.get());
+        basicItem(MinejagoItems.GOLD_DISC.get());
 
         MinejagoItems.TEAPOTS.forEach((dyeColor, itemRegistryObject) ->
         {

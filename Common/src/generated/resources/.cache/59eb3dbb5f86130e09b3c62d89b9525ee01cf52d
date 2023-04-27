@@ -1,8 +1,9 @@
-// 1.19.4	2023-04-13T20:53:03.3937244	Loot Tables
+// 1.19.4	2023-04-26T23:59:50.6787186	Loot Tables
 9e63c8bb5debf95bb4daf3367b8481f44f93b049 data/minejago/loot_tables/blocks/black_teapot.json
 d606d109357004b94debc5618a5cae4a3c53a614 data/minejago/loot_tables/blocks/blue_teapot.json
 0c778d25e79a0853b5a93e0f5858fb8895aa0b2c data/minejago/loot_tables/blocks/brown_teapot.json
 cb83657b99b327bfb182fe0d690e61852afc10f9 data/minejago/loot_tables/blocks/cyan_teapot.json
+9a34d54d70ba732d5d4dfb2083188cadddf60545 data/minejago/loot_tables/blocks/gold_disc.json
 f1d0a6f25ad718e2eec990a8113e75dc2b13624f data/minejago/loot_tables/blocks/gray_teapot.json
 86e9d60b3a1007187d40c3485a207150aef67999 data/minejago/loot_tables/blocks/green_teapot.json
 b997e04f0d3e0845f5c0e4f952644b78b2105cba data/minejago/loot_tables/blocks/jaspot.json
@@ -17,4 +18,4 @@ bc6582d5fdca0114465326094d5c65cc200e0525 data/minejago/loot_tables/blocks/orange
 9eb861e8e756fba974702e06d00fd32384bbaf8b data/minejago/loot_tables/blocks/teapot.json
 ddce48ebed59ebcd9d86771a07f9f9f1faf44af0 data/minejago/loot_tables/blocks/white_teapot.json
 5f8a3831dadbac90174d53582b10f64ac27efc20 data/minejago/loot_tables/blocks/yellow_teapot.json
-30b347540be113910177892006dc074540dfae51 data/minejago/loot_tables/chests/four_weapons.json
+e951b37385bc90f6058e3c5de4370e3baf115d10 data/minejago/loot_tables/chests/four_weapons.json

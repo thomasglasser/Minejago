@@ -17,7 +17,7 @@ import java.util.Set;
 public class MinejagoLootTables extends LootTableProvider
 {
     public MinejagoLootTables(PackOutput packOutput) {
-        super(packOutput, Set.of(new ResourceLocation(Minejago.MOD_ID, "chests/four_weapons"), MinejagoBlocks.TEAPOT.get().getLootTable()), List.of(
+        super(packOutput, Set.of(), List.of(
                 new SubProviderEntry(MinejagoChestLoot::new, LootContextParamSets.CHEST),
                 new SubProviderEntry(MinejagoBlockLoot::new, LootContextParamSets.BLOCK)));
     }

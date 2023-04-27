@@ -1,8 +1,9 @@
-// 1.19.4	2023-04-15T14:30:00.5798244	Block States: minejago
+// 1.19.4	2023-04-26T23:59:50.6667504	Block States: minejago
 da38d1a8c86426a81f5182b3ac52567b84540269 assets/minejago/blockstates/black_teapot.json
 e405d8d3854a66bd62a9fff98ad5f42cb9a1ac14 assets/minejago/blockstates/blue_teapot.json
 cc0c17972cdc5306604d26025749be87194a935f assets/minejago/blockstates/brown_teapot.json
 882ffdec11cd8a07989cf7fff8f9fb147f0013b8 assets/minejago/blockstates/cyan_teapot.json
+f9637c3a1d40678d4b8e5773098b2f6c2121d17a assets/minejago/blockstates/gold_disc.json
 2cfbf65a59b650c683c6a9dc1a4caa329800b2e9 assets/minejago/blockstates/gray_teapot.json
 72e45d3c181f0699bc89d3fca763a6d043a2fb91 assets/minejago/blockstates/green_teapot.json
 075ef60962cd6eada754445ffac070a3b39fa05b assets/minejago/blockstates/jaspot.json
@@ -25,6 +26,10 @@ f33b477b2c428fdd886a19bdb30c7577f5435c56 assets/minejago/models/block/brown_teap
 c13ecf2c0446de437f41805d35a5d8da057cfaaf assets/minejago/models/block/brown_teapot_filled.json
 e2ef5499f9d4ea0bf54e0cb80e0cbe8548d7785e assets/minejago/models/block/cyan_teapot.json
 b4d208fb0d2a2d7267d82928b464f38ee49c618b assets/minejago/models/block/cyan_teapot_filled.json
+5943cfa4010cc7d093e16da54823949e6fcb4ac0 assets/minejago/models/block/gold_disc_bottom_left.json
+250bd9d271606041fdc30823870ddb5449a52c55 assets/minejago/models/block/gold_disc_bottom_right.json
+ad4d7114ec07364a5951de0ec334cabb55f1789a assets/minejago/models/block/gold_disc_top_left.json
+26bdfe1b00224818de2b8518ad70a446a89ae59e assets/minejago/models/block/gold_disc_top_right.json
 8f2547dc26242d12ea2bab182199089cba3644d8 assets/minejago/models/block/gray_teapot.json
 39f199ddfe232d3dc03379b97b530937294242d0 assets/minejago/models/block/gray_teapot_filled.json
 52dafb28406097ceaa52bf6d3e97124bc137a592 assets/minejago/models/block/green_teapot.json

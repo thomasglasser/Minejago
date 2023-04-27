@@ -7,6 +7,10 @@
         {
           "type": "minecraft:item",
           "name": "minejago:four_weapons_banner_pattern"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minejago:four_weapons_armor_trim_smithing_template"
         }
       ],
       "rolls": 1.0

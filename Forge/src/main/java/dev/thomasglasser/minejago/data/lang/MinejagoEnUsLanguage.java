@@ -83,9 +83,10 @@ public class MinejagoEnUsLanguage extends LanguageProvider
 
         add(MinejagoBlocks.TEAPOT.get(), "Teapot");
         add(MinejagoBlocks.JASPOT.get(), "Jaspot");
-
         MinejagoBlocks.TEAPOTS.forEach((color, pot) ->
                 add(pot.get(), WordUtils.capitalize(color.getName().replace('_', ' ')) + " Teapot"));
+
+        add(MinejagoBlocks.GOLD_DISC.get(), "Gold Disc");
 
         addDesc(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get(), "Four Weapons");
 

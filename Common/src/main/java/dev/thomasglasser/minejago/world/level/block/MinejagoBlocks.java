@@ -21,9 +21,12 @@ public class MinejagoBlocks
 {
     public static final RegistrationProvider<Block> BLOCKS = RegistrationProvider.get(Registries.BLOCK, Minejago.MOD_ID);
 
+    // POTS
     public static final BlockRegistryObject<Block> TEAPOT = registerAndWrap("teapot", () -> new TeapotBlock(BlockBehaviour.Properties.of(Material.CLAY, MaterialColor.COLOR_ORANGE).instabreak().noOcclusion()));
     public static final BlockRegistryObject<Block> JASPOT = registerAndWrap("jaspot", () -> new TeapotBlock(BlockBehaviour.Properties.of(Material.CLAY, MaterialColor.COLOR_LIGHT_BLUE).instabreak().noOcclusion()));
     public static final Map<DyeColor, BlockRegistryObject<Block>> TEAPOTS = teapots();
+
+    public static final BlockRegistryObject<Block> GOLD_DISC = registerAndWrap("gold_disc", () -> new DiscBlock(BlockBehaviour.Properties.of(Material.DECORATION).noOcclusion().instabreak()));
 
     private static BlockRegistryObject<Block> registerAndWrap(String name, Supplier<Block> supplier)
     {

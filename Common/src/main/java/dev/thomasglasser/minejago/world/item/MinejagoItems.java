@@ -16,7 +16,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
@@ -67,10 +66,13 @@ public class MinejagoItems
     public static final RegistryObject<Item> KRUNCHA_SPAWN_EGG = register("kruncha_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.KRUNCHA::get, 12698049, 4802889, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
     public static final RegistryObject<Item> NUCKAL_SPAWN_EGG = register("nuckal_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.NUCKAL::get, 12698049, 6974058, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
 
-    // BLOCK ITEMS
+    // POT ITEMS
     public static final RegistryObject<Item> TEAPOT = register("teapot", () -> new BlockItem(MinejagoBlocks.TEAPOT.get(), new Item.Properties().stacksTo(1)), CreativeModeTabs.FUNCTIONAL_BLOCKS);
     public static final RegistryObject<Item> JASPOT = register("jaspot", () -> new BlockItem(MinejagoBlocks.JASPOT.get(), new Item.Properties().stacksTo(1)), CreativeModeTabs.FUNCTIONAL_BLOCKS);
     public static final Map<DyeColor, RegistryObject<Item>> TEAPOTS = teapots();
+
+    // BLOCK ITEMS
+    public static final RegistryObject<Item> GOLD_DISC = register("gold_disc", () -> new BlockItem(MinejagoBlocks.GOLD_DISC.get(), new Item.Properties()), CreativeModeTabs.BUILDING_BLOCKS);
 
     private static RegistryObject<Item> register(String name, Supplier<? extends Item> supplier, CreativeModeTab... tabs)
     {
@@ -83,7 +85,7 @@ public class MinejagoItems
 
     private static RegistryObject<Item> registerSherd(String name)
     {
-        RegistryObject<Item> sherd = register(name, () -> new Item(new Item.Properties().requiredFeatures(FeatureFlags.UPDATE_1_20)), CreativeModeTabs.INGREDIENTS);
+        RegistryObject<Item> sherd = register(name, () -> new Item(new Item.Properties()), CreativeModeTabs.INGREDIENTS);
 
         if (Services.PLATFORM.isModLoaded(Minejago.Dependencies.SHARDSAPI.getModId())) PotteryShardRegistry.register(sherd.getId(), sherd.getId());
 
