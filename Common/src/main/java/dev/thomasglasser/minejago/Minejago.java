@@ -16,6 +16,8 @@ import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.MinejagoTiers;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
+import dev.thomasglasser.minejago.world.item.crafting.MinejagoRecipeSerializers;
+import dev.thomasglasser.minejago.world.item.crafting.MinejagoRecipeTypes;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPatterns;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
@@ -49,6 +51,8 @@ public class Minejago {
 	{
 		MinejagoRegistries.init();
 
+		MinejagoRecipeTypes.init();
+		MinejagoRecipeSerializers.init();
 		MinejagoArmor.init();
 		MinejagoTiers.init();
 		MinejagoPowers.init();

@@ -13,6 +13,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
@@ -101,30 +102,34 @@ public class TeapotBlock extends BaseEntityBlock {
                     pPlayer.addItem(PotionUtils.setPotion(new ItemStack(MinejagoItems.FILLED_TEACUP.get()), be.getPotion()));
                     be.take(1);
                     pLevel.playSound(null, pPos, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
+                    be.giveExperienceForCup((ServerLevel) pLevel, pPos.getCenter());
                 }
-                else if ((be.isBoiling() || be.isDone()) && (((PotionBrewing.hasPotionMix(PotionUtils.setPotion(new ItemStack(Items.POTION), be.getPotion()), inHand) && be.getPotion() != Potions.AWKWARD) || (PotionBrewing.hasPotionMix(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.AWKWARD), inHand)) && be.getPotion() == MinejagoPotions.REGULAR_TEA.get()) || MinejagoPotionBrewing.hasTeaMix(PotionUtils.setPotion(new ItemStack(Items.POTION), be.getPotion()), inHand)))
+                else
                 {
-                    if ((PotionBrewing.hasPotionMix(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.AWKWARD), inHand)) && be.getPotion() == MinejagoPotions.REGULAR_TEA.get())
+                    if ((be.isBoiling() || be.isDone()) && (((PotionBrewing.hasPotionMix(PotionUtils.setPotion(new ItemStack(Items.POTION), be.getPotion()), inHand) && be.getPotion() != Potions.AWKWARD) || (PotionBrewing.hasPotionMix(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.AWKWARD), inHand)) && be.getPotion() == MinejagoPotions.REGULAR_TEA.get()) || (be.hasRecipe(inHand, pLevel)) || (MinejagoPotionBrewing.hasTeaMix(PotionUtils.setPotion(new ItemStack(Items.POTION), be.getPotion()), inHand))))
                     {
-                        be.setPotion(Potions.AWKWARD);
+                        if (!be.hasRecipe(inHand, pLevel) && (PotionBrewing.hasPotionMix(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.AWKWARD), inHand)) && be.getPotion() == MinejagoPotions.REGULAR_TEA.get())
+                        {
+                            be.setPotion(Potions.AWKWARD);
+                        }
+                        be.setItem(0, inHand);
+                        MinejagoItemUtils.safeShrink(1, inHand, pPlayer);
                     }
-                    be.setItem(0, inHand);
-                    MinejagoItemUtils.safeShrink(1, inHand, pPlayer);
-                }
-                else if (!be.getInSlot(0).isEmpty()) {
-                    pPlayer.addItem(be.getInSlot(0));
-                    be.extract(0, 1);
-                    if (be.getPotion() == Potions.AWKWARD)
-                        be.setPotion(MinejagoPotions.REGULAR_TEA.get());
-                }
-                else if (inHand.getItem() instanceof ITeapotLiquidHolder holder)
-                {
-                    if (be.tryFill(holder.getCups(), holder.getPotion(inHand)))
+                    else if (!be.getInSlot(0).isEmpty()) {
+                        pPlayer.addItem(be.getInSlot(0));
+                        be.extract(0, 1);
+                        if (be.getPotion() == Potions.AWKWARD)
+                            be.setPotion(MinejagoPotions.REGULAR_TEA.get());
+                    }
+                    else if (inHand.getItem() instanceof ITeapotLiquidHolder holder)
                     {
-                        if (!pPlayer.getAbilities().instabuild)
-                            MinejagoItemUtils.safeShrink(1, inHand, pPlayer);
-                        pPlayer.addItem(holder.getDrained(pPlayer.getItemInHand(pHand)));
-                        pLevel.playSound(null, pPos, SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
+                        if (be.tryFill(holder.getCups(), holder.getPotion(inHand)))
+                        {
+                            if (!pPlayer.getAbilities().instabuild)
+                                MinejagoItemUtils.safeShrink(1, inHand, pPlayer);
+                            pPlayer.addItem(holder.getDrained(pPlayer.getItemInHand(pHand)));
+                            pLevel.playSound(null, pPos, SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
+                        }
                     }
                 }
             }

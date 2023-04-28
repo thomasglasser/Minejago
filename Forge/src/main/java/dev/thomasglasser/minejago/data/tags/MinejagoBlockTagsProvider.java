@@ -38,11 +38,19 @@ public class MinejagoBlockTagsProvider extends IntrinsicHolderTagsProvider<Block
                 .addTag(MinejagoBlockTags.TEAPOTS);
 
         IntrinsicTagAppender<Block> pots = tag(MinejagoBlockTags.TEAPOTS);
-        pots.add(MinejagoBlocks.TEAPOT.get(), MinejagoBlocks.JASPOT.get());
+        pots.add(MinejagoBlocks.TEAPOT.get(),
+                MinejagoBlocks.JASPOT.get());
         for (BlockRegistryObject<Block> pot : MinejagoBlocks.TEAPOTS.values())
         {
             pots.add(pot.get());
         }
+
+        tag(MinejagoBlockTags.SHURIKEN_BREAKS)
+                .addTag(BlockTags.CROPS)
+                .addTag(BlockTags.FLOWERS)
+                .addTag(BlockTags.SAPLINGS)
+                .addTag(BlockTags.REPLACEABLE_PLANTS)
+                .add(Blocks.SUGAR_CANE);
     }
 
     @Override

@@ -27,6 +27,7 @@ public class MinejagoRecipes extends RecipeProvider {
     protected void buildRecipes(Consumer<FinishedRecipe> writer) {
         buildCrafting(writer);
         buildSmithing(writer);
+        buildBrewing(writer);
     }
 
     private void buildCrafting(Consumer<FinishedRecipe> writer)
@@ -122,5 +123,16 @@ public class MinejagoRecipes extends RecipeProvider {
                 .unlockedBy("has_teapot", has(MinejagoItemTags.TEAPOTS))
                 .unlockedBy("has_dye", has(pDye))
                 .save(writer, RecipeBuilder.getDefaultRecipeId(pColoredTeapot) + "_from_dye");
+    }
+
+    private void buildBrewing(Consumer<FinishedRecipe> writer) {
+//        SimpleBrewingRecipeBuilder.of(
+//                Ingredient.of(Items.COW_SPAWN_EGG),
+//                RecipeCategory.BREWING,
+//                MinejagoPotions.MILK.get(),
+//                100,
+//                1400)
+//                .unlockedBy(getHasName(Items.COW_SPAWN_EGG), has(Items.COW_SPAWN_EGG))
+//                .save(writer);
     }
 }
