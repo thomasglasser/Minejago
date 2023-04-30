@@ -17,7 +17,7 @@ import net.minecraft.world.level.storage.loot.functions.SetContainerContents;
 import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Set;
 
 public class MinejagoBlockLoot extends BlockLootSubProvider {
@@ -34,6 +34,7 @@ public class MinejagoBlockLoot extends BlockLootSubProvider {
             add(pot.get(), createTeapotBlock(pot.get()));
 
         dropSelf(MinejagoBlocks.GOLD_DISC.get());
+        dropSelf(MinejagoBlocks.TOP_POST.get());
     }
 
     protected LootTable.Builder createTeapotBlock(Block block)
@@ -58,9 +59,8 @@ public class MinejagoBlockLoot extends BlockLootSubProvider {
 
     @Override
     protected Iterable<Block> getKnownBlocks() {
-        List<Block> blocks = MinejagoBlocks.allPots();
-        blocks.add(MinejagoBlocks.GOLD_DISC.get());
-
-        return blocks;
+        ArrayList<Block> list = new ArrayList<>();
+        MinejagoBlocks.BLOCKS.getEntries().forEach(ro -> list.add(ro.get()));
+        return list;
     }
 }

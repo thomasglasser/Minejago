@@ -20,18 +20,17 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class DiscBlock extends Block {
+public class DiscBlock extends HorizontalDirectionalBlock {
     public static final EnumProperty<Row> ROW = EnumProperty.create("row", Row.class);
     public static final EnumProperty<Column> COLUMN = EnumProperty.create("column", Column.class);
 
-    public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     private static final VoxelShape SHAPE_NORTH = box(15.0, 15.0, 0.0, 16.0, 16.0, 2.0);
     private static final VoxelShape SHAPE_SOUTH = box(0.0, 0.0, 0.0, 16.0, 16.0, 2.0);
     private static final VoxelShape SHAPE_EAST = box(0.0, 0.0, 0.0, 2.0, 16.0, 16.0);
     private static final VoxelShape SHAPE_WEST = box(14.0, 0.0, 0.0, 16.0, 16.0, 16.0);
 
     public DiscBlock(Properties properties) {
-        super(properties);
+        super(properties.noOcclusion());
         this.registerDefaultState(
                 this.stateDefinition
                         .any()
@@ -126,16 +125,6 @@ public class DiscBlock extends Block {
     @Override
     public PushReaction getPistonPushReaction(BlockState state) {
         return PushReaction.DESTROY;
-    }
-
-    @Override
-    public BlockState rotate(BlockState state, Rotation rotation) {
-        return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
-    }
-
-    @Override
-    public BlockState mirror(BlockState state, Mirror mirror) {
-        return mirror == Mirror.NONE ? state : state.rotate(mirror.getRotation(state.getValue(FACING)));
     }
 
     @Override

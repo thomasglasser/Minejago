@@ -26,7 +26,8 @@ public class MinejagoBlocks
     public static final BlockRegistryObject<Block> JASPOT = registerAndWrap("jaspot", () -> new TeapotBlock(BlockBehaviour.Properties.of(Material.CLAY, MaterialColor.COLOR_CYAN).instabreak().noOcclusion()));
     public static final Map<DyeColor, BlockRegistryObject<Block>> TEAPOTS = teapots();
 
-    public static final BlockRegistryObject<Block> GOLD_DISC = registerAndWrap("gold_disc", () -> new DiscBlock(BlockBehaviour.Properties.of(Material.DECORATION).noOcclusion().instabreak()));
+    public static final BlockRegistryObject<Block> GOLD_DISC = registerAndWrap("gold_disc", () -> new DiscBlock(BlockBehaviour.Properties.of(Material.DECORATION).instabreak()));
+    public static final BlockRegistryObject<Block> TOP_POST = registerAndWrap("top_post", () -> new TopPostBlock(BlockBehaviour.Properties.of(Material.DECORATION).instabreak().noCollission()));
 
     private static BlockRegistryObject<Block> registerAndWrap(String name, Supplier<Block> supplier)
     {

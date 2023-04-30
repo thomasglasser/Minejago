@@ -4,6 +4,7 @@ import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.level.block.DiscBlock;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
+import dev.thomasglasser.minejago.world.level.block.TopPostBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -52,9 +53,20 @@ public class MinejagoBlockStates extends BlockStateProvider {
                     .rotationY((int) (facing.getOpposite()).toYRot())
                     .build();
         });
+
+        getVariantBuilder(MinejagoBlocks.TOP_POST.get()).forAllStates(blockState ->
+        {
+            Direction facing = blockState.getValue(TopPostBlock.FACING);
+            ModelFile model = models().getExistingFile(blockModel("top_post"));
+
+            return ConfiguredModel.builder()
+                    .modelFile(model)
+                    .rotationY((int) (facing.getOpposite()).toYRot())
+                    .build();
+        });
     }
 
-    public ResourceLocation blockModel(String path)
+    public static ResourceLocation blockModel(String path)
     {
         return Minejago.modLoc("block/" + path);
     }

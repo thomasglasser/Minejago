@@ -16,15 +16,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.concurrent.CompletableFuture;
 
 public class PowerTagsProvider extends TagsProvider<Power> {
-    public PowerTagsProvider(PackOutput pOutput, String modid, @Nullable ExistingFileHelper existingFileHelper) {
-        super(pOutput, MinejagoRegistries.POWER,
-                CompletableFuture.supplyAsync(() -> {
-                    final RegistryAccess.Frozen access = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
-                    final RegistrySetBuilder builder = new RegistrySetBuilder();
-                    MinejagoPowers.POWERS.addToSet(builder);
-                    return builder.build(access);
-                }, Util.backgroundExecutor()),
-                modid, existingFileHelper);
+    public PowerTagsProvider(PackOutput pOutput, String modId,  CompletableFuture<HolderLookup.Provider> pProvider, @Nullable ExistingFileHelper existingFileHelper) {
+        super(pOutput, MinejagoRegistries.POWER, pProvider, modId, existingFileHelper);
     }
 
     @Override

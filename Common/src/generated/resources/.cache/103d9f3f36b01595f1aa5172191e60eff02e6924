@@ -1,7 +1,8 @@
-// 1.19.4	2023-04-28T08:04:22.1866708	Registries
+// 1.19.4	2023-04-29T23:50:59.5037656	Registries
 cb76af03729b548cf0f65a4e2e0c87bea7d0c31a data/minejago/minejago/power/earth.json
 faf2913cac24328c38c713ff398672f2d10fa45e data/minejago/minejago/power/fire.json
 b51ace50273e5edcd8e1aaa40a0d237062c5aebb data/minejago/minejago/power/ice.json
 cff542054be98c0ea9aecfcf7c2b081cf26d6201 data/minejago/minejago/power/lightning.json
 eaa3323dfcc2a6fb0701f38e962b65409d4804e5 data/minejago/minejago/power/none.json
 5307b577a111af81aa0b316af5d0f67b470a2104 data/minejago/trim_pattern/four_weapons.json
+57e323d7a08e34b7aa561ede996dd844dcd40108 data/minejago/worldgen/biome/high_mountains.json

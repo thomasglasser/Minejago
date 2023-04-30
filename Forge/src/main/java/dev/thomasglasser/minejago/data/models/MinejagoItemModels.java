@@ -18,6 +18,8 @@ import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import static dev.thomasglasser.minejago.data.blockstates.MinejagoBlockStates.blockModel;
+
 public class MinejagoItemModels extends ItemModelProvider
 {
     public MinejagoItemModels(PackOutput output, ExistingFileHelper helper)
@@ -93,6 +95,8 @@ public class MinejagoItemModels extends ItemModelProvider
         spawnEgg(MinejagoItems.UNDERWORLD_SKELETON_SPAWN_EGG.getId().getPath());
         spawnEgg(MinejagoItems.KRUNCHA_SPAWN_EGG.getId().getPath());
         spawnEgg(MinejagoItems.NUCKAL_SPAWN_EGG.getId().getPath());
+
+        withExistingParent("top_post", blockModel("top_post"));
     }
     
     protected void basicItemHandheld(ResourceLocation item)

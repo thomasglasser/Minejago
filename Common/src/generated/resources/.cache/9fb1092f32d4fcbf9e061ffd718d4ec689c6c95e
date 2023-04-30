@@ -1,4 +1,4 @@
-// 1.19.4	2023-04-28T08:04:22.1717115	Recipes
+// 1.19.4	2023-04-29T23:50:59.5057588	Recipes
 6600347f2e80bbe13b09094fc74754740bfbc3ce data/minecraft/advancements/recipes/misc/four_weapons_armor_trim_smithing_template_smithing_trim.json
 0e9575d5a771c47efff82eec22da7da2d7bf49b3 data/minecraft/recipes/four_weapons_armor_trim_smithing_template_smithing_trim.json
 f329d945848b94449fbbeeac5a22efbd7ec71db5 data/minejago/advancements/recipes/brewing/black_teapot.json
@@ -22,7 +22,6 @@ e75663e771ad1ab55ca1f4f4e1864f2e6918f328 data/minejago/advancements/recipes/brew
 2530df92c3278e47a4187ef8d6a084df408a6044 data/minejago/advancements/recipes/brewing/lime_teapot_from_dye.json
 68766a86e63346442233a18a270f681cdf9f0b0a data/minejago/advancements/recipes/brewing/magenta_teapot.json
 07bfab98fcdaceabc25f3de182d644086cfab358 data/minejago/advancements/recipes/brewing/magenta_teapot_from_dye.json
-2c3d4068505c7c52deac5081e2aa778ca2225355 data/minejago/advancements/recipes/brewing/milk.json
 6559478e4b08ca484b3e43df0000cc6b7a40171d data/minejago/advancements/recipes/brewing/orange_teapot.json
 01b4224ad99a05f39a8bedf660d51cd3ca2ca385 data/minejago/advancements/recipes/brewing/orange_teapot_from_dye.json
 f5a14f599b0f9ec692527b9f9b9e4a78a8bcbb9e data/minejago/advancements/recipes/brewing/pink_teapot.json
@@ -69,7 +68,6 @@ a2355d1d88b3cd5d23824f3048a88c314733a19c data/minejago/recipes/lime_teapot.json
 b1ef5f8ab69d28dcdb330fa4ee5fa9c6ef722952 data/minejago/recipes/lime_teapot_from_dye.json
 c1e58682534293cfbf4df1c5ad65721b59df60cc data/minejago/recipes/magenta_teapot.json
 559a6a9cc1d9c6ef5bab3e8ed449f52a20d39181 data/minejago/recipes/magenta_teapot_from_dye.json
-d7d7a61978bf245bfb5cb46af28389a5f6a3734a data/minejago/recipes/milk.json
 d844d98773ace73809acbdbc52a83adece16dc5a data/minejago/recipes/orange_teapot.json
 c54b2584867e2effe3eaffbc04da07dace3add95 data/minejago/recipes/orange_teapot_from_dye.json
 92771a4297a4f27a8a98007c045c0f79099af72d data/minejago/recipes/pink_teapot.json

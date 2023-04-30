@@ -42,10 +42,10 @@ import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraftforge.common.data.LanguageProvider;
 import org.apache.commons.lang3.text.WordUtils;
 
-public class MinejagoEnUsLanguage extends LanguageProvider
+public class MinejagoEnUsLanguageProvider extends LanguageProvider
 {
 
-    public MinejagoEnUsLanguage(PackOutput output)
+    public MinejagoEnUsLanguageProvider(PackOutput output)
     {
         super(output, Minejago.MOD_ID, "en_us");
     }
@@ -87,6 +87,7 @@ public class MinejagoEnUsLanguage extends LanguageProvider
                 add(pot.get(), WordUtils.capitalize(color.getName().replace('_', ' ')) + " Teapot"));
 
         add(MinejagoBlocks.GOLD_DISC.get(), "Gold Disc");
+        add(MinejagoBlocks.TOP_POST.get(), "Top Post");
 
         addDesc(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get(), "Four Weapons");
 

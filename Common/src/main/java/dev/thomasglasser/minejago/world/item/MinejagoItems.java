@@ -73,6 +73,7 @@ public class MinejagoItems
 
     // BLOCK ITEMS
     public static final RegistryObject<Item> GOLD_DISC = register("gold_disc", () -> new BlockItem(MinejagoBlocks.GOLD_DISC.get(), new Item.Properties()), CreativeModeTabs.BUILDING_BLOCKS);
+    public static final RegistryObject<Item> TOP_POST = register("top_post", () -> new BlockItem(MinejagoBlocks.TOP_POST.get(), new Item.Properties()), CreativeModeTabs.BUILDING_BLOCKS);
 
     private static RegistryObject<Item> register(String name, Supplier<? extends Item> supplier, CreativeModeTab... tabs)
     {
