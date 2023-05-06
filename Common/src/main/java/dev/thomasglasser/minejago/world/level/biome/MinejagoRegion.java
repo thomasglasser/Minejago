@@ -9,6 +9,7 @@ import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.Climate;
 import terrablender.api.Region;
 import terrablender.api.RegionType;
+import terrablender.worldgen.RegionUtils;
 
 import java.util.function.Consumer;
 
@@ -22,12 +23,9 @@ public class MinejagoRegion extends Region
     @Override
     public void addBiomes(Registry<Biome> registry, Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> mapper)
     {
-        this.addModifiedVanillaOverworldBiomes(mapper, builder ->
+        RegionUtils.getVanillaParameterPoints(Biomes.SNOWY_SLOPES).forEach(point ->
         {
-            if (registry.containsKey(MinejagoBiomes.HIGH_MOUNTAINS))
-            {
-                builder.replaceBiome(Biomes.SNOWY_SLOPES, MinejagoBiomes.HIGH_MOUNTAINS);
-            }
+            this.addBiome(mapper, new Climate.ParameterPoint(point.temperature(), point.humidity(), point.continentalness(), Climate.Parameter.point(0.01f), point.depth(), point.weirdness(), point.offset()), MinejagoBiomes.HIGH_MOUNTAINS);
         });
     }
 }

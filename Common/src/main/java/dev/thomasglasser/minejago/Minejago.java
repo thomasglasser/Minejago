@@ -103,4 +103,20 @@ public class Minejago {
 			return Services.PLATFORM.getPlatformName().equals("Forge") ? forge : fabric;
 		}
 	}
+
+	public enum Expansions
+	{
+		IMMERSION_PACK("minejago_immersion_pack");
+
+		private final String id;
+
+		Expansions(String id)
+		{
+			this.id = id;
+		}
+
+		public String getId() {
+			return id;
+		}
+	}
 }
