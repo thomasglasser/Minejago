@@ -13,6 +13,9 @@ import dev.thomasglasser.minejago.data.sounds.MinejagoSoundDefinitions;
 import dev.thomasglasser.minejago.data.tags.*;
 import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
 import dev.thomasglasser.minejago.world.item.armortrim.MinejagoTrimPatterns;
+import dev.thomasglasser.minejago.world.level.levelgen.structure.MinejagoStructures;
+import dev.thomasglasser.minejago.world.level.levelgen.structure.placement.MinejagoStructureSets;
+import dev.thomasglasser.minejago.world.level.levelgen.structure.pools.MinejagoPools;
 import net.minecraft.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
@@ -21,6 +24,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.worldgen.Pools;
 import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
@@ -34,6 +38,9 @@ public class MinejagoDataGenerators
 {
     private static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
             .add(Registries.TRIM_PATTERN, MinejagoTrimPatterns::bootstrap)
+            .add(Registries.TEMPLATE_POOL, MinejagoPools::bootstrap)
+            .add(Registries.STRUCTURE, MinejagoStructures::bootstrap)
+            .add(Registries.STRUCTURE_SET, MinejagoStructureSets::bootstrap)
             .add(MinejagoRegistries.POWER, MinejagoPowers::bootstrap);
 
     public static void gatherData(GatherDataEvent event)
@@ -68,6 +75,7 @@ public class MinejagoDataGenerators
         generator.addProvider(includeServer, new MinejagoPaintingVariantTagsProvider(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(includeServer, new PowerTagsProvider(packOutput, Minejago.MOD_ID,  lookupProvider, existingFileHelper));
         generator.addProvider(includeServer, new MinejagoGameEventTagsProvider(packOutput, lookupProvider, existingFileHelper));
+        generator.addProvider(includeServer, new MinejagoBiomeTagsProvider(packOutput, lookupProvider, existingFileHelper));
 
         //Client
         generator.addProvider(includeClient, new MinejagoItemModels(packOutput, existingFileHelper));

@@ -241,17 +241,17 @@ public class MinejagoEntityEvents
             /* TODO: Find ice */ BlockPos pos4 = serverLevel.findNearestMapStructure(StructureTags.MINESHAFT, player.getOnPos(), Integer.MAX_VALUE, false);
             if (Services.PLATFORM.isModLoaded(Minejago.Dependencies.MOONLIGHT_LIB.getModId()))
             {
-                MapHelper.addDecorationToMap(itemstack, pos1, MinejagoMapDecorations.NUNCHUCKS, -1);
-                MapHelper.addDecorationToMap(itemstack, pos2, MinejagoMapDecorations.SWORD, -1);
-                MapHelper.addDecorationToMap(itemstack, pos3, MinejagoMapDecorations.SCYTHE, -1);
-                MapHelper.addDecorationToMap(itemstack, pos4, MinejagoMapDecorations.SHURIKENS, -1);
+                if (pos1 != null) MapHelper.addDecorationToMap(itemstack, pos1, MinejagoMapDecorations.NUNCHUCKS, -1);
+                if (pos2 != null) MapHelper.addDecorationToMap(itemstack, pos2, MinejagoMapDecorations.SWORD, -1);
+                if (pos3 != null) MapHelper.addDecorationToMap(itemstack, pos3, MinejagoMapDecorations.SCYTHE, -1);
+                if (pos4 != null) MapHelper.addDecorationToMap(itemstack, pos4, MinejagoMapDecorations.SHURIKENS, -1);
             }
             else
             {
-                MapItemSavedData.addTargetDecoration(itemstack, pos1, "lightning", MapDecoration.Type.BANNER_BLUE);
-                MapItemSavedData.addTargetDecoration(itemstack, pos2, "fire", MapDecoration.Type.BANNER_RED);
-                MapItemSavedData.addTargetDecoration(itemstack, pos3, "earth", MapDecoration.Type.BANNER_BROWN);
-                MapItemSavedData.addTargetDecoration(itemstack, pos4, "ice", MapDecoration.Type.BANNER_WHITE);
+                if (pos1 != null) MapItemSavedData.addTargetDecoration(itemstack, pos1, "lightning", MapDecoration.Type.BANNER_BLUE);
+                if (pos2 != null) MapItemSavedData.addTargetDecoration(itemstack, pos2, "fire", MapDecoration.Type.BANNER_RED);
+                if (pos3 != null) MapItemSavedData.addTargetDecoration(itemstack, pos3, "earth", MapDecoration.Type.BANNER_BROWN);
+                if (pos4 != null) MapItemSavedData.addTargetDecoration(itemstack, pos4, "ice", MapDecoration.Type.BANNER_WHITE);
             }
             itemstack.setHoverName(Component.translatable(Items.FILLED_MAP.getDescriptionId() + ".golden_weapons"));
             player.addItem(itemstack);

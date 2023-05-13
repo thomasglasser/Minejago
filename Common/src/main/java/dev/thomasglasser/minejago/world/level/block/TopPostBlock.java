@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class TopPostBlock extends HorizontalDirectionalBlock
 {
-    private static final VoxelShape SHAPE_NORTH = box(15.0, 15.0, 0.0, 16.0, 16.0, 1.1);
+    private static final VoxelShape SHAPE_NORTH = box(0.0, 0.0, 14.9, 16.0, 16.0, 16.0);
     private static final VoxelShape SHAPE_SOUTH = box(0.0, 0.0, 0.0, 16.0, 16.0, 1.1);
     private static final VoxelShape SHAPE_EAST = box(0.0, 0.0, 0.0, 1.1, 16.0, 16.0);
     private static final VoxelShape SHAPE_WEST = box(14.9, 0.0, 0.0, 16.0, 16.0, 16.0);
