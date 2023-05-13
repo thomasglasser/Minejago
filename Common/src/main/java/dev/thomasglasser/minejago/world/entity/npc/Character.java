@@ -1,4 +1,4 @@
-package dev.thomasglasser.minejago.world.entity;
+package dev.thomasglasser.minejago.world.entity.npc;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.nbt.CompoundTag;

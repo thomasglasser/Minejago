@@ -13,7 +13,6 @@ import dev.thomasglasser.minejago.data.sounds.MinejagoSoundDefinitions;
 import dev.thomasglasser.minejago.data.tags.*;
 import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
 import dev.thomasglasser.minejago.world.item.armortrim.MinejagoTrimPatterns;
-import dev.thomasglasser.minejago.world.level.biome.MinejagoBiomes;
 import net.minecraft.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
@@ -35,8 +34,7 @@ public class MinejagoDataGenerators
 {
     private static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
             .add(Registries.TRIM_PATTERN, MinejagoTrimPatterns::bootstrap)
-            .add(MinejagoRegistries.POWER, MinejagoPowers::bootstrap)
-            .add(Registries.BIOME, MinejagoBiomes::bootstrap);
+            .add(MinejagoRegistries.POWER, MinejagoPowers::bootstrap);
 
     public static void gatherData(GatherDataEvent event)
     {

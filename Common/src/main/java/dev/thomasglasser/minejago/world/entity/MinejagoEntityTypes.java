@@ -3,10 +3,16 @@ package dev.thomasglasser.minejago.world.entity;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.registration.RegistrationProvider;
 import dev.thomasglasser.minejago.registration.RegistryObject;
+import dev.thomasglasser.minejago.world.entity.npc.*;
+import dev.thomasglasser.minejago.world.entity.npc.Character;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownBambooStaff;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownBoneKnife;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownIronShuriken;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownIronSpear;
+import dev.thomasglasser.minejago.world.entity.skulkin.Kruncha;
+import dev.thomasglasser.minejago.world.entity.skulkin.Nuckal;
+import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;
+import dev.thomasglasser.minejago.world.entity.skulkin.SkulkinHorse;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -53,16 +59,19 @@ public class MinejagoEntityTypes
     public static final RegistryObject<EntityType<Zane>> ZANE = ENTITY_TYPES.register("zane", () -> EntityType.Builder.of(Zane::new, MobCategory.CREATURE)
             .sized(0.6f, 1.95f)
             .build("zane"));
-    public static final RegistryObject<EntityType<UnderworldSkeleton>> UNDERWORLD_SKELETON = ENTITY_TYPES.register("underworld_skeleton", () -> EntityType.Builder.of(UnderworldSkeleton::new, MobCategory.MONSTER)
+    public static final RegistryObject<EntityType<Skulkin>> SKULKIN = ENTITY_TYPES.register("skulkin", () -> EntityType.Builder.of(Skulkin::new, MobCategory.MONSTER)
             .sized(0.6f, 1.95f)
-            .build("underworld_skeleton"));
+            .build("skulkin"));
     public static final RegistryObject<EntityType<Kruncha>> KRUNCHA = ENTITY_TYPES.register("kruncha", () -> EntityType.Builder.of(Kruncha::new, MobCategory.MONSTER)
             .sized(0.6f, 1.95f)
             .build("kruncha"));
     public static final RegistryObject<EntityType<Nuckal>> NUCKAL = ENTITY_TYPES.register("nuckal", () -> EntityType.Builder.of(Nuckal::new, MobCategory.MONSTER)
             .sized(0.6f, 1.95f)
             .build("nuckal"));
-    
+    public static final RegistryObject<EntityType<SkulkinHorse>> SKULKIN_HORSE = ENTITY_TYPES.register("skulkin_horse", () -> EntityType.Builder.of(SkulkinHorse::new, MobCategory.CREATURE)
+            .sized(1.3964844f, 1.6f)
+            .build("skulkin_horse"));
+
     public static Map<EntityType<? extends LivingEntity>, AttributeSupplier> getAllAttributes() {
         Map<EntityType<? extends LivingEntity>, AttributeSupplier> map = new HashMap<>();
 
@@ -72,9 +81,10 @@ public class MinejagoEntityTypes
         map.put(COLE.get(), Cole.createAttributes().build());
         map.put(JAY.get(), Jay.createAttributes().build());
         map.put(ZANE.get(), Zane.createAttributes().build());
-        map.put(UNDERWORLD_SKELETON.get(), UnderworldSkeleton.createAttributes().build());
+        map.put(SKULKIN.get(), Skulkin.createAttributes().build());
         map.put(KRUNCHA.get(), Kruncha.createAttributes().build());
         map.put(NUCKAL.get(), Nuckal.createAttributes().build());
+        map.put(SKULKIN_HORSE.get(), SkulkinHorse.createAttributes().build());
 
         return map;
     }

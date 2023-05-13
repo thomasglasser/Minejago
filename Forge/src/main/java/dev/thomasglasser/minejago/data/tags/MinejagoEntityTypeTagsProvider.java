@@ -19,9 +19,10 @@ public class MinejagoEntityTypeTagsProvider extends EntityTypeTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider pProvider) {
         tag(MinejagoEntityTypeTags.SKULKINS)
-                .add(MinejagoEntityTypes.UNDERWORLD_SKELETON.get())
+                .add(MinejagoEntityTypes.SKULKIN.get())
                 .add(MinejagoEntityTypes.NUCKAL.get())
-                .add(MinejagoEntityTypes.KRUNCHA.get());
+                .add(MinejagoEntityTypes.KRUNCHA.get())
+                .add(MinejagoEntityTypes.SKULKIN_HORSE.get());
 
         tag(EntityTypeTags.SKELETONS)
                 .addTag(MinejagoEntityTypeTags.SKULKINS);

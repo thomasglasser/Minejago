@@ -2,7 +2,7 @@ package dev.thomasglasser.minejago.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.world.entity.Nuckal;
+import dev.thomasglasser.minejago.world.entity.skulkin.Nuckal;
 import net.minecraft.client.model.AnimationUtils;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;

@@ -122,9 +122,10 @@ public class MinejagoFabricClient implements ClientModInitializer {
         EntityRendererRegistry.register(MinejagoEntityTypes.JAY.get(), CharacterRenderer::new);
         EntityRendererRegistry.register(MinejagoEntityTypes.COLE.get(), CharacterRenderer::new);
         EntityRendererRegistry.register(MinejagoEntityTypes.ZANE.get(), CharacterRenderer::new);
-        EntityRendererRegistry.register(MinejagoEntityTypes.UNDERWORLD_SKELETON.get(), UnderworldSkeletonRenderer::new);
+        EntityRendererRegistry.register(MinejagoEntityTypes.SKULKIN.get(), UnderworldSkeletonRenderer::new);
         EntityRendererRegistry.register(MinejagoEntityTypes.KRUNCHA.get(), KrunchaRenderer::new);
         EntityRendererRegistry.register(MinejagoEntityTypes.NUCKAL.get(), NuckalRenderer::new);
+        EntityRendererRegistry.register(MinejagoEntityTypes.SKULKIN_HORSE.get(), SkulkinHorseRenderer::new);
     }
 
     private void registerModelLayers()

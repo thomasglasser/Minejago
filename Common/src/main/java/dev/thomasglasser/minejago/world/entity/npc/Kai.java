@@ -1,4 +1,4 @@
-package dev.thomasglasser.minejago.world.entity;
+package dev.thomasglasser.minejago.world.entity.npc;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;

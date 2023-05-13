@@ -2,7 +2,7 @@ package dev.thomasglasser.minejago.client.renderer.entity;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.model.KrunchaModel;
-import dev.thomasglasser.minejago.world.entity.Kruncha;
+import dev.thomasglasser.minejago.world.entity.skulkin.Kruncha;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.resources.ResourceLocation;

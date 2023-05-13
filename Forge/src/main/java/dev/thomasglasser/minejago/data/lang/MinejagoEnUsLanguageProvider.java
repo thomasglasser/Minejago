@@ -18,7 +18,6 @@ import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
 import dev.thomasglasser.minejago.world.item.armor.SkeletalChestplateItem;
 import dev.thomasglasser.minejago.world.item.armortrim.MinejagoTrimPatterns;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
-import dev.thomasglasser.minejago.world.level.biome.MinejagoBiomes;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPatterns;
 import net.minecraft.Util;
@@ -126,17 +125,16 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(MinejagoEntityTypes.JAY.get(), "Jay", MinejagoItems.JAY_SPAWN_EGG.get());
         add(MinejagoEntityTypes.COLE.get(), "Cole", MinejagoItems.COLE_SPAWN_EGG.get());
         add(MinejagoEntityTypes.ZANE.get(), "Zane", MinejagoItems.ZANE_SPAWN_EGG.get());
-        add(MinejagoEntityTypes.UNDERWORLD_SKELETON.get(), "Underworld Skeleton", MinejagoItems.UNDERWORLD_SKELETON_SPAWN_EGG.get());
+        add(MinejagoEntityTypes.SKULKIN.get(), "Skulkin", MinejagoItems.SKULKIN_SPAWN_EGG.get());
         add(MinejagoEntityTypes.KRUNCHA.get(), "Kruncha", MinejagoItems.KRUNCHA_SPAWN_EGG.get());
         add(MinejagoEntityTypes.NUCKAL.get(), "Nuckal", MinejagoItems.NUCKAL_SPAWN_EGG.get());
+        add(MinejagoEntityTypes.SKULKIN_HORSE.get(), "Skulkin Horse", MinejagoItems.SKULKIN_HORSE_SPAWN_EGG.get());
 
         add(MinejagoBannerPatterns.FOUR_WEAPONS_LEFT.get(), "Four Weapons Left");
         add(MinejagoBannerPatterns.FOUR_WEAPONS_RIGHT.get(), "Four Weapons Right");
         add(MinejagoBannerPatterns.EDGE_LINES.get(), "Edge Lines");
 
         add(Items.FILLED_MAP.getDescriptionId() + ".golden_weapons", "Golden Weapons Map");
-
-        addBiome(MinejagoBiomes.HIGH_MOUNTAINS, "Mountains of Impossible Height");
 
         add("container.teapot", "Teapot");
 

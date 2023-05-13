@@ -1,5 +1,6 @@
-package dev.thomasglasser.minejago.world.entity;
+package dev.thomasglasser.minejago.world.entity.skulkin;
 
+import dev.thomasglasser.minejago.world.entity.MeleeSkeleton;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntityType;

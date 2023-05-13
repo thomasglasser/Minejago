@@ -1,3 +1,6 @@
 {
-  "parent": "minejago:block/top_post"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minejago:item/top_post"
+  }
 }

@@ -2,8 +2,7 @@ package dev.thomasglasser.minejago.client.renderer.entity;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.model.NuckalModel;
-import dev.thomasglasser.minejago.world.entity.Nuckal;
-import net.minecraft.client.model.SkeletonModel;
+import dev.thomasglasser.minejago.world.entity.skulkin.Nuckal;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;

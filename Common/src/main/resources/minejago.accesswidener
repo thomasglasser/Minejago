@@ -22,4 +22,10 @@ mutable     field   net/minecraft/resources/RegistryDataLoader                  
 accessible  method  net/minecraft/commands/arguments/ResourceKeyArgument                    resolveKey          (Lcom/mojang/brigadier/context/CommandContext;Ljava/lang/String;Lnet/minecraft/resources/ResourceKey;Lcom/mojang/brigadier/exceptions/DynamicCommandExceptionType;)Lnet/minecraft/core/Holder$Reference;
 accessible  class   net/minecraft/world/item/CreativeModeTab$Output
 accessible  method  net/minecraft/world/effect/MobEffect                                    <init>              (Lnet/minecraft/world/effect/MobEffectCategory;I)V
-accessible method   net/minecraft/data/worldgen/biome/OverworldBiomes                        biome              (ZFFLnet/minecraft/world/level/biome/MobSpawnSettings$Builder;Lnet/minecraft/world/level/biome/BiomeGenerationSettings$Builder;Lnet/minecraft/sounds/Music;)Lnet/minecraft/world/level/biome/Biome;
+accessible  method  net/minecraft/data/worldgen/biome/OverworldBiomes                       biome               (ZFFLnet/minecraft/world/level/biome/MobSpawnSettings$Builder;Lnet/minecraft/world/level/biome/BiomeGenerationSettings$Builder;Lnet/minecraft/sounds/Music;)Lnet/minecraft/world/level/biome/Biome;
+accessible  field   net/minecraft/world/entity/animal/horse/SkeletonHorse                   skeletonTrapGoal    Lnet/minecraft/world/entity/animal/horse/SkeletonTrapGoal;
+mutable     field   net/minecraft/world/entity/animal/horse/SkeletonHorse                   skeletonTrapGoal    Lnet/minecraft/world/entity/animal/horse/SkeletonTrapGoal;
+extendable  method  net/minecraft/world/entity/animal/horse/SkeletonTrapGoal                createSkeleton      (Lnet/minecraft/world/DifficultyInstance;Lnet/minecraft/world/entity/animal/horse/AbstractHorse;)Lnet/minecraft/world/entity/monster/Skeleton;
+extendable  method  net/minecraft/world/entity/animal/horse/SkeletonTrapGoal                createHorse         (Lnet/minecraft/world/DifficultyInstance;)Lnet/minecraft/world/entity/animal/horse/AbstractHorse;
+accessible  method  net/minecraft/world/entity/animal/horse/SkeletonTrapGoal                disenchant          (Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/world/item/ItemStack;
+accessible  method  net/minecraft/world/entity/Mob                                          isSunBurnTick       ()Z

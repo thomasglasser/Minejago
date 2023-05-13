@@ -62,9 +62,10 @@ public class MinejagoItems
     public static final RegistryObject<Item> COLE_SPAWN_EGG = register("cole_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.COLE::get, 1647949, 2697513, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
     public static final RegistryObject<Item> JAY_SPAWN_EGG = register("jay_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.JAY::get, 10057, 4854026, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
     public static final RegistryObject<Item> ZANE_SPAWN_EGG = register("zane_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.ZANE::get, 2697513, 16769956, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
-    public static final RegistryObject<Item> UNDERWORLD_SKELETON_SPAWN_EGG = register("underworld_skeleton_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.UNDERWORLD_SKELETON::get, 12698049, 11348013, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
+    public static final RegistryObject<Item> SKULKIN_SPAWN_EGG = register("skulkin_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.SKULKIN::get, 12698049, 11348013, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
     public static final RegistryObject<Item> KRUNCHA_SPAWN_EGG = register("kruncha_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.KRUNCHA::get, 12698049, 4802889, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
     public static final RegistryObject<Item> NUCKAL_SPAWN_EGG = register("nuckal_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.NUCKAL::get, 12698049, 6974058, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
+    public static final RegistryObject<Item> SKULKIN_HORSE_SPAWN_EGG = register("skulkin_horse_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.SKULKIN_HORSE::get, 0xfffffd, 0xad282d, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
 
     // POT ITEMS
     public static final RegistryObject<Item> TEAPOT = register("teapot", () -> new BlockItem(MinejagoBlocks.TEAPOT.get(), new Item.Properties().stacksTo(1)), CreativeModeTabs.FUNCTIONAL_BLOCKS);

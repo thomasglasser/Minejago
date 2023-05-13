@@ -1,5 +1,6 @@
-package dev.thomasglasser.minejago.world.entity;
+package dev.thomasglasser.minejago.world.entity.skulkin;
 
+import dev.thomasglasser.minejago.world.entity.MeleeSkeleton;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
 import net.minecraft.ChatFormatting;
@@ -14,10 +15,10 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-public class UnderworldSkeleton extends MeleeSkeleton {
-    private final Variant variant;
+public class Skulkin extends MeleeSkeleton {
+    private Variant variant;
 
-    public UnderworldSkeleton(EntityType<? extends UnderworldSkeleton> entityType, Level level) {
+    public Skulkin(EntityType<? extends Skulkin> entityType, Level level) {
         super(entityType, level);
         variant = Variant.values()[(int) (Math.random() * Variant.values().length)];
     }
@@ -46,6 +47,11 @@ public class UnderworldSkeleton extends MeleeSkeleton {
             case KNIFE -> this.setItemSlot(EquipmentSlot.MAINHAND, MinejagoItems.BONE_KNIFE.get().getDefaultInstance());
             default -> this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
         }
+    }
+
+    public void setVariant(Variant variant)
+    {
+        this.variant = variant;
     }
 
     public enum Variant

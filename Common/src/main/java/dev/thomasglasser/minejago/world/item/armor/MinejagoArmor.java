@@ -3,7 +3,7 @@ package dev.thomasglasser.minejago.world.item.armor;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.registration.RegistrationProvider;
 import dev.thomasglasser.minejago.registration.RegistryObject;
-import dev.thomasglasser.minejago.world.entity.UnderworldSkeleton;
+import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
@@ -37,13 +37,13 @@ public class MinejagoArmor
         public SkeletalChestplateSet()
         {
             String name = "skeletal_chestplate";
-            RED = ARMOR.register(name + "_red", () -> new SkeletalChestplateItem(UnderworldSkeleton.Variant.STRENGTH, MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
-            BLUE = ARMOR.register(name + "_blue", () -> new SkeletalChestplateItem(UnderworldSkeleton.Variant.SPEED, MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
-            WHITE = ARMOR.register(name + "_white", () -> new SkeletalChestplateItem(UnderworldSkeleton.Variant.BOW, MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
-            BLACK = ARMOR.register(name + "_black", () -> new SkeletalChestplateItem(UnderworldSkeleton.Variant.KNIFE, MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
+            RED = ARMOR.register(name + "_red", () -> new SkeletalChestplateItem(Skulkin.Variant.STRENGTH, MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
+            BLUE = ARMOR.register(name + "_blue", () -> new SkeletalChestplateItem(Skulkin.Variant.SPEED, MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
+            WHITE = ARMOR.register(name + "_white", () -> new SkeletalChestplateItem(Skulkin.Variant.BOW, MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
+            BLACK = ARMOR.register(name + "_black", () -> new SkeletalChestplateItem(Skulkin.Variant.KNIFE, MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
         }
 
-        public RegistryObject<Item> getForVariant(UnderworldSkeleton.Variant variant) {
+        public RegistryObject<Item> getForVariant(Skulkin.Variant variant) {
             return switch (variant)
                     {
 

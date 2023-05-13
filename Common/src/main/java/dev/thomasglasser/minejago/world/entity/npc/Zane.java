@@ -1,4 +1,4 @@
-package dev.thomasglasser.minejago.world.entity;
+package dev.thomasglasser.minejago.world.entity.npc;
 
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;

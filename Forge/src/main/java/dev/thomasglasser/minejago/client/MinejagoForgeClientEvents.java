@@ -86,9 +86,10 @@ public class MinejagoForgeClientEvents {
         event.registerEntityRenderer(MinejagoEntityTypes.JAY.get(), CharacterRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.COLE.get(), CharacterRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.ZANE.get(), CharacterRenderer::new);
-        event.registerEntityRenderer(MinejagoEntityTypes.UNDERWORLD_SKELETON.get(), UnderworldSkeletonRenderer::new);
+        event.registerEntityRenderer(MinejagoEntityTypes.SKULKIN.get(), UnderworldSkeletonRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.KRUNCHA.get(), KrunchaRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.NUCKAL.get(), NuckalRenderer::new);
+        event.registerEntityRenderer(MinejagoEntityTypes.SKULKIN_HORSE.get(), SkulkinHorseRenderer::new);
     }
 
     public static void registerModels(ModelEvent.RegisterAdditional event)

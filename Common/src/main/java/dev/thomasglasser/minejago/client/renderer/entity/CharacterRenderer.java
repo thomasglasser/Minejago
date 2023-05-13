@@ -1,7 +1,7 @@
 package dev.thomasglasser.minejago.client.renderer.entity;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.world.entity.Character;
+import dev.thomasglasser.minejago.world.entity.npc.Character;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;

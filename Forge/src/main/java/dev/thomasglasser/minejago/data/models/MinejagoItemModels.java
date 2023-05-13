@@ -61,6 +61,7 @@ public class MinejagoItemModels extends ItemModelProvider
         basicItem(MinejagoItems.TEAPOT.get());
         basicItem(MinejagoItems.JASPOT.get());
         basicItem(MinejagoItems.GOLD_DISC.get());
+        basicItem(MinejagoItems.TOP_POST.get());
 
         MinejagoItems.TEAPOTS.forEach((dyeColor, itemRegistryObject) ->
         {
@@ -92,11 +93,10 @@ public class MinejagoItemModels extends ItemModelProvider
         spawnEgg(MinejagoItems.COLE_SPAWN_EGG.getId().getPath());
         spawnEgg(MinejagoItems.JAY_SPAWN_EGG.getId().getPath());
         spawnEgg(MinejagoItems.ZANE_SPAWN_EGG.getId().getPath());
-        spawnEgg(MinejagoItems.UNDERWORLD_SKELETON_SPAWN_EGG.getId().getPath());
+        spawnEgg(MinejagoItems.SKULKIN_SPAWN_EGG.getId().getPath());
         spawnEgg(MinejagoItems.KRUNCHA_SPAWN_EGG.getId().getPath());
         spawnEgg(MinejagoItems.NUCKAL_SPAWN_EGG.getId().getPath());
-
-        withExistingParent("top_post", blockModel("top_post"));
+        spawnEgg(MinejagoItems.SKULKIN_HORSE_SPAWN_EGG.getId().getPath());
     }
     
     protected void basicItemHandheld(ResourceLocation item)
