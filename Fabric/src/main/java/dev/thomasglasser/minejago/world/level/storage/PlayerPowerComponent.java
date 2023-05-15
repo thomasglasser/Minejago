@@ -1,5 +1,7 @@
 package dev.thomasglasser.minejago.world.level.storage;
 
+import dev.onyxstudios.cca.api.v3.component.ComponentProvider;
+import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.entity.PlayerComponent;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
@@ -8,7 +10,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 
-public class PlayerPowerComponent implements PowerComponent, PlayerComponent {
+public class PlayerPowerComponent implements PowerComponent, PlayerComponent, AutoSyncedComponent {
     private ResourceKey<Power> power;
 
     public PlayerPowerComponent()

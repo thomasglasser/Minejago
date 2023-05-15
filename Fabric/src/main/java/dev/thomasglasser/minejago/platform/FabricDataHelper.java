@@ -21,6 +21,7 @@ public class FabricDataHelper implements IDataHelper {
     @Override
     public void setPowerData(PowerData data, LivingEntity entity) {
         MinejagoFabricEntityComponents.POWER.get(entity).setPower(data.power());
+        MinejagoFabricEntityComponents.POWER.sync(entity);
     }
 
     @Override

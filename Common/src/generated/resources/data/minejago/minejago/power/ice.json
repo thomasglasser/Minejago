@@ -5,6 +5,17 @@
     3.0
   ],
   "border_particle": "minejago:snows",
+  "display": {
+    "description": {
+      "translate": "power.minejago.ice.desc"
+    },
+    "lore": {
+      "translate": "power.minejago.ice.lore"
+    },
+    "subtitle": {
+      "translate": "power.minejago.ice.subtitle"
+    }
+  },
   "id": "minejago:ice",
   "main_spinjitzu_color": [
     78.0,
@@ -12,5 +23,6 @@
     2.0
   ],
   "make_sets": true,
-  "power_color": "white"
+  "power_color": "white",
+  "selectable": true
 }

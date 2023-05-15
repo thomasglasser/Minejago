@@ -20,8 +20,6 @@ public class MobMixin
     @Inject(method = "doHurtTarget", at = @At("RETURN"))
     private void minejago_doHurtTarget(Entity target, CallbackInfoReturnable<Boolean> cir)
     {
-        System.out.println(((INSTANCE.getAttributeValue(Attributes.ATTACK_KNOCKBACK) + EnchantmentHelper.getKnockbackBonus(INSTANCE))));
-        System.out.println(cir.getReturnValue());
         if (cir.getReturnValue() && target instanceof ServerPlayer sp && ((INSTANCE.getAttributeValue(Attributes.ATTACK_KNOCKBACK) + EnchantmentHelper.getKnockbackBonus(INSTANCE)) > 2))
             MinejagoEntityEvents.stopSpinjitzu(Services.DATA.getSpinjitzuData(sp), sp, true);
     }

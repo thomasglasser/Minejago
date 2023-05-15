@@ -5,6 +5,17 @@
     134.0
   ],
   "border_particle": "minejago:sparks",
+  "display": {
+    "description": {
+      "translate": "power.minejago.fire.desc"
+    },
+    "lore": {
+      "translate": "power.minejago.fire.lore"
+    },
+    "subtitle": {
+      "translate": "power.minejago.fire.subtitle"
+    }
+  },
   "id": "minejago:fire",
   "main_spinjitzu_color": [
     37.0,
@@ -12,5 +23,6 @@
     211.0
   ],
   "make_sets": true,
-  "power_color": "red"
+  "power_color": "red",
+  "selectable": true
 }

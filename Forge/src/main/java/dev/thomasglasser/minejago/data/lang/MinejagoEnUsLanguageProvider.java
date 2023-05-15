@@ -20,6 +20,7 @@ import dev.thomasglasser.minejago.world.item.armortrim.MinejagoTrimPatterns;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPatterns;
+import dev.thomasglasser.minejago.client.gui.screens.inventory.PowerSelectionScreen;
 import net.minecraft.Util;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.data.PackOutput;
@@ -174,6 +175,7 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(PowerCommand.QUERY, "Your power is currently set to: %s");
         add(PowerCommand.INVALID, "Power not found in world. Check enabled data packs.");
 
+        // TODO: Add other values
         addPower(MinejagoPowers.EARTH, "Earth");
         addPower(MinejagoPowers.FIRE, "Fire");
         addPower(MinejagoPowers.LIGHTNING, "Lightning");
@@ -214,6 +216,10 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(MinejagoItems.MOD_NEEDED, "To get the full functionality of this item, please install the %s mod.");
 
         add(MinejagoPacks.IMMERSION.titleKey(), "Minejago Immersion Pack");
+
+        add(PowerSelectionScreen.POWER_GIVEN_KEY, "You feel a new power flow through you...");
+        add("gui.choose", "Choose");
+        add(PowerSelectionScreen.TITLE, "Select Power");
     }
 
     public void addDesc(Item item, String desc)
@@ -260,6 +266,14 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
     public void addPower(ResourceKey<Power> power, String name)
     {
         add(power.location().toLanguageKey("power"), name);
+    }
+
+    public void addPower(ResourceKey<Power> power, String name, String lore, String subtitle, String desc)
+    {
+        add(power.location().toLanguageKey("power"), name);
+        add(power.location().toLanguageKey("power") + ".lore", lore);
+        add(power.location().toLanguageKey("power") + ".subtitle", subtitle);
+        add(power.location().toLanguageKey("power") + ".desc", desc);
     }
 
     public void addAdvancement(String category, String key, String titleString, String descString) {

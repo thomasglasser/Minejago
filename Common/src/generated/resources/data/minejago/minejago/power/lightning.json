@@ -5,6 +5,17 @@
     2.0
   ],
   "border_particle": "minejago:bolts",
+  "display": {
+    "description": {
+      "translate": "power.minejago.lightning.desc"
+    },
+    "lore": {
+      "translate": "power.minejago.lightning.lore"
+    },
+    "subtitle": {
+      "translate": "power.minejago.lightning.subtitle"
+    }
+  },
   "id": "minejago:lightning",
   "main_spinjitzu_color": [
     142.0,
@@ -12,5 +23,6 @@
     3.0
   ],
   "make_sets": true,
-  "power_color": "blue"
+  "power_color": "blue",
+  "selectable": true
 }

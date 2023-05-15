@@ -45,6 +45,11 @@ public class MinejagoMainChannel
                 .encoder(ServerboundChangeVipDataPacket::toBytes)
                 .consumerMainThread((packet, context) -> packet.handle(context.get().getSender()))
                 .add();
+        INSTANCE.messageBuilder(ServerboundSetPowerDataPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(ServerboundSetPowerDataPacket::new)
+                .encoder(ServerboundSetPowerDataPacket::toBytes)
+                .consumerMainThread((packet, context) -> packet.handle(context.get().getSender()))
+                .add();
 
         // Client bound
         INSTANCE.messageBuilder(ClientboundStartSpinjitzuPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
