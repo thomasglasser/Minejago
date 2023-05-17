@@ -11,6 +11,7 @@ import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
+import dev.thomasglasser.minejago.world.entity.npc.Wu;
 import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.powers.Power;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
@@ -172,6 +173,9 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(PowerCommand.SUCCESS_SELF, "Set own power to %s");
         add(PowerCommand.CHANGED, "Your power has been updated to %s");
         add(PowerCommand.SUCCESS_OTHER, "Set %s's power to %s");
+        add(PowerCommand.SUCCESS_CLEARED_SELF, "Reset own power to %s and enabled power discovery");
+        add(PowerCommand.CLEARED, "Your power has been reset to %s and power discovery has been enabled");
+        add(PowerCommand.SUCCESS_CLEARED_OTHER, "Reset %s's power to %s and enabled power discovery");
         add(PowerCommand.QUERY, "Your power is currently set to: %s");
         add(PowerCommand.INVALID, "Power not found in world. Check enabled data packs.");
 
@@ -217,7 +221,7 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
 
         add(MinejagoPacks.IMMERSION.titleKey(), "Minejago Immersion Pack");
 
-        add(PowerSelectionScreen.POWER_GIVEN_KEY, "You feel a new power flow through you...");
+        add(Wu.POWER_GIVEN_KEY, "You feel a new power flow through you...");
         add("gui.choose", "Choose");
         add(PowerSelectionScreen.TITLE, "Select Power");
     }

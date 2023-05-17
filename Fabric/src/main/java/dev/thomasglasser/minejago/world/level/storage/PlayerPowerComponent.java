@@ -10,17 +10,19 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 
-public class PlayerPowerComponent implements PowerComponent, PlayerComponent, AutoSyncedComponent {
+public class PlayerPowerComponent implements PowerComponent, PlayerComponent<PlayerPowerComponent>, AutoSyncedComponent {
     private ResourceKey<Power> power;
+    private boolean given;
 
     public PlayerPowerComponent()
     {
-        power = MinejagoPowers.NONE;
+        this(MinejagoPowers.NONE, false);
     }
 
-    public PlayerPowerComponent(ResourceKey<Power> basePower)
+    public PlayerPowerComponent(ResourceKey<Power> basePower, boolean given)
     {
         power = basePower;
+        this.given = given;
     }
 
     @Override
@@ -48,5 +50,13 @@ public class PlayerPowerComponent implements PowerComponent, PlayerComponent, Au
     @Override
     public boolean shouldCopyForRespawn(boolean lossless, boolean keepInventory, boolean sameCharacter) {
         return true;
+    }
+
+    public boolean isGiven() {
+        return given;
+    }
+
+    public void setGiven(boolean given) {
+        this.given = given;
     }
 }

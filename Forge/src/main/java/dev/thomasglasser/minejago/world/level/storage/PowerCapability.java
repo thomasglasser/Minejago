@@ -17,11 +17,18 @@ import org.jetbrains.annotations.NotNull;
 public class PowerCapability extends LivingEntityCapability {
     @NotNull
     private ResourceKey<Power> power;
+    private boolean given;
 
     public PowerCapability(LivingEntity entity)
     {
+        this(entity, MinejagoPowers.NONE, false);
+    }
+
+    public PowerCapability(LivingEntity entity, ResourceKey<Power> power, boolean given)
+    {
         super(entity);
-        power = MinejagoPowers.NONE;
+        this.power = power;
+        this.given = given;
     }
 
     public @NotNull ResourceKey<Power> getPower() {
@@ -59,5 +66,13 @@ public class PowerCapability extends LivingEntityCapability {
     public SimpleChannel getNetworkChannel() {
         // Return the network channel here
         return MinejagoMainChannel.getChannel();
+    }
+
+    public void setGiven(boolean given) {
+        this.given = given;
+    }
+
+    public boolean isGiven() {
+        return given;
     }
 }

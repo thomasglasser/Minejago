@@ -274,5 +274,14 @@ public class MinejagoFabricClient implements ClientModInitializer {
                 buf.release();
             });
         });
+        ClientPlayNetworking.registerGlobalReceiver(ClientboundOpenPowerSelectionScreenPacket.ID, (client, handler, buf, responseSender) ->
+        {
+            buf.retain();
+            client.execute(() ->
+            {
+                new ClientboundOpenPowerSelectionScreenPacket(buf).handle();
+                buf.release();
+            });
+        });
     }
 }

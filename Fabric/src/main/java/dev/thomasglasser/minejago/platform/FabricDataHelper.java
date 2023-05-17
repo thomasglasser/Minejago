@@ -1,26 +1,20 @@
 package dev.thomasglasser.minejago.platform;
 
 import dev.thomasglasser.minejago.platform.services.IDataHelper;
-import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
-import dev.thomasglasser.minejago.world.entity.powers.Power;
-import dev.thomasglasser.minejago.world.level.storage.MinejagoFabricEntityComponents;
-import dev.thomasglasser.minejago.world.level.storage.PowerData;
-import dev.thomasglasser.minejago.world.level.storage.SpinjitzuComponent;
-import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
-import net.minecraft.resources.ResourceKey;
+import dev.thomasglasser.minejago.world.level.storage.*;
 import net.minecraft.world.entity.LivingEntity;
 
 public class FabricDataHelper implements IDataHelper {
     @Override
     public PowerData getPowerData(LivingEntity entity) {
-        ResourceKey<Power> key = MinejagoFabricEntityComponents.POWER.get(entity).getPower();
-        Power power = MinejagoPowers.POWERS.get(entity.level.registryAccess()).get(key);
-        return new PowerData(power != null ? key : MinejagoPowers.NONE);
+        PlayerPowerComponent component = (PlayerPowerComponent) MinejagoFabricEntityComponents.POWER.get(entity);
+        return new PowerData(component.getPower(), component.isGiven());
     }
 
     @Override
     public void setPowerData(PowerData data, LivingEntity entity) {
         MinejagoFabricEntityComponents.POWER.get(entity).setPower(data.power());
+        MinejagoFabricEntityComponents.POWER.get(entity).setGiven(data.given());
         MinejagoFabricEntityComponents.POWER.sync(entity);
     }
 

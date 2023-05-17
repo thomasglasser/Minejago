@@ -1,0 +1,43 @@
+package dev.thomasglasser.minejago.network;
+
+import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.client.gui.screens.inventory.PowerSelectionScreen;
+import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
+import dev.thomasglasser.minejago.util.MinejagoClientUtils;
+import dev.thomasglasser.minejago.util.MinejagoPacketUtils;
+import dev.thomasglasser.minejago.world.entity.powers.Power;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+
+import java.util.List;
+
+public class ClientboundOpenPowerSelectionScreenPacket
+{
+    public static final ResourceLocation ID = Minejago.modLoc("clientbound_open_power_selection_screen");
+
+    private final List<ResourceKey<Power>> powers;
+
+    public ClientboundOpenPowerSelectionScreenPacket(FriendlyByteBuf buf) {
+        powers = buf.readList(friendlyByteBuf -> friendlyByteBuf.readResourceKey(MinejagoRegistries.POWER));
+    }
+
+    public void toBytes(FriendlyByteBuf buf) {
+        buf.writeCollection(powers, FriendlyByteBuf::writeResourceKey);
+    }
+
+    public static FriendlyByteBuf toBytes(List<ResourceKey<Power>> powers) {
+        FriendlyByteBuf buf = MinejagoPacketUtils.create();
+
+        buf.writeCollection(powers, FriendlyByteBuf::writeResourceKey);
+
+        return buf;
+    }
+
+    // ON CLIENT
+    public void handle() {
+        MinejagoClientUtils.setScreen(new PowerSelectionScreen(Component.translatable("gui.power_selection.title"), powers));
+    }
+
+}

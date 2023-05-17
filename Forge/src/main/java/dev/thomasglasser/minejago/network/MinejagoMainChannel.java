@@ -87,6 +87,11 @@ public class MinejagoMainChannel
                 .encoder(ClientboundFailSpinjitzuPacket::toBytes)
                 .consumerMainThread((packet, context) -> packet.handle())
                 .add();
+        INSTANCE.messageBuilder(ClientboundOpenPowerSelectionScreenPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(ClientboundOpenPowerSelectionScreenPacket::new)
+                .encoder(ClientboundOpenPowerSelectionScreenPacket::toBytes)
+                .consumerMainThread((packet, context) -> packet.handle())
+                .add();
     }
 
     public static <MSG> void sendToServer(MSG msg)

@@ -9,4 +9,8 @@ public interface PowerComponent extends ComponentV3
     ResourceKey<Power> getPower();
 
     void setPower(ResourceKey<Power> newPower);
+
+    boolean isGiven();
+
+    void setGiven(boolean given);
 }

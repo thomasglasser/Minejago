@@ -12,14 +12,17 @@ public class ForgeDataHelper implements IDataHelper
 
     @Override
     public PowerData getPowerData(LivingEntity entity) {
-        ResourceKey<Power> key = entity.getCapability(PowerCapabilityAttacher.POWER_CAPABILITY).orElse(new PowerCapability(entity)).getPower();
-        Power power = MinejagoPowers.POWERS.get(entity.level.registryAccess()).get(key);
-        return new PowerData(power != null ? key : MinejagoPowers.NONE);
+        PowerCapability capability = entity.getCapability(PowerCapabilityAttacher.POWER_CAPABILITY).orElse(new PowerCapability(entity));
+        return new PowerData(capability.getPower(), capability.isGiven());
     }
 
     @Override
     public void setPowerData(PowerData data, LivingEntity entity) {
-        entity.getCapability(PowerCapabilityAttacher.POWER_CAPABILITY).ifPresent(cap -> cap.setPower(data.power()));
+        entity.getCapability(PowerCapabilityAttacher.POWER_CAPABILITY).ifPresent(cap ->
+        {
+            cap.setPower(data.power());
+            cap.setGiven(data.given());
+        });
     }
 
     @Override
