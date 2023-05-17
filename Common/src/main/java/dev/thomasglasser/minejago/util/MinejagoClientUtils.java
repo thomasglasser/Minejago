@@ -15,6 +15,7 @@ import dev.thomasglasser.minejago.platform.Services;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import org.apache.commons.io.IOUtils;
 
@@ -161,5 +162,10 @@ public class MinejagoClientUtils {
     public static void setScreen(Screen screen)
     {
         Minecraft.getInstance().setScreen(screen);
+    }
+
+    public static Entity getEntityById(int id)
+    {
+        return Minecraft.getInstance().level == null ? null : Minecraft.getInstance().level.getEntity(id);
     }
 }

@@ -14,21 +14,37 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 
+import javax.annotation.Nullable;
+
 public class ServerboundSetPowerDataPacket
 {
     public static final ResourceLocation ID = Minejago.modLoc("serverbound_set_power_data_packet");
 
     private final ResourceKey<Power> power;
     private final boolean markGiven;
+    @Nullable
+    private final Integer wuId;
 
     public ServerboundSetPowerDataPacket(FriendlyByteBuf buf) {
         power = buf.readResourceKey(MinejagoRegistries.POWER);
         markGiven = buf.readBoolean();
+        wuId = buf.readNullable(FriendlyByteBuf::readInt);
     }
 
     public void toBytes(FriendlyByteBuf buf) {
         buf.writeResourceKey(power);
         buf.writeBoolean(markGiven);
+        buf.writeNullable(wuId, FriendlyByteBuf::writeInt);
+    }
+
+    public static FriendlyByteBuf toBytes(ResourceKey<Power> key, boolean markGiven, @Nullable Integer wuId) {
+        FriendlyByteBuf buf = MinejagoPacketUtils.create();
+
+        buf.writeResourceKey(key);
+        buf.writeBoolean(markGiven);
+        buf.writeNullable(wuId, FriendlyByteBuf::writeInt);
+
+        return buf;
     }
 
     public static FriendlyByteBuf toBytes(ResourceKey<Power> key, boolean markGiven) {
@@ -36,6 +52,7 @@ public class ServerboundSetPowerDataPacket
 
         buf.writeResourceKey(key);
         buf.writeBoolean(markGiven);
+        buf.writeNullable(null, FriendlyByteBuf::writeInt);
 
         return buf;
     }
@@ -43,8 +60,10 @@ public class ServerboundSetPowerDataPacket
     // ON SERVER
     public void handle(ServerPlayer serverPlayer)
     {
-        ResourceKey<Power> key = Services.DATA.getPowerData(serverPlayer).power();
-        if (key != MinejagoPowers.NONE && markGiven && MinejagoPowersConfig.DRAIN_POOL.get()) Wu.getPowersToGive().add(key);
+        PowerData powerData = Services.DATA.getPowerData(serverPlayer);
+        ResourceKey<Power> key = powerData.power();
+        if (powerData.given() && markGiven && MinejagoPowersConfig.DRAIN_POOL.get() && wuId != null && serverPlayer.level.getEntity(wuId) instanceof Wu wu) wu.addPowersToGive(key);
         Services.DATA.setPowerData(new PowerData(power, markGiven), serverPlayer);
+        if (MinejagoPowersConfig.DRAIN_POOL.get() && wuId != null && serverPlayer.level.getEntity(wuId) instanceof Wu wu) wu.removePowersToGive(power);
     }
 }

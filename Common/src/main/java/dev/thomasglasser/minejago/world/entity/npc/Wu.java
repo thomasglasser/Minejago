@@ -32,12 +32,14 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Wu extends Character
 {
     public static final String POWER_GIVEN_KEY = "gui.power_selection.power_given";
-    private static List<ResourceKey<Power>> powersToGive = new ArrayList<>();
+    public static final String NO_POWER_GIVEN_KEY = "gui.power_selection.no_power_given";
+    private List<ResourceKey<Power>> powersToGive = new ArrayList<>();
 
     public Wu(EntityType<? extends Wu> entityType, Level level) {
         super(entityType, level);
@@ -75,7 +77,7 @@ public class Wu extends Character
         {
             powersToGive = new ArrayList<>(registry.registryKeySet());
             if (!MinejagoPowersConfig.ALLOW_NONE.get())
-                powersToGive.removeIf(powerResourceKey -> registry.get(powerResourceKey) != null && !registry.get(powerResourceKey).isSelectable());
+                removePowersToGive(MinejagoPowers.NONE);
         }
 
         if (player instanceof ServerPlayer serverPlayer && hand == InteractionHand.MAIN_HAND)
@@ -83,7 +85,7 @@ public class Wu extends Character
             if (!Services.DATA.getPowerData(serverPlayer).given() || MinejagoPowersConfig.ALLOW_CHANGE.get()) {
                 if (MinejagoPowersConfig.ALLOW_CHOOSE.get())
                 {
-                    Services.NETWORK.sendToClient(ClientboundOpenPowerSelectionScreenPacket.class, ClientboundOpenPowerSelectionScreenPacket.toBytes(powersToGive), serverPlayer);
+                    Services.NETWORK.sendToClient(ClientboundOpenPowerSelectionScreenPacket.class, ClientboundOpenPowerSelectionScreenPacket.toBytes(powersToGive, this.getId()), serverPlayer);
                 }
                 else
                 {
@@ -91,14 +93,36 @@ public class Wu extends Character
                     if (key != MinejagoPowers.NONE && MinejagoPowersConfig.DRAIN_POOL.get()) powersToGive.add(key);
                     ResourceKey<Power> power = powersToGive.remove(random.nextInt(powersToGive.size()));
                     Services.DATA.setPowerData(new PowerData(power, true), serverPlayer);
-                    serverPlayer.displayClientMessage(Component.translatable(POWER_GIVEN_KEY), true);
+                    serverPlayer.displayClientMessage(power == MinejagoPowers.NONE ? Component.translatable(NO_POWER_GIVEN_KEY) : Component.translatable(POWER_GIVEN_KEY), true);
                 }
             }
         }
         return super.mobInteract(player, hand);
     }
 
-    public static List<ResourceKey<Power>> getPowersToGive() {
+    public List<ResourceKey<Power>> getPowersToGive() {
+        return powersToGive;
+    }
+
+    @SafeVarargs
+    public final List<ResourceKey<Power>> addPowersToGive(ResourceKey<Power>... keys)
+    {
+        Arrays.stream(keys).forEach(key ->
+        {
+            if (!powersToGive.contains(key)) powersToGive.add(key);
+        });
+
+        return powersToGive;
+    }
+
+    @SafeVarargs
+    public final List<ResourceKey<Power>> removePowersToGive(ResourceKey<Power>... keys)
+    {
+        Arrays.stream(keys).forEach(key ->
+        {
+            while (powersToGive.contains(key)) powersToGive.remove(key);
+        });
+
         return powersToGive;
     }
 }

@@ -221,7 +221,9 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
 
         add(MinejagoPacks.IMMERSION.titleKey(), "Minejago Immersion Pack");
 
-        add(Wu.POWER_GIVEN_KEY, "You feel a new power flow through you...");
+        add(Wu.POWER_GIVEN_KEY, "You feel your power rise from within...");
+        add(Wu.NO_POWER_GIVEN_KEY, "You feel no unfound power. You are not an elemental master...");
+
         add("gui.choose", "Choose");
         add(PowerSelectionScreen.TITLE, "Select Power");
     }

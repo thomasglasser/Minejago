@@ -46,7 +46,9 @@ public class PowerCommand
                     return 1;
                 })
                 .then(Commands.literal("clear")
-                        .executes(context -> resetPower(context, Collections.singleton(context.getSource().getPlayerOrException()))))
+                        .executes(context -> resetPower(context, Collections.singleton(context.getSource().getPlayerOrException())))
+                        .then(Commands.argument("target", EntityArgument.players())
+                                .executes(context -> resetPower(context, EntityArgument.getPlayers(context,"target")))))
                 .then(Commands.argument("power", ResourceKeyArgument.key(MinejagoRegistries.POWER))
                         .executes((p_258228_) -> setPower(p_258228_, Collections.singleton(p_258228_.getSource().getPlayerOrException()), ResourceKeyArgument.resolveKey(p_258228_, "power", MinejagoRegistries.POWER, ERROR_INVALID_POWER)))
                 .then(Commands.argument("target", EntityArgument.players())

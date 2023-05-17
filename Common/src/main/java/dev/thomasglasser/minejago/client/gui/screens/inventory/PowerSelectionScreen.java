@@ -7,7 +7,7 @@ import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.network.ServerboundSetPowerDataPacket;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.world.entity.npc.Wu;
-import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowersConfig;
+import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.powers.Power;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.components.AbstractButton;
@@ -21,6 +21,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import org.jetbrains.annotations.NotNull;
+import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -53,9 +54,13 @@ public class PowerSelectionScreen extends Screen
 
     private Button selectOrDone;
 
-    public PowerSelectionScreen(Component pTitle, List<ResourceKey<Power>> powers) {
+    @Nullable
+    private final Wu wuForList;
+
+    public PowerSelectionScreen(Component pTitle, List<ResourceKey<Power>> powers, @Nullable Wu wu) {
         super(pTitle);
         this.powers = powers;
+        wuForList = wu;
     }
 
     @Override
@@ -80,9 +85,8 @@ public class PowerSelectionScreen extends Screen
             selectOrDone = Button.builder(Component.translatable("gui.done"), button ->
             {
                 if (selectedPower != null && minecraft.player != null) {
-                    minecraft.player.displayClientMessage(Component.translatable(Wu.POWER_GIVEN_KEY), true);
-                    Services.NETWORK.sendToServer(ServerboundSetPowerDataPacket.class, ServerboundSetPowerDataPacket.toBytes(registry.getResourceKey(selectedPower).orElseThrow(), true));
-                    if (MinejagoPowersConfig.DRAIN_POOL.get()) Wu.getPowersToGive().remove(registry.getResourceKey(selectedPower).orElseThrow());
+                    minecraft.player.displayClientMessage(selectedPower.is(MinejagoPowers.NONE) ? Component.translatable(Wu.NO_POWER_GIVEN_KEY) : Component.translatable(Wu.POWER_GIVEN_KEY), true);
+                    Services.NETWORK.sendToServer(ServerboundSetPowerDataPacket.class, ServerboundSetPowerDataPacket.toBytes(registry.getResourceKey(selectedPower).orElseThrow(), true, wuForList == null ? null : wuForList.getId()));
                 }
                 onClose();
             }).build();
@@ -346,5 +350,12 @@ public class PowerSelectionScreen extends Screen
     {
         if (selectedPower == null) selectOrDone.setMessage(Component.translatable("gui.done"));
         else selectOrDone.setMessage(Component.translatable("gui.choose"));
+    }
+
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        if (keyCode == GLFW.GLFW_KEY_ENTER)
+            selectOrDone.onPress();
+        return super.keyPressed(keyCode, scanCode, modifiers);
     }
 }

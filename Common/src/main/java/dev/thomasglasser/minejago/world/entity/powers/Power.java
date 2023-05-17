@@ -30,7 +30,6 @@ public class Power {
             ExtraCodecs.VECTOR3F.optionalFieldOf("alt_spinjitzu_color", SpinjitzuParticleOptions.DEFAULT).forGetter(Power::getAltSpinjitzuColor),
             BuiltInRegistries.PARTICLE_TYPE.byNameCodec().optionalFieldOf("border_particle").forGetter(Power::getBorderParticleType),
             Codec.BOOL.optionalFieldOf("make_sets", false).forGetter(Power::doMakeSets),
-            Codec.BOOL.optionalFieldOf("selectable", false).forGetter(Power::isSelectable),
             Display.CODEC.optionalFieldOf("display", Display.EMPTY).forGetter(Power::getDisplay)
     ).apply(instance, Power::new));
 
@@ -45,7 +44,6 @@ public class Power {
     @Nullable
     protected Supplier<? extends ParticleOptions> borderParticle;
     protected boolean makeSets;
-    protected boolean selectable;
     protected Display display;
 
     private String descId;
@@ -54,10 +52,10 @@ public class Power {
 
     public Power(@NotNull ResourceLocation id)
     {
-        this(id, ChatFormatting.GRAY, SpinjitzuParticleOptions.DEFAULT, SpinjitzuParticleOptions.DEFAULT, (Supplier<? extends ParticleOptions>) null, false, false, Display.EMPTY);
+        this(id, ChatFormatting.GRAY, SpinjitzuParticleOptions.DEFAULT, SpinjitzuParticleOptions.DEFAULT, (Supplier<? extends ParticleOptions>) null, false, Display.EMPTY);
     }
 
-    public Power(@NotNull ResourceLocation id, @NotNull ChatFormatting color, @NotNull Vector3f mainSpinjitzuColor, @NotNull Vector3f altSpinjitzuColor, @Nullable Supplier<? extends ParticleOptions> borderParticle, boolean makeSets, boolean selectable, Display display)
+    public Power(@NotNull ResourceLocation id, @NotNull ChatFormatting color, @NotNull Vector3f mainSpinjitzuColor, @NotNull Vector3f altSpinjitzuColor, @Nullable Supplier<? extends ParticleOptions> borderParticle, boolean makeSets, Display display)
     {
         this.id = id;
         this.color = color.isColor() ? color : ChatFormatting.GRAY;
@@ -65,18 +63,17 @@ public class Power {
         this.altSpinjitzuColor = altSpinjitzuColor;
         this.borderParticle = borderParticle;
         this.makeSets = makeSets;
-        this.selectable = selectable;
         this.display = display;
     }
 
-    public Power(@NotNull ResourceLocation id, ChatFormatting color, @NotNull Vector3f mainSpinjitzuColor, @NotNull Vector3f altSpinjitzuColor, @Nullable ParticleType<? extends ParticleOptions> borderParticle, boolean makeSets, boolean selectable, Display display)
+    public Power(@NotNull ResourceLocation id, ChatFormatting color, @NotNull Vector3f mainSpinjitzuColor, @NotNull Vector3f altSpinjitzuColor, @Nullable ParticleType<? extends ParticleOptions> borderParticle, boolean makeSets, Display display)
     {
-        this(id, color, mainSpinjitzuColor, altSpinjitzuColor, borderParticle instanceof ParticleOptions ? () -> (ParticleOptions) borderParticle : null, makeSets, selectable, display);
+        this(id, color, mainSpinjitzuColor, altSpinjitzuColor, borderParticle instanceof ParticleOptions ? () -> (ParticleOptions) borderParticle : null, makeSets, display);
     }
 
-    public Power(@NotNull ResourceLocation id, ChatFormatting color, @NotNull Vector3f mainSpinjitzuColor, @NotNull Vector3f altSpinjitzuColor, @NotNull Optional<ParticleType<?>> borderParticle, boolean makeSets, boolean selectable, Display display)
+    public Power(@NotNull ResourceLocation id, ChatFormatting color, @NotNull Vector3f mainSpinjitzuColor, @NotNull Vector3f altSpinjitzuColor, @NotNull Optional<ParticleType<?>> borderParticle, boolean makeSets, Display display)
     {
-        this(id, color, mainSpinjitzuColor, altSpinjitzuColor, borderParticle.orElse(null), makeSets, selectable, display);
+        this(id, color, mainSpinjitzuColor, altSpinjitzuColor, borderParticle.orElse(null), makeSets, display);
     }
 
     @NotNull
@@ -128,12 +125,6 @@ public class Power {
     {
         return Component.translatable(getDescriptionId()).withStyle(getColor());
     }
-
-    public boolean isSelectable()
-    {
-        return selectable;
-    }
-
     public Display getDisplay() {
         return display;
     }
