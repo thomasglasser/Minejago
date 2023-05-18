@@ -79,6 +79,8 @@
   "commands.power.query": "Deine derzeitige Energie ist auf %s gesetzt",
   "commands.power.success.other": "Setze die Kraft von %s auf %s",
   "commands.power.success.self": "Eigene Kraft auf %s gesetzt",
+  "commands.power.success_cleared.other": "Setze die Kraft von %s auf %s zurück und aktiviere die Kräfte-Entdeckung",
+  "commands.power.success_cleared.self": "Setze die eigene Kraft auf %s zurück und aktiviere die Kräfte-Entdeckung",
   "container.teapot": "Teekanne",
   "effect.minecraft.harming": "Schaden",
   "effect.minecraft.healing": "Heilung",
