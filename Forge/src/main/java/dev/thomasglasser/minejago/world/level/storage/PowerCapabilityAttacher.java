@@ -4,7 +4,7 @@ import dev._100media.capabilitysyncer.core.CapabilityAttacher;
 import dev.thomasglasser.minejago.Minejago;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.util.LazyOptional;
@@ -18,19 +18,19 @@ public class PowerCapabilityAttacher extends CapabilityAttacher {
     public static final ResourceLocation POWER_CAPABILITY_RL = new ResourceLocation(Minejago.MOD_ID, "power_capability");
 
     @Nullable
-    public static PowerCapability getPowerCapabilityUnwrap(Player player) {
+    public static PowerCapability getPowerCapabilityUnwrap(LivingEntity player) {
         return getPowerCapability(player).orElse(null);
     }
 
-    public static LazyOptional<PowerCapability> getPowerCapability(Player player) {
+    public static LazyOptional<PowerCapability> getPowerCapability(LivingEntity player) {
         return player.getCapability(POWER_CAPABILITY);
     }
 
-    private static void attach(AttachCapabilitiesEvent<Entity> event, Player player) {
+    private static void attach(AttachCapabilitiesEvent<Entity> event, LivingEntity player) {
         genericAttachCapability(event, new PowerCapability(player), POWER_CAPABILITY, POWER_CAPABILITY_RL);
     }
 
     public static void register() {
         CapabilityAttacher.registerCapability(CAPABILITY_CLASS);
-        CapabilityAttacher.registerPlayerAttacher(PowerCapabilityAttacher::attach, PowerCapabilityAttacher::getPowerCapability, true);
+        CapabilityAttacher.registerEntityAttacher(LivingEntity.class, PowerCapabilityAttacher::attach, PowerCapabilityAttacher::getPowerCapability);
     }}

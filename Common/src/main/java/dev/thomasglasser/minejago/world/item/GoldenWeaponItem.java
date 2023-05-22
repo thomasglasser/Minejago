@@ -155,9 +155,9 @@ public abstract class GoldenWeaponItem extends SimpleFoiledItem
         super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
         if (isAdvanced.isAdvanced())
         {
-            if (!Services.PLATFORM.isModLoaded(Minejago.Dependencies.PLAYER_ANIMATOR.getModId()))
+            if (!Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled())
                 tooltipComponents.add(Component.translatable(MOD_NEEDED, Minejago.Dependencies.PLAYER_ANIMATOR.getModId()).withStyle(ChatFormatting.RED));
-            if (!Services.PLATFORM.isModLoaded(Minejago.Dependencies.DYNAMIC_LIGHTS.getModId()))
+            if (!Minejago.Dependencies.DYNAMIC_LIGHTS.isInstalled())
                 tooltipComponents.add(Component.translatable(MOD_NEEDED, Minejago.Dependencies.DYNAMIC_LIGHTS.getModId()).withStyle(ChatFormatting.RED));
         }
     }

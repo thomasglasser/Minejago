@@ -154,3 +154,25 @@ versionRange="[2.1.1,)" #mandatory
 ordering="NONE"
 # Side this dependency is applied on - BOTH, CLIENT or SERVER
 side="CLIENT"
+[[dependencies.minejago]] #optional
+# the modid of the dependency
+modId="tslatentitystatus" #mandatory
+# Does this dependency have to exist - if not, ordering below must be specified
+mandatory=false #mandatory
+# The version range of the dependency
+versionRange="[1.1.1,)" #mandatory
+# An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
+ordering="NONE"
+# Side this dependency is applied on - BOTH, CLIENT or SERVER
+side="CLIENT"
+[[dependencies.minejago]] #optional
+# the modid of the dependency
+modId="jade" #mandatory
+# Does this dependency have to exist - if not, ordering below must be specified
+mandatory=false #mandatory
+# The version range of the dependency
+versionRange="[10.3.0,)" #mandatory
+# An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
+ordering="NONE"
+# Side this dependency is applied on - BOTH, CLIENT or SERVER
+side="BOTH"

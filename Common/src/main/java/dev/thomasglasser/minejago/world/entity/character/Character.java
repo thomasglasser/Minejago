@@ -1,8 +1,16 @@
-package dev.thomasglasser.minejago.world.entity.npc;
+package dev.thomasglasser.minejago.world.entity.character;
 
+import dev.thomasglasser.minejago.core.particles.MinejagoParticleUtils;
+import dev.thomasglasser.minejago.platform.Services;
+import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
+import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
+import dev.thomasglasser.minejago.world.entity.powers.Power;
+import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
+import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -32,12 +40,27 @@ import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.HurtBySensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyPlayersSensor;
 import net.tslat.smartbrainlib.util.BrainUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.constant.DefaultAnimations;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 
-public class Character extends AgeableMob implements SmartBrainOwner<Character>
+public class Character extends AgeableMob implements SmartBrainOwner<Character>, GeoEntity
 {
+    public static final RawAnimation SPIN = RawAnimation.begin().thenPlay("move.spinjitzu");
+
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    protected boolean stopSpinjitzuOnNextStop;
+
     public Character(EntityType<? extends Character> entityType, Level level) {
         super(entityType, level);
         this.getNavigation().setCanFloat(true);
@@ -52,12 +75,12 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>
 
     @Nullable
     @Override
-    public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob otherParent) {
+    public AgeableMob getBreedOffspring(@NotNull ServerLevel level, @NotNull AgeableMob otherParent) {
         return null;
     }
 
     @Override
-    protected Brain.Provider<?> brainProvider() {
+    protected Brain.@NotNull Provider<?> brainProvider() {
         return new SmartBrainProvider<>(this);
     }
 
@@ -70,7 +93,7 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>
     public List<ExtendedSensor<Character>> getSensors() {
         return ObjectArrayList.of(
                 new NearbyPlayersSensor<>(),
-                new HurtBySensor<>()); 							// Keep track of nearby players
+                new HurtBySensor<>());
     }
 
     @Override
@@ -78,7 +101,7 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>
         return BrainActivityGroup.coreTasks(
                 new SetWalkTargetToAttackTarget<>(),
                 new LookAtTargetSink(40, 300), 														// Look at the look target
-                new MoveToWalkTarget<>(),
+                new MoveToWalkTarget<>().whenStopping(this::onMoveToWalkTargetStopping),
                 new FloatToSurfaceOfFluid<Character>().startCondition(this::shouldFloatToSurfaceOfFluid));																					// Move to the current walk target
     }
 
@@ -98,7 +121,7 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>
         return BrainActivityGroup.fightTasks(
                 new InvalidateAttackTarget<>(), 	 // Invalidate the attack target if it's no longer applicable
                 new FirstApplicableBehaviour<>( 																							  	 // Run only one of the below behaviours, trying each one in order
-                        new AnimatableMeleeAttack<>(0).whenStarting(entity -> setAggressive(true)).whenStarting(entity -> setAggressive(false)))// Melee attack
+                        new AnimatableMeleeAttack<>(0).whenStarting(entity -> setAggressive(true)).whenStopping(entity -> setAggressive(false)))// Melee attack
         );
     }
 
@@ -134,5 +157,54 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         return InteractionResult.CONSUME;
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+        controllerRegistrar.add(DefaultAnimations.genericWalkController(this));
+        controllerRegistrar.add(DefaultAnimations.genericAttackAnimation(this, DefaultAnimations.ATTACK_STRIKE));
+        controllerRegistrar.add(new AnimationController<GeoAnimatable>(this, "spinjitzu", animationState ->
+        {
+            if (isDoingSpinjitzu())
+                return animationState.setAndContinue(SPIN);
+
+            animationState.getController().forceAnimationReset();
+
+            return PlayState.STOP;
+        }));
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        Power power1 = MinejagoPowers.POWERS.get(level.registryAccess()).get(Services.DATA.getPowerData(this).power());
+        if (!level.isClientSide && isDoingSpinjitzu() && power1 != null)
+        {
+            if (tickCount % 20 == 0)
+            {
+                level.playSound(null, blockPosition(), MinejagoSoundEvents.SPINJITZU_ACTIVE.get(), SoundSource.NEUTRAL);
+                level.gameEvent(this, MinejagoGameEvents.SPINJITZU.get(), blockPosition());
+            }
+            MinejagoParticleUtils.renderNormalSpinjitzu(this, power1.getMainSpinjitzuColor(), power1.getAltSpinjitzuColor(), 10.5, false);
+            MinejagoParticleUtils.renderNormalSpinjitzuBorder(power1.getBorderParticle(), this, 4, false);
+        }
+    }
+
+    protected void onMoveToWalkTargetStopping(PathfinderMob pathfinderMob) {
+        if (pathfinderMob instanceof Character character && character.stopSpinjitzuOnNextStop) character.setDoingSpinjitzu(false);
+    }
+
+    public boolean isDoingSpinjitzu() {
+        return Services.DATA.getSpinjitzuData(this).active();
+    }
+
+    public void setDoingSpinjitzu(boolean doingSpinjitzu)
+    {
+        Services.DATA.setSpinjitzuData(new SpinjitzuData(true, doingSpinjitzu), this);
     }
 }

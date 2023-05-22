@@ -95,7 +95,7 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem implements IModeledItem
         }
         else if (player.isShiftKeyDown())
         {
-            if (!level.isClientSide) Services.NETWORK.sendToAllClients(ClientboundStartScytheAnimationPacket.class, ClientboundStartScytheAnimationPacket.toBytes(player.getUUID(), ItemAnimations.Animations.SLAM_START, ItemAnimations.Animations.SLAM_RUMBLE), (ServerPlayer) player);
+            if (!level.isClientSide) Services.NETWORK.sendToAllClients(ClientboundStartScytheAnimationPacket.class, ClientboundStartScytheAnimationPacket.toBytes(player.getUUID(), ItemAnimations.Animations.SLAM_START, ItemAnimations.Animations.SLAM_RUMBLE), player.getServer());
             BlockPos[] places = new BlockPos[] {pos.north(6), pos.north(4).east(4), pos.east(6), pos.east(4).south(4), pos.south(6), pos.south(4).west(4), pos.west(6), pos.west(4).north(4)};
             for (BlockPos place: places)
             {
@@ -108,7 +108,7 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem implements IModeledItem
         else
         {
             player.startUsingItem(pContext.getHand());
-            if (!level.isClientSide) Services.NETWORK.sendToAllClients(ClientboundStartScytheAnimationPacket.class, ClientboundStartScytheAnimationPacket.toBytes(player.getUUID(), ItemAnimations.Animations.BEAM_START, ItemAnimations.Animations.BEAM_ACTIVE), (ServerPlayer) player);
+            if (!level.isClientSide) Services.NETWORK.sendToAllClients(ClientboundStartScytheAnimationPacket.class, ClientboundStartScytheAnimationPacket.toBytes(player.getUUID(), ItemAnimations.Animations.BEAM_START, ItemAnimations.Animations.BEAM_ACTIVE), player.getServer());
         }
         return InteractionResult.SUCCESS;
     }
@@ -120,7 +120,7 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem implements IModeledItem
         if (pLivingEntity instanceof Player player1)
         {
             if (!player1.getAbilities().instabuild) player1.getCooldowns().addCooldown(pStack.getItem(), 20 * (pTimeCharged > 10? (pStack.getUseDuration() - pTimeCharged) : 1));
-            if (!pLevel.isClientSide) Services.NETWORK.sendToAllClients(ClientboundStopAnimationPacket.class, ClientboundStopAnimationPacket.toBytes(pLivingEntity.getUUID()), (ServerPlayer) player1);
+            if (!pLevel.isClientSide) Services.NETWORK.sendToAllClients(ClientboundStopAnimationPacket.class, ClientboundStopAnimationPacket.toBytes(pLivingEntity.getUUID()), pLevel.getServer());
             player1.getAttributes().removeAttributeModifiers(builder.build());
         }
     }
@@ -287,7 +287,7 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem implements IModeledItem
         if (!player.getLevel().isClientSide && !player.getAbilities().instabuild)
         {
             player.getLevel().explode(null, player.getX(), player.getY() + 1, player.getZ(), 8.0F, Level.ExplosionInteraction.TNT);
-            Services.NETWORK.sendToAllClients(ClientboundStartScytheAnimationPacket.class, ClientboundStartScytheAnimationPacket.toBytes(player.getUUID(), ItemAnimations.Animations.SLAM_START, ItemAnimations.Animations.EMPTY), (ServerPlayer) player);
+            Services.NETWORK.sendToAllClients(ClientboundStartScytheAnimationPacket.class, ClientboundStartScytheAnimationPacket.toBytes(player.getUUID(), ItemAnimations.Animations.SLAM_START, ItemAnimations.Animations.EMPTY), player.getServer());
         }
     }
 

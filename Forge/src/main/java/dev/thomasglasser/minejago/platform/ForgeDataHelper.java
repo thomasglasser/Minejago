@@ -1,19 +1,22 @@
 package dev.thomasglasser.minejago.platform;
 
 import dev.thomasglasser.minejago.platform.services.IDataHelper;
-import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
-import dev.thomasglasser.minejago.world.entity.powers.Power;
 import dev.thomasglasser.minejago.world.level.storage.*;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraftforge.common.util.LazyOptional;
 
 public class ForgeDataHelper implements IDataHelper
 {
 
     @Override
     public PowerData getPowerData(LivingEntity entity) {
-        PowerCapability capability = entity.getCapability(PowerCapabilityAttacher.POWER_CAPABILITY).orElse(new PowerCapability(entity));
-        return new PowerData(capability.getPower(), capability.isGiven());
+        LazyOptional<PowerCapability> capability = entity.getCapability(PowerCapabilityAttacher.POWER_CAPABILITY);
+        if (capability.isPresent()) {
+            PowerCapability pc = capability.orElse(new PowerCapability(entity));
+            return new PowerData(pc.getPower(), pc.isGiven());
+        }
+
+        return null;
     }
 
     @Override
@@ -27,8 +30,13 @@ public class ForgeDataHelper implements IDataHelper
 
     @Override
     public SpinjitzuData getSpinjitzuData(LivingEntity entity) {
-        SpinjitzuCapability capability = entity.getCapability(SpinjitzuCapabilityAttacher.SPINJITZU_CAPABILITY).orElse(new SpinjitzuCapability(entity));
-        return new SpinjitzuData(capability.isUnlocked(), capability.isActive());
+        LazyOptional<SpinjitzuCapability> capability = entity.getCapability(SpinjitzuCapabilityAttacher.SPINJITZU_CAPABILITY);
+        if (capability.isPresent()) {
+            SpinjitzuCapability sc = capability.orElse(new SpinjitzuCapability(entity));
+            return new SpinjitzuData(sc.isUnlocked(), sc.isActive());
+        }
+
+        return null;
     }
 
     @Override

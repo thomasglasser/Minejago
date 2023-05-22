@@ -57,7 +57,7 @@ public class MinejagoForgeClientEvents {
 
     public static void onClientSetup(FMLClientSetupEvent event)
     {
-        if (Services.PLATFORM.isModLoaded(Minejago.Dependencies.PLAYER_ANIMATOR.getModId())) PlayerAnimationAccess.REGISTER_ANIMATION_EVENT.register(MinejagoPlayerAnimator::registerPlayerAnimation);
+        if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled()) PlayerAnimationAccess.REGISTER_ANIMATION_EVENT.register(MinejagoPlayerAnimator::registerPlayerAnimation);
     }
 
     public static void onRegisterLayers(EntityRenderersEvent.RegisterLayerDefinitions event)
@@ -80,7 +80,7 @@ public class MinejagoForgeClientEvents {
         event.registerEntityRenderer(MinejagoEntityTypes.THROWN_IRON_SPEAR.get(), ThrownIronSpearRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.THROWN_IRON_SHURIKEN.get(), ThrownIronShurikenRenderer::new);
 
-        event.registerEntityRenderer(MinejagoEntityTypes.WU.get(), CharacterRenderer::new);
+        event.registerEntityRenderer(MinejagoEntityTypes.WU.get(), WuRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.KAI.get(), CharacterRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.NYA.get(), (context) -> new CharacterRenderer<>(context, true));
         event.registerEntityRenderer(MinejagoEntityTypes.JAY.get(), CharacterRenderer::new);
@@ -169,13 +169,6 @@ public class MinejagoForgeClientEvents {
                 player.addLayer(new BetaTesterLayer<>(player, models));
                 player.addLayer(new DevLayer<>(player, models));
             }
-        }
-
-        LivingEntityRenderer<Mob, PlayerModel<Mob>> wu = event.getRenderer(MinejagoEntityTypes.WU.get());
-        if (wu != null)
-        {
-            wu.addLayer(new BetaTesterLayer<>(wu, models));
-            wu.addLayer(new DevLayer<>(wu, models));
         }
     }
 

@@ -89,7 +89,7 @@ public class MinejagoItems
     {
         RegistryObject<Item> sherd = register(name, () -> new Item(new Item.Properties()), CreativeModeTabs.INGREDIENTS);
 
-        if (Services.PLATFORM.isModLoaded(Minejago.Dependencies.SHARDSAPI.getModId())) PotteryShardRegistry.register(sherd.getId(), sherd.getId());
+        if (Minejago.Dependencies.SHARDSAPI.isInstalled()) PotteryShardRegistry.register(sherd.getId(), sherd.getId());
 
         return sherd;
     }

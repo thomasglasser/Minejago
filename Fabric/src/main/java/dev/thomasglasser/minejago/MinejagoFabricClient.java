@@ -10,7 +10,6 @@ import dev.thomasglasser.minejago.client.renderer.entity.layers.DevLayer;
 import dev.thomasglasser.minejago.network.*;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import dev.thomasglasser.minejago.packs.PackHolder;
-import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
@@ -43,7 +42,6 @@ import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -116,7 +114,7 @@ public class MinejagoFabricClient implements ClientModInitializer {
         EntityRendererRegistry.register(MinejagoEntityTypes.THROWN_IRON_SPEAR.get(), ThrownIronSpearRenderer::new);
         EntityRendererRegistry.register(MinejagoEntityTypes.THROWN_IRON_SHURIKEN.get(), ThrownIronShurikenRenderer::new);
 
-        EntityRendererRegistry.register(MinejagoEntityTypes.WU.get(), CharacterRenderer::new);
+        EntityRendererRegistry.register(MinejagoEntityTypes.WU.get(), WuRenderer::new);
         EntityRendererRegistry.register(MinejagoEntityTypes.KAI.get(), CharacterRenderer::new);
         EntityRendererRegistry.register(MinejagoEntityTypes.NYA.get(), (context) -> new CharacterRenderer<>(context, true));
         EntityRendererRegistry.register(MinejagoEntityTypes.JAY.get(), CharacterRenderer::new);
@@ -185,13 +183,7 @@ public class MinejagoFabricClient implements ClientModInitializer {
         {
             EntityModelSet models = context.getModelSet();
 
-            if (entityType == MinejagoEntityTypes.WU.get())
-            {
-                LivingEntityRenderer<Mob, PlayerModel<Mob>> wu = (LivingEntityRenderer<Mob, PlayerModel<Mob>>) entityRenderer;
-                wu.addLayer(new BetaTesterLayer<>(wu, models));
-                wu.addLayer(new DevLayer<>(wu, models));
-            }
-            else if (entityType == EntityType.PLAYER)
+            if (entityType == EntityType.PLAYER)
             {
                 LivingEntityRenderer<Player, PlayerModel<Player>> player = (LivingEntityRenderer<Player, PlayerModel<Player>>) entityRenderer;
 
@@ -202,7 +194,7 @@ public class MinejagoFabricClient implements ClientModInitializer {
                 }
             }
         });
-        if (Services.PLATFORM.isModLoaded(Minejago.Dependencies.PLAYER_ANIMATOR.getModId())) PlayerAnimationAccess.REGISTER_ANIMATION_EVENT.register(MinejagoPlayerAnimator::registerPlayerAnimation);
+        if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled()) PlayerAnimationAccess.REGISTER_ANIMATION_EVENT.register(MinejagoPlayerAnimator::registerPlayerAnimation);
         ModConfigEvents.reloading(Minejago.MOD_ID).register((config) ->
                 MinejagoClientUtils.refreshVip());
         ItemGroupEvents.MODIFY_ENTRIES_ALL.register((group, entries) ->

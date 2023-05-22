@@ -7,9 +7,8 @@ import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
-
-import java.lang.reflect.InvocationTargetException;
 
 public class FabricNetworkHelper implements INetworkHelper {
     @Override
@@ -49,8 +48,8 @@ public class FabricNetworkHelper implements INetworkHelper {
     }
 
     @Override
-    public <MSG> void sendToAllClients(Class<MSG> msgClass, FriendlyByteBuf args, ServerPlayer p) {
-        for (ServerPlayer player : PlayerLookup.all(p.getServer()))
+    public <MSG> void sendToAllClients(Class<MSG> msgClass, FriendlyByteBuf args, MinecraftServer server) {
+        for (ServerPlayer player : PlayerLookup.all(server))
         {
             try {
                 ServerPlayNetworking.send(player, ((ResourceLocation) msgClass.getDeclaredField("ID").get(this)), args);
@@ -61,8 +60,8 @@ public class FabricNetworkHelper implements INetworkHelper {
     }
 
     @Override
-    public <MSG> void sendToAllClients(Class<MSG> msgClass, ServerPlayer p) {
-        for (ServerPlayer player : PlayerLookup.all(p.getServer()))
+    public <MSG> void sendToAllClients(Class<MSG> msgClass, MinecraftServer server) {
+        for (ServerPlayer player : PlayerLookup.all(server))
         {
             try {
                 ServerPlayNetworking.send(player, ((ResourceLocation) msgClass.getDeclaredField("ID").get(this)), MinejagoPacketUtils.empty());

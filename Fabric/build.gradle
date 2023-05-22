@@ -28,7 +28,6 @@ dependencies {
     modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:$rei_version"
     modRuntimeOnly "maven.modrinth:huge-structure-blocks:${hugestructureblocks_version}"
     modRuntimeOnly "curse.maven:worldedit-225608:${worldedit_id}"
-    modRuntimeOnly "curse.maven:tes-830420:${tes_fabric_id}"
     modRuntimeOnly "maven.modrinth:midnightlib:${midnightlib_version}-fabric"
     modRuntimeOnly "com.terraformersmc:modmenu:${modmenu_version}"
 
@@ -48,6 +47,7 @@ dependencies {
     }
     modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-api:${cca_version}")
 //    modImplementation("curse.maven:configured-667378:${configured_fabric_id}") Waiting on 1.19.4
+    modImplementation "net.tslat.tes:TES-fabric-${project.minecraft_version}:${project.tes_version}"
 
     include modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${playeranimator_version}+${minecraft_version}")
     include modImplementation("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forgeconfigapiport_version}")

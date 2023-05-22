@@ -7,27 +7,42 @@ import net.minecraft.world.entity.LivingEntity;
 public class FabricDataHelper implements IDataHelper {
     @Override
     public PowerData getPowerData(LivingEntity entity) {
-        PlayerPowerComponent component = (PlayerPowerComponent) MinejagoFabricEntityComponents.POWER.get(entity);
-        return new PowerData(component.getPower(), component.isGiven());
+        if (MinejagoFabricEntityComponents.POWER.isProvidedBy(entity))
+        {
+            PowerComponent component = MinejagoFabricEntityComponents.POWER.get(entity);
+            return new PowerData(component.getPower(), component.isGiven());
+        }
+        return null;
     }
 
     @Override
     public void setPowerData(PowerData data, LivingEntity entity) {
-        MinejagoFabricEntityComponents.POWER.get(entity).setPower(data.power());
-        MinejagoFabricEntityComponents.POWER.get(entity).setGiven(data.given());
-        MinejagoFabricEntityComponents.POWER.sync(entity);
+        if (MinejagoFabricEntityComponents.POWER.isProvidedBy(entity))
+        {
+            MinejagoFabricEntityComponents.POWER.get(entity).setPower(data.power());
+            MinejagoFabricEntityComponents.POWER.get(entity).setGiven(data.given());
+            MinejagoFabricEntityComponents.POWER.sync(entity);
+        }
     }
 
     @Override
     public SpinjitzuData getSpinjitzuData(LivingEntity entity) {
-        SpinjitzuComponent component = MinejagoFabricEntityComponents.SPINJITZU.get(entity);
-        return new SpinjitzuData(component.isUnlocked(), component.isActive());
+        if (MinejagoFabricEntityComponents.SPINJITZU.isProvidedBy(entity))
+        {
+            SpinjitzuComponent component = MinejagoFabricEntityComponents.SPINJITZU.get(entity);
+            return new SpinjitzuData(component.isUnlocked(), component.isActive());
+        }
+        return null;
     }
 
     @Override
     public void setSpinjitzuData(SpinjitzuData data, LivingEntity entity) {
-        SpinjitzuComponent component = MinejagoFabricEntityComponents.SPINJITZU.get(entity);
-        component.setActive(data.active());
-        component.setUnlocked(data.unlocked());
+        if (MinejagoFabricEntityComponents.SPINJITZU.isProvidedBy(entity))
+        {
+            SpinjitzuComponent component = MinejagoFabricEntityComponents.SPINJITZU.get(entity);
+            component.setActive(data.active());
+            component.setUnlocked(data.unlocked());
+            MinejagoFabricEntityComponents.SPINJITZU.sync(entity);
+        }
     }
 }

@@ -16,7 +16,7 @@ public class ServerboundStartSpinjitzuPacket {
     // ON SERVER
     public void handle(ServerPlayer serverPlayer) {
         Services.DATA.setSpinjitzuData(new SpinjitzuData(true, true), serverPlayer);
-        Services.NETWORK.sendToAllClients(ClientboundStartSpinjitzuPacket.class, ClientboundStartSpinjitzuPacket.toBytes(serverPlayer.getUUID()), serverPlayer);
+        Services.NETWORK.sendToAllClients(ClientboundStartSpinjitzuPacket.class, ClientboundStartSpinjitzuPacket.toBytes(serverPlayer.getUUID()), serverPlayer.getServer());
         AttributeInstance speed = serverPlayer.getAttribute(Attributes.MOVEMENT_SPEED);
         if (speed != null && !speed.hasModifier(SpinjitzuData.SPEED_MODIFIER)) speed.addTransientModifier(SpinjitzuData.SPEED_MODIFIER);
         AttributeInstance kb = serverPlayer.getAttribute(Attributes.ATTACK_KNOCKBACK);

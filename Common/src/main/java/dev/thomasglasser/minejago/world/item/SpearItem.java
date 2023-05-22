@@ -88,7 +88,7 @@ public class SpearItem extends ThrowableSwordItem implements IModeledItem {
         super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
         if (isAdvanced.isAdvanced())
         {
-            if (!Services.PLATFORM.isModLoaded(Minejago.Dependencies.REACH_ENTITY_ATTRIBUTES.getModId()))
+            if (!Minejago.Dependencies.REACH_ENTITY_ATTRIBUTES.isInstalled())
                 tooltipComponents.add(Component.translatable(MOD_NEEDED, Minejago.Dependencies.REACH_ENTITY_ATTRIBUTES.getModId()).withStyle(ChatFormatting.RED));
         }
     }

@@ -18,8 +18,6 @@ import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import static dev.thomasglasser.minejago.data.blockstates.MinejagoBlockStates.blockModel;
-
 public class MinejagoItemModels extends ItemModelProvider
 {
     public MinejagoItemModels(PackOutput output, ExistingFileHelper helper)
@@ -76,7 +74,7 @@ public class MinejagoItemModels extends ItemModelProvider
 
         provider.lookupOrThrow(MinejagoRegistries.POWER).listElements().forEach(powerReference ->
                 {
-                    if (powerReference.get().doMakeSets())
+                    if (powerReference.get().hasSets())
                     {
                         MinejagoArmor.POWER_SETS.forEach(armorSet ->
                                 armorSet.getAll().forEach(item ->

@@ -6,7 +6,7 @@ import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.network.ServerboundSetPowerDataPacket;
 import dev.thomasglasser.minejago.platform.Services;
-import dev.thomasglasser.minejago.world.entity.npc.Wu;
+import dev.thomasglasser.minejago.world.entity.character.Wu;
 import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.powers.Power;
 import net.minecraft.ChatFormatting;
@@ -85,7 +85,6 @@ public class PowerSelectionScreen extends Screen
             selectOrDone = Button.builder(Component.translatable("gui.done"), button ->
             {
                 if (selectedPower != null && minecraft.player != null) {
-                    minecraft.player.displayClientMessage(selectedPower.is(MinejagoPowers.NONE) ? Component.translatable(Wu.NO_POWER_GIVEN_KEY) : Component.translatable(Wu.POWER_GIVEN_KEY), true);
                     Services.NETWORK.sendToServer(ServerboundSetPowerDataPacket.class, ServerboundSetPowerDataPacket.toBytes(registry.getResourceKey(selectedPower).orElseThrow(), true, wuForList == null ? null : wuForList.getId()));
                 }
                 onClose();
@@ -122,7 +121,7 @@ public class PowerSelectionScreen extends Screen
 
             Power.Display display = selectedPower.getDisplay();
             Component lore = display.lore();
-            Component sub = display.subtitle();
+            Component sub = selectedPower.getTagline();
             Component desc = display.description();
 
             int x = (this.width - BACKGROUND_WIDTH) / 2;
@@ -188,7 +187,7 @@ public class PowerSelectionScreen extends Screen
 
         protected PowerButton(int i, int j, Power power) {
             super(i, j, 32, 32, power.getFormattedName());
-            textureLoc = new ResourceLocation(power.getId().getNamespace(), "textures/power/" + power.getId().getPath() + ".png");
+            textureLoc = power.getIcon();
             this.power = power;
             setTooltip(Tooltip.create(power.getFormattedName()));
         }

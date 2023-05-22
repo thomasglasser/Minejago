@@ -29,7 +29,7 @@ public class SpinjitzuParticleOptions implements ParticleOptions {
     public static final Vector3f ELEMENT_TAN = new Vector3f(25, 76, 138);
     public static final Vector3f ELEMENT_WHITE = new Vector3f(7, 2, 3);
     public static final Vector3f ELEMENT_YELLOW = new Vector3f(1, 21, 134);
-    public static final Vector3f ELEMENT_GOLD = new Vector3f(); // TODO: Figure out TOC/Golden color
+    public static final Vector3f ELEMENT_GOLD = new Vector3f(1, 19, 123);
 
     // TEAM COLORS
     public static final Vector3f TEAM_BLACK = new Vector3f(0, 0, 0);

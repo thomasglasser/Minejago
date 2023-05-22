@@ -7,7 +7,6 @@ import dev.thomasglasser.minejago.platform.services.IItemHelper;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -23,7 +22,7 @@ public class FabricItemHelper implements IItemHelper
 
     @Override
     public Attribute getAttackRangeAttribute() {
-        if (Services.PLATFORM.isModLoaded(Minejago.Dependencies.REACH_ENTITY_ATTRIBUTES.getModId()))
+        if (Minejago.Dependencies.REACH_ENTITY_ATTRIBUTES.isInstalled())
             return ReachEntityAttributes.ATTACK_RANGE;
         return null;
     }

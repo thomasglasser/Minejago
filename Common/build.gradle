@@ -9,7 +9,7 @@ buildscript {
 }
 
 plugins {
-    id 'org.quiltmc.loom' version '1.+'
+    id 'org.quiltmc.loom' version '1.1.+'
     id 'maven-publish'
 }
 
@@ -54,10 +54,12 @@ dependencies {
     modCompileOnly "curse.maven:moonlight-499980:${moonlight_fabric_id}"
 //    modCompileOnly "vazkii.patchouli:Patchouli:${minecraft_version}-${patchouli_version}:api"
     modCompileOnly("curse.maven:configured-667378:${configured_fabric_id}")
+    modCompileOnly "maven.modrinth:jade:${jade_version}"
 
     modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-common:${forgeconfigapiport_version}"
     modImplementation("dev.thomasglasser.shardsapi:shardsapi-common-${minecraft_version}:${shardsapi_version}")
     modImplementation "net.tslat.smartbrainlib:SmartBrainLib-common-${minecraft_version}:${smartbrainlib_version}"
+    modImplementation "net.tslat.tes:TES-common-${project.minecraft_version}:${project.tes_version}"
 
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
 }

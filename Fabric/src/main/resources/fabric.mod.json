@@ -35,6 +35,9 @@
     ],
     "cardinal-components": [
       "dev.thomasglasser.minejago.world.level.storage.MinejagoFabricEntityComponents"
+    ],
+    "jade": [
+      "dev.thomasglasser.minejago.client.MinejagoWailaPlugin"
     ]
   },
   "mixins": [
@@ -62,7 +65,9 @@
     "lambdynamiclights": ">=2.3.0+1.19.4",
     "firstpersonmod": "*",
     "modmenu": "*",
-    "configured": ">=2.1.1"
+    "configured": ">=2.1.1",
+    "tslatentitystatus": ">=1.1.1",
+    "jade": ">=10.3.0"
   },
 
   "accessWidener" : "minejago.accesswidener",

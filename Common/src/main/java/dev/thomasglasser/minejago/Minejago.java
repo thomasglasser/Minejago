@@ -9,6 +9,7 @@ import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
+import dev.thomasglasser.minejago.world.entity.ai.memory.MinejagoMemoryModuleTypes;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
 import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
 import dev.thomasglasser.minejago.world.item.MinejagoCreativeModeTabs;
@@ -23,6 +24,8 @@ import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPattern
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
 import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
 import net.minecraft.resources.ResourceLocation;
+import net.tslat.tes.api.TESAPI;
+import net.tslat.tes.api.util.TESClientUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.bernie.geckolib.GeckoLib;
@@ -45,6 +48,23 @@ public class Minejago {
 		registerConfigs();
 
 		GeckoLib.initialize();
+
+		if (Dependencies.TSLAT_ENTITY_STATUS.isInstalled())
+		{
+			TESAPI.addTESHudElement(Minejago.modLoc("power_symbol"), (poseStack, mc, partialTick, entity, opacity, inWorldHud) ->
+			{
+				if (mc.level != null && Services.DATA.getPowerData(entity) != null) {
+					TESClientUtil.prepRenderForTexture(MinejagoPowers.POWERS.get(mc.level.registryAccess()).get(Services.DATA.getPowerData(entity).power()).getIcon());
+					poseStack.pushPose();
+					poseStack.scale(0.5f, 0.5f, 1.0f);
+					TESClientUtil.drawSimpleTexture(poseStack, 0, 0, 32, 32, 0, 0, 32);
+					poseStack.popPose();
+					return 16;
+				}
+
+				return 0;
+			});
+		}
 	}
 
 	private static void initRegistries()
@@ -69,6 +89,7 @@ public class Minejago {
 		MinejagoKeyMappings.init();
 		MinejagoCreativeModeTabs.init();
 		MinejagoGameEvents.init();
+		MinejagoMemoryModuleTypes.init();
 	}
 
 	private static void registerConfigs()
@@ -84,14 +105,15 @@ public class Minejago {
 		TRIMMED("trimmed"),
 		SHARDSAPI("shardsapi"),
 		PLAYER_ANIMATOR("playeranimator", "player-animator"),
-		REACH_ENTITY_ATTRIBUTES("forge", "reach-entity-attributes");
+		REACH_ENTITY_ATTRIBUTES("forge", "reach-entity-attributes"),
+		TSLAT_ENTITY_STATUS("tslatentitystatus");
 
 		private final String forge;
 		private final String fabric;
 
-		Dependencies(String modid)
+		Dependencies(String modId)
 		{
-			this(modid, modid);
+			this(modId, modId);
 		}
 		Dependencies(String forge, String fabric)
 		{
@@ -101,6 +123,11 @@ public class Minejago {
 
 		public String getModId() {
 			return Services.PLATFORM.getPlatformName().equals("Forge") ? forge : fabric;
+		}
+
+		public boolean isInstalled()
+		{
+			return Services.PLATFORM.isModLoaded(getModId());
 		}
 	}
 

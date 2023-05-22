@@ -1,5 +1,8 @@
-package dev.thomasglasser.minejago.world.entity.npc;
+package dev.thomasglasser.minejago.world.entity.character;
 
+import dev.thomasglasser.minejago.platform.Services;
+import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
+import dev.thomasglasser.minejago.world.level.storage.PowerData;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -16,6 +19,7 @@ public class Jay extends Character
 {
     public Jay(EntityType<? extends Jay> entityType, Level level) {
         super(entityType, level);
+        Services.DATA.setPowerData(new PowerData(MinejagoPowers.LIGHTNING, true), this);
     }
 
     @Override

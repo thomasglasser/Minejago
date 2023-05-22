@@ -44,6 +44,6 @@ public class ServerboundChangeVipDataPacket {
     }
 
     public void handle(ServerPlayer serverPlayer) {
-        Services.NETWORK.sendToAllClients(ClientboundChangeVipDataPacket.class, ClientboundChangeVipDataPacket.toBytes(uuid, beta, choice, dev), serverPlayer);
+        Services.NETWORK.sendToAllClients(ClientboundChangeVipDataPacket.class, ClientboundChangeVipDataPacket.toBytes(uuid, beta, choice, dev), serverPlayer.getServer());
     }
 }

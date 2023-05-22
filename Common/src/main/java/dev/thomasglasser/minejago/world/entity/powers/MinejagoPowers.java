@@ -26,6 +26,7 @@ public class MinejagoPowers {
     public static final ResourceKey<Power> EARTH = create("earth");
     public static final ResourceKey<Power> FIRE = create("fire");
     public static final ResourceKey<Power> LIGHTNING = create("lightning");
+    public static final ResourceKey<Power> CREATION = create("creation");
 
     private static ResourceKey<Power> create(String id)
     {
@@ -36,11 +37,12 @@ public class MinejagoPowers {
 
     public static void bootstrap(BootstapContext<Power> context)
     {
-        context.register(NONE, new Power(Minejago.modLoc("none")));
-        context.register(ICE, new Power(Minejago.modLoc("ice"), ChatFormatting.WHITE, SpinjitzuParticleOptions.ELEMENT_LIGHT_BLUE, SpinjitzuParticleOptions.ELEMENT_WHITE, MinejagoParticleTypes.SNOWS, true, new Power.Display(Component.translatable(Util.makeDescriptionId("power", Minejago.modLoc("ice")) + ".lore"), Component.translatable(Util.makeDescriptionId("power", Minejago.modLoc("ice")) + ".subtitle"), Component.translatable(Util.makeDescriptionId("power", Minejago.modLoc("ice")) + ".desc"))));
-        context.register(EARTH, new Power(Minejago.modLoc("earth"), ChatFormatting.YELLOW, SpinjitzuParticleOptions.ELEMENT_BROWN, SpinjitzuParticleOptions.ELEMENT_TAN, MinejagoParticleTypes.ROCKS, true, new Power.Display(Component.translatable(Util.makeDescriptionId("power", Minejago.modLoc("earth")) + ".lore"), Component.translatable(Util.makeDescriptionId("power", Minejago.modLoc("earth")) + ".subtitle"), Component.translatable(Util.makeDescriptionId("power", Minejago.modLoc("earth")) + ".desc"))));
-        context.register(FIRE, new Power(Minejago.modLoc("fire"), ChatFormatting.RED, SpinjitzuParticleOptions.ELEMENT_ORANGE, SpinjitzuParticleOptions.ELEMENT_YELLOW, MinejagoParticleTypes.SPARKS, true, new Power.Display(Component.translatable(Util.makeDescriptionId("power", Minejago.modLoc("fire")) + ".lore"), Component.translatable(Util.makeDescriptionId("power", Minejago.modLoc("fire")) + ".subtitle"), Component.translatable(Util.makeDescriptionId("power", Minejago.modLoc("fire")) + ".desc"))));
-        context.register(LIGHTNING, new Power(Minejago.modLoc("lightning"), ChatFormatting.BLUE, SpinjitzuParticleOptions.ELEMENT_BLUE, SpinjitzuParticleOptions.ELEMENT_LIGHT_BLUE, MinejagoParticleTypes.BOLTS, true, new Power.Display(Component.translatable(Util.makeDescriptionId("power", Minejago.modLoc("lightning")) + ".lore"), Component.translatable(Util.makeDescriptionId("power", Minejago.modLoc("lightning")) + ".subtitle"), Component.translatable(Util.makeDescriptionId("power", Minejago.modLoc("lightning")) + ".desc"))));
+        context.register(NONE, Power.builder("none").build());
+        context.register(ICE, Power.builder("ice").color(ChatFormatting.WHITE).defaultTagline().mainSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_LIGHT_BLUE).altSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_WHITE).borderParticle(MinejagoParticleTypes.SNOWS).hasSets().defaultDisplay().build());
+        context.register(EARTH, Power.builder("earth").color(ChatFormatting.DARK_GRAY).defaultTagline().mainSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_BROWN).altSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_TAN).borderParticle(MinejagoParticleTypes.ROCKS).hasSets().defaultDisplay().build());
+        context.register(FIRE, Power.builder("fire").color(ChatFormatting.RED).defaultTagline().mainSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_ORANGE).altSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_YELLOW).borderParticle(MinejagoParticleTypes.SPARKS).hasSets().defaultDisplay().build());
+        context.register(LIGHTNING, Power.builder("lightning").color(ChatFormatting.BLUE).defaultTagline().mainSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_BLUE).altSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_LIGHT_BLUE).borderParticle(MinejagoParticleTypes.BOLTS).hasSets().defaultDisplay().build());
+        context.register(CREATION, Power.builder("creation").color(ChatFormatting.GOLD).mainSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_DARK_GOLD).altSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_GOLD).borderParticle(MinejagoParticleTypes.SPARKLES).defaultDisplay().isSpecial().build());
     }
 
     public static List<ItemStack> getArmorForAll(HolderLookup.Provider access)
@@ -49,7 +51,7 @@ public class MinejagoPowers {
         access.lookupOrThrow(MinejagoRegistries.POWER).listElements().forEach(powerReference ->
         {
             Power power = powerReference.value();
-            if (power.makeSets)
+            if (power.hasSets)
             {
                 MinejagoArmor.POWER_SETS.forEach(armorSet ->
                         armorSet.getAll().forEach(item ->

@@ -52,12 +52,12 @@ public class TeapotBlockEntity extends BlockEntity implements IItemHolder, Namea
 
     private int cups = 0;
 
-    public float temp;
-    private boolean boiling;
-    private boolean done;
-    private boolean brewing;
-    private boolean heating;
-    private Potion potion;
+    protected float temp;
+    protected boolean boiling;
+    protected boolean done;
+    protected boolean brewing;
+    protected boolean heating;
+    protected Potion potion;
 
     private float experiencePerCup = 0;
     private int experienceCups = 6;
@@ -199,6 +199,7 @@ public class TeapotBlockEntity extends BlockEntity implements IItemHolder, Namea
             this.boiling = pTag.getBoolean("Boiling");
             this.done = pTag.getBoolean("Done");
         }
+        this.brewTime = pTag.getShort("BrewTime");
     }
 
     @Override
@@ -210,8 +211,9 @@ public class TeapotBlockEntity extends BlockEntity implements IItemHolder, Namea
         }
         pTag.putBoolean("Boiling", boiling);
         pTag.putBoolean("Done", done);
-        pTag.putShort("Temperature", (short) temp);
-        pTag.putShort("Cups", (short) cups);
+        pTag.putFloat("Temperature", temp);
+        pTag.putInt("Cups", cups);
+        pTag.putShort("BrewTime", brewTime);
     }
 
     /**
@@ -240,12 +242,20 @@ public class TeapotBlockEntity extends BlockEntity implements IItemHolder, Namea
     public void take(int count)
     {
         this.cups -= count;
-        setChanged();
+        setChanged(level, getBlockPos(), getBlockState());
     }
 
     public void setTemperature(int temp) {
         this.temp = temp;
-        setChanged();
+        setChanged(level, getBlockPos(), getBlockState());
+    }
+
+    public float getTemperature() {
+        return temp;
+    }
+
+    public short getBrewTime() {
+        return brewTime;
     }
 
     public boolean isBoiling() {
@@ -272,12 +282,12 @@ public class TeapotBlockEntity extends BlockEntity implements IItemHolder, Namea
         } else if (potion == this.potion)
         {
             this.cups += cups;
-            setChanged();
+            setChanged(level, getBlockPos(), getBlockState());
             return true;
         } else if (this.potion == null) {
             this.cups = cups;
             this.potion = potion;
-            setChanged();
+            setChanged(level, getBlockPos(), getBlockState());
             return true;
         }
         return false;

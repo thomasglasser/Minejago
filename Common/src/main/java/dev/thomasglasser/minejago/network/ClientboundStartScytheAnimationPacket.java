@@ -42,6 +42,6 @@ public class ClientboundStartScytheAnimationPacket {
 
     // ON CLIENT
     public void handle() {
-        if (Services.PLATFORM.isModLoaded(Minejago.Dependencies.PLAYER_ANIMATOR.getModId())) MinejagoClientUtils.startAnimation(startAnim.getAnimation(), goAnim != null ? goAnim.getAnimation() : null, MinejagoClientUtils.getClientPlayerByUUID(uuid), FirstPersonMode.THIRD_PERSON_MODEL);
+        if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled()) MinejagoClientUtils.startAnimation(startAnim.getAnimation(), goAnim != null ? goAnim.getAnimation() : null, MinejagoClientUtils.getClientPlayerByUUID(uuid), FirstPersonMode.THIRD_PERSON_MODEL);
     }
 }

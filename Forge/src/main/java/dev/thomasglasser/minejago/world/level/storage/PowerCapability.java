@@ -45,6 +45,7 @@ public class PowerCapability extends LivingEntityCapability {
         CompoundTag nbt = new CompoundTag();
 
         nbt.putString("Power", power.location().toString());
+        nbt.putBoolean("Given", given);
 
         return nbt;
     }
@@ -54,6 +55,8 @@ public class PowerCapability extends LivingEntityCapability {
         if (nbt.contains("Power")) {
             this.power = ResourceKey.create(MinejagoRegistries.POWER, ResourceLocation.of(nbt.getString("Power"), ':'));
         }
+        if (nbt.contains("Given"))
+            given = nbt.getBoolean("Given");
     }
 
     @Override

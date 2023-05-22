@@ -104,7 +104,7 @@ public class MinejagoMainChannel
         INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), msg);
     }
 
-    public static <MSG> void sendToAllClients(MSG msg, ServerPlayer player)
+    public static <MSG> void sendToAllClients(MSG msg)
     {
         INSTANCE.send(PacketDistributor.ALL.noArg(), msg);
     }

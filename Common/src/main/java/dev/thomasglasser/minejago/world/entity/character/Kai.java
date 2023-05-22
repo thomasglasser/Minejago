@@ -1,5 +1,8 @@
-package dev.thomasglasser.minejago.world.entity.npc;
+package dev.thomasglasser.minejago.world.entity.character;
 
+import dev.thomasglasser.minejago.platform.Services;
+import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
+import dev.thomasglasser.minejago.world.level.storage.PowerData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Items;
@@ -8,6 +11,7 @@ import net.minecraft.world.level.Level;
 public class Kai extends Character {
     public Kai(EntityType<? extends Kai> entityType, Level level) {
         super(entityType, level);
+        Services.DATA.setPowerData(new PowerData(MinejagoPowers.FIRE, true), this);
     }
 
     @Override

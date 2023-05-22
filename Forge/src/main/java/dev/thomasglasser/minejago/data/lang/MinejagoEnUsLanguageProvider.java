@@ -2,6 +2,7 @@ package dev.thomasglasser.minejago.data.lang;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
+import dev.thomasglasser.minejago.client.MinejagoWailaPlugin;
 import dev.thomasglasser.minejago.data.advancements.packs.MinejagoAdventureAdvancementKeys;
 import dev.thomasglasser.minejago.data.advancements.packs.MinejagoStoryAdvancementKeys;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
@@ -11,7 +12,7 @@ import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
-import dev.thomasglasser.minejago.world.entity.npc.Wu;
+import dev.thomasglasser.minejago.world.entity.character.Wu;
 import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.powers.Power;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
@@ -25,6 +26,7 @@ import dev.thomasglasser.minejago.client.gui.screens.inventory.PowerSelectionScr
 import net.minecraft.Util;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.data.PackOutput;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -42,6 +44,8 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraftforge.common.data.LanguageProvider;
 import org.apache.commons.lang3.text.WordUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class MinejagoEnUsLanguageProvider extends LanguageProvider
 {
@@ -179,12 +183,13 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(PowerCommand.QUERY, "Your power is currently set to: %s");
         add(PowerCommand.INVALID, "Power not found in world. Check enabled data packs.");
 
-        // TODO: Add other values
-        addPower(MinejagoPowers.EARTH, "Earth");
-        addPower(MinejagoPowers.FIRE, "Fire");
-        addPower(MinejagoPowers.LIGHTNING, "Lightning");
-        addPower(MinejagoPowers.ICE, "Ice");
-        addPower(MinejagoPowers.NONE, "None");
+        // TODO: Update other values
+        addPower(MinejagoPowers.EARTH, "Earth", "Solid as rock.", "Lore!", "Description!");
+        addPower(MinejagoPowers.FIRE, "Fire", "It burns bright in you.", "Lore!", "Description!");
+        addPower(MinejagoPowers.LIGHTNING, "Lightning", "yay spark", "Lore!", "Description!");
+        addPower(MinejagoPowers.ICE, "Ice", "yay ice", "Lore!", "Description!");
+        addPower(MinejagoPowers.NONE, "None", "no powers", "Lore!", "Description!");
+        addPower(MinejagoPowers.CREATION, "Creation", "wu hoo", "Lore!", "Description!");
 
         addCreativeTab(Minejago.modLoc("gi"), "Gi");
 
@@ -221,11 +226,25 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
 
         add(MinejagoPacks.IMMERSION.titleKey(), "Minejago Immersion Pack");
 
-        add(Wu.POWER_GIVEN_KEY, "You feel your power rise from within...");
-        add(Wu.NO_POWER_GIVEN_KEY, "You feel no unfound power. You are not an elemental master...");
+        add(Wu.NO_POWER_GIVEN_KEY, "You feel no new power rise from within. You are not an elemental master...");
+        add(Wu.POWER_GIVEN_KEY, "<%s> %s, Master of %s. %s");
 
         add("gui.choose", "Choose");
         add(PowerSelectionScreen.TITLE, "Select Power");
+
+        add("block.minejago.teapot.waila.potion", "Potion: %s");
+        add("block.minejago.teapot.waila.item", "Item: %s");
+        add("block.minejago.teapot.waila.cups", "Cups: %s");
+        add("block.minejago.teapot.waila.time", "Brew Time: %s");
+        add("block.minejago.teapot.waila.temp", "Temperature: %s");
+        add("block.minejago.teapot.waila.empty", "Empty");
+
+        add("entity.minejago.living.waila.power", "Power: %s");
+        add("entity.minejago.painting.waila.map", "Has Golden Weapons Map");
+
+        addPluginConfig(MinejagoWailaPlugin.LIVING_ENTITY, "Living Entity");
+        addPluginConfig(MinejagoWailaPlugin.PAINTING, "Painting");
+        addPluginConfig(MinejagoWailaPlugin.TEAPOT_BLOCK, "Teapot");
     }
 
     public void addDesc(Item item, String desc)
@@ -269,17 +288,12 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(key.getName(), name);
     }
 
-    public void addPower(ResourceKey<Power> power, String name)
+    public void addPower(@NotNull ResourceKey<Power> power, @NotNull String name, @Nullable String tagline, @Nullable String lore, @Nullable String desc)
     {
         add(power.location().toLanguageKey("power"), name);
-    }
-
-    public void addPower(ResourceKey<Power> power, String name, String lore, String subtitle, String desc)
-    {
-        add(power.location().toLanguageKey("power"), name);
-        add(power.location().toLanguageKey("power") + ".lore", lore);
-        add(power.location().toLanguageKey("power") + ".subtitle", subtitle);
-        add(power.location().toLanguageKey("power") + ".desc", desc);
+        if (tagline != null) add(((TranslatableContents)(Power.defaultTagline(power.location()).getContents())).getKey(), tagline);
+        if (lore != null) add(((TranslatableContents)(Power.Display.withDefaultKeys(power.location()).lore().getContents())).getKey(), lore);
+        if (desc != null) add(((TranslatableContents)(Power.Display.withDefaultKeys(power.location()).description().getContents())).getKey(), desc);
     }
 
     public void addAdvancement(String category, String key, String titleString, String descString) {
@@ -319,5 +333,10 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
     public void addPattern(ResourceKey<TrimPattern> pattern, String name)
     {
         add(Util.makeDescriptionId("trim_pattern", pattern.location()), name + " Armor Trim");
+    }
+
+    public void addPluginConfig(ResourceLocation location, String name)
+    {
+        add("config.jade.plugin_" + location.toLanguageKey(), "Minejago " + name + " Config");
     }
 }

@@ -1,0 +1,24 @@
+{
+  "alt_spinjitzu_color": [
+    1.0,
+    19.0,
+    123.0
+  ],
+  "border_particle": "minejago:sparkles",
+  "display": {
+    "description": {
+      "translate": "power.minejago.creation.description"
+    },
+    "lore": {
+      "translate": "power.minejago.creation.lore"
+    }
+  },
+  "id": "minejago:creation",
+  "is_special": true,
+  "main_spinjitzu_color": [
+    103.0,
+    126.0,
+    242.0
+  ],
+  "power_color": "gold"
+}
