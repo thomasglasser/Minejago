@@ -4,6 +4,7 @@ import dev._100media.capabilitysyncer.core.CapabilityAttacher;
 import dev.thomasglasser.minejago.Minejago;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityToken;
@@ -18,19 +19,19 @@ public class SpinjitzuCapabilityAttacher extends CapabilityAttacher {
     public static final ResourceLocation SPINJITZU_CAPABILITY_RL = new ResourceLocation(Minejago.MOD_ID, "spinjitzu_capability");
 
     @Nullable
-    public static SpinjitzuCapability getSpinjitzuCapabilityUnwrap(Player player) {
+    public static SpinjitzuCapability getSpinjitzuCapabilityUnwrap(LivingEntity player) {
         return getSpinjitzuCapability(player).orElse(null);
     }
 
-    public static LazyOptional<SpinjitzuCapability> getSpinjitzuCapability(Player player) {
+    public static LazyOptional<SpinjitzuCapability> getSpinjitzuCapability(LivingEntity player) {
         return player.getCapability(SPINJITZU_CAPABILITY);
     }
 
-    private static void attach(AttachCapabilitiesEvent<Entity> event, Player player) {
+    private static void attach(AttachCapabilitiesEvent<Entity> event, LivingEntity player) {
         genericAttachCapability(event, new SpinjitzuCapability(player), SPINJITZU_CAPABILITY, SPINJITZU_CAPABILITY_RL);
     }
 
     public static void register() {
         CapabilityAttacher.registerCapability(CAPABILITY_CLASS);
-        CapabilityAttacher.registerPlayerAttacher(SpinjitzuCapabilityAttacher::attach, SpinjitzuCapabilityAttacher::getSpinjitzuCapability, true);
+        CapabilityAttacher.registerEntityAttacher(LivingEntity.class, SpinjitzuCapabilityAttacher::attach, SpinjitzuCapabilityAttacher::getSpinjitzuCapability, true);
     }}
