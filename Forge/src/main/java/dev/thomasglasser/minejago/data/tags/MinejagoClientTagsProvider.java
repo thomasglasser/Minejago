@@ -14,7 +14,7 @@ public class MinejagoClientTagsProvider extends ClientTagDataProvider {
         super(packOutput, Minejago.MOD_ID, existingFileHelper);
     }
 
-    public static final ClientTagKey CUSTOM_TRIM_PATTERN_TEXTURES = ClientTagKey.of(new ResourceLocation(Minejago.Dependencies.TRIMMED.getModId(), "custom_trim_pattern_textures"));
+    public static final ClientTagKey CUSTOM_TRIM_PATTERN_TEXTURES = ClientTagKey.of(new ResourceLocation(Minejago.Dependencies.TRIMMED.getModId(), "custom_armor_trim_pattern_textures"));
 
     @Override
     protected void addTags() {

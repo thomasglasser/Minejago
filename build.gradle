@@ -129,9 +129,9 @@ subprojects {
         repositories {
             maven { url = 'https://maven.parchmentmc.org' }
         }
-        maven {
-            url = "https://maven.dhyces.dev/"
-        }
+//        maven {
+//            url = "https://maven.dhyces.dev/"
+//        }
         maven {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/dhyces/trimmed")

@@ -92,6 +92,11 @@ public class MinejagoMainChannel
                 .encoder(ClientboundOpenPowerSelectionScreenPacket::toBytes)
                 .consumerMainThread((packet, context) -> packet.handle())
                 .add();
+        INSTANCE.messageBuilder(ClientboundOpenScrollPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(ClientboundOpenScrollPacket::new)
+                .encoder(ClientboundOpenScrollPacket::toBytes)
+                .consumerMainThread((packet, context) -> packet.handle())
+                .add();
     }
 
     public static <MSG> void sendToServer(MSG msg)

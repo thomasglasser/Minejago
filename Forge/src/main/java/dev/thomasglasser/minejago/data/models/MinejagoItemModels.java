@@ -60,6 +60,9 @@ public class MinejagoItemModels extends ItemModelProvider
         basicItem(MinejagoItems.JASPOT.get());
         basicItem(MinejagoItems.GOLD_DISC.get());
         basicItem(MinejagoItems.TOP_POST.get());
+        basicItem(MinejagoItems.SCROLL.get());
+        basicItem(MinejagoItems.WRITABLE_SCROLL.get());
+        basicItem(MinejagoItems.WRITTEN_SCROLL.get());
 
         MinejagoItems.TEAPOTS.forEach((dyeColor, itemRegistryObject) ->
         {

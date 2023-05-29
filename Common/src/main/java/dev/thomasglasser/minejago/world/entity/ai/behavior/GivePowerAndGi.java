@@ -67,7 +67,7 @@ public class GivePowerAndGi<E extends PathfinderMob> extends MoveToWalkTarget<E>
         if (power1 != null) target.sendSystemMessage(Component.translatable(Wu.POWER_GIVEN_KEY, entity.getDisplayName(), target.getDisplayName(), power1.getFormattedName(), power1.getTagline()));
 
         this.target = null;
-        BrainUtils.setMemory(entity, MemoryModuleType.WALK_TARGET, new WalkTarget(originalPos, 1.2f, 2));
+        BrainUtils.setMemory(entity, MemoryModuleType.WALK_TARGET, new WalkTarget(originalPos, 1.2f, 1));
 
         BrainUtils.clearMemory(entity, MemoryModuleType.INTERACTION_TARGET);
         BrainUtils.clearMemory(entity, MemoryModuleType.LOOK_TARGET);

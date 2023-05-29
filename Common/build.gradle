@@ -60,6 +60,7 @@ dependencies {
     modImplementation("dev.thomasglasser.shardsapi:shardsapi-common-${minecraft_version}:${shardsapi_version}")
     modImplementation "net.tslat.smartbrainlib:SmartBrainLib-common-${minecraft_version}:${smartbrainlib_version}"
     modImplementation "net.tslat.tes:TES-common-${project.minecraft_version}:${project.tes_version}"
+    modImplementation("dev.dhyces.trimmed:trimmed-common-${minecraft_version}:${trimmed_version}")
 
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
 }

@@ -88,6 +88,17 @@ public class MinejagoRecipes extends RecipeProvider {
             coloredTeapotFromColoredTerracotta(writer, pot.get(), ForgeRegistries.BLOCKS.getValue(new ResourceLocation(color.getName() + "_terracotta")));
             coloredTeapotFromTeapotAndDye(writer, pot.get(), MinejagoItemTags.DYES_TAGS.get(color));
         });
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, MinejagoItems.SCROLL.get(), 1)
+                .requires(Items.PAPER, 3)
+                .unlockedBy("has_paper", has(Items.PAPER))
+                .save(writer);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, MinejagoItems.WRITABLE_SCROLL.get(), 1)
+                .requires(MinejagoItems.SCROLL.get())
+                .requires(Items.FEATHER)
+                .requires(Items.INK_SAC)
+                .unlockedBy("has_scroll", has(MinejagoItems.SCROLL.get()))
+                .save(writer);
     }
 
     private void buildSmithing(Consumer<FinishedRecipe> writer)

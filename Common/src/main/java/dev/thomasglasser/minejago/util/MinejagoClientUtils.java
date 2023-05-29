@@ -168,4 +168,9 @@ public class MinejagoClientUtils {
     {
         return Minecraft.getInstance().level == null ? null : Minecraft.getInstance().level.getEntity(id);
     }
+
+    public static Player getMainClientPlayer()
+    {
+        return Minecraft.getInstance().player;
+    }
 }

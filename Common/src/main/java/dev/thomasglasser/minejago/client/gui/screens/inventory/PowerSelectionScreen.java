@@ -42,7 +42,11 @@ public class PowerSelectionScreen extends Screen
 
     @Nullable
     Power selectedPower;
-    
+    @Nullable
+    ResourceKey<Power> selectedPowerKey;
+    @Nullable
+    PowerButton selectedPowerButton;
+
     private boolean canScroll = false;
     private boolean scrolling = false;
     private int descStart = 0;
@@ -85,7 +89,15 @@ public class PowerSelectionScreen extends Screen
             selectOrDone = Button.builder(Component.translatable("gui.done"), button ->
             {
                 if (selectedPower != null && minecraft.player != null) {
-                    Services.NETWORK.sendToServer(ServerboundSetPowerDataPacket.class, ServerboundSetPowerDataPacket.toBytes(registry.getResourceKey(selectedPower).orElseThrow(), true, wuForList == null ? null : wuForList.getId()));
+                    if (wuForList != null)
+                    {
+                        if (wuForList.distanceTo(minecraft.player) > 1.0f)
+                            Services.NETWORK.sendToServer(ServerboundSetPowerDataPacket.class, ServerboundSetPowerDataPacket.toBytes(registry.getResourceKey(selectedPower).orElseThrow(), true, wuForList == null ? null : wuForList.getId()));
+                    }
+                    else
+                    {
+                        Services.NETWORK.sendToServer(ServerboundSetPowerDataPacket.class, ServerboundSetPowerDataPacket.toBytes(registry.getResourceKey(selectedPower).orElseThrow(), true, wuForList == null ? null : wuForList.getId()));
+                    }
                 }
                 onClose();
             }).build();
@@ -96,7 +108,7 @@ public class PowerSelectionScreen extends Screen
         super.init();
     }
 
-    public void renderBg(PoseStack poseStack) {
+    public void renderBase(PoseStack poseStack) {
         RenderSystem.setShaderTexture(0, BACKGROUND);
         int i = (this.width - BACKGROUND_WIDTH) / 2;
         int j = (this.height - BACKGROUND_VERTICAL_START) / 2;
@@ -105,7 +117,8 @@ public class PowerSelectionScreen extends Screen
 
     @Override
     public void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
-        this.renderBg(poseStack);
+        this.renderBackground(poseStack);
+        this.renderBase(poseStack);
         this.renderArrows(poseStack, mouseX, mouseY);
         this.renderPowerInfo(poseStack);
         this.renderScrollBar(poseStack);
@@ -198,10 +211,12 @@ public class PowerSelectionScreen extends Screen
             setSelected(!selected);
             if (power != selectedPower)
                 descStart = 0;
-            if (selected)
+            if (selected && power != null && minecraft != null && minecraft.level != null)
             {
                 selectedPower = power;
+                selectedPowerKey = MinejagoPowers.POWERS.get(minecraft.level.registryAccess()).getResourceKey(selectedPower).orElseThrow();
             }
+            selectedPowerButton = this;
         }
 
         @Override
@@ -302,31 +317,12 @@ public class PowerSelectionScreen extends Screen
             }
             else if (this.insideLeftArrow(mouseX, mouseY) && showLeftArrow)
             {
-                shownStart -= 5;
-                shownPowerButtons.forEach(this::removeWidget);
-                shownPowerButtons.clear();
-                for (int i = 0; i < 5; i++)
-                {
-                    PowerButton b = allPowerButtons.get(shownStart + i);
-                    addRenderableWidget(b);
-                    shownPowerButtons.add(b);
-                }
+                previousPage();
             }
             else if (this.insideRightArrow(mouseX, mouseY) && showRightArrow)
             {
-                shownStart += 5;
-                shownPowerButtons.forEach(this::removeWidget);
-                shownPowerButtons.clear();
-                for (int i = 0; i < 5; i++)
-                {
-                    if (shownStart + i >= allPowerButtons.size()) break;
-                    PowerButton b = allPowerButtons.get(shownStart + i);
-                    addRenderableWidget(b);
-                    shownPowerButtons.add(b);
-                }
+                nextPage();
             }
-            showLeftArrow = shownPowerButtons.get(0) != allPowerButtons.get(0);
-            showRightArrow = shownPowerButtons.get(shownPowerButtons.size() - 1) != allPowerButtons.get(allPowerButtons.size() - 1);
         }
 
         return super.mouseClicked(mouseX, mouseY, button);
@@ -345,6 +341,11 @@ public class PowerSelectionScreen extends Screen
         }
     }
 
+    public boolean mouseScrolled(double delta)
+    {
+        return mouseScrolled(0, 0, delta);
+    }
+
     protected void renderSelectOrDoneButton()
     {
         if (selectedPower == null) selectOrDone.setMessage(Component.translatable("gui.done"));
@@ -354,7 +355,100 @@ public class PowerSelectionScreen extends Screen
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if (keyCode == GLFW.GLFW_KEY_ENTER)
+        {
             selectOrDone.onPress();
+            return true;
+        }
+        else if (keyCode == GLFW.GLFW_KEY_LEFT)
+            return previousPower();
+        else if (keyCode == GLFW.GLFW_KEY_RIGHT)
+            return nextPower();
+        else if (keyCode == GLFW.GLFW_KEY_PAGE_UP)
+            return previousPage();
+        else if (keyCode == GLFW.GLFW_KEY_PAGE_DOWN)
+            return nextPage();
+        else if (keyCode == GLFW.GLFW_KEY_UP)
+            return mouseScrolled(10);
+        else if (keyCode == GLFW.GLFW_KEY_DOWN)
+            return mouseScrolled(-10);
+
         return super.keyPressed(keyCode, scanCode, modifiers);
+    }
+
+    protected boolean previousPage()
+    {
+        if (showLeftArrow)
+        {
+            shownStart -= 5;
+            shownPowerButtons.forEach(this::removeWidget);
+            shownPowerButtons.clear();
+            for (int i = 0; i < 5; i++) {
+                PowerButton b = allPowerButtons.get(shownStart + i);
+                addRenderableWidget(b);
+                shownPowerButtons.add(b);
+            }
+        }
+
+        refreshArrows();
+
+        return showLeftArrow;
+    }
+
+    protected boolean nextPage()
+    {
+        if (showRightArrow)
+        {
+            shownStart += 5;
+            shownPowerButtons.forEach(this::removeWidget);
+            shownPowerButtons.clear();
+            for (int i = 0; i < 5; i++)
+            {
+                if (shownStart + i >= allPowerButtons.size()) break;
+                PowerButton b = allPowerButtons.get(shownStart + i);
+                addRenderableWidget(b);
+                shownPowerButtons.add(b);
+            }
+        }
+
+        refreshArrows();
+
+        return showRightArrow;
+    }
+
+    protected void refreshArrows()
+    {
+        showLeftArrow = shownPowerButtons.get(0) != allPowerButtons.get(0);
+        showRightArrow = shownPowerButtons.get(shownPowerButtons.size() - 1) != allPowerButtons.get(allPowerButtons.size() - 1);
+    }
+
+    protected boolean nextPower()
+    {
+        if (shownPowerButtons.size() > shownPowerButtons.indexOf(selectedPowerButton) + 1)
+        {
+            shownPowerButtons.get(shownPowerButtons.indexOf(selectedPowerButton) + 1).onPress();
+            return true;
+        }
+        else if (nextPage())
+        {
+            shownPowerButtons.get(0).onPress();
+            return true;
+        }
+        return false;
+    }
+
+    protected boolean previousPower()
+    {
+        if (shownPowerButtons.indexOf(selectedPowerButton) - 1 >= 0)
+        {
+            shownPowerButtons.get(shownPowerButtons.indexOf(selectedPowerButton) - 1).onPress();
+            return true;
+        }
+        else if (previousPage())
+        {
+            shownPowerButtons.get(0).onPress();
+            return true;
+        }
+
+        return false;
     }
 }

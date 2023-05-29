@@ -3,6 +3,7 @@ package dev.thomasglasser.minejago.data.lang;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.client.MinejagoWailaPlugin;
+import dev.thomasglasser.minejago.client.gui.screens.inventory.ScrollEditScreen;
 import dev.thomasglasser.minejago.data.advancements.packs.MinejagoAdventureAdvancementKeys;
 import dev.thomasglasser.minejago.data.advancements.packs.MinejagoStoryAdvancementKeys;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
@@ -26,6 +27,7 @@ import dev.thomasglasser.minejago.client.gui.screens.inventory.PowerSelectionScr
 import net.minecraft.Util;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.data.PackOutput;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -85,6 +87,9 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(MinejagoItems.IRON_KATANA.get(), "Iron Katana");
         add(MinejagoItems.IRON_SCYTHE.get(), "Iron Scythe");
         add(MinejagoItems.WOODEN_NUNCHUCKS.get(), "Wooden Nunchucks");
+        add(MinejagoItems.SCROLL.get(), "Scroll");
+        add(MinejagoItems.WRITABLE_SCROLL.get(), "Scroll and Quill");
+        add(MinejagoItems.WRITTEN_SCROLL.get(), "Written Scroll");
 
         add(MinejagoBlocks.TEAPOT.get(), "Teapot");
         add(MinejagoBlocks.JASPOT.get(), "Jaspot");
@@ -245,6 +250,9 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         addPluginConfig(MinejagoWailaPlugin.LIVING_ENTITY, "Living Entity");
         addPluginConfig(MinejagoWailaPlugin.PAINTING, "Painting");
         addPluginConfig(MinejagoWailaPlugin.TEAPOT_BLOCK, "Teapot");
+
+        add(ScrollEditScreen.EDIT_TITLE_LABEL, "Enter Scroll Title:");
+        add(ScrollEditScreen.FINALIZE_WARNING_LABEL, "Note! When you sign the scroll, it will no longer be editable.");
     }
 
     public void addDesc(Item item, String desc)
@@ -338,5 +346,10 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
     public void addPluginConfig(ResourceLocation location, String name)
     {
         add("config.jade.plugin_" + location.toLanguageKey(), "Minejago " + name + " Config");
+    }
+
+    public void add(Component component, String name)
+    {
+        add(((TranslatableContents)component.getContents()).getKey(), name);
     }
 }

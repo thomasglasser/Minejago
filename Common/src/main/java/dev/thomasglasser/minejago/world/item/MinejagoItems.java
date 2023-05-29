@@ -42,6 +42,9 @@ public class MinejagoItems
     public static final RegistryObject<Item> FOUR_WEAPONS_BANNER_PATTERN = register("four_weapons_banner_pattern", () -> new BannerPatternItem(MinejagoBannerPatternTags.PATTERN_ITEM_FOUR_WEAPONS, (new Item.Properties()).stacksTo(1).rarity(Rarity.EPIC)), CreativeModeTabs.INGREDIENTS);
     public static final RegistryObject<Item> IRON_SCYTHE = register("iron_scythe", () -> new IronScytheItem(Tiers.IRON, 8, -3.5F, BlockTags.REPLACEABLE_PLANTS, new Item.Properties()), CreativeModeTabs.TOOLS_AND_UTILITIES, CreativeModeTabs.COMBAT);
     public static final RegistryObject<Item> WOODEN_NUNCHUCKS = register("wooden_nunchucks", () -> new NunchucksItem(new Item.Properties().stacksTo(1)), CreativeModeTabs.COMBAT);
+    public static final RegistryObject<Item> SCROLL = register("scroll", () -> new ScrollItem(new Item.Properties()), CreativeModeTabs.INGREDIENTS);
+    public static final RegistryObject<Item> WRITABLE_SCROLL = register("writable_scroll", () -> new WritableScrollItem(new Item.Properties().stacksTo(1)), CreativeModeTabs.TOOLS_AND_UTILITIES);
+    public static final RegistryObject<Item> WRITTEN_SCROLL = register("written_scroll", () -> new WrittenScrollItem(new Item.Properties().stacksTo(1)));
 
     // POTTERY SHERDS
     public static final RegistryObject<Item> POTTERY_SHERD_ICE_CUBE = registerSherd("pottery_sherd_ice_cube");

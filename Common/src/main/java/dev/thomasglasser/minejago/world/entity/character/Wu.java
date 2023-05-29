@@ -78,7 +78,6 @@ public class Wu extends Character
 
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
-        System.out.println(powersToGive);
         Registry<Power> registry = MinejagoPowers.POWERS.get(level.registryAccess());
 
         if (!MinejagoPowersConfig.DRAIN_POOL.get() || (powersToGive.size() <= 1))
@@ -97,7 +96,7 @@ public class Wu extends Character
                 {
                     Services.NETWORK.sendToClient(ClientboundOpenPowerSelectionScreenPacket.class, ClientboundOpenPowerSelectionScreenPacket.toBytes(powersToGive, this.getId()), serverPlayer);
                 }
-                else
+                else if (this.distanceTo(serverPlayer) > 1.0f)
                 {
                     ResourceKey<Power> oldPower = Services.DATA.getPowerData(serverPlayer).power();
                     if (Services.DATA.getPowerData(serverPlayer).given() && oldPower != MinejagoPowers.NONE && MinejagoPowersConfig.DRAIN_POOL.get()) addPowersToGive(oldPower);
