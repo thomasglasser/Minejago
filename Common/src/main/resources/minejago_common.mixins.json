@@ -15,6 +15,7 @@
     "minecraft.world.item.MinejagoPotionItemMixin",
     "minecraft.world.item.alchemy.PotionUtilsMixin",
     "minecraft.world.item.enchantment.EnchantmentMixin",
+    "minecraft.world.level.block.entity.LecternBlockEntityMixin",
     "minecraft.world.level.gameevent.vibrations.VibrationListenerMixin"
   ],
   "client": [
@@ -22,7 +23,8 @@
     "minecraft.client.model.HumanoidModelMixin",
     "minecraft.client.model.PlayerModelMixin",
     "minecraft.client.multiplayer.MinejagoClientLevelMixin",
-    "minecraft.client.player.LocalPlayerMixin"
+    "minecraft.client.player.LocalPlayerMixin",
+    "minecraft.client.renderer.blockentity.LecternRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

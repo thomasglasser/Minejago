@@ -253,6 +253,8 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
 
         add(ScrollEditScreen.EDIT_TITLE_LABEL, "Enter Scroll Title:");
         add(ScrollEditScreen.FINALIZE_WARNING_LABEL, "Note! When you sign the scroll, it will no longer be editable.");
+
+        add("lectern.take_scroll", "Take Scroll");
     }
 
     public void addDesc(Item item, String desc)

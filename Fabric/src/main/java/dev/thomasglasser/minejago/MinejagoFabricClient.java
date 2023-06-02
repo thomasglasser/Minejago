@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago;
 
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
+import dev.thomasglasser.minejago.client.MinejagoClientEvents;
 import dev.thomasglasser.minejago.client.animation.MinejagoPlayerAnimator;
 import dev.thomasglasser.minejago.client.model.*;
 import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
@@ -105,6 +106,8 @@ public class MinejagoFabricClient implements ClientModInitializer {
         {
             if (holder.type() == PackType.CLIENT_RESOURCES) ResourceManagerHelper.registerBuiltinResourcePack(holder.id(), FabricLoader.getInstance().getModContainer(Minejago.MOD_ID).get(), Component.translatable(holder.titleKey()), ResourcePackActivationType.NORMAL);
         }
+
+        MinejagoClientEvents.registerMenuScreens();
     }
 
     private void registerRenderers()

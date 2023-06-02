@@ -18,6 +18,7 @@ public class MinejagoItemTags
 
     public static final TagKey<Item> GOLDEN_WEAPONS = create("golden_weapons");
     public static final TagKey<Item> TEAPOTS = create("teapots");
+    public static final TagKey<Item> LECTERN_SCROLLS = create("lectern_scrolls");
 
     private static TagKey<Item> create(String name)
     {

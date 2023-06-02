@@ -12,6 +12,7 @@ import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.ai.memory.MinejagoMemoryModuleTypes;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
 import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
+import dev.thomasglasser.minejago.world.inventory.MinejagoMenuTypes;
 import dev.thomasglasser.minejago.world.item.MinejagoCreativeModeTabs;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.MinejagoTiers;
@@ -90,6 +91,7 @@ public class Minejago {
 		MinejagoCreativeModeTabs.init();
 		MinejagoGameEvents.init();
 		MinejagoMemoryModuleTypes.init();
+		MinejagoMenuTypes.init();
 	}
 
 	private static void registerConfigs()

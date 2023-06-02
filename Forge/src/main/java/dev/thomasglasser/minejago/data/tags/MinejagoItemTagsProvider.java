@@ -89,6 +89,13 @@ public class MinejagoItemTagsProvider extends ItemTagsProvider
         IntrinsicTagAppender<Item> pots = tag(MinejagoItemTags.TEAPOTS);
         pots.add(MinejagoItems.TEAPOT.get(), MinejagoItems.JASPOT.get());
         MinejagoItems.TEAPOTS.forEach((color, pot) -> pots.add(pot.get()));
+
+        tag(MinejagoItemTags.LECTERN_SCROLLS)
+                .add(MinejagoItems.WRITABLE_SCROLL.get())
+                .add(MinejagoItems.WRITTEN_SCROLL.get());
+
+        tag(ItemTags.LECTERN_BOOKS)
+                .addTag(MinejagoItemTags.LECTERN_SCROLLS);
     }
 
     public TagAppender<Item> tagDynamicLight(String tag, int level)
