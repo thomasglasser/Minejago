@@ -31,7 +31,7 @@ public final class MinejagoLevelUtils
 
     public static void beamParticles(ParticleOptions particleOptions, Level level, Entity entity)
     {
-        if (entity.level instanceof ServerLevel serverLevel)
+        if (entity.level() instanceof ServerLevel serverLevel)
         {
             Vec3 look = entity.getViewVector(0);
             Vec3 eyepos = entity.getEyePosition(0).add(look.x * entity.getBbWidth(),0, look.z * entity.getBbWidth());

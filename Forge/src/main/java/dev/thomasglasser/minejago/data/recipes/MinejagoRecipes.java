@@ -1,5 +1,6 @@
 package dev.thomasglasser.minejago.data.recipes;
 
+import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.data.tags.MinejagoItemTags;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
@@ -117,7 +118,7 @@ public class MinejagoRecipes extends RecipeProvider {
 
     private void smithing(Consumer<FinishedRecipe> writer, Item template, Item dup)
     {
-        trimSmithing(writer, template);
+        trimSmithing(writer, template, Minejago.modLoc(getItemName(template) + "_smithing_template"));
         copySmithingTemplate(writer, template, dup);
     }
 

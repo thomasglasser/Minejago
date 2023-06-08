@@ -53,7 +53,7 @@ public class Cole extends Character {
 
     public void tick() {
         super.tick();
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             this.setClimbing(this.horizontalCollision);
         }
     }

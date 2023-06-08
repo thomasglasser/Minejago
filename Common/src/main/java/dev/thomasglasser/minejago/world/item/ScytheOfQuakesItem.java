@@ -127,11 +127,11 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem implements IModeledItem
 
     @Override
     public void doOnUsingTick(ItemStack stack, LivingEntity player, int count) {
-        Level level = player.getLevel();
+        Level level = player.level();
         if (stack.getUseDuration() - count + 1 == stack.getUseDuration())
         {
             player.stopUsingItem();
-            stack.releaseUsing(player.getLevel(), player, count);
+            stack.releaseUsing(level, player, count);
             return;
         }
         if (count % 10 == 0)
@@ -284,9 +284,9 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem implements IModeledItem
 
     @Override
     protected void goCrazy(Player player) {
-        if (!player.getLevel().isClientSide && !player.getAbilities().instabuild)
+        if (!player.level().isClientSide && !player.getAbilities().instabuild)
         {
-            player.getLevel().explode(null, player.getX(), player.getY() + 1, player.getZ(), 8.0F, Level.ExplosionInteraction.TNT);
+            player.level().explode(null, player.getX(), player.getY() + 1, player.getZ(), 8.0F, Level.ExplosionInteraction.TNT);
             Services.NETWORK.sendToAllClients(ClientboundStartScytheAnimationPacket.class, ClientboundStartScytheAnimationPacket.toBytes(player.getUUID(), ItemAnimations.Animations.SLAM_START, ItemAnimations.Animations.EMPTY), player.getServer());
         }
     }

@@ -9,7 +9,7 @@ buildscript {
 }
 
 plugins {
-    id 'org.quiltmc.loom' version '1.1.+'
+    id 'org.quiltmc.loom' version '1.+'
     id 'maven-publish'
 }
 
@@ -39,7 +39,7 @@ dependencies {
     mappings loom.layered() {
         officialMojangMappings()
 //        parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip") Waiting for 1.19.4
-        parchment("org.parchmentmc.data:parchment-${previous_minecraft_version}:${parchment_version}@zip")
+        parchment("org.parchmentmc.data:parchment-1.19.3:${parchment_version}@zip")
     }
 
     //DO NOT USE IN PROJECT
@@ -48,8 +48,10 @@ dependencies {
 
     compileOnly group:'org.spongepowered', name:'mixin', version:'0.8.5'
 
-    modCompileOnly "dev.kosmx.player-anim:player-animation-lib:${playeranimator_version}+${minecraft_version}"
-    modCompileOnly "dev.kosmx.player-anim:anim-core:${playeranimator_version}+${minecraft_version}"
+//    modCompileOnly "dev.kosmx.player-anim:player-animation-lib:${playeranimator_version}+${minecraft_version}" // TODO: update
+    modCompileOnly "dev.kosmx.player-anim:player-animation-lib:${playeranimator_version}+${previous_minecraft_version}"
+//    modCompileOnly "dev.kosmx.player-anim:anim-core:${playeranimator_version}+${minecraft_version}" // TODO: update
+    modCompileOnly "dev.kosmx.player-anim:anim-core:${playeranimator_version}+${previous_minecraft_version}"
     modCompileOnly "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}"
     modCompileOnly "curse.maven:moonlight-499980:${moonlight_fabric_id}"
 //    modCompileOnly "vazkii.patchouli:Patchouli:${minecraft_version}-${patchouli_version}:api"
@@ -57,10 +59,13 @@ dependencies {
     modCompileOnly "maven.modrinth:jade:${jade_version}"
 
     modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-common:${forgeconfigapiport_version}"
-    modImplementation("dev.thomasglasser.shardsapi:shardsapi-common-${minecraft_version}:${shardsapi_version}")
-    modImplementation "net.tslat.smartbrainlib:SmartBrainLib-common-${minecraft_version}:${smartbrainlib_version}"
-    modImplementation "net.tslat.tes:TES-common-${project.minecraft_version}:${project.tes_version}"
-    modImplementation("dev.dhyces.trimmed:trimmed-common-${minecraft_version}:${trimmed_version}")
+    modImplementation("dev.thomasglasser.sherdsapi:sherdsapi-common-${minecraft_version}:${sherdsapi_version}")
+//    modImplementation "net.tslat.smartbrainlib:SmartBrainLib-common-${minecraft_version}:${smartbrainlib_version}" // TODO: update
+    modImplementation "net.tslat.smartbrainlib:SmartBrainLib-common-${previous_minecraft_version}:${smartbrainlib_version}"
+//    modImplementation "net.tslat.tes:TES-common-${project.minecraft_version}:${project.tes_version}" // TODO: update
+    modImplementation "net.tslat.tes:TES-common-${previous_minecraft_version}:${project.tes_version}"
+//    modImplementation("dev.dhyces.trimmed:trimmed-common-${minecraft_version}:${trimmed_version}") // TODO: update
+    modImplementation("dev.dhyces.trimmed:trimmed-common-${previous_minecraft_version}:${trimmed_version}")
 
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
 }

@@ -105,7 +105,7 @@ public class Minejago {
 		MOONLIGHT_LIB("moonlight"),
 		DYNAMIC_LIGHTS("dynamiclights", "lambdynlights"),
 		TRIMMED("trimmed"),
-		SHARDSAPI("shardsapi"),
+		SHERDSAPI("sherdsapi"),
 		PLAYER_ANIMATOR("playeranimator", "player-animator"),
 		REACH_ENTITY_ATTRIBUTES("forge", "reach-entity-attributes"),
 		TSLAT_ENTITY_STATUS("tslatentitystatus");

@@ -2,6 +2,7 @@ package dev.thomasglasser.minejago.client.gui.screens.inventory;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.PageButton;
 import net.minecraft.resources.ResourceLocation;
 
@@ -14,8 +15,7 @@ public class CustomPageButton extends PageButton {
     }
 
     @Override
-    public void renderWidget(PoseStack poseStack, int i, int j, float f) {
-        RenderSystem.setShaderTexture(0, location);
+    public void renderWidget(GuiGraphics guiGraphics, int i, int j, float f) {
         int k = 0;
         int l = 192;
         if (this.isHoveredOrFocused()) {
@@ -26,6 +26,6 @@ public class CustomPageButton extends PageButton {
             l += 13;
         }
 
-        blit(poseStack, this.getX(), this.getY(), k, l, 23, 13);
+        guiGraphics.blit(location, this.getX(), this.getY(), k, l, 23, 13);
     }
 }

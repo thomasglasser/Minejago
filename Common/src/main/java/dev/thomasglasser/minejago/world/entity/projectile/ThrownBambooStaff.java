@@ -60,7 +60,7 @@ public class ThrownBambooStaff extends AbstractArrow
         int i = this.entityData.get(ID_LOYALTY);
         if (i > 0 && (this.dealtDamage || this.isNoPhysics()) && entity != null) {
             if (!this.isAcceptableReturnOwner()) {
-                if (!this.level.isClientSide && this.pickup == Pickup.ALLOWED) {
+                if (!this.level().isClientSide && this.pickup == Pickup.ALLOWED) {
                     this.spawnAtLocation(this.getPickupItem(), 0.1F);
                 }
 
@@ -69,7 +69,7 @@ public class ThrownBambooStaff extends AbstractArrow
                 this.setNoPhysics(true);
                 Vec3 vec3 = entity.getEyePosition().subtract(this.position());
                 this.setPosRaw(this.getX(), this.getY() + vec3.y * 0.015D * (double)i, this.getZ());
-                if (this.level.isClientSide) {
+                if (this.level().isClientSide) {
                     this.yOld = this.getY();
                 }
 
