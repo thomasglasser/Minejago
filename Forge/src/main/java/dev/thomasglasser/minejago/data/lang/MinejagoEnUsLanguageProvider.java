@@ -255,6 +255,8 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(ScrollEditScreen.FINALIZE_WARNING_LABEL, "Note! When you sign the scroll, it will no longer be editable.");
 
         add("lectern.take_scroll", "Take Scroll");
+
+        add(MinejagoItems.CHISELED_SCROLL_SHELF.get(), "Chiseled Scroll Shelf");
     }
 
     public void addDesc(Item item, String desc)

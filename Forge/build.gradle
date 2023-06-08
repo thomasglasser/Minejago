@@ -108,7 +108,7 @@ dependencies {
     implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}")
     implementation fg.deobf("dev._100media.capabilitysyncer:capabilitysyncer:${major_minecraft_version}-${capabilitysyncer_version}")
     implementation fg.deobf("net.tslat.smartbrainlib:SmartBrainLib-forge-${minecraft_version}:${smartbrainlib_version}")
-    implementation fg.deobf("maven.modrinth:jade:${jade_forge_version}")
+    implementation fg.deobf("maven.modrinth:jade:${jade_forge_id}")
     implementation(fg.deobf("me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}"))
     implementation fg.deobf("dev.thomasglasser.shardsapi:shardsapi-forge-${minecraft_version}:${shardsapi_version}")
     implementation fg.deobf("dev.dhyces.trimmed:trimmed-forge-${minecraft_version}:${trimmed_version}")

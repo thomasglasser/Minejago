@@ -14,6 +14,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -98,6 +99,8 @@ public class MinejagoItemModels extends ItemModelProvider
         spawnEgg(MinejagoItems.KRUNCHA_SPAWN_EGG.getId().getPath());
         spawnEgg(MinejagoItems.NUCKAL_SPAWN_EGG.getId().getPath());
         spawnEgg(MinejagoItems.SKULKIN_HORSE_SPAWN_EGG.getId().getPath());
+
+
     }
     
     protected void basicItemHandheld(ResourceLocation item)
@@ -110,8 +113,13 @@ public class MinejagoItemModels extends ItemModelProvider
         basicItemHandheld(ForgeRegistries.ITEMS.getKey(item));
     }
 
-    private void spawnEgg(String path)
+    protected void spawnEgg(String path)
     {
         withExistingParent(path, mcLoc("item/template_spawn_egg"));
+    }
+
+    protected void blockModel(Block block)
+    {
+        // TODO
     }
 }

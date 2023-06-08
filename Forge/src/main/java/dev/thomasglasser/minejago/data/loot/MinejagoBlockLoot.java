@@ -35,6 +35,8 @@ public class MinejagoBlockLoot extends BlockLootSubProvider {
 
         dropSelf(MinejagoBlocks.GOLD_DISC.get());
         dropSelf(MinejagoBlocks.TOP_POST.get());
+
+        add(MinejagoBlocks.CHISELED_SCROLL_SHELF.get(), createSilkTouchOnlyTable(MinejagoBlocks.CHISELED_SCROLL_SHELF.get()));
     }
 
     protected LootTable.Builder createTeapotBlock(Block block)

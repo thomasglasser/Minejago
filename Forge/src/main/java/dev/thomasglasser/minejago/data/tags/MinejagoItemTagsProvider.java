@@ -96,6 +96,10 @@ public class MinejagoItemTagsProvider extends ItemTagsProvider
 
         tag(ItemTags.LECTERN_BOOKS)
                 .addTag(MinejagoItemTags.LECTERN_SCROLLS);
+
+        tag(MinejagoItemTags.SCROLL_SHELF_SCROLLS)
+                .addTag(MinejagoItemTags.LECTERN_SCROLLS)
+                .add(MinejagoItems.SCROLL.get());
     }
 
     public TagAppender<Item> tagDynamicLight(String tag, int level)

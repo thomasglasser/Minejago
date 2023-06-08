@@ -99,6 +99,15 @@ public class MinejagoRecipes extends RecipeProvider {
                 .requires(Items.INK_SAC)
                 .unlockedBy("has_scroll", has(MinejagoItems.SCROLL.get()))
                 .save(writer);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, MinejagoItems.CHISELED_SCROLL_SHELF.get(), 1)
+                .pattern("psp")
+                .pattern("s s")
+                .pattern("psp")
+                .define('p', ItemTags.PLANKS)
+                .define('s', ItemTags.WOODEN_SLABS)
+                .unlockedBy("has_slab", has(ItemTags.WOODEN_SLABS))
+                .save(writer);
     }
 
     private void buildSmithing(Consumer<FinishedRecipe> writer)

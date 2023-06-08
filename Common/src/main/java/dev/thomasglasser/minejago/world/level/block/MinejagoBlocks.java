@@ -7,6 +7,7 @@ import dev.thomasglasser.minejago.registration.RegistryObject;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
@@ -28,6 +29,7 @@ public class MinejagoBlocks
 
     public static final BlockRegistryObject<Block> GOLD_DISC = registerAndWrap("gold_disc", () -> new DiscBlock(BlockBehaviour.Properties.of(Material.DECORATION).instabreak()));
     public static final BlockRegistryObject<Block> TOP_POST = registerAndWrap("top_post", () -> new TopPostBlock(BlockBehaviour.Properties.of(Material.DECORATION).instabreak().noCollission()));
+    public static final BlockRegistryObject<Block> CHISELED_SCROLL_SHELF = registerAndWrap("chiseled_scroll_shelf", () -> new ChiseledScrollShelfBlock(BlockBehaviour.Properties.copy(Blocks.CHISELED_BOOKSHELF)));
 
     private static BlockRegistryObject<Block> registerAndWrap(String name, Supplier<Block> supplier)
     {
