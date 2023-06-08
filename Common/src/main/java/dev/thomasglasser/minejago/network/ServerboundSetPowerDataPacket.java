@@ -65,7 +65,7 @@ public class ServerboundSetPowerDataPacket
     public void handle(ServerPlayer serverPlayer)
     {
         Wu wu = null;
-        if (wuId != null && serverPlayer.level().getEntity(wuId) instanceof Wu) wu = (Wu) serverPlayer.level().getEntity(wuId);
+        if (wuId != null && serverPlayer.level.getEntity(wuId) instanceof Wu) wu = (Wu) serverPlayer.level.getEntity(wuId);
         ResourceKey<Power> oldPower = Services.DATA.getPowerData(serverPlayer).power();
         if (Services.DATA.getPowerData(serverPlayer).given() && oldPower != MinejagoPowers.NONE && MinejagoPowersConfig.DRAIN_POOL.get() && wu != null) wu.addPowersToGive(oldPower);
         if (power != MinejagoPowers.NONE && wu != null) wu.removePowersToGive(power);

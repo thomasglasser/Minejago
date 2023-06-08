@@ -3,14 +3,14 @@ package dev.thomasglasser.minejago.mixin.minecraft.world.level.gameevent.vibrati
 import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.gameevent.vibrations.VibrationSystem;
+import net.minecraft.world.level.gameevent.vibrations.VibrationListener;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(VibrationSystem.class)
-public class VibrationSystemMixin
+@Mixin(VibrationListener.class)
+public class VibrationListenerMixin
 {
     @Inject(method = "getGameEventFrequency", at = @At("HEAD"), cancellable = true)
     private static void minejago_getGameEventFrequency(GameEvent gameEvent, CallbackInfoReturnable<Integer> cir)

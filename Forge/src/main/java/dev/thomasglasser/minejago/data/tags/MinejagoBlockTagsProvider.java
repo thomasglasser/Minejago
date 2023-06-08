@@ -49,7 +49,7 @@ public class MinejagoBlockTagsProvider extends IntrinsicHolderTagsProvider<Block
                 .addTag(BlockTags.CROPS)
                 .addTag(BlockTags.FLOWERS)
                 .addTag(BlockTags.SAPLINGS)
-                .addTag(BlockTags.REPLACEABLE)
+                .addTag(BlockTags.REPLACEABLE_PLANTS)
                 .add(Blocks.SUGAR_CANE);
     }
 

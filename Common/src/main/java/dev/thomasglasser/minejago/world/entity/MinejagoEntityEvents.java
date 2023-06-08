@@ -69,7 +69,7 @@ public class MinejagoEntityEvents
 
         if (player instanceof ServerPlayer serverPlayer)
         {
-            if (!player.onGround())
+            if (!player.isOnGround())
                 ((IDataHolder)player).getPersistentData().putInt("OffGroundTicks", ((IDataHolder)player).getPersistentData().getInt("OffGroundTicks") + 1);
             else
                 ((IDataHolder)player).getPersistentData().putInt("OffGroundTicks", 0);
@@ -81,10 +81,10 @@ public class MinejagoEntityEvents
                     }
                     if (player.tickCount % 20 == 0)
                     {
-                        serverPlayer.level().playSound(null, serverPlayer.blockPosition(), MinejagoSoundEvents.SPINJITZU_ACTIVE.get(), SoundSource.PLAYERS);
-                        serverPlayer.level().gameEvent(serverPlayer, MinejagoGameEvents.SPINJITZU.get(), serverPlayer.blockPosition());
+                        serverPlayer.level.playSound(null, serverPlayer.blockPosition(), MinejagoSoundEvents.SPINJITZU_ACTIVE.get(), SoundSource.PLAYERS);
+                        serverPlayer.level.gameEvent(serverPlayer, MinejagoGameEvents.SPINJITZU.get(), serverPlayer.blockPosition());
                     }
-                    Power power = player.level().registryAccess().registryOrThrow(MinejagoRegistries.POWER).getHolderOrThrow(Services.DATA.getPowerData(player).power()).value();
+                    Power power = player.level.registryAccess().registryOrThrow(MinejagoRegistries.POWER).getHolderOrThrow(Services.DATA.getPowerData(player).power()).value();
                     if (!power.is(MinejagoPowers.NONE)) {
                         MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, power.getMainSpinjitzuColor(), power.getAltSpinjitzuColor(), 10.5, false);
                         if (power.getBorderParticle() != null)
@@ -157,7 +157,7 @@ public class MinejagoEntityEvents
 
     public static void onServerPlayerLoggedIn(Player player)
     {
-        for (ServerPlayer serverPlayer : ((ServerLevel) player.level()).getPlayers(serverPlayer -> true))
+        for (ServerPlayer serverPlayer : ((ServerLevel) player.getLevel()).getPlayers(serverPlayer -> true))
         {
             Services.NETWORK.sendToAllClients(ClientboundRefreshVipDataPacket.class, serverPlayer.getServer());
         }
@@ -274,7 +274,7 @@ public class MinejagoEntityEvents
             AttributeInstance kb = serverPlayer.getAttribute(Attributes.ATTACK_KNOCKBACK);
             if (kb != null && kb.hasModifier(SpinjitzuData.KNOCKBACK_MODIFIER))
                 kb.removeModifier(SpinjitzuData.KNOCKBACK_MODIFIER);
-            serverPlayer.level().playSound(null, serverPlayer.blockPosition(), MinejagoSoundEvents.SPINJITZU_STOP.get(), SoundSource.PLAYERS);
+            serverPlayer.level.playSound(null, serverPlayer.blockPosition(), MinejagoSoundEvents.SPINJITZU_STOP.get(), SoundSource.PLAYERS);
         }
     }
 }

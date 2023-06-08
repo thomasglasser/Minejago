@@ -41,8 +41,16 @@ public class ForgeItemHelper implements IItemHelper {
         Minecraft.getInstance().getItemRenderer().render(itemStack, displayContext, false, poseStack, buffer, combinedLight, combinedOverlay, Minecraft.getInstance().getModelManager().getModel(new ResourceLocation(modid, "item/" + model)));
     }
 
+    public final List<List<Object>> TABS = new ArrayList<>();
+
     @Override
-    public CreativeModeTab newTab(Component title, Supplier<ItemStack> icon, CreativeModeTab.DisplayItemsGenerator displayItems) {
-        return CreativeModeTab.builder().title(title).icon(icon).displayItems(displayItems).build();
+    public CreativeModeTab newTab(ResourceLocation rl, Component title, Supplier<ItemStack> icon, CreativeModeTab.DisplayItemsGenerator displayItems) {
+        int i = TABS.size();
+        TABS.add(i, new ArrayList<>());
+        TABS.get(i).add(0, rl);
+        TABS.get(i).add(1, title);
+        TABS.get(i).add(2, icon);
+        TABS.get(i).add(3, displayItems);
+        return null;
     }
 }

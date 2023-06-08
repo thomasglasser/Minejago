@@ -2,8 +2,6 @@ package dev.thomasglasser.minejago.world.item;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.platform.Services;
-import dev.thomasglasser.minejago.registration.RegistrationProvider;
-import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
 import dev.thomasglasser.minejago.world.item.armor.IGeoArmorItem;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
@@ -12,15 +10,12 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 
 public class MinejagoCreativeModeTabs
 {
-    public static final RegistrationProvider<CreativeModeTab> CREATIVE_MODE_TABS = RegistrationProvider.get(Registries.CREATIVE_MODE_TAB, Minejago.MOD_ID);
-
-    public static final RegistryObject<CreativeModeTab> GI = CREATIVE_MODE_TABS.register("gi", () -> Services.ITEM.newTab(Component.translatable(Minejago.modLoc("gi").toLanguageKey("item_group")), () -> MinejagoArmor.BLACK_GI_SET.HEAD.get().getDefaultInstance(), (parameters, output) ->
+    public static CreativeModeTab GI = Services.ITEM.newTab(Minejago.modLoc("gi"), Component.translatable(Minejago.modLoc("gi").toLanguageKey("item_group")), () -> MinejagoArmor.BLACK_GI_SET.HEAD.get().getDefaultInstance(), (parameters, output) ->
     {
         MinejagoArmor.ARMOR_SETS.forEach(armorSet ->
         {
@@ -36,7 +31,7 @@ public class MinejagoCreativeModeTabs
         MinejagoPowers.POWERS.addToSet(builder);
         HolderLookup.Provider provider = builder.build(access);
         output.acceptAll(MinejagoPowers.getArmorForAll(provider));
-    }));
+    });
 
     public static void init() {}
 }

@@ -5,7 +5,7 @@ buildscript {
 }
 
 plugins {
-    id 'fabric-loom' version '1.+'
+    id 'fabric-loom' version '1.0-SNAPSHOT'
     id 'maven-publish'
     id 'idea'
 }
@@ -18,14 +18,13 @@ dependencies {
     mappings loom.layered() {
         officialMojangMappings()
 //        parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip") Waiting for 1.19.4
-        parchment("org.parchmentmc.data:parchment-1.19.3:${parchment_version}@zip")
+        parchment("org.parchmentmc.data:parchment-${previous_minecraft_version}:${parchment_version}@zip")
     }
 
     // Waiting on Fabric version, for now compiling against forge so code builds
     modCompileOnly "curse.maven:moonlight-499980:${moonlight_forge_id}"
 
-//    modRuntimeOnly "dev.lambdaurora:spruceui:${spruceui_version}+${minecraft_version}"
-    modRuntimeOnly "dev.lambdaurora:spruceui:${spruceui_version}+${previous_minecraft_version}" // TODO: update
+    modRuntimeOnly "dev.lambdaurora:spruceui:${spruceui_version}+${minecraft_version}"
     modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:$rei_version"
     modRuntimeOnly "maven.modrinth:huge-structure-blocks:${hugestructureblocks_version}"
     modRuntimeOnly "curse.maven:worldedit-225608:${worldedit_id}"
@@ -37,30 +36,25 @@ dependencies {
 
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}+${minecraft_version}"
-//    modImplementation "maven.modrinth:lambdynamiclights:${lambdynamiclights_version}+${minecraft_version}"
-    modImplementation "maven.modrinth:lambdynamiclights:${lambdynamiclights_version}+${previous_minecraft_version}" // TODO: update
+    modImplementation "maven.modrinth:lambdynamiclights:${lambdynamiclights_version}+${minecraft_version}"
     modImplementation "curse.maven:moonlight-499980:${moonlight_fabric_id}"
     modImplementation "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}"
-//    modImplementation("net.tslat.smartbrainlib:SmartBrainLib-fabric-${minecraft_version}:${smartbrainlib_version}")
-    modImplementation("net.tslat.smartbrainlib:SmartBrainLib-fabric-${previous_minecraft_version}:${smartbrainlib_version}") // TODO: update
+    modImplementation("net.tslat.smartbrainlib:SmartBrainLib-fabric-${minecraft_version}:${smartbrainlib_version}")
     modImplementation "maven.modrinth:jade:${jade_version}"
 //    modImplementation "vazkii.patchouli:Patchouli:${minecraft_version}-${patchouli_version}-FABRIC"
     modImplementation("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
     modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-api:${cca_version}")
-//    modImplementation("curse.maven:configured-667378:${configured_fabric_id}") // TODO: update
-//    modImplementation "net.tslat.tes:TES-fabric-${project.minecraft_version}:${project.tes_version}" // TODO: update
-    modImplementation "net.tslat.tes:TES-fabric-${previous_minecraft_version}:${project.tes_version}"
-//    modImplementation("dev.dhyces.trimmed:trimmed-fabric-${minecraft_version}:${trimmed_version}")
-    modImplementation("dev.dhyces.trimmed:trimmed-fabric-${previous_minecraft_version}:${trimmed_version}")
+//    modImplementation("curse.maven:configured-667378:${configured_fabric_id}") Waiting on 1.19.4
+    modImplementation "net.tslat.tes:TES-fabric-${project.minecraft_version}:${project.tes_version}"
+    modImplementation("dev.dhyces.trimmed:trimmed-fabric-${minecraft_version}:${trimmed_version}")
 
-//    include modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${playeranimator_version}+${minecraft_version}") // TODO: update
-    include modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${playeranimator_version}+${previous_minecraft_version}")
+    include modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${playeranimator_version}+${minecraft_version}")
     include modImplementation("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forgeconfigapiport_version}")
     include modImplementation("com.jamieswhiteshirt:reach-entity-attributes:$reachentityattributes_version")
-//    modCompileOnly("com.jamieswhiteshirt:reach-entity-attributes:$reachentityattributes_version") // So mod compiles
-    include modImplementation("dev.thomasglasser.sherdsapi:sherdsapi-fabric-${minecraft_version}:${sherdsapi_version}")
+    modCompileOnly("com.jamieswhiteshirt:reach-entity-attributes:$reachentityattributes_version") // So mod compiles
+    include modImplementation("dev.thomasglasser.shardsapi:shardsapi-fabric-${minecraft_version}:${shardsapi_version}")
 
     include("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cca_version}")
     include("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cca_version}")

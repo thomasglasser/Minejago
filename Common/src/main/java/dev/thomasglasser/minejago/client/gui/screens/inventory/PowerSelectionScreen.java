@@ -10,7 +10,6 @@ import dev.thomasglasser.minejago.world.entity.character.Wu;
 import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.powers.Power;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
@@ -109,24 +108,25 @@ public class PowerSelectionScreen extends Screen
         super.init();
     }
 
-    public void renderBase(GuiGraphics guiGraphics) {
+    public void renderBase(PoseStack poseStack) {
+        RenderSystem.setShaderTexture(0, BACKGROUND);
         int i = (this.width - BACKGROUND_WIDTH) / 2;
         int j = (this.height - BACKGROUND_VERTICAL_START) / 2;
-        guiGraphics.blit(BACKGROUND, i, j, 0, 0, BACKGROUND_WIDTH, BACKGROUND_HEIGHT, 256, 256);
+        blit(poseStack, i, j, 0, 0, BACKGROUND_WIDTH, BACKGROUND_HEIGHT, 256, 256);
     }
 
     @Override
-    public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        this.renderBackground(guiGraphics);
-        this.renderBase(guiGraphics);
-        this.renderArrows(guiGraphics, mouseX, mouseY);
-        this.renderPowerInfo(guiGraphics);
-        this.renderScrollBar(guiGraphics);
-        super.render(guiGraphics, mouseX, mouseY, partialTick);
+    public void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
+        this.renderBackground(poseStack);
+        this.renderBase(poseStack);
+        this.renderArrows(poseStack, mouseX, mouseY);
+        this.renderPowerInfo(poseStack);
+        this.renderScrollBar(poseStack);
+        super.render(poseStack, mouseX, mouseY, partialTick);
         this.renderSelectOrDoneButton();
     }
 
-    public void renderPowerInfo(GuiGraphics guiGraphics)
+    public void renderPowerInfo(PoseStack poseStack)
     {
         if (selectedPower != null)
         {
@@ -139,24 +139,24 @@ public class PowerSelectionScreen extends Screen
 
             int x = (this.width - BACKGROUND_WIDTH) / 2;
             int y = (this.height - BACKGROUND_VERTICAL_START) / 2;
-            guiGraphics.pose().pushPose();
-            guiGraphics.pose().scale(1.5f, 1.5f, 1f);
-            guiGraphics.pose().translate(-73f, -20f, 0f);
+            poseStack.pushPose();
+            poseStack.scale(1.5f, 1.5f, 1f);
+            poseStack.translate(-73f, -20f, 0f);
             FormattedCharSequence cutTitle = this.font.split(title, 60).get(0);
-            guiGraphics.drawString(this.font, cutTitle, x + 131, y + 49, Optional.ofNullable(title.getStyle().getColor()).orElseThrow().getValue());
-            guiGraphics.pose().popPose();
+            this.font.draw(poseStack, cutTitle, x + 131, y + 49, Optional.ofNullable(title.getStyle().getColor()).orElseThrow().getValue());
+            poseStack.popPose();
             final int[] j = {0};
             this.font.split(lore, 89).forEach(formattedCharSequence ->
             {
                 if (j[0] < 9)
-                    guiGraphics.drawString(this.font, formattedCharSequence, x + 17, y + 59 + (j[0] * 10), lore.getStyle().getColor() != null ? lore.getStyle().getColor().getValue() : title.getStyle().getColor().getValue());
+                    this.font.draw(poseStack, formattedCharSequence, x + 17, y + 59 + (j[0] * 10), lore.getStyle().getColor() != null ? lore.getStyle().getColor().getValue() : title.getStyle().getColor().getValue());
                 j[0]++;
             });
             final int[] k = {0};
             this.font.split(sub, 89).forEach(formattedCharSequence ->
             {
                 if (k[0] < 2)
-                    guiGraphics.drawString(this.font, formattedCharSequence, x + 131, y + 64 + (k[0] * 10), sub.getStyle().getColor() != null ? sub.getStyle().getColor().getValue() : title.getStyle().getColor().getValue());
+                    this.font.draw(poseStack, formattedCharSequence, x + 131, y + 64 + (k[0] * 10), sub.getStyle().getColor() != null ? sub.getStyle().getColor().getValue() : title.getStyle().getColor().getValue());
                 k[0]++;
             });
             final int[] l = {0};
@@ -164,31 +164,33 @@ public class PowerSelectionScreen extends Screen
             descLines.forEach(formattedCharSequence ->
             {
                 if (l[0] < descStart + 7 && l[0] >= descStart)
-                    guiGraphics.drawString(this.font, formattedCharSequence, x + 131, y + 86 + ((l[0] - descStart) * 10), desc.getStyle().getColor() != null ? desc.getStyle().getColor().getValue() : Optional.ofNullable(ChatFormatting.BLACK.getColor()).orElseThrow());
+                    this.font.draw(poseStack, formattedCharSequence, x + 131, y + 86 + ((l[0] - descStart) * 10), desc.getStyle().getColor() != null ? desc.getStyle().getColor().getValue() : Optional.ofNullable(ChatFormatting.BLACK.getColor()).orElseThrow());
                 l[0]++;
             });
             canScroll = l[0] > 7;
         }
     }
 
-    protected void renderScrollBar(GuiGraphics guiGraphics)
+    protected void renderScrollBar(PoseStack poseStack)
     {
         int i = ((this.width - BACKGROUND_WIDTH) / 2);
         int j = ((this.height - BACKGROUND_VERTICAL_START) / 2);
         int k = i + 228;
         int l = j + 48;
-        guiGraphics.blit(new ResourceLocation("textures/gui/container/creative_inventory/tabs.png"), k, l + (descStart), 232 + (canScroll ? 0 : 12), 0, 12, 15);
+        RenderSystem.setShaderTexture(0, new ResourceLocation("textures/gui/container/creative_inventory/tabs.png"));
+        blit(poseStack, k, l + (descStart), 232 + (canScroll ? 0 : 12), 0, 12, 15);
     }
 
-    protected void renderArrows(GuiGraphics guiGraphics, int mouseX, int mouseY)
+    protected void renderArrows(PoseStack poseStack, int mouseX, int mouseY)
     {
         int i = ((this.width - BACKGROUND_WIDTH) / 2);
         int j = ((this.height - BACKGROUND_VERTICAL_START) / 2);
         int k = i + 20;
         int l = j + 12;
-        if (showLeftArrow) guiGraphics.blit(BACKGROUND, k, l, 156 + (!insideLeftArrow(mouseX, mouseY) ? 26 : 0), 166, 13, 20, 256, 256);
+        RenderSystem.setShaderTexture(0, BACKGROUND);
+        if (showLeftArrow) blit(poseStack, k, l, 156 + (!insideLeftArrow(mouseX, mouseY) ? 26 : 0), 166, 13, 20, 256, 256);
         k = i + 216;
-        if (showRightArrow) guiGraphics.blit(BACKGROUND, k, l, 169 + (!insideRightArrow(mouseX, mouseY) ? 26 : 0), 166, 13, 20, 256, 256);
+        if (showRightArrow) blit(poseStack, k, l, 169 + (!insideRightArrow(mouseX, mouseY) ? 26 : 0), 166, 13, 20, 256, 256);
     }
 
     class PowerButton extends AbstractButton {
@@ -218,27 +220,30 @@ public class PowerSelectionScreen extends Screen
         }
 
         @Override
-        public void renderWidget(@NotNull GuiGraphics guiGraphics, int i, int j, float f) {
-            this.renderButton(guiGraphics, isSelected(), isHovered());
-            this.renderIcon(guiGraphics);
+        public void renderWidget(@NotNull PoseStack poseStack, int i, int j, float f) {
+            this.renderButton(poseStack, isSelected(), isHovered());
+            this.renderIcon(poseStack);
         }
 
-        protected void renderButton(GuiGraphics guiGraphics, boolean selected, boolean hoveringOver)
+        protected void renderButton(PoseStack poseStack, boolean selected, boolean hoveringOver)
         {
+            RenderSystem.setShaderTexture(0, BACKGROUND);
+
             int u = 0;
             int v = 167;
 
             if (hoveringOver) v = 199;
             if (!selected) u = 32;
 
-            guiGraphics.blit(BACKGROUND, getX(), getY(), u, v, 32, 32, 256, 256);
+            blit(poseStack, getX(), getY(), u, v, 32, 32, 256, 256);
         }
 
-        protected void renderIcon(GuiGraphics guiGraphics)
+        protected void renderIcon(PoseStack poseStack)
         {
+            RenderSystem.setShaderTexture(0, textureLoc);
             int x = getX() - 1;
             int y = getY() - 1;
-            guiGraphics.blit(textureLoc, x, y, 0, 0, 0, 32, 32, 32, 32);
+            blit(poseStack, x, y, 0, 0, 0, 32, 32, 32, 32);
         }
 
         public boolean isSelected() {

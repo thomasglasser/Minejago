@@ -43,7 +43,7 @@ public class FabricItemHelper implements IItemHelper
     }
 
     @Override
-    public CreativeModeTab newTab(Component title, Supplier<ItemStack> icon, CreativeModeTab.DisplayItemsGenerator displayItems) {
-        return FabricItemGroup.builder().title(title).icon(icon).displayItems(displayItems).build();
+    public CreativeModeTab newTab(ResourceLocation rl, Component title, Supplier<ItemStack> icon, CreativeModeTab.DisplayItemsGenerator displayItems) {
+        return FabricItemGroup.builder(rl).title(title).icon(icon).displayItems(displayItems).build();
     }
 }

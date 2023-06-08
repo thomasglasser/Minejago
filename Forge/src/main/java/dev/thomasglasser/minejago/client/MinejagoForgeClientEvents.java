@@ -43,7 +43,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.event.AddPackFindersEvent;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
+import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
@@ -173,9 +173,23 @@ public class MinejagoForgeClientEvents {
         }
     }
 
-    public static void onBuildCreativeTabContent(BuildCreativeModeTabContentsEvent event)
+    public static void onBuildCreativeTabContent(CreativeModeTabEvent.BuildContents event)
     {
-        event.acceptAll(MinejagoItems.getItemsForTab(event.getTabKey()));
+        event.acceptAll(MinejagoItems.getItemsForTab(event.getTab()));
+    }
+
+    public static void onRegisterCreativeTab(CreativeModeTabEvent.Register event)
+    {
+        ((ForgeItemHelper)(Services.ITEM)).TABS.forEach(list ->
+        {
+            if (list.get(0).equals(Minejago.modLoc("gi")))
+            {
+                MinejagoCreativeModeTabs.GI = event.registerCreativeModeTab((ResourceLocation) list.get(0), (builder ->
+                {
+                    builder.title((Component) list.get(1)).icon((Supplier<ItemStack>) list.get(2)).displayItems((CreativeModeTab.DisplayItemsGenerator) list.get(3)).build();
+                }));
+            }
+        });
     }
 
     public static void onClientConfigChanged(ModConfigEvent event)

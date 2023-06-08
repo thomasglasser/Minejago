@@ -20,7 +20,7 @@ import snownee.jade.api.config.IPluginConfig;
 import snownee.jade.api.ui.IElement;
 import snownee.jade.api.ui.IElementHelper;
 
-public enum PaintingComponentProvider implements IEntityComponentProvider, IServerDataProvider<EntityAccessor> {
+public enum PaintingComponentProvider implements IEntityComponentProvider, IServerDataProvider<Entity> {
     INSTANCE;
     
     @Override
@@ -40,8 +40,8 @@ public enum PaintingComponentProvider implements IEntityComponentProvider, IServ
     }
 
     @Override
-    public void appendServerData(CompoundTag compoundTag, EntityAccessor accessor) {
-        if (accessor.getEntity() instanceof Painting painting)
+    public void appendServerData(CompoundTag compoundTag, ServerPlayer serverPlayer, Level level, Entity painting, boolean b) {
+        if (painting instanceof Painting)
         {
             CompoundTag tag = ((IDataHolder) painting).getPersistentData();
             compoundTag.putBoolean("MapTaken", tag.getBoolean("MapTaken"));

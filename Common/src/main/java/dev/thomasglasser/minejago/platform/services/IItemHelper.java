@@ -23,5 +23,5 @@ public interface IItemHelper
     void renderItem(ItemStack itemStack, ItemDisplayContext displayContext, boolean leftHand, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, String modid, String model);
 
     @Nullable
-    CreativeModeTab newTab(Component title, Supplier<ItemStack> icon, CreativeModeTab.DisplayItemsGenerator displayItems);
+    CreativeModeTab newTab(ResourceLocation rl, Component title, Supplier<ItemStack> icon, CreativeModeTab.DisplayItemsGenerator displayItems);
 }

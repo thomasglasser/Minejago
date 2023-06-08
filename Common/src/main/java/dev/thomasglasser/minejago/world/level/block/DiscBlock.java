@@ -123,6 +123,11 @@ public class DiscBlock extends HorizontalDirectionalBlock {
     }
 
     @Override
+    public PushReaction getPistonPushReaction(BlockState state) {
+        return PushReaction.DESTROY;
+    }
+
+    @Override
     public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos currentPos, BlockPos neighborPos) {
         if (direction.getOpposite() == state.getValue(FACING) && !state.canSurvive(level, currentPos))
         {

@@ -49,9 +49,9 @@ public class SkulkinHorse extends SkeletonHorse {
 
         @Override
         public AbstractHorse createHorse(DifficultyInstance difficulty) {
-            SkulkinHorse skeletonHorse = MinejagoEntityTypes.SKULKIN_HORSE.get().create(this.horse.level());
+            SkulkinHorse skeletonHorse = MinejagoEntityTypes.SKULKIN_HORSE.get().create(this.horse.level);
             if (skeletonHorse != null) {
-                skeletonHorse.finalizeSpawn((ServerLevel)this.horse.level(), difficulty, MobSpawnType.TRIGGERED, null, null);
+                skeletonHorse.finalizeSpawn((ServerLevel)this.horse.level, difficulty, MobSpawnType.TRIGGERED, null, null);
                 skeletonHorse.setPos(this.horse.getX(), this.horse.getY(), this.horse.getZ());
                 skeletonHorse.invulnerableTime = 60;
                 skeletonHorse.setPersistenceRequired();
@@ -67,10 +67,10 @@ public class SkulkinHorse extends SkeletonHorse {
 
         @Override
         public Skeleton createSkeleton(DifficultyInstance difficulty, AbstractHorse horse) {
-            Skulkin skeleton = MinejagoEntityTypes.SKULKIN.get().create(horse.level());
+            Skulkin skeleton = MinejagoEntityTypes.SKULKIN.get().create(horse.level);
             if (skeleton != null) {
                 skeleton.setVariant(Skulkin.Variant.BOW);
-                skeleton.finalizeSpawn((ServerLevel)horse.level(), difficulty, MobSpawnType.TRIGGERED, null, null);
+                skeleton.finalizeSpawn((ServerLevel)horse.level, difficulty, MobSpawnType.TRIGGERED, null, null);
                 skeleton.setPos(horse.getX(), horse.getY(), horse.getZ());
                 skeleton.invulnerableTime = 60;
                 skeleton.setPersistenceRequired();
@@ -103,7 +103,7 @@ public class SkulkinHorse extends SkeletonHorse {
 
         private boolean equipArmor(Mob mob)
         {
-            return (mob.level().isDay() && mob.level().canSeeSky(mob.blockPosition()));
+            return (mob.level.isDay() && mob.level.canSeeSky(mob.blockPosition()));
         }
     }
 
