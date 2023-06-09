@@ -62,7 +62,7 @@ public class GivePowerAndGi<E extends PathfinderMob> extends MoveToWalkTarget<E>
     protected void stop(E entity) {
         super.stop(entity);
         Services.DATA.setPowerData(new PowerData(power, true), target);
-        Power power1 = entity.level.registryAccess().registry(MinejagoRegistries.POWER).orElseThrow().get(power);
+        Power power1 = entity.level().registryAccess().registry(MinejagoRegistries.POWER).orElseThrow().get(power);
         if (power1 != null && power1.hasSets()) equipGi();
         if (power1 != null) target.sendSystemMessage(Component.translatable(Wu.POWER_GIVEN_KEY, entity.getDisplayName(), target.getDisplayName(), power1.getFormattedName(), power1.getTagline()));
 

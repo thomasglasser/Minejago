@@ -2,6 +2,7 @@ package dev.thomasglasser.minejago.client.gui.screens.inventory;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.inventory.BookEditScreen;
 import net.minecraft.network.chat.Component;
@@ -24,40 +25,39 @@ public class ScrollEditScreen extends BookEditScreen {
     }
 
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
-        renderBackground(poseStack);
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        renderBackground(guiGraphics);
         setFocused(null);
-        RenderSystem.setShaderTexture(0, BACKGROUND);
         int i = (width - IMAGE_WIDTH) / 2;
         int j = 2;
-        blit(poseStack, i, 2, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
+        guiGraphics.blit(BACKGROUND, i, j, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
         if (isSigning) {
             boolean bl = frameTick / 6 % 2 == 0;
             FormattedCharSequence formattedCharSequence = FormattedCharSequence.composite(
                     FormattedCharSequence.forward(title, Style.EMPTY), bl ? BLACK_CURSOR : GRAY_CURSOR
             );
             int k = font.width(EDIT_TITLE_LABEL);
-            font.draw(poseStack, EDIT_TITLE_LABEL, (float)(i + 36 + (114 - k) / 2), 34.0F, 0);
+            guiGraphics.drawString(this.font, EDIT_TITLE_LABEL, (i + 36 + (114 - k) / 2), 34, 0);
             int l = font.width(formattedCharSequence);
-            font.draw(poseStack, formattedCharSequence, (float)(i + 36 + (114 - l) / 2), 50.0F, 0);
+            guiGraphics.drawString(this.font, formattedCharSequence, (i + 36 + (114 - l) / 2), 50, 0);
             int m = font.width(ownerText);
-            font.draw(poseStack, ownerText, (float)(i + 36 + (114 - m) / 2), 60.0F, 0);
-            font.drawWordWrap(poseStack, FINALIZE_WARNING_LABEL, i + 36, 82, 114, 0);
+            guiGraphics.drawString(this.font, ownerText, (i + 36 + (114 - m) / 2), 60, 0);
+            guiGraphics.drawWordWrap(this.font, FINALIZE_WARNING_LABEL, i + 36, 82, 114, 0);
         } else {
             int n = font.width(pageMsg);
-            font.draw(poseStack, pageMsg, (float)(i - n + IMAGE_WIDTH - 44), 18.0F, 0);
+            guiGraphics.drawString(this.font, pageMsg, (i - n + IMAGE_WIDTH - 44), 18, 0);
             BookEditScreen.DisplayCache displayCache = getDisplayCache();
 
             for(BookEditScreen.LineInfo lineInfo : displayCache.lines) {
-                font.draw(poseStack, lineInfo.asComponent, (float)lineInfo.x, (float)lineInfo.y, -16777216);
+                guiGraphics.drawString(this.font, lineInfo.asComponent, lineInfo.x, lineInfo.y, -16777216);
             }
 
-            renderHighlight(poseStack, displayCache.selection);
-            renderCursor(poseStack, displayCache.cursor, displayCache.cursorAtEnd);
+            renderHighlight(guiGraphics, displayCache.selection);
+            renderCursor(guiGraphics, displayCache.cursor, displayCache.cursorAtEnd);
         }
 
         for(Renderable renderable : this.renderables) {
-            renderable.render(poseStack, mouseX, mouseY, partialTick);
+            renderable.render(guiGraphics, mouseX, mouseY, partialTick);
         }
     }
 

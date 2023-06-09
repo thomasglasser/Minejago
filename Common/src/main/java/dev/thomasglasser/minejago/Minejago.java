@@ -52,14 +52,14 @@ public class Minejago {
 
 		if (Dependencies.TSLAT_ENTITY_STATUS.isInstalled())
 		{
-			TESAPI.addTESHudElement(Minejago.modLoc("power_symbol"), (poseStack, mc, partialTick, entity, opacity, inWorldHud) ->
+			TESAPI.addTESHudElement(Minejago.modLoc("power_symbol"), (guiGraphics, mc, partialTick, entity, opacity, inWorldHud) ->
 			{
 				if (mc.level != null && Services.DATA.getPowerData(entity) != null) {
 					TESClientUtil.prepRenderForTexture(MinejagoPowers.POWERS.get(mc.level.registryAccess()).get(Services.DATA.getPowerData(entity).power()).getIcon());
-					poseStack.pushPose();
-					poseStack.scale(0.5f, 0.5f, 1.0f);
-					TESClientUtil.drawSimpleTexture(poseStack, 0, 0, 32, 32, 0, 0, 32);
-					poseStack.popPose();
+					guiGraphics.pose().pushPose();
+					guiGraphics.pose().scale(0.5f, 0.5f, 1.0f);
+					TESClientUtil.drawSimpleTexture(guiGraphics, 0, 0, 32, 32, 0, 0, 32);
+					guiGraphics.pose().popPose();
 					return 16;
 				}
 
@@ -105,7 +105,7 @@ public class Minejago {
 		MOONLIGHT_LIB("moonlight"),
 		DYNAMIC_LIGHTS("dynamiclights", "lambdynlights"),
 		TRIMMED("trimmed"),
-		SHARDSAPI("shardsapi"),
+		SHERDSAPI("sherdsapi"),
 		PLAYER_ANIMATOR("playeranimator", "player-animator"),
 		REACH_ENTITY_ATTRIBUTES("forge", "reach-entity-attributes"),
 		TSLAT_ENTITY_STATUS("tslatentitystatus");

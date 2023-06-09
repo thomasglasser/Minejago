@@ -7,6 +7,7 @@ import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.powers.Power;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
@@ -35,13 +36,8 @@ public enum LivingEntityComponentProvider implements IEntityComponentProvider {
                 }
 
                 @Override
-                public void render(PoseStack poseStack, float x, float y, float maxX, float maxY) {
-                    RenderSystem.setShaderTexture(0, power.getIcon());
-                    RenderSystem.enableBlend();
-                    RenderSystem.defaultBlendFunc();
-                    poseStack.pushPose();
-                    Gui.blit(poseStack, (int) x, (int) y, 16, 16, 0, 0, 32, 32, 32, 32);
-                    poseStack.popPose();
+                public void render(GuiGraphics guiGraphics, float x, float y, float maxX, float maxY) {
+                    guiGraphics.blit(power.getIcon(), (int) x, (int) y, 16, 16, 0, 0, 32, 32, 32, 32);
                 }
             };
             iTooltip.add(icon);

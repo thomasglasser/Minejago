@@ -78,7 +78,7 @@ public class Wu extends Character
 
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
-        Registry<Power> registry = MinejagoPowers.POWERS.get(level.registryAccess());
+        Registry<Power> registry = MinejagoPowers.POWERS.get(level().registryAccess());
 
         if (!MinejagoPowersConfig.DRAIN_POOL.get() || (powersToGive.size() <= 1))
         {

@@ -21,6 +21,6 @@ public class ServerboundStartSpinjitzuPacket {
         if (speed != null && !speed.hasModifier(SpinjitzuData.SPEED_MODIFIER)) speed.addTransientModifier(SpinjitzuData.SPEED_MODIFIER);
         AttributeInstance kb = serverPlayer.getAttribute(Attributes.ATTACK_KNOCKBACK);
         if (kb != null && !kb.hasModifier(SpinjitzuData.KNOCKBACK_MODIFIER)) kb.addTransientModifier(SpinjitzuData.KNOCKBACK_MODIFIER);
-        serverPlayer.level.playSound(null, serverPlayer.blockPosition(), MinejagoSoundEvents.SPINJITZU_START.get(), SoundSource.PLAYERS);
+        serverPlayer.level().playSound(null, serverPlayer.blockPosition(), MinejagoSoundEvents.SPINJITZU_START.get(), SoundSource.PLAYERS);
     }
 }
