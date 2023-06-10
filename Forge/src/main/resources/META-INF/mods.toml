@@ -123,7 +123,7 @@ ordering="NONE"
 side="CLIENT"
 [[dependencies.minejago]] #optional
 # the modid of the dependency
-modId="shardsapi" #mandatory
+modId="sherdsapi" #mandatory
 # Does this dependency have to exist - if not, ordering below must be specified
 mandatory=true #mandatory
 # The version range of the dependency
