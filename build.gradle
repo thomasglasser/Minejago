@@ -5,8 +5,7 @@ buildscript {
 }
 
 plugins {
-    id 'com.matyrobbrt.mc.registrationutils' version "1.19.3-${registration_utils_version}"
-//    id 'com.matyrobbrt.mc.registrationutils' version "${minecraft_version}-${registration_utils_version}" Waiting on 1.20
+    id 'com.matyrobbrt.mc.registrationutils' version "${previous_minecraft_version}-${registration_utils_version}"
     id "io.github.pacifistmc.forgix" version "1.2.6"
 }
 

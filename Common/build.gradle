@@ -50,17 +50,16 @@ dependencies {
 
     modCompileOnly "dev.kosmx.player-anim:player-animation-lib:${playeranimator_version}"
     modCompileOnly "dev.kosmx.player-anim:anim-core:${playeranimator_version}"
-    modCompileOnly "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}"
+    modCompileOnly "software.bernie.geckolib:geckolib-fabric-${previous_minecraft_version}:${geckolib_version}"
     modCompileOnly "curse.maven:moonlight-499980:${moonlight_fabric_id}"
 //    modCompileOnly "vazkii.patchouli:Patchouli:${minecraft_version}-${patchouli_version}:api"
     modCompileOnly("curse.maven:configured-667378:${configured_fabric_id}")
     modCompileOnly "maven.modrinth:jade:${jade_version}"
 
     modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-common:${forgeconfigapiport_version}"
-    modImplementation("dev.thomasglasser.sherdsapi:sherdsapi-common-${minecraft_version}:${sherdsapi_version}")
-    modImplementation "net.tslat.smartbrainlib:SmartBrainLib-common-${minecraft_version}:${smartbrainlib_version}"
-    modImplementation "net.tslat.tes:TES-common-${minecraft_version}:${tes_version}"
-//    modImplementation("dev.dhyces.trimmed:trimmed-common-${minecraft_version}:${trimmed_version}") // TODO: update
+    modImplementation("dev.thomasglasser.sherdsapi:sherdsapi-common-${previous_minecraft_version}:${sherdsapi_version}")
+    modImplementation "net.tslat.smartbrainlib:SmartBrainLib-common-${previous_minecraft_version}:${smartbrainlib_version}"
+    modImplementation "net.tslat.tes:TES-common-${previous_minecraft_version}:${tes_version}"
     modImplementation("dev.dhyces.trimmed:trimmed-common-${previous_minecraft_version}:${trimmed_version}")
 
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'

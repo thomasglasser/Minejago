@@ -104,16 +104,15 @@ dependencies {
     implementation fg.deobf("curse.maven:dynamiclights-227874:${dynamiclights_id}")
     implementation fg.deobf("curse.maven:moonlight-499980:${moonlight_forge_id}")
 //    implementation fg.deobf("curse.maven:ptd-585667:${ptd_id}")
-    implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}")
+    implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${previous_minecraft_version}:${geckolib_version}")
     implementation fg.deobf("dev._100media.capabilitysyncer:capabilitysyncer:${capabilitysyncer_version}")
-    implementation fg.deobf("net.tslat.smartbrainlib:SmartBrainLib-forge-${minecraft_version}:${smartbrainlib_version}")
+    implementation fg.deobf("net.tslat.smartbrainlib:SmartBrainLib-forge-${previous_minecraft_version}:${smartbrainlib_version}")
     implementation fg.deobf("maven.modrinth:jade:${jade_forge_id}")
     implementation(fg.deobf("me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}"))
-    implementation fg.deobf("dev.thomasglasser.sherdsapi:sherdsapi-forge-${minecraft_version}:${sherdsapi_version}")
-//    implementation fg.deobf("dev.dhyces.trimmed:trimmed-forge-${minecraft_version}:${trimmed_version}") // TODO: update
+    implementation fg.deobf("dev.thomasglasser.sherdsapi:sherdsapi-forge-${previous_minecraft_version}:${sherdsapi_version}")
     implementation fg.deobf("dev.dhyces.trimmed:trimmed-forge-${previous_minecraft_version}:${trimmed_version}")
     implementation fg.deobf("curse.maven:configured-457570:${configured_forge_id}")
-    implementation fg.deobf("net.tslat.tes:TES-forge-${minecraft_version}:${tes_version}")
+    implementation fg.deobf("net.tslat.tes:TES-forge-${previous_minecraft_version}:${tes_version}")
 
     jarJar(group: "dev.thomasglasser.sherdsapi", name: "sherdsapi-forge-${minecraft_version}", version: "[${sherdsapi_version},${sherdsapi_next_major_version})")
 //    jarJar(group: "dev.dhyces.trimmed", name: "trimmed-forge-${minecraft_version}", version: "[${trimmed_version},${trimmed_next_major_version})") // TODO: update
