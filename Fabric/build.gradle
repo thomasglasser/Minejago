@@ -21,9 +21,6 @@ dependencies {
         parchment("org.parchmentmc.data:parchment-1.19.3:${parchment_version}@zip")
     }
 
-    // Waiting on Fabric version, for now compiling against forge so code builds
-    modCompileOnly "curse.maven:moonlight-499980:${moonlight_forge_id}"
-
     modRuntimeOnly "dev.lambdaurora:spruceui:${spruceui_version}"
     modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:$rei_version"
     modRuntimeOnly "maven.modrinth:huge-structure-blocks:${hugestructureblocks_version}"
@@ -37,7 +34,7 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
     modImplementation "maven.modrinth:lambdynamiclights:${lambdynamiclights_version}"
-    modImplementation "curse.maven:moonlight-499980:${moonlight_fabric_id}"
+    modImplementation "maven.modrinth:moonlight:${moonlight_version}"
     modImplementation "software.bernie.geckolib:geckolib-fabric-${previous_minecraft_version}:${geckolib_version}"
     modImplementation("net.tslat.smartbrainlib:SmartBrainLib-fabric-${previous_minecraft_version}:${smartbrainlib_version}")
     modImplementation "maven.modrinth:jade:${jade_version}"
