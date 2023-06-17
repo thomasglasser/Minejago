@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/chiseled_bookshelf_inventory",
+  "textures": {
+    "front": "minejago:block/chiseled_scroll_shelf_empty"
+  }
+}

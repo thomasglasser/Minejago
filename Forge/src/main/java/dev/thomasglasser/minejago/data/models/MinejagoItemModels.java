@@ -77,17 +77,17 @@ public class MinejagoItemModels extends ItemModelProvider
         HolderLookup.Provider provider = builder.build(access);
 
         provider.lookupOrThrow(MinejagoRegistries.POWER).listElements().forEach(powerReference ->
-                {
-                    if (powerReference.get().hasSets())
-                    {
-                        MinejagoArmor.POWER_SETS.forEach(armorSet ->
-                                armorSet.getAll().forEach(item ->
-                                {
-                                    String path = powerReference.key().location().getPath() + "_" + item.getId().getPath();
-                                    singleTexture("item/minejago_armor/" + path, mcLoc("item/generated"), "layer0", modLoc("item/" + path));
-                                }));
-                    }
-                });
+        {
+            if (powerReference.get().hasSets())
+            {
+                MinejagoArmor.POWER_SETS.forEach(armorSet ->
+                        armorSet.getAll().forEach(item ->
+                        {
+                            String path = powerReference.key().location().getPath() + "_" + item.getId().getPath();
+                            singleTexture("item/minejago_armor/" + path, mcLoc("item/generated"), "layer0", modLoc("item/" + path));
+                        }));
+            }
+        });
 
         spawnEgg(MinejagoItems.WU_SPAWN_EGG.getId().getPath());
         spawnEgg(MinejagoItems.KAI_SPAWN_EGG.getId().getPath());
@@ -102,7 +102,7 @@ public class MinejagoItemModels extends ItemModelProvider
 
 
     }
-    
+
     protected void basicItemHandheld(ResourceLocation item)
     {
         singleTexture(item.getPath(), mcLoc("item/handheld"), "layer0", new ResourceLocation(item.getNamespace(), "item/" + item.getPath()));
@@ -116,10 +116,5 @@ public class MinejagoItemModels extends ItemModelProvider
     protected void spawnEgg(String path)
     {
         withExistingParent(path, mcLoc("item/template_spawn_egg"));
-    }
-
-    protected void blockModel(Block block)
-    {
-        // TODO
     }
 }
