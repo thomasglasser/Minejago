@@ -31,7 +31,7 @@
       "dev.thomasglasser.minejago.MinejagoFabric"
     ],
     "client": [
-      "dev.thomasglasser.minejago.MinejagoFabricClient"
+      "dev.thomasglasser.minejago.client.MinejagoFabricClient"
     ],
     "cardinal-components": [
       "dev.thomasglasser.minejago.world.level.storage.MinejagoFabricEntityComponents"

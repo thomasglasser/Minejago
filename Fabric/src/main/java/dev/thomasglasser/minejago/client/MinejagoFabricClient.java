@@ -1,6 +1,7 @@
-package dev.thomasglasser.minejago;
+package dev.thomasglasser.minejago.client;
 
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
+import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.MinejagoClientEvents;
 import dev.thomasglasser.minejago.client.animation.MinejagoPlayerAnimator;
 import dev.thomasglasser.minejago.client.model.*;
