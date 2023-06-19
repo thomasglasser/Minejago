@@ -16,7 +16,6 @@
     "minecraft.world.item.alchemy.PotionUtilsMixin",
     "minecraft.world.item.enchantment.EnchantmentMixin",
     "minecraft.world.level.block.entity.LecternBlockEntityMixin",
-    "minecraft.world.level.gameevent.vibrations.VibrationSystemMixin"
   ],
   "client": [
     "minecraft.client.OptionsMixin",

@@ -61,7 +61,7 @@ modId="playeranimator" #mandatory
 # Does this dependency have to exist - if not, ordering below must be specified
 mandatory=false #mandatory
 # The version range of the dependency
-versionRange="[1.0.2+1.19.4,)" #mandatory
+versionRange="[1.0,)" #mandatory
 # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
 ordering="NONE"
 # Side this dependency is applied on - BOTH, CLIENT or SERVER
@@ -72,7 +72,7 @@ modId="dynamiclights" #mandatory
 # Does this dependency have to exist - if not, ordering below must be specified
 mandatory=false #mandatory
 # The version range of the dependency
-versionRange="[1.19.4.1,)" #mandatory
+versionRange="[1.20.1,)" #mandatory
 # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
 ordering="NONE"
 # Side this dependency is applied on - BOTH, CLIENT or SERVER
@@ -83,7 +83,7 @@ modId="moonlight" #mandatory
 # Does this dependency have to exist - if not, ordering below must be specified
 mandatory=false #mandatory
 # The version range of the dependency
-versionRange="[1.19.4-2.3.8,)" #mandatory
+versionRange="[1.20-2.5,)" #mandatory
 # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
 ordering="NONE"
 # Side this dependency is applied on - BOTH, CLIENT or SERVER
@@ -127,7 +127,7 @@ modId="sherdsapi" #mandatory
 # Does this dependency have to exist - if not, ordering below must be specified
 mandatory=true #mandatory
 # The version range of the dependency
-versionRange="[3.0.0,)" #mandatory
+versionRange="[3.0,)" #mandatory
 # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
 ordering="NONE"
 # Side this dependency is applied on - BOTH, CLIENT or SERVER
@@ -138,7 +138,7 @@ modId="trimmed" #mandatory
 # Does this dependency have to exist - if not, ordering below must be specified
 mandatory=true #mandatory
 # The version range of the dependency
-versionRange="[1.1.1,)" #mandatory
+versionRange="[1.1,)" #mandatory
 # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
 ordering="NONE"
 # Side this dependency is applied on - BOTH, CLIENT or SERVER
@@ -149,7 +149,7 @@ modId="configured" #mandatory
 # Does this dependency have to exist - if not, ordering below must be specified
 mandatory=false #mandatory
 # The version range of the dependency
-versionRange="[2.1.1,)" #mandatory
+versionRange="[2.1,)" #mandatory
 # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
 ordering="NONE"
 # Side this dependency is applied on - BOTH, CLIENT or SERVER
@@ -160,7 +160,7 @@ modId="tslatentitystatus" #mandatory
 # Does this dependency have to exist - if not, ordering below must be specified
 mandatory=false #mandatory
 # The version range of the dependency
-versionRange="[1.1.1,)" #mandatory
+versionRange="[1.1,)" #mandatory
 # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
 ordering="NONE"
 # Side this dependency is applied on - BOTH, CLIENT or SERVER
@@ -171,7 +171,7 @@ modId="jade" #mandatory
 # Does this dependency have to exist - if not, ordering below must be specified
 mandatory=false #mandatory
 # The version range of the dependency
-versionRange="[11.0.3,)" #mandatory
+versionRange="[11.0,)" #mandatory
 # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
 ordering="NONE"
 # Side this dependency is applied on - BOTH, CLIENT or SERVER

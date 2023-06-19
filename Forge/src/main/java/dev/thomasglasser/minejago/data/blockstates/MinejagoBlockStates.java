@@ -52,12 +52,6 @@ public class MinejagoBlockStates extends BlockStateProvider {
                     .rotationY((int) (facing.getOpposite()).toYRot())
                     .build();
         });
-
-        // TODO
-        getVariantBuilder(MinejagoBlocks.CHISELED_SCROLL_SHELF.get()).forAllStates(blockState ->
-        {
-            return ConfiguredModel.builder().build();
-        });
     }
 
     public static ResourceLocation blockModel(String path)

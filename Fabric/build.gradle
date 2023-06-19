@@ -27,13 +27,15 @@ dependencies {
     modRuntimeOnly "curse.maven:worldedit-225608:${worldedit_id}"
     modRuntimeOnly "maven.modrinth:midnightlib:${midnightlib_version}-fabric"
     modRuntimeOnly "com.terraformersmc:modmenu:${modmenu_version}"
+    runtimeOnly "maven.modrinth:common-network:${common_network_version}-fabric"
 
     implementation project(":Common")
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
 
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
-    modImplementation "maven.modrinth:lambdynamiclights:${lambdynamiclights_version}"
+    modCompileOnly "maven.modrinth:lambdynamiclights:${lambdynamiclights_version}"
+//    modImplementation "maven.modrinth:lambdynamiclights:${lambdynamiclights_version}" TODO: Update
     modImplementation "maven.modrinth:moonlight:${moonlight_version}"
     modImplementation "software.bernie.geckolib:geckolib-fabric-${previous_minecraft_version}:${geckolib_version}"
     modImplementation("net.tslat.smartbrainlib:SmartBrainLib-fabric-${previous_minecraft_version}:${smartbrainlib_version}")
@@ -43,13 +45,16 @@ dependencies {
         exclude(group: "net.fabricmc.fabric-api")
     }
     modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-api:${cca_version}")
-    modImplementation("curse.maven:configured-667378:${configured_fabric_id}")
-    modImplementation "net.tslat.tes:TES-fabric-${previous_minecraft_version}:${tes_version}"
-    modImplementation("dev.dhyces.trimmed:trimmed-fabric-${previous_minecraft_version}:${trimmed_version}")
+    modCompileOnly("curse.maven:configured-667378:${configured_fabric_id}")
+    modCompileOnly "net.tslat.tes:TES-fabric-${previous_minecraft_version}:${tes_version}"
+//    modImplementation("curse.maven:configured-667378:${configured_fabric_id}") TODO: Update
+//    modImplementation "net.tslat.tes:TES-fabric-${previous_minecraft_version}:${tes_version}" TODO: Update
+    modImplementation("maven.modrinth:trimmed:${trimmed_version}")
 
     include modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${playeranimator_version}")
     include modImplementation("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forgeconfigapiport_version}")
-    include modImplementation("com.jamieswhiteshirt:reach-entity-attributes:$reachentityattributes_version")
+    include modCompileOnly("com.jamieswhiteshirt:reach-entity-attributes:$reachentityattributes_version")
+//    include modImplementation("com.jamieswhiteshirt:reach-entity-attributes:$reachentityattributes_version") TODO: Update
     include modImplementation("dev.thomasglasser.sherdsapi:sherdsapi-fabric-${previous_minecraft_version}:${sherdsapi_version}")
 
     include("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cca_version}")
