@@ -62,14 +62,14 @@ public class ThrownIronShuriken extends AbstractArrow
 
         if (this.inGroundTime > 4) {
             this.dealtDamage = true;
-            level.broadcastEntityEvent(this, (byte) 100);
+            level().broadcastEntityEvent(this, (byte) 100);
         }
 
         if (!this.dealtDamage && this.tickCount > 40)
         {
             Vec3 vec3 = pos.subtract(this.position());
             this.setPosRaw(this.getX(), this.getY() + vec3.y * 0.015D, this.getZ());
-            if (this.level.isClientSide) {
+            if (this.level().isClientSide) {
                 this.yOld = this.getY();
             }
 
@@ -81,7 +81,7 @@ public class ThrownIronShuriken extends AbstractArrow
                 this.setNoGravity(false);
                 do {
                     pos = pos.subtract(0, 1, 0);
-                } while (level.getBlockState(blockPos).isAir());
+                } while (level().getBlockState(blockPos).isAir());
             }
         }
         else {
@@ -152,7 +152,7 @@ public class ThrownIronShuriken extends AbstractArrow
         {
             if (!(pEntity.swinging || inGround))
                 onHitEntity(new EntityHitResult(this.getOwner() == null ? this : this.getOwner()));
-            if (!this.level.isClientSide()) {
+            if (!this.level().isClientSide()) {
                 this.setNoPhysics(true);
                 super.playerTouch(pEntity);
             }
@@ -214,11 +214,11 @@ public class ThrownIronShuriken extends AbstractArrow
     @Override
     protected void onInsideBlock(BlockState state) {
         if (state.is(MinejagoBlockTags.SHURIKEN_BREAKS))
-            level.destroyBlock(blockPosition(), true, this.getOwner());
-        if (level.getBlockState(blockPosition().above()).is(MinejagoBlockTags.SHURIKEN_BREAKS))
-            level.destroyBlock(blockPosition().above(), true, this.getOwner());
-        if (level.getBlockState(blockPosition().below()).is(MinejagoBlockTags.SHURIKEN_BREAKS))
-            level.destroyBlock(blockPosition().below(), true, this.getOwner());
+            level().destroyBlock(blockPosition(), true, this.getOwner());
+        if (level().getBlockState(blockPosition().above()).is(MinejagoBlockTags.SHURIKEN_BREAKS))
+            level().destroyBlock(blockPosition().above(), true, this.getOwner());
+        if (level().getBlockState(blockPosition().below()).is(MinejagoBlockTags.SHURIKEN_BREAKS))
+            level().destroyBlock(blockPosition().below(), true, this.getOwner());
         super.onInsideBlock(state);
     }
 }

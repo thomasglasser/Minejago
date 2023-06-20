@@ -1,6 +1,7 @@
-package dev.thomasglasser.minejago;
+package dev.thomasglasser.minejago.client;
 
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
+import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.MinejagoClientEvents;
 import dev.thomasglasser.minejago.client.animation.MinejagoPlayerAnimator;
 import dev.thomasglasser.minejago.client.model.*;
@@ -36,6 +37,7 @@ import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
@@ -201,7 +203,7 @@ public class MinejagoFabricClient implements ClientModInitializer {
         ModConfigEvents.reloading(Minejago.MOD_ID).register((config) ->
                 MinejagoClientUtils.refreshVip());
         ItemGroupEvents.MODIFY_ENTRIES_ALL.register((group, entries) ->
-                entries.acceptAll(MinejagoItems.getItemsForTab(group)));
+                entries.acceptAll(MinejagoItems.getItemsForTab(BuiltInRegistries.CREATIVE_MODE_TAB.getResourceKey(group).orElseThrow())));
     }
 
     private void registerPackets()

@@ -34,12 +34,12 @@ public class MinejagoStoryAdvancements implements ForgeAdvancementProvider.Advan
         Advancement interactWithMainSix = Advancement.Builder.advancement()
                 .parent(root)
                 .display(MinejagoItems.IRON_KATANA.get(), title(CATEGORY, INTERACT_WITH_MAIN_SIX), desc(CATEGORY, INTERACT_WITH_MAIN_SIX), null, FrameType.GOAL, true, true, false)
-                .addCriterion("interact_wu", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), EntityPredicate.Composite.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.WU.get()).build())))
-                .addCriterion("interact_nya", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), EntityPredicate.Composite.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.NYA.get()).build())))
-                .addCriterion("interact_jay", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), EntityPredicate.Composite.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.JAY.get()).build())))
-                .addCriterion("interact_kai", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), EntityPredicate.Composite.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.KAI.get()).build())))
-                .addCriterion("interact_cole", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), EntityPredicate.Composite.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.COLE.get()).build())))
-                .addCriterion("interact_zane", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), EntityPredicate.Composite.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.ZANE.get()).build())))
+                .addCriterion("interact_wu", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), EntityPredicate.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.WU.get()).build())))
+                .addCriterion("interact_nya", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), EntityPredicate.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.NYA.get()).build())))
+                .addCriterion("interact_jay", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), EntityPredicate.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.JAY.get()).build())))
+                .addCriterion("interact_kai", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), EntityPredicate.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.KAI.get()).build())))
+                .addCriterion("interact_cole", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), EntityPredicate.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.COLE.get()).build())))
+                .addCriterion("interact_zane", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), EntityPredicate.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.ZANE.get()).build())))
                 .save(saver, Minejago.modLoc(CATEGORY + "/" + INTERACT_WITH_MAIN_SIX), existingFileHelper);
     }
 }

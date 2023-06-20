@@ -28,5 +28,6 @@
     "recipes": [
       "minejago:teacup"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

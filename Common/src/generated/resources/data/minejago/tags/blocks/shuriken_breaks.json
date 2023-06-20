@@ -3,7 +3,7 @@
     "#minecraft:crops",
     "#minecraft:flowers",
     "#minecraft:saplings",
-    "#minecraft:replaceable_plants",
+    "#minecraft:replaceable",
     "minecraft:sugar_cane"
   ]
 }

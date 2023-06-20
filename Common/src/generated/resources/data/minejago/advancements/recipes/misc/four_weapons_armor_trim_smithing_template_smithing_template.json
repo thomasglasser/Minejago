@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:four_weapons_armor_trim_smithing_template_smithing_trim"
+        "recipe": "minejago:four_weapons_armor_trim_smithing_template_smithing_template"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,8 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:four_weapons_armor_trim_smithing_template_smithing_trim"
+      "minejago:four_weapons_armor_trim_smithing_template_smithing_template"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

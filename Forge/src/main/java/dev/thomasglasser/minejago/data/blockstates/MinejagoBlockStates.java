@@ -85,7 +85,7 @@ public class MinejagoBlockStates extends BlockStateProvider {
                     .rotationY((int) (facing.getOpposite()).toYRot())
                     .build();
         });
-
+      
         getVariantBuilder(MinejagoBlocks.TOP_POST.get()).forAllStates(blockState ->
         {
             Direction facing = blockState.getValue(TopPostBlock.FACING);

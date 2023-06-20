@@ -6,7 +6,6 @@ buildscript {
 
 plugins {
     id 'com.matyrobbrt.mc.registrationutils' version "${previous_minecraft_version}-${registration_utils_version}"
-//    id 'com.matyrobbrt.mc.registrationutils' version "${minecraft_version}-${registration_utils_version}" Waiting on 1.19.4
     id "io.github.pacifistmc.forgix" version "1.2.6"
 }
 
@@ -66,6 +65,10 @@ subprojects {
         maven {
             name = 'Sponge / Mixin'
             url = 'https://repo.spongepowered.org/repository/maven-public/'
+        }
+
+        maven {
+            url = "https://jm.gserv.me/repository/maven-public/"
         }
 
         maven {

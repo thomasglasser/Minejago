@@ -21,7 +21,7 @@ public class EntityMixin implements IDataHolder
     @Shadow @Final protected RandomSource random;
     private final Entity INSTANCE = ((Entity)(Object)this);
 
-    private CompoundTag persistentData = new CompoundTag();
+    private final CompoundTag persistentData = new CompoundTag();
 
     @Unique(silent = true)
     @Override

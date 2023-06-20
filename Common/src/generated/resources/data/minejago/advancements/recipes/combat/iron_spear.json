@@ -28,5 +28,6 @@
     "recipes": [
       "minejago:iron_spear"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

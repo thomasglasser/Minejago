@@ -42,6 +42,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -170,13 +171,14 @@ public class TeapotBlock extends BaseEntityBlock {
         return false;
     }
 
+    @Override
     @SuppressWarnings("deprecation")
-    public List<ItemStack> getDrops(BlockState pState, LootContext.Builder pBuilder) {
+    public List<ItemStack> getDrops(BlockState pState, LootParams.Builder pBuilder) {
         BlockEntity blockentity = pBuilder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
         if (blockentity instanceof TeapotBlockEntity be) {
-            pBuilder = pBuilder.withDynamicDrop(CONTENTS, (p_56218_, p_56219_) -> {
+            pBuilder = pBuilder.withDynamicDrop(CONTENTS, (consumer) -> {
                 for(int i = 0; i < be.getContainerSize(); ++i) {
-                    p_56219_.accept(be.getInSlot(i));
+                    consumer.accept(be.getInSlot(i));
                 }
 
             });

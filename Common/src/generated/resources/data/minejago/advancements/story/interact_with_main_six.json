@@ -127,5 +127,6 @@
     [
       "interact_zane"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

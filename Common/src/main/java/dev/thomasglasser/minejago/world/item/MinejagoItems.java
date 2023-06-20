@@ -10,7 +10,7 @@ import dev.thomasglasser.minejago.world.item.armor.IGeoArmorItem;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
 import dev.thomasglasser.minejago.world.item.armortrim.MinejagoTrimPatterns;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
-import dev.thomasglasser.shardsapi.api.PotteryShardRegistry;
+import dev.thomasglasser.sherdsapi.api.PotterySherdRegistry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -28,7 +28,7 @@ import java.util.function.Supplier;
 public class MinejagoItems
 {
     public static final RegistrationProvider<Item> ITEMS = RegistrationProvider.get(Registries.ITEM, Minejago.MOD_ID);
-    private static final HashMap<CreativeModeTab, ArrayList<ResourceLocation>> ITEM_TABS = new HashMap<>();
+    private static final HashMap<ResourceKey<CreativeModeTab>, ArrayList<ResourceLocation>> ITEM_TABS = new HashMap<>();
     public static final String MOD_NEEDED = "error.mod_needed";
 
     public static final RegistryObject<Item> BAMBOO_STAFF = register("bamboo_staff", () -> new BambooStaffItem(Tiers.WOOD, 2, -1, new Item.Properties()), CreativeModeTabs.COMBAT);
@@ -40,7 +40,7 @@ public class MinejagoItems
     public static final RegistryObject<Item> TEACUP = register("teacup", () -> new TeacupItem(new Item.Properties()), CreativeModeTabs.INGREDIENTS);
     public static final RegistryObject<Item> FILLED_TEACUP = register("filled_teacup", () -> new FilledTeacupItem(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> FOUR_WEAPONS_BANNER_PATTERN = register("four_weapons_banner_pattern", () -> new BannerPatternItem(MinejagoBannerPatternTags.PATTERN_ITEM_FOUR_WEAPONS, (new Item.Properties()).stacksTo(1).rarity(Rarity.EPIC)), CreativeModeTabs.INGREDIENTS);
-    public static final RegistryObject<Item> IRON_SCYTHE = register("iron_scythe", () -> new IronScytheItem(Tiers.IRON, 8, -3.5F, BlockTags.REPLACEABLE_PLANTS, new Item.Properties()), CreativeModeTabs.TOOLS_AND_UTILITIES, CreativeModeTabs.COMBAT);
+    public static final RegistryObject<Item> IRON_SCYTHE = register("iron_scythe", () -> new IronScytheItem(Tiers.IRON, 8, -3.5F, BlockTags.MINEABLE_WITH_HOE, new Item.Properties()), CreativeModeTabs.TOOLS_AND_UTILITIES, CreativeModeTabs.COMBAT);
     public static final RegistryObject<Item> WOODEN_NUNCHUCKS = register("wooden_nunchucks", () -> new NunchucksItem(new Item.Properties().stacksTo(1)), CreativeModeTabs.COMBAT);
     public static final RegistryObject<Item> SCROLL = register("scroll", () -> new ScrollItem(new Item.Properties()), CreativeModeTabs.INGREDIENTS);
     public static final RegistryObject<Item> WRITABLE_SCROLL = register("writable_scroll", () -> new WritableScrollItem(new Item.Properties().stacksTo(1)), CreativeModeTabs.TOOLS_AND_UTILITIES);
@@ -54,7 +54,7 @@ public class MinejagoItems
     public static final RegistryObject<Item> POTTERY_SHERD_YIN_YANG = registerSherd("pottery_sherd_yin_yang");
     public static final RegistryObject<Item> POTTERY_SHERD_DRAGONS_HEAD = registerSherd("pottery_sherd_dragons_head");
     public static final RegistryObject<Item> POTTERY_SHERD_DRAGONS_TAIL = registerSherd("pottery_sherd_dragons_tail");
-    
+
     // SMITHING TEMPLATES
     public static final RegistryObject<Item> FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE = registerSmithingTemplate(MinejagoTrimPatterns.FOUR_WEAPONS);
 
@@ -80,9 +80,10 @@ public class MinejagoItems
     public static final RegistryObject<Item> TOP_POST = register("top_post", () -> new BlockItem(MinejagoBlocks.TOP_POST.get(), new Item.Properties()), CreativeModeTabs.BUILDING_BLOCKS);
     public static final RegistryObject<Item> CHISELED_SCROLL_SHELF = register("chiseled_scroll_shelf", () -> new BlockItem(MinejagoBlocks.CHISELED_SCROLL_SHELF.get(), new Item.Properties()), CreativeModeTabs.FUNCTIONAL_BLOCKS, CreativeModeTabs.REDSTONE_BLOCKS);
 
-    private static RegistryObject<Item> register(String name, Supplier<? extends Item> supplier, CreativeModeTab... tabs)
+    @SafeVarargs
+    private static RegistryObject<Item> register(String name, Supplier<? extends Item> supplier, ResourceKey<CreativeModeTab>... tabs)
     {
-        for (CreativeModeTab tab: tabs) {
+        for (ResourceKey<CreativeModeTab> tab: tabs) {
             ArrayList<ResourceLocation> list = ITEM_TABS.computeIfAbsent(tab, empty -> new ArrayList<>());
             list.add(new ResourceLocation(Minejago.MOD_ID, name));
         }
@@ -93,7 +94,7 @@ public class MinejagoItems
     {
         RegistryObject<Item> sherd = register(name, () -> new Item(new Item.Properties()), CreativeModeTabs.INGREDIENTS);
 
-        if (Minejago.Dependencies.SHARDSAPI.isInstalled()) PotteryShardRegistry.register(sherd.getId(), sherd.getId());
+        if (Minejago.Dependencies.SHERDSAPI.isInstalled()) PotterySherdRegistry.register(sherd.getId(), sherd.getId());
 
         return sherd;
     }
@@ -103,13 +104,13 @@ public class MinejagoItems
         return register(key.location().getPath() + "_armor_trim_smithing_template", () -> (SmithingTemplateItem.createArmorTrimTemplate(key)), CreativeModeTabs.INGREDIENTS);
     }
 
-    public static Map<CreativeModeTab, ArrayList<ResourceLocation>> getItemTabs() {
+    public static Map<ResourceKey<CreativeModeTab>, ArrayList<ResourceLocation>> getItemTabs() {
         return ITEM_TABS;
     }
 
     public static void init() {}
 
-    public static List<ItemStack> getItemsForTab(CreativeModeTab tab)
+    public static List<ItemStack> getItemsForTab(ResourceKey<CreativeModeTab> tab)
     {
         List<ItemStack> items = new ArrayList<>();
 
