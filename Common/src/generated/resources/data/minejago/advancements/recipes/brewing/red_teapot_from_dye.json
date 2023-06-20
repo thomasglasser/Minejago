@@ -39,5 +39,6 @@
     "recipes": [
       "minejago:red_teapot_from_dye"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

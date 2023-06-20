@@ -39,5 +39,6 @@
     "recipes": [
       "minejago:blue_teapot"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

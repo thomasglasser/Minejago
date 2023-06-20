@@ -28,5 +28,6 @@
     "recipes": [
       "minejago:chiseled_scroll_shelf"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

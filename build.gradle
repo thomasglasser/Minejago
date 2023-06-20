@@ -68,6 +68,10 @@ subprojects {
         }
 
         maven {
+            url = "https://jm.gserv.me/repository/maven-public/"
+        }
+
+        maven {
             name = 'BlameJared Maven (CrT / Bookshelf)'
             url = 'https://maven.blamejared.com'
         }

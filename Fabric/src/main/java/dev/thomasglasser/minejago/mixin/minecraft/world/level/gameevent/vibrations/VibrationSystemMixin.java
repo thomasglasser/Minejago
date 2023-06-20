@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(VibrationSystem.class)
-public class VibrationSystemMixin
+public interface VibrationSystemMixin
 {
     @Inject(method = "getGameEventFrequency", at = @At("HEAD"), cancellable = true)
     private static void minejago_getGameEventFrequency(GameEvent gameEvent, CallbackInfoReturnable<Integer> cir)

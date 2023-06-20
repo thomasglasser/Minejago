@@ -39,5 +39,6 @@
     "recipes": [
       "minejago:light_gray_teapot"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

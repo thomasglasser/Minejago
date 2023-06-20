@@ -39,5 +39,6 @@
     "recipes": [
       "minejago:magenta_teapot"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

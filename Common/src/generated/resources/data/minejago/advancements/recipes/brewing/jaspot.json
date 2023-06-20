@@ -30,5 +30,6 @@
     "recipes": [
       "minejago:jaspot"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

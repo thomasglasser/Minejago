@@ -28,5 +28,6 @@
     "recipes": [
       "minejago:iron_katana"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

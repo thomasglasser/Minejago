@@ -73,5 +73,6 @@
       ],
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "minejago:blocks/light_blue_teapot"
 }

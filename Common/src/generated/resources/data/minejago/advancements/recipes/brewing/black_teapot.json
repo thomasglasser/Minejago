@@ -39,5 +39,6 @@
     "recipes": [
       "minejago:black_teapot"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

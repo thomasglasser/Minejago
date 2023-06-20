@@ -30,5 +30,6 @@
     "recipes": [
       "minejago:bamboo_staff"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

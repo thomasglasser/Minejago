@@ -30,5 +30,6 @@
     "recipes": [
       "minejago:scroll"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }
