@@ -32,6 +32,6 @@ public class ClientboundStartSpinjitzuPacket {
     }
 
     public void handle() {
-        MinejagoClientUtils.startAnimation(SpinjitzuAnimations.Animations.SPINJITZU_START.getAnimation(), SpinjitzuAnimations.Animations.SPINJITZU_ACTIVE.getAnimation(), MinejagoClientUtils.getClientPlayerByUUID(uuid), FirstPersonMode.VANILLA);
+        if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled()) MinejagoClientUtils.startAnimation(SpinjitzuAnimations.Animations.SPINJITZU_START.getAnimation(), SpinjitzuAnimations.Animations.SPINJITZU_ACTIVE.getAnimation(), MinejagoClientUtils.getClientPlayerByUUID(uuid), FirstPersonMode.VANILLA);
     }
 }

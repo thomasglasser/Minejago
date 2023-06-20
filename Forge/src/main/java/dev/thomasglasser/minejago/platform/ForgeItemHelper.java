@@ -12,10 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.item.*;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 
@@ -26,7 +23,7 @@ import java.util.function.Supplier;
 public class ForgeItemHelper implements IItemHelper {
     @Override
     public Attribute getAttackRangeAttribute() {
-        return ForgeMod.ATTACK_RANGE.get();
+        return ForgeMod.ENTITY_REACH.get();
     }
 
     @Override
@@ -35,25 +32,17 @@ public class ForgeItemHelper implements IItemHelper {
     }
 
     @Override
-    public void renderItem(ItemStack itemStack, ItemTransforms.TransformType transformType, boolean leftHand, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, String model) {
-        renderItem(itemStack, transformType, false, poseStack, buffer, combinedLight, combinedOverlay, Minejago.MOD_ID, model);
+    public void renderItem(ItemStack itemStack, ItemDisplayContext displayContext, boolean leftHand, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, String model) {
+        renderItem(itemStack, displayContext, false, poseStack, buffer, combinedLight, combinedOverlay, Minejago.MOD_ID, model);
     }
 
     @Override
-    public void renderItem(ItemStack itemStack, ItemTransforms.TransformType transformType, boolean leftHand, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, String modid, String model) {
-        Minecraft.getInstance().getItemRenderer().render(itemStack, transformType, false, poseStack, buffer, combinedLight, combinedOverlay, Minecraft.getInstance().getModelManager().getModel(new ResourceLocation(modid, "item/" + model)));
+    public void renderItem(ItemStack itemStack, ItemDisplayContext displayContext, boolean leftHand, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, String modid, String model) {
+        Minecraft.getInstance().getItemRenderer().render(itemStack, displayContext, false, poseStack, buffer, combinedLight, combinedOverlay, Minecraft.getInstance().getModelManager().getModel(new ResourceLocation(modid, "item/" + model)));
     }
 
-    public final List<List<Object>> TABS = new ArrayList<>();
-
     @Override
-    public CreativeModeTab newTab(ResourceLocation rl, Component title, Supplier<ItemStack> icon, CreativeModeTab.DisplayItemsGenerator displayItems) {
-        int i = TABS.size();
-        TABS.add(i, new ArrayList<>());
-        TABS.get(i).add(0, rl);
-        TABS.get(i).add(1, title);
-        TABS.get(i).add(2, icon);
-        TABS.get(i).add(3, displayItems);
-        return null;
+    public CreativeModeTab newTab(Component title, Supplier<ItemStack> icon, CreativeModeTab.DisplayItemsGenerator displayItems) {
+        return CreativeModeTab.builder().title(title).icon(icon).displayItems(displayItems).build();
     }
 }

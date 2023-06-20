@@ -1,0 +1,64 @@
+{
+  "variants": {
+    "column=left,facing=east,row=bottom": {
+      "model": "minejago:block/gold_disc_bottom_left",
+      "y": 90
+    },
+    "column=left,facing=east,row=top": {
+      "model": "minejago:block/gold_disc_top_left",
+      "y": 90
+    },
+    "column=left,facing=north,row=bottom": {
+      "model": "minejago:block/gold_disc_bottom_left"
+    },
+    "column=left,facing=north,row=top": {
+      "model": "minejago:block/gold_disc_top_left"
+    },
+    "column=left,facing=south,row=bottom": {
+      "model": "minejago:block/gold_disc_bottom_left",
+      "y": 180
+    },
+    "column=left,facing=south,row=top": {
+      "model": "minejago:block/gold_disc_top_left",
+      "y": 180
+    },
+    "column=left,facing=west,row=bottom": {
+      "model": "minejago:block/gold_disc_bottom_left",
+      "y": 270
+    },
+    "column=left,facing=west,row=top": {
+      "model": "minejago:block/gold_disc_top_left",
+      "y": 270
+    },
+    "column=right,facing=east,row=bottom": {
+      "model": "minejago:block/gold_disc_bottom_right",
+      "y": 90
+    },
+    "column=right,facing=east,row=top": {
+      "model": "minejago:block/gold_disc_top_right",
+      "y": 90
+    },
+    "column=right,facing=north,row=bottom": {
+      "model": "minejago:block/gold_disc_bottom_right"
+    },
+    "column=right,facing=north,row=top": {
+      "model": "minejago:block/gold_disc_top_right"
+    },
+    "column=right,facing=south,row=bottom": {
+      "model": "minejago:block/gold_disc_bottom_right",
+      "y": 180
+    },
+    "column=right,facing=south,row=top": {
+      "model": "minejago:block/gold_disc_top_right",
+      "y": 180
+    },
+    "column=right,facing=west,row=bottom": {
+      "model": "minejago:block/gold_disc_bottom_right",
+      "y": 270
+    },
+    "column=right,facing=west,row=top": {
+      "model": "minejago:block/gold_disc_top_right",
+      "y": 270
+    }
+  }
+}

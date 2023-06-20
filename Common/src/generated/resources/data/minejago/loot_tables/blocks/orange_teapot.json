@@ -1,0 +1,78 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_name",
+              "source": "block_entity"
+            },
+            {
+              "function": "minecraft:copy_nbt",
+              "ops": [
+                {
+                  "op": "replace",
+                  "source": "Boiling",
+                  "target": "BlockEntityTag.Boiling"
+                },
+                {
+                  "op": "replace",
+                  "source": "Done",
+                  "target": "BlockEntityTag.Done"
+                },
+                {
+                  "op": "replace",
+                  "source": "Cups",
+                  "target": "BlockEntityTag.Cups"
+                },
+                {
+                  "op": "replace",
+                  "source": "LootTable",
+                  "target": "BlockEntityTag.LootTable"
+                },
+                {
+                  "op": "replace",
+                  "source": "LootTableSeed",
+                  "target": "BlockEntityTag.LootTableSeed"
+                },
+                {
+                  "op": "replace",
+                  "source": "HasLeaves",
+                  "target": "BlockEntityTag.HasLeaves"
+                },
+                {
+                  "op": "replace",
+                  "source": "Temperature",
+                  "target": "BlockEntityTag.Temperature"
+                },
+                {
+                  "op": "replace",
+                  "source": "Potion",
+                  "target": "BlockEntityTag.Potion"
+                }
+              ],
+              "source": "block_entity"
+            },
+            {
+              "type": "minejago:teapot",
+              "entries": [
+                {
+                  "type": "minecraft:dynamic",
+                  "name": "minejago:teapot_contents"
+                }
+              ],
+              "function": "minecraft:set_contents"
+            }
+          ],
+          "name": "minejago:orange_teapot"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "minejago:blocks/orange_teapot"
+}

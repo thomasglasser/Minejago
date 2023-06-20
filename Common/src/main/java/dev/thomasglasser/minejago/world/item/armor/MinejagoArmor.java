@@ -3,7 +3,7 @@ package dev.thomasglasser.minejago.world.item.armor;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.registration.RegistrationProvider;
 import dev.thomasglasser.minejago.registration.RegistryObject;
-import dev.thomasglasser.minejago.world.entity.UnderworldSkeleton;
+import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
@@ -37,13 +37,13 @@ public class MinejagoArmor
         public SkeletalChestplateSet()
         {
             String name = "skeletal_chestplate";
-            RED = ARMOR.register(name + "_red", () -> new SkeletalChestplateItem(UnderworldSkeleton.Variant.STRENGTH, MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
-            BLUE = ARMOR.register(name + "_blue", () -> new SkeletalChestplateItem(UnderworldSkeleton.Variant.SPEED, MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
-            WHITE = ARMOR.register(name + "_white", () -> new SkeletalChestplateItem(UnderworldSkeleton.Variant.BOW, MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
-            BLACK = ARMOR.register(name + "_black", () -> new SkeletalChestplateItem(UnderworldSkeleton.Variant.KNIFE, MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
+            RED = ARMOR.register(name + "_red", () -> new SkeletalChestplateItem(Skulkin.Variant.STRENGTH, MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
+            BLUE = ARMOR.register(name + "_blue", () -> new SkeletalChestplateItem(Skulkin.Variant.SPEED, MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
+            WHITE = ARMOR.register(name + "_white", () -> new SkeletalChestplateItem(Skulkin.Variant.BOW, MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
+            BLACK = ARMOR.register(name + "_black", () -> new SkeletalChestplateItem(Skulkin.Variant.KNIFE, MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
         }
 
-        public RegistryObject<Item> getForVariant(UnderworldSkeleton.Variant variant) {
+        public RegistryObject<Item> getForVariant(Skulkin.Variant variant) {
             return switch (variant)
                     {
 
@@ -137,28 +137,28 @@ public class MinejagoArmor
 
         headItem = () -> {
             try {
-                return clazz.getDeclaredConstructor(ArmorMaterial.class, EquipmentSlot.class, Item.Properties.class).newInstance(material, EquipmentSlot.HEAD, properties);
+                return clazz.getDeclaredConstructor(ArmorMaterial.class, ArmorItem.Type.class, Item.Properties.class).newInstance(material, ArmorItem.Type.HELMET, properties);
             } catch (Exception e) {
                 throw new RuntimeException("Armor construction failed! Error: " + e);
             }
         };
         chestItem = () -> {
             try {
-                return clazz.getDeclaredConstructor(ArmorMaterial.class, EquipmentSlot.class, Item.Properties.class).newInstance(material, EquipmentSlot.CHEST, properties);
+                return clazz.getDeclaredConstructor(ArmorMaterial.class, ArmorItem.Type.class, Item.Properties.class).newInstance(material, ArmorItem.Type.CHESTPLATE, properties);
             } catch (Exception e) {
                 throw new RuntimeException("Armor construction failed! Error: " + e);
             }
         };
         legsItem = () -> {
             try {
-                return clazz.getDeclaredConstructor(ArmorMaterial.class, EquipmentSlot.class, Item.Properties.class).newInstance(material, EquipmentSlot.LEGS, properties);
+                return clazz.getDeclaredConstructor(ArmorMaterial.class, ArmorItem.Type.class, Item.Properties.class).newInstance(material, ArmorItem.Type.LEGGINGS, properties);
             } catch (Exception e) {
                 throw new RuntimeException("Armor construction failed! Error: " + e);
             }
         };
         feetItem = () -> {
             try {
-                return clazz.getDeclaredConstructor(ArmorMaterial.class, EquipmentSlot.class, Item.Properties.class).newInstance(material, EquipmentSlot.FEET, properties);
+                return clazz.getDeclaredConstructor(ArmorMaterial.class, ArmorItem.Type.class, Item.Properties.class).newInstance(material, ArmorItem.Type.BOOTS, properties);
             } catch (Exception e) {
                 throw new RuntimeException("Armor construction failed! Error: " + e);
             }

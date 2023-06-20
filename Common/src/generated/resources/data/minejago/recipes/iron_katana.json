@@ -1,7 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
-  "group": "minejago",
   "key": {
     "o": {
       "tag": "minejago:wooden_rods"
@@ -17,5 +16,6 @@
   ],
   "result": {
     "item": "minejago:iron_katana"
-  }
+  },
+  "show_notification": true
 }

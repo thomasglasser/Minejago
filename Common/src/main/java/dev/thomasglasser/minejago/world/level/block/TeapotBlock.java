@@ -13,6 +13,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
@@ -37,8 +38,11 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -49,11 +53,18 @@ import java.util.List;
 
 public class TeapotBlock extends BaseEntityBlock {
     public static final VoxelShape SHAPE = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 10.0D, 13.0D);
-
     public static final ResourceLocation CONTENTS = new ResourceLocation(Minejago.MOD_ID, "teapot_contents");
+    public static final BooleanProperty FILLED = BooleanProperty.create("filled");
 
     public TeapotBlock(Properties pProperties) {
         super(pProperties);
+        this.registerDefaultState(this.getStateDefinition().any().setValue(FILLED, Boolean.FALSE));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
+        builder.add(FILLED);
     }
 
     @Override
@@ -92,30 +103,34 @@ public class TeapotBlock extends BaseEntityBlock {
                     pPlayer.addItem(PotionUtils.setPotion(new ItemStack(MinejagoItems.FILLED_TEACUP.get()), be.getPotion()));
                     be.take(1);
                     pLevel.playSound(null, pPos, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
+                    be.giveExperienceForCup((ServerLevel) pLevel, pPos.getCenter());
                 }
-                else if ((be.isBoiling() || be.isDone()) && ((PotionBrewing.hasPotionMix(PotionUtils.setPotion(new ItemStack(Items.POTION), be.getPotion()), inHand) && be.getPotion() != Potions.AWKWARD) || (PotionBrewing.hasPotionMix(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.AWKWARD), inHand)) && be.getPotion() == MinejagoPotions.REGULAR_TEA.get()) || MinejagoPotionBrewing.hasTeaMix(PotionUtils.setPotion(new ItemStack(Items.POTION), be.getPotion()), inHand))
+                else
                 {
-                    if ((PotionBrewing.hasPotionMix(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.AWKWARD), inHand)) && be.getPotion() == MinejagoPotions.REGULAR_TEA.get())
+                    if ((be.isBoiling() || be.isDone()) && (((PotionBrewing.hasPotionMix(PotionUtils.setPotion(new ItemStack(Items.POTION), be.getPotion()), inHand) && be.getPotion() != Potions.AWKWARD) || (PotionBrewing.hasPotionMix(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.AWKWARD), inHand)) && be.getPotion() == MinejagoPotions.REGULAR_TEA.get()) || (be.hasRecipe(inHand, pLevel)) || (MinejagoPotionBrewing.hasTeaMix(PotionUtils.setPotion(new ItemStack(Items.POTION), be.getPotion()), inHand))))
                     {
-                        be.setPotion(Potions.AWKWARD);
+                        if (!be.hasRecipe(inHand, pLevel) && (PotionBrewing.hasPotionMix(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.AWKWARD), inHand)) && be.getPotion() == MinejagoPotions.REGULAR_TEA.get())
+                        {
+                            be.setPotion(Potions.AWKWARD);
+                        }
+                        be.setItem(0, inHand);
+                        MinejagoItemUtils.safeShrink(1, inHand, pPlayer);
                     }
-                    be.setItem(0, inHand);
-                    MinejagoItemUtils.safeShrink(1, inHand, pPlayer);
-                }
-                else if (!be.getInSlot(0).isEmpty()) {
-                    pPlayer.addItem(be.getInSlot(0));
-                    be.extract(0, 1);
-                    if (be.getPotion() == Potions.AWKWARD)
-                        be.setPotion(MinejagoPotions.REGULAR_TEA.get());
-                }
-                else if (inHand.getItem() instanceof ITeapotLiquidHolder holder)
-                {
-                    if (be.tryFill(holder.getCups(), holder.getPotion(inHand)))
+                    else if (!be.getInSlot(0).isEmpty()) {
+                        pPlayer.addItem(be.getInSlot(0));
+                        be.extract(0, 1);
+                        if (be.getPotion() == Potions.AWKWARD)
+                            be.setPotion(MinejagoPotions.REGULAR_TEA.get());
+                    }
+                    else if (inHand.getItem() instanceof ITeapotLiquidHolder holder)
                     {
-                        if (!pPlayer.getAbilities().instabuild)
-                            MinejagoItemUtils.safeShrink(1, inHand, pPlayer);
-                        pPlayer.addItem(holder.getDrained(pPlayer.getItemInHand(pHand)));
-                        pLevel.playSound(null, pPos, SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
+                        if (be.tryFill(holder.getCups(), holder.getPotion(inHand)))
+                        {
+                            if (!pPlayer.getAbilities().instabuild)
+                                MinejagoItemUtils.safeShrink(1, inHand, pPlayer);
+                            pPlayer.addItem(holder.getDrained(pPlayer.getItemInHand(pHand)));
+                            pLevel.playSound(null, pPos, SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
+                        }
                     }
                 }
             }
@@ -156,13 +171,14 @@ public class TeapotBlock extends BaseEntityBlock {
         return false;
     }
 
+    @Override
     @SuppressWarnings("deprecation")
-    public List<ItemStack> getDrops(BlockState pState, LootContext.Builder pBuilder) {
+    public List<ItemStack> getDrops(BlockState pState, LootParams.Builder pBuilder) {
         BlockEntity blockentity = pBuilder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
         if (blockentity instanceof TeapotBlockEntity be) {
-            pBuilder = pBuilder.withDynamicDrop(CONTENTS, (p_56218_, p_56219_) -> {
+            pBuilder = pBuilder.withDynamicDrop(CONTENTS, (consumer) -> {
                 for(int i = 0; i < be.getContainerSize(); ++i) {
-                    p_56219_.accept(be.getInSlot(i));
+                    consumer.accept(be.getInSlot(i));
                 }
 
             });

@@ -1,0 +1,39 @@
+package dev.thomasglasser.minejago.world.level.levelgen.structure.pools;
+
+import com.google.common.collect.ImmutableList;
+import com.mojang.datafixers.util.Either;
+import com.mojang.datafixers.util.Pair;
+import dev.thomasglasser.minejago.Minejago;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.Pools;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.levelgen.structure.pools.LegacySinglePoolElement;
+import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
+import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
+
+import java.util.function.Function;
+
+import static net.minecraft.data.worldgen.Pools.EMPTY;
+
+public class FourWeaponsPools
+{
+    public static final ResourceKey<StructureTemplatePool> START = MinejagoPools.createKey("four_weapons/base");
+
+    public static void bootstrap(BootstapContext<StructureTemplatePool> bootstapContext) {
+        HolderGetter<StructureTemplatePool> holderGetter = bootstapContext.lookup(Registries.TEMPLATE_POOL);
+
+        Holder<StructureTemplatePool> holder = holderGetter.getOrThrow(EMPTY);
+        bootstapContext.register(EMPTY, new StructureTemplatePool(holder, ImmutableList.of(), StructureTemplatePool.Projection.RIGID));
+
+        bootstapContext.register(
+                START,
+                new StructureTemplatePool(
+                        holder, ImmutableList.of(Pair.of(MinejagoPools.legacyElement(Minejago.modLoc("four_weapons/base")), 1)), StructureTemplatePool.Projection.RIGID
+                )
+        );
+    }
+}

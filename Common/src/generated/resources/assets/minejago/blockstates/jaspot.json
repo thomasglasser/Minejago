@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "filled=false": {
+      "model": "minejago:block/jaspot"
+    },
+    "filled=true": {
+      "model": "minejago:block/jaspot_filled"
+    }
+  }
+}

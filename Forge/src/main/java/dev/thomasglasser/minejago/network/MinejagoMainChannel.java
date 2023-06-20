@@ -45,6 +45,11 @@ public class MinejagoMainChannel
                 .encoder(ServerboundChangeVipDataPacket::toBytes)
                 .consumerMainThread((packet, context) -> packet.handle(context.get().getSender()))
                 .add();
+        INSTANCE.messageBuilder(ServerboundSetPowerDataPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(ServerboundSetPowerDataPacket::new)
+                .encoder(ServerboundSetPowerDataPacket::toBytes)
+                .consumerMainThread((packet, context) -> packet.handle(context.get().getSender()))
+                .add();
 
         // Client bound
         INSTANCE.messageBuilder(ClientboundStartSpinjitzuPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
@@ -77,6 +82,21 @@ public class MinejagoMainChannel
                 .encoder(ClientboundStartScytheAnimationPacket::toBytes)
                 .consumerMainThread((packet, context) -> packet.handle())
                 .add();
+        INSTANCE.messageBuilder(ClientboundFailSpinjitzuPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(ClientboundFailSpinjitzuPacket::new)
+                .encoder(ClientboundFailSpinjitzuPacket::toBytes)
+                .consumerMainThread((packet, context) -> packet.handle())
+                .add();
+        INSTANCE.messageBuilder(ClientboundOpenPowerSelectionScreenPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(ClientboundOpenPowerSelectionScreenPacket::new)
+                .encoder(ClientboundOpenPowerSelectionScreenPacket::toBytes)
+                .consumerMainThread((packet, context) -> packet.handle())
+                .add();
+        INSTANCE.messageBuilder(ClientboundOpenScrollPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(ClientboundOpenScrollPacket::new)
+                .encoder(ClientboundOpenScrollPacket::toBytes)
+                .consumerMainThread((packet, context) -> packet.handle())
+                .add();
     }
 
     public static <MSG> void sendToServer(MSG msg)
@@ -89,7 +109,7 @@ public class MinejagoMainChannel
         INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), msg);
     }
 
-    public static <MSG> void sendToAllClients(MSG msg, ServerPlayer player)
+    public static <MSG> void sendToAllClients(MSG msg)
     {
         INSTANCE.send(PacketDistributor.ALL.noArg(), msg);
     }

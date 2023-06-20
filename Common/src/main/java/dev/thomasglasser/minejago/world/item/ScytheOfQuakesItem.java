@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMultimap;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.animation.definitions.ItemAnimations;
 import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
+import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import dev.thomasglasser.minejago.data.tags.MinejagoBlockTags;
 import dev.thomasglasser.minejago.data.tags.MinejagoPowerTags;
 import dev.thomasglasser.minejago.network.ClientboundStartScytheAnimationPacket;
@@ -94,7 +95,7 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem implements IModeledItem
         }
         else if (player.isShiftKeyDown())
         {
-            if (!level.isClientSide) Services.NETWORK.sendToAllClients(ClientboundStartScytheAnimationPacket.class, ClientboundStartScytheAnimationPacket.toBytes(player.getUUID(), ItemAnimations.Animations.SLAM_START, ItemAnimations.Animations.SLAM_RUMBLE), (ServerPlayer) player);
+            if (!level.isClientSide) Services.NETWORK.sendToAllClients(ClientboundStartScytheAnimationPacket.class, ClientboundStartScytheAnimationPacket.toBytes(player.getUUID(), ItemAnimations.Animations.SLAM_START, ItemAnimations.Animations.SLAM_RUMBLE), player.getServer());
             BlockPos[] places = new BlockPos[] {pos.north(6), pos.north(4).east(4), pos.east(6), pos.east(4).south(4), pos.south(6), pos.south(4).west(4), pos.west(6), pos.west(4).north(4)};
             for (BlockPos place: places)
             {
@@ -107,7 +108,7 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem implements IModeledItem
         else
         {
             player.startUsingItem(pContext.getHand());
-            if (!level.isClientSide) Services.NETWORK.sendToAllClients(ClientboundStartScytheAnimationPacket.class, ClientboundStartScytheAnimationPacket.toBytes(player.getUUID(), ItemAnimations.Animations.BEAM_START, ItemAnimations.Animations.BEAM_ACTIVE), (ServerPlayer) player);
+            if (!level.isClientSide) Services.NETWORK.sendToAllClients(ClientboundStartScytheAnimationPacket.class, ClientboundStartScytheAnimationPacket.toBytes(player.getUUID(), ItemAnimations.Animations.BEAM_START, ItemAnimations.Animations.BEAM_ACTIVE), player.getServer());
         }
         return InteractionResult.SUCCESS;
     }
@@ -118,25 +119,26 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem implements IModeledItem
     public void doReleaseUsing(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity, int pTimeCharged) {
         if (pLivingEntity instanceof Player player1)
         {
-            if (!player1.getAbilities().instabuild) player1.getCooldowns().addCooldown(pStack.getItem(), 20 * (pStack.getUseDuration() - pTimeCharged));
-            if (!pLevel.isClientSide) Services.NETWORK.sendToAllClients(ClientboundStopAnimationPacket.class, ClientboundStopAnimationPacket.toBytes(pLivingEntity.getUUID()), (ServerPlayer) player1);
+            if (!player1.getAbilities().instabuild) player1.getCooldowns().addCooldown(pStack.getItem(), 20 * (pTimeCharged > 10? (pStack.getUseDuration() - pTimeCharged) : 1));
+            if (!pLevel.isClientSide) Services.NETWORK.sendToAllClients(ClientboundStopAnimationPacket.class, ClientboundStopAnimationPacket.toBytes(pLivingEntity.getUUID()), pLevel.getServer());
             player1.getAttributes().removeAttributeModifiers(builder.build());
         }
     }
 
     @Override
     public void doOnUsingTick(ItemStack stack, LivingEntity player, int count) {
-        Level level = player.getLevel();
+        Level level = player.level();
         if (stack.getUseDuration() - count + 1 == stack.getUseDuration())
         {
             player.stopUsingItem();
-            stack.releaseUsing(player.getLevel(), player, count);
+            stack.releaseUsing(level, player, count);
             return;
         }
-        if (count % 10 == 0 && !level.isClientSide())
+        if (count % 10 == 0)
         {
+            MinejagoLevelUtils.beamParticles(MinejagoParticleTypes.ROCKS.get(), level, player);
             Vec3 loc = player.pick(Double.MAX_EXPONENT, 0.0F, false).getLocation();
-            BlockPos pos = new BlockPos(loc);
+            BlockPos pos = new BlockPos((int) loc.x, (int) loc.y, (int) loc.z);
             Direction direction = player.getDirection();
             if (direction == Direction.EAST)
             {
@@ -282,10 +284,10 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem implements IModeledItem
 
     @Override
     protected void goCrazy(Player player) {
-        if (!player.getLevel().isClientSide && !player.getAbilities().instabuild)
+        if (!player.level().isClientSide && !player.getAbilities().instabuild)
         {
-            player.getLevel().explode(null, player.getX(), player.getY() + 1, player.getZ(), 8.0F, Level.ExplosionInteraction.TNT);
-            Services.NETWORK.sendToAllClients(ClientboundStartScytheAnimationPacket.class, ClientboundStartScytheAnimationPacket.toBytes(player.getUUID(), ItemAnimations.Animations.SLAM_START, ItemAnimations.Animations.EMPTY), (ServerPlayer) player);
+            player.level().explode(null, player.getX(), player.getY() + 1, player.getZ(), 8.0F, Level.ExplosionInteraction.TNT);
+            Services.NETWORK.sendToAllClients(ClientboundStartScytheAnimationPacket.class, ClientboundStartScytheAnimationPacket.toBytes(player.getUUID(), ItemAnimations.Animations.SLAM_START, ItemAnimations.Animations.EMPTY), player.getServer());
         }
     }
 

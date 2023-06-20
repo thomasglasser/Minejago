@@ -1,7 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
-  "group": "minejago",
   "key": {
     "x": {
       "tag": "minecraft:terracotta"
@@ -14,5 +13,6 @@
   "result": {
     "count": 4,
     "item": "minejago:teacup"
-  }
+  },
+  "show_notification": true
 }

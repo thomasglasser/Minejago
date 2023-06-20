@@ -12,8 +12,8 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 public class BlackGiItem extends ArmorItem implements IGeoArmorItem, IFabricGeoItem {
     private AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public BlackGiItem(ArmorMaterial pMaterial, EquipmentSlot pSlot, Properties pProperties) {
-        super(pMaterial, pSlot, pProperties);
+    public BlackGiItem(ArmorMaterial pMaterial, Type type, Properties pProperties) {
+        super(pMaterial, type, pProperties);
     }
 
     @Override

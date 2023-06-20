@@ -1,5 +1,11 @@
+buildscript {
+    repositories {
+        maven { url = 'https://maven.parchmentmc.org' }
+    }
+}
+
 plugins {
-    id 'com.matyrobbrt.mc.registrationutils' version "${minecraft_version}-${registration_utils_version}"
+    id 'com.matyrobbrt.mc.registrationutils' version "${previous_minecraft_version}-${registration_utils_version}"
     id "io.github.pacifistmc.forgix" version "1.2.6"
 }
 
@@ -54,10 +60,15 @@ subprojects {
     repositories {
 
         mavenCentral()
+        mavenLocal()
 
         maven {
             name = 'Sponge / Mixin'
             url = 'https://repo.spongepowered.org/repository/maven-public/'
+        }
+
+        maven {
+            url = "https://jm.gserv.me/repository/maven-public/"
         }
 
         maven {
@@ -109,6 +120,28 @@ subprojects {
         }
         maven {
             url "https://maven.jamieswhiteshirt.com/libs-release"
+        }
+        maven {
+            name = "SmartBrainLib (SBL) Maven Repo"
+            url = "https://dl.cloudsmith.io/public/tslat/sbl/maven/"
+        }
+        maven {
+            name = "TES Maven Repo"
+            url = "https://dl.cloudsmith.io/public/tslat/tes/maven/"
+        }
+        repositories {
+            maven { url = 'https://maven.parchmentmc.org' }
+        }
+//        maven {
+//            url = "https://maven.dhyces.dev/"
+//        }
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/dhyces/trimmed")
+            credentials {
+                username = project.findProperty("gpr.user")
+                password = project.findProperty("gpr.key")
+            }
         }
     }
 

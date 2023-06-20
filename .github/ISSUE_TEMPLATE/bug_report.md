@@ -24,8 +24,8 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
  - Loader [e.g. fabric, forge]
- - Mod Version [e.g. 00e01a]
- - Minecraft Version [e.g. 1.19.3]
+ - Mod Version [e.g. 1.0.0-00e01a]
+ - Minecraft Version [e.g. 1.19.4]
 
 **Additional context**
 Add any other context about the problem here.

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "p": {
+      "tag": "minecraft:planks"
+    },
+    "s": {
+      "tag": "minecraft:wooden_slabs"
+    }
+  },
+  "pattern": [
+    "psp",
+    "s s",
+    "psp"
+  ],
+  "result": {
+    "item": "minejago:chiseled_scroll_shelf"
+  },
+  "show_notification": true
+}

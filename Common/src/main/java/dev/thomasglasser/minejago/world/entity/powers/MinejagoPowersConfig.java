@@ -7,6 +7,7 @@ public class MinejagoPowersConfig
     public static ForgeConfigSpec.BooleanValue ALLOW_CHOOSE;
     public static ForgeConfigSpec.BooleanValue ALLOW_CHANGE;
     public static ForgeConfigSpec.BooleanValue DRAIN_POOL;
+    public static ForgeConfigSpec.BooleanValue ALLOW_NONE;
 
     public static ForgeConfigSpec.BooleanValue REQUIRE_FOR_GOLDEN_WEAPON;
     public static ForgeConfigSpec.BooleanValue WEAPON_GOES_CRAZY;
@@ -21,6 +22,9 @@ public class MinejagoPowersConfig
         ALLOW_CHANGE = builder
                 .comment("Allow players to get a new power by interacting with Master Wu again")
                 .define("change", false);
+        ALLOW_NONE = builder
+                .comment("Allow players to receive no power from Master Wu")
+                .define("can_be_none", true);
         DRAIN_POOL = builder
                 .comment("Remove a power from the list once given and reset when all powers have been given")
                 .define("drain", true);

@@ -4,21 +4,29 @@ import dev.thomasglasser.minejago.client.MinejagoClientConfig;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
+import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
+import dev.thomasglasser.minejago.world.entity.ai.memory.MinejagoMemoryModuleTypes;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
 import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
+import dev.thomasglasser.minejago.world.inventory.MinejagoMenuTypes;
 import dev.thomasglasser.minejago.world.item.MinejagoCreativeModeTabs;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.MinejagoTiers;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
+import dev.thomasglasser.minejago.world.item.crafting.MinejagoRecipeSerializers;
+import dev.thomasglasser.minejago.world.item.crafting.MinejagoRecipeTypes;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPatterns;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
+import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
 import net.minecraft.resources.ResourceLocation;
+import net.tslat.tes.api.TESAPI;
+import net.tslat.tes.api.util.TESClientUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.bernie.geckolib.GeckoLib;
@@ -34,23 +42,6 @@ public class Minejago {
 		return new ResourceLocation(MOD_ID, path);
 	}
 
-	public enum Dependencies
-	{
-		MOONLIGHT_LIB("moonlight"),
-		DYNAMIC_LIGHTS("dynamiclights");
-
-		private final String modid;
-
-		Dependencies(String modid)
-		{
-			this.modid = modid;
-		}
-
-		public String getModId() {
-			return modid;
-		}
-	}
-
 	public static void init()
 	{
 		initRegistries();
@@ -58,12 +49,31 @@ public class Minejago {
 		registerConfigs();
 
 		GeckoLib.initialize();
+
+		if (Dependencies.TSLAT_ENTITY_STATUS.isInstalled())
+		{
+			TESAPI.addTESHudElement(Minejago.modLoc("power_symbol"), (guiGraphics, mc, partialTick, entity, opacity, inWorldHud) ->
+			{
+				if (mc.level != null && Services.DATA.getPowerData(entity) != null) {
+					TESClientUtil.prepRenderForTexture(MinejagoPowers.POWERS.get(mc.level.registryAccess()).get(Services.DATA.getPowerData(entity).power()).getIcon());
+					guiGraphics.pose().pushPose();
+					guiGraphics.pose().scale(0.5f, 0.5f, 1.0f);
+					TESClientUtil.drawSimpleTexture(guiGraphics, 0, 0, 32, 32, 0, 0, 32);
+					guiGraphics.pose().popPose();
+					return 16;
+				}
+
+				return 0;
+			});
+		}
 	}
 
 	private static void initRegistries()
 	{
 		MinejagoRegistries.init();
 
+		MinejagoRecipeTypes.init();
+		MinejagoRecipeSerializers.init();
 		MinejagoArmor.init();
 		MinejagoTiers.init();
 		MinejagoPowers.init();
@@ -79,11 +89,63 @@ public class Minejago {
 		MinejagoMobEffects.init();
 		MinejagoKeyMappings.init();
 		MinejagoCreativeModeTabs.init();
+		MinejagoGameEvents.init();
+		MinejagoMemoryModuleTypes.init();
+		MinejagoMenuTypes.init();
 	}
 
 	private static void registerConfigs()
 	{
 		MinejagoServerConfig.register();
 		MinejagoClientConfig.register();
+	}
+
+	public enum Dependencies
+	{
+		MOONLIGHT_LIB("moonlight"),
+		DYNAMIC_LIGHTS("dynamiclights", "lambdynlights"),
+		TRIMMED("trimmed"),
+		SHERDSAPI("sherdsapi"),
+		PLAYER_ANIMATOR("playeranimator", "player-animator"),
+		REACH_ENTITY_ATTRIBUTES("forge", "reach-entity-attributes"),
+		TSLAT_ENTITY_STATUS("tslatentitystatus");
+
+		private final String forge;
+		private final String fabric;
+
+		Dependencies(String modId)
+		{
+			this(modId, modId);
+		}
+		Dependencies(String forge, String fabric)
+		{
+			this.forge = forge;
+			this.fabric = fabric;
+		}
+
+		public String getModId() {
+			return Services.PLATFORM.getPlatformName().equals("Forge") ? forge : fabric;
+		}
+
+		public boolean isInstalled()
+		{
+			return Services.PLATFORM.isModLoaded(getModId());
+		}
+	}
+
+	public enum Expansions
+	{
+		IMMERSION_PACK("minejago_immersion_pack");
+
+		private final String id;
+
+		Expansions(String id)
+		{
+			this.id = id;
+		}
+
+		public String getId() {
+			return id;
+		}
 	}
 }

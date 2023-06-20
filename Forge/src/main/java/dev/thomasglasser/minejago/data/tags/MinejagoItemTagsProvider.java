@@ -12,6 +12,7 @@ import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -27,7 +28,7 @@ public class MinejagoItemTagsProvider extends ItemTagsProvider
     public static final Pair<ResourceLocation, ResourceLocation> LEGGINGS = Pair.of(forgeLoc("armors/leggings"), cLoc("leggings"));
     public static final Pair<ResourceLocation, ResourceLocation> BOOTS = Pair.of(forgeLoc("armors/boots"), cLoc("boots"));
 
-    public MinejagoItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> future, TagsProvider<Block> blockTagsProvider, ExistingFileHelper existingFileHelper) {
+    public MinejagoItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> future, CompletableFuture<TagsProvider.TagLookup<Block>> blockTagsProvider, ExistingFileHelper existingFileHelper) {
         super(output, future, blockTagsProvider, Minejago.MOD_ID, existingFileHelper);
     }
 
@@ -61,11 +62,44 @@ public class MinejagoItemTagsProvider extends ItemTagsProvider
         tag(MinejagoItemTags.WOODEN_RODS)
                 .add(Items.STICK)
                 .addOptionalTag(forgeLoc("rods/wooden"))
+                .addOptionalTag(cLoc("wood_sticks"))
                 .addOptionalTag(cLoc("wooden_rods"));
         tag(MinejagoItemTags.IRON_INGOTS)
                 .add(Items.IRON_INGOT)
                 .addOptionalTag(forgeLoc("ingots/iron"))
                 .addOptionalTag(cLoc("iron_ingots"));
+        MinejagoItemTags.DYES_TAGS.forEach((dyeColor, itemTagKey) ->
+                tag(itemTagKey)
+                        .add(DyeItem.byColor(dyeColor))
+                        .addOptionalTag(forgeLoc("dyes/" + dyeColor.getName()))
+                        .addOptionalTag(cLoc(dyeColor.getName() + "_dyes")));
+
+        tag(ItemTags.DECORATED_POT_SHERDS)
+                .add(MinejagoItems.POTTERY_SHERD_ICE_CUBE.get())
+                .add(MinejagoItems.POTTERY_SHERD_THUNDER.get())
+                .add(MinejagoItems.POTTERY_SHERD_PEAKS.get())
+                .add(MinejagoItems.POTTERY_SHERD_MASTER.get())
+                .add(MinejagoItems.POTTERY_SHERD_YIN_YANG.get())
+                .add(MinejagoItems.POTTERY_SHERD_DRAGONS_HEAD.get())
+                .add(MinejagoItems.POTTERY_SHERD_DRAGONS_TAIL.get());
+
+        tag(ItemTags.TRIM_TEMPLATES)
+                .add(MinejagoItems.FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE.get());
+
+        IntrinsicTagAppender<Item> pots = tag(MinejagoItemTags.TEAPOTS);
+        pots.add(MinejagoItems.TEAPOT.get(), MinejagoItems.JASPOT.get());
+        MinejagoItems.TEAPOTS.forEach((color, pot) -> pots.add(pot.get()));
+
+        tag(MinejagoItemTags.LECTERN_SCROLLS)
+                .add(MinejagoItems.WRITABLE_SCROLL.get())
+                .add(MinejagoItems.WRITTEN_SCROLL.get());
+
+        tag(ItemTags.LECTERN_BOOKS)
+                .addTag(MinejagoItemTags.LECTERN_SCROLLS);
+
+        tag(MinejagoItemTags.SCROLL_SHELF_SCROLLS)
+                .addTag(MinejagoItemTags.LECTERN_SCROLLS)
+                .add(MinejagoItems.SCROLL.get());
     }
 
     public TagAppender<Item> tagDynamicLight(String tag, int level)

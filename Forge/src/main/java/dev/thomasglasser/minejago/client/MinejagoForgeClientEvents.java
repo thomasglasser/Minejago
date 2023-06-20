@@ -9,6 +9,8 @@ import dev.thomasglasser.minejago.client.renderer.entity.*;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.BetaTesterLayer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.DevLayer;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
+import dev.thomasglasser.minejago.packs.MinejagoPacks;
+import dev.thomasglasser.minejago.packs.PackHolder;
 import dev.thomasglasser.minejago.platform.ForgeItemHelper;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.util.MinejagoClientUtils;
@@ -18,6 +20,9 @@ import dev.thomasglasser.minejago.world.item.MinejagoCreativeModeTabs;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.IGeoArmorItem;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
+import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
+import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
+import dev.thomasglasser.minejago.world.level.block.entity.TeapotBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.EntityModelSet;
@@ -25,6 +30,8 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.repository.Pack;
+import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.entity.Mob;
@@ -32,12 +39,16 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import net.minecraftforge.event.CreativeModeTabEvent;
+import net.minecraftforge.event.AddPackFindersEvent;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.resource.PathPackResources;
 
 import java.util.Map;
 import java.util.function.Supplier;
@@ -46,7 +57,8 @@ public class MinejagoForgeClientEvents {
 
     public static void onClientSetup(FMLClientSetupEvent event)
     {
-        PlayerAnimationAccess.REGISTER_ANIMATION_EVENT.register(MinejagoPlayerAnimator::registerPlayerAnimation);
+        if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled()) PlayerAnimationAccess.REGISTER_ANIMATION_EVENT.register(MinejagoPlayerAnimator::registerPlayerAnimation);
+        MinejagoClientEvents.registerMenuScreens();
     }
 
     public static void onRegisterLayers(EntityRenderersEvent.RegisterLayerDefinitions event)
@@ -69,15 +81,16 @@ public class MinejagoForgeClientEvents {
         event.registerEntityRenderer(MinejagoEntityTypes.THROWN_IRON_SPEAR.get(), ThrownIronSpearRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.THROWN_IRON_SHURIKEN.get(), ThrownIronShurikenRenderer::new);
 
-        event.registerEntityRenderer(MinejagoEntityTypes.WU.get(), CharacterRenderer::new);
+        event.registerEntityRenderer(MinejagoEntityTypes.WU.get(), WuRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.KAI.get(), CharacterRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.NYA.get(), (context) -> new CharacterRenderer<>(context, true));
         event.registerEntityRenderer(MinejagoEntityTypes.JAY.get(), CharacterRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.COLE.get(), CharacterRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.ZANE.get(), CharacterRenderer::new);
-        event.registerEntityRenderer(MinejagoEntityTypes.UNDERWORLD_SKELETON.get(), UnderworldSkeletonRenderer::new);
+        event.registerEntityRenderer(MinejagoEntityTypes.SKULKIN.get(), UnderworldSkeletonRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.KRUNCHA.get(), KrunchaRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.NUCKAL.get(), NuckalRenderer::new);
+        event.registerEntityRenderer(MinejagoEntityTypes.SKULKIN_HORSE.get(), SkulkinHorseRenderer::new);
     }
 
     public static void registerModels(ModelEvent.RegisterAdditional event)
@@ -113,40 +126,36 @@ public class MinejagoForgeClientEvents {
 
     public static void onRegisterParticleProviders(RegisterParticleProvidersEvent event)
     {
-        event.register(MinejagoParticleTypes.SPINJITZU.get(), SpinjitzuParticle.Provider::new);
-        event.register(MinejagoParticleTypes.SPARKS.get(), SparksParticle.Provider::new);
-        event.register(MinejagoParticleTypes.SPARKLES.get(), SparklesParticle.Provider::new);
-        event.register(MinejagoParticleTypes.SNOWS.get(), SnowsParticle.Provider::new);
-        event.register(MinejagoParticleTypes.ROCKS.get(), RocksParticle.Provider::new);
-        event.register(MinejagoParticleTypes.BOLTS.get(), BoltsParticle.Provider::new);
-        event.register(MinejagoParticleTypes.VAPORS.get(), VaporsParticle.Provider::new);
+        event.registerSpriteSet(MinejagoParticleTypes.SPINJITZU.get(), SpinjitzuParticle.Provider::new);
+        event.registerSpriteSet(MinejagoParticleTypes.SPARKS.get(), SparksParticle.Provider::new);
+        event.registerSpriteSet(MinejagoParticleTypes.SPARKLES.get(), SparklesParticle.Provider::new);
+        event.registerSpriteSet(MinejagoParticleTypes.SNOWS.get(), SnowsParticle.Provider::new);
+        event.registerSpriteSet(MinejagoParticleTypes.ROCKS.get(), RocksParticle.Provider::new);
+        event.registerSpriteSet(MinejagoParticleTypes.BOLTS.get(), BoltsParticle.Provider::new);
+        event.registerSpriteSet(MinejagoParticleTypes.VAPORS.get(), VaporsParticle.Provider::new);
     }
 
-    public static void onRegisterColorHandlers(RegisterColorHandlersEvent.Item event)
+    public static void onRegisterItemColorHandlers(RegisterColorHandlersEvent.Item event)
     {
         event.register((pStack, pTintIndex) -> {
             if (pTintIndex == 0)
-                return PotionUtils.getPotion(pStack).getName("").contains("tea") ? 7028992 : PotionUtils.getColor(pStack);
+                return PotionUtils.getColor(pStack);
             return -1;
         }, MinejagoItems.FILLED_TEACUP.get());
+    }
 
-        event.register((pStack, pTintIndex) -> {
-            if (pTintIndex == 0)
-                return PotionUtils.getPotion(pStack).getName("").contains("tea") ? 7028992 : PotionUtils.getColor(pStack);
+    public static void onRegisterBlockColorHandlers(RegisterColorHandlersEvent.Block event)
+    {
+        event.register(((blockState, blockAndTintGetter, blockPos, i) ->
+        {
+            if (blockPos == null || blockAndTintGetter == null)
+                return -1;
+            if (i == 1 && blockAndTintGetter.getBlockEntity(blockPos) instanceof TeapotBlockEntity teapotBlockEntity && blockState.getValue(TeapotBlock.FILLED))
+            {
+                return teapotBlockEntity.getPotion().getName("").contains("tea") || teapotBlockEntity.getPotion().getName("").contains("awkward") ? 7028992 : PotionUtils.getColor(PotionUtils.setPotion(new ItemStack(Items.POTION), teapotBlockEntity.getPotion()));
+            }
             return -1;
-        }, Items.POTION);
-
-        event.register((pStack, pTintIndex) -> {
-            if (pTintIndex == 0)
-                return PotionUtils.getPotion(pStack).getName("").contains("tea") ? 7028992 : PotionUtils.getColor(pStack);
-            return -1;
-        }, Items.SPLASH_POTION);
-
-        event.register((pStack, pTintIndex) -> {
-            if (pTintIndex == 0)
-                return PotionUtils.getPotion(pStack).getName("").contains("tea") ? 7028992 : PotionUtils.getColor(pStack);
-            return -1;
-        }, Items.LINGERING_POTION);
+        }), MinejagoBlocks.allPots().toArray(new Block[0]));
     }
 
     public static void onAddLayers(EntityRenderersEvent.AddLayers event)
@@ -162,32 +171,11 @@ public class MinejagoForgeClientEvents {
                 player.addLayer(new DevLayer<>(player, models));
             }
         }
-
-        LivingEntityRenderer<Mob, PlayerModel<Mob>> wu = event.getRenderer(MinejagoEntityTypes.WU.get());
-        if (wu != null)
-        {
-            wu.addLayer(new BetaTesterLayer<>(wu, models));
-            wu.addLayer(new DevLayer<>(wu, models));
-        }
     }
 
-    public static void onBuildCreativeTabContent(CreativeModeTabEvent.BuildContents event)
+    public static void onBuildCreativeTabContent(BuildCreativeModeTabContentsEvent event)
     {
-        event.acceptAll(MinejagoItems.getItemsForTab(event.getTab()));
-    }
-
-    public static void onRegisterCreativeTab(CreativeModeTabEvent.Register event)
-    {
-        ((ForgeItemHelper)(Services.ITEM)).TABS.forEach(list ->
-        {
-            if (list.get(0).equals(Minejago.modLoc("gi")))
-            {
-                MinejagoCreativeModeTabs.GI = event.registerCreativeModeTab((ResourceLocation) list.get(0), (builder ->
-                {
-                    builder.title((Component) list.get(1)).icon((Supplier<ItemStack>) list.get(2)).displayItems((CreativeModeTab.DisplayItemsGenerator) list.get(3)).build();
-                }));
-            }
-        });
+        event.acceptAll(MinejagoItems.getItemsForTab(event.getTabKey()));
     }
 
     public static void onClientConfigChanged(ModConfigEvent event)
@@ -198,5 +186,17 @@ public class MinejagoForgeClientEvents {
         }
     }
 
-
+    public static void onAddPackFinders(AddPackFindersEvent event)
+    {
+        for (PackHolder holder : MinejagoPacks.getPacks())
+        {
+            if (event.getPackType() == holder.type())
+            {
+                var resourcePath = ModList.get().getModFileById(Minejago.MOD_ID).getFile().findResource("resourcepacks/" + holder.id().getPath());
+                var pack = Pack.readMetaAndCreate("builtin/" + holder.id().getPath(), Component.translatable(holder.titleKey()), holder.required(),
+                        (path) -> new PathPackResources(path, false, resourcePath), holder.type(), Pack.Position.BOTTOM, PackSource.BUILT_IN);
+                event.addRepositorySource((packConsumer) -> packConsumer.accept(pack));
+            }
+        }
+    }
 }

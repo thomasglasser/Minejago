@@ -13,7 +13,9 @@ import dev.thomasglasser.minejago.client.renderer.entity.layers.VipData;
 import dev.thomasglasser.minejago.network.ServerboundChangeVipDataPacket;
 import dev.thomasglasser.minejago.platform.Services;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import org.apache.commons.io.IOUtils;
 
@@ -52,16 +54,18 @@ public class MinejagoClientUtils {
 
     public static void refreshVip()
     {
-        UUID uuid = Minecraft.getInstance().player.getUUID();
+        if (Minecraft.getInstance().player != null)
+        {
+            UUID uuid = Minecraft.getInstance().player.getUUID();
 
-        boolean displayDev;
-        boolean displayBeta;
+            boolean displayDev;
+            boolean displayBeta;
 
-        displayDev = LayersConfig.DISPLAY_DEV.get() && MinejagoClientUtils.checkDev(uuid);
-        displayBeta = LayersConfig.DISPLAY_BETA.get() && MinejagoClientUtils.checkBetaTester(uuid);
+            displayDev = LayersConfig.DISPLAY_DEV.get() && MinejagoClientUtils.checkDev(uuid);
+            displayBeta = LayersConfig.DISPLAY_BETA.get() && MinejagoClientUtils.checkBetaTester(uuid);
 
-        Services.NETWORK.sendToServer(ServerboundChangeVipDataPacket.class, ServerboundChangeVipDataPacket.toBytes(uuid, displayBeta, LayersConfig.BETA_CHOICE.get(), displayDev));
-
+            Services.NETWORK.sendToServer(ServerboundChangeVipDataPacket.class, ServerboundChangeVipDataPacket.toBytes(uuid, displayBeta, LayersConfig.BETA_CHOICE.get(), displayDev));
+        }
     }
 
 
@@ -141,14 +145,32 @@ public class MinejagoClientUtils {
             //Do not attempt to do this on a server, that will only fail
             animation.setAnimation(new KeyframeAnimationPlayer(startAnim).setFirstPersonMode(firstPersonMode));
             if (goAnim != null)
-                animation.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(30, Ease.CONSTANT), new KeyframeAnimationPlayer(goAnim).setFirstPersonMode(firstPersonMode));
+                animation.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(20, Ease.CONSTANT), new KeyframeAnimationPlayer(goAnim).setFirstPersonMode(firstPersonMode));
         }
 
     }
 
     public static void stopAnimation(AbstractClientPlayer player)
     {
-        var animation = MinejagoPlayerAnimator.animationData.get(player);
+        if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled())
+        {
+            var animation = MinejagoPlayerAnimator.animationData.get(player);
             animation.setAnimation(null);
+        }
+    }
+
+    public static void setScreen(Screen screen)
+    {
+        Minecraft.getInstance().setScreen(screen);
+    }
+
+    public static Entity getEntityById(int id)
+    {
+        return Minecraft.getInstance().level == null ? null : Minecraft.getInstance().level.getEntity(id);
+    }
+
+    public static Player getMainClientPlayer()
+    {
+        return Minecraft.getInstance().player;
     }
 }

@@ -5,12 +5,23 @@
     138.0
   ],
   "border_particle": "minejago:rocks",
+  "display": {
+    "description": {
+      "translate": "power.minejago.earth.description"
+    },
+    "lore": {
+      "translate": "power.minejago.earth.lore"
+    }
+  },
+  "has_sets": true,
   "id": "minejago:earth",
   "main_spinjitzu_color": [
     157.0,
     193.0,
     240.0
   ],
-  "make_sets": true,
-  "power_color": "yellow"
+  "power_color": "dark_gray",
+  "tagline": {
+    "translate": "power.minejago.earth.tagline"
+  }
 }

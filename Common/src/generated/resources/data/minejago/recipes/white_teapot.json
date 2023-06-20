@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "teapot",
+  "key": {
+    "o": {
+      "item": "minecraft:white_terracotta"
+    },
+    "x": {
+      "tag": "minejago:wooden_rods"
+    }
+  },
+  "pattern": [
+    "x",
+    "o"
+  ],
+  "result": {
+    "item": "minejago:white_teapot"
+  },
+  "show_notification": true
+}

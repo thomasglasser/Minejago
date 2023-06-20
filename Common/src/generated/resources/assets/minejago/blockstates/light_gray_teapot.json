@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "filled=false": {
+      "model": "minejago:block/light_gray_teapot"
+    },
+    "filled=true": {
+      "model": "minejago:block/light_gray_teapot_filled"
+    }
+  }
+}

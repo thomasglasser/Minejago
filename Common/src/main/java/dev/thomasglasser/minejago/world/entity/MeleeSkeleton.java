@@ -14,7 +14,7 @@ public class MeleeSkeleton extends SBLSkeleton
     }
 
     @Override
-    public BrainActivityGroup<SBLSkeleton> getCoreTasks() {
+    public BrainActivityGroup<? extends SBLSkeleton> getCoreTasks() {
         return super.getCoreTasks().behaviours(
                 new SetWalkTargetToAttackTarget<>().startCondition((entity) -> !(entity.isHolding(stack -> stack.getItem() instanceof BowItem)))
         );

@@ -1,7 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "equipment",
-  "group": "minejago",
   "ingredients": [
     {
       "tag": "minejago:wooden_rods"

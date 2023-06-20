@@ -1,11 +1,10 @@
 package dev.thomasglasser.minejago.world.item.armor;
 
 import dev.thomasglasser.minejago.client.renderer.armor.SkeletalArmorRenderer;
-import dev.thomasglasser.minejago.world.entity.UnderworldSkeleton;
+import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;
 import dev.thomasglasser.minejago.world.item.IFabricGeoItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
@@ -20,15 +19,15 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class SkeletalChestplateItem extends ArmorItem implements IGeoArmorItem, IFabricGeoItem {
-    private final UnderworldSkeleton.Variant variant;
+    private final Skulkin.Variant variant;
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public SkeletalChestplateItem(UnderworldSkeleton.Variant variant, ArmorMaterial pMaterial, Properties pProperties) {
-        super(pMaterial, EquipmentSlot.CHEST, pProperties);
+    public SkeletalChestplateItem(Skulkin.Variant variant, ArmorMaterial pMaterial, Properties pProperties) {
+        super(pMaterial, Type.CHESTPLATE, pProperties);
         this.variant = variant;
     }
 
-    public UnderworldSkeleton.Variant getVariant() {
+    public Skulkin.Variant getVariant() {
         return variant;
     }
 

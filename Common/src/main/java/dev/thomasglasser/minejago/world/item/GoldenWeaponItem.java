@@ -2,14 +2,17 @@ package dev.thomasglasser.minejago.world.item;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
+import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowersConfig;
 import dev.thomasglasser.minejago.world.entity.powers.Power;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -20,10 +23,18 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SimpleFoiledItem;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+import static dev.thomasglasser.minejago.world.item.MinejagoItems.MOD_NEEDED;
 
 public abstract class GoldenWeaponItem extends SimpleFoiledItem
 {
@@ -44,7 +55,7 @@ public abstract class GoldenWeaponItem extends SimpleFoiledItem
 
     @Override
     public boolean canBeHurtBy(DamageSource pDamageSource) {
-        return pDamageSource == DamageSource.OUT_OF_WORLD;
+        return pDamageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY);
     }
 
     @Override
@@ -137,5 +148,17 @@ public abstract class GoldenWeaponItem extends SimpleFoiledItem
     public SoundEvent getFailSound()
     {
         return null;
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
+        super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
+        if (isAdvanced.isAdvanced())
+        {
+            if (!Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled())
+                tooltipComponents.add(Component.translatable(MOD_NEEDED, Minejago.Dependencies.PLAYER_ANIMATOR.getModId()).withStyle(ChatFormatting.RED));
+            if (!Minejago.Dependencies.DYNAMIC_LIGHTS.isInstalled())
+                tooltipComponents.add(Component.translatable(MOD_NEEDED, Minejago.Dependencies.DYNAMIC_LIGHTS.getModId()).withStyle(ChatFormatting.RED));
+        }
     }
 }

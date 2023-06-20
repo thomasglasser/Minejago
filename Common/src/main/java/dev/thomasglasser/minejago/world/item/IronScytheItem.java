@@ -61,7 +61,7 @@ public class IronScytheItem extends DiggerItem implements IModeledItem {
 
     @Override
     public boolean isCorrectToolForDrops(BlockState state) {
-        return state.is(BlockTags.REPLACEABLE_PLANTS) || state.is(BlockTags.CROPS) || super.isCorrectToolForDrops(state);
+        return state.is(BlockTags.MINEABLE_WITH_HOE) || state.is(BlockTags.CROPS) || super.isCorrectToolForDrops(state);
     }
 
     @Override

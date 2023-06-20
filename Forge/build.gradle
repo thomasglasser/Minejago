@@ -12,7 +12,7 @@ plugins {
     id 'java'
     id 'eclipse'
     id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '5.1.+'
+    id 'net.minecraftforge.gradle' version '6.+'
 }
 
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
@@ -21,8 +21,9 @@ apply plugin: 'org.spongepowered.mixin'
 archivesBaseName = "${mod_name}-forge-${minecraft_version}"
 
 minecraft {
-    mappings channel: 'parchment', version: parchment_version + '-' + minecraft_version
-    
+//    mappings channel: 'parchment', version: parchment_version + '-' + minecraft_version Waiting for 1.19.4
+    mappings channel: 'parchment', version: '1.19.3-' + parchment_version + '-' + minecraft_version
+
     if (project.hasProperty('forge_ats_enabled') && project.findProperty('forge_ats_enabled').toBoolean()) {
         // This location is hardcoded in Forge and can not be changed.
         // https://github.com/MinecraftForge/MinecraftForge/blob/be1698bb1554f9c8fa2f58e32b9ab70bc4385e60/fmlloader/src/main/java/net/minecraftforge/fml/loading/moddiscovery/ModFile.java#L123
@@ -37,7 +38,6 @@ minecraft {
             taskName 'Client'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            jvmArg "-XX:+AllowEnhancedClassRedefinition"
             mods {
                 modClientRun {
                     source sourceSets.main
@@ -52,7 +52,6 @@ minecraft {
             taskName 'Server'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            jvmArg "-XX:+AllowEnhancedClassRedefinition"
             arg("-Dmixin.debug=true")
             mods {
                 modServerRun {
@@ -93,28 +92,35 @@ dependencies {
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
-    compileOnly fg.deobf("vazkii.patchouli:Patchouli:${minecraft_version}-${patchouli_version}:api")
+//    compileOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}-FORGE:api")
 
     runtimeOnly fg.deobf("me.shedaniel:RoughlyEnoughItems-forge:$rei_version")
     runtimeOnly fg.deobf("dev.architectury:architectury-forge:$architectury_version")
     runtimeOnly fg.deobf("maven.modrinth:huge-structure-blocks:${hugestructureblocks_version}")
-//    runtimeOnly fg.deobf("maven.modrinth:first-person-model:${firstperson_forge_id}")
     runtimeOnly fg.deobf("curse.maven:worldedit-225608:${worldedit_id}")
-    runtimeOnly fg.deobf("curse.maven:tes-830420:${tes_forge_id}")
-    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${minecraft_version}-${patchouli_version}")
+//    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}-FORGE")
+    runtimeOnly fg.deobf("mysticdrew:common-networking:${common_networking_version}-forge")
 
-    implementation fg.deobf("dev.kosmx.player-anim:player-animation-lib-forge:${playeranimator_version}+${minecraft_version}")
-    implementation fg.deobf("com.github.glitchfiend:TerraBlender-forge:${minecraft_version}-${terrablender_version}")
+    implementation fg.deobf("dev.kosmx.player-anim:player-animation-lib-forge:${playeranimator_version}")
     implementation fg.deobf("curse.maven:dynamiclights-227874:${dynamiclights_id}")
-    implementation fg.deobf("curse.maven:moonlight-499980:${moonlight_forge_id}")
-    implementation fg.deobf("curse.maven:ptd-585667:${ptd_id}")
-    implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}")
-    implementation fg.deobf("dev._100media.capabilitysyncer:capabilitysyncer:${major_minecraft_version}-${capabilitysyncer_version}")
-    implementation fg.deobf("curse.maven:smartbrainlib-661293:${smartbrainlib_forge_id}-sources-${smartbrainlib_sources_forge_id}")
-    implementation fg.deobf("maven.modrinth:jade:${jade_forge_version}")
+    implementation fg.deobf("maven.modrinth:moonlight:${moonlight_forge_id}")
+//    implementation fg.deobf("curse.maven:ptd-585667:${ptd_id}")
+    implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${previous_minecraft_version}:${geckolib_version}")
+    implementation fg.deobf("dev._100media.capabilitysyncer:capabilitysyncer:${capabilitysyncer_version}")
+    implementation fg.deobf("net.tslat.smartbrainlib:SmartBrainLib-forge-${previous_minecraft_version}:${smartbrainlib_version}")
+    implementation fg.deobf("maven.modrinth:jade:${jade_forge_id}")
     implementation(fg.deobf("me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}"))
+    implementation fg.deobf("dev.thomasglasser.sherdsapi:sherdsapi-forge-${minecraft_version}:${sherdsapi_version}")
+    implementation fg.deobf("dev.dhyces.trimmed:trimmed-forge-${previous_minecraft_version}:${trimmed_version}")
+//    implementation fg.deobf("dev.dhyces.trimmed:trimmed-forge-${minecraft_version}:${trimmed_version}") TODO: update
+    compileOnly fg.deobf("curse.maven:configured-457570:${configured_forge_id}")
+//    implementation fg.deobf("curse.maven:configured-457570:${configured_forge_id}") TODO: Update
+    implementation fg.deobf("net.tslat.tes:TES-forge-${previous_minecraft_version}:${tes_version}")
 
-    jarJar(group: "dev._100media.capabilitysyncer", name: "capabilitysyncer", version: "[${major_minecraft_version}-${capabilitysyncer_version},1.20-4.0.0)")
+    jarJar(group: "dev.thomasglasser.sherdsapi", name: "sherdsapi-forge-${minecraft_version}", version: "[${sherdsapi_version},${sherdsapi_next_major_version})")
+//    jarJar(group: "dev.dhyces.trimmed", name: "trimmed-forge-${minecraft_version}", version: "[${trimmed_version},${trimmed_next_major_version})") // TODO: update
+    jarJar(group: "dev.dhyces.trimmed", name: "trimmed-forge-${previous_minecraft_version}", version: "[${trimmed_version},${trimmed_next_major_version})")
+    jarJar(group: "dev._100media.capabilitysyncer", name: "capabilitysyncer", version: "[${capabilitysyncer_version},${capabilitysyncer_next_major_version})")
 }
 
 mixin {
@@ -149,12 +155,12 @@ publishing {
 }
 
 jar{
-    classifier = 'slim'
+    archiveClassifier = 'slim'
 }
 jar.finalizedBy('reobfJar')
 
 reobf { jarJar {} }
 tasks.jarJar {
-    classifier = ''
+    archiveClassifier = ''
 }
 tasks.jarJar.finalizedBy('reobfJarJar')

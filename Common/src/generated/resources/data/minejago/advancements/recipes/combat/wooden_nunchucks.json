@@ -30,5 +30,6 @@
     "recipes": [
       "minejago:wooden_nunchucks"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }
