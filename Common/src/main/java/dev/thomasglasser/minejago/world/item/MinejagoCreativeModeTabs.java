@@ -15,6 +15,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 
 public class MinejagoCreativeModeTabs
 {
@@ -36,7 +37,7 @@ public class MinejagoCreativeModeTabs
         MinejagoPowers.POWERS.addToSet(builder);
         HolderLookup.Provider provider = builder.build(access);
         output.acceptAll(MinejagoPowers.getArmorForAll(provider));
-    }));
+    }, CreativeModeTabs.COMBAT));
 
     public static void init() {}
 }

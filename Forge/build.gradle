@@ -98,13 +98,11 @@ dependencies {
     runtimeOnly fg.deobf("dev.architectury:architectury-forge:$architectury_version")
     runtimeOnly fg.deobf("maven.modrinth:huge-structure-blocks:${hugestructureblocks_version}")
     runtimeOnly fg.deobf("curse.maven:worldedit-225608:${worldedit_id}")
-//    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}-FORGE")
     runtimeOnly fg.deobf("mysticdrew:common-networking:${common_networking_version}-forge")
 
     implementation fg.deobf("dev.kosmx.player-anim:player-animation-lib-forge:${playeranimator_version}")
     implementation fg.deobf("curse.maven:dynamiclights-227874:${dynamiclights_id}")
     implementation fg.deobf("maven.modrinth:moonlight:${moonlight_forge_id}")
-//    implementation fg.deobf("curse.maven:ptd-585667:${ptd_id}")
     implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${previous_minecraft_version}:${geckolib_version}")
     implementation fg.deobf("dev._100media.capabilitysyncer:capabilitysyncer:${capabilitysyncer_version}")
     implementation fg.deobf("net.tslat.smartbrainlib:SmartBrainLib-forge-${previous_minecraft_version}:${smartbrainlib_version}")
