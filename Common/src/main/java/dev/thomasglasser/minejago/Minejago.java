@@ -108,6 +108,7 @@ public class Minejago {
 		SHERDSAPI("sherdsapi"),
 		PLAYER_ANIMATOR("playeranimator", "player-animator"),
 		REACH_ENTITY_ATTRIBUTES("forge", "reach-entity-attributes"),
+		MODONOMICON("modonomicon"),
 		TSLAT_ENTITY_STATUS("tslatentitystatus");
 
 		private final String forge;

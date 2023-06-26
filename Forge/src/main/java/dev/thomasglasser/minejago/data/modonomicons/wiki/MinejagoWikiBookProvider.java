@@ -24,7 +24,7 @@ public class MinejagoWikiBookProvider extends BookProvider {
         return BookModel.create(modLoc(context.book()), context.bookName())
                 .withTooltip(context.bookTooltip())
                 .withGenerateBookItem(true)
-                .withModel(Minejago.modLoc("wiki"))
+                .withModel(Minejago.Dependencies.MODONOMICON.modLoc("modonomicon_red"))
                 .withCategories(
                         new CompatCategoryProvider(this).generate()
                 );
