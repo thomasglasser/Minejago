@@ -1,6 +1,8 @@
 package dev.thomasglasser.minejago.world.entity.skulkin;
 
 import dev.thomasglasser.minejago.world.entity.MeleeSkeleton;
+import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntityType;
@@ -18,6 +20,7 @@ public class Kruncha extends MeleeSkeleton
     @Override
     protected void populateDefaultEquipmentSlots(RandomSource pRandom, DifficultyInstance pDifficulty) {
         this.setItemSlot(EquipmentSlot.HEAD, Items.IRON_HELMET.getDefaultInstance());
+        this.setItemSlot(EquipmentSlot.CHEST, MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.BONE).get().getDefaultInstance());
         this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
     }
 }

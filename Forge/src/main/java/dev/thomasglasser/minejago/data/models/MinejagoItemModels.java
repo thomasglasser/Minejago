@@ -2,9 +2,9 @@ package dev.thomasglasser.minejago.data.models;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
-import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
+import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
-import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
+import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.armor.SkeletalChestplateItem;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
@@ -14,7 +14,6 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -32,9 +31,9 @@ public class MinejagoItemModels extends ItemModelProvider
     {
         basicItemHandheld(MinejagoItems.BONE_KNIFE.get());
         basicItemHandheld(MinejagoItems.IRON_SHURIKEN.get());
-        MinejagoArmor.BLACK_GI_SET.getAll().forEach(item ->
+        MinejagoArmors.BLACK_GI_SET.getAll().forEach(item ->
         {
-            String nameForSlot = switch (MinejagoArmor.BLACK_GI_SET.getForItem(item.get())) {
+            String nameForSlot = switch (MinejagoArmors.BLACK_GI_SET.getForItem(item.get())) {
                 case FEET -> "boots";
                 case LEGS -> "pants";
                 case CHEST -> "jacket";
@@ -44,7 +43,7 @@ public class MinejagoItemModels extends ItemModelProvider
 
             singleTexture(item.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/black_gi_" + nameForSlot));
         });
-        MinejagoArmor.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
+        MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
                 singleTexture(item.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/skeletal_chestplate_" + ((SkeletalChestplateItem)item.get()).getVariant().getColor().getName())));
         basicItem(MinejagoItems.TEACUP.get());
         basicItem(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get());
@@ -80,7 +79,7 @@ public class MinejagoItemModels extends ItemModelProvider
         {
             if (powerReference.get().hasSets())
             {
-                MinejagoArmor.POWER_SETS.forEach(armorSet ->
+                MinejagoArmors.POWER_SETS.forEach(armorSet ->
                         armorSet.getAll().forEach(item ->
                         {
                             String path = powerReference.key().location().getPath() + "_" + item.getId().getPath();

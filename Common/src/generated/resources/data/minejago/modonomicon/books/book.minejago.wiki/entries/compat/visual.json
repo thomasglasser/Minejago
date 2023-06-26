@@ -1,0 +1,31 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "minejago:compat",
+  "description": "book.minejago.wiki.compat.visual.description",
+  "hide_while_locked": false,
+  "icon": "minecraft:spyglass",
+  "name": "book.minejago.wiki.compat.visual.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "show_title_separator": true,
+      "text": "book.minejago.wiki.compat.visual.playeranimator_text.text",
+      "title": "book.minejago.wiki.compat.visual.playeranimator_text.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:image",
+      "anchor": "",
+      "border": true,
+      "images": [
+        "minejago:textures/modonomicon/wiki/compat/visual/playeranimator.png"
+      ],
+      "text": "book.minejago.wiki.compat.visual.playeranimator_image.text",
+      "title": "book.minejago.wiki.compat.visual.playeranimator_image.title"
+    }
+  ],
+  "x": -5,
+  "y": -4
+}

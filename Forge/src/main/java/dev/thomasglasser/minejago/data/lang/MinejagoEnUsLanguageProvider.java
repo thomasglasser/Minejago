@@ -14,10 +14,10 @@ import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
 import dev.thomasglasser.minejago.world.entity.character.Wu;
-import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
-import dev.thomasglasser.minejago.world.entity.powers.Power;
+import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
+import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
-import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
+import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.armor.SkeletalChestplateItem;
 import dev.thomasglasser.minejago.world.item.armortrim.MinejagoTrimPatterns;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
@@ -67,9 +67,9 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get(), "Banner Pattern");
         add(MinejagoItems.IRON_SPEAR.get(), "Iron Spear");
         add(MinejagoItems.IRON_SHURIKEN.get(), "Iron Shuriken");
-        MinejagoArmor.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
+        MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
                 add(item.get(), "Skeletal Chestplate"));
-        MinejagoArmor.ARMOR_SETS.forEach(set ->
+        MinejagoArmors.ARMOR_SETS.forEach(set ->
                 {
                     set.getAll().forEach(item ->
                     {
@@ -101,7 +101,7 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
 
         addDesc(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get(), "Four Weapons");
 
-        MinejagoArmor.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
+        MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
         {
             if (item.get() instanceof SkeletalChestplateItem chestplate)
             {
@@ -111,6 +111,7 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
                             case SPEED -> "Blue";
                             case BOW -> "White";
                             case KNIFE -> "Black";
+                            case BONE -> "Bone";
                         };
 
                 addDesc(item.get(), nameForVariant);

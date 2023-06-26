@@ -1,6 +1,5 @@
 package dev.thomasglasser.minejago.platform.services;
 
-import dev.thomasglasser.minejago.world.entity.powers.Power;
 import dev.thomasglasser.minejago.world.level.storage.PowerData;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
 import net.minecraft.world.entity.LivingEntity;

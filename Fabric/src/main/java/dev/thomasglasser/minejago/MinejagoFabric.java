@@ -50,5 +50,7 @@ public class MinejagoFabric implements ModInitializer {
                 new ServerboundStartSpinjitzuPacket().handle(player));
         ServerPlayNetworking.registerGlobalReceiver(ServerboundSetPowerDataPacket.ID, (server, player, handler, buf, responseSender) ->
                 new ServerboundSetPowerDataPacket(buf).handle(player));
+        ServerPlayNetworking.registerGlobalReceiver(ServerboundStopSpinjitzuPacket.ID, (server, player, handler, buf, responseSender) ->
+                new ServerboundStopSpinjitzuPacket().handle(player));
     }
 }

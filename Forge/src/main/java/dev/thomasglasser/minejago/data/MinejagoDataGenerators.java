@@ -8,10 +8,11 @@ import dev.thomasglasser.minejago.data.lang.MinejagoEnUsLanguageProvider;
 import dev.thomasglasser.minejago.data.lang.expansions.MinejagoImmersionPackEnUsLanguageProvider;
 import dev.thomasglasser.minejago.data.loot.MinejagoLootTables;
 import dev.thomasglasser.minejago.data.models.MinejagoItemModels;
+import dev.thomasglasser.minejago.data.modonomicons.wiki.MinejagoWikiBookProvider;
 import dev.thomasglasser.minejago.data.recipes.MinejagoRecipes;
 import dev.thomasglasser.minejago.data.sounds.MinejagoSoundDefinitions;
 import dev.thomasglasser.minejago.data.tags.*;
-import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
+import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.item.armortrim.MinejagoTrimPatterns;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.MinejagoStructures;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.placement.MinejagoStructureSets;
@@ -24,9 +25,10 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.worldgen.Pools;
+import net.minecraft.data.registries.VanillaRegistries;
 import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.data.LanguageProvider;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.registries.DataPackRegistriesHooks;
 
@@ -47,8 +49,7 @@ public class MinejagoDataGenerators
     {
         DataGenerator generator = event.getGenerator();
         PackOutput packOutput = generator.getPackOutput();
-        CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
-        lookupProvider = constructRegistries(lookupProvider.getNow(null), BUILDER);
+        CompletableFuture<HolderLookup.Provider> lookupProvider = constructRegistries(event.getLookupProvider().getNow(VanillaRegistries.createLookup()), BUILDER);
 
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
 
@@ -79,10 +80,18 @@ public class MinejagoDataGenerators
 
         //Client
         generator.addProvider(includeClient, new MinejagoItemModels(packOutput, existingFileHelper));
-        generator.addProvider(includeClient, new MinejagoEnUsLanguageProvider(packOutput));
         generator.addProvider(includeClient, new MinejagoBlockStates(packOutput, existingFileHelper));
         generator.addProvider(includeClient, new MinejagoSoundDefinitions(packOutput, existingFileHelper));
         generator.addProvider(includeClient, new MinejagoClientTagsProvider(packOutput, existingFileHelper));
+
+        // LanugageProviders for Modonomicons
+        LanguageProvider enUs = new MinejagoEnUsLanguageProvider(packOutput);
+
+        // Modonomicons (on server)
+        generator.addProvider(includeServer, new MinejagoWikiBookProvider(packOutput, enUs));
+
+        // Lang gen (on client)
+        generator.addProvider(includeClient, enUs);
     }
     
     private static void genImmersionPack(DataGenerator generator, PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper, boolean includeServer, boolean includeClient)

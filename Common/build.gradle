@@ -39,7 +39,7 @@ dependencies {
     mappings loom.layered() {
         officialMojangMappings()
 //        parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip")
-        parchment("org.parchmentmc.data:parchment-1.19.3:${parchment_version}@zip")
+        parchment("org.parchmentmc.data:parchment-1.19.4:${parchment_version}@zip")
     }
 
     //DO NOT USE IN PROJECT
@@ -54,10 +54,11 @@ dependencies {
     modCompileOnly "maven.modrinth:moonlight:${moonlight_version}"
     modCompileOnly("curse.maven:configured-667378:${configured_fabric_id}")
     modCompileOnly "maven.modrinth:jade:${jade_version}"
+    modCompileOnly "com.klikli_dev:modonomicon:${modonomicon_version}" // TODO: update mcon when ml
 
     modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-common:${forgeconfigapiport_version}"
     modImplementation("dev.thomasglasser.sherdsapi:sherdsapi-common-${minecraft_version}:${sherdsapi_version}")
-    modImplementation "net.tslat.smartbrainlib:SmartBrainLib-common-${previous_minecraft_version}:${smartbrainlib_version}"
+    modImplementation "net.tslat.smartbrainlib:SmartBrainLib-common-${previous_minecraft_version}:${sbl_version}"
     modCompileOnly "net.tslat.tes:TES-common-${previous_minecraft_version}:${tes_version}"
 //    modImplementation "net.tslat.tes:TES-common-${previous_minecraft_version}:${tes_version}" TODO: update
     modImplementation("dev.dhyces.trimmed:trimmed-common-${previous_minecraft_version}:${trimmed_version}")

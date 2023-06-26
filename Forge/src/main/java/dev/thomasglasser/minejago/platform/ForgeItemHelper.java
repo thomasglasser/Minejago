@@ -3,10 +3,8 @@ package dev.thomasglasser.minejago.platform;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.platform.services.IItemHelper;
-import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -17,8 +15,6 @@ import net.minecraft.world.item.*;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Supplier;
 
 public class ForgeItemHelper implements IItemHelper {

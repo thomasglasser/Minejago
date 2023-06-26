@@ -2,7 +2,6 @@ package dev.thomasglasser.minejago.client;
 
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.client.MinejagoClientEvents;
 import dev.thomasglasser.minejago.client.animation.MinejagoPlayerAnimator;
 import dev.thomasglasser.minejago.client.model.*;
 import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
@@ -17,7 +16,7 @@ import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.item.IModeledItem;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
-import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
+import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.minejago.world.level.block.entity.TeapotBlockEntity;
@@ -85,7 +84,7 @@ public class MinejagoFabricClient implements ClientModInitializer {
             }
         }
 
-        for (RegistryObject<Item> item : MinejagoArmor.ARMOR.getEntries())
+        for (RegistryObject<Item> item : MinejagoArmors.ARMOR.getEntries())
         {
             if (item.get() instanceof IModeledItem)
             {

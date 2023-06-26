@@ -1,4 +1,4 @@
-package dev.thomasglasser.minejago.world.entity.powers;
+package dev.thomasglasser.minejago.world.entity.power;
 
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import net.minecraft.resources.ResourceKey;

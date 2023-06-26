@@ -5,14 +5,11 @@ import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleUtils;
 import dev.thomasglasser.minejago.core.particles.SpinjitzuParticleOptions;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
-import dev.thomasglasser.minejago.network.ClientboundFailSpinjitzuPacket;
-import dev.thomasglasser.minejago.network.ClientboundRefreshVipDataPacket;
-import dev.thomasglasser.minejago.network.ClientboundStopAnimationPacket;
-import dev.thomasglasser.minejago.network.ServerboundStartSpinjitzuPacket;
+import dev.thomasglasser.minejago.network.*;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
-import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
-import dev.thomasglasser.minejago.world.entity.powers.Power;
+import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
+import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.item.GoldenWeaponItem;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
@@ -66,6 +63,7 @@ public class MinejagoEntityEvents
     public static void onPlayerTick(Player player)
     {
         SpinjitzuData spinjitzu = Services.DATA.getSpinjitzuData(player);
+        int waitTicks = ((IDataHolder)(player)).getPersistentData().getInt("SpinjitzuWaitTicks");
 
         if (player instanceof ServerPlayer serverPlayer)
         {
@@ -150,8 +148,22 @@ public class MinejagoEntityEvents
             } else if (spinjitzu.active()) {
                 stopSpinjitzu(spinjitzu, serverPlayer, true);
             }
-        } else if (!spinjitzu.active() && MinejagoKeyMappings.ACTIVATE_SPINJITZU.isDown()) {
-            Services.NETWORK.sendToServer(ServerboundStartSpinjitzuPacket.class);
+        }
+        else if (waitTicks > 0)
+        {
+            ((IDataHolder)player).getPersistentData().putInt("SpinjitzuWaitTicks", --waitTicks);
+        }
+        else if (player.level().isClientSide && MinejagoKeyMappings.ACTIVATE_SPINJITZU.isDown())
+        {
+            if (spinjitzu.active())
+            {
+                Services.NETWORK.sendToServer(ServerboundStopSpinjitzuPacket.class);
+            }
+            else
+            {
+                Services.NETWORK.sendToServer(ServerboundStartSpinjitzuPacket.class);
+            }
+            ((IDataHolder)player).getPersistentData().putInt("SpinjitzuWaitTicks", 5);
         }
     }
 
@@ -254,6 +266,7 @@ public class MinejagoEntityEvents
                 if (pos4 != null) MapItemSavedData.addTargetDecoration(itemstack, pos4, "ice", MapDecoration.Type.BANNER_WHITE);
             }
             itemstack.setHoverName(Component.translatable(Items.FILLED_MAP.getDescriptionId() + ".golden_weapons"));
+            itemstack.getOrCreateTag().putBoolean("IsFourWeaponsMap", true);
             player.addItem(itemstack);
             ((IDataHolder)painting).getPersistentData().putBoolean("MapTaken", true);
         }

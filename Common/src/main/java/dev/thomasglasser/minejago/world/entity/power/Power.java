@@ -1,4 +1,4 @@
-package dev.thomasglasser.minejago.world.entity.powers;
+package dev.thomasglasser.minejago.world.entity.power;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

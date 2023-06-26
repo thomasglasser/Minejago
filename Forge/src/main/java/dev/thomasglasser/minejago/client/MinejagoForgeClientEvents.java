@@ -11,15 +11,12 @@ import dev.thomasglasser.minejago.client.renderer.entity.layers.DevLayer;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import dev.thomasglasser.minejago.packs.PackHolder;
-import dev.thomasglasser.minejago.platform.ForgeItemHelper;
-import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.item.IModeledItem;
-import dev.thomasglasser.minejago.world.item.MinejagoCreativeModeTabs;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.IGeoArmorItem;
-import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
+import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.minejago.world.level.block.entity.TeapotBlockEntity;
@@ -34,8 +31,6 @@ import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
@@ -51,7 +46,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.resource.PathPackResources;
 
 import java.util.Map;
-import java.util.function.Supplier;
 
 public class MinejagoForgeClientEvents {
 
@@ -112,7 +106,7 @@ public class MinejagoForgeClientEvents {
 
     public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event)
     {
-        MinejagoArmor.ARMOR.getEntries().forEach(armor ->
+        MinejagoArmors.ARMOR.getEntries().forEach(armor ->
         {
             if (armor.get() instanceof IGeoArmorItem || armor.get() instanceof IModeledItem)
                 event.registerReloadListener(IClientItemExtensions.of(armor.get()).getCustomRenderer());

@@ -1,11 +1,11 @@
 package dev.thomasglasser.minejago.world.item.crafting;
 
+import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.crafting.*;
@@ -66,7 +66,7 @@ public class TeapotBrewingRecipe implements Recipe<Container> {
 
     @Override
     public ItemStack getResultItem(RegistryAccess registryAccess) {
-        return PotionUtils.setPotion(new ItemStack(Items.POTION), result);
+        return PotionUtils.setPotion(MinejagoItems.FILLED_TEACUP.get().getDefaultInstance(), result);
     }
 
     @Override
@@ -98,5 +98,10 @@ public class TeapotBrewingRecipe implements Recipe<Container> {
 
     public CookingBookCategory category() {
         return CookingBookCategory.FOOD;
+    }
+
+    @Override
+    public ItemStack getToastSymbol() {
+        return MinejagoItems.TEAPOT.get().getDefaultInstance();
     }
 }

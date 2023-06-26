@@ -5,10 +5,9 @@ import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.world.entity.ai.memory.MinejagoMemoryModuleTypes;
 import dev.thomasglasser.minejago.world.entity.character.Wu;
-import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
-import dev.thomasglasser.minejago.world.entity.powers.Power;
-import dev.thomasglasser.minejago.world.entity.powers.PowerUtils;
-import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
+import dev.thomasglasser.minejago.world.entity.power.Power;
+import dev.thomasglasser.minejago.world.entity.power.PowerUtils;
+import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.level.storage.PowerData;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
@@ -76,7 +75,7 @@ public class GivePowerAndGi<E extends PathfinderMob> extends MoveToWalkTarget<E>
 
     protected void equipGi()
     {
-        MinejagoArmor.ArmorSet set = MinejagoArmor.TRAINING_GI_SET;
+        MinejagoArmors.ArmorSet set = MinejagoArmors.TRAINING_GI_SET;
         for (ArmorItem.Type value : ArmorItem.Type.values()) {
             ArmorItem armor = set.getForSlot(value.getSlot()).get();
             if (target instanceof Player player)

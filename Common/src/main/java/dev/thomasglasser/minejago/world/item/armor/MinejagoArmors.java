@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class MinejagoArmor
+public class MinejagoArmors
 {
     public static final RegistrationProvider<Item> ARMOR = RegistrationProvider.get(Registries.ITEM, Minejago.MOD_ID);
     public static final List<ArmorSet> ARMOR_SETS = new ArrayList<>();
@@ -33,6 +33,7 @@ public class MinejagoArmor
         private final RegistryObject<Item> BLUE;
         private final RegistryObject<Item> WHITE;
         private final RegistryObject<Item> BLACK;
+        private final RegistryObject<Item> BONE;
 
         public SkeletalChestplateSet()
         {
@@ -41,6 +42,7 @@ public class MinejagoArmor
             BLUE = ARMOR.register(name + "_blue", () -> new SkeletalChestplateItem(Skulkin.Variant.SPEED, MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
             WHITE = ARMOR.register(name + "_white", () -> new SkeletalChestplateItem(Skulkin.Variant.BOW, MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
             BLACK = ARMOR.register(name + "_black", () -> new SkeletalChestplateItem(Skulkin.Variant.KNIFE, MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
+            BONE = ARMOR.register(name + "_bone", () -> new SkeletalChestplateItem(Skulkin.Variant.BONE, MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
         }
 
         public RegistryObject<Item> getForVariant(Skulkin.Variant variant) {
@@ -51,12 +53,13 @@ public class MinejagoArmor
                         case SPEED -> BLUE;
                         case BOW -> WHITE;
                         case KNIFE -> BLACK;
+                        case BONE -> BONE;
                     };
         }
 
         public List<RegistryObject<Item>> getAll()
         {
-            return new ArrayList<>(List.of(RED, BLUE, WHITE, BLACK));
+            return new ArrayList<>(List.of(RED, BLUE, WHITE, BLACK, BONE));
         }
     }
 
@@ -115,6 +118,11 @@ public class MinejagoArmor
         public List<RegistryObject<ArmorItem>> getAll()
         {
             return List.of(HEAD, CHEST, LEGS, FEET);
+        }
+
+        public List<ArmorItem> getAllAsItems()
+        {
+            return List.of(HEAD.get(), CHEST.get(), LEGS.get(), FEET.get());
         }
 
         public String getDisplayName()

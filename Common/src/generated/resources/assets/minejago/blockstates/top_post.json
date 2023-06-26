@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "minejago:block/top_post",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "minejago:block/top_post"
+    },
+    "facing=south": {
+      "model": "minejago:block/top_post",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "minejago:block/top_post",
+      "y": 270
+    }
+  }
+}

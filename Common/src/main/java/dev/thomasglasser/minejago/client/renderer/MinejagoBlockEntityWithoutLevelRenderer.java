@@ -8,12 +8,11 @@ import dev.thomasglasser.minejago.client.model.ScytheModel;
 import dev.thomasglasser.minejago.client.model.SpearModel;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
-import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
+import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.armor.PoweredArmorItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -96,7 +95,7 @@ public class MinejagoBlockEntityWithoutLevelRenderer extends BlockEntityWithoutL
             poseStack.translate(0.5D, 0.5D, 0.5D);
             ResourceLocation location = ResourceLocation.of(stack.getOrCreateTag().getString("Power"), ':');
             final String[] path = new String[1];
-            MinejagoArmor.POWER_SETS.forEach(armorSet ->
+            MinejagoArmors.POWER_SETS.forEach(armorSet ->
                     armorSet.getAll().forEach(item ->
                     {
                         if (stack.is(item.get()))

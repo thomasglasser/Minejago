@@ -5,10 +5,11 @@ import dev.thomasglasser.minejago.network.ClientboundOpenPowerSelectionScreenPac
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.world.entity.ai.behavior.GivePowerAndGi;
 import dev.thomasglasser.minejago.world.entity.ai.memory.MinejagoMemoryModuleTypes;
-import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
-import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowersConfig;
-import dev.thomasglasser.minejago.world.entity.powers.Power;
+import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
+import dev.thomasglasser.minejago.world.entity.power.MinejagoPowersConfig;
+import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.level.storage.PowerData;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
@@ -27,6 +28,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
@@ -37,6 +39,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 public class Wu extends Character
 {
@@ -78,44 +81,46 @@ public class Wu extends Character
 
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
-        Registry<Power> registry = MinejagoPowers.POWERS.get(level().registryAccess());
-
-        if (!MinejagoPowersConfig.DRAIN_POOL.get() || (powersToGive.size() <= 1))
+        if (player.getInventory().hasAnyMatching(itemStack -> itemStack.is(Items.FILLED_MAP) && itemStack.getOrCreateTag().getBoolean("IsFourWeaponsMap")))
         {
-            powersToGive = new ArrayList<>(registry.registryKeySet());
-            if (!MinejagoPowersConfig.ALLOW_NONE.get())
-                removePowersToGive(MinejagoPowers.NONE);
-            powersToGive.removeIf(key -> registry.get(key) != null && registry.get(key).isSpecial());
-        }
+            Registry<Power> registry = MinejagoPowers.POWERS.get(level().registryAccess());
 
-        if (player instanceof ServerPlayer serverPlayer && hand == InteractionHand.MAIN_HAND)
-        {
-            givingPower = !Services.DATA.getPowerData(serverPlayer).given() || MinejagoPowersConfig.ALLOW_CHANGE.get();
-            if (givingPower) {
-                if (MinejagoPowersConfig.ALLOW_CHOOSE.get())
-                {
-                    Services.NETWORK.sendToClient(ClientboundOpenPowerSelectionScreenPacket.class, ClientboundOpenPowerSelectionScreenPacket.toBytes(powersToGive, this.getId()), serverPlayer);
-                }
-                else if (this.distanceTo(serverPlayer) > 1.0f)
-                {
-                    ResourceKey<Power> oldPower = Services.DATA.getPowerData(serverPlayer).power();
-                    if (Services.DATA.getPowerData(serverPlayer).given() && oldPower != MinejagoPowers.NONE && MinejagoPowersConfig.DRAIN_POOL.get()) addPowersToGive(oldPower);
-                    ResourceKey<Power> newPower = powersToGive.get(random.nextInt(powersToGive.size()));
-                    if (newPower != MinejagoPowers.NONE) removePowersToGive(newPower);
-                    if (newPower == MinejagoPowers.NONE)
-                    {
-                        Services.DATA.setPowerData(new PowerData(newPower, true), serverPlayer);
-                        serverPlayer.displayClientMessage(Component.translatable(Wu.NO_POWER_GIVEN_KEY), true);
-                        givingPower = false;
-                    }
-                    else
-                    {
-                        BrainUtils.setMemory(this, MemoryModuleType.INTERACTION_TARGET, serverPlayer);
-                        BrainUtils.setMemory(this, MinejagoMemoryModuleTypes.SELECTED_POWER.get(), newPower);
+            if (!MinejagoPowersConfig.DRAIN_POOL.get() || (powersToGive.size() <= 1)) {
+                powersToGive = new ArrayList<>(registry.registryKeySet());
+                if (!MinejagoPowersConfig.ALLOW_NONE.get())
+                    removePowersToGive(MinejagoPowers.NONE);
+                powersToGive.removeIf(key -> registry.get(key) != null && registry.get(key).isSpecial());
+            }
+
+            if (player instanceof ServerPlayer serverPlayer && hand == InteractionHand.MAIN_HAND) {
+                givingPower = !Services.DATA.getPowerData(serverPlayer).given() || MinejagoPowersConfig.ALLOW_CHANGE.get();
+                if (givingPower) {
+                    if (MinejagoPowersConfig.ALLOW_CHOOSE.get()) {
+                        Services.NETWORK.sendToClient(ClientboundOpenPowerSelectionScreenPacket.class, ClientboundOpenPowerSelectionScreenPacket.toBytes(powersToGive, this.getId()), serverPlayer);
+                    } else if (this.distanceTo(serverPlayer) > 1.0f) {
+                        ResourceKey<Power> oldPower = Services.DATA.getPowerData(serverPlayer).power();
+                        if (Services.DATA.getPowerData(serverPlayer).given() && oldPower != MinejagoPowers.NONE && MinejagoPowersConfig.DRAIN_POOL.get())
+                            addPowersToGive(oldPower);
+                        ResourceKey<Power> newPower = powersToGive.get(random.nextInt(powersToGive.size()));
+                        if (newPower != MinejagoPowers.NONE) removePowersToGive(newPower);
+                        if (newPower == MinejagoPowers.NONE) {
+                            Services.DATA.setPowerData(new PowerData(newPower, true), serverPlayer);
+                            serverPlayer.displayClientMessage(Component.translatable(Wu.NO_POWER_GIVEN_KEY), true);
+                            givingPower = false;
+                        } else {
+                            BrainUtils.setMemory(this, MemoryModuleType.INTERACTION_TARGET, serverPlayer);
+                            BrainUtils.setMemory(this, MinejagoMemoryModuleTypes.SELECTED_POWER.get(), newPower);
+                        }
                     }
                 }
             }
         }
+        else if (!player.getInventory().hasAnyOf(Set.copyOf(MinejagoArmors.BLACK_GI_SET.getAllAsItems())))
+        {
+            MinejagoArmors.BLACK_GI_SET.getAllAsItems().forEach(armorItem ->
+                    player.addItem(armorItem.getDefaultInstance()));
+        }
+
         return super.mobInteract(player, hand);
     }
 

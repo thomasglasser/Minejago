@@ -1,16 +1,14 @@
-package dev.thomasglasser.minejago.world.entity.powers;
+package dev.thomasglasser.minejago.world.entity.power;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import dev.thomasglasser.minejago.core.particles.SpinjitzuParticleOptions;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.registration.registries.DatapackRegistry;
-import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
+import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import net.minecraft.ChatFormatting;
-import net.minecraft.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.worldgen.BootstapContext;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.ItemStack;
 
@@ -53,7 +51,7 @@ public class MinejagoPowers {
             Power power = powerReference.value();
             if (power.hasSets)
             {
-                MinejagoArmor.POWER_SETS.forEach(armorSet ->
+                MinejagoArmors.POWER_SETS.forEach(armorSet ->
                         armorSet.getAll().forEach(item ->
                             list.add(PowerUtils.setPower(new ItemStack(item.get()), powerReference.key()))
                         ));

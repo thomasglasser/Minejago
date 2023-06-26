@@ -11,12 +11,13 @@ public class ForgeDataHelper implements IDataHelper
     @Override
     public PowerData getPowerData(LivingEntity entity) {
         LazyOptional<PowerCapability> capability = entity.getCapability(PowerCapabilityAttacher.POWER_CAPABILITY);
+
         if (capability.isPresent()) {
             PowerCapability pc = capability.orElse(new PowerCapability(entity));
             return new PowerData(pc.getPower(), pc.isGiven());
         }
 
-        return null;
+        return new PowerData();
     }
 
     @Override
@@ -31,12 +32,13 @@ public class ForgeDataHelper implements IDataHelper
     @Override
     public SpinjitzuData getSpinjitzuData(LivingEntity entity) {
         LazyOptional<SpinjitzuCapability> capability = entity.getCapability(SpinjitzuCapabilityAttacher.SPINJITZU_CAPABILITY);
+
         if (capability.isPresent()) {
             SpinjitzuCapability sc = capability.orElse(new SpinjitzuCapability(entity));
             return new SpinjitzuData(sc.isUnlocked(), sc.isActive());
         }
 
-        return null;
+        return new SpinjitzuData();
     }
 
     @Override

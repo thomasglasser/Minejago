@@ -69,6 +69,7 @@ public class MinejagoForge
         MinecraftForge.EVENT_BUS.addListener(MinejagoForgeEntityEvents::onPlayerEntityInteract);
         MinecraftForge.EVENT_BUS.addListener(MinejagoForgeEntityEvents::onPlayerTick);
         MinecraftForge.EVENT_BUS.addListener(MinejagoForgeEntityEvents::onServerPlayerLoggedIn);
+        MinecraftForge.EVENT_BUS.addListener(MinejagoForgeEntityEvents::onPlayerClone);
         MinecraftForge.EVENT_BUS.addListener(MinejagoForgeCommandEvents::onCommandsRegister);
     }
 

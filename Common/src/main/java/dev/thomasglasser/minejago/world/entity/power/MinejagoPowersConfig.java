@@ -1,4 +1,4 @@
-package dev.thomasglasser.minejago.world.entity.powers;
+package dev.thomasglasser.minejago.world.entity.power;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 

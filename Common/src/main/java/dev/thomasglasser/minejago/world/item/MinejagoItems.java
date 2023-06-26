@@ -7,7 +7,7 @@ import dev.thomasglasser.minejago.registration.RegistrationProvider;
 import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.item.armor.IGeoArmorItem;
-import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
+import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.armortrim.MinejagoTrimPatterns;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.sherdsapi.api.PotterySherdRegistry;
@@ -132,7 +132,7 @@ public class MinejagoItems
 
         if (tab == CreativeModeTabs.COMBAT)
         {
-            for (RegistryObject<Item> item : MinejagoArmor.ARMOR.getEntries())
+            for (RegistryObject<Item> item : MinejagoArmors.ARMOR.getEntries())
             {
                 if (!(item.get() instanceof IGeoArmorItem iGeoArmorItem && iGeoArmorItem.isGi()))
                 {
