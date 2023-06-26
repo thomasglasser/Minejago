@@ -2,4 +2,4 @@ files:
   - source: /Common/src/generated/resources/assets/minejago/lang/en_us.json
     translation: /Common/src/main/resources/assets/minejago/lang/%locale_with_underscore%.json
   - source: /Common/src/generated/resources/resourcepacks/minejago_immersion_pack/assets/minejago_immersion_pack/lang/en_us.json
-    translation: /Common/src/generated/resources/resourcepacks/minejago_immersion_pack/assets/minejago_immersion_pack/lang/%locale_with_underscore%.json
+    translation: /Common/src/main/resources/resourcepacks/minejago_immersion_pack/assets/minejago_immersion_pack/lang/%locale_with_underscore%.json
