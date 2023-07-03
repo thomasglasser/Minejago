@@ -203,6 +203,8 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         addAdvancement(MinejagoAdventureAdvancementKeys.CATEGORY, MinejagoAdventureAdvancementKeys.COLLECT_ALL_SKELETAL_CHESTPLATES, "It's Always You Four Colors", "Collect all 4 Skeletal Chestplate variants");
         addAdvancement(MinejagoStoryAdvancementKeys.CATEGORY, MinejagoStoryAdvancementKeys.ROOT, "Minejago", "Long before time had a name...");
         addAdvancement(MinejagoStoryAdvancementKeys.CATEGORY, MinejagoStoryAdvancementKeys.INTERACT_WITH_MAIN_SIX, "Meet N' Greet", "Interact with Wu, Nya, and the Four Ninja");
+        addAdvancement(MinejagoStoryAdvancementKeys.CATEGORY, MinejagoStoryAdvancementKeys.DO_SPINJITZU, "Twistitzu? Tornadzu?", "Do spinjitzu for the first time");
+        addAdvancement(MinejagoStoryAdvancementKeys.CATEGORY, MinejagoStoryAdvancementKeys.GET_POWER, "I've Got the Power!", "Discover your elemental power");
 
         add(MinejagoPaintingVariants.A_MORNING_BREW, "A Morning Brew", "waifu_png_pl");
         add(MinejagoPaintingVariants.NEEDS_HAIR_GEL, "Needs Hair Gel", "waifu_png_pl");

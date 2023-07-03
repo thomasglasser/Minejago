@@ -3,6 +3,7 @@ package dev.thomasglasser.minejago.world.entity.character;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleUtils;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
+import dev.thomasglasser.minejago.world.entity.ISpinjitzuDoer;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
@@ -54,7 +55,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 
-public class Character extends AgeableMob implements SmartBrainOwner<Character>, GeoEntity
+public class Character extends AgeableMob implements SmartBrainOwner<Character>, GeoEntity, ISpinjitzuDoer
 {
     public static final RawAnimation SPIN = RawAnimation.begin().thenPlay("move.spinjitzu");
 
@@ -193,16 +194,26 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
             MinejagoParticleUtils.renderNormalSpinjitzu(this, power1.getMainSpinjitzuColor(), power1.getAltSpinjitzuColor(), 10.5, false);
             MinejagoParticleUtils.renderNormalSpinjitzuBorder(power1.getBorderParticle(), this, 4, false);
         }
+        if (this.getHealth() < this.getMaxHealth() && this.tickCount % 20 == 0) {
+            this.heal(1.0F);
+        }
     }
 
     protected void onMoveToWalkTargetStopping(PathfinderMob pathfinderMob) {
         if (pathfinderMob instanceof Character character && character.stopSpinjitzuOnNextStop) character.setDoingSpinjitzu(false);
     }
 
+    @Override
+    public boolean canBeLeashed(Player player) {
+        return false;
+    }
+
+    @Override
     public boolean isDoingSpinjitzu() {
         return Services.DATA.getSpinjitzuData(this).active();
     }
 
+    @Override
     public void setDoingSpinjitzu(boolean doingSpinjitzu)
     {
         Services.DATA.setSpinjitzuData(new SpinjitzuData(true, doingSpinjitzu), this);

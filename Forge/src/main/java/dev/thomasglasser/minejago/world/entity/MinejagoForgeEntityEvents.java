@@ -1,13 +1,17 @@
 package dev.thomasglasser.minejago.world.entity;
 
 import dev.thomasglasser.minejago.platform.Services;
+import dev.thomasglasser.minejago.world.entity.character.Zane;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuCapabilityAttacher;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -49,5 +53,10 @@ public class MinejagoForgeEntityEvents
     {
         event.getOriginal().getCapability(SpinjitzuCapabilityAttacher.SPINJITZU_CAPABILITY).ifPresent(spinjitzuCapability ->
                 Services.DATA.setSpinjitzuData(new SpinjitzuData(spinjitzuCapability.isUnlocked(), false), event.getEntity()));
+    }
+
+    public static void onSpawnPlacementsRegister(SpawnPlacementRegisterEvent event)
+    {
+        event.register(MinejagoEntityTypes.ZANE.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Zane::checkSurfaceWaterAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
     }
 }

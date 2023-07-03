@@ -8,10 +8,6 @@ import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.item.armor.IGeoArmorItem;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.armor.PoweredArmorItem;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.RegistrySetBuilder;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -32,11 +28,7 @@ public class MinejagoCreativeModeTabs
             });
         });
 
-        final RegistryAccess.Frozen access = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
-        final RegistrySetBuilder builder = new RegistrySetBuilder();
-        MinejagoPowers.POWERS.addToSet(builder);
-        HolderLookup.Provider provider = builder.build(access);
-        output.acceptAll(MinejagoPowers.getArmorForAll(provider));
+        output.acceptAll(MinejagoPowers.getArmorForAll(MinejagoPowers.getBasePowers()));
     }, CreativeModeTabs.COMBAT));
 
     public static void init() {}

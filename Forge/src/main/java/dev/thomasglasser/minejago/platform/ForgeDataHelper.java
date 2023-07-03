@@ -27,6 +27,7 @@ public class ForgeDataHelper implements IDataHelper
             cap.setPower(data.power());
             cap.setGiven(data.given());
         });
+        IDataHelper.super.setPowerData(data, entity);
     }
 
     @Override
@@ -48,5 +49,6 @@ public class ForgeDataHelper implements IDataHelper
             cap.setActive(data.active());
             cap.setUnlocked(data.unlocked());
         });
+        IDataHelper.super.setSpinjitzuData(data, entity);
     }
 }

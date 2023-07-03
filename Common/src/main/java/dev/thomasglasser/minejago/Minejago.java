@@ -1,5 +1,6 @@
 package dev.thomasglasser.minejago;
 
+import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
 import dev.thomasglasser.minejago.client.MinejagoClientConfig;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
@@ -92,6 +93,7 @@ public class Minejago {
 		MinejagoGameEvents.init();
 		MinejagoMemoryModuleTypes.init();
 		MinejagoMenuTypes.init();
+		MinejagoCriteriaTriggers.init();
 	}
 
 	private static void registerConfigs()

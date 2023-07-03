@@ -1,0 +1,31 @@
+{
+  "parent": "minejago:story/root",
+  "criteria": {
+    "get_power": {
+      "conditions": {},
+      "trigger": "minejago:get_power"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.minejago.story.get_power.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minejago:training_gi_hood",
+      "nbt": "{Damage:0,Power:\"minejago:fire\"}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.minejago.story.get_power.title"
+    }
+  },
+  "requirements": [
+    [
+      "get_power"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

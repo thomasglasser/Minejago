@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.world.entity;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleUtils;
 import dev.thomasglasser.minejago.core.particles.SpinjitzuParticleOptions;
@@ -77,6 +78,7 @@ public class MinejagoEntityEvents
                         stopSpinjitzu(spinjitzu, serverPlayer, !serverPlayer.isCrouching());
                         return;
                     }
+                    MinejagoCriteriaTriggers.DO_SPINJITZU.trigger(serverPlayer);
                     if (player.tickCount % 20 == 0)
                     {
                         serverPlayer.level().playSound(null, serverPlayer.blockPosition(), MinejagoSoundEvents.SPINJITZU_ACTIVE.get(), SoundSource.PLAYERS);

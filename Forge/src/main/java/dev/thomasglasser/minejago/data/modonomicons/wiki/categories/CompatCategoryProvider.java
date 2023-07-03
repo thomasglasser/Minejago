@@ -6,10 +6,7 @@ import com.klikli_dev.modonomicon.api.datagen.book.BookCategoryModel;
 import com.klikli_dev.modonomicon.api.datagen.book.BookEntryModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookImagePageModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
-import dev.thomasglasser.minejago.data.modonomicons.pages.BookTeapotBrewingRecipePageModel;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
-import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Items;
 
 public class CompatCategoryProvider extends CategoryProvider {
@@ -33,17 +30,19 @@ public class CompatCategoryProvider extends CategoryProvider {
     }
 
     @Override
+    protected void generateEntries() {
+        add(generateVisualEntry().withLocation(entryMap.get('v')));
+    }
+
+    @Override
     protected BookCategoryModel generateCategory() {
         lang().add(context().categoryName(), "Mod Compatibilities & Enhancements");
 
         return BookCategoryModel.create(this.modLoc(this.context().categoryId()), this.context().categoryName())
-                .withIcon(MinejagoItems.IRON_SPEAR.getId())
-                .withEntries(
-                        generateVisualEntry().withLocation(entryMap.get('v')).build()
-                );
+                .withIcon(MinejagoItems.IRON_SPEAR.getId());
     }
 
-    protected BookEntryModel.Builder generateVisualEntry()
+    protected BookEntryModel generateVisualEntry()
     {
         this.context().entry("visual");
         lang().add(context().entryName(), "Visual");
@@ -66,9 +65,10 @@ public class CompatCategoryProvider extends CategoryProvider {
         lang().add(context().pageTitle(), "playerAnimator");
         lang().add(context().pageText(), "Using the Scythe of Quakes with playerAnimator installed");
 
-        return BookEntryModel.builder()
-                .withId(this.modLoc(this.context().categoryId() + "/" + this.context().entryId()))
-                .withName(this.context().entryName())
+        return BookEntryModel.create(
+                        this.modLoc(this.context().categoryId() + "/" + this.context().entryId()),
+                        this.context().entryName()
+                )
                 .withDescription(this.context().entryDescription())
                 .withIcon(Items.SPYGLASS)
                 .withPages(

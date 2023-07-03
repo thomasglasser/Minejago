@@ -5,6 +5,7 @@ import dev.thomasglasser.minejago.client.MinejagoForgeClientEvents;
 import dev.thomasglasser.minejago.commands.MinejagoForgeCommandEvents;
 import dev.thomasglasser.minejago.core.MinejagoForgeCoreEvents;
 import dev.thomasglasser.minejago.data.MinejagoDataGenerators;
+import dev.thomasglasser.minejago.data.worldgen.biome.MinejagoBiomeModifierSerializers;
 import dev.thomasglasser.minejago.world.entity.MinejagoForgeEntityEvents;
 import dev.thomasglasser.minejago.world.level.storage.PowerCapabilityAttacher;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuCapabilityAttacher;
@@ -25,6 +26,8 @@ public class MinejagoForge
         Minejago.init();
 
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+
+        MinejagoBiomeModifierSerializers.BIOME_MODIFIER_SERIALIZERS.register(bus);
 
         bus.addListener(MinejagoForgeCoreEvents::onCommonSetup);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> bus.addListener(MinejagoForgeClientEvents::onClientSetup));
@@ -47,6 +50,7 @@ public class MinejagoForge
     {
         bus.addListener(MinejagoForgeClientEvents::onClientConfigChanged);
         bus.addListener(MinejagoForgeEntityEvents::onEntityAttributeCreation);
+        bus.addListener(MinejagoForgeEntityEvents::onSpawnPlacementsRegister);
     }
 
     private void addModClientListeners(IEventBus bus)

@@ -23,6 +23,7 @@ public class FabricDataHelper implements IDataHelper {
             MinejagoFabricEntityComponents.POWER.get(entity).setGiven(data.given());
             MinejagoFabricEntityComponents.POWER.sync(entity);
         }
+        IDataHelper.super.setPowerData(data, entity);
     }
 
     @Override
@@ -44,5 +45,6 @@ public class FabricDataHelper implements IDataHelper {
             component.setUnlocked(data.unlocked());
             MinejagoFabricEntityComponents.SPINJITZU.sync(entity);
         }
+        IDataHelper.super.setSpinjitzuData(data, entity);
     }
 }

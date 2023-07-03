@@ -1,0 +1,31 @@
+{
+  "parent": "minejago:story/root",
+  "criteria": {
+    "do_spinjitzu": {
+      "conditions": {},
+      "trigger": "minejago:do_spinjitzu"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.minejago.story.do_spinjitzu.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minejago:filled_teacup",
+      "nbt": "{Potion:\"minejago:regular_tea\"}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.minejago.story.do_spinjitzu.title"
+    }
+  },
+  "requirements": [
+    [
+      "do_spinjitzu"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

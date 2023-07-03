@@ -47,7 +47,6 @@ dependencies {
     modCompileOnly "net.tslat.tes:TES-forge-${previous_minecraft_version}:${tes_version}"
 //    modImplementation "net.tslat.tes:TES-fabric-${previous_minecraft_version}:${tes_version}" Waiting on new push
 //    modImplementation("curse.maven:configured-667378:${configured_fabric_id}") TODO: Update
-//    modImplementation "net.tslat.tes:TES-fabric-${previous_minecraft_version}:${tes_version}" TODO: Update
     modImplementation("dev.dhyces.trimmed:trimmed-fabric-${previous_minecraft_version}:${trimmed_version}")
 //    modImplementation("dev.dhyces.trimmed:trimmed-fabric-${minecraft_version}:${trimmed_version}") TODO: Update
     modCompileOnly "com.klikli_dev:modonomicon:${modonomicon_version}" // TODO: update mcon when ml

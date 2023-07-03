@@ -8,6 +8,9 @@ import dev.thomasglasser.minejago.registration.registries.DatapackRegistry;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.RegistrySetBuilder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.ItemStack;
@@ -58,5 +61,13 @@ public class MinejagoPowers {
             }
         });
         return list;
+    }
+
+    public static HolderLookup.Provider getBasePowers()
+    {
+        final RegistryAccess.Frozen access = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
+        final RegistrySetBuilder builder = new RegistrySetBuilder();
+        MinejagoPowers.POWERS.addToSet(builder);
+        return builder.build(access);
     }
 }

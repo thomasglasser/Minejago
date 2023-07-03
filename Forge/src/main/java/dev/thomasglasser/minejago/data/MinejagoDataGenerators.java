@@ -12,6 +12,7 @@ import dev.thomasglasser.minejago.data.modonomicons.wiki.MinejagoWikiBookProvide
 import dev.thomasglasser.minejago.data.recipes.MinejagoRecipes;
 import dev.thomasglasser.minejago.data.sounds.MinejagoSoundDefinitions;
 import dev.thomasglasser.minejago.data.tags.*;
+import dev.thomasglasser.minejago.data.worldgen.biome.MinejagoBiomeModifiers;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.item.armortrim.MinejagoTrimPatterns;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.MinejagoStructures;
@@ -31,6 +32,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.LanguageProvider;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.registries.DataPackRegistriesHooks;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -43,7 +45,8 @@ public class MinejagoDataGenerators
             .add(Registries.TEMPLATE_POOL, MinejagoPools::bootstrap)
             .add(Registries.STRUCTURE, MinejagoStructures::bootstrap)
             .add(Registries.STRUCTURE_SET, MinejagoStructureSets::bootstrap)
-            .add(MinejagoRegistries.POWER, MinejagoPowers::bootstrap);
+            .add(MinejagoRegistries.POWER, MinejagoPowers::bootstrap)
+            .add(ForgeRegistries.Keys.BIOME_MODIFIERS, MinejagoBiomeModifiers::bootstrap);
 
     public static void gatherData(GatherDataEvent event)
     {
@@ -65,7 +68,7 @@ public class MinejagoDataGenerators
         MinejagoBlockTagsProvider blockTags = new MinejagoBlockTagsProvider(packOutput, lookupProvider, existingFileHelper);
 
         //Server
-        generator.addProvider(includeServer, new DatapackBuiltinEntriesProvider(packOutput, lookupProvider, BUILDER, Set.of(Minejago.MOD_ID)));
+        generator.addProvider(includeServer, new DatapackBuiltinEntriesProvider(packOutput, lookupProvider, Set.of(Minejago.MOD_ID)));
         generator.addProvider(includeServer, blockTags);
         generator.addProvider(includeServer, new MinejagoItemTagsProvider(packOutput, lookupProvider, blockTags.contentsGetter(), existingFileHelper));
         generator.addProvider(includeServer, new MinejagoRecipes(packOutput));

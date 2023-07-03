@@ -1,0 +1,9 @@
+{
+  "type": "minejago:add_spawn_costs",
+  "biomes": "minecraft:frozen_river",
+  "entity_type": "minejago:zane",
+  "spawn_costs": {
+    "charge": 0.7,
+    "energy_budget": 0.15
+  }
+}
