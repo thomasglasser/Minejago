@@ -11,10 +11,6 @@ import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 
-import java.util.List;
-import java.util.function.BiConsumer;
-import java.util.stream.Stream;
-
 public class MinejagoMainChannel
 {
 

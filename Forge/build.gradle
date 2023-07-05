@@ -12,7 +12,7 @@ plugins {
     id 'java'
     id 'eclipse'
     id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '6.+'
+    id 'net.minecraftforge.gradle' version '5.+'
 }
 
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
@@ -110,7 +110,7 @@ dependencies {
 //    implementation fg.deobf("dev.dhyces.trimmed:trimmed-forge-${minecraft_version}:${trimmed_version}") TODO: update
     compileOnly fg.deobf("curse.maven:configured-457570:${configured_forge_id}")
 //    implementation fg.deobf("curse.maven:configured-457570:${configured_forge_id}") TODO: Update
-    implementation fg.deobf("net.tslat.tes:TES-forge-${previous_minecraft_version}:${tes_version}")
+    implementation fg.deobf("net.tslat.tes:TES-forge-${minecraft_version}:${tes_version}")
     implementation fg.deobf("com.klikli_dev:modonomicon:${modonomicon_version}")
 
     jarJar(group: "dev.thomasglasser.sherdsapi", name: "sherdsapi-forge-${minecraft_version}", version: "[${sherdsapi_version},${sherdsapi_next_major_version})")

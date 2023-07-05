@@ -110,12 +110,6 @@
   },
   "requirements": [
     [
-      "interact_cole"
-    ],
-    [
-      "interact_jay"
-    ],
-    [
       "interact_kai"
     ],
     [
@@ -126,6 +120,12 @@
     ],
     [
       "interact_nya"
+    ],
+    [
+      "interact_cole"
+    ],
+    [
+      "interact_jay"
     ]
   ],
   "sends_telemetry_event": true

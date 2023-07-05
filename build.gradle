@@ -100,10 +100,10 @@ subprojects {
             name = "Fuzs Mod Resources"
             url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
         }
-        maven {
-            name = '100Media'
-            url = 'https://maven.100media.dev/'
-        }
+//        maven {
+//            name = '100Media'
+//            url = 'https://maven.100media.dev/'
+//        }
         maven {
             name 'Gegy'
             url 'https://maven.gegy.dev'

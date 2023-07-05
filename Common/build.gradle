@@ -9,7 +9,7 @@ buildscript {
 }
 
 plugins {
-    id 'org.quiltmc.loom' version '1.+'
+    id 'org.quiltmc.loom' version '1.1.+'
     id 'maven-publish'
 }
 
@@ -58,8 +58,7 @@ dependencies {
     modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-common:${forgeconfigapiport_version}"
     modImplementation("dev.thomasglasser.sherdsapi:sherdsapi-common-${minecraft_version}:${sherdsapi_version}")
     modImplementation "net.tslat.smartbrainlib:SmartBrainLib-common-${previous_minecraft_version}:${sbl_version}"
-    modCompileOnly "net.tslat.tes:TES-common-${previous_minecraft_version}:${tes_version}"
-//    modImplementation "net.tslat.tes:TES-common-${previous_minecraft_version}:${tes_version}" TODO: update
+    modImplementation "net.tslat.tes:TES-common-${minecraft_version}:${tes_version}"
     modImplementation("dev.dhyces.trimmed:trimmed-common-${previous_minecraft_version}:${trimmed_version}")
 //    modImplementation("dev.dhyces.trimmed:trimmed-common-${minecraft_version}:${trimmed_version}") TODO: update
 
