@@ -1,13 +1,12 @@
 package dev.thomasglasser.minejago.data.advancements;
 
-import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.data.advancements.packs.MinejagoAdventureAdvancements;
 import dev.thomasglasser.minejago.data.advancements.packs.MinejagoStoryAdvancements;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.minecraft.network.chat.Component;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.ForgeAdvancementProvider;
+import net.minecraftforge.common.data.LanguageProvider;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -21,20 +20,10 @@ public class MinejagoAdvancementProvider extends ForgeAdvancementProvider {
      * @param registries         a future of a lookup for registries and their objects
      * @param existingFileHelper a helper used to find whether a file exists
      */
-    public MinejagoAdvancementProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries, ExistingFileHelper existingFileHelper) {
+    public MinejagoAdvancementProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries, ExistingFileHelper existingFileHelper, LanguageProvider enUs) {
         super(output, registries, existingFileHelper, List.of(
-                new MinejagoStoryAdvancements(),
-                new MinejagoAdventureAdvancements()
+                new MinejagoStoryAdvancements(enUs),
+                new MinejagoAdventureAdvancements(enUs)
         ));
-    }
-
-    public static Component title(String category, String path)
-    {
-        return Component.translatable("advancement." + Minejago.MOD_ID + "." + category + "." + path + ".title");
-    }
-
-    public static Component desc(String category, String path)
-    {
-        return Component.translatable("advancement." + Minejago.MOD_ID + "." + category + "." + path + ".desc");
     }
 }

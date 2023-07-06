@@ -35,15 +35,21 @@ public class MinejagoBiomeModifiers
         HolderSet<Biome> mountains = biomes.get(BiomeTags.IS_MOUNTAIN).orElseThrow();
         context.register(register("add_cole"), addCharactersToBiomes(mountains, MinejagoEntityTypes.COLE.get()));
         Holder.Reference<Biome> frozen_lakes = biomes.get(Biomes.FROZEN_RIVER).orElseThrow();
-        context.register(register("add_zane"), addCharactersToBiomes(HolderSet.direct(frozen_lakes), MinejagoEntityTypes.ZANE.get()));
+        context.register(register("add_zane"), addCharactersToBiomes(HolderSet.direct(frozen_lakes), 100, MinejagoEntityTypes.ZANE.get()));
 
         // Add charges
-        context.register(register("charge_cole"), addCharacterCharge(mountains, MinejagoEntityTypes.COLE.get()));
-        context.register(register("charge_zane"), new AddSpawnCostsBiomeModifier(HolderSet.direct(frozen_lakes), MinejagoEntityTypes.ZANE.get(), new MobSpawnSettings.MobSpawnCost(0.15, 0.7)));
+        context.register(register("charge_cole"), addCharge(mountains, MinejagoEntityTypes.COLE.get(), 0.15, 0.7));
+//        context.register(register("charge_zane"), addCharge(HolderSet.direct(frozen_lakes), MinejagoEntityTypes.ZANE.get(), 0.3, 1.0));
     }
 
     @SafeVarargs
     private static ForgeBiomeModifiers.AddSpawnsBiomeModifier addCharactersToBiomes(HolderSet<Biome> biomes, EntityType<? extends Entity>... entities)
+    {
+        return addCharactersToBiomes(biomes, 1, entities);
+    }
+
+    @SafeVarargs
+    private static ForgeBiomeModifiers.AddSpawnsBiomeModifier addCharactersToBiomes(HolderSet<Biome> biomes, int weight, EntityType<? extends Entity>... entities)
     {
         List<MobSpawnSettings.SpawnerData> data = new ArrayList<>();
 
@@ -51,7 +57,7 @@ public class MinejagoBiomeModifiers
         {
             data.add(new MobSpawnSettings.SpawnerData(
                     entity,
-                    1,
+                    weight,
                     1,
                     1
             ));
@@ -63,12 +69,12 @@ public class MinejagoBiomeModifiers
         );
     }
 
-    private static AddSpawnCostsBiomeModifier addCharacterCharge(HolderSet<Biome> biomes, EntityType<? extends Entity> entity)
+    private static AddSpawnCostsBiomeModifier addCharge(HolderSet<Biome> biomes, EntityType<? extends Entity> entity, double budget, double charge)
     {
         return new AddSpawnCostsBiomeModifier(
                 biomes,
                 entity,
-                new MobSpawnSettings.MobSpawnCost(0.3, 1.0)
+                new MobSpawnSettings.MobSpawnCost(budget, charge)
         );
     }
 }

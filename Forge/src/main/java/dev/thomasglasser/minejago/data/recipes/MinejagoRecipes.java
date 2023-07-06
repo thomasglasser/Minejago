@@ -3,7 +3,6 @@ package dev.thomasglasser.minejago.data.recipes;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.data.tags.MinejagoItemTags;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
-import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
@@ -77,15 +76,15 @@ public class MinejagoRecipes extends RecipeProvider {
                 .unlockedBy("has_bamboo", has(Items.BAMBOO))
                 .save(writer);
 
-        coloredTeapotFromColoredTerracotta(writer, MinejagoItems.TEAPOT.get(), Blocks.TERRACOTTA);
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.BREWING, MinejagoItems.JASPOT.get(), 1)
-                .requires(MinejagoItems.TEAPOTS.get(DyeColor.CYAN).get())
+        coloredTeapotFromColoredTerracotta(writer, MinejagoBlocks.TEAPOT.get(), Blocks.TERRACOTTA);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BREWING, MinejagoBlocks.JASPOT.get(), 1)
+                .requires(MinejagoBlocks.TEAPOTS.get(DyeColor.CYAN).get())
                 .requires(ItemTags.FISHES)
                 .group("teapot")
                 .unlockedBy("has_self", has(MinejagoBlocks.JASPOT.get()))
                 .save(writer);
 
-        MinejagoItems.TEAPOTS.forEach((color, pot) ->
+        MinejagoBlocks.TEAPOTS.forEach((color, pot) ->
         {
             coloredTeapotFromColoredTerracotta(writer, pot.get(), ForgeRegistries.BLOCKS.getValue(new ResourceLocation(color.getName() + "_terracotta")));
             coloredTeapotFromTeapotAndDye(writer, pot.get(), MinejagoItemTags.DYES_TAGS.get(color));
@@ -102,7 +101,7 @@ public class MinejagoRecipes extends RecipeProvider {
                 .unlockedBy("has_scroll", has(MinejagoItems.SCROLL.get()))
                 .save(writer);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, MinejagoItems.CHISELED_SCROLL_SHELF.get(), 1)
+        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, MinejagoBlocks.CHISELED_SCROLL_SHELF.get(), 1)
                 .pattern("psp")
                 .pattern("s s")
                 .pattern("psp")
@@ -139,7 +138,7 @@ public class MinejagoRecipes extends RecipeProvider {
     protected void coloredTeapotFromTeapotAndDye(Consumer<FinishedRecipe> writer, ItemLike pColoredTeapot, TagKey<Item> pDye)
     {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.BREWING, pColoredTeapot, 1)
-                .requires(MinejagoItems.TEAPOT.get())
+                .requires(MinejagoBlocks.TEAPOT.get())
                 .requires(pDye)
                 .group("teapot")
                 .unlockedBy("has_teapot", has(MinejagoItemTags.TEAPOTS))

@@ -1,15 +1,15 @@
 {
-  "parent": "minejago:story/get_black_gi",
+  "parent": "minejago:adventure/get_teapot",
   "criteria": {
-    "do_spinjitzu": {
+    "brewed_tea": {
       "conditions": {},
-      "trigger": "minejago:do_spinjitzu"
+      "trigger": "minejago:brewed_tea"
     }
   },
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancement.minejago.story.do_spinjitzu.desc"
+      "translate": "advancement.minejago.adventure.brew_tea.desc"
     },
     "frame": "task",
     "hidden": false,
@@ -19,12 +19,12 @@
     },
     "show_toast": true,
     "title": {
-      "translate": "advancement.minejago.story.do_spinjitzu.title"
+      "translate": "advancement.minejago.adventure.brew_tea.title"
     }
   },
   "requirements": [
     [
-      "do_spinjitzu"
+      "brewed_tea"
     ]
   ],
   "sends_telemetry_event": true

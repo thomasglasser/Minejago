@@ -1,5 +1,5 @@
 {
-  "parent": "minejago:story/root",
+  "parent": "minejago:story/get_four_weapons_map",
   "criteria": {
     "get_power": {
       "conditions": {},

@@ -15,6 +15,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import org.jetbrains.annotations.NotNull;
 
 public class Zane extends Character
 {
@@ -23,6 +25,7 @@ public class Zane extends Character
     public Zane(EntityType<? extends Zane> entityType, Level level) {
         super(entityType, level);
         Services.DATA.setPowerData(new PowerData(MinejagoPowers.ICE, true), this);
+        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
     }
 
     @Override
@@ -34,7 +37,7 @@ public class Zane extends Character
 
     @Override
     public boolean checkSpawnObstruction(LevelReader level) {
-        return level.isUnobstructed(this) && level.isWaterAt(this.blockPosition());
+        return level.isUnobstructed(this);
     }
 
     @Override
@@ -42,10 +45,9 @@ public class Zane extends Character
         return super.getMaxAirSupply() * 2;
     }
 
-    public static boolean checkSurfaceWaterAnimalSpawnRules(EntityType<? extends Zane> zane, LevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+    public static boolean checkSurfaceWaterAnimalSpawnRules(EntityType<?> animal, LevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         int i = level.getSeaLevel();
-        int j = i - 13;
-        return pos.getY() >= j && pos.getY() <= i && level.getFluidState(pos.below()).is(FluidTags.WATER) && level.getBlockState(pos.above()).is(Blocks.WATER);
+        return pos.getY() <= i && level.getFluidState(pos.below()).is(FluidTags.WATER) && level.getBlockState(pos.above()).is(Blocks.WATER);
     }
 
     @Override
@@ -67,7 +69,7 @@ public class Zane extends Character
     }
 
     @Override
-    public MobType getMobType() {
+    public @NotNull MobType getMobType() {
         return MobType.WATER;
     }
 }

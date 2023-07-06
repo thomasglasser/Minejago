@@ -3,17 +3,16 @@ package dev.thomasglasser.minejago.data.lang;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.client.MinejagoWailaPlugin;
+import dev.thomasglasser.minejago.client.gui.screens.inventory.PowerSelectionScreen;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.ScrollEditScreen;
-import dev.thomasglasser.minejago.data.advancements.packs.MinejagoAdventureAdvancementKeys;
-import dev.thomasglasser.minejago.data.advancements.packs.MinejagoStoryAdvancementKeys;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.server.commands.PowerCommand;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
-import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
 import dev.thomasglasser.minejago.world.entity.character.Wu;
+import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
@@ -23,7 +22,6 @@ import dev.thomasglasser.minejago.world.item.armortrim.MinejagoTrimPatterns;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPatterns;
-import dev.thomasglasser.minejago.client.gui.screens.inventory.PowerSelectionScreen;
 import net.minecraft.Util;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.data.PackOutput;
@@ -98,6 +96,7 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
 
         add(MinejagoBlocks.GOLD_DISC.get(), "Gold Disc");
         add(MinejagoBlocks.TOP_POST.get(), "Top Post");
+        add(MinejagoBlocks.CHISELED_SCROLL_SHELF.get(), "Chiseled Scroll Shelf");
 
         addDesc(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get(), "Four Weapons");
 
@@ -199,13 +198,6 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
 
         addCreativeTab(Minejago.modLoc("gi"), "Gi");
 
-        addAdvancement(MinejagoAdventureAdvancementKeys.CATEGORY, MinejagoAdventureAdvancementKeys.KILL_A_SKULKIN, "Redead", "Kill a Skulkin Warrior");
-        addAdvancement(MinejagoAdventureAdvancementKeys.CATEGORY, MinejagoAdventureAdvancementKeys.COLLECT_ALL_SKELETAL_CHESTPLATES, "It's Always You Four Colors", "Collect all 4 Skeletal Chestplate variants");
-        addAdvancement(MinejagoStoryAdvancementKeys.CATEGORY, MinejagoStoryAdvancementKeys.ROOT, "Minejago", "Long before time had a name...");
-        addAdvancement(MinejagoStoryAdvancementKeys.CATEGORY, MinejagoStoryAdvancementKeys.INTERACT_WITH_MAIN_SIX, "Meet N' Greet", "Interact with Wu, Nya, and the Four Ninja");
-        addAdvancement(MinejagoStoryAdvancementKeys.CATEGORY, MinejagoStoryAdvancementKeys.DO_SPINJITZU, "Twistitzu? Tornadzu?", "Do spinjitzu for the first time");
-        addAdvancement(MinejagoStoryAdvancementKeys.CATEGORY, MinejagoStoryAdvancementKeys.GET_POWER, "I've Got the Power!", "Discover your elemental power");
-
         add(MinejagoPaintingVariants.A_MORNING_BREW, "A Morning Brew", "waifu_png_pl");
         add(MinejagoPaintingVariants.NEEDS_HAIR_GEL, "Needs Hair Gel", "waifu_png_pl");
         add(MinejagoPaintingVariants.AMBUSHED, "Ambushed", "waifu_png_pl");
@@ -258,8 +250,6 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(ScrollEditScreen.FINALIZE_WARNING_LABEL, "Note! When you sign the scroll, it will no longer be editable.");
 
         add("lectern.take_scroll", "Take Scroll");
-
-        add(MinejagoItems.CHISELED_SCROLL_SHELF.get(), "Chiseled Scroll Shelf");
     }
 
     public void addDesc(Item item, String desc)

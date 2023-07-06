@@ -65,6 +65,7 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
     public Character(EntityType<? extends Character> entityType, Level level) {
         super(entityType, level);
         this.getNavigation().setCanFloat(true);
+        setPersistenceRequired();
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -217,5 +218,10 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
     public void setDoingSpinjitzu(boolean doingSpinjitzu)
     {
         Services.DATA.setSpinjitzuData(new SpinjitzuData(true, doingSpinjitzu), this);
+    }
+
+    @Override
+    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+        return false;
     }
 }

@@ -74,7 +74,6 @@ public class MinejagoDataGenerators
         generator.addProvider(includeServer, new MinejagoRecipes(packOutput));
         generator.addProvider(includeServer, new MinejagoBannerPatternTagsProvider(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(includeServer, new MinejagoLootTables(packOutput));
-        generator.addProvider(includeServer, new MinejagoAdvancementProvider(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(includeServer, new MinejagoEntityTypeTagsProvider(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(includeServer, new MinejagoPaintingVariantTagsProvider(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(includeServer, new PowerTagsProvider(packOutput, Minejago.MOD_ID,  lookupProvider, existingFileHelper));
@@ -87,11 +86,14 @@ public class MinejagoDataGenerators
         generator.addProvider(includeClient, new MinejagoSoundDefinitions(packOutput, existingFileHelper));
         generator.addProvider(includeClient, new MinejagoClientTagsProvider(packOutput, existingFileHelper));
 
-        // LanugageProviders for Modonomicons
+        // LanugageProviders
         LanguageProvider enUs = new MinejagoEnUsLanguageProvider(packOutput);
 
         // Modonomicons (on server)
         generator.addProvider(includeServer, new MinejagoWikiBookProvider(packOutput, enUs));
+
+        // AdvancementProvider
+        generator.addProvider(includeServer, new MinejagoAdvancementProvider(packOutput, lookupProvider, existingFileHelper, enUs));
 
         // Lang gen (on client)
         generator.addProvider(includeClient, enUs);
