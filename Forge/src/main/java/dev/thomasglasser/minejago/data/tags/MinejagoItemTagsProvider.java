@@ -56,6 +56,16 @@ public class MinejagoItemTagsProvider extends ItemTagsProvider
                         case FEET -> tagPair(BOOTS, item.get());
                     }
                 }));
+        MinejagoArmors.POWER_SETS.forEach(set ->
+                set.getAll().forEach(item ->
+                {
+                    switch (set.getForItem(item.get())) {
+                        case HEAD -> tagPair(HELMETS, item.get());
+                        case CHEST -> tagPair(CHESTPLATES, item.get());
+                        case LEGS -> tagPair(LEGGINGS, item.get());
+                        case FEET -> tagPair(BOOTS, item.get());
+                    }
+                }));
         MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
                 tagPair(CHESTPLATES, item.get()));
         tagPair(CHESTPLATES, MinejagoArmors.SAMUKAIS_CHESTPLATE.get());

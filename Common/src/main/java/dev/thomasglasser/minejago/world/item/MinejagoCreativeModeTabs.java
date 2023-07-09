@@ -22,7 +22,7 @@ public class MinejagoCreativeModeTabs
 {
     public static final RegistrationProvider<CreativeModeTab> CREATIVE_MODE_TABS = RegistrationProvider.get(Registries.CREATIVE_MODE_TAB, Minejago.MOD_ID);
 
-    public static final RegistryObject<CreativeModeTab> GI = CREATIVE_MODE_TABS.register("gi", () -> Services.ITEM.newTab(Component.translatable(Minejago.modLoc("gi").toLanguageKey("item_group")), () -> MinejagoArmors.BLACK_GI_SET.HEAD.get().getDefaultInstance(), false, (parameters, output) ->
+    public static final RegistryObject<CreativeModeTab> GI = CREATIVE_MODE_TABS.register("gi", () -> Services.ITEM.newTab(Component.translatable(Minejago.modLoc("gi").toLanguageKey("item_group")), () -> MinejagoArmors.BLACK_GI_SET.HEAD.get().getDefaultInstance(), true, (parameters, output) ->
     {
         MinejagoArmors.ARMOR_SETS.forEach(armorSet ->
                 armorSet.getAll().forEach(armor ->
@@ -31,7 +31,7 @@ public class MinejagoCreativeModeTabs
                         output.accept(armor::get);
                 }));
 
-        output.acceptAll(MinejagoPowers.getArmorForAll(MinejagoPowers.getBasePowers()));
+        output.acceptAll(MinejagoPowers.getArmorForAll(parameters.holders()));
     }, CreativeModeTabs.COMBAT));
 
     public static final RegistryObject<CreativeModeTab> MINEJAGO = CREATIVE_MODE_TABS.register("minejago", () -> Services.ITEM.newTab(Component.translatable(Minejago.modLoc("minejago").toLanguageKey("item_group")), () -> MinejagoItems.SCYTHE_OF_QUAKES.get().getDefaultInstance(), true, (parameters, output) ->
@@ -50,8 +50,7 @@ public class MinejagoCreativeModeTabs
         MinejagoArmors.ARMOR_SETS.forEach(armorSet ->
                 output.acceptAll(armorSet.getAll().stream().map(ro -> ro.get().getDefaultInstance()).toList()));
 
-        output.acceptAll(MinejagoPowers.getArmorForAll(parameters.holders()));
-
+        output.acceptAll(MinejagoPowers.getArmorForAll(MinejagoPowers.getBasePowers()));
     }, CreativeModeTabs.SPAWN_EGGS));
 
     public static void init() {}

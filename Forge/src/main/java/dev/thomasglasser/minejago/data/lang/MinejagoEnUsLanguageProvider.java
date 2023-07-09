@@ -69,35 +69,31 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
                 add(item.get(), "Skeletal Chestplate"));
         MinejagoArmors.ARMOR_SETS.forEach(set ->
+                set.getAll().forEach(item ->
                 {
-                    set.getAll().forEach(item ->
-                    {
-                        String nameForSlot = switch (set.getForItem(item.get())) {
-                            case FEET -> "Boots";
-                            case LEGS -> "Pants";
-                            case CHEST -> "Jacket";
-                            case HEAD -> "Hood";
-                            default -> null;
-                        };
+                    String nameForSlot = switch (set.getForItem(item.get())) {
+                        case FEET -> "Boots";
+                        case LEGS -> "Pants";
+                        case CHEST -> "Jacket";
+                        case HEAD -> "Hood";
+                        default -> null;
+                    };
 
-                        add(item.get(), set.getDisplayName() + " " + nameForSlot);
-                    });
-                });
+                    add(item.get(), set.getDisplayName() + " " + nameForSlot);
+                }));
         MinejagoArmors.POWER_SETS.forEach(set ->
+                set.getAll().forEach(item ->
                 {
-                    set.getAll().forEach(item ->
-                    {
-                        String nameForSlot = switch (set.getForItem(item.get())) {
-                            case FEET -> "Boots";
-                            case LEGS -> "Pants";
-                            case CHEST -> "Jacket";
-                            case HEAD -> "Hood";
-                            default -> null;
-                        };
+                    String nameForSlot = switch (set.getForItem(item.get())) {
+                        case FEET -> "Boots";
+                        case LEGS -> "Pants";
+                        case CHEST -> "Jacket";
+                        case HEAD -> "Hood";
+                        default -> null;
+                    };
 
-                        add(item.get(), set.getDisplayName() + " " + nameForSlot);
-                    });
-                });
+                    add(item.get(), set.getDisplayName() + " " + nameForSlot);
+                }));
         add(MinejagoArmors.SAMUKAIS_CHESTPLATE.get(), "Samukai's Chestplate");
         add(MinejagoItems.IRON_KATANA.get(), "Iron Katana");
         add(MinejagoItems.IRON_SCYTHE.get(), "Iron Scythe");
