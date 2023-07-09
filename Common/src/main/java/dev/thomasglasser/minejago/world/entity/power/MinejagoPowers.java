@@ -70,4 +70,9 @@ public class MinejagoPowers {
         MinejagoPowers.POWERS.addToSet(builder);
         return builder.build(access);
     }
+
+    public static Power getPowerOrThrow(RegistryAccess registryAccess, ResourceKey<Power> key)
+    {
+        return registryAccess.registryOrThrow(MinejagoRegistries.POWER).getOrThrow(key);
+    }
 }

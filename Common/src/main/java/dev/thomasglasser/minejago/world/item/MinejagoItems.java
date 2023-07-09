@@ -6,7 +6,6 @@ import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.registration.RegistrationProvider;
 import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
-import dev.thomasglasser.minejago.world.item.armor.IGeoArmorItem;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.armortrim.MinejagoTrimPatterns;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
@@ -69,6 +68,8 @@ public class MinejagoItems
     public static final RegistryObject<Item> KRUNCHA_SPAWN_EGG = register("kruncha_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.KRUNCHA::get, 12698049, 4802889, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
     public static final RegistryObject<Item> NUCKAL_SPAWN_EGG = register("nuckal_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.NUCKAL::get, 12698049, 6974058, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
     public static final RegistryObject<Item> SKULKIN_HORSE_SPAWN_EGG = register("skulkin_horse_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.SKULKIN_HORSE::get, 0xfffffd, 0xad282d, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
+    public static final RegistryObject<Item> EARTH_DRAGON_SPAWN_EGG = register("earth_dragon_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.EARTH_DRAGON::get, 0x412017, 0xa08d71, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
+    public static final RegistryObject<Item> SAMUKAI_SPAWN_EGG = register("samukai_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.SAMUKAI::get, 0xdbd7bd, 0xb90e04, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
 
     // POT ITEMS
     public static final RegistryObject<Item> TEAPOT = register("teapot", () -> new BlockItem(MinejagoBlocks.TEAPOT.get(), new Item.Properties().stacksTo(1)), CreativeModeTabs.FUNCTIONAL_BLOCKS);
@@ -79,6 +80,7 @@ public class MinejagoItems
     public static final RegistryObject<Item> GOLD_DISC = register("gold_disc", () -> new BlockItem(MinejagoBlocks.GOLD_DISC.get(), new Item.Properties()), CreativeModeTabs.BUILDING_BLOCKS);
     public static final RegistryObject<Item> TOP_POST = register("top_post", () -> new BlockItem(MinejagoBlocks.TOP_POST.get(), new Item.Properties()), CreativeModeTabs.BUILDING_BLOCKS);
     public static final RegistryObject<Item> CHISELED_SCROLL_SHELF = register("chiseled_scroll_shelf", () -> new BlockItem(MinejagoBlocks.CHISELED_SCROLL_SHELF.get(), new Item.Properties()), CreativeModeTabs.FUNCTIONAL_BLOCKS, CreativeModeTabs.REDSTONE_BLOCKS);
+    public static final RegistryObject<Item> EARTH_DRAGON_HEAD = register("earth_dragon_head", () -> new BlockItem(MinejagoBlocks.EARTH_DRAGON_HEAD.get(), new Item.Properties()), CreativeModeTabs.FUNCTIONAL_BLOCKS);
 
     @SafeVarargs
     private static RegistryObject<Item> register(String name, Supplier<? extends Item> supplier, ResourceKey<CreativeModeTab>... tabs)
@@ -134,10 +136,7 @@ public class MinejagoItems
         {
             for (RegistryObject<Item> item : MinejagoArmors.ARMOR.getEntries())
             {
-                if (!(item.get() instanceof IGeoArmorItem iGeoArmorItem && iGeoArmorItem.isGi()))
-                {
-                    items.add(item.get().getDefaultInstance());
-                }
+                items.add(item.get().getDefaultInstance());
             }
         }
 

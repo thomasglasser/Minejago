@@ -2,7 +2,7 @@ package dev.thomasglasser.minejago.platform;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.platform.services.IItemHelper;
+import dev.thomasglasser.minejago.platform.services.ItemHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
@@ -17,7 +17,7 @@ import net.minecraftforge.common.ForgeSpawnEggItem;
 
 import java.util.function.Supplier;
 
-public class ForgeItemHelper implements IItemHelper {
+public class ForgeItemHelper implements ItemHelper {
     @Override
     public Attribute getAttackRangeAttribute() {
         return ForgeMod.ENTITY_REACH.get();
@@ -40,7 +40,9 @@ public class ForgeItemHelper implements IItemHelper {
 
     @SafeVarargs
     @Override
-    public final CreativeModeTab newTab(Component title, Supplier<ItemStack> icon, CreativeModeTab.DisplayItemsGenerator displayItems, ResourceKey<CreativeModeTab>... tabsBefore) {
-        return CreativeModeTab.builder().title(title).icon(icon).displayItems(displayItems).withTabsBefore(tabsBefore).build();
+    public final CreativeModeTab newTab(Component title, Supplier<ItemStack> icon, boolean search, CreativeModeTab.DisplayItemsGenerator displayItems, ResourceKey<CreativeModeTab>... tabsBefore) {
+        CreativeModeTab.Builder builder = CreativeModeTab.builder().title(title).icon(icon).displayItems(displayItems).withTabsBefore(tabsBefore);
+        if (search) builder.withSearchBar();
+        return builder.build();
     }
 }

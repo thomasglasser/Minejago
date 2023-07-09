@@ -59,19 +59,19 @@ public class MinejagoEntityEvents
             player.isBlocking() ||
             player.getActiveEffects().stream().anyMatch((mobEffectInstance -> mobEffectInstance.getEffect().getCategory() == MobEffectCategory.HARMFUL)) ||
             player.isInWater() ||
-            ((IDataHolder)player).getPersistentData().getInt("OffGroundTicks") > 20);
+            ((DataHolder)player).getPersistentData().getInt("OffGroundTicks") > 20);
 
     public static void onPlayerTick(Player player)
     {
         SpinjitzuData spinjitzu = Services.DATA.getSpinjitzuData(player);
-        int waitTicks = ((IDataHolder)(player)).getPersistentData().getInt("SpinjitzuWaitTicks");
+        int waitTicks = ((DataHolder)(player)).getPersistentData().getInt("SpinjitzuWaitTicks");
 
         if (player instanceof ServerPlayer serverPlayer)
         {
             if (!player.onGround())
-                ((IDataHolder)player).getPersistentData().putInt("OffGroundTicks", ((IDataHolder)player).getPersistentData().getInt("OffGroundTicks") + 1);
+                ((DataHolder)player).getPersistentData().putInt("OffGroundTicks", ((DataHolder)player).getPersistentData().getInt("OffGroundTicks") + 1);
             else
-                ((IDataHolder)player).getPersistentData().putInt("OffGroundTicks", 0);
+                ((DataHolder)player).getPersistentData().putInt("OffGroundTicks", 0);
             if (spinjitzu.unlocked()) {
                 if (spinjitzu.active()) {
                     if (NO_SPINJITZU.test(serverPlayer)) {
@@ -153,7 +153,7 @@ public class MinejagoEntityEvents
         }
         else if (waitTicks > 0)
         {
-            ((IDataHolder)player).getPersistentData().putInt("SpinjitzuWaitTicks", --waitTicks);
+            ((DataHolder)player).getPersistentData().putInt("SpinjitzuWaitTicks", --waitTicks);
         }
         else if (player.level().isClientSide && MinejagoKeyMappings.ACTIVATE_SPINJITZU.isDown())
         {
@@ -165,7 +165,7 @@ public class MinejagoEntityEvents
             {
                 Services.NETWORK.sendToServer(ServerboundStartSpinjitzuPacket.class);
             }
-            ((IDataHolder)player).getPersistentData().putInt("SpinjitzuWaitTicks", 5);
+            ((DataHolder)player).getPersistentData().putInt("SpinjitzuWaitTicks", 5);
         }
     }
 
@@ -245,7 +245,7 @@ public class MinejagoEntityEvents
 
     public static void onPlayerEntityInteract(Player player, Level world, InteractionHand hand, Entity entity)
     {
-        if (world instanceof ServerLevel serverLevel && hand == InteractionHand.MAIN_HAND && entity instanceof Painting painting && painting.getVariant().is(Minejago.modLoc( "four_weapons")) && !((IDataHolder)painting).getPersistentData().getBoolean("MapTaken"))
+        if (world instanceof ServerLevel serverLevel && hand == InteractionHand.MAIN_HAND && entity instanceof Painting painting && painting.getVariant().is(Minejago.modLoc( "four_weapons")) && !((DataHolder)painting).getPersistentData().getBoolean("MapTaken"))
         {
             ItemStack itemstack = MapItem.create(world, (int)entity.getX(), (int)entity.getZ(), (byte)4, true, true);
             MapItem.renderBiomePreviewMap((ServerLevel) world, itemstack);
@@ -270,7 +270,7 @@ public class MinejagoEntityEvents
             itemstack.setHoverName(Component.translatable(Items.FILLED_MAP.getDescriptionId() + ".golden_weapons"));
             itemstack.getOrCreateTag().putBoolean("IsFourWeaponsMap", true);
             player.addItem(itemstack);
-            ((IDataHolder)painting).getPersistentData().putBoolean("MapTaken", true);
+            ((DataHolder)painting).getPersistentData().putBoolean("MapTaken", true);
         }
     }
 

@@ -1,11 +1,9 @@
 package dev.thomasglasser.minejago.world.item;
 
-import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownBambooStaff;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.Level;
 
-public class BambooStaffItem extends ThrowableSwordItem implements IModeledItem
+public class BambooStaffItem extends ThrowableSwordItem implements ModeledItem
 {
     private BlockEntityWithoutLevelRenderer bewlr;
 

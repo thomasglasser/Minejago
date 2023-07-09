@@ -80,19 +80,19 @@
   },
   "requirements": [
     [
-      "collect_bone"
-    ],
-    [
       "collect_knife"
     ],
     [
-      "collect_bow"
+      "collect_bone"
+    ],
+    [
+      "collect_speed"
     ],
     [
       "collect_strength"
     ],
     [
-      "collect_speed"
+      "collect_bow"
     ]
   ],
   "rewards": {

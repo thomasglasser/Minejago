@@ -4,7 +4,7 @@ import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import dev.thomasglasser.minejago.util.MinejagoItemUtils;
-import dev.thomasglasser.minejago.world.item.ITeapotLiquidHolder;
+import dev.thomasglasser.minejago.world.item.TeapotLiquidHolder;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotionBrewing;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
@@ -124,7 +124,7 @@ public class TeapotBlock extends BaseEntityBlock {
                         if (be.getPotion() == Potions.AWKWARD)
                             be.setPotion(MinejagoPotions.REGULAR_TEA.get());
                     }
-                    else if (inHand.getItem() instanceof ITeapotLiquidHolder holder)
+                    else if (inHand.getItem() instanceof TeapotLiquidHolder holder)
                     {
                         if (be.tryFill(holder.getCups(), holder.getPotion(inHand)))
                         {

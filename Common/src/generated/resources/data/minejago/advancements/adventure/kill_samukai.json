@@ -1,0 +1,44 @@
+{
+  "parent": "minejago:adventure/kill_a_skulkin",
+  "criteria": {
+    "kill_samukai": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "minejago:samukai"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.minejago.adventure.kill_samukai.desc"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "minejago:samukais_chestplate",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.minejago.adventure.kill_samukai.title"
+    }
+  },
+  "requirements": [
+    [
+      "kill_samukai"
+    ]
+  ],
+  "rewards": {
+    "experience": 10
+  },
+  "sends_telemetry_event": true
+}

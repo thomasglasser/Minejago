@@ -11,6 +11,8 @@ import net.minecraft.resources.ResourceLocation;
 
 public class KrunchaRenderer extends HumanoidMobRenderer<Kruncha, KrunchaModel<Kruncha>>
 {
+    public static final ResourceLocation TEXTURE_LOCATION = Minejago.modLoc("textures/entity/skulkin/kruncha.png");
+
     public KrunchaRenderer(EntityRendererProvider.Context context) {
         super(context, new KrunchaModel<>(context.bakeLayer(KrunchaModel.LAYER_LOCATION)), 0.5f);
         HumanoidSelectiveArmorLayer<Kruncha, KrunchaModel<Kruncha>, KrunchaModel<Kruncha>> armorLayer = new HumanoidSelectiveArmorLayer<>(this, new KrunchaModel<>(context.bakeLayer(ModelLayers.SKELETON_INNER_ARMOR)), new KrunchaModel<>(context.bakeLayer(ModelLayers.SKELETON_OUTER_ARMOR)), context.getModelManager());
@@ -22,7 +24,7 @@ public class KrunchaRenderer extends HumanoidMobRenderer<Kruncha, KrunchaModel<K
      * Returns the location of an entity's texture.
      */
     public ResourceLocation getTextureLocation(Kruncha pEntity) {
-        return Minejago.modLoc("textures/entity/kruncha.png");
+        return TEXTURE_LOCATION;
     }
 
     protected boolean isShaking(Kruncha pEntity) {

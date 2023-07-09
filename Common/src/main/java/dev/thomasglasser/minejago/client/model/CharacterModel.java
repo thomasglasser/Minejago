@@ -27,7 +27,7 @@ public class CharacterModel<T extends Character> extends DefaultedEntityGeoModel
 
     @Override
     public ResourceLocation getTextureResource(T animatable) {
-        return Minejago.modLoc("textures/entity/" + BuiltInRegistries.ENTITY_TYPE.getKey(animatable.getType()).getPath() + ".png");
+        return Minejago.modLoc("textures/entity/character/" + BuiltInRegistries.ENTITY_TYPE.getKey(animatable.getType()).getPath() + ".png");
     }
 
     @Override

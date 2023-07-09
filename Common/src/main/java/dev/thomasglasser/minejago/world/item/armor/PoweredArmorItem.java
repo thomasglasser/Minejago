@@ -3,7 +3,7 @@ package dev.thomasglasser.minejago.world.item.armor;
 import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.power.Power;
-import dev.thomasglasser.minejago.world.item.IModeledItem;
+import dev.thomasglasser.minejago.world.item.ModeledItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.network.chat.Component;
@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public abstract class PoweredArmorItem extends ArmorItem implements IGeoArmorItem, IModeledItem
+public abstract class PoweredArmorItem extends ArmorItem implements GeoArmorItem, ModeledItem
 {
     BlockEntityWithoutLevelRenderer bewlr;
 

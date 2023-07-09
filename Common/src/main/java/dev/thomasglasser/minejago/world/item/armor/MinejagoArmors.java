@@ -23,6 +23,7 @@ public class MinejagoArmors
     private static final Item.Properties DEFAULT_PROPERTIES = new Item.Properties().stacksTo(1);
 
     public static final SkeletalChestplateSet SKELETAL_CHESTPLATE_SET = new SkeletalChestplateSet();
+    public static final RegistryObject<SamukaisChestplateItem> SAMUKAIS_CHESTPLATE = ARMOR.register("samukais_chestplate", () -> new SamukaisChestplateItem(MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
 
     public static final ArmorSet BLACK_GI_SET = create("black_gi", "Black Gi", false, BlackGiItem.class, MinejagoArmorMaterials.BLACK_GI, DEFAULT_PROPERTIES);
     public static final ArmorSet TRAINING_GI_SET = create("training_gi", "Training Gi", true, TrainingGiItem.class, MinejagoArmorMaterials.TRAINING_GI, DEFAULT_PROPERTIES);
@@ -179,10 +180,10 @@ public class MinejagoArmors
 
         ArmorSet set = new ArmorSet(name, displayName, head, chest, legs, feet);
 
-        ARMOR_SETS.add(set);
-
         if (powered)
             POWER_SETS.add(set);
+        else
+            ARMOR_SETS.add(set);
 
         return set;
     }

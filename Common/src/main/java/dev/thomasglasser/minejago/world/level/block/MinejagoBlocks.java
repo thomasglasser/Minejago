@@ -4,6 +4,7 @@ import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.registration.BlockRegistryObject;
 import dev.thomasglasser.minejago.registration.RegistrationProvider;
 import dev.thomasglasser.minejago.registration.RegistryObject;
+import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
@@ -30,6 +31,7 @@ public class MinejagoBlocks
     public static final BlockRegistryObject<Block> GOLD_DISC = registerAndWrap("gold_disc", () -> new DiscBlock(BlockBehaviour.Properties.of().instabreak().pushReaction(PushReaction.DESTROY)));
     public static final BlockRegistryObject<Block> TOP_POST = registerAndWrap("top_post", () -> new TopPostBlock(BlockBehaviour.Properties.of().instabreak().noCollission().pushReaction(PushReaction.DESTROY)));
     public static final BlockRegistryObject<Block> CHISELED_SCROLL_SHELF = registerAndWrap("chiseled_scroll_shelf", () -> new ChiseledScrollShelfBlock(BlockBehaviour.Properties.copy(Blocks.CHISELED_BOOKSHELF)));
+    public static final BlockRegistryObject<Block> EARTH_DRAGON_HEAD = registerAndWrap("earth_dragon_head", () -> new DragonHeadBlock(MinejagoEntityTypes.EARTH_DRAGON::get));
 
     private static BlockRegistryObject<Block> registerAndWrap(String name, Supplier<Block> supplier)
     {

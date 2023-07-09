@@ -1,7 +1,7 @@
 package dev.thomasglasser.minejago.mixin.minecraft.world.item;
 
-import dev.thomasglasser.minejago.world.item.IModeledItem;
-import dev.thomasglasser.minejago.world.item.armor.IGeoArmorItem;
+import dev.thomasglasser.minejago.world.item.ModeledItem;
+import dev.thomasglasser.minejago.world.item.armor.GeoArmorItem;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -24,7 +24,7 @@ public class ItemMixin
     @Inject(method = "initializeClient", at = @At("TAIL"), remap = false)
     void initializeClient(Consumer<IClientItemExtensions> consumer, CallbackInfo ci)
     {
-        if (this instanceof IModeledItem iModeledItem && this instanceof IGeoArmorItem iGeoArmorItem)
+        if (this instanceof ModeledItem modeledItem && this instanceof GeoArmorItem geoArmorItem)
         {
             consumer.accept(new IClientItemExtensions() {
                 private BlockEntityWithoutLevelRenderer bewlr;
@@ -32,7 +32,7 @@ public class ItemMixin
                 @Override
                 public BlockEntityWithoutLevelRenderer getCustomRenderer() {
                     if (this.bewlr == null)
-                        this.bewlr = iModeledItem.getBEWLR();
+                        this.bewlr = modeledItem.getBEWLR();
 
                     return this.bewlr;
                 }
@@ -41,7 +41,7 @@ public class ItemMixin
 
                 @Override
                 public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, HumanoidModel<?> original) {
-                    if (renderer == null) renderer = iGeoArmorItem.newRenderer();
+                    if (renderer == null) renderer = geoArmorItem.newRenderer();
 
                     this.renderer.prepForRender(livingEntity, itemStack, equipmentSlot, original);
 
@@ -49,7 +49,7 @@ public class ItemMixin
                 }
             });
         }
-        else if (this instanceof IModeledItem iModeledItem)
+        else if (this instanceof ModeledItem modeledItem)
         {
             consumer.accept(new IClientItemExtensions() {
                 private BlockEntityWithoutLevelRenderer bewlr;
@@ -57,7 +57,7 @@ public class ItemMixin
                 @Override
                 public BlockEntityWithoutLevelRenderer getCustomRenderer() {
                     if (this.bewlr == null)
-                        this.bewlr = iModeledItem.getBEWLR();
+                        this.bewlr = modeledItem.getBEWLR();
 
                     return this.bewlr;
                 }
@@ -65,14 +65,14 @@ public class ItemMixin
 
             });
         }
-        else if (this instanceof IGeoArmorItem iGeoArmorItem)
+        else if (this instanceof GeoArmorItem geoArmorItem)
         {
             consumer.accept(new IClientItemExtensions() {
                 GeoArmorRenderer<?> renderer;
 
                 @Override
                 public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, HumanoidModel<?> original) {
-                    if (renderer == null) renderer = iGeoArmorItem.newRenderer();
+                    if (renderer == null) renderer = geoArmorItem.newRenderer();
 
                     this.renderer.prepForRender(livingEntity, itemStack, equipmentSlot, original);
 

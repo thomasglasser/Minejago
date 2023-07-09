@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.mixin.minecraft.client.model;
 
-import dev.thomasglasser.minejago.world.item.armor.IGeoArmorItem;
+import dev.thomasglasser.minejago.world.item.armor.GeoArmorItem;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -22,7 +22,7 @@ public abstract class HumanoidModelMixin<T extends LivingEntity>
     @Inject(method = "prepareMobModel(Lnet/minecraft/world/entity/LivingEntity;FFF)V", at = @At("TAIL"))
     private void minejago_prepareMobModel(T entity, float limbSwing, float limbSwingAmount, float partialTick, CallbackInfo ci)
     {
-        if (entity.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof IGeoArmorItem iGeoArmorItem && iGeoArmorItem.isSkintight())
+        if (entity.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof GeoArmorItem geoArmorItem && geoArmorItem.isSkintight())
         {
             this.leftArm.visible = false;
             this.rightArm.visible = false;

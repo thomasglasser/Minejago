@@ -16,7 +16,7 @@ import net.minecraft.util.Mth;
 
 public class ThrownBoneKnifeRenderer extends EntityRenderer<ThrownBoneKnife>
 {
-    public static final ResourceLocation TEXTURE_LOCATION = Minejago.modLoc("textures/entity/bone_knife.png");
+    public static final ResourceLocation TEXTURE_LOCATION = Minejago.modLoc("textures/entity/item/bone_knife.png");
     private final ThrownBoneKnifeModel model;
 
     public ThrownBoneKnifeRenderer(EntityRendererProvider.Context context) {

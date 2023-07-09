@@ -34,7 +34,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Math;
 
-public class ScytheOfQuakesItem extends GoldenWeaponItem implements IModeledItem
+public class ScytheOfQuakesItem extends GoldenWeaponItem implements ModeledItem
 {
     private BlockEntityWithoutLevelRenderer bewlr;
 

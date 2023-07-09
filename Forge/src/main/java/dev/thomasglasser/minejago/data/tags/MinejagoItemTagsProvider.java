@@ -58,6 +58,7 @@ public class MinejagoItemTagsProvider extends ItemTagsProvider
                 }));
         MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
                 tagPair(CHESTPLATES, item.get()));
+        tagPair(CHESTPLATES, MinejagoArmors.SAMUKAIS_CHESTPLATE.get());
 
         tag(MinejagoItemTags.WOODEN_RODS)
                 .add(Items.STICK)

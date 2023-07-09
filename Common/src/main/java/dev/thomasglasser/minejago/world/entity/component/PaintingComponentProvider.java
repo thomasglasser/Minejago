@@ -1,16 +1,13 @@
 package dev.thomasglasser.minejago.world.entity.component;
 
 import dev.thomasglasser.minejago.client.MinejagoWailaPlugin;
-import dev.thomasglasser.minejago.world.entity.IDataHolder;
+import dev.thomasglasser.minejago.world.entity.DataHolder;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.decoration.Painting;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec2;
 import snownee.jade.api.EntityAccessor;
 import snownee.jade.api.IEntityComponentProvider;
@@ -43,7 +40,7 @@ public enum PaintingComponentProvider implements IEntityComponentProvider, IServ
     public void appendServerData(CompoundTag compoundTag, EntityAccessor accessor) {
         if (accessor.getEntity() instanceof Painting painting)
         {
-            CompoundTag tag = ((IDataHolder) painting).getPersistentData();
+            CompoundTag tag = ((DataHolder) painting).getPersistentData();
             compoundTag.putBoolean("MapTaken", tag.getBoolean("MapTaken"));
         }
     }

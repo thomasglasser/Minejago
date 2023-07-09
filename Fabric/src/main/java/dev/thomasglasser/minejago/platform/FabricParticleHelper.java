@@ -1,13 +1,13 @@
 package dev.thomasglasser.minejago.platform;
 
 import dev.thomasglasser.minejago.client.particle.*;
-import dev.thomasglasser.minejago.platform.services.IParticleHelper;
+import dev.thomasglasser.minejago.platform.services.ParticleHelper;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 
-public class FabricParticleHelper implements IParticleHelper {
+public class FabricParticleHelper implements ParticleHelper {
     @Override
     public SimpleParticleType simple(String name, boolean alwaysRender) {
         SimpleParticleType simple = FabricParticleTypes.simple(alwaysRender);

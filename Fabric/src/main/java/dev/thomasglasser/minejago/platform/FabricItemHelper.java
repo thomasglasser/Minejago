@@ -3,7 +3,7 @@ package dev.thomasglasser.minejago.platform;
 import com.jamieswhiteshirt.reachentityattributes.ReachEntityAttributes;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.platform.services.IItemHelper;
+import dev.thomasglasser.minejago.platform.services.ItemHelper;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -18,7 +18,7 @@ import net.minecraft.world.item.*;
 
 import java.util.function.Supplier;
 
-public class FabricItemHelper implements IItemHelper
+public class FabricItemHelper implements ItemHelper
 {
 
     @Override
@@ -45,7 +45,8 @@ public class FabricItemHelper implements IItemHelper
 
     @SafeVarargs
     @Override
-    public final CreativeModeTab newTab(Component title, Supplier<ItemStack> icon, CreativeModeTab.DisplayItemsGenerator displayItems, ResourceKey<CreativeModeTab>... tabsBefore) {
-        return FabricItemGroup.builder().title(title).icon(icon).displayItems(displayItems).build();
+    public final CreativeModeTab newTab(Component title, Supplier<ItemStack> icon, boolean search, CreativeModeTab.DisplayItemsGenerator displayItems, ResourceKey<CreativeModeTab>... tabsBefore) {
+        CreativeModeTab.Builder builder = FabricItemGroup.builder().title(title).icon(icon).displayItems(displayItems);
+        return builder.build();
     }
 }

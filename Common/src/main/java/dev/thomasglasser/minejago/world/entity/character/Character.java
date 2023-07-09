@@ -3,7 +3,7 @@ package dev.thomasglasser.minejago.world.entity.character;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleUtils;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
-import dev.thomasglasser.minejago.world.entity.ISpinjitzuDoer;
+import dev.thomasglasser.minejago.world.entity.SpinjitzuDoer;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
@@ -55,7 +55,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 
-public class Character extends AgeableMob implements SmartBrainOwner<Character>, GeoEntity, ISpinjitzuDoer
+public class Character extends AgeableMob implements SmartBrainOwner<Character>, GeoEntity, SpinjitzuDoer
 {
     public static final RawAnimation SPIN = RawAnimation.begin().thenPlay("move.spinjitzu");
 

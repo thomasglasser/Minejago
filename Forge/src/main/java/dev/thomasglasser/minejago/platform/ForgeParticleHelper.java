@@ -1,11 +1,10 @@
 package dev.thomasglasser.minejago.platform;
 
-import dev.thomasglasser.minejago.platform.services.IParticleHelper;
-import net.minecraft.client.particle.ParticleProvider;
+import dev.thomasglasser.minejago.platform.services.ParticleHelper;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 
-public class ForgeParticleHelper implements IParticleHelper {
+public class ForgeParticleHelper implements ParticleHelper {
     @Override
     public SimpleParticleType simple(String name, boolean alwaysRender) {
         return new SimpleParticleType(alwaysRender);

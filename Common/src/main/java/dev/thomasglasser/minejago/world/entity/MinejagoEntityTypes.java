@@ -5,14 +5,12 @@ import dev.thomasglasser.minejago.registration.RegistrationProvider;
 import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.world.entity.character.Character;
 import dev.thomasglasser.minejago.world.entity.character.*;
+import dev.thomasglasser.minejago.world.entity.dragon.Dragon;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownBambooStaff;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownBoneKnife;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownIronShuriken;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownIronSpear;
-import dev.thomasglasser.minejago.world.entity.skulkin.Kruncha;
-import dev.thomasglasser.minejago.world.entity.skulkin.Nuckal;
-import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;
-import dev.thomasglasser.minejago.world.entity.skulkin.SkulkinHorse;
+import dev.thomasglasser.minejago.world.entity.skulkin.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -71,6 +69,12 @@ public class MinejagoEntityTypes
     public static final RegistryObject<EntityType<SkulkinHorse>> SKULKIN_HORSE = ENTITY_TYPES.register("skulkin_horse", () -> EntityType.Builder.of(SkulkinHorse::new, MobCategory.CREATURE)
             .sized(1.3964844f, 1.6f)
             .build("skulkin_horse"));
+    public static final RegistryObject<EntityType<Dragon>> EARTH_DRAGON = ENTITY_TYPES.register("earth_dragon", () -> EntityType.Builder.of(Dragon::new, MobCategory.CREATURE)
+            .sized(4.8125f, 3.00f)
+            .build("earth_dragon"));
+    public static final RegistryObject<EntityType<Samukai>> SAMUKAI = ENTITY_TYPES.register("samukai", () -> EntityType.Builder.of(Samukai::new, MobCategory.MONSTER)
+            .sized(0.875f, 2.375f)
+            .build("samukai"));
 
     public static Map<EntityType<? extends LivingEntity>, AttributeSupplier> getAllAttributes() {
         Map<EntityType<? extends LivingEntity>, AttributeSupplier> map = new HashMap<>();
@@ -85,6 +89,8 @@ public class MinejagoEntityTypes
         map.put(KRUNCHA.get(), Kruncha.createAttributes().build());
         map.put(NUCKAL.get(), Nuckal.createAttributes().build());
         map.put(SKULKIN_HORSE.get(), SkulkinHorse.createAttributes().build());
+        map.put(EARTH_DRAGON.get(), Dragon.createAttributes().build());
+        map.put(SAMUKAI.get(), Samukai.createAttributes().build());
 
         return map;
     }

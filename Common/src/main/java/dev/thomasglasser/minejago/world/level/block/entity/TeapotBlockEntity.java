@@ -44,7 +44,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public class TeapotBlockEntity extends BlockEntity implements IItemHolder, Nameable
+public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameable
 {
     private ItemStack item = ItemStack.EMPTY;
 

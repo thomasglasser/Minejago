@@ -46,11 +46,13 @@ public class MinejagoBlockStates extends BlockStateProvider {
     private final Map<ResourceLocation, Supplier<JsonElement>> MODEL_MAP = Maps.newHashMap();
     private final MinejagoBlockModelGenerators blockModelGenerators;
     private final PackOutput output;
+    private final ExistingFileHelper existingFileHelper;
 
     public MinejagoBlockStates(PackOutput output, ExistingFileHelper exFileHelper) {
         super(output, Minejago.MOD_ID, exFileHelper);
         blockModelGenerators = makeBlockModelGenerators();
         this.output = output;
+        existingFileHelper = exFileHelper;
     }
 
     @Override
@@ -90,6 +92,23 @@ public class MinejagoBlockStates extends BlockStateProvider {
         {
             Direction facing = blockState.getValue(TopPostBlock.FACING);
             ModelFile model = models().getExistingFile(blockModel("top_post"));
+
+            return ConfiguredModel.builder()
+                    .modelFile(model)
+                    .rotationY((int) (facing.getOpposite()).toYRot())
+                    .build();
+        });
+
+        getVariantBuilder(MinejagoBlocks.EARTH_DRAGON_HEAD.get()).forAllStates(blockState ->
+        {
+            Direction facing = blockState.getValue(TopPostBlock.FACING);
+            ModelFile model = new ModelFile.ExistingModelFile(modLoc("block/earth_dragon_head.geo.json"), existingFileHelper)
+            {
+                @Override
+                protected boolean exists() {
+                    return existingFileHelper.exists(getUncheckedLocation(), new ExistingFileHelper.ResourceType(PackType.CLIENT_RESOURCES, "", "geo"));
+                }
+            };
 
             return ConfiguredModel.builder()
                     .modelFile(model)

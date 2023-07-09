@@ -5,6 +5,7 @@ import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.animation.MinejagoPlayerAnimator;
 import dev.thomasglasser.minejago.client.model.*;
 import dev.thomasglasser.minejago.client.particle.*;
+import dev.thomasglasser.minejago.client.renderer.block.DragonHeadRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.*;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.BetaTesterLayer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.DevLayer;
@@ -13,12 +14,13 @@ import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import dev.thomasglasser.minejago.packs.PackHolder;
 import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
-import dev.thomasglasser.minejago.world.item.IModeledItem;
+import dev.thomasglasser.minejago.world.item.ModeledItem;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
-import dev.thomasglasser.minejago.world.item.armor.IGeoArmorItem;
+import dev.thomasglasser.minejago.world.item.armor.GeoArmorItem;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
+import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
 import dev.thomasglasser.minejago.world.level.block.entity.TeapotBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
@@ -81,10 +83,14 @@ public class MinejagoForgeClientEvents {
         event.registerEntityRenderer(MinejagoEntityTypes.JAY.get(), CharacterRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.COLE.get(), CharacterRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.ZANE.get(), CharacterRenderer::new);
-        event.registerEntityRenderer(MinejagoEntityTypes.SKULKIN.get(), UnderworldSkeletonRenderer::new);
+        event.registerEntityRenderer(MinejagoEntityTypes.SKULKIN.get(), SkulkinRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.KRUNCHA.get(), KrunchaRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.NUCKAL.get(), NuckalRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.SKULKIN_HORSE.get(), SkulkinHorseRenderer::new);
+        event.registerEntityRenderer(MinejagoEntityTypes.EARTH_DRAGON.get(), pContext -> new DragonRenderer<>(pContext, new DragonModel<>(Minejago.modLoc("dragon/earth_dragon"))));
+        event.registerEntityRenderer(MinejagoEntityTypes.SAMUKAI.get(), SamukaiRenderer::new);
+
+        event.registerBlockEntityRenderer(MinejagoBlockEntityTypes.DRAGON_HEAD.get(), pContext -> new DragonHeadRenderer());
     }
 
     public static void registerModels(ModelEvent.RegisterAdditional event)
@@ -108,12 +114,12 @@ public class MinejagoForgeClientEvents {
     {
         MinejagoArmors.ARMOR.getEntries().forEach(armor ->
         {
-            if (armor.get() instanceof IGeoArmorItem || armor.get() instanceof IModeledItem)
+            if (armor.get() instanceof GeoArmorItem || armor.get() instanceof ModeledItem)
                 event.registerReloadListener(IClientItemExtensions.of(armor.get()).getCustomRenderer());
         });
         MinejagoItems.ITEMS.getEntries().forEach(item ->
         {
-            if (item.get() instanceof IModeledItem)
+            if (item.get() instanceof ModeledItem)
                 event.registerReloadListener(IClientItemExtensions.of(item.get()).getCustomRenderer());
         });
     }

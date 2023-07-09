@@ -54,7 +54,7 @@ public class Power {
     protected Component tagline;
 
     private String descId;
-    private ResourceLocation icon;
+    private final ResourceLocation icon;
 
     public static Builder builder(ResourceLocation id)
     {

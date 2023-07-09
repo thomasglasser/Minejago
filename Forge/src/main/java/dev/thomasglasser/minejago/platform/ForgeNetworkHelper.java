@@ -1,12 +1,12 @@
 package dev.thomasglasser.minejago.platform;
 
 import dev.thomasglasser.minejago.network.MinejagoMainChannel;
-import dev.thomasglasser.minejago.platform.services.INetworkHelper;
+import dev.thomasglasser.minejago.platform.services.NetworkHelper;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 
-public class ForgeNetworkHelper implements INetworkHelper {
+public class ForgeNetworkHelper implements NetworkHelper {
     @Override
     public <MSG> void sendToServer(Class<MSG> msgClass, FriendlyByteBuf args) {
         try {

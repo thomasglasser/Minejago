@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.platform;
 
-import dev.thomasglasser.minejago.platform.services.IPotionHelper;
+import dev.thomasglasser.minejago.platform.services.PotionHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionBrewing;
@@ -10,7 +10,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 
-public class ForgePotionHelper implements IPotionHelper
+public class ForgePotionHelper implements PotionHelper
 {
 
     @Override

@@ -110,22 +110,22 @@
   },
   "requirements": [
     [
-      "interact_jay"
+      "interact_nya"
     ],
     [
       "interact_cole"
     ],
     [
-      "interact_nya"
+      "interact_jay"
     ],
     [
-      "interact_wu"
+      "interact_kai"
     ],
     [
       "interact_zane"
     ],
     [
-      "interact_kai"
+      "interact_wu"
     ]
   ],
   "sends_telemetry_event": true

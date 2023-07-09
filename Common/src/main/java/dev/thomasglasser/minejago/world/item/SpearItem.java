@@ -29,7 +29,7 @@ import java.util.List;
 
 import static dev.thomasglasser.minejago.world.item.MinejagoItems.MOD_NEEDED;
 
-public class SpearItem extends ThrowableSwordItem implements IModeledItem {
+public class SpearItem extends ThrowableSwordItem implements ModeledItem {
     /** Modifiers applied when the item is in the mainhand of a user. */
     private final Multimap<Attribute, AttributeModifier> defaultModifiers;
 

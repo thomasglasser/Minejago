@@ -5,6 +5,7 @@ import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.animation.MinejagoPlayerAnimator;
 import dev.thomasglasser.minejago.client.model.*;
 import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
+import dev.thomasglasser.minejago.client.renderer.block.DragonHeadRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.*;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.BetaTesterLayer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.DevLayer;
@@ -14,11 +15,12 @@ import dev.thomasglasser.minejago.packs.PackHolder;
 import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
-import dev.thomasglasser.minejago.world.item.IModeledItem;
+import dev.thomasglasser.minejago.world.item.ModeledItem;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
+import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
 import dev.thomasglasser.minejago.world.level.block.entity.TeapotBlockEntity;
 import fuzs.forgeconfigapiport.api.config.v2.ModConfigEvents;
 import net.fabricmc.api.ClientModInitializer;
@@ -34,6 +36,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -78,7 +81,7 @@ public class MinejagoFabricClient implements ClientModInitializer {
 
         for (RegistryObject<Item> item : MinejagoItems.ITEMS.getEntries())
         {
-            if (item.get() instanceof IModeledItem)
+            if (item.get() instanceof ModeledItem)
             {
                 BuiltinItemRendererRegistry.INSTANCE.register(item.get(), (bewlr::renderByItem));
             }
@@ -86,7 +89,7 @@ public class MinejagoFabricClient implements ClientModInitializer {
 
         for (RegistryObject<Item> item : MinejagoArmors.ARMOR.getEntries())
         {
-            if (item.get() instanceof IModeledItem)
+            if (item.get() instanceof ModeledItem)
             {
                 BuiltinItemRendererRegistry.INSTANCE.register(item.get(), (bewlr::renderByItem));
             }
@@ -124,10 +127,14 @@ public class MinejagoFabricClient implements ClientModInitializer {
         EntityRendererRegistry.register(MinejagoEntityTypes.JAY.get(), CharacterRenderer::new);
         EntityRendererRegistry.register(MinejagoEntityTypes.COLE.get(), CharacterRenderer::new);
         EntityRendererRegistry.register(MinejagoEntityTypes.ZANE.get(), CharacterRenderer::new);
-        EntityRendererRegistry.register(MinejagoEntityTypes.SKULKIN.get(), UnderworldSkeletonRenderer::new);
+        EntityRendererRegistry.register(MinejagoEntityTypes.SKULKIN.get(), SkulkinRenderer::new);
         EntityRendererRegistry.register(MinejagoEntityTypes.KRUNCHA.get(), KrunchaRenderer::new);
         EntityRendererRegistry.register(MinejagoEntityTypes.NUCKAL.get(), NuckalRenderer::new);
         EntityRendererRegistry.register(MinejagoEntityTypes.SKULKIN_HORSE.get(), SkulkinHorseRenderer::new);
+        EntityRendererRegistry.register(MinejagoEntityTypes.EARTH_DRAGON.get(), context -> new DragonRenderer<>(context, new DragonModel<>(Minejago.modLoc("dragon/earth_dragon"))));
+        EntityRendererRegistry.register(MinejagoEntityTypes.SAMUKAI.get(), SamukaiRenderer::new);
+
+        BlockEntityRenderers.register(MinejagoBlockEntityTypes.DRAGON_HEAD.get(), context -> new DragonHeadRenderer());
     }
 
     private void registerModelLayers()

@@ -11,6 +11,8 @@ import net.minecraft.resources.ResourceLocation;
 
 public class NuckalRenderer extends HumanoidMobRenderer<Nuckal, NuckalModel<Nuckal>>
 {
+    public static final ResourceLocation TEXTURE_LOCATION = Minejago.modLoc("textures/entity/nuckal.png");
+
     public NuckalRenderer(EntityRendererProvider.Context context) {
         super(context, new NuckalModel<>(context.bakeLayer(NuckalModel.LAYER_LOCATION)), 0.5f);
         addLayer(new HumanoidArmorLayer<>(this, new NuckalModel<>(context.bakeLayer(ModelLayers.SKELETON_INNER_ARMOR)), new NuckalModel<>(context.bakeLayer(ModelLayers.SKELETON_OUTER_ARMOR)), context.getModelManager()));
@@ -20,7 +22,7 @@ public class NuckalRenderer extends HumanoidMobRenderer<Nuckal, NuckalModel<Nuck
      * Returns the location of an entity's texture.
      */
     public ResourceLocation getTextureLocation(Nuckal pEntity) {
-        return Minejago.modLoc("textures/entity/nuckal.png");
+        return TEXTURE_LOCATION;
     }
 
     protected boolean isShaking(Nuckal pEntity) {

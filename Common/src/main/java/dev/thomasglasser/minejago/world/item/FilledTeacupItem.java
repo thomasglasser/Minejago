@@ -29,7 +29,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 
-public class FilledTeacupItem extends PotionItem implements ITeapotLiquidHolder
+public class FilledTeacupItem extends PotionItem implements TeapotLiquidHolder
 {
     public FilledTeacupItem(Properties pProperties) {
         super(pProperties);

@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.mixin.minecraft.world.item;
 
-import dev.thomasglasser.minejago.world.item.ITeapotLiquidHolder;
+import dev.thomasglasser.minejago.world.item.TeapotLiquidHolder;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -9,7 +9,7 @@ import net.minecraft.world.item.alchemy.Potions;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(BucketItem.class)
-public class MinejagoBucketItemMixin implements ITeapotLiquidHolder {
+public class MinejagoBucketItemMixin implements TeapotLiquidHolder {
     @Override
     public int getCups() {
         return 6;

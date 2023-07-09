@@ -45,6 +45,7 @@ public class MinejagoItemModels extends ItemModelProvider
         });
         MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
                 singleTexture(item.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/skeletal_chestplate_" + ((SkeletalChestplateItem)item.get()).getVariant().getColor().getName())));
+        basicItem(MinejagoArmors.SAMUKAIS_CHESTPLATE.get());
         basicItem(MinejagoItems.TEACUP.get());
         basicItem(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get());
         basicItemHandheld(MinejagoItems.IRON_KATANA.get());
@@ -98,8 +99,8 @@ public class MinejagoItemModels extends ItemModelProvider
         spawnEgg(MinejagoItems.KRUNCHA_SPAWN_EGG.getId().getPath());
         spawnEgg(MinejagoItems.NUCKAL_SPAWN_EGG.getId().getPath());
         spawnEgg(MinejagoItems.SKULKIN_HORSE_SPAWN_EGG.getId().getPath());
-
-
+        spawnEgg(MinejagoItems.EARTH_DRAGON_SPAWN_EGG.getId().getPath());
+        spawnEgg(MinejagoItems.SAMUKAI_SPAWN_EGG.getId().getPath());
     }
 
     protected void basicItemHandheld(ResourceLocation item)

@@ -4,6 +4,7 @@ import dev.thomasglasser.minejago.advancements.criterion.BrewedTeaTrigger;
 import dev.thomasglasser.minejago.data.advancements.AdvancementUtils;
 import dev.thomasglasser.minejago.data.tags.MinejagoEntityTypeTags;
 import dev.thomasglasser.minejago.data.tags.MinejagoItemTags;
+import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
@@ -43,6 +44,10 @@ public class MinejagoAdventureAdvancements implements ForgeAdvancementProvider.A
         Advancement killASkulkin = maker.make(new ResourceLocation("adventure/kill_a_mob"), MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.SPEED).get(), KILL_A_SKULKIN, FrameType.TASK, true, true, false, null, Map.of(
                 "kill_skulkin", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(MinejagoEntityTypeTags.SKULKINS))
         ), "Redead", "Kill a Skulkin Warrior");
+
+        Advancement killSamukai = maker.make(killASkulkin, MinejagoArmors.SAMUKAIS_CHESTPLATE.get(), KILL_SAMUKAI, FrameType.CHALLENGE, true, true, false, AdvancementRewards.Builder.experience(10).build(), Map.of(
+                "kill_samukai", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.SAMUKAI.get()))
+        ), "Knives Out", "Defeat Samukai");
 
         Advancement collectAllSkeletalChestplates = maker.make(killASkulkin, MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.STRENGTH).get(), COLLECT_ALL_SKELETAL_CHESTPLATES, FrameType.CHALLENGE, true, true, false, AdvancementRewards.Builder.experience(25).build(), Map.of(
                 "collect_strength", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.STRENGTH).get()).build()),

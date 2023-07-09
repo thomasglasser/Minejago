@@ -1,11 +1,11 @@
 package dev.thomasglasser.minejago.platform;
 
-import dev.thomasglasser.minejago.platform.services.IDataHelper;
+import dev.thomasglasser.minejago.platform.services.DataHelper;
 import dev.thomasglasser.minejago.world.level.storage.*;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.common.util.LazyOptional;
 
-public class ForgeDataHelper implements IDataHelper
+public class ForgeDataHelper implements DataHelper
 {
 
     @Override
@@ -27,7 +27,7 @@ public class ForgeDataHelper implements IDataHelper
             cap.setPower(data.power());
             cap.setGiven(data.given());
         });
-        IDataHelper.super.setPowerData(data, entity);
+        DataHelper.super.setPowerData(data, entity);
     }
 
     @Override
@@ -49,6 +49,6 @@ public class ForgeDataHelper implements IDataHelper
             cap.setActive(data.active());
             cap.setUnlocked(data.unlocked());
         });
-        IDataHelper.super.setSpinjitzuData(data, entity);
+        DataHelper.super.setSpinjitzuData(data, entity);
     }
 }

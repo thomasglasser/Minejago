@@ -15,6 +15,7 @@ import dev.thomasglasser.minejago.world.entity.character.Wu;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.power.Power;
+import dev.thomasglasser.minejago.world.item.MinejagoCreativeModeTabs;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.armor.SkeletalChestplateItem;
@@ -82,6 +83,22 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
                         add(item.get(), set.getDisplayName() + " " + nameForSlot);
                     });
                 });
+        MinejagoArmors.POWER_SETS.forEach(set ->
+                {
+                    set.getAll().forEach(item ->
+                    {
+                        String nameForSlot = switch (set.getForItem(item.get())) {
+                            case FEET -> "Boots";
+                            case LEGS -> "Pants";
+                            case CHEST -> "Jacket";
+                            case HEAD -> "Hood";
+                            default -> null;
+                        };
+
+                        add(item.get(), set.getDisplayName() + " " + nameForSlot);
+                    });
+                });
+        add(MinejagoArmors.SAMUKAIS_CHESTPLATE.get(), "Samukai's Chestplate");
         add(MinejagoItems.IRON_KATANA.get(), "Iron Katana");
         add(MinejagoItems.IRON_SCYTHE.get(), "Iron Scythe");
         add(MinejagoItems.WOODEN_NUNCHUCKS.get(), "Wooden Nunchucks");
@@ -97,6 +114,7 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(MinejagoBlocks.GOLD_DISC.get(), "Gold Disc");
         add(MinejagoBlocks.TOP_POST.get(), "Top Post");
         add(MinejagoBlocks.CHISELED_SCROLL_SHELF.get(), "Chiseled Scroll Shelf");
+        add(MinejagoBlocks.EARTH_DRAGON_HEAD.get(), "Earth Dragon Head");
 
         addDesc(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get(), "Four Weapons");
 
@@ -140,6 +158,8 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(MinejagoEntityTypes.KRUNCHA.get(), "Kruncha", MinejagoItems.KRUNCHA_SPAWN_EGG.get());
         add(MinejagoEntityTypes.NUCKAL.get(), "Nuckal", MinejagoItems.NUCKAL_SPAWN_EGG.get());
         add(MinejagoEntityTypes.SKULKIN_HORSE.get(), "Skulkin Horse", MinejagoItems.SKULKIN_HORSE_SPAWN_EGG.get());
+        add(MinejagoEntityTypes.EARTH_DRAGON.get(), "Earth Dragon", MinejagoItems.EARTH_DRAGON_SPAWN_EGG.get());
+        add(MinejagoEntityTypes.SAMUKAI.get(), "Samukai", MinejagoItems.SAMUKAI_SPAWN_EGG.get());
 
         add(MinejagoBannerPatterns.FOUR_WEAPONS_LEFT.get(), "Four Weapons Left");
         add(MinejagoBannerPatterns.FOUR_WEAPONS_RIGHT.get(), "Four Weapons Right");
@@ -196,7 +216,8 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         addPower(MinejagoPowers.NONE, "None", "no powers", "Lore!", "Description!");
         addPower(MinejagoPowers.CREATION, "Creation", "wu hoo", "Lore!", "Description!");
 
-        addCreativeTab(Minejago.modLoc("gi"), "Gi");
+        addCreativeTab(MinejagoCreativeModeTabs.GI.getId(), "Gi");
+        addCreativeTab(MinejagoCreativeModeTabs.MINEJAGO.getId(), "Minejago");
 
         add(MinejagoPaintingVariants.A_MORNING_BREW, "A Morning Brew", "waifu_png_pl");
         add(MinejagoPaintingVariants.NEEDS_HAIR_GEL, "Needs Hair Gel", "waifu_png_pl");
