@@ -33,7 +33,7 @@ dependencies {
 
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
-    modCompileOnly "maven.modrinth:lambdynamiclights:${lambdynamiclights_version}"
+    modImplementation "maven.modrinth:lambdynamiclights:${lambdynamiclights_version}"
     modImplementation "maven.modrinth:moonlight:${moonlight_version}"
     modImplementation "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}"
     modImplementation("net.tslat.smartbrainlib:SmartBrainLib-fabric-${minecraft_version}:1.11.1")

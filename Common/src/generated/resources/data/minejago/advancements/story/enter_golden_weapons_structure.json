@@ -1,0 +1,42 @@
+{
+  "parent": "minejago:story/get_power",
+  "criteria": {
+    "enter_cave_of_despair": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "structure": "minejago:cave_of_despair"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:location"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.minejago.story.enter_golden_weapons_structure.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minejago:scythe_of_quakes"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.minejago.story.enter_golden_weapons_structure.title"
+    }
+  },
+  "requirements": [
+    [
+      "enter_cave_of_despair"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

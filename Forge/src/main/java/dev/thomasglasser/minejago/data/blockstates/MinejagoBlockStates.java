@@ -187,6 +187,7 @@ public class MinejagoBlockStates extends BlockStateProvider {
         @Override
         public void run() {
             createChiseledShelf(MinejagoBlocks.CHISELED_SCROLL_SHELF.get());
+            createBrushableBlock(MinejagoBlocks.SUSPICIOUS_RED_SAND.get());
         }
 
         public CompletableFuture<?> generateAll(CachedOutput cache)

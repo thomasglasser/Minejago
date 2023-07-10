@@ -61,8 +61,6 @@ public class ItemMixin
 
                     return this.bewlr;
                 }
-
-
             });
         }
         else if (this instanceof GeoArmorItem geoArmorItem)

@@ -14,6 +14,7 @@ import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
 public class MinejagoStructureSets
 {
     public static final ResourceKey<StructureSet> FOUR_WEAPONS = register("four_weapons");
+    public static final ResourceKey<StructureSet> CAVE_OF_DESPAIR = register("cave_of_despair");
 
     public static void bootstrap(BootstapContext<StructureSet> context) {
         HolderGetter<Structure> holderGetter = context.lookup(Registries.STRUCTURE);
@@ -21,6 +22,11 @@ public class MinejagoStructureSets
         context.register(
                 FOUR_WEAPONS,
                 new StructureSet(holderGetter.getOrThrow(MinejagoStructures.FOUR_WEAPONS), new RandomSpreadStructurePlacement(32, 8, RandomSpreadType.LINEAR, 14357613))
+        );
+
+        context.register(
+                CAVE_OF_DESPAIR,
+                new StructureSet(holderGetter.getOrThrow(MinejagoStructures.CAVE_OF_DESPAIR), new RandomSpreadStructurePlacement(32, 8, RandomSpreadType.LINEAR, 14357614))
         );
     }
 

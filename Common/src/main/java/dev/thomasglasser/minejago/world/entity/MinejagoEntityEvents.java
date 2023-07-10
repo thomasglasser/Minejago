@@ -6,6 +6,7 @@ import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleUtils;
 import dev.thomasglasser.minejago.core.particles.SpinjitzuParticleOptions;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
+import dev.thomasglasser.minejago.data.tags.MinejagoStructureTags;
 import dev.thomasglasser.minejago.network.*;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
@@ -251,20 +252,20 @@ public class MinejagoEntityEvents
             MapItem.renderBiomePreviewMap((ServerLevel) world, itemstack);
             /* TODO: Find lightning */ BlockPos pos1 = serverLevel.findNearestMapStructure(StructureTags.VILLAGE, player.getOnPos(), Integer.MAX_VALUE, false);
             /* TODO: Find fire */ BlockPos pos2 = serverLevel.findNearestMapStructure(StructureTags.RUINED_PORTAL, player.getOnPos(), Integer.MAX_VALUE, false);
-            /* TODO: Find earth */ BlockPos pos3 = serverLevel.findNearestMapStructure(StructureTags.SHIPWRECK, player.getOnPos(), Integer.MAX_VALUE, false);
+            BlockPos earth = serverLevel.findNearestMapStructure(MinejagoStructureTags.CAVE_OF_DESPAIR, player.getOnPos(), Integer.MAX_VALUE, false);
             /* TODO: Find ice */ BlockPos pos4 = serverLevel.findNearestMapStructure(StructureTags.MINESHAFT, player.getOnPos(), Integer.MAX_VALUE, false);
             if (Minejago.Dependencies.MOONLIGHT_LIB.isInstalled())
             {
                 if (pos1 != null) MapHelper.addDecorationToMap(itemstack, pos1, MinejagoMapDecorations.NUNCHUCKS, -1);
                 if (pos2 != null) MapHelper.addDecorationToMap(itemstack, pos2, MinejagoMapDecorations.SWORD, -1);
-                if (pos3 != null) MapHelper.addDecorationToMap(itemstack, pos3, MinejagoMapDecorations.SCYTHE, -1);
+                if (earth != null) MapHelper.addDecorationToMap(itemstack, earth, MinejagoMapDecorations.SCYTHE, -1);
                 if (pos4 != null) MapHelper.addDecorationToMap(itemstack, pos4, MinejagoMapDecorations.SHURIKENS, -1);
             }
             else
             {
                 if (pos1 != null) MapItemSavedData.addTargetDecoration(itemstack, pos1, "lightning", MapDecoration.Type.BANNER_BLUE);
                 if (pos2 != null) MapItemSavedData.addTargetDecoration(itemstack, pos2, "fire", MapDecoration.Type.BANNER_RED);
-                if (pos3 != null) MapItemSavedData.addTargetDecoration(itemstack, pos3, "earth", MapDecoration.Type.BANNER_BROWN);
+                if (earth != null) MapItemSavedData.addTargetDecoration(itemstack, earth, "earth", MapDecoration.Type.BANNER_BROWN);
                 if (pos4 != null) MapItemSavedData.addTargetDecoration(itemstack, pos4, "ice", MapDecoration.Type.BANNER_WHITE);
             }
             itemstack.setHoverName(Component.translatable(Items.FILLED_MAP.getDescriptionId() + ".golden_weapons"));

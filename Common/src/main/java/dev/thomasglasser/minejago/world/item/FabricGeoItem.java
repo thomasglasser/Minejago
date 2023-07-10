@@ -11,5 +11,4 @@ public interface FabricGeoItem extends GeoItem
         return null;
     }
     default void createRenderer(Consumer<Object> consumer) {}
-
 }

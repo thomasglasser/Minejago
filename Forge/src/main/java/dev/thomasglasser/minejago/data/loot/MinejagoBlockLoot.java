@@ -36,6 +36,8 @@ public class MinejagoBlockLoot extends BlockLootSubProvider {
         dropSelf(MinejagoBlocks.GOLD_DISC.get());
         dropSelf(MinejagoBlocks.TOP_POST.get());
 
+        add(MinejagoBlocks.SUSPICIOUS_RED_SAND.get(), noDrop());
+
         add(MinejagoBlocks.CHISELED_SCROLL_SHELF.get(), createSilkTouchOnlyTable(MinejagoBlocks.CHISELED_SCROLL_SHELF.get()));
     }
 

@@ -5,6 +5,9 @@
     512,
     512
   ],
+  "textures": {
+    "particle": "minejago:entity/dragon/earth_dragon"
+  },
   "display": {
     "firstperson_righthand": {
       "scale": [

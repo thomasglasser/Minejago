@@ -51,6 +51,12 @@ public class MinejagoBlockTagsProvider extends IntrinsicHolderTagsProvider<Block
                 .addTag(BlockTags.SAPLINGS)
                 .addTag(BlockTags.REPLACEABLE)
                 .add(Blocks.SUGAR_CANE);
+
+        tag(BlockTags.MINEABLE_WITH_SHOVEL)
+                .add(MinejagoBlocks.SUSPICIOUS_RED_SAND.get());
+
+        tag(BlockTags.SAND)
+                .add(MinejagoBlocks.SUSPICIOUS_RED_SAND.get());
     }
 
     @Override

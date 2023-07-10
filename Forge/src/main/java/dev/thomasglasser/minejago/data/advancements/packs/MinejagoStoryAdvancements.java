@@ -9,12 +9,10 @@ import dev.thomasglasser.minejago.world.entity.power.PowerUtils;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
+import dev.thomasglasser.minejago.world.level.levelgen.structure.MinejagoStructures;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.FrameType;
-import net.minecraft.advancements.critereon.EntityPredicate;
-import net.minecraft.advancements.critereon.InventoryChangeTrigger;
-import net.minecraft.advancements.critereon.ItemPredicate;
-import net.minecraft.advancements.critereon.PlayerInteractTrigger;
+import net.minecraft.advancements.critereon.*;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -68,6 +66,11 @@ public class MinejagoStoryAdvancements implements ForgeAdvancementProvider.Advan
         Advancement getPower = maker.make(getFourWeaponsMap, PowerUtils.setPower(MinejagoArmors.TRAINING_GI_SET.HEAD.get().getDefaultInstance(), MinejagoPowers.FIRE), GET_POWER, FrameType.TASK, true, true, false, null, Map.of(
                 "get_power", GetPowerTrigger.TriggerInstance.gotAnyPower()
         ), "I've Got the Power!", "Discover your elemental power");
+
+        Advancement enterGoldenWeaponsStructure = maker.make(getPower, MinejagoItems.SCYTHE_OF_QUAKES.get(), ENTER_GOLDEN_WEAPONS_STRUCTURE, FrameType.TASK, true, true, false, null, Map.of(
+                "enter_cave_of_despair", PlayerTrigger.TriggerInstance.located(LocationPredicate.inStructure(MinejagoStructures.CAVE_OF_DESPAIR))
+                // TODO: Add other structures
+        ), "The Weapon is Near", "Enter a structure containing a Golden Weapon");
 
         Advancement interactWithMainSix = maker.make(root, MinejagoItems.IRON_KATANA.get(), INTERACT_WITH_MAIN_SIX, FrameType.GOAL, true, true, false, null,
                 Map.of(

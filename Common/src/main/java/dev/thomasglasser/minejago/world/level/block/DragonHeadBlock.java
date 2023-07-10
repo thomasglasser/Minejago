@@ -34,7 +34,7 @@ public class DragonHeadBlock extends HorizontalDirectionalBlock implements Entit
     public static BooleanProperty ACTIVATED = BooleanProperty.create("activated");
 
     public DragonHeadBlock(Supplier<EntityType<? extends Dragon>> entity) {
-        super(BlockBehaviour.Properties.copy(Blocks.BARRIER).noLootTable());
+        super(BlockBehaviour.Properties.copy(Blocks.BARRIER).noLootTable().lightLevel(state -> state.getValue(ACTIVATED) ? 0 : 10));
         this.registerDefaultState(
                 this.stateDefinition
                         .any()
