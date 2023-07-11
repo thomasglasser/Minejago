@@ -6,6 +6,7 @@ import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.armor.SkeletalChestplateItem;
+import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.RegistrySetBuilder;
@@ -57,18 +58,18 @@ public class MinejagoItemModels extends ItemModelProvider
         basicItem(MinejagoItems.POTTERY_SHERD_DRAGONS_HEAD.get());
         basicItem(MinejagoItems.POTTERY_SHERD_DRAGONS_TAIL.get());
         basicItem(MinejagoItems.FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE.get());
-        basicItem(MinejagoItems.TEAPOT.get());
-        basicItem(MinejagoItems.JASPOT.get());
-        basicItem(MinejagoItems.GOLD_DISC.get());
-        basicItem(MinejagoItems.TOP_POST.get());
+        basicItem(MinejagoBlocks.TEAPOT.asItem());
+        basicItem(MinejagoBlocks.JASPOT.asItem());
+        basicItem(MinejagoBlocks.GOLD_DISC.asItem());
+        basicItem(MinejagoBlocks.TOP_POST.asItem());
         basicItem(MinejagoItems.SCROLL.get());
         basicItem(MinejagoItems.WRITABLE_SCROLL.get());
         basicItem(MinejagoItems.WRITTEN_SCROLL.get());
 
-        MinejagoItems.TEAPOTS.forEach((dyeColor, itemRegistryObject) ->
+        MinejagoBlocks.TEAPOTS.forEach((dyeColor, itemRegistryObject) ->
         {
             if (existingFileHelper.exists(Minejago.modLoc("textures/item/" + dyeColor.getName() + "_teapot.png"), PackType.CLIENT_RESOURCES))
-                basicItem(itemRegistryObject.get());
+                basicItem(itemRegistryObject.asItem());
         });
 
         final RegistryAccess.Frozen access = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);

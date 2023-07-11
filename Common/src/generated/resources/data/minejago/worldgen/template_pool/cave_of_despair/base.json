@@ -4,9 +4,7 @@
       "element": {
         "element_type": "minecraft:single_pool_element",
         "location": "minejago:cave_of_despair/base",
-        "processors": {
-          "processors": []
-        },
+        "processors": "minejago:cave_of_despair",
         "projection": "rigid"
       },
       "weight": 1

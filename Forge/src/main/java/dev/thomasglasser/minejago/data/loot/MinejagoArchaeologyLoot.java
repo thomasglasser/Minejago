@@ -1,6 +1,5 @@
 package dev.thomasglasser.minejago.data.loot;
 
-import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
@@ -13,9 +12,9 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 
 import java.util.function.BiConsumer;
 
-public class MinejagoArchaeologyLoot implements LootTableSubProvider {
-    public static final ResourceLocation CAVE_OF_DESPAIR = modLoc("cave_of_despair");
+import static dev.thomasglasser.minejago.data.loot.MinejagoArchaeologyLootKeys.*;
 
+public class MinejagoArchaeologyLoot implements LootTableSubProvider {
     public static final LootTable.Builder CAVE_OF_DESPAIR_TABLE = LootTable.lootTable().withPool(
             LootPool.lootPool()
                     .add(LootItem.lootTableItem(MinejagoItems.POTTERY_SHERD_PEAKS.get()))
@@ -33,9 +32,5 @@ public class MinejagoArchaeologyLoot implements LootTableSubProvider {
     @Override
     public void generate(BiConsumer<ResourceLocation, LootTable.Builder> p_249643_) {
         p_249643_.accept(CAVE_OF_DESPAIR, CAVE_OF_DESPAIR_TABLE);
-    }
-
-    private static ResourceLocation modLoc(String name) {
-        return new ResourceLocation(Minejago.MOD_ID, "archaeology/" + name);
     }
 }

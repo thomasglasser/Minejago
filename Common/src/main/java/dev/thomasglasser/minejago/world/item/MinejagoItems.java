@@ -1,7 +1,6 @@
 package dev.thomasglasser.minejago.world.item;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.client.model.DragonHeadModel;
 import dev.thomasglasser.minejago.data.tags.MinejagoBannerPatternTags;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.registration.RegistrationProvider;
@@ -72,20 +71,8 @@ public class MinejagoItems
     public static final RegistryObject<Item> EARTH_DRAGON_SPAWN_EGG = register("earth_dragon_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.EARTH_DRAGON::get, 0x412017, 0xa08d71, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
     public static final RegistryObject<Item> SAMUKAI_SPAWN_EGG = register("samukai_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.SAMUKAI::get, 0xdbd7bd, 0xb90e04, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
 
-    // POT ITEMS
-    public static final RegistryObject<Item> TEAPOT = register("teapot", () -> new BlockItem(MinejagoBlocks.TEAPOT.get(), new Item.Properties().stacksTo(1)), CreativeModeTabs.FUNCTIONAL_BLOCKS);
-    public static final RegistryObject<Item> JASPOT = register("jaspot", () -> new BlockItem(MinejagoBlocks.JASPOT.get(), new Item.Properties().stacksTo(1)), CreativeModeTabs.FUNCTIONAL_BLOCKS);
-    public static final Map<DyeColor, RegistryObject<Item>> TEAPOTS = teapots();
-
-    // BLOCK ITEMS
-    public static final RegistryObject<Item> GOLD_DISC = register("gold_disc", () -> new BlockItem(MinejagoBlocks.GOLD_DISC.get(), new Item.Properties()), CreativeModeTabs.BUILDING_BLOCKS);
-    public static final RegistryObject<Item> TOP_POST = register("top_post", () -> new BlockItem(MinejagoBlocks.TOP_POST.get(), new Item.Properties()), CreativeModeTabs.BUILDING_BLOCKS);
-    public static final RegistryObject<Item> CHISELED_SCROLL_SHELF = register("chiseled_scroll_shelf", () -> new BlockItem(MinejagoBlocks.CHISELED_SCROLL_SHELF.get(), new Item.Properties()), CreativeModeTabs.FUNCTIONAL_BLOCKS, CreativeModeTabs.REDSTONE_BLOCKS);
-    public static final RegistryObject<Item> EARTH_DRAGON_HEAD = register("earth_dragon_head", () -> new DragonHeadBlockItem(MinejagoBlocks.EARTH_DRAGON_HEAD.get(), new Item.Properties(), new DragonHeadModel(), "earth_dragon"), CreativeModeTabs.FUNCTIONAL_BLOCKS);
-    public static final RegistryObject<Item> SUSPICIOUS_RED_SAND = register("suspicious_red_sand", () -> new BlockItem(MinejagoBlocks.SUSPICIOUS_RED_SAND.get(), new Item.Properties()), CreativeModeTabs.FUNCTIONAL_BLOCKS);
-
     @SafeVarargs
-    private static RegistryObject<Item> register(String name, Supplier<? extends Item> supplier, ResourceKey<CreativeModeTab>... tabs)
+    public static RegistryObject<Item> register(String name, Supplier<? extends Item> supplier, ResourceKey<CreativeModeTab>... tabs)
     {
         for (ResourceKey<CreativeModeTab> tab: tabs) {
             ArrayList<ResourceLocation> list = ITEM_TABS.computeIfAbsent(tab, empty -> new ArrayList<>());

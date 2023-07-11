@@ -12,6 +12,7 @@ import dev.thomasglasser.minejago.data.modonomicons.wiki.MinejagoWikiBookProvide
 import dev.thomasglasser.minejago.data.recipes.MinejagoRecipes;
 import dev.thomasglasser.minejago.data.sounds.MinejagoSoundDefinitions;
 import dev.thomasglasser.minejago.data.tags.*;
+import dev.thomasglasser.minejago.data.worldgen.MinejagoProcessorLists;
 import dev.thomasglasser.minejago.data.worldgen.biome.MinejagoBiomeModifiers;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.item.armortrim.MinejagoTrimPatterns;
@@ -46,6 +47,7 @@ public class MinejagoDataGenerators
             .add(Registries.STRUCTURE, MinejagoStructures::bootstrap)
             .add(Registries.STRUCTURE_SET, MinejagoStructureSets::bootstrap)
             .add(MinejagoRegistries.POWER, MinejagoPowers::bootstrap)
+            .add(Registries.PROCESSOR_LIST, MinejagoProcessorLists::bootstrap)
             .add(ForgeRegistries.Keys.BIOME_MODIFIERS, MinejagoBiomeModifiers::bootstrap);
 
     public static void gatherData(GatherDataEvent event)

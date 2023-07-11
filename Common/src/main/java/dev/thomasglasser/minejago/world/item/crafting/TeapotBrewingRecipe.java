@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.world.item.crafting;
 
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
@@ -10,6 +11,7 @@ import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 public class TeapotBrewingRecipe implements Recipe<Container> {
     protected final ResourceLocation id;
@@ -101,7 +103,7 @@ public class TeapotBrewingRecipe implements Recipe<Container> {
     }
 
     @Override
-    public ItemStack getToastSymbol() {
-        return MinejagoItems.TEAPOT.get().getDefaultInstance();
+    public @NotNull ItemStack getToastSymbol() {
+        return MinejagoBlocks.TEAPOT.get().asItem().getDefaultInstance();
     }
 }

@@ -39,6 +39,11 @@ public class MinejagoPools
                 Holder.direct(new StructureProcessorList(List.of())), projection);
     }
 
+    public static Function<StructureTemplatePool.Projection, SinglePoolElement> singleElement(ResourceLocation rl, Holder<StructureProcessorList> structureProcessorList) {
+        return projection -> new SinglePoolElement(Either.left(rl),
+                structureProcessorList, projection);
+    }
+
     public static Function<StructureTemplatePool.Projection, LegacySinglePoolElement> legacyElement(ResourceLocation rl) {
         return projection -> new LegacySinglePoolElement(Either.left(rl),
                 Holder.direct(new StructureProcessorList(List.of())), projection);
