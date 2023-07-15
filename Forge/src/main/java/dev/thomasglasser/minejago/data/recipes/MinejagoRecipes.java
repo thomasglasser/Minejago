@@ -1,6 +1,5 @@
 package dev.thomasglasser.minejago.data.recipes;
 
-import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.data.tags.MinejagoItemTags;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
@@ -27,7 +26,6 @@ public class MinejagoRecipes extends RecipeProvider {
     @Override
     protected void buildRecipes(Consumer<FinishedRecipe> writer) {
         buildCrafting(writer);
-        buildSmithing(writer);
         buildBrewing(writer);
     }
 
@@ -109,17 +107,6 @@ public class MinejagoRecipes extends RecipeProvider {
                 .define('s', ItemTags.WOODEN_SLABS)
                 .unlockedBy("has_slab", has(ItemTags.WOODEN_SLABS))
                 .save(writer);
-    }
-
-    private void buildSmithing(Consumer<FinishedRecipe> writer)
-    {
-        smithing(writer, MinejagoItems.FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE.get(), Items.IRON_BLOCK);
-    }
-
-    private void smithing(Consumer<FinishedRecipe> writer, Item template, Item dup)
-    {
-        trimSmithing(writer, template, Minejago.modLoc(getItemName(template) + "_smithing_template"));
-        copySmithingTemplate(writer, template, dup);
     }
 
     protected void coloredTeapotFromColoredTerracotta(Consumer<FinishedRecipe> writer, ItemLike pot, ItemLike color)

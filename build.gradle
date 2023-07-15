@@ -132,14 +132,14 @@ subprojects {
         repositories {
             maven { url = 'https://maven.parchmentmc.org' }
         }
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/dhyces/trimmed")
-            credentials {
-                username = project.findProperty("gpr.user")
-                password = project.findProperty("gpr.key")
-            }
-        }
+//        maven {
+//            name = "GitHubPackages"
+//            url = uri("https://maven.pkg.github.com/dhyces/trimmed")
+//            credentials {
+//                username = project.findProperty("gpr.user")
+//                password = project.findProperty("gpr.key")
+//            }
+//        }
         maven {
             name = "KliKli Dev Repsy Maven"
             url = "https://repo.repsy.io/mvn/klikli-dev/mods"

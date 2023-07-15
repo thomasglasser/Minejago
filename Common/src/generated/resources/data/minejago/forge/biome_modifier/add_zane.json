@@ -5,6 +5,6 @@
     "type": "minejago:zane",
     "maxCount": 1,
     "minCount": 1,
-    "weight": 1
+    "weight": 100
   }
 }

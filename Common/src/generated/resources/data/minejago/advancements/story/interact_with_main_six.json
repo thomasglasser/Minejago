@@ -110,19 +110,19 @@
   },
   "requirements": [
     [
-      "interact_wu"
-    ],
-    [
-      "interact_zane"
-    ],
-    [
-      "interact_kai"
+      "interact_cole"
     ],
     [
       "interact_jay"
     ],
     [
-      "interact_cole"
+      "interact_kai"
+    ],
+    [
+      "interact_zane"
+    ],
+    [
+      "interact_wu"
     ],
     [
       "interact_nya"

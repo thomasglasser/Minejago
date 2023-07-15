@@ -80,16 +80,16 @@
   },
   "requirements": [
     [
-      "collect_bow"
-    ],
-    [
-      "collect_strength"
+      "collect_bone"
     ],
     [
       "collect_speed"
     ],
     [
-      "collect_bone"
+      "collect_strength"
+    ],
+    [
+      "collect_bow"
     ],
     [
       "collect_knife"

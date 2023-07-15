@@ -19,11 +19,9 @@ import dev.thomasglasser.minejago.world.item.MinejagoCreativeModeTabs;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.armor.SkeletalChestplateItem;
-import dev.thomasglasser.minejago.world.item.armortrim.MinejagoTrimPatterns;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPatterns;
-import net.minecraft.Util;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.data.PackOutput;
 import net.minecraft.network.chat.Component;
@@ -40,7 +38,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
-import net.minecraft.world.item.armortrim.TrimPattern;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraftforge.common.data.LanguageProvider;
@@ -238,8 +235,6 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         addSherd(MinejagoItems.POTTERY_SHERD_DRAGONS_HEAD.get(), "Dragon's Head");
         addSherd(MinejagoItems.POTTERY_SHERD_DRAGONS_TAIL.get(), "Dragon's Tail");
 
-        addPattern(MinejagoTrimPatterns.FOUR_WEAPONS, "Four Weapons");
-
         add(MinejagoItems.MOD_NEEDED, "To get the full functionality of this item, please install the %s mod.");
 
         add(MinejagoPacks.IMMERSION.titleKey(), "Minejago Immersion Pack");
@@ -351,11 +346,6 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
     public void addSherd(Item item, String name)
     {
         add(item, name + " Pottery Sherd");
-    }
-
-    public void addPattern(ResourceKey<TrimPattern> pattern, String name)
-    {
-        add(Util.makeDescriptionId("trim_pattern", pattern.location()), name + " Armor Trim");
     }
 
     public void addPluginConfig(ResourceLocation location, String name)

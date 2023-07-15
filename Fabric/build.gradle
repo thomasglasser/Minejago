@@ -46,9 +46,8 @@ dependencies {
     modCompileOnly("curse.maven:configured-667378:${configured_fabric_id}")
     modImplementation "net.tslat.tes:TES-fabric-${minecraft_version}:${tes_version}"
 //    modImplementation("curse.maven:configured-667378:${configured_fabric_id}") TODO: Update
-    modImplementation("dev.dhyces.trimmed:trimmed-fabric-${previous_minecraft_version}:${trimmed_version}")
-//    modImplementation("dev.dhyces.trimmed:trimmed-fabric-${minecraft_version}:${trimmed_version}") TODO: Update
     modCompileOnly "com.klikli_dev:modonomicon:${modonomicon_version}" // TODO: update mcon when ml
+    modImplementation "maven.modrinth:trimmed:${trimmed_version}+fabric"
 
     include modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${playeranimator_version}")
     include modImplementation("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forgeconfigapiport_version}")

@@ -54,13 +54,12 @@ dependencies {
     modCompileOnly("curse.maven:configured-667378:${configured_fabric_id}")
     modCompileOnly "maven.modrinth:jade:${jade_version}"
     modCompileOnly "com.klikli_dev:modonomicon:${modonomicon_version}" // TODO: update mcon when ml
+    modCompileOnly "maven.modrinth:trimmed:${trimmed_version}+fabric"
 
     modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-common:${forgeconfigapiport_version}"
     modImplementation("dev.thomasglasser.sherdsapi:sherdsapi-common-${minecraft_version}:${sherdsapi_version}")
     modImplementation "net.tslat.smartbrainlib:SmartBrainLib-common-${previous_minecraft_version}:${sbl_version}"
     modImplementation "net.tslat.tes:TES-common-${minecraft_version}:${tes_version}"
-    modImplementation("dev.dhyces.trimmed:trimmed-common-${previous_minecraft_version}:${trimmed_version}")
-//    modImplementation("dev.dhyces.trimmed:trimmed-common-${minecraft_version}:${trimmed_version}") TODO: update
 
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
 }

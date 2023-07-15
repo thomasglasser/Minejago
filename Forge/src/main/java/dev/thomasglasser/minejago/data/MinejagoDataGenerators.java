@@ -12,10 +12,10 @@ import dev.thomasglasser.minejago.data.modonomicons.wiki.MinejagoWikiBookProvide
 import dev.thomasglasser.minejago.data.recipes.MinejagoRecipes;
 import dev.thomasglasser.minejago.data.sounds.MinejagoSoundDefinitions;
 import dev.thomasglasser.minejago.data.tags.*;
+import dev.thomasglasser.minejago.data.trimmed.MinejagoTrimDatagenSuite;
 import dev.thomasglasser.minejago.data.worldgen.MinejagoProcessorLists;
 import dev.thomasglasser.minejago.data.worldgen.biome.MinejagoBiomeModifiers;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
-import dev.thomasglasser.minejago.world.item.armortrim.MinejagoTrimPatterns;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.MinejagoStructures;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.placement.MinejagoStructureSets;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.pools.MinejagoPools;
@@ -42,7 +42,6 @@ import java.util.concurrent.CompletableFuture;
 public class MinejagoDataGenerators
 {
     private static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
-            .add(Registries.TRIM_PATTERN, MinejagoTrimPatterns::bootstrap)
             .add(Registries.TEMPLATE_POOL, MinejagoPools::bootstrap)
             .add(Registries.STRUCTURE, MinejagoStructures::bootstrap)
             .add(Registries.STRUCTURE_SET, MinejagoStructureSets::bootstrap)
@@ -61,11 +60,11 @@ public class MinejagoDataGenerators
         boolean includeServer = event.includeServer();
         boolean includeClient = event.includeClient();
 
-        genMain(generator, packOutput, lookupProvider, existingFileHelper, includeServer, includeClient);
-        genImmersionPack(generator, new PackOutput(packOutput.getOutputFolder().resolve("resourcepacks/minejago_immersion_pack")), lookupProvider, existingFileHelper, includeServer, includeClient);
+        genMain(event, generator, packOutput, lookupProvider, existingFileHelper, includeServer, includeClient);
+        genImmersionPack(event, generator, new PackOutput(packOutput.getOutputFolder().resolve("resourcepacks/minejago_immersion_pack")), lookupProvider, existingFileHelper, includeServer, includeClient);
     }
     
-    private static void genMain(DataGenerator generator, PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper, boolean includeServer, boolean includeClient)
+    private static void genMain(GatherDataEvent event, DataGenerator generator, PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper, boolean includeServer, boolean includeClient)
     {
         MinejagoBlockTagsProvider blockTags = new MinejagoBlockTagsProvider(packOutput, lookupProvider, existingFileHelper);
 
@@ -87,7 +86,6 @@ public class MinejagoDataGenerators
         generator.addProvider(includeClient, new MinejagoItemModels(packOutput, existingFileHelper));
         generator.addProvider(includeClient, new MinejagoBlockStates(packOutput, existingFileHelper));
         generator.addProvider(includeClient, new MinejagoSoundDefinitions(packOutput, existingFileHelper));
-        generator.addProvider(includeClient, new MinejagoClientTagsProvider(packOutput, existingFileHelper));
 
         // LanugageProviders
         LanguageProvider enUs = new MinejagoEnUsLanguageProvider(packOutput);
@@ -98,11 +96,14 @@ public class MinejagoDataGenerators
         // AdvancementProvider
         generator.addProvider(includeServer, new MinejagoAdvancementProvider(packOutput, lookupProvider, existingFileHelper, enUs));
 
+        // Trims
+        new MinejagoTrimDatagenSuite(event, enUs);
+
         // Lang gen (on client)
         generator.addProvider(includeClient, enUs);
     }
     
-    private static void genImmersionPack(DataGenerator generator, PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper, boolean includeServer, boolean includeClient)
+    private static void genImmersionPack(GatherDataEvent event, DataGenerator generator, PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper, boolean includeServer, boolean includeClient)
     {
         generator.addProvider(includeClient, new MinejagoImmersionPackEnUsLanguageProvider(packOutput));
     }

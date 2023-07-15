@@ -9,14 +9,13 @@ import dev.thomasglasser.minejago.data.worldgen.biome.MinejagoBiomeModifierSeria
 import dev.thomasglasser.minejago.world.entity.MinejagoForgeEntityEvents;
 import dev.thomasglasser.minejago.world.level.storage.PowerCapabilityAttacher;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuCapabilityAttacher;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 
 @Mod(Minejago.MOD_ID)
 public class MinejagoForge
@@ -30,13 +29,13 @@ public class MinejagoForge
         MinejagoBiomeModifierSerializers.BIOME_MODIFIER_SERIALIZERS.register(bus);
 
         bus.addListener(MinejagoForgeCoreEvents::onCommonSetup);
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> bus.addListener(MinejagoForgeClientEvents::onClientSetup));
+        if (FMLEnvironment.dist.isClient()) bus.addListener(MinejagoForgeClientEvents::onClientSetup);
 
         addModListeners(bus);
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> addModClientListeners(bus));
+        if (FMLEnvironment.dist.isClient()) addModClientListeners(bus);
 
         addForgeListeners();
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> this::addForgeClientListeners);
+        if (FMLEnvironment.dist.isClient()) addForgeClientListeners();
 
         registerCapabilities();
 
