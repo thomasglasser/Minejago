@@ -30,10 +30,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -158,7 +155,8 @@ public class MinejagoBlockStates extends BlockStateProvider {
         {
             ResourceLocation resourcelocation = ModelLocationUtils.getModelLocation(block);
             MultiPartGenerator multipartgenerator = MultiPartGenerator.multiPart(block);
-            Map.of(Direction.NORTH, VariantProperties.Rotation.R0, Direction.EAST, VariantProperties.Rotation.R90, Direction.SOUTH, VariantProperties.Rotation.R180, Direction.WEST, VariantProperties.Rotation.R270).forEach((p_262541_, p_262542_) -> {
+            SortedMap<Direction, VariantProperties.Rotation> sm = new TreeMap<>(Map.of(Direction.NORTH, VariantProperties.Rotation.R0, Direction.EAST, VariantProperties.Rotation.R90, Direction.SOUTH, VariantProperties.Rotation.R180, Direction.WEST, VariantProperties.Rotation.R270));
+            sm.forEach((p_262541_, p_262542_) -> {
                 Condition.TerminalCondition condition$terminalcondition = Condition.condition().term(BlockStateProperties.HORIZONTAL_FACING, p_262541_);
                 multipartgenerator.with(condition$terminalcondition, Variant.variant().with(VariantProperties.MODEL, resourcelocation).with(VariantProperties.Y_ROT, p_262542_).with(VariantProperties.UV_LOCK, true));
                 addScrollSlotStateAndRotationVariants(multipartgenerator, condition$terminalcondition, p_262542_);

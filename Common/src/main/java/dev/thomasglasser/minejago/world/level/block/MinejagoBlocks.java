@@ -16,10 +16,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -71,9 +68,9 @@ public class MinejagoBlocks
         return BlockRegistryObject.wrap(BLOCKS.register(name, block));
     }
 
-    private static Map<DyeColor, BlockRegistryObject<Block>> teapots()
+    private static SortedMap<DyeColor, BlockRegistryObject<Block>> teapots()
     {
-        Map<DyeColor, BlockRegistryObject<Block>> map = new HashMap<>();
+        SortedMap<DyeColor, BlockRegistryObject<Block>> map = new TreeMap<>();
         for (DyeColor color : DyeColor.values())
         {
             map.put(color, registerBlockAndItemAndWrap(color.getName() + "_teapot", () -> new TeapotBlock(BlockBehaviour.Properties.of().mapColor(color).instabreak().noOcclusion()), CreativeModeTabs.FUNCTIONAL_BLOCKS));

@@ -15,6 +15,8 @@ import net.minecraftforge.common.data.LanguageProvider;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.function.Consumer;
 
 public class AdvancementUtils
@@ -121,7 +123,8 @@ public class AdvancementUtils
         if (rewards != null)
             builder.rewards(rewards);
 
-        triggers.forEach(builder::addCriterion);
+        SortedMap<String, AbstractCriterionTriggerInstance> sm = new TreeMap<>(triggers);
+        sm.forEach(builder::addCriterion);
 
         return builder.save(saver, Minejago.modLoc(category + "/" + id), existingFileHelper);
     }

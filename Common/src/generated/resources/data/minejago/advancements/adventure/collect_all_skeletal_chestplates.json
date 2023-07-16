@@ -83,16 +83,16 @@
       "collect_bone"
     ],
     [
-      "collect_speed"
-    ],
-    [
-      "collect_strength"
-    ],
-    [
       "collect_bow"
     ],
     [
       "collect_knife"
+    ],
+    [
+      "collect_speed"
+    ],
+    [
+      "collect_strength"
     ]
   ],
   "rewards": {
