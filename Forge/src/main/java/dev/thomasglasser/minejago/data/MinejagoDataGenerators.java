@@ -53,7 +53,7 @@ public class MinejagoDataGenerators
     {
         DataGenerator generator = event.getGenerator();
         PackOutput packOutput = generator.getPackOutput();
-        CompletableFuture<HolderLookup.Provider> lookupProvider = constructRegistries(event.getLookupProvider().getNow(VanillaRegistries.createLookup()), BUILDER);
+        CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
 
@@ -69,7 +69,9 @@ public class MinejagoDataGenerators
         MinejagoBlockTagsProvider blockTags = new MinejagoBlockTagsProvider(packOutput, lookupProvider, existingFileHelper);
 
         //Server
-        generator.addProvider(includeServer, new DatapackBuiltinEntriesProvider(packOutput, lookupProvider, Set.of(Minejago.MOD_ID)));
+        DatapackBuiltinEntriesProvider datapackEntries = new DatapackBuiltinEntriesProvider(packOutput, lookupProvider, BUILDER, Set.of(Minejago.MOD_ID));
+        generator.addProvider(includeServer, datapackEntries);
+        lookupProvider = datapackEntries.getRegistryProvider();
         generator.addProvider(includeServer, blockTags);
         generator.addProvider(includeServer, new MinejagoItemTagsProvider(packOutput, lookupProvider, blockTags.contentsGetter(), existingFileHelper));
         generator.addProvider(includeServer, new MinejagoRecipes(packOutput));
@@ -106,15 +108,5 @@ public class MinejagoDataGenerators
     private static void genImmersionPack(GatherDataEvent event, DataGenerator generator, PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper, boolean includeServer, boolean includeClient)
     {
         generator.addProvider(includeClient, new MinejagoImmersionPackEnUsLanguageProvider(packOutput));
-    }
-
-    private static CompletableFuture<HolderLookup.Provider> constructRegistries(HolderLookup.Provider original, RegistrySetBuilder datapackEntriesBuilder)
-    {
-        if (original == null) throw new IllegalArgumentException("Provider should not be null!");
-
-        var builderKeys = new HashSet<>(datapackEntriesBuilder.getEntryKeys());
-        DataPackRegistriesHooks.getDataPackRegistriesWithDimensions().filter(data -> !builderKeys.contains(data.key())).forEach(data -> datapackEntriesBuilder.add(data.key(), context -> {}));
-        var provider = datapackEntriesBuilder.buildPatch(RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY), original);
-        return CompletableFuture.supplyAsync(() -> provider, Util.backgroundExecutor());
     }
 }
