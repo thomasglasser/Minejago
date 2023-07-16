@@ -1,7 +1,6 @@
 package dev.thomasglasser.minejago.data;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.data.advancements.MinejagoAdvancementProvider;
 import dev.thomasglasser.minejago.data.blockstates.MinejagoBlockStates;
 import dev.thomasglasser.minejago.data.lang.MinejagoEnUsLanguageProvider;
@@ -9,33 +8,28 @@ import dev.thomasglasser.minejago.data.lang.expansions.MinejagoImmersionPackEnUs
 import dev.thomasglasser.minejago.data.loot.MinejagoLootTables;
 import dev.thomasglasser.minejago.data.models.MinejagoItemModels;
 import dev.thomasglasser.minejago.data.modonomicons.wiki.MinejagoWikiBookProvider;
+import dev.thomasglasser.minejago.data.particles.MinejagoParticleDescriptionProvider;
+import dev.thomasglasser.minejago.data.powers.MinejagoPowerDatagenSuite;
 import dev.thomasglasser.minejago.data.recipes.MinejagoRecipes;
 import dev.thomasglasser.minejago.data.sounds.MinejagoSoundDefinitions;
 import dev.thomasglasser.minejago.data.tags.*;
 import dev.thomasglasser.minejago.data.trimmed.MinejagoTrimDatagenSuite;
 import dev.thomasglasser.minejago.data.worldgen.MinejagoProcessorLists;
 import dev.thomasglasser.minejago.data.worldgen.biome.MinejagoBiomeModifiers;
-import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.MinejagoStructures;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.placement.MinejagoStructureSets;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.pools.MinejagoPools;
-import net.minecraft.Util;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.RegistrySetBuilder;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.registries.VanillaRegistries;
 import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.LanguageProvider;
 import net.minecraftforge.data.event.GatherDataEvent;
-import net.minecraftforge.registries.DataPackRegistriesHooks;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
@@ -45,7 +39,6 @@ public class MinejagoDataGenerators
             .add(Registries.TEMPLATE_POOL, MinejagoPools::bootstrap)
             .add(Registries.STRUCTURE, MinejagoStructures::bootstrap)
             .add(Registries.STRUCTURE_SET, MinejagoStructureSets::bootstrap)
-            .add(MinejagoRegistries.POWER, MinejagoPowers::bootstrap)
             .add(Registries.PROCESSOR_LIST, MinejagoProcessorLists::bootstrap)
             .add(ForgeRegistries.Keys.BIOME_MODIFIERS, MinejagoBiomeModifiers::bootstrap);
 
@@ -68,27 +61,6 @@ public class MinejagoDataGenerators
     {
         MinejagoBlockTagsProvider blockTags = new MinejagoBlockTagsProvider(packOutput, lookupProvider, existingFileHelper);
 
-        //Server
-        DatapackBuiltinEntriesProvider datapackEntries = new DatapackBuiltinEntriesProvider(packOutput, lookupProvider, BUILDER, Set.of(Minejago.MOD_ID));
-        generator.addProvider(includeServer, datapackEntries);
-        lookupProvider = datapackEntries.getRegistryProvider();
-        generator.addProvider(includeServer, blockTags);
-        generator.addProvider(includeServer, new MinejagoItemTagsProvider(packOutput, lookupProvider, blockTags.contentsGetter(), existingFileHelper));
-        generator.addProvider(includeServer, new MinejagoRecipes(packOutput));
-        generator.addProvider(includeServer, new MinejagoBannerPatternTagsProvider(packOutput, lookupProvider, existingFileHelper));
-        generator.addProvider(includeServer, new MinejagoLootTables(packOutput));
-        generator.addProvider(includeServer, new MinejagoEntityTypeTagsProvider(packOutput, lookupProvider, existingFileHelper));
-        generator.addProvider(includeServer, new MinejagoPaintingVariantTagsProvider(packOutput, lookupProvider, existingFileHelper));
-        generator.addProvider(includeServer, new PowerTagsProvider(packOutput, Minejago.MOD_ID,  lookupProvider, existingFileHelper));
-        generator.addProvider(includeServer, new MinejagoGameEventTagsProvider(packOutput, lookupProvider, existingFileHelper));
-        generator.addProvider(includeServer, new MinejagoBiomeTagsProvider(packOutput, lookupProvider, existingFileHelper));
-        generator.addProvider(includeServer, new MinejagoStructureTagsProvider(packOutput, lookupProvider, existingFileHelper));
-
-        //Client
-        generator.addProvider(includeClient, new MinejagoItemModels(packOutput, existingFileHelper));
-        generator.addProvider(includeClient, new MinejagoBlockStates(packOutput, existingFileHelper));
-        generator.addProvider(includeClient, new MinejagoSoundDefinitions(packOutput, existingFileHelper));
-
         // LanugageProviders
         LanguageProvider enUs = new MinejagoEnUsLanguageProvider(packOutput);
 
@@ -101,8 +73,34 @@ public class MinejagoDataGenerators
         // Trims
         new MinejagoTrimDatagenSuite(event, enUs);
 
+        // Powers
+        MinejagoPowerDatagenSuite powerDatagenSuite = new MinejagoPowerDatagenSuite(event, enUs);
+        CompletableFuture<HolderLookup.Provider> powerLookupProvider = powerDatagenSuite.getRegistryProvider();
+        generator.addProvider(includeServer, new PowerTagsProvider(packOutput, Minejago.MOD_ID,  powerLookupProvider, existingFileHelper));
+
         // Lang gen (on client)
         generator.addProvider(includeClient, enUs);
+
+        //Server
+        DatapackBuiltinEntriesProvider datapackEntries = new DatapackBuiltinEntriesProvider(packOutput, lookupProvider, BUILDER, Set.of(Minejago.MOD_ID));
+        generator.addProvider(includeServer, datapackEntries);
+        lookupProvider = datapackEntries.getRegistryProvider();
+        generator.addProvider(includeServer, blockTags);
+        generator.addProvider(includeServer, new MinejagoItemTagsProvider(packOutput, lookupProvider, blockTags.contentsGetter(), existingFileHelper));
+        generator.addProvider(includeServer, new MinejagoRecipes(packOutput));
+        generator.addProvider(includeServer, new MinejagoBannerPatternTagsProvider(packOutput, lookupProvider, existingFileHelper));
+        generator.addProvider(includeServer, new MinejagoLootTables(packOutput));
+        generator.addProvider(includeServer, new MinejagoEntityTypeTagsProvider(packOutput, lookupProvider, existingFileHelper));
+        generator.addProvider(includeServer, new MinejagoPaintingVariantTagsProvider(packOutput, lookupProvider, existingFileHelper));
+        generator.addProvider(includeServer, new MinejagoGameEventTagsProvider(packOutput, lookupProvider, existingFileHelper));
+        generator.addProvider(includeServer, new MinejagoBiomeTagsProvider(packOutput, lookupProvider, existingFileHelper));
+        generator.addProvider(includeServer, new MinejagoStructureTagsProvider(packOutput, lookupProvider, existingFileHelper));
+
+        //Client
+        generator.addProvider(includeClient, new MinejagoItemModels(packOutput, existingFileHelper));
+        generator.addProvider(includeClient, new MinejagoBlockStates(packOutput, existingFileHelper));
+        generator.addProvider(includeClient, new MinejagoSoundDefinitions(packOutput, existingFileHelper));
+        generator.addProvider(includeClient, new MinejagoParticleDescriptionProvider(packOutput, existingFileHelper));
     }
     
     private static void genImmersionPack(GatherDataEvent event, DataGenerator generator, PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper, boolean includeServer, boolean includeClient)

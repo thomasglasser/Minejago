@@ -257,6 +257,12 @@ public class Power {
             return this;
         }
 
+        public Builder hasSets(boolean has)
+        {
+            this.hasSets = has;
+            return this;
+        }
+
         public Builder display(Display display)
         {
             this.display = display;
@@ -271,6 +277,11 @@ public class Power {
 
         public Builder isSpecial() {
             this.isSpecial = true;
+            return this;
+        }
+
+        public Builder isSpecial(boolean is) {
+            this.isSpecial = is;
             return this;
         }
 

@@ -1,8 +1,8 @@
 {
   "textures": [
+    "minejago:bolt_0",
     "minejago:bolt_1",
     "minejago:bolt_2",
-    "minejago:bolt_3",
-    "minejago:bolt_4"
+    "minejago:bolt_3"
   ]
 }

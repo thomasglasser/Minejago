@@ -1,16 +1,10 @@
 package dev.thomasglasser.minejago.data.models;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
-import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.armor.SkeletalChestplateItem;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.RegistrySetBuilder;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
@@ -70,24 +64,6 @@ public class MinejagoItemModels extends ItemModelProvider
         {
             if (existingFileHelper.exists(Minejago.modLoc("textures/item/" + dyeColor.getName() + "_teapot.png"), PackType.CLIENT_RESOURCES))
                 basicItem(itemRegistryObject.asItem());
-        });
-
-        final RegistryAccess.Frozen access = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
-        final RegistrySetBuilder builder = new RegistrySetBuilder();
-        MinejagoPowers.POWERS.addToSet(builder);
-        HolderLookup.Provider provider = builder.build(access);
-
-        provider.lookupOrThrow(MinejagoRegistries.POWER).listElements().forEach(powerReference ->
-        {
-            if (powerReference.get().hasSets())
-            {
-                MinejagoArmors.POWER_SETS.forEach(armorSet ->
-                        armorSet.getAll().forEach(item ->
-                        {
-                            String path = powerReference.key().location().getPath() + "_" + item.getId().getPath();
-                            singleTexture("item/minejago_armor/" + path, mcLoc("item/generated"), "layer0", modLoc("item/" + path));
-                        }));
-            }
         });
 
         spawnEgg(MinejagoItems.WU_SPAWN_EGG.getId().getPath());

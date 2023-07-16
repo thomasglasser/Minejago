@@ -23,16 +23,16 @@ public class MinejagoParticleTypes
                 return SpinjitzuParticleOptions.CODEC;
             }
         };
-        Services.PARTICLE.fabricRegister("spinjitzu", particle);
+        Services.PARTICLE.fabricRegister(particle, SpinjitzuParticle.Provider::new);
         return particle;
     });
 
-    public static final RegistryObject<SimpleParticleType> SPARKS = PARTICLE_TYPES.register("sparks", () -> Services.PARTICLE.simple("sparks", false));
-    public static final RegistryObject<SimpleParticleType> SNOWS = PARTICLE_TYPES.register("snows", () -> Services.PARTICLE.simple("snows", false));
-    public static final RegistryObject<SimpleParticleType> ROCKS = PARTICLE_TYPES.register("rocks", () -> Services.PARTICLE.simple("rocks", false));
-    public static final RegistryObject<SimpleParticleType> BOLTS = PARTICLE_TYPES.register("bolts", () -> Services.PARTICLE.simple("bolts", false));
-    public static final RegistryObject<SimpleParticleType> SPARKLES = PARTICLE_TYPES.register("sparkles", () -> Services.PARTICLE.simple("sparkles", false));
-    public static final RegistryObject<SimpleParticleType> VAPORS = PARTICLE_TYPES.register("vapors", () -> Services.PARTICLE.simple("vapors", false));
+    public static final RegistryObject<SimpleParticleType> SPARKS = PARTICLE_TYPES.register("sparks", () -> Services.PARTICLE.simple("sparks", SparksParticle.Provider::new, false));
+    public static final RegistryObject<SimpleParticleType> SNOWS = PARTICLE_TYPES.register("snows", () -> Services.PARTICLE.simple("snows", SnowsParticle.Provider::new,  false));
+    public static final RegistryObject<SimpleParticleType> ROCKS = PARTICLE_TYPES.register("rocks", () -> Services.PARTICLE.simple("rocks", RocksParticle.Provider::new,  false));
+    public static final RegistryObject<SimpleParticleType> BOLTS = PARTICLE_TYPES.register("bolts", () -> Services.PARTICLE.simple("bolts", BoltsParticle.Provider::new,  false));
+    public static final RegistryObject<SimpleParticleType> SPARKLES = PARTICLE_TYPES.register("sparkles", () -> Services.PARTICLE.simple("sparkles", SparklesParticle.Provider::new,  false));
+    public static final RegistryObject<SimpleParticleType> VAPORS = PARTICLE_TYPES.register("vapors", () -> Services.PARTICLE.simple("vapors", VaporsParticle.Provider::new,  false));
 
     public static void init() {}
 }

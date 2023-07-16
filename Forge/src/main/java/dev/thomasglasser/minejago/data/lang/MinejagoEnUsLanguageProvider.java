@@ -13,8 +13,6 @@ import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.character.Wu;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
-import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
-import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.item.MinejagoCreativeModeTabs;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
@@ -42,8 +40,6 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraftforge.common.data.LanguageProvider;
 import org.apache.commons.lang3.text.WordUtils;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class MinejagoEnUsLanguageProvider extends LanguageProvider
 {
@@ -202,14 +198,6 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(PowerCommand.QUERY, "Your power is currently set to: %s");
         add(PowerCommand.INVALID, "Power not found in world. Check enabled data packs.");
 
-        // TODO: Update other values
-        addPower(MinejagoPowers.EARTH, "Earth", "Solid as rock.", "Lore!", "Description!");
-        addPower(MinejagoPowers.FIRE, "Fire", "It burns bright in you.", "Lore!", "Description!");
-        addPower(MinejagoPowers.LIGHTNING, "Lightning", "yay spark", "Lore!", "Description!");
-        addPower(MinejagoPowers.ICE, "Ice", "yay ice", "Lore!", "Description!");
-        addPower(MinejagoPowers.NONE, "None", "no powers", "Lore!", "Description!");
-        addPower(MinejagoPowers.CREATION, "Creation", "wu hoo", "Lore!", "Description!");
-
         addCreativeTab(MinejagoCreativeModeTabs.GI.getId(), "Gi");
         addCreativeTab(MinejagoCreativeModeTabs.MINEJAGO.getId(), "Minejago");
 
@@ -304,14 +292,6 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
     public void add(KeyMapping key, String name)
     {
         add(key.getName(), name);
-    }
-
-    public void addPower(@NotNull ResourceKey<Power> power, @NotNull String name, @Nullable String tagline, @Nullable String lore, @Nullable String desc)
-    {
-        add(power.location().toLanguageKey("power"), name);
-        if (tagline != null) add(((TranslatableContents)(Power.defaultTagline(power.location()).getContents())).getKey(), tagline);
-        if (lore != null) add(((TranslatableContents)(Power.Display.withDefaultKeys(power.location()).lore().getContents())).getKey(), lore);
-        if (desc != null) add(((TranslatableContents)(Power.Display.withDefaultKeys(power.location()).description().getContents())).getKey(), desc);
     }
 
     public void addAdvancement(String category, String key, String titleString, String descString) {
