@@ -139,7 +139,7 @@ public class MinejagoRecipes extends RecipeProvider {
 //                RecipeCategory.BREWING,
 //                MinejagoPotions.MILK.get(),
 //                100,
-//                1400)
+//                UniformInt.of(1200, 1400))
 //                .unlockedBy(getHasName(Items.COW_SPAWN_EGG), has(Items.COW_SPAWN_EGG))
 //                .save(writer);
     }

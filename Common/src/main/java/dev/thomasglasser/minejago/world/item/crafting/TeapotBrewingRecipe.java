@@ -5,6 +5,7 @@ import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.Potion;
@@ -19,7 +20,7 @@ public class TeapotBrewingRecipe implements Recipe<Container> {
     protected final Ingredient ingredient;
     protected final Potion result;
     protected final float experience;
-    protected final int cookingTime;
+    protected final IntProvider cookingTime;
 
     public TeapotBrewingRecipe(
             ResourceLocation resourceLocation,
@@ -27,7 +28,7 @@ public class TeapotBrewingRecipe implements Recipe<Container> {
             Ingredient ingredient,
             Potion potion,
             float f,
-            int i
+            IntProvider i
     ) {
         this.id = resourceLocation;
         this.group = string;
@@ -79,7 +80,7 @@ public class TeapotBrewingRecipe implements Recipe<Container> {
     /**
      * Gets the cook time in ticks
      */
-    public int getCookingTime() {
+    public IntProvider getCookingTime() {
         return this.cookingTime;
     }
 

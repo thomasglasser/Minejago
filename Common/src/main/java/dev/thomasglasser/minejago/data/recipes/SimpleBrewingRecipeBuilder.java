@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.data.recipes;
 
 import com.google.gson.JsonObject;
+import com.mojang.serialization.JsonOps;
 import dev.thomasglasser.minejago.world.item.crafting.MinejagoRecipeSerializers;
 import dev.thomasglasser.minejago.world.item.crafting.TeapotBrewingRecipe;
 import net.minecraft.advancements.Advancement;
@@ -13,6 +14,7 @@ import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -27,13 +29,13 @@ public class SimpleBrewingRecipeBuilder implements RecipeBuilder
     private final Potion result;
     private final Ingredient ingredient;
     private final float experience;
-    private final int brewingTime;
+    private final IntProvider brewingTime;
     private final Advancement.Builder advancement = Advancement.Builder.advancement();
     @Nullable
     private String group;
     private final RecipeSerializer<? extends TeapotBrewingRecipe> serializer;
 
-    private SimpleBrewingRecipeBuilder(RecipeCategory pCategory, Potion pResult, Ingredient pIngredient, float pExperience, int pCookingTime, RecipeSerializer<? extends TeapotBrewingRecipe> pSerializer) {
+    private SimpleBrewingRecipeBuilder(RecipeCategory pCategory, Potion pResult, Ingredient pIngredient, float pExperience, IntProvider pCookingTime, RecipeSerializer<? extends TeapotBrewingRecipe> pSerializer) {
         this.category = pCategory;
         this.result = pResult;
         this.ingredient = pIngredient;
@@ -42,7 +44,7 @@ public class SimpleBrewingRecipeBuilder implements RecipeBuilder
         this.serializer = pSerializer;
     }
 
-    public static SimpleBrewingRecipeBuilder of(Ingredient pIngredient, RecipeCategory pCategory, Potion pResult, float pExperience, int brewingTime) {
+    public static SimpleBrewingRecipeBuilder of(Ingredient pIngredient, RecipeCategory pCategory, Potion pResult, float pExperience, IntProvider brewingTime) {
         return new SimpleBrewingRecipeBuilder(pCategory, pResult, pIngredient, pExperience, brewingTime, MinejagoRecipeSerializers.TEAPOT_BREWING_RECIPE.get());
     }
 
@@ -101,12 +103,12 @@ public class SimpleBrewingRecipeBuilder implements RecipeBuilder
         private final Ingredient ingredient;
         private final Potion result;
         private final float experience;
-        private final int brewingTime;
+        private final IntProvider brewingTime;
         private final Advancement.Builder advancement;
         private final ResourceLocation advancementId;
         private final RecipeSerializer<? extends TeapotBrewingRecipe> serializer;
 
-        public Result(ResourceLocation pId, String pGroup, Ingredient pIngredient, Potion pResult, float pExperience, int pCookingTime, Advancement.Builder pAdvancement, ResourceLocation pAdvancementId, RecipeSerializer<? extends TeapotBrewingRecipe> pSerializer) {
+        public Result(ResourceLocation pId, String pGroup, Ingredient pIngredient, Potion pResult, float pExperience, IntProvider pCookingTime, Advancement.Builder pAdvancement, ResourceLocation pAdvancementId, RecipeSerializer<? extends TeapotBrewingRecipe> pSerializer) {
             this.id = pId;
             this.group = pGroup;
             this.ingredient = pIngredient;
@@ -126,7 +128,7 @@ public class SimpleBrewingRecipeBuilder implements RecipeBuilder
             pJson.add("ingredient", this.ingredient.toJson());
             pJson.addProperty("result", BuiltInRegistries.POTION.getKey(this.result).toString());
             pJson.addProperty("experience", this.experience);
-            pJson.addProperty("brewingtime", this.brewingTime);
+            pJson.add("brewingtime", IntProvider.CODEC.encodeStart(JsonOps.INSTANCE, brewingTime).get().orThrow());
         }
 
         public RecipeSerializer<?> getType() {

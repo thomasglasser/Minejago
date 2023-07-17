@@ -2,20 +2,20 @@ package dev.thomasglasser.minejago.world.item.crafting;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.mojang.serialization.JsonOps;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 
 public class SimpleBrewingSerializer<T extends TeapotBrewingRecipe> implements RecipeSerializer<T> {
-    private final int defaultCookingTime;
     private final CookieBaker<T> factory;
 
     public SimpleBrewingSerializer(CookieBaker<T> cookieBaker, int i) {
-        this.defaultCookingTime = i;
         this.factory = cookieBaker;
     }
     public T fromJson(ResourceLocation recipeId, JsonObject json) {
@@ -28,7 +28,7 @@ public class SimpleBrewingSerializer<T extends TeapotBrewingRecipe> implements R
         ResourceLocation resourceLocation = new ResourceLocation(string2);
         Potion potion = BuiltInRegistries.POTION.getOptional(resourceLocation).orElseThrow(() -> new IllegalStateException("Potion: " + string2 + " does not exist"));
         float f = GsonHelper.getAsFloat(json, "experience", 0.0F);
-        int i = GsonHelper.getAsInt(json, "cookingtime", this.defaultCookingTime);
+        IntProvider i = IntProvider.CODEC.parse(JsonOps.INSTANCE, json.getAsJsonObject("brewingtime")).get().orThrow();
         return this.factory.create(recipeId, string, ingredient, potion, f, i);
     }
 
@@ -37,7 +37,7 @@ public class SimpleBrewingSerializer<T extends TeapotBrewingRecipe> implements R
         Ingredient ingredient = Ingredient.fromNetwork(buffer);
         Potion potion = BuiltInRegistries.POTION.get(buffer.readResourceLocation());
         float f = buffer.readFloat();
-        int i = buffer.readVarInt();
+        IntProvider i = buffer.readJsonWithCodec(IntProvider.CODEC);
         return this.factory.create(recipeId, string, ingredient, potion, f, i);
     }
 
@@ -46,12 +46,12 @@ public class SimpleBrewingSerializer<T extends TeapotBrewingRecipe> implements R
         recipe.ingredient.toNetwork(buffer);
         buffer.writeResourceLocation(BuiltInRegistries.POTION.getKey(recipe.result));
         buffer.writeFloat(recipe.experience);
-        buffer.writeVarInt(recipe.cookingTime);
+        buffer.writeJsonWithCodec(IntProvider.CODEC, recipe.cookingTime);
     }
 
     interface CookieBaker<T extends TeapotBrewingRecipe> {
         T create(
-                ResourceLocation resourceLocation, String string, Ingredient ingredient, Potion result, float f, int i
+                ResourceLocation resourceLocation, String string, Ingredient ingredient, Potion result, float f, IntProvider i
         );
     }
 }

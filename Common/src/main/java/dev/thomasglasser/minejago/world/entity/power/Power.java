@@ -26,7 +26,7 @@ import java.util.function.Supplier;
 public class Power {
     public static final Codec<Power> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ResourceLocation.CODEC.fieldOf("id").forGetter(Power::getId),
-            ChatFormatting.CODEC.fieldOf("power_color").forGetter(Power::getColor),
+            ChatFormatting.CODEC.optionalFieldOf("power_color", ChatFormatting.GRAY).forGetter(Power::getColor),
             ExtraCodecs.COMPONENT.optionalFieldOf("tagline", Component.empty()).forGetter(Power::getTagline),
             ExtraCodecs.VECTOR3F.optionalFieldOf("main_spinjitzu_color", SpinjitzuParticleOptions.DEFAULT).forGetter(Power::getMainSpinjitzuColor),
             ExtraCodecs.VECTOR3F.optionalFieldOf("alt_spinjitzu_color", SpinjitzuParticleOptions.DEFAULT).forGetter(Power::getAltSpinjitzuColor),

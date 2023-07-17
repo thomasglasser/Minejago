@@ -54,7 +54,7 @@ public enum TeapotBlockComponentProvider implements IBlockComponentProvider {
                 iTooltip.append(Component.translatable("block.minejago.teapot.waila.cups", cups));
             }
 
-            short time = be.getBrewTime();
+            int time = be.getBrewTime();
             if (time > 0)
             {
                 IElement icon = elementHelper.item(Items.CLOCK.getDefaultInstance(), 0.5f).translate(new Vec2(0, -2));

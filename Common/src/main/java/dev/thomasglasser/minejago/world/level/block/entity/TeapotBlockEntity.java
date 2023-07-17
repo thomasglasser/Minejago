@@ -21,7 +21,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.RandomSource;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Nameable;
@@ -48,7 +48,7 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
 {
     private ItemStack item = ItemStack.EMPTY;
 
-    private short brewTime;
+    private int brewTime;
 
     private int cups = 0;
 
@@ -134,8 +134,8 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
                     if (!pLevel.isClientSide) pLevel.playSound(null, pPos, MinejagoSoundEvents.TEAPOT_WHISTLE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
                     setChanged(pLevel, pPos, pState);
                 }
-            } else if (pBlockEntity.temp >= 100 && ((pBlockEntity.potion == Potions.WATER || !pBlockEntity.item.isEmpty()) && (PotionBrewing.hasPotionMix(PotionUtils.setPotion(new ItemStack(Items.POTION), pBlockEntity.potion), pBlockEntity.item) || recipe.isPresent() || (MinejagoPotionBrewing.hasTeaMix(PotionUtils.setPotion(new ItemStack(Items.POTION), pBlockEntity.getPotion()), pBlockEntity.item))))) {
-                pBlockEntity.brewTime = (recipe.map(TeapotBrewingRecipe::getCookingTime).orElseGet(() -> RandomSource.create().nextIntBetweenInclusive(1200, 2400))).shortValue();
+            } else if (pBlockEntity.temp >= 100 && (pBlockEntity.potion == Potions.WATER || !pBlockEntity.item.isEmpty()) && (PotionBrewing.hasPotionMix(PotionUtils.setPotion(new ItemStack(Items.POTION), pBlockEntity.potion), pBlockEntity.item) || recipe.isPresent() || MinejagoPotionBrewing.hasTeaMix(PotionUtils.setPotion(new ItemStack(Items.POTION), pBlockEntity.getPotion()), pBlockEntity.item))) {
+                pBlockEntity.brewTime = (recipe.map(TeapotBrewingRecipe::getCookingTime).orElseGet(() -> UniformInt.of(1200, 2400))).sample(pLevel.random);
                 pBlockEntity.brewing = true;
                 pBlockEntity.boiling = false;
                 pBlockEntity.done = false;
@@ -143,7 +143,7 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
             BlockState below = pLevel.getBlockState(pPos.below());
             if (pLevel.dimension() == Level.NETHER)
             {
-                if (pBlockEntity.temp < 100)
+                if (pBlockEntity.temp < 100 && !pBlockEntity.isBoiling())
                 {
                     pBlockEntity.temp = 100;
                     pBlockEntity.heating = true;
@@ -175,7 +175,7 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
             pBlockEntity.heating = false;
             pBlockEntity.brewing = false;
             pBlockEntity.brewTime = 0;
-            pBlockEntity.temp = TeapotBlock.getBiomeTemperature(pLevel, pPos);
+            pBlockEntity.temp = (float) TeapotBlock.getBiomeTemperature(pLevel, pPos) / 2;
             setChanged(pLevel, pPos, pState);
         }
     }
@@ -213,7 +213,7 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
         pTag.putBoolean("Done", done);
         pTag.putFloat("Temperature", temp);
         pTag.putInt("Cups", cups);
-        pTag.putShort("BrewTime", brewTime);
+        pTag.putInt("BrewTime", brewTime);
     }
 
     /**
@@ -254,7 +254,7 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
         return temp;
     }
 
-    public short getBrewTime() {
+    public int getBrewTime() {
         return brewTime;
     }
 

@@ -58,11 +58,9 @@ public class CompatCategoryProvider extends CategoryProvider {
 
         this.context().page("playeranimator_image");
         var playerAnimatorImage = BookImagePageModel.builder()
-                .withTitle(context().pageTitle())
                 .withImages(modLoc("textures/modonomicon/wiki/compat/visual/playeranimator.png"))
                 .withText(context().pageText())
                 .build();
-        lang().add(context().pageTitle(), "playerAnimator");
         lang().add(context().pageText(), "Using the Scythe of Quakes with playerAnimator installed");
 
         return BookEntryModel.create(

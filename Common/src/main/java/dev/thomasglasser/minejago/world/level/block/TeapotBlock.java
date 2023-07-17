@@ -141,7 +141,7 @@ public class TeapotBlock extends BaseEntityBlock {
     }
 
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, LivingEntity pPlacer, ItemStack pStack) {
-        if (!pLevel.isClientSide && pLevel.getBlockEntity(pPos) instanceof TeapotBlockEntity teapot) teapot.setTemperature(TeapotBlock.getBiomeTemperature(pLevel, pPos));
+        if (pLevel.getBlockEntity(pPos) instanceof TeapotBlockEntity teapot) teapot.setTemperature(TeapotBlock.getBiomeTemperature(pLevel, pPos) / 2);
 
         if (pStack.hasTag()) {
             CompoundTag tag = pStack.getTag();
