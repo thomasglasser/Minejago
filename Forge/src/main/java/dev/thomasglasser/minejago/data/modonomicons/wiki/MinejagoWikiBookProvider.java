@@ -4,6 +4,7 @@ import com.klikli_dev.modonomicon.api.datagen.BookProvider;
 import com.klikli_dev.modonomicon.api.datagen.book.BookModel;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.data.modonomicons.wiki.categories.CompatCategoryProvider;
+import dev.thomasglasser.minejago.world.item.MinejagoCreativeModeTabs;
 import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.LanguageProvider;
 
@@ -25,6 +26,7 @@ public class MinejagoWikiBookProvider extends BookProvider {
                 .withTooltip(context.bookTooltip())
                 .withGenerateBookItem(true)
                 .withModel(Minejago.Dependencies.MODONOMICON.modLoc("modonomicon_red"))
+                .withCreativeTab(MinejagoCreativeModeTabs.MINEJAGO.getId())
                 .withCategories(
                         new CompatCategoryProvider(this).generate()
                 );
