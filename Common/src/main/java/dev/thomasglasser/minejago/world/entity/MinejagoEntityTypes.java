@@ -1,11 +1,13 @@
 package dev.thomasglasser.minejago.world.entity;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.data.tags.MinejagoPowerTags;
 import dev.thomasglasser.minejago.registration.RegistrationProvider;
 import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.world.entity.character.Character;
 import dev.thomasglasser.minejago.world.entity.character.*;
 import dev.thomasglasser.minejago.world.entity.dragon.Dragon;
+import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownBambooStaff;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownBoneKnife;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownIronShuriken;
@@ -16,6 +18,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.level.Level;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -69,7 +72,7 @@ public class MinejagoEntityTypes
     public static final RegistryObject<EntityType<SkulkinHorse>> SKULKIN_HORSE = ENTITY_TYPES.register("skulkin_horse", () -> EntityType.Builder.of(SkulkinHorse::new, MobCategory.CREATURE)
             .sized(1.3964844f, 1.6f)
             .build("skulkin_horse"));
-    public static final RegistryObject<EntityType<Dragon>> EARTH_DRAGON = ENTITY_TYPES.register("earth_dragon", () -> EntityType.Builder.of(Dragon::new, MobCategory.CREATURE)
+    public static final RegistryObject<EntityType<Dragon>> EARTH_DRAGON = ENTITY_TYPES.register("earth_dragon", () -> EntityType.Builder.of((EntityType<Dragon> entityType, Level level) -> new Dragon(entityType, level, MinejagoPowers.EARTH, MinejagoPowerTags.EARTH), MobCategory.CREATURE)
             .sized(4.8125f, 3.00f)
             .build("earth_dragon"));
     public static final RegistryObject<EntityType<Samukai>> SAMUKAI = ENTITY_TYPES.register("samukai", () -> EntityType.Builder.of(Samukai::new, MobCategory.MONSTER)

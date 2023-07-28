@@ -7,6 +7,7 @@ import dev.thomasglasser.minejago.world.item.ModeledItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
@@ -31,7 +32,12 @@ public abstract class PoweredArmorItem extends ArmorItem implements GeoArmorItem
         {
             ResourceLocation location = ResourceLocation.of(stack.getOrCreateTag().getString("Power"), ':');
             Power power = MinejagoPowers.POWERS.get(level.registryAccess()).get(location);
-            tooltipComponents.add(Component.translatable(location.toLanguageKey("power")).withStyle(ChatFormatting.ITALIC, power.getColor()));
+            if (power != null)
+            {
+                MutableComponent component = Component.translatable(location.toLanguageKey("power"));
+                component.setStyle(component.getStyle().withColor(power.getColor()).withItalic(true));
+                tooltipComponents.add(component);
+            }
         }
         super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
     }

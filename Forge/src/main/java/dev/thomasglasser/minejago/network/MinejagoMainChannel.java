@@ -51,6 +51,11 @@ public class MinejagoMainChannel
                 .encoder((packet, buf) -> {})
                 .consumerMainThread((packet, context) -> packet.handle(context.get().getSender()))
                 .add();
+        INSTANCE.messageBuilder(ServerboundFlyVehiclePacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(ServerboundFlyVehiclePacket::new)
+                .encoder(ServerboundFlyVehiclePacket::toBytes)
+                .consumerMainThread((packet, context) -> packet.handle(context.get().getSender()))
+                .add();
 
         // Client bound
         INSTANCE.messageBuilder(ClientboundStartSpinjitzuPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)

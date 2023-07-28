@@ -18,9 +18,9 @@ public class MinejagoParticleDescriptionProvider extends ParticleDescriptionProv
                 Minejago.modLoc("vapor_1"),
                 Minejago.modLoc("vapor_2"),
                 Minejago.modLoc("vapor_3")
-                );
+        );
         spriteSet(MinejagoParticleTypes.SPINJITZU.get(),
                 Minejago.modLoc("spinjitzu")
-                );
+        );
     }
 }

@@ -56,7 +56,7 @@ public class MinejagoDataGenerators
         genMain(event, generator, packOutput, lookupProvider, existingFileHelper, includeServer, includeClient);
         genImmersionPack(event, generator, new PackOutput(packOutput.getOutputFolder().resolve("resourcepacks/minejago_immersion_pack")), lookupProvider, existingFileHelper, includeServer, includeClient);
     }
-    
+
     private static void genMain(GatherDataEvent event, DataGenerator generator, PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper, boolean includeServer, boolean includeClient)
     {
         MinejagoBlockTagsProvider blockTags = new MinejagoBlockTagsProvider(packOutput, lookupProvider, existingFileHelper);
@@ -102,7 +102,7 @@ public class MinejagoDataGenerators
         generator.addProvider(includeClient, new MinejagoSoundDefinitions(packOutput, existingFileHelper));
         generator.addProvider(includeClient, new MinejagoParticleDescriptionProvider(packOutput, existingFileHelper));
     }
-    
+
     private static void genImmersionPack(GatherDataEvent event, DataGenerator generator, PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper, boolean includeServer, boolean includeClient)
     {
         generator.addProvider(includeClient, new MinejagoImmersionPackEnUsLanguageProvider(packOutput));

@@ -44,6 +44,7 @@ public class MinejagoItems
     public static final RegistryObject<Item> SCROLL = register("scroll", () -> new ScrollItem(new Item.Properties()), CreativeModeTabs.INGREDIENTS);
     public static final RegistryObject<Item> WRITABLE_SCROLL = register("writable_scroll", () -> new WritableScrollItem(new Item.Properties().stacksTo(1)), CreativeModeTabs.TOOLS_AND_UTILITIES);
     public static final RegistryObject<Item> WRITTEN_SCROLL = register("written_scroll", () -> new WrittenScrollItem(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> EMPTY_GOLDEN_WEAPONS_MAP = register("empty_golden_weapons_map", () -> new CustomEmptyMapItem(CustomEmptyMapItem::getFourWeaponsMap, new Item.Properties()), MinejagoCreativeModeTabs.MINEJAGO.getResourceKey());
 
     // POTTERY SHERDS
     public static final RegistryObject<Item> POTTERY_SHERD_ICE_CUBE = registerSherd("pottery_sherd_ice_cube");
@@ -123,10 +124,8 @@ public class MinejagoItems
 
         if (tab == CreativeModeTabs.COMBAT)
         {
-            for (RegistryObject<Item> item : MinejagoArmors.ARMOR.getEntries())
-            {
-                items.add(item.get().getDefaultInstance());
-            }
+            MinejagoArmors.ARMOR_SETS.forEach(set ->
+                    items.addAll(set.getAllAsItems().stream().map(Item::getDefaultInstance).toList()));
         }
 
         return items;

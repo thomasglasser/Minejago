@@ -11,7 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class NuckalRenderer extends HumanoidMobRenderer<Nuckal, NuckalModel<Nuckal>>
 {
-    public static final ResourceLocation TEXTURE_LOCATION = Minejago.modLoc("textures/entity/nuckal.png");
+    public static final ResourceLocation TEXTURE_LOCATION = Minejago.modLoc("textures/entity/skulkin/nuckal.png");
 
     public NuckalRenderer(EntityRendererProvider.Context context) {
         super(context, new NuckalModel<>(context.bakeLayer(NuckalModel.LAYER_LOCATION)), 0.5f);

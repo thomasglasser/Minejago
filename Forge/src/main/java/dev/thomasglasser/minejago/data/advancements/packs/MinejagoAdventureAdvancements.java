@@ -40,7 +40,7 @@ public class MinejagoAdventureAdvancements implements ForgeAdvancementProvider.A
     @Override
     public void generate(HolderLookup.Provider registries, Consumer<Advancement> saver, ExistingFileHelper existingFileHelper) {
         AdvancementUtils maker = new AdvancementUtils(saver, existingFileHelper, enUs, CATEGORY);
-        
+
         Advancement killASkulkin = maker.make(new ResourceLocation("adventure/kill_a_mob"), MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.SPEED).get(), KILL_A_SKULKIN, FrameType.TASK, true, true, false, null, Map.of(
                 "kill_skulkin", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(MinejagoEntityTypeTags.SKULKINS))
         ), "Redead", "Kill a Skulkin Warrior");

@@ -94,9 +94,6 @@ public class MinejagoItemTagsProvider extends ItemTagsProvider
                 .add(MinejagoItems.POTTERY_SHERD_DRAGONS_HEAD.get())
                 .add(MinejagoItems.POTTERY_SHERD_DRAGONS_TAIL.get());
 
-        tag(ItemTags.TRIM_TEMPLATES)
-                .add(MinejagoItems.FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE.get());
-
         copy(MinejagoBlockTags.TEAPOTS, MinejagoItemTags.TEAPOTS);
 
         tag(MinejagoItemTags.LECTERN_SCROLLS)

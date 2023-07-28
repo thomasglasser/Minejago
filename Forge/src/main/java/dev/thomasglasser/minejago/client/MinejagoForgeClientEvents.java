@@ -42,6 +42,7 @@ import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
@@ -200,5 +201,10 @@ public class MinejagoForgeClientEvents {
                 event.addRepositorySource((packConsumer) -> packConsumer.accept(pack));
             }
         }
+    }
+
+    public static void onClientTick(TickEvent.ClientTickEvent event)
+    {
+        MinejagoClientEvents.onClientTick();
     }
 }

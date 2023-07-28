@@ -94,6 +94,7 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(MinejagoItems.SCROLL.get(), "Scroll");
         add(MinejagoItems.WRITABLE_SCROLL.get(), "Scroll and Quill");
         add(MinejagoItems.WRITTEN_SCROLL.get(), "Written Scroll");
+        add(MinejagoItems.EMPTY_GOLDEN_WEAPONS_MAP.get(), "Empty Golden Weapons Map");
 
         add(MinejagoBlocks.TEAPOT.get(), "Teapot");
         add(MinejagoBlocks.JASPOT.get(), "Jaspot");
@@ -113,13 +114,13 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
             if (item.get() instanceof SkeletalChestplateItem chestplate)
             {
                 String nameForVariant = switch (chestplate.getVariant())
-                        {
-                            case STRENGTH -> "Red";
-                            case SPEED -> "Blue";
-                            case BOW -> "White";
-                            case KNIFE -> "Black";
-                            case BONE -> "Bone";
-                        };
+                {
+                    case STRENGTH -> "Red";
+                    case SPEED -> "Blue";
+                    case BOW -> "White";
+                    case KNIFE -> "Black";
+                    case BONE -> "Bone";
+                };
 
                 addDesc(item.get(), nameForVariant);
             }
@@ -188,6 +189,8 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add("effect.minecraft.leaping", "Leaping");
 
         add(MinejagoKeyMappings.ACTIVATE_SPINJITZU, "Activate Spinjitzu");
+        add(MinejagoKeyMappings.ASCEND, "Ascend");
+        add(MinejagoKeyMappings.DESCEND, "Descend");
 
         add(PowerCommand.SUCCESS_SELF, "Set own power to %s");
         add(PowerCommand.CHANGED, "Your power has been updated to %s");
@@ -306,7 +309,7 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
     {
         add(location.toLanguageKey("item_group"), name);
     }
-    
+
     public void add(RegistryObject<SoundEvent> sound, String name)
     {
         add("subtitles." + sound.getId().getPath(), name);

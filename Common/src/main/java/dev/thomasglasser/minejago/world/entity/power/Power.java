@@ -12,6 +12,9 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -26,7 +29,7 @@ import java.util.function.Supplier;
 public class Power {
     public static final Codec<Power> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ResourceLocation.CODEC.fieldOf("id").forGetter(Power::getId),
-            ChatFormatting.CODEC.optionalFieldOf("power_color", ChatFormatting.GRAY).forGetter(Power::getColor),
+            TextColor.CODEC.optionalFieldOf("power_color", TextColor.fromLegacyFormat(ChatFormatting.GRAY)).forGetter(Power::getColor),
             ExtraCodecs.COMPONENT.optionalFieldOf("tagline", Component.empty()).forGetter(Power::getTagline),
             ExtraCodecs.VECTOR3F.optionalFieldOf("main_spinjitzu_color", SpinjitzuParticleOptions.DEFAULT).forGetter(Power::getMainSpinjitzuColor),
             ExtraCodecs.VECTOR3F.optionalFieldOf("alt_spinjitzu_color", SpinjitzuParticleOptions.DEFAULT).forGetter(Power::getAltSpinjitzuColor),
@@ -39,7 +42,7 @@ public class Power {
     @NotNull
     private final ResourceLocation id;
     @NotNull
-    private final ChatFormatting color;
+    private final TextColor color;
     @NotNull
     protected Vector3f mainSpinjitzuColor;
     @NotNull
@@ -66,10 +69,10 @@ public class Power {
         return new Builder(Minejago.modLoc(id));
     }
 
-    protected Power(@NotNull ResourceLocation id, @NotNull ChatFormatting color, @Nullable Component tagline, @NotNull Vector3f mainSpinjitzuColor, @NotNull Vector3f altSpinjitzuColor, @Nullable Supplier<? extends ParticleOptions> borderParticle, boolean hasSets, @Nullable Display display, boolean isSpecial)
+    protected Power(@NotNull ResourceLocation id, @NotNull TextColor color, @Nullable Component tagline, @NotNull Vector3f mainSpinjitzuColor, @NotNull Vector3f altSpinjitzuColor, @Nullable Supplier<? extends ParticleOptions> borderParticle, boolean hasSets, @Nullable Display display, boolean isSpecial)
     {
         this.id = id;
-        this.color = color.isColor() ? color : ChatFormatting.GRAY;
+        this.color = color;
         this.tagline = tagline == null ? Component.empty() : tagline;
         this.mainSpinjitzuColor = mainSpinjitzuColor;
         this.altSpinjitzuColor = altSpinjitzuColor;
@@ -80,7 +83,7 @@ public class Power {
         this.icon = new ResourceLocation(id.getNamespace(), "textures/power/" + id.getPath() + ".png");
     }
 
-    protected Power(@NotNull ResourceLocation id, ChatFormatting color, @Nullable Component tagline, @NotNull Vector3f mainSpinjitzuColor, @NotNull Vector3f altSpinjitzuColor, @NotNull Optional<ParticleType<?>> borderParticle, boolean hasSets, Display display, boolean isSpecial)
+    protected Power(@NotNull ResourceLocation id, TextColor color, @Nullable Component tagline, @NotNull Vector3f mainSpinjitzuColor, @NotNull Vector3f altSpinjitzuColor, @NotNull Optional<ParticleType<?>> borderParticle, boolean hasSets, Display display, boolean isSpecial)
     {
         this(id, color, tagline, mainSpinjitzuColor, altSpinjitzuColor, borderParticle.orElse(null) instanceof ParticleOptions ? () -> (ParticleOptions) borderParticle.orElse(null) : null, hasSets, display, isSpecial);
     }
@@ -107,7 +110,7 @@ public class Power {
         return borderParticle != null ? Optional.of(borderParticle.get().getType()) : Optional.empty();
     }
 
-    public @NotNull ChatFormatting getColor() {
+    public @NotNull TextColor getColor() {
         return color;
     }
 
@@ -132,7 +135,9 @@ public class Power {
 
     public Component getFormattedName()
     {
-        return Component.translatable(getDescriptionId()).withStyle(getColor());
+        MutableComponent component = Component.translatable(getDescriptionId());
+        component.withStyle((component.getStyle().withColor(color)));
+        return component;
     }
     public Display getDisplay() {
         return display;
@@ -193,7 +198,7 @@ public class Power {
     public static class Builder
     {
         private final ResourceLocation id;
-        private ChatFormatting color;
+        private TextColor color;
         protected Vector3f mainSpinjitzuColor;
         protected Vector3f altSpinjitzuColor;
         protected Supplier<? extends ParticleOptions> borderParticle;
@@ -205,7 +210,7 @@ public class Power {
         public Builder(ResourceLocation id)
         {
             this.id = id;
-            this.color = ChatFormatting.GRAY;
+            this.color = TextColor.fromLegacyFormat(ChatFormatting.GRAY);
             this.tagline = Component.empty();
             this.mainSpinjitzuColor = SpinjitzuParticleOptions.DEFAULT;
             this.altSpinjitzuColor = SpinjitzuParticleOptions.DEFAULT;
@@ -216,6 +221,12 @@ public class Power {
         }
 
         public Builder color(ChatFormatting color)
+        {
+            this.color = TextColor.fromLegacyFormat(color);
+            return this;
+        }
+
+        public Builder color(TextColor color)
         {
             this.color = color;
             return this;

@@ -79,6 +79,7 @@ public class MinejagoForge
     private void addForgeClientListeners()
     {
         MinecraftForge.EVENT_BUS.addListener((ClientPlayerNetworkEvent.LoggingIn event) -> MinejagoClientEvents.onPlayerLoggedIn());
+        MinecraftForge.EVENT_BUS.addListener(MinejagoForgeClientEvents::onClientTick);
     }
 
     private void registerCapabilities()

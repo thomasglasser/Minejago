@@ -24,10 +24,10 @@ public class MinejagoBannerPatternTagsProvider extends BannerPatternTagsProvider
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         tag(MinejagoBannerPatternTags.PATTERN_ITEM_FOUR_WEAPONS)
-            .add(modLoc(MinejagoBannerPatterns.FOUR_WEAPONS_LEFT.get()))
-            .add(modLoc(MinejagoBannerPatterns.FOUR_WEAPONS_RIGHT.get()));
+                .add(modLoc(MinejagoBannerPatterns.FOUR_WEAPONS_LEFT.get()))
+                .add(modLoc(MinejagoBannerPatterns.FOUR_WEAPONS_RIGHT.get()));
         tag(BannerPatternTags.NO_ITEM_REQUIRED)
-            .add(modLoc(MinejagoBannerPatterns.EDGE_LINES.get()));
+                .add(modLoc(MinejagoBannerPatterns.EDGE_LINES.get()));
     }
 
     private static ResourceKey<BannerPattern> modLoc(BannerPattern pattern)

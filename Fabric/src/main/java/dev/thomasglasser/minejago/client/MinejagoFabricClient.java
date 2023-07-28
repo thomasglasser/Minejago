@@ -25,7 +25,9 @@ import dev.thomasglasser.minejago.world.level.block.entity.TeapotBlockEntity;
 import fuzs.forgeconfigapiport.api.config.v2.ModConfigEvents;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
-import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
+import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.*;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
@@ -55,6 +57,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.level.block.Block;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
@@ -154,20 +158,23 @@ public class MinejagoFabricClient implements ClientModInitializer {
 
     private void registerModelProviders()
     {
-        ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, consumer) -> consumer.accept(new ModelResourceLocation(Minejago.MOD_ID, "iron_scythe_inventory", "inventory")));
-        ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, consumer) -> consumer.accept(new ModelResourceLocation(Minejago.MOD_ID, "scythe_of_quakes_inventory", "inventory")));
-        ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, consumer) -> consumer.accept(new ModelResourceLocation(Minejago.MOD_ID, "iron_spear_inventory", "inventory")));
-        ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, consumer) -> consumer.accept(new ModelResourceLocation(Minejago.MOD_ID, "wooden_nunchucks_inventory", "inventory")));
-        ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, consumer) -> consumer.accept(new ModelResourceLocation(Minejago.MOD_ID, "bamboo_staff_inventory", "inventory")));
-        ModelLoadingRegistry.INSTANCE.registerModelProvider(((manager, consumer) ->
+        ModelLoadingPlugin.register(context -> context.addModels(new ModelResourceLocation(Minejago.MOD_ID, "iron_scythe_inventory", "inventory")));
+        ModelLoadingPlugin.register(context -> context.addModels(new ModelResourceLocation(Minejago.MOD_ID, "scythe_of_quakes_inventory", "inventory")));
+        ModelLoadingPlugin.register(context -> context.addModels(new ModelResourceLocation(Minejago.MOD_ID, "iron_spear_inventory", "inventory")));
+        ModelLoadingPlugin.register(context -> context.addModels(new ModelResourceLocation(Minejago.MOD_ID, "wooden_nunchucks_inventory", "inventory")));
+        ModelLoadingPlugin.register(context -> context.addModels(new ModelResourceLocation(Minejago.MOD_ID, "bamboo_staff_inventory", "inventory")));
+        PreparableModelLoadingPlugin.register(((resourceManager, executor) ->
         {
-            Map<ResourceLocation, Resource> map = manager.listResources("models/item/minejago_armor", (location -> location.getPath().endsWith(".json")));
+            Map<ResourceLocation, Resource> map = resourceManager.listResources("models/item/minejago_armor", (location -> location.getPath().endsWith(".json")));
+            List<ModelResourceLocation> rls = new ArrayList<>();
             for (ResourceLocation rl : map.keySet())
             {
                 ResourceLocation stripped = new ResourceLocation(rl.getNamespace(), rl.getPath().substring("models/item/".length(), rl.getPath().indexOf(".json")));
-                consumer.accept(new ModelResourceLocation(stripped, "inventory"));
+                rls.add(new ModelResourceLocation(stripped, "inventory"));
             }
-        }));
+            return CompletableFuture.supplyAsync(() -> rls, executor);
+        }), (data, pluginContext) ->
+                pluginContext.addModels(data));
     }
 
     private void registerItemAndBlockColors()
@@ -212,55 +219,57 @@ public class MinejagoFabricClient implements ClientModInitializer {
                 MinejagoClientUtils.refreshVip());
         ItemGroupEvents.MODIFY_ENTRIES_ALL.register((group, entries) ->
                 entries.acceptAll(MinejagoItems.getItemsForTab(BuiltInRegistries.CREATIVE_MODE_TAB.getResourceKey(group).orElseThrow())));
+        ClientTickEvents.END_CLIENT_TICK.register(client ->
+                MinejagoClientEvents.onClientTick());
     }
 
     private void registerPackets()
     {
         ClientPlayNetworking.registerGlobalReceiver(ClientboundChangeVipDataPacket.ID, (client, handler, buf, responseSender) ->
-                {
-                    buf.retain();
-                    client.execute(() ->
-                    {
-                        new ClientboundChangeVipDataPacket(buf).handle();
-                        buf.release();
-                    });
-                });
+        {
+            buf.retain();
+            client.execute(() ->
+            {
+                new ClientboundChangeVipDataPacket(buf).handle();
+                buf.release();
+            });
+        });
         ClientPlayNetworking.registerGlobalReceiver(ClientboundRefreshVipDataPacket.ID, (client, handler, buf, responseSender) ->
-                {
-                    buf.retain();
-                    client.execute(() ->
-                    {
-                        new ClientboundRefreshVipDataPacket().handle();
-                        buf.release();
-                    });
-                });
+        {
+            buf.retain();
+            client.execute(() ->
+            {
+                new ClientboundRefreshVipDataPacket().handle();
+                buf.release();
+            });
+        });
         ClientPlayNetworking.registerGlobalReceiver(ClientboundStartScytheAnimationPacket.ID, (client, handler, buf, responseSender) ->
-                {
-                    buf.retain();
-                    client.execute(() ->
-                    {
-                        new ClientboundStartScytheAnimationPacket(buf).handle();
-                        buf.release();
-                    });
-                });
+        {
+            buf.retain();
+            client.execute(() ->
+            {
+                new ClientboundStartScytheAnimationPacket(buf).handle();
+                buf.release();
+            });
+        });
         ClientPlayNetworking.registerGlobalReceiver(ClientboundStartSpinjitzuPacket.ID, (client, handler, buf, responseSender) ->
-                {
-                    buf.retain();
-                    client.execute(() ->
-                    {
-                        new ClientboundStartSpinjitzuPacket(buf).handle();
-                        buf.release();
-                    });
-                });
+        {
+            buf.retain();
+            client.execute(() ->
+            {
+                new ClientboundStartSpinjitzuPacket(buf).handle();
+                buf.release();
+            });
+        });
         ClientPlayNetworking.registerGlobalReceiver(ClientboundStopAnimationPacket.ID, (client, handler, buf, responseSender) ->
-                {
-                    buf.retain();
-                    client.execute(() ->
-                    {
-                        new ClientboundStopAnimationPacket(buf).handle();
-                        buf.release();
-                    });
-                });
+        {
+            buf.retain();
+            client.execute(() ->
+            {
+                new ClientboundStopAnimationPacket(buf).handle();
+                buf.release();
+            });
+        });
         ClientPlayNetworking.registerGlobalReceiver(ClientboundSpawnParticlePacket.ID, (client, handler, buf, responseSender) ->
         {
             buf.retain();

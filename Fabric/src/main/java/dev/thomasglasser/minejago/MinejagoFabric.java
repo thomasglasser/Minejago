@@ -1,9 +1,6 @@
 package dev.thomasglasser.minejago;
 
-import dev.thomasglasser.minejago.network.ServerboundChangeVipDataPacket;
-import dev.thomasglasser.minejago.network.ServerboundSetPowerDataPacket;
-import dev.thomasglasser.minejago.network.ServerboundStartSpinjitzuPacket;
-import dev.thomasglasser.minejago.network.ServerboundStopSpinjitzuPacket;
+import dev.thomasglasser.minejago.network.*;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityEvents;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.character.Zane;
@@ -65,6 +62,8 @@ public class MinejagoFabric implements ModInitializer {
                 new ServerboundSetPowerDataPacket(buf).handle(player));
         ServerPlayNetworking.registerGlobalReceiver(ServerboundStopSpinjitzuPacket.ID, (server, player, handler, buf, responseSender) ->
                 new ServerboundStopSpinjitzuPacket().handle(player));
+        ServerPlayNetworking.registerGlobalReceiver(ServerboundFlyVehiclePacket.ID, (server, player, handler, buf, responseSender) ->
+                new ServerboundFlyVehiclePacket(buf).handle(player));
     }
 
     private void addBiomeModifications()
