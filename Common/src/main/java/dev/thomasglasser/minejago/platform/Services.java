@@ -20,7 +20,6 @@ public class Services {
     public static final NetworkHelper NETWORK = load(NetworkHelper.class);
     public static final BlockEntityHelper BLOCK_ENTITY = load(BlockEntityHelper.class);
     public static final ItemHelper ITEM = load(ItemHelper.class);
-    public static final PotionHelper POTION = load(PotionHelper.class);
 
     // This code is used to load a service for the current environment. Your implementation of the service must be defined
     // manually by including a text file in META-INF/services named with the fully qualified class name of the service.

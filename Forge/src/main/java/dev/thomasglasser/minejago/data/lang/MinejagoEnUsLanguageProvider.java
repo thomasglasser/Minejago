@@ -160,7 +160,15 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
 
         add("container.teapot", "Teapot");
 
-        addTea(MinejagoPotions.REGULAR_TEA.get(), "Regular Tea");
+        addTea(MinejagoPotions.ACACIA_TEA.get(), "Acacia Tea");
+        addTea(MinejagoPotions.OAK_TEA.get(), "Oak Tea");
+        addTea(MinejagoPotions.CHERRY_TEA.get(), "Cherry Tea");
+        addTea(MinejagoPotions.SPRUCE_TEA.get(), "Spruce Tea");
+        addTea(MinejagoPotions.MANGROVE_TEA.get(), "Mangrove Tea");
+        addTea(MinejagoPotions.JUNGLE_TEA.get(), "Jungle Tea");
+        addTea(MinejagoPotions.DARK_OAK_TEA.get(), "Dark Oak Tea");
+        addTea(MinejagoPotions.BIRCH_TEA.get(), "Birch Tea");
+
         add(MinejagoItems.FILLED_TEACUP.get().getDescriptionId() + ".milk", "Cup of Milk");
         addPotions(MinejagoPotions.MILK.get(), "Milk");
 
@@ -200,6 +208,7 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(PowerCommand.SUCCESS_CLEARED_OTHER, "Reset %s's power to %s and enabled power discovery");
         add(PowerCommand.QUERY, "Your power is currently set to: %s");
         add(PowerCommand.INVALID, "Power not found in world. Check enabled data packs.");
+        add(PowerCommand.NOT_LIVING_ENTITY, "Target %s (%s) is not a LivingEntity");
 
         addCreativeTab(MinejagoCreativeModeTabs.GI.getId(), "Gi");
         addCreativeTab(MinejagoCreativeModeTabs.MINEJAGO.getId(), "Minejago");
@@ -229,6 +238,7 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(MinejagoItems.MOD_NEEDED, "To get the full functionality of this item, please install the %s mod.");
 
         add(MinejagoPacks.IMMERSION.titleKey(), "Minejago Immersion Pack");
+        add(MinejagoPacks.POTION_POT.titleKey(), "Minejago Potion Pot Pack");
 
         add(Wu.NO_POWER_GIVEN_KEY, "You feel no new power rise from within. You are not an elemental master...");
         add(Wu.POWER_GIVEN_KEY, "<%s> %s, Master of %s. %s");

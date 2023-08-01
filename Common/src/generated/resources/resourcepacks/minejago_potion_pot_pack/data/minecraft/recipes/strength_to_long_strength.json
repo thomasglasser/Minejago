@@ -1,0 +1,11 @@
+{
+  "type": "minejago:teapot_brewing",
+  "base": "minecraft:strength",
+  "brewingtime": 800,
+  "experience": 0.35,
+  "group": "potion",
+  "ingredient": {
+    "item": "minecraft:redstone"
+  },
+  "result": "minecraft:long_strength"
+}

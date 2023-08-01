@@ -1,0 +1,29 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_brewed_swiftness_in_stand": {
+      "conditions": {
+        "potion": "minecraft:swiftness"
+      },
+      "trigger": "minecraft:brewed_potion"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:awkward_to_swiftness"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_brewed_swiftness_in_stand",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:awkward_to_swiftness"
+    ]
+  },
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,29 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_brewed_slow_falling_in_stand": {
+      "conditions": {
+        "potion": "minecraft:slow_falling"
+      },
+      "trigger": "minecraft:brewed_potion"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:awkward_to_slow_falling"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_brewed_slow_falling_in_stand",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:awkward_to_slow_falling"
+    ]
+  },
+  "sends_telemetry_event": true
+}

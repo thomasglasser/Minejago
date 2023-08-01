@@ -29,7 +29,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 
-public class FilledTeacupItem extends PotionItem implements TeapotLiquidHolder
+public class FilledTeacupItem extends PotionItem implements PotionCupHolder
 {
     public FilledTeacupItem(Properties pProperties) {
         super(pProperties);
@@ -135,7 +135,22 @@ public class FilledTeacupItem extends PotionItem implements TeapotLiquidHolder
     }
 
     @Override
+    public boolean canBeDrained(ItemStack stack) {
+        return true;
+    }
+
+    @Override
     public ItemStack getDrained(ItemStack stack) {
         return new ItemStack(MinejagoItems.TEACUP.get());
+    }
+
+    @Override
+    public ItemStack getFilled(Potion potion) {
+        return null;
+    }
+
+    @Override
+    public boolean canBeFilled(ItemStack stack, Potion potion, int cups) {
+        return false;
     }
 }

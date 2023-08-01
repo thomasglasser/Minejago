@@ -50,6 +50,7 @@ public class MinejagoForge
         bus.addListener(MinejagoForgeClientEvents::onClientConfigChanged);
         bus.addListener(MinejagoForgeEntityEvents::onEntityAttributeCreation);
         bus.addListener(MinejagoForgeEntityEvents::onSpawnPlacementsRegister);
+        bus.addListener(MinejagoForgeCoreEvents::onAddPackFinders);
     }
 
     private void addModClientListeners(IEventBus bus)
@@ -63,7 +64,6 @@ public class MinejagoForge
         bus.addListener(MinejagoForgeClientEvents::registerClientReloadListeners);
         bus.addListener(MinejagoForgeClientEvents::onAddLayers);
         bus.addListener(MinejagoForgeClientEvents::onBuildCreativeTabContent);
-        bus.addListener(MinejagoForgeClientEvents::onAddPackFinders);
     }
 
     private void addForgeListeners()

@@ -17,7 +17,7 @@ public class MinejagoPowerDatagenSuite extends PowerDatagenSuite {
     public void generate() {
         makePowerSuite(MinejagoPowers.NONE);
         makePowerSuite(MinejagoPowers.ICE, builder -> builder
-                        .color(ChatFormatting.WHITE)
+                        .color("#EDECE4")
                         .defaultTagline()
                         .mainSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_LIGHT_BLUE)
                         .altSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_WHITE)
@@ -25,7 +25,7 @@ public class MinejagoPowerDatagenSuite extends PowerDatagenSuite {
                         .defaultDisplay(),
                 MinejagoParticleTypes.SNOWS, "snow", 4, true, config -> {});
         makePowerSuite(MinejagoPowers.EARTH, builder -> builder
-                        .color(ChatFormatting.DARK_GRAY)
+                        .color("#5A4441")
                         .defaultTagline()
                         .mainSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_BROWN)
                         .altSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_TAN)
@@ -34,7 +34,7 @@ public class MinejagoPowerDatagenSuite extends PowerDatagenSuite {
                 MinejagoParticleTypes.ROCKS, "rock", 4, true, config ->
                         config.tagline("Solid as rock."));
         makePowerSuite(MinejagoPowers.FIRE, builder -> builder
-                        .color(ChatFormatting.RED)
+                        .color("#B90E04")
                         .defaultTagline()
                         .mainSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_ORANGE)
                         .altSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_YELLOW)
@@ -43,7 +43,7 @@ public class MinejagoPowerDatagenSuite extends PowerDatagenSuite {
                 MinejagoParticleTypes.SPARKS, "spark", 4, true, config ->
                         config.tagline("It burns bright in you."));
         makePowerSuite(MinejagoPowers.LIGHTNING, builder -> builder
-                        .color(ChatFormatting.BLUE)
+                        .color("#4668D5")
                         .defaultTagline()
                         .mainSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_BLUE)
                         .altSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_LIGHT_BLUE)

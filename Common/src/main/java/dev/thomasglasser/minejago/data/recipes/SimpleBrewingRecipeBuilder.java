@@ -25,27 +25,27 @@ import java.util.function.Consumer;
 
 public class SimpleBrewingRecipeBuilder implements RecipeBuilder
 {
-    private final RecipeCategory category;
-    private final Potion result;
+    @Nullable
+    private String group;
+    private final Potion base;
     private final Ingredient ingredient;
+    private final Potion result;
     private final float experience;
     private final IntProvider brewingTime;
     private final Advancement.Builder advancement = Advancement.Builder.advancement();
-    @Nullable
-    private String group;
     private final RecipeSerializer<? extends TeapotBrewingRecipe> serializer;
 
-    private SimpleBrewingRecipeBuilder(RecipeCategory pCategory, Potion pResult, Ingredient pIngredient, float pExperience, IntProvider pCookingTime, RecipeSerializer<? extends TeapotBrewingRecipe> pSerializer) {
-        this.category = pCategory;
-        this.result = pResult;
+    private SimpleBrewingRecipeBuilder(Potion base, Ingredient pIngredient, Potion pResult, float pExperience, IntProvider pCookingTime, RecipeSerializer<? extends TeapotBrewingRecipe> pSerializer) {
+        this.base = base;
         this.ingredient = pIngredient;
+        this.result = pResult;
         this.experience = pExperience;
         this.brewingTime = pCookingTime;
         this.serializer = pSerializer;
     }
 
-    public static SimpleBrewingRecipeBuilder of(Ingredient pIngredient, RecipeCategory pCategory, Potion pResult, float pExperience, IntProvider brewingTime) {
-        return new SimpleBrewingRecipeBuilder(pCategory, pResult, pIngredient, pExperience, brewingTime, MinejagoRecipeSerializers.TEAPOT_BREWING_RECIPE.get());
+    public static SimpleBrewingRecipeBuilder of(Potion base, Ingredient ingredient, Potion pResult, float pExperience, IntProvider brewingTime) {
+        return new SimpleBrewingRecipeBuilder(base, ingredient, pResult, pExperience, brewingTime, MinejagoRecipeSerializers.TEAPOT_BREWING_RECIPE.get());
     }
 
     public SimpleBrewingRecipeBuilder unlockedBy(String pCriterionName, CriterionTriggerInstance pCriterionTrigger) {
@@ -65,17 +65,17 @@ public class SimpleBrewingRecipeBuilder implements RecipeBuilder
     public void save(Consumer<FinishedRecipe> pFinishedRecipeConsumer, ResourceLocation pRecipeId) {
         this.ensureValid(pRecipeId);
         this.advancement.parent(ROOT_RECIPE_ADVANCEMENT).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(pRecipeId)).rewards(AdvancementRewards.Builder.recipe(pRecipeId)).requirements(RequirementsStrategy.OR);
-        pFinishedRecipeConsumer.accept(new SimpleBrewingRecipeBuilder.Result(pRecipeId, this.group == null ? "" : this.group, this.ingredient, this.result, this.experience, this.brewingTime, this.advancement, pRecipeId.withPrefix("recipes/" + this.category.getFolderName() + "/"), this.serializer));
+        pFinishedRecipeConsumer.accept(new SimpleBrewingRecipeBuilder.Result(pRecipeId, this.group == null ? "" : this.group, base, this.ingredient, this.result, this.experience, this.brewingTime, this.advancement, pRecipeId.withPrefix("recipes/" + RecipeCategory.BREWING.getFolderName() + "/"), this.serializer));
     }
 
     @Override
     public void save(Consumer<FinishedRecipe> pFinishedRecipeConsumer) {
-        save(pFinishedRecipeConsumer, getDefaultRecipeId(result));
+        save(pFinishedRecipeConsumer, getDefaultRecipeId(base, result));
     }
 
     @Override
     public void save(Consumer<FinishedRecipe> finishedRecipeConsumer, String recipeId) {
-        ResourceLocation resourceLocation = getDefaultRecipeId(result);
+        ResourceLocation resourceLocation = getDefaultRecipeId(base, result);
         ResourceLocation resourceLocation2 = new ResourceLocation(recipeId);
         if (resourceLocation2.equals(resourceLocation)) {
             throw new IllegalStateException("Recipe " + recipeId + " should remove its 'save' argument as it is equal to default one");
@@ -84,8 +84,10 @@ public class SimpleBrewingRecipeBuilder implements RecipeBuilder
         }
     }
 
-    static ResourceLocation getDefaultRecipeId(Potion potion) {
-        return BuiltInRegistries.POTION.getKey(potion);
+    static ResourceLocation getDefaultRecipeId(Potion from, Potion to) {
+        ResourceLocation fromKey = BuiltInRegistries.POTION.getKey(from);
+        ResourceLocation toKey = BuiltInRegistries.POTION.getKey(to);
+        return new ResourceLocation(toKey.getNamespace(), fromKey.getPath() + "_to_" + toKey.getPath());
     }
 
     /**
@@ -100,6 +102,7 @@ public class SimpleBrewingRecipeBuilder implements RecipeBuilder
     static class Result implements FinishedRecipe {
         private final ResourceLocation id;
         private final String group;
+        private final Potion base;
         private final Ingredient ingredient;
         private final Potion result;
         private final float experience;
@@ -108,9 +111,10 @@ public class SimpleBrewingRecipeBuilder implements RecipeBuilder
         private final ResourceLocation advancementId;
         private final RecipeSerializer<? extends TeapotBrewingRecipe> serializer;
 
-        public Result(ResourceLocation pId, String pGroup, Ingredient pIngredient, Potion pResult, float pExperience, IntProvider pCookingTime, Advancement.Builder pAdvancement, ResourceLocation pAdvancementId, RecipeSerializer<? extends TeapotBrewingRecipe> pSerializer) {
+        public Result(ResourceLocation pId, String pGroup, Potion base, Ingredient pIngredient, Potion pResult, float pExperience, IntProvider pCookingTime, Advancement.Builder pAdvancement, ResourceLocation pAdvancementId, RecipeSerializer<? extends TeapotBrewingRecipe> pSerializer) {
             this.id = pId;
             this.group = pGroup;
+            this.base = base;
             this.ingredient = pIngredient;
             this.result = pResult;
             this.experience = pExperience;
@@ -125,6 +129,7 @@ public class SimpleBrewingRecipeBuilder implements RecipeBuilder
                 pJson.addProperty("group", this.group);
             }
 
+            pJson.addProperty("base", BuiltInRegistries.POTION.getKey(this.base).toString());
             pJson.add("ingredient", this.ingredient.toJson());
             pJson.addProperty("result", BuiltInRegistries.POTION.getKey(this.result).toString());
             pJson.addProperty("experience", this.experience);

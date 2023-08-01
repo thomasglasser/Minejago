@@ -15,7 +15,8 @@ import net.minecraft.commands.arguments.ResourceKeyArgument;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.GameRules;
 
 import java.util.Collection;
@@ -31,6 +32,7 @@ public class PowerCommand
     public static final String SUCCESS_CLEARED_OTHER = "commands.power.success_cleared.other";
     public static final String QUERY = "commands.power.query";
     public static final String INVALID = "commands.power.power.invalid";
+    public static final String NOT_LIVING_ENTITY = "commands.power.failure.not_living_entity";
 
     private static final DynamicCommandExceptionType ERROR_INVALID_POWER = new DynamicCommandExceptionType(
             object -> Component.translatable(INVALID, object)
@@ -42,51 +44,63 @@ public class PowerCommand
                 .executes(context ->
                 {
                     PowerData powerData = Services.DATA.getPowerData(context.getSource().getPlayer());
-                    context.getSource().sendSuccess(() -> Component.translatable(QUERY, Component.translatable(powerData.power().location().toLanguageKey("power"))), false);
+                    context.getSource().sendSuccess(() -> Component.translatable(QUERY, MinejagoPowers.getPowerOrThrow(context.getSource().registryAccess(), powerData.power()).getFormattedName()), false);
                     return 1;
                 })
                 .then(Commands.literal("clear")
                         .executes(context -> resetPower(context, Collections.singleton(context.getSource().getPlayerOrException())))
-                        .then(Commands.argument("target", EntityArgument.players())
-                                .executes(context -> resetPower(context, EntityArgument.getPlayers(context,"target")))))
+                        .then(Commands.argument("target", EntityArgument.entities())
+                                .executes(context -> resetPower(context, EntityArgument.getEntities(context,"target")))))
                 .then(Commands.argument("power", ResourceKeyArgument.key(MinejagoRegistries.POWER))
                         .executes((p_258228_) -> setPower(p_258228_, Collections.singleton(p_258228_.getSource().getPlayerOrException()), ResourceKeyArgument.resolveKey(p_258228_, "power", MinejagoRegistries.POWER, ERROR_INVALID_POWER)))
-                .then(Commands.argument("target", EntityArgument.players())
-                        .executes((p_258229_) -> setPower(p_258229_, EntityArgument.getPlayers(p_258229_, "target"), ResourceKeyArgument.resolveKey(p_258229_, "power", MinejagoRegistries.POWER, ERROR_INVALID_POWER))))));
+                .then(Commands.argument("target", EntityArgument.entities())
+                        .executes((p_258229_) -> setPower(p_258229_, EntityArgument.getEntities(p_258229_, "target"), ResourceKeyArgument.resolveKey(p_258229_, "power", MinejagoRegistries.POWER, ERROR_INVALID_POWER))))));
     }
 
-    private static void logPowerChange(CommandSourceStack pSource, ServerPlayer pPlayer, ResourceKey<Power> power, boolean clear) {
-        if (pSource.getEntity() == pPlayer) {
-            pSource.sendSuccess(() -> Component.translatable(clear ? SUCCESS_CLEARED_SELF : SUCCESS_SELF, Component.translatable(power.location().toLanguageKey("power"))), true);
-        } else {
-            if (pSource.getLevel().getGameRules().getBoolean(GameRules.RULE_SENDCOMMANDFEEDBACK)) {
-                pPlayer.sendSystemMessage(Component.translatable(clear ? CLEARED : CHANGED, Component.translatable(power.location().toLanguageKey("power"))));
+    private static void logPowerChange(CommandSourceStack pSource, Entity entity, ResourceKey<Power> power, boolean clear) {
+        if (entity instanceof LivingEntity livingEntity)
+        {
+            if (pSource.getEntity() == entity) {
+                pSource.sendSuccess(() -> Component.translatable(clear ? SUCCESS_CLEARED_SELF : SUCCESS_SELF, MinejagoPowers.getPowerOrThrow(pSource.registryAccess(), power).getFormattedName()), true);
+            } else {
+                if (pSource.getLevel().getGameRules().getBoolean(GameRules.RULE_SENDCOMMANDFEEDBACK)) {
+                    livingEntity.sendSystemMessage(Component.translatable(clear ? CLEARED : CHANGED, MinejagoPowers.getPowerOrThrow(pSource.registryAccess(), power).getFormattedName()));
+                }
+
+                pSource.sendSuccess(() -> Component.translatable(clear ? SUCCESS_CLEARED_OTHER : SUCCESS_OTHER, livingEntity.getDisplayName(), MinejagoPowers.getPowerOrThrow(pSource.registryAccess(), power).getFormattedName()), true);
             }
-
-            pSource.sendSuccess(() -> Component.translatable(clear ? SUCCESS_CLEARED_OTHER : SUCCESS_OTHER, pPlayer.getDisplayName(), Component.translatable(power.location().toLanguageKey("power"))), true);
         }
-
+        else
+        {
+            pSource.sendFailure(Component.translatable(NOT_LIVING_ENTITY, entity.getDisplayName(), entity.getStringUUID()));
+        }
     }
 
-    private static int setPower(CommandContext<CommandSourceStack> pSource, Collection<ServerPlayer> pPlayers, Holder.Reference<Power> power) {
+    private static int setPower(CommandContext<CommandSourceStack> pSource, Collection<? extends Entity> entities, Holder.Reference<Power> power) {
         int i = 0;
 
-        for(ServerPlayer serverplayer : pPlayers) {
-            Services.DATA.setPowerData(new PowerData(power.key(), false), serverplayer);
-            logPowerChange(pSource.getSource(), serverplayer, power.key(), false);
-            ++i;
+        for(Entity entity : entities) {
+            if (entity instanceof LivingEntity livingEntity)
+            {
+                Services.DATA.setPowerData(new PowerData(power.key(), false), livingEntity);
+                ++i;
+            }
+            logPowerChange(pSource.getSource(), entity, power.key(), false);
         }
 
         return i;
     }
 
-    private static int resetPower(CommandContext<CommandSourceStack> pSource, Collection<ServerPlayer> pPlayers) {
+    private static int resetPower(CommandContext<CommandSourceStack> pSource, Collection<? extends Entity> entities) {
         int i = 0;
 
-        for(ServerPlayer serverplayer : pPlayers) {
-            Services.DATA.setPowerData(new PowerData(MinejagoPowers.NONE, false), serverplayer);
-            logPowerChange(pSource.getSource(), serverplayer, MinejagoPowers.NONE, true);
-            ++i;
+        for(Entity entity : entities) {
+            if (entity instanceof LivingEntity livingEntity)
+            {
+                Services.DATA.setPowerData(new PowerData(MinejagoPowers.NONE, false), livingEntity);
+                ++i;
+            }
+            logPowerChange(pSource.getSource(), entity, MinejagoPowers.NONE, true);
         }
 
         return i;

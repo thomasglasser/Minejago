@@ -2,21 +2,27 @@ package dev.thomasglasser.minejago.data.recipes;
 
 import dev.thomasglasser.minejago.data.tags.MinejagoItemTags;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class MinejagoRecipes extends RecipeProvider {
     public MinejagoRecipes(PackOutput output) {
@@ -134,13 +140,31 @@ public class MinejagoRecipes extends RecipeProvider {
     }
 
     private void buildBrewing(Consumer<FinishedRecipe> writer) {
-//        SimpleBrewingRecipeBuilder.of(
-//                Ingredient.of(Items.COW_SPAWN_EGG),
-//                RecipeCategory.BREWING,
-//                MinejagoPotions.MILK.get(),
-//                100,
-//                UniformInt.of(1200, 1400))
-//                .unlockedBy(getHasName(Items.COW_SPAWN_EGG), has(Items.COW_SPAWN_EGG))
-//                .save(writer);
+        normalTea(writer, Items.ACACIA_LEAVES, MinejagoPotions.ACACIA_TEA);
+        normalTea(writer, Items.OAK_LEAVES, MinejagoPotions.OAK_TEA);
+        normalTea(writer, Items.CHERRY_LEAVES, MinejagoPotions.CHERRY_TEA);
+        normalTea(writer, Items.SPRUCE_LEAVES, MinejagoPotions.SPRUCE_TEA);
+        normalTea(writer, Items.MANGROVE_LEAVES, MinejagoPotions.MANGROVE_TEA);
+        normalTea(writer, Items.JUNGLE_LEAVES, MinejagoPotions.JUNGLE_TEA);
+        normalTea(writer, Items.DARK_OAK_LEAVES, MinejagoPotions.DARK_OAK_TEA);
+        normalTea(writer, Items.BIRCH_LEAVES, MinejagoPotions.BIRCH_TEA);
+    }
+
+    private void normalTea(Consumer<FinishedRecipe> writer, Item ingredient, Potion result)
+    {
+        SimpleBrewingRecipeBuilder.of(
+                Potions.WATER,
+                Ingredient.of(ingredient),
+                result,
+                0.5f,
+                UniformInt.of(1200, 2400))
+                .group(BuiltInRegistries.POTION.getKey(result).getPath())
+                .unlockedBy("has_ingredient", has(ingredient))
+                .save(writer);
+    }
+
+    private void normalTea(Consumer<FinishedRecipe> writer, Item ingredient, Supplier<Potion> result)
+    {
+        normalTea(writer, ingredient, result.get());
     }
 }

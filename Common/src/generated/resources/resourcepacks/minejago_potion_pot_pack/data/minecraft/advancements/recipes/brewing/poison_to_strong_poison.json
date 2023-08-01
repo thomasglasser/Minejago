@@ -1,0 +1,29 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_brewed_strong_poison_in_stand": {
+      "conditions": {
+        "potion": "minecraft:strong_poison"
+      },
+      "trigger": "minecraft:brewed_potion"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:poison_to_strong_poison"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_brewed_strong_poison_in_stand",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:poison_to_strong_poison"
+    ]
+  },
+  "sends_telemetry_event": true
+}

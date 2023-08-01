@@ -155,7 +155,7 @@ public class MinejagoForgeClientEvents {
                 return -1;
             if (i == 1 && blockAndTintGetter.getBlockEntity(blockPos) instanceof TeapotBlockEntity teapotBlockEntity && blockState.getValue(TeapotBlock.FILLED))
             {
-                return teapotBlockEntity.getPotion().getName("").contains("tea") || teapotBlockEntity.getPotion().getName("").contains("awkward") ? 7028992 : PotionUtils.getColor(PotionUtils.setPotion(new ItemStack(Items.POTION), teapotBlockEntity.getPotion()));
+                return PotionUtils.getColor(PotionUtils.setPotion(new ItemStack(Items.POTION), teapotBlockEntity.getPotion()));
             }
             return -1;
         }), MinejagoBlocks.allPots().toArray(new Block[0]));
@@ -186,20 +186,6 @@ public class MinejagoForgeClientEvents {
         if (event.getConfig().getType() == ModConfig.Type.CLIENT && Minecraft.getInstance().player != null)
         {
             MinejagoClientUtils.refreshVip();
-        }
-    }
-
-    public static void onAddPackFinders(AddPackFindersEvent event)
-    {
-        for (PackHolder holder : MinejagoPacks.getPacks())
-        {
-            if (event.getPackType() == holder.type())
-            {
-                var resourcePath = ModList.get().getModFileById(Minejago.MOD_ID).getFile().findResource("resourcepacks/" + holder.id().getPath());
-                var pack = Pack.readMetaAndCreate("builtin/" + holder.id().getPath(), Component.translatable(holder.titleKey()), holder.required(),
-                        (path) -> new PathPackResources(path, false, resourcePath), holder.type(), Pack.Position.BOTTOM, PackSource.BUILT_IN);
-                event.addRepositorySource((packConsumer) -> packConsumer.accept(pack));
-            }
         }
     }
 

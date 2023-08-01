@@ -232,6 +232,12 @@ public class Power {
             return this;
         }
 
+        public Builder color(String colorCode)
+        {
+            this.color = TextColor.parseColor(colorCode);
+            return this;
+        }
+
         public Builder tagline(Component tagline)
         {
             this.tagline = tagline;

@@ -11,6 +11,7 @@ import dev.thomasglasser.minejago.data.modonomicons.wiki.MinejagoWikiBookProvide
 import dev.thomasglasser.minejago.data.particles.MinejagoParticleDescriptionProvider;
 import dev.thomasglasser.minejago.data.powers.MinejagoPowerDatagenSuite;
 import dev.thomasglasser.minejago.data.recipes.MinejagoRecipes;
+import dev.thomasglasser.minejago.data.recipes.expansions.MinejagoPotionPotPackRecipes;
 import dev.thomasglasser.minejago.data.sounds.MinejagoSoundDefinitions;
 import dev.thomasglasser.minejago.data.tags.*;
 import dev.thomasglasser.minejago.data.trimmed.MinejagoTrimDatagenSuite;
@@ -55,6 +56,7 @@ public class MinejagoDataGenerators
 
         genMain(event, generator, packOutput, lookupProvider, existingFileHelper, includeServer, includeClient);
         genImmersionPack(event, generator, new PackOutput(packOutput.getOutputFolder().resolve("resourcepacks/minejago_immersion_pack")), lookupProvider, existingFileHelper, includeServer, includeClient);
+        genPotionPotPack(event, generator, new PackOutput(packOutput.getOutputFolder().resolve("resourcepacks/minejago_potion_pot_pack")), lookupProvider, existingFileHelper, includeServer, includeClient);
     }
 
     private static void genMain(GatherDataEvent event, DataGenerator generator, PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper, boolean includeServer, boolean includeClient)
@@ -106,5 +108,10 @@ public class MinejagoDataGenerators
     private static void genImmersionPack(GatherDataEvent event, DataGenerator generator, PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper, boolean includeServer, boolean includeClient)
     {
         generator.addProvider(includeClient, new MinejagoImmersionPackEnUsLanguageProvider(packOutput));
+    }
+
+    private static void genPotionPotPack(GatherDataEvent event, DataGenerator generator, PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper, boolean includeServer, boolean includeClient)
+    {
+        generator.addProvider(includeServer, new MinejagoPotionPotPackRecipes(packOutput));
     }
 }

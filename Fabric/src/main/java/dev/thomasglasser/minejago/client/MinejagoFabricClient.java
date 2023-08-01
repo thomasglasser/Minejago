@@ -111,11 +111,6 @@ public class MinejagoFabricClient implements ClientModInitializer {
 
         registerPackets();
 
-        for (PackHolder holder : MinejagoPacks.getPacks())
-        {
-            if (holder.type() == PackType.CLIENT_RESOURCES) ResourceManagerHelper.registerBuiltinResourcePack(holder.id(), FabricLoader.getInstance().getModContainer(Minejago.MOD_ID).get(), Component.translatable(holder.titleKey()), ResourcePackActivationType.NORMAL);
-        }
-
         MinejagoClientEvents.registerMenuScreens();
     }
 
@@ -191,7 +186,7 @@ public class MinejagoFabricClient implements ClientModInitializer {
                 return -1;
             if (i == 1 && blockAndTintGetter.getBlockEntity(blockPos) instanceof TeapotBlockEntity teapotBlockEntity && blockState.getValue(TeapotBlock.FILLED))
             {
-                return teapotBlockEntity.getPotion().getName("").contains("tea") || teapotBlockEntity.getPotion().getName("").contains("awkward") ? 7028992 : PotionUtils.getColor(PotionUtils.setPotion(new ItemStack(Items.POTION), teapotBlockEntity.getPotion()));
+                return PotionUtils.getColor(PotionUtils.setPotion(new ItemStack(Items.POTION), teapotBlockEntity.getPotion()));
             }
             return -1;
         }), MinejagoBlocks.allPots().toArray(new Block[0]));

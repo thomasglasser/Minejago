@@ -31,7 +31,6 @@ public enum TeapotBlockComponentProvider implements IBlockComponentProvider {
             Potion potion = be.getPotion();
             if (potion != Potions.EMPTY)
             {
-                if (potion == Potions.AWKWARD) potion = MinejagoPotions.REGULAR_TEA.get();
                 ItemStack potionStack = PotionUtils.setPotion(MinejagoItems.FILLED_TEACUP.get().getDefaultInstance(), potion);
                 IElement icon = elementHelper.item(potionStack, 0.5f).translate(new Vec2(0, -2));
                 iTooltip.add(icon);

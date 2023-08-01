@@ -1,0 +1,34 @@
+{
+  "type": "minejago:teapot_brewing",
+  "base": "minecraft:water",
+  "brewingtime": 800,
+  "experience": 0.35,
+  "group": "potion",
+  "ingredient": [
+    {
+      "item": "minecraft:glistering_melon_slice"
+    },
+    {
+      "item": "minecraft:ghast_tear"
+    },
+    {
+      "item": "minecraft:rabbit_foot"
+    },
+    {
+      "item": "minecraft:blaze_powder"
+    },
+    {
+      "item": "minecraft:spider_eye"
+    },
+    {
+      "item": "minecraft:sugar"
+    },
+    {
+      "item": "minecraft:magma_cream"
+    },
+    {
+      "item": "minecraft:redstone"
+    }
+  ],
+  "result": "minecraft:mundane"
+}

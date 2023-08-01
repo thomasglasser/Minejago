@@ -10,7 +10,7 @@ public class MinejagoRecipeSerializers
 {
     public static final RegistrationProvider<RecipeSerializer<?>> RECIPE_SERIALIZERS = RegistrationProvider.get(BuiltInRegistries.RECIPE_SERIALIZER, Minejago.MOD_ID);
 
-    public static final RegistryObject<RecipeSerializer<TeapotBrewingRecipe>> TEAPOT_BREWING_RECIPE = RECIPE_SERIALIZERS.register("teapot_brewing", () -> new SimpleBrewingSerializer<>(TeapotBrewingRecipe::new, 1200));
+    public static final RegistryObject<RecipeSerializer<TeapotBrewingRecipe>> TEAPOT_BREWING_RECIPE = RECIPE_SERIALIZERS.register("teapot_brewing", () -> new SimpleBrewingSerializer<>(TeapotBrewingRecipe::new));
 
     public static void init() {}
 }

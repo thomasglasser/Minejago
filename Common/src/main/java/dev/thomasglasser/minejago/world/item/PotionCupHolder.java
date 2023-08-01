@@ -4,7 +4,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.Potions;
 
-public interface TeapotLiquidHolder
+public interface PotionCupHolder
 {
     int getCups();
 
@@ -14,4 +14,16 @@ public interface TeapotLiquidHolder
     {
         return Potions.WATER;
     }
+
+    default boolean canBeFilled(ItemStack stack, Potion potion, int cups)
+    {
+        return cups >= getCups();
+    }
+
+    default boolean canBeDrained(ItemStack stack)
+    {
+        return false;
+    }
+
+    ItemStack getFilled(Potion potion);
 }

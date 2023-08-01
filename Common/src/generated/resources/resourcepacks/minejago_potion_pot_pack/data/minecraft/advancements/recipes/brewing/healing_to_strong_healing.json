@@ -1,0 +1,29 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_brewed_strong_healing_in_stand": {
+      "conditions": {
+        "potion": "minecraft:strong_healing"
+      },
+      "trigger": "minecraft:brewed_potion"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:healing_to_strong_healing"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_brewed_strong_healing_in_stand",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:healing_to_strong_healing"
+    ]
+  },
+  "sends_telemetry_event": true
+}

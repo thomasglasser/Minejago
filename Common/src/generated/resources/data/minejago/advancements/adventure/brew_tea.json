@@ -15,7 +15,7 @@
     "hidden": false,
     "icon": {
       "item": "minejago:filled_teacup",
-      "nbt": "{Potion:\"minejago:regular_tea\"}"
+      "nbt": "{Potion:\"minejago:oak_tea\"}"
     },
     "show_toast": true,
     "title": {
