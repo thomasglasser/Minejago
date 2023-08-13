@@ -85,15 +85,6 @@ public class MinejagoItemTagsProvider extends ItemTagsProvider
                         .addOptionalTag(forgeLoc("dyes/" + dyeColor.getName()))
                         .addOptionalTag(cLoc(dyeColor.getName() + "_dyes")));
 
-        tag(ItemTags.DECORATED_POT_SHERDS)
-                .add(MinejagoItems.POTTERY_SHERD_ICE_CUBE.get())
-                .add(MinejagoItems.POTTERY_SHERD_THUNDER.get())
-                .add(MinejagoItems.POTTERY_SHERD_PEAKS.get())
-                .add(MinejagoItems.POTTERY_SHERD_MASTER.get())
-                .add(MinejagoItems.POTTERY_SHERD_YIN_YANG.get())
-                .add(MinejagoItems.POTTERY_SHERD_DRAGONS_HEAD.get())
-                .add(MinejagoItems.POTTERY_SHERD_DRAGONS_TAIL.get());
-
         copy(MinejagoBlockTags.TEAPOTS, MinejagoItemTags.TEAPOTS);
 
         tag(MinejagoItemTags.LECTERN_SCROLLS)

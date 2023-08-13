@@ -31,7 +31,7 @@ dependencies {
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
 
     modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-common:${forgeconfigapiport_version}"
-    modImplementation "net.tslat.smartbrainlib:SmartBrainLib-common-${previous_minecraft_version}:${sbl_version}"
+    modImplementation "net.tslat.smartbrainlib:SmartBrainLib-common-${minecraft_version}:${sbl_version}"
     modImplementation "net.tslat.tes:TES-common-${minecraft_version}:${tes_version}"
     modImplementation "com.klikli_dev:modonomicon-${minecraft_version}-common:${modonomicon_version}"
 

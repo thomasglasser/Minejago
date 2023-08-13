@@ -110,7 +110,7 @@
   "book.minejago.wiki.compat.visual.playeranimator_text.title": "playerAnimator",
   "book.minejago.wiki.name": "Minejago Wiki",
   "book.minejago.wiki.tooltip": "Your guide to the Realms of Minejago!",
-  "commands.power.failure.not_living_entity": "Target %s is not a LivingEntity",
+  "commands.power.failure.not_living_entity": "Target %s (%s) is not a LivingEntity",
   "commands.power.power.invalid": "Power not found in world. Check enabled data packs.",
   "commands.power.query": "Your power is currently set to: %s",
   "commands.power.success.other": "Set %s's power to %s",

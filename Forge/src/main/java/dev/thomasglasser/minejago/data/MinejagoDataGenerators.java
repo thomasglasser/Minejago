@@ -9,9 +9,10 @@ import dev.thomasglasser.minejago.data.loot.MinejagoLootTables;
 import dev.thomasglasser.minejago.data.models.MinejagoItemModels;
 import dev.thomasglasser.minejago.data.modonomicons.wiki.MinejagoWikiBookProvider;
 import dev.thomasglasser.minejago.data.particles.MinejagoParticleDescriptionProvider;
-import dev.thomasglasser.minejago.data.powers.MinejagoPowerDatagenSuite;
+import dev.thomasglasser.minejago.data.powers.MinejagoForgePowerDatagenSuite;
 import dev.thomasglasser.minejago.data.recipes.MinejagoRecipes;
 import dev.thomasglasser.minejago.data.recipes.expansions.MinejagoPotionPotPackRecipes;
+import dev.thomasglasser.minejago.data.sherds.MinejagoForgeSherdDatagenSuite;
 import dev.thomasglasser.minejago.data.sounds.MinejagoSoundDefinitions;
 import dev.thomasglasser.minejago.data.tags.*;
 import dev.thomasglasser.minejago.data.trimmed.MinejagoTrimDatagenSuite;
@@ -76,9 +77,12 @@ public class MinejagoDataGenerators
         new MinejagoTrimDatagenSuite(event, enUs);
 
         // Powers
-        MinejagoPowerDatagenSuite powerDatagenSuite = new MinejagoPowerDatagenSuite(event, enUs);
+        MinejagoForgePowerDatagenSuite powerDatagenSuite = new MinejagoForgePowerDatagenSuite(event, enUs);
         CompletableFuture<HolderLookup.Provider> powerLookupProvider = powerDatagenSuite.getRegistryProvider();
         generator.addProvider(includeServer, new PowerTagsProvider(packOutput, Minejago.MOD_ID,  powerLookupProvider, existingFileHelper));
+
+        // Sherds
+        new MinejagoForgeSherdDatagenSuite(event);
 
         // Lang gen (on client)
         generator.addProvider(includeClient, enUs);

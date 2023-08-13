@@ -15,7 +15,7 @@ plugins {
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 apply plugin: 'org.spongepowered.mixin'
 
-archivesBaseName = "${mod_id}-forge-${minecraft_version}"
+archivesBaseName = "${mod_id}-neoforge-${minecraft_version}"
 
 minecraft {
     mappings channel: 'parchment', version: parchment_version + '-' + minecraft_version
@@ -91,14 +91,14 @@ dependencies {
     implementation fg.deobf("maven.modrinth:moonlight:${moonlight_forge_id}")
     implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}")
     implementation fg.deobf("dev._100media.capabilitysyncer:capabilitysyncer:${capabilitysyncer_version}")
-    implementation fg.deobf("net.tslat.smartbrainlib:SmartBrainLib-forge-${previous_minecraft_version}:${sbl_version}")
+    implementation fg.deobf("net.tslat.smartbrainlib:SmartBrainLib-neoforge-${minecraft_version}:${sbl_version}")
     implementation fg.deobf("maven.modrinth:jade:${jade_forge_id}")
     implementation fg.deobf("me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}")
-    implementation fg.deobf("maven.modrinth:sherdsapi:${sherdsapi_version}+forge")
+    implementation fg.deobf("maven.modrinth:sherdsapi:${sherdsapi_version}+neoforge")
     implementation fg.deobf("maven.modrinth:trimmed:${trimmed_version}+forge")
     compileOnly fg.deobf("curse.maven:configured-457570:${configured_forge_id}")
 //    implementation fg.deobf("curse.maven:configured-457570:${configured_forge_id}") TODO: Update
-    implementation fg.deobf("net.tslat.tes:TES-forge-${minecraft_version}:${tes_version}")
+    implementation fg.deobf("net.tslat.tes:TES-neoforge-${minecraft_version}:${tes_version}")
     implementation fg.deobf("com.klikli_dev:modonomicon-${minecraft_version}-forge:${modonomicon_version}")
 
     runtimeOnly fg.deobf("me.shedaniel:RoughlyEnoughItems-forge:$rei_version")

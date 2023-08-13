@@ -17,15 +17,15 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
-public class PowerDatagenSuite extends BasePowerDatagenSuite
+public class ForgePowerDatagenSuite extends BasePowerDatagenSuite
 {
     private final CompletableFuture<HolderLookup.Provider> registries;
 
-    protected PowerDatagenSuite(GatherDataEvent event, String modid) {
+    public ForgePowerDatagenSuite(GatherDataEvent event, String modid) {
         this(event, modid, null);
     }
 
-    public PowerDatagenSuite(GatherDataEvent event, final String modid, @Nullable BiConsumer<String, String> translationConsumer) {
+    public ForgePowerDatagenSuite(GatherDataEvent event, final String modid, @Nullable BiConsumer<String, String> translationConsumer) {
         super(modid, translationConsumer);
         DataGenerator generator = event.getGenerator();
         PackOutput packOutput = event.getGenerator().getPackOutput();
@@ -77,12 +77,12 @@ public class PowerDatagenSuite extends BasePowerDatagenSuite
         });
     }
 
-    public static PowerDatagenSuite create(GatherDataEvent event, String modid) {
-        return new PowerDatagenSuite(event, modid);
+    public static ForgePowerDatagenSuite create(GatherDataEvent event, String modid) {
+        return new ForgePowerDatagenSuite(event, modid);
     }
 
-    public static PowerDatagenSuite create(GatherDataEvent event, String modid, @Nullable BiConsumer<String, String> translationConsumer) {
-        return new PowerDatagenSuite(event, modid, translationConsumer);
+    public static ForgePowerDatagenSuite create(GatherDataEvent event, String modid, @Nullable BiConsumer<String, String> translationConsumer) {
+        return new ForgePowerDatagenSuite(event, modid, translationConsumer);
     }
 
     public CompletableFuture<HolderLookup.Provider> getRegistryProvider() {

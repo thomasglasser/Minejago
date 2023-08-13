@@ -8,8 +8,9 @@ import net.minecraft.ChatFormatting;
 import net.minecraftforge.common.data.LanguageProvider;
 import net.minecraftforge.data.event.GatherDataEvent;
 
-public class MinejagoPowerDatagenSuite extends PowerDatagenSuite {
-    public MinejagoPowerDatagenSuite(GatherDataEvent event, LanguageProvider languageProvider) {
+public class MinejagoForgePowerDatagenSuite extends ForgePowerDatagenSuite
+{
+    public MinejagoForgePowerDatagenSuite(GatherDataEvent event, LanguageProvider languageProvider) {
         super(event, Minejago.MOD_ID, languageProvider::add);
     }
 

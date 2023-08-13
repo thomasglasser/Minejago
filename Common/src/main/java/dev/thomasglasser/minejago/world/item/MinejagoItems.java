@@ -9,7 +9,6 @@ import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.armortrim.MinejagoTrimPatterns;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
-import dev.thomasglasser.sherdsapi.api.PotterySherdRegistry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -28,6 +27,7 @@ public class MinejagoItems
 {
     public static final RegistrationProvider<Item> ITEMS = RegistrationProvider.get(Registries.ITEM, Minejago.MOD_ID);
     private static final HashMap<ResourceKey<CreativeModeTab>, ArrayList<ResourceLocation>> ITEM_TABS = new HashMap<>();
+    public static final List<ResourceLocation> SHERDS = new ArrayList<>();
     public static final String MOD_NEEDED = "error.mod_needed";
 
     public static final RegistryObject<Item> BAMBOO_STAFF = register("bamboo_staff", () -> new BambooStaffItem(Tiers.WOOD, 2, -1, new Item.Properties()), CreativeModeTabs.COMBAT);
@@ -86,7 +86,7 @@ public class MinejagoItems
     {
         RegistryObject<Item> sherd = register(name, () -> new Item(new Item.Properties()), CreativeModeTabs.INGREDIENTS);
 
-        if (Minejago.Dependencies.SHERDSAPI.isInstalled()) PotterySherdRegistry.register(sherd.getId(), sherd.getId());
+        SHERDS.add(sherd.getId());
 
         return sherd;
     }
