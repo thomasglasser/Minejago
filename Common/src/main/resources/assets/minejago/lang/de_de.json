@@ -110,6 +110,7 @@
   "book.minejago.wiki.compat.visual.playeranimator_text.title": "playerAnimator",
   "book.minejago.wiki.name": "Minejago Wiki",
   "book.minejago.wiki.tooltip": "Dein Guide zu den Gebieten von Minejago!",
+  "commands.power.failure.not_living_entity": "Ziel %s (%s) ist kein lebendes Objekt",
   "commands.power.power.invalid": "Die Kraft wurde nicht in der Welt gefunden. Prüfe die Datenpakete.",
   "commands.power.query": "Deine derzeitige Kraft ist auf %s gesetzt",
   "commands.power.success.other": "Setze die Kraft von %s auf %s",
