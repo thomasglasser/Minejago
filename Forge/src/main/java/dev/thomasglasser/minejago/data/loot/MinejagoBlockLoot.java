@@ -36,6 +36,8 @@ public class MinejagoBlockLoot extends BlockLootSubProvider {
         dropSelf(MinejagoBlocks.GOLD_DISC.get());
         dropSelf(MinejagoBlocks.TOP_POST.get());
 
+        add(MinejagoBlocks.SUSPICIOUS_RED_SAND.get(), noDrop());
+
         add(MinejagoBlocks.CHISELED_SCROLL_SHELF.get(), createSilkTouchOnlyTable(MinejagoBlocks.CHISELED_SCROLL_SHELF.get()));
     }
 
@@ -43,20 +45,20 @@ public class MinejagoBlockLoot extends BlockLootSubProvider {
     {
         return LootTable.lootTable()
                 .withPool(
-                LootPool.lootPool().setRolls(ConstantValue.exactly(1))
-                        .add(LootItem.lootTableItem(block)
-                                .apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY))
-                                .apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY)
-                                        .copy("Boiling","BlockEntityTag.Boiling")
-                                        .copy("Done", "BlockEntityTag.Done")
-                                        .copy("Cups","BlockEntityTag.Cups")
-                                        .copy("LootTable", "BlockEntityTag.LootTable")
-                                        .copy("LootTableSeed", "BlockEntityTag.LootTableSeed")
-                                        .copy("HasLeaves", "BlockEntityTag.HasLeaves")
-                                        .copy("Temperature", "BlockEntityTag.Temperature")
-                                        .copy("Potion", "BlockEntityTag.Potion"))
-                                .apply(SetContainerContents.setContents(MinejagoBlockEntityTypes.TEAPOT.get()).withEntry(DynamicLoot.dynamicEntry(TeapotBlock.CONTENTS))))
-        );
+                        LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                                .add(LootItem.lootTableItem(block)
+                                        .apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY))
+                                        .apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY)
+                                                .copy("Boiling","BlockEntityTag.Boiling")
+                                                .copy("Done", "BlockEntityTag.Done")
+                                                .copy("Cups","BlockEntityTag.Cups")
+                                                .copy("LootTable", "BlockEntityTag.LootTable")
+                                                .copy("LootTableSeed", "BlockEntityTag.LootTableSeed")
+                                                .copy("HasLeaves", "BlockEntityTag.HasLeaves")
+                                                .copy("Temperature", "BlockEntityTag.Temperature")
+                                                .copy("Potion", "BlockEntityTag.Potion"))
+                                        .apply(SetContainerContents.setContents(MinejagoBlockEntityTypes.TEAPOT.get()).withEntry(DynamicLoot.dynamicEntry(TeapotBlock.CONTENTS))))
+                );
     }
 
     @Override

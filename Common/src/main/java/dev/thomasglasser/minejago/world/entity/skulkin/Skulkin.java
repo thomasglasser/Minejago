@@ -2,7 +2,7 @@ package dev.thomasglasser.minejago.world.entity.skulkin;
 
 import dev.thomasglasser.minejago.world.entity.MeleeSkeleton;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
-import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
+import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import net.minecraft.ChatFormatting;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -39,7 +39,7 @@ public class Skulkin extends MeleeSkeleton {
     @Override
     protected void populateDefaultEquipmentSlots(RandomSource pRandom, DifficultyInstance pDifficulty) {
         super.populateDefaultEquipmentSlots(pRandom, pDifficulty);
-        this.setItemSlot(EquipmentSlot.CHEST, MinejagoArmor.SKELETAL_CHESTPLATE_SET.getForVariant(this.variant).get().getDefaultInstance());
+        this.setItemSlot(EquipmentSlot.CHEST, MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(this.variant).get().getDefaultInstance());
         this.setItemSlot(EquipmentSlot.LEGS, ItemStack.EMPTY);
         switch (variant)
         {
@@ -59,7 +59,8 @@ public class Skulkin extends MeleeSkeleton {
         STRENGTH(ChatFormatting.RED),
         SPEED(ChatFormatting.BLUE),
         BOW(ChatFormatting.WHITE),
-        KNIFE(ChatFormatting.BLACK);
+        KNIFE(ChatFormatting.BLACK),
+        BONE(ChatFormatting.GRAY);
 
         private final ChatFormatting color;
 

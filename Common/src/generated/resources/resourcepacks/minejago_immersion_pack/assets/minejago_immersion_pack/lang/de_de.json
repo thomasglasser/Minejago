@@ -1,8 +1,0 @@
-{
-  "advancements.husbandry.allay_deliver_cake_to_note_block.description": "Bringe einen Hilfsgeist dazu, einen Kuchen auf eine Trommel fallen zu lassen",
-  "block.minecraft.note_block": "Trommel",
-  "soundCategory.record": "Plattenspieler/Trommeln",
-  "stat.minecraft.play_noteblock": "Trommeln werden gespielt",
-  "stat.minecraft.tune_noteblock": "Trommeln werden gestellt",
-  "subtitles.block.note_block.note": "Trommel wird gespielt"
-}

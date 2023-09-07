@@ -1,15 +1,12 @@
 package dev.thomasglasser.minejago.world.item.armor;
 
 import dev.thomasglasser.minejago.client.renderer.armor.TrainingGiRenderer;
-import dev.thomasglasser.minejago.world.item.IFabricGeoItem;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorMaterial;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class TrainingGiItem extends PoweredArmorItem implements IFabricGeoItem
+public class TrainingGiItem extends PoweredArmorItem
 {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 

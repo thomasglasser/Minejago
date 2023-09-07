@@ -1,5 +1,6 @@
 package dev.thomasglasser.minejago.world.item;
 
+import dev.thomasglasser.minejago.util.MinejagoItemUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -9,6 +10,7 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BottleItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.ClipContext;
@@ -17,7 +19,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 
-public class TeacupItem extends BottleItem
+public class TeacupItem extends BottleItem implements PotionCupHolder
 {
     public TeacupItem(Properties pProperties) {
         super(pProperties);
@@ -43,5 +45,30 @@ public class TeacupItem extends BottleItem
 
         }
         return InteractionResultHolder.pass(itemstack);
+    }
+
+    @Override
+    public int getCups() {
+        return 1;
+    }
+
+    @Override
+    public ItemStack getDrained(ItemStack stack) {
+        return null;
+    }
+
+    @Override
+    public boolean canBeFilled(ItemStack stack, Potion potion, int cups) {
+        return PotionCupHolder.super.canBeFilled(stack, potion, cups);
+    }
+
+    @Override
+    public boolean canBeDrained(ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public ItemStack getFilled(Potion potion) {
+        return MinejagoItemUtils.fillTeacup(potion);
     }
 }

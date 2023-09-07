@@ -1,0 +1,11 @@
+{
+  "type": "minejago:teapot_brewing",
+  "base": "minecraft:water",
+  "brewingtime": 800,
+  "experience": 0.35,
+  "group": "potion",
+  "ingredient": {
+    "item": "minecraft:nether_wart"
+  },
+  "result": "minecraft:awkward"
+}

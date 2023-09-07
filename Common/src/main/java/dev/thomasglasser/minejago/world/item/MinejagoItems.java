@@ -6,11 +6,9 @@ import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.registration.RegistrationProvider;
 import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
-import dev.thomasglasser.minejago.world.item.armor.IGeoArmorItem;
-import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
+import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.armortrim.MinejagoTrimPatterns;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
-import dev.thomasglasser.sherdsapi.api.PotterySherdRegistry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -29,6 +27,7 @@ public class MinejagoItems
 {
     public static final RegistrationProvider<Item> ITEMS = RegistrationProvider.get(Registries.ITEM, Minejago.MOD_ID);
     private static final HashMap<ResourceKey<CreativeModeTab>, ArrayList<ResourceLocation>> ITEM_TABS = new HashMap<>();
+    public static final List<ResourceLocation> SHERDS = new ArrayList<>();
     public static final String MOD_NEEDED = "error.mod_needed";
 
     public static final RegistryObject<Item> BAMBOO_STAFF = register("bamboo_staff", () -> new BambooStaffItem(Tiers.WOOD, 2, -1, new Item.Properties()), CreativeModeTabs.COMBAT);
@@ -45,6 +44,7 @@ public class MinejagoItems
     public static final RegistryObject<Item> SCROLL = register("scroll", () -> new ScrollItem(new Item.Properties()), CreativeModeTabs.INGREDIENTS);
     public static final RegistryObject<Item> WRITABLE_SCROLL = register("writable_scroll", () -> new WritableScrollItem(new Item.Properties().stacksTo(1)), CreativeModeTabs.TOOLS_AND_UTILITIES);
     public static final RegistryObject<Item> WRITTEN_SCROLL = register("written_scroll", () -> new WrittenScrollItem(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> EMPTY_GOLDEN_WEAPONS_MAP = register("empty_golden_weapons_map", () -> new CustomEmptyMapItem(CustomEmptyMapItem::getFourWeaponsMap, new Item.Properties()), MinejagoCreativeModeTabs.MINEJAGO.getResourceKey());
 
     // POTTERY SHERDS
     public static final RegistryObject<Item> POTTERY_SHERD_ICE_CUBE = registerSherd("pottery_sherd_ice_cube");
@@ -69,19 +69,11 @@ public class MinejagoItems
     public static final RegistryObject<Item> KRUNCHA_SPAWN_EGG = register("kruncha_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.KRUNCHA::get, 12698049, 4802889, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
     public static final RegistryObject<Item> NUCKAL_SPAWN_EGG = register("nuckal_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.NUCKAL::get, 12698049, 6974058, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
     public static final RegistryObject<Item> SKULKIN_HORSE_SPAWN_EGG = register("skulkin_horse_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.SKULKIN_HORSE::get, 0xfffffd, 0xad282d, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
-
-    // POT ITEMS
-    public static final RegistryObject<Item> TEAPOT = register("teapot", () -> new BlockItem(MinejagoBlocks.TEAPOT.get(), new Item.Properties().stacksTo(1)), CreativeModeTabs.FUNCTIONAL_BLOCKS);
-    public static final RegistryObject<Item> JASPOT = register("jaspot", () -> new BlockItem(MinejagoBlocks.JASPOT.get(), new Item.Properties().stacksTo(1)), CreativeModeTabs.FUNCTIONAL_BLOCKS);
-    public static final Map<DyeColor, RegistryObject<Item>> TEAPOTS = teapots();
-
-    // BLOCK ITEMS
-    public static final RegistryObject<Item> GOLD_DISC = register("gold_disc", () -> new BlockItem(MinejagoBlocks.GOLD_DISC.get(), new Item.Properties()), CreativeModeTabs.BUILDING_BLOCKS);
-    public static final RegistryObject<Item> TOP_POST = register("top_post", () -> new BlockItem(MinejagoBlocks.TOP_POST.get(), new Item.Properties()), CreativeModeTabs.BUILDING_BLOCKS);
-    public static final RegistryObject<Item> CHISELED_SCROLL_SHELF = register("chiseled_scroll_shelf", () -> new BlockItem(MinejagoBlocks.CHISELED_SCROLL_SHELF.get(), new Item.Properties()), CreativeModeTabs.FUNCTIONAL_BLOCKS, CreativeModeTabs.REDSTONE_BLOCKS);
+    public static final RegistryObject<Item> EARTH_DRAGON_SPAWN_EGG = register("earth_dragon_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.EARTH_DRAGON::get, 0x412017, 0xa08d71, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
+    public static final RegistryObject<Item> SAMUKAI_SPAWN_EGG = register("samukai_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.SAMUKAI::get, 0xdbd7bd, 0xb90e04, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
 
     @SafeVarargs
-    private static RegistryObject<Item> register(String name, Supplier<? extends Item> supplier, ResourceKey<CreativeModeTab>... tabs)
+    public static RegistryObject<Item> register(String name, Supplier<? extends Item> supplier, ResourceKey<CreativeModeTab>... tabs)
     {
         for (ResourceKey<CreativeModeTab> tab: tabs) {
             ArrayList<ResourceLocation> list = ITEM_TABS.computeIfAbsent(tab, empty -> new ArrayList<>());
@@ -94,7 +86,7 @@ public class MinejagoItems
     {
         RegistryObject<Item> sherd = register(name, () -> new Item(new Item.Properties()), CreativeModeTabs.INGREDIENTS);
 
-        if (Minejago.Dependencies.SHERDSAPI.isInstalled()) PotterySherdRegistry.register(sherd.getId(), sherd.getId());
+        SHERDS.add(sherd.getId());
 
         return sherd;
     }
@@ -132,13 +124,8 @@ public class MinejagoItems
 
         if (tab == CreativeModeTabs.COMBAT)
         {
-            for (RegistryObject<Item> item : MinejagoArmor.ARMOR.getEntries())
-            {
-                if (!(item.get() instanceof IGeoArmorItem iGeoArmorItem && iGeoArmorItem.isGi()))
-                {
-                    items.add(item.get().getDefaultInstance());
-                }
-            }
+            MinejagoArmors.ARMOR_SETS.forEach(set ->
+                    items.addAll(set.getAllAsItems().stream().map(Item::getDefaultInstance).toList()));
         }
 
         return items;

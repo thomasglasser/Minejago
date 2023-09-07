@@ -3,8 +3,9 @@ package dev.thomasglasser.minejago.world.entity.character;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleUtils;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
-import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
-import dev.thomasglasser.minejago.world.entity.powers.Power;
+import dev.thomasglasser.minejago.world.entity.SpinjitzuDoer;
+import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
+import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -54,7 +55,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 
-public class Character extends AgeableMob implements SmartBrainOwner<Character>, GeoEntity
+public class Character extends AgeableMob implements SmartBrainOwner<Character>, GeoEntity, SpinjitzuDoer
 {
     public static final RawAnimation SPIN = RawAnimation.begin().thenPlay("move.spinjitzu");
 
@@ -64,6 +65,7 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
     public Character(EntityType<? extends Character> entityType, Level level) {
         super(entityType, level);
         this.getNavigation().setCanFloat(true);
+        setPersistenceRequired();
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -183,15 +185,16 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
     public void tick() {
         super.tick();
         Power power1 = MinejagoPowers.POWERS.get(level().registryAccess()).get(Services.DATA.getPowerData(this).power());
-        if (!level().isClientSide && isDoingSpinjitzu() && power1 != null)
-        {
-            if (tickCount % 20 == 0)
-            {
+        if (!level().isClientSide && isDoingSpinjitzu() && power1 != null) {
+            if (tickCount % 20 == 0) {
                 level().playSound(null, blockPosition(), MinejagoSoundEvents.SPINJITZU_ACTIVE.get(), SoundSource.NEUTRAL);
                 level().gameEvent(this, MinejagoGameEvents.SPINJITZU.get(), blockPosition());
             }
             MinejagoParticleUtils.renderNormalSpinjitzu(this, power1.getMainSpinjitzuColor(), power1.getAltSpinjitzuColor(), 10.5, false);
             MinejagoParticleUtils.renderNormalSpinjitzuBorder(power1.getBorderParticle(), this, 4, false);
+        }
+        if (this.getHealth() < this.getMaxHealth() && this.tickCount % 20 == 0) {
+            this.heal(1.0F);
         }
     }
 
@@ -199,12 +202,24 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
         if (pathfinderMob instanceof Character character && character.stopSpinjitzuOnNextStop) character.setDoingSpinjitzu(false);
     }
 
+    @Override
+    public boolean canBeLeashed(Player player) {
+        return false;
+    }
+
+    @Override
     public boolean isDoingSpinjitzu() {
         return Services.DATA.getSpinjitzuData(this).active();
     }
 
+    @Override
     public void setDoingSpinjitzu(boolean doingSpinjitzu)
     {
         Services.DATA.setSpinjitzuData(new SpinjitzuData(true, doingSpinjitzu), this);
+    }
+
+    @Override
+    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+        return false;
     }
 }

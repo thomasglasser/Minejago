@@ -3,7 +3,7 @@ accessible  class   net/minecraft/world/item/alchemy/PotionBrewing$Mix
 accessible  field   net/minecraft/world/item/alchemy/PotionBrewing$Mix                          from                                    Ljava/lang/Object;
 accessible  field   net/minecraft/world/item/alchemy/PotionBrewing$Mix                          ingredient                              Lnet/minecraft/world/item/crafting/Ingredient;
 accessible  field   net/minecraft/world/item/alchemy/PotionBrewing$Mix                          to                                      Ljava/lang/Object;
-accessible  method  net/minecraft/world/item/alchemy/PotionBrewing                              hasPotionMix                            (Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemStack;)Z
+accessible  field   net/minecraft/world/item/alchemy/PotionBrewing                              POTION_MIXES                            Ljava/util/List;
 accessible  field   net/minecraft/world/item/CreativeModeTabs                                   BUILDING_BLOCKS                         Lnet/minecraft/resources/ResourceKey;
 accessible  field   net/minecraft/world/item/CreativeModeTabs                                   COLORED_BLOCKS                          Lnet/minecraft/resources/ResourceKey;
 accessible  field   net/minecraft/world/item/CreativeModeTabs                                   NATURAL_BLOCKS                          Lnet/minecraft/resources/ResourceKey;
@@ -33,6 +33,7 @@ accessible  method  net/minecraft/data/worldgen/Structures                      
 accessible  method  net/minecraft/data/worldgen/Structures                                      structure                               (Lnet/minecraft/core/HolderSet;Lnet/minecraft/world/level/levelgen/structure/TerrainAdjustment;)Lnet/minecraft/world/level/levelgen/structure/Structure$StructureSettings;
 accessible  method  net/minecraft/data/worldgen/Structures                                      structure                               (Lnet/minecraft/core/HolderSet;Ljava/util/Map;Lnet/minecraft/world/level/levelgen/GenerationStep$Decoration;Lnet/minecraft/world/level/levelgen/structure/TerrainAdjustment;)Lnet/minecraft/world/level/levelgen/structure/Structure$StructureSettings;
 accessible  method  net/minecraft/world/level/levelgen/structure/pools/LegacySinglePoolElement  <init>                                  (Lcom/mojang/datafixers/util/Either;Lnet/minecraft/core/Holder;Lnet/minecraft/world/level/levelgen/structure/pools/StructureTemplatePool$Projection;)V
+accessible  method  net/minecraft/world/level/levelgen/structure/pools/SinglePoolElement        <init>                                  (Lcom/mojang/datafixers/util/Either;Lnet/minecraft/core/Holder;Lnet/minecraft/world/level/levelgen/structure/pools/StructureTemplatePool$Projection;)V
 accessible  field   net/minecraft/client/gui/screens/inventory/BookEditScreen                   isSigning                               Z
 accessible  field   net/minecraft/client/gui/screens/inventory/BookEditScreen                   frameTick                               I
 accessible  field   net/minecraft/client/gui/screens/inventory/BookEditScreen                   title                                   Ljava/lang/String;
@@ -80,3 +81,10 @@ accessible  method  net/minecraft/world/level/block/ChiseledBookShelfBlock      
 accessible  method  net/minecraft/world/level/block/ChiseledBookShelfBlock                      removeBook                              (Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/level/block/entity/ChiseledBookShelfBlockEntity;I)V
 accessible  method  net/minecraft/world/level/block/entity/ChiseledBookShelfBlockEntity         updateState                             (I)V
 accessible  field   net/minecraft/world/level/block/entity/ChiseledBookShelfBlockEntity         items                                   Lnet/minecraft/core/NonNullList;
+accessible  method  net/minecraft/client/renderer/entity/layers/HumanoidArmorLayer              setPartVisibility                       (Lnet/minecraft/client/model/HumanoidModel;Lnet/minecraft/world/entity/EquipmentSlot;)V
+accessible  method  net/minecraft/client/renderer/entity/layers/HumanoidArmorLayer              getArmorModel                           (Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/client/model/HumanoidModel;
+accessible  method  net/minecraft/client/renderer/entity/layers/HumanoidArmorLayer              renderArmorPiece                        (Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/model/HumanoidModel;)V
+accessible  method  net/minecraft/advancements/CriteriaTriggers                                 register                                (Lnet/minecraft/advancements/CriterionTrigger;)Lnet/minecraft/advancements/CriterionTrigger;
+accessible  method  net/minecraft/client/gui/screens/MenuScreens                                register                                (Lnet/minecraft/world/inventory/MenuType;Lnet/minecraft/client/gui/screens/MenuScreens$ScreenConstructor;)V
+accessible  class   net/minecraft/client/gui/screens/MenuScreens$ScreenConstructor
+accessible  method  net/minecraft/data/loot/BlockLootSubProvider                                createSilkTouchOnlyTable                (Lnet/minecraft/world/level/ItemLike;)Lnet/minecraft/world/level/storage/loot/LootTable$Builder;

@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.mixin.minecraft.client.model;
 
-import dev.thomasglasser.minejago.world.item.armor.IGeoArmorItem;
+import dev.thomasglasser.minejago.world.item.armor.GeoArmorItem;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -28,17 +28,17 @@ public class PlayerModelMixin<T extends LivingEntity> extends HumanoidModel<T> {
 
     @Override
     public void prepareMobModel(T entity, float limbSwing, float limbSwingAmount, float partialTick) {
-        if (entity.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof IGeoArmorItem iGeoArmorItem && iGeoArmorItem.isSkintight())
+        if (entity.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof GeoArmorItem geoArmorItem && geoArmorItem.isSkintight())
         {
             this.leftSleeve.visible = false;
             this.rightSleeve.visible = false;
             this.jacket.visible = false;
         }
-        if (entity.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof IGeoArmorItem iGeoArmorItem && iGeoArmorItem.isSkintight())
+        if (entity.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof GeoArmorItem geoArmorItem && geoArmorItem.isSkintight())
         {
             this.hat.visible = false;
         }
-        if (entity.getItemBySlot(EquipmentSlot.FEET).getItem() instanceof IGeoArmorItem iGeoArmorBoots && iGeoArmorBoots.isSkintight() || entity.getItemBySlot(EquipmentSlot.LEGS).getItem() instanceof IGeoArmorItem iGeoArmorLeggings && iGeoArmorLeggings.isSkintight())
+        if (entity.getItemBySlot(EquipmentSlot.FEET).getItem() instanceof GeoArmorItem iGeoArmorBoots && iGeoArmorBoots.isSkintight() || entity.getItemBySlot(EquipmentSlot.LEGS).getItem() instanceof GeoArmorItem iGeoArmorLeggings && iGeoArmorLeggings.isSkintight())
         {
             this.rightPants.visible = false;
             this.leftPants.visible = false;

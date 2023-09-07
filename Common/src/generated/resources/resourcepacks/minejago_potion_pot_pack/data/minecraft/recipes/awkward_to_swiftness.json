@@ -1,0 +1,11 @@
+{
+  "type": "minejago:teapot_brewing",
+  "base": "minecraft:awkward",
+  "brewingtime": 800,
+  "experience": 0.35,
+  "group": "potion",
+  "ingredient": {
+    "item": "minecraft:sugar"
+  },
+  "result": "minecraft:swiftness"
+}

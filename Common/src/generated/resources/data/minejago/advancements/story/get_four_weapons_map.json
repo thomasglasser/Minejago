@@ -1,0 +1,39 @@
+{
+  "parent": "minejago:story/get_black_gi",
+  "criteria": {
+    "get_four_weapons_map": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:filled_map"
+            ],
+            "nbt": "{IsFourWeaponsMap:1b}"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.minejago.story.get_four_weapons_map.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:filled_map"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.minejago.story.get_four_weapons_map.title"
+    }
+  },
+  "requirements": [
+    [
+      "get_four_weapons_map"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

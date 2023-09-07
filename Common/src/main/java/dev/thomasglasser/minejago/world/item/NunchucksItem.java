@@ -28,7 +28,7 @@ import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class NunchucksItem extends Item implements IModeledItem, IFabricGeoItem
+public class NunchucksItem extends Item implements ModeledItem, FabricGeoItem
 {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 

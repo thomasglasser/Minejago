@@ -1,12 +1,10 @@
 package dev.thomasglasser.minejago.world.level.block;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import dev.thomasglasser.minejago.util.MinejagoItemUtils;
-import dev.thomasglasser.minejago.world.item.ITeapotLiquidHolder;
-import dev.thomasglasser.minejago.world.item.MinejagoItems;
-import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotionBrewing;
-import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
+import dev.thomasglasser.minejago.world.item.PotionCupHolder;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
 import dev.thomasglasser.minejago.world.level.block.entity.TeapotBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -14,6 +12,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
@@ -23,10 +22,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionBrewing;
-import net.minecraft.world.item.alchemy.PotionUtils;
-import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -41,7 +36,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
-import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
@@ -97,49 +91,40 @@ public class TeapotBlock extends BaseEntityBlock {
             if (pLevel.getBlockEntity(pPos) instanceof TeapotBlockEntity be)
             {
                 ItemStack inHand = pPlayer.getItemInHand(pHand);
-                if ((be.isDone() || be.isBoiling()) && inHand.is(MinejagoItems.TEACUP.get()) && be.getCups() > 0)
+                if (be.getInSlot(0) == ItemStack.EMPTY)
                 {
-                    MinejagoItemUtils.safeShrink(1, inHand, pPlayer);
-                    pPlayer.addItem(PotionUtils.setPotion(new ItemStack(MinejagoItems.FILLED_TEACUP.get()), be.getPotion()));
-                    be.take(1);
-                    pLevel.playSound(null, pPos, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
-                    be.giveExperienceForCup((ServerLevel) pLevel, pPos.getCenter());
-                }
-                else
-                {
-                    if ((be.isBoiling() || be.isDone()) && (((PotionBrewing.hasPotionMix(PotionUtils.setPotion(new ItemStack(Items.POTION), be.getPotion()), inHand) && be.getPotion() != Potions.AWKWARD) || (PotionBrewing.hasPotionMix(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.AWKWARD), inHand)) && be.getPotion() == MinejagoPotions.REGULAR_TEA.get()) || (be.hasRecipe(inHand, pLevel)) || (MinejagoPotionBrewing.hasTeaMix(PotionUtils.setPotion(new ItemStack(Items.POTION), be.getPotion()), inHand))))
-                    {
-                        if (!be.hasRecipe(inHand, pLevel) && (PotionBrewing.hasPotionMix(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.AWKWARD), inHand)) && be.getPotion() == MinejagoPotions.REGULAR_TEA.get())
-                        {
-                            be.setPotion(Potions.AWKWARD);
-                        }
-                        be.setItem(0, inHand);
-                        MinejagoItemUtils.safeShrink(1, inHand, pPlayer);
-                    }
-                    else if (!be.getInSlot(0).isEmpty()) {
-                        pPlayer.addItem(be.getInSlot(0));
-                        be.extract(0, 1);
-                        if (be.getPotion() == Potions.AWKWARD)
-                            be.setPotion(MinejagoPotions.REGULAR_TEA.get());
-                    }
-                    else if (inHand.getItem() instanceof ITeapotLiquidHolder holder)
+                    if (inHand.getItem() instanceof PotionCupHolder holder && holder.canBeDrained(inHand))
                     {
                         if (be.tryFill(holder.getCups(), holder.getPotion(inHand)))
                         {
-                            if (!pPlayer.getAbilities().instabuild)
-                                MinejagoItemUtils.safeShrink(1, inHand, pPlayer);
+                            MinejagoItemUtils.safeShrink(1, inHand, pPlayer);
                             pPlayer.addItem(holder.getDrained(pPlayer.getItemInHand(pHand)));
-                            pLevel.playSound(null, pPos, SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
+                            pLevel.playSound(null, pPos, SoundEvents.BOTTLE_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
                         }
                     }
+                    else if (be.getCups() > 0)
+                    {
+                        if (inHand.getItem() instanceof PotionCupHolder potionCupHolder && potionCupHolder.canBeFilled(inHand, be.getPotion(), be.getCups())) {
+                            MinejagoItemUtils.safeShrink(1, inHand, pPlayer);
+                            pPlayer.addItem(potionCupHolder.getFilled(be.getPotion()));
+                            be.take(potionCupHolder.getCups());
+                            MinejagoCriteriaTriggers.BREWED_TEA.trigger((ServerPlayer) pPlayer, be.getPotion());
+                            pLevel.playSound(null, pPos, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
+                            be.giveExperienceForCup((ServerLevel) pLevel, pPos.getCenter());
+                        } else if (be.hasRecipe(inHand, pLevel)) {
+                            be.insert(0, inHand);
+                            MinejagoItemUtils.safeShrink(1, inHand, pPlayer);
+                        }
+                    }
+                    return InteractionResult.SUCCESS;
                 }
             }
-            return InteractionResult.CONSUME;
+            return InteractionResult.FAIL;
         }
     }
 
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, LivingEntity pPlacer, ItemStack pStack) {
-        if (!pLevel.isClientSide && pLevel.getBlockEntity(pPos) instanceof TeapotBlockEntity teapot) teapot.setTemperature(TeapotBlock.getBiomeTemperature(pLevel, pPos));
+        if (pLevel.getBlockEntity(pPos) instanceof TeapotBlockEntity teapot) teapot.setTemperature(TeapotBlock.getBiomeTemperature(pLevel, pPos) / 2);
 
         if (pStack.hasTag()) {
             CompoundTag tag = pStack.getTag();

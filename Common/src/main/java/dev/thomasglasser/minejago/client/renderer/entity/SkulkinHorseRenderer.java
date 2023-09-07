@@ -11,6 +11,8 @@ import net.minecraft.resources.ResourceLocation;
 
 public class SkulkinHorseRenderer extends AbstractHorseRenderer<SkulkinHorse, HorseModel<SkulkinHorse>>
 {
+    public static final ResourceLocation TEXTURE_LOCATION = Minejago.modLoc("textures/entity/skulkin/skulkin_horse.png");
+
     public SkulkinHorseRenderer(EntityRendererProvider.Context context) {
         super(context, new HorseModel<>(context.bakeLayer(ModelLayers.SKELETON_HORSE)), 1.0F);
         this.addLayer(new AbstractHorseArmorLayer<>(this, context.getModelSet()));
@@ -18,6 +20,6 @@ public class SkulkinHorseRenderer extends AbstractHorseRenderer<SkulkinHorse, Ho
 
     @Override
     public ResourceLocation getTextureLocation(SkulkinHorse entity) {
-        return Minejago.modLoc("textures/entity/skulkin_horse.png");
+        return TEXTURE_LOCATION;
     }
 }

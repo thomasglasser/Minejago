@@ -1,10 +1,10 @@
 package dev.thomasglasser.minejago.platform;
 
-import dev.thomasglasser.minejago.platform.services.IDataHelper;
+import dev.thomasglasser.minejago.platform.services.DataHelper;
 import dev.thomasglasser.minejago.world.level.storage.*;
 import net.minecraft.world.entity.LivingEntity;
 
-public class FabricDataHelper implements IDataHelper {
+public class FabricDataHelper implements DataHelper {
     @Override
     public PowerData getPowerData(LivingEntity entity) {
         if (MinejagoFabricEntityComponents.POWER.isProvidedBy(entity))
@@ -23,6 +23,7 @@ public class FabricDataHelper implements IDataHelper {
             MinejagoFabricEntityComponents.POWER.get(entity).setGiven(data.given());
             MinejagoFabricEntityComponents.POWER.sync(entity);
         }
+        DataHelper.super.setPowerData(data, entity);
     }
 
     @Override
@@ -44,5 +45,6 @@ public class FabricDataHelper implements IDataHelper {
             component.setUnlocked(data.unlocked());
             MinejagoFabricEntityComponents.SPINJITZU.sync(entity);
         }
+        DataHelper.super.setSpinjitzuData(data, entity);
     }
 }

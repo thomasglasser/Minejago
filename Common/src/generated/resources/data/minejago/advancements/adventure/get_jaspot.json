@@ -1,0 +1,41 @@
+{
+  "parent": "minejago:adventure/get_teapot",
+  "criteria": {
+    "get_jaspot": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minejago:jaspot"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.minejago.adventure.get_jaspot.desc"
+    },
+    "frame": "challenge",
+    "hidden": true,
+    "icon": {
+      "item": "minejago:jaspot"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.minejago.adventure.get_jaspot.title"
+    }
+  },
+  "requirements": [
+    [
+      "get_jaspot"
+    ]
+  ],
+  "rewards": {
+    "experience": 10
+  },
+  "sends_telemetry_event": true
+}

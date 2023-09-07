@@ -5,17 +5,17 @@ import dev.thomasglasser.minejago.client.MinejagoForgeClientEvents;
 import dev.thomasglasser.minejago.commands.MinejagoForgeCommandEvents;
 import dev.thomasglasser.minejago.core.MinejagoForgeCoreEvents;
 import dev.thomasglasser.minejago.data.MinejagoDataGenerators;
+import dev.thomasglasser.minejago.data.worldgen.biome.MinejagoBiomeModifierSerializers;
 import dev.thomasglasser.minejago.world.entity.MinejagoForgeEntityEvents;
 import dev.thomasglasser.minejago.world.level.storage.PowerCapabilityAttacher;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuCapabilityAttacher;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 
 @Mod(Minejago.MOD_ID)
 public class MinejagoForge
@@ -26,14 +26,16 @@ public class MinejagoForge
 
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        MinejagoBiomeModifierSerializers.BIOME_MODIFIER_SERIALIZERS.register(bus);
+
         bus.addListener(MinejagoForgeCoreEvents::onCommonSetup);
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> bus.addListener(MinejagoForgeClientEvents::onClientSetup));
+        if (FMLEnvironment.dist.isClient()) bus.addListener(MinejagoForgeClientEvents::onClientSetup);
 
         addModListeners(bus);
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> addModClientListeners(bus));
+        if (FMLEnvironment.dist.isClient()) addModClientListeners(bus);
 
         addForgeListeners();
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> this::addForgeClientListeners);
+        if (FMLEnvironment.dist.isClient()) addForgeClientListeners();
 
         registerCapabilities();
 
@@ -47,6 +49,8 @@ public class MinejagoForge
     {
         bus.addListener(MinejagoForgeClientEvents::onClientConfigChanged);
         bus.addListener(MinejagoForgeEntityEvents::onEntityAttributeCreation);
+        bus.addListener(MinejagoForgeEntityEvents::onSpawnPlacementsRegister);
+        bus.addListener(MinejagoForgeCoreEvents::onAddPackFinders);
     }
 
     private void addModClientListeners(IEventBus bus)
@@ -60,7 +64,6 @@ public class MinejagoForge
         bus.addListener(MinejagoForgeClientEvents::registerClientReloadListeners);
         bus.addListener(MinejagoForgeClientEvents::onAddLayers);
         bus.addListener(MinejagoForgeClientEvents::onBuildCreativeTabContent);
-        bus.addListener(MinejagoForgeClientEvents::onAddPackFinders);
     }
 
     private void addForgeListeners()
@@ -69,12 +72,14 @@ public class MinejagoForge
         MinecraftForge.EVENT_BUS.addListener(MinejagoForgeEntityEvents::onPlayerEntityInteract);
         MinecraftForge.EVENT_BUS.addListener(MinejagoForgeEntityEvents::onPlayerTick);
         MinecraftForge.EVENT_BUS.addListener(MinejagoForgeEntityEvents::onServerPlayerLoggedIn);
+        MinecraftForge.EVENT_BUS.addListener(MinejagoForgeEntityEvents::onPlayerClone);
         MinecraftForge.EVENT_BUS.addListener(MinejagoForgeCommandEvents::onCommandsRegister);
     }
 
     private void addForgeClientListeners()
     {
         MinecraftForge.EVENT_BUS.addListener((ClientPlayerNetworkEvent.LoggingIn event) -> MinejagoClientEvents.onPlayerLoggedIn());
+        MinecraftForge.EVENT_BUS.addListener(MinejagoForgeClientEvents::onClientTick);
     }
 
     private void registerCapabilities()

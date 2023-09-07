@@ -1,25 +1,43 @@
-buildscript {
-    repositories {
-        maven { url = 'https://maven.parchmentmc.org' }
-    }
-}
-
 plugins {
     id 'fabric-loom' version '1.+'
     id 'maven-publish'
     id 'idea'
 }
 
-archivesBaseName = "${mod_name}-fabric-${minecraft_version}"
+archivesBaseName = "${mod_id}-fabric-${minecraft_version}"
 
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
 
     mappings loom.layered() {
         officialMojangMappings()
-//        parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip") Waiting for 1.19.4
-        parchment("org.parchmentmc.data:parchment-1.19.3:${parchment_version}@zip")
+        parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip")
     }
+
+    implementation project(":Common")
+    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
+
+    modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
+    modImplementation "maven.modrinth:lambdynamiclights:${lambdynamiclights_version}"
+    modImplementation "maven.modrinth:moonlight:${moonlight_version}"
+    modImplementation "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}"
+    modImplementation "net.tslat.smartbrainlib:SmartBrainLib-fabric-${minecraft_version}:${sbl_version}"
+    modImplementation "maven.modrinth:jade:${jade_version}"
+    modImplementation("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}") {
+        exclude group: "net.fabricmc.fabric-api"
+    }
+    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-api:${cca_version}"
+    modCompileOnly "curse.maven:configured-667378:${configured_fabric_id}"
+//    modImplementation("curse.maven:configured-667378:${configured_fabric_id}") TODO: Update
+    modImplementation "net.tslat.tes:TES-fabric-${minecraft_version}:${tes_version}"
+    modImplementation "maven.modrinth:trimmed:${trimmed_version}+fabric"
+    modImplementation "com.klikli_dev:modonomicon-${minecraft_version}-fabric:${modonomicon_version}"
+
+    include modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${playeranimator_version}")
+    include modImplementation("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forgeconfigapiport_version}")
+    include modImplementation("com.jamieswhiteshirt:reach-entity-attributes:$reachentityattributes_version")
+    include modImplementation("maven.modrinth:sherdsapi:${sherdsapi_version}+fabric")
 
     modRuntimeOnly "dev.lambdaurora:spruceui:${spruceui_version}"
     modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:$rei_version"
@@ -28,38 +46,10 @@ dependencies {
     modRuntimeOnly "maven.modrinth:midnightlib:${midnightlib_version}-fabric"
     modRuntimeOnly "com.terraformersmc:modmenu:${modmenu_version}"
     modRuntimeOnly "mysticdrew:common-networking:${common_networking_version}-fabric"
+    runtimeOnly "com.github.llamalad7.mixinextras:mixinextras-fabric:${mixinextras_version}"
 
-    implementation project(":Common")
-    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
-
-    modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
-    modCompileOnly "maven.modrinth:lambdynamiclights:${lambdynamiclights_version}"
-    modImplementation "maven.modrinth:moonlight:${moonlight_version}"
-    modImplementation "software.bernie.geckolib:geckolib-fabric-${previous_minecraft_version}:${geckolib_version}"
-    modImplementation("net.tslat.smartbrainlib:SmartBrainLib-fabric-${minecraft_version}:1.11.1")
-//    modImplementation("net.tslat.smartbrainlib:SmartBrainLib-fabric-${minecraft_version}:${smartbrainlib_version}") TODO: update
-    modImplementation "maven.modrinth:jade:${jade_version}"
-//    modImplementation "vazkii.patchouli:Patchouli:${patchouli_version}-FABRIC"
-    modImplementation("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}") {
-        exclude(group: "net.fabricmc.fabric-api")
-    }
-    modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-api:${cca_version}")
-    modCompileOnly("curse.maven:configured-667378:${configured_fabric_id}")
-    modCompileOnly "net.tslat.tes:TES-fabric-${previous_minecraft_version}:${tes_version}"
-//    modImplementation("curse.maven:configured-667378:${configured_fabric_id}") TODO: Update
-//    modImplementation "net.tslat.tes:TES-fabric-${previous_minecraft_version}:${tes_version}" TODO: Update
-    modImplementation("dev.dhyces.trimmed:trimmed-fabric-${previous_minecraft_version}:${trimmed_version}")
-//    modImplementation("dev.dhyces.trimmed:trimmed-fabric-${minecraft_version}:${trimmed_version}") TODO: Update
-
-    include modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${playeranimator_version}")
-    include modImplementation("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forgeconfigapiport_version}")
-    include modCompileOnly("com.jamieswhiteshirt:reach-entity-attributes:$reachentityattributes_version")
-//    include modImplementation("com.jamieswhiteshirt:reach-entity-attributes:$reachentityattributes_version") TODO: Update
-    include modImplementation("dev.thomasglasser.sherdsapi:sherdsapi-fabric-${minecraft_version}:${sherdsapi_version}")
-
-    include("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cca_version}")
-    include("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cca_version}")
+    include "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cca_version}"
+    include "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cca_version}"
 }
 
 loom {
@@ -86,8 +76,37 @@ loom {
 }
 
 
+def resourceTargets = ['fabric.mod.json', 'pack.mcmeta']
+def replaceProperties = [
+        mod_id: mod_id,
+        version: version,
+        mod_name: mod_name,
+        mod_author: mod_author,
+        fabric_loader_version: fabric_loader_version,
+        minecraft_version: minecraft_version,
+        cca_version: cca_version,
+        sbl_version: sbl_version,
+        geckolib_version: geckolib_version,
+        sherdsapi_version: sherdsapi_version,
+        forgeconfigapiport_version: forgeconfigapiport_version,
+        trimmed_version: trimmed_version,
+        reachentityattributes_version: reachentityattributes_version,
+        playeranimator_version: playeranimator_version,
+        lambdynamiclights_version: lambdynamiclights_version,
+        configured_version: configured_version,
+        tes_version: tes_version,
+        jade_version: jade_version
+]
+
 processResources {
     from project(":Common").sourceSets.main.resources
+
+    inputs.properties replaceProperties
+    replaceProperties.put 'project', project
+
+    filesMatching(resourceTargets) {
+        expand replaceProperties
+    }
 }
 
 tasks.withType(JavaCompile) {

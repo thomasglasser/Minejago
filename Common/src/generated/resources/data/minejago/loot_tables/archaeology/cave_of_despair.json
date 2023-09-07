@@ -1,0 +1,52 @@
+{
+  "type": "minecraft:archaeology",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minejago:pottery_sherd_peaks"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:terracotta"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:light_gray_terracotta"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:clay_ball"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:emerald"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minejago:bone_knife"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minejago:skeletal_chestplate_red"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minejago:skeletal_chestplate_blue"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minejago:skeletal_chestplate_black"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minejago:skeletal_chestplate_white"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "minejago:archaeology/cave_of_despair"
+}

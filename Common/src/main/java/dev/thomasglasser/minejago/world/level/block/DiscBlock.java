@@ -10,12 +10,12 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
@@ -24,7 +24,7 @@ public class DiscBlock extends HorizontalDirectionalBlock {
     public static final EnumProperty<Row> ROW = EnumProperty.create("row", Row.class);
     public static final EnumProperty<Column> COLUMN = EnumProperty.create("column", Column.class);
 
-    private static final VoxelShape SHAPE_NORTH = box(15.0, 15.0, 0.0, 16.0, 16.0, 2.0);
+    private static final VoxelShape SHAPE_NORTH = box(0.0, 0.0, 14.0, 16.0, 16.0, 16.0);
     private static final VoxelShape SHAPE_SOUTH = box(0.0, 0.0, 0.0, 16.0, 16.0, 2.0);
     private static final VoxelShape SHAPE_EAST = box(0.0, 0.0, 0.0, 2.0, 16.0, 16.0);
     private static final VoxelShape SHAPE_WEST = box(14.0, 0.0, 0.0, 16.0, 16.0, 16.0);

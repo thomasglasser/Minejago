@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.platform;
 
-import dev.thomasglasser.minejago.platform.services.INetworkHelper;
+import dev.thomasglasser.minejago.platform.services.NetworkHelper;
 import dev.thomasglasser.minejago.util.MinejagoPacketUtils;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 
-public class FabricNetworkHelper implements INetworkHelper {
+public class FabricNetworkHelper implements NetworkHelper {
     @Override
     public <MSG> void sendToServer(Class<MSG> msgClass, FriendlyByteBuf args) {
         try {

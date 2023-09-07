@@ -20,7 +20,7 @@ public class SpinjitzuCapabilityAttacher extends CapabilityAttacher {
 
     @Nullable
     public static SpinjitzuCapability getSpinjitzuCapabilityUnwrap(LivingEntity player) {
-        return getSpinjitzuCapability(player).orElse(null);
+        return getSpinjitzuCapability(player).orElse(new SpinjitzuCapability(player));
     }
 
     public static LazyOptional<SpinjitzuCapability> getSpinjitzuCapability(LivingEntity player) {
@@ -33,5 +33,5 @@ public class SpinjitzuCapabilityAttacher extends CapabilityAttacher {
 
     public static void register() {
         CapabilityAttacher.registerCapability(CAPABILITY_CLASS);
-        CapabilityAttacher.registerEntityAttacher(LivingEntity.class, SpinjitzuCapabilityAttacher::attach, SpinjitzuCapabilityAttacher::getSpinjitzuCapability, true);
+        CapabilityAttacher.registerEntityAttacher(LivingEntity.class, SpinjitzuCapabilityAttacher::attach, SpinjitzuCapabilityAttacher::getSpinjitzuCapability, false);
     }}

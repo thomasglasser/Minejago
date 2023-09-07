@@ -1,21 +1,16 @@
 package dev.thomasglasser.minejago.data.models;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
-import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
-import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
+import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.armor.SkeletalChestplateItem;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.RegistrySetBuilder;
-import net.minecraft.core.registries.BuiltInRegistries;
+import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
+import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -32,9 +27,9 @@ public class MinejagoItemModels extends ItemModelProvider
     {
         basicItemHandheld(MinejagoItems.BONE_KNIFE.get());
         basicItemHandheld(MinejagoItems.IRON_SHURIKEN.get());
-        MinejagoArmor.BLACK_GI_SET.getAll().forEach(item ->
+        MinejagoArmors.BLACK_GI_SET.getAll().forEach(item ->
         {
-            String nameForSlot = switch (MinejagoArmor.BLACK_GI_SET.getForItem(item.get())) {
+            String nameForSlot = switch (MinejagoArmors.BLACK_GI_SET.getForItem(item.get())) {
                 case FEET -> "boots";
                 case LEGS -> "pants";
                 case CHEST -> "jacket";
@@ -44,8 +39,9 @@ public class MinejagoItemModels extends ItemModelProvider
 
             singleTexture(item.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/black_gi_" + nameForSlot));
         });
-        MinejagoArmor.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
+        MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
                 singleTexture(item.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/skeletal_chestplate_" + ((SkeletalChestplateItem)item.get()).getVariant().getColor().getName())));
+        basicItem(MinejagoArmors.SAMUKAIS_CHESTPLATE.get());
         basicItem(MinejagoItems.TEACUP.get());
         basicItem(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get());
         basicItemHandheld(MinejagoItems.IRON_KATANA.get());
@@ -57,36 +53,18 @@ public class MinejagoItemModels extends ItemModelProvider
         basicItem(MinejagoItems.POTTERY_SHERD_DRAGONS_HEAD.get());
         basicItem(MinejagoItems.POTTERY_SHERD_DRAGONS_TAIL.get());
         basicItem(MinejagoItems.FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE.get());
-        basicItem(MinejagoItems.TEAPOT.get());
-        basicItem(MinejagoItems.JASPOT.get());
-        basicItem(MinejagoItems.GOLD_DISC.get());
-        basicItem(MinejagoItems.TOP_POST.get());
+        basicItem(MinejagoBlocks.TEAPOT.asItem());
+        basicItem(MinejagoBlocks.JASPOT.asItem());
+        basicItem(MinejagoBlocks.GOLD_DISC.asItem());
+        basicItem(MinejagoBlocks.TOP_POST.asItem());
         basicItem(MinejagoItems.SCROLL.get());
         basicItem(MinejagoItems.WRITABLE_SCROLL.get());
         basicItem(MinejagoItems.WRITTEN_SCROLL.get());
 
-        MinejagoItems.TEAPOTS.forEach((dyeColor, itemRegistryObject) ->
+        MinejagoBlocks.TEAPOTS.forEach((dyeColor, itemRegistryObject) ->
         {
             if (existingFileHelper.exists(Minejago.modLoc("textures/item/" + dyeColor.getName() + "_teapot.png"), PackType.CLIENT_RESOURCES))
-                basicItem(itemRegistryObject.get());
-        });
-
-        final RegistryAccess.Frozen access = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
-        final RegistrySetBuilder builder = new RegistrySetBuilder();
-        MinejagoPowers.POWERS.addToSet(builder);
-        HolderLookup.Provider provider = builder.build(access);
-
-        provider.lookupOrThrow(MinejagoRegistries.POWER).listElements().forEach(powerReference ->
-        {
-            if (powerReference.get().hasSets())
-            {
-                MinejagoArmor.POWER_SETS.forEach(armorSet ->
-                        armorSet.getAll().forEach(item ->
-                        {
-                            String path = powerReference.key().location().getPath() + "_" + item.getId().getPath();
-                            singleTexture("item/minejago_armor/" + path, mcLoc("item/generated"), "layer0", modLoc("item/" + path));
-                        }));
-            }
+                basicItem(itemRegistryObject.asItem());
         });
 
         spawnEgg(MinejagoItems.WU_SPAWN_EGG.getId().getPath());
@@ -99,8 +77,10 @@ public class MinejagoItemModels extends ItemModelProvider
         spawnEgg(MinejagoItems.KRUNCHA_SPAWN_EGG.getId().getPath());
         spawnEgg(MinejagoItems.NUCKAL_SPAWN_EGG.getId().getPath());
         spawnEgg(MinejagoItems.SKULKIN_HORSE_SPAWN_EGG.getId().getPath());
+        spawnEgg(MinejagoItems.EARTH_DRAGON_SPAWN_EGG.getId().getPath());
+        spawnEgg(MinejagoItems.SAMUKAI_SPAWN_EGG.getId().getPath());
 
-
+        withExistingParent(MinejagoItems.EMPTY_GOLDEN_WEAPONS_MAP.getId().getPath(), "item/map");
     }
 
     protected void basicItemHandheld(ResourceLocation item)

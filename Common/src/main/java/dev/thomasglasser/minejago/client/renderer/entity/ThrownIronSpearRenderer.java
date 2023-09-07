@@ -16,7 +16,7 @@ import net.minecraft.util.Mth;
 
 public class ThrownIronSpearRenderer extends EntityRenderer<ThrownIronSpear>
 {
-    public static final ResourceLocation TEXTURE_LOCATION = Minejago.modLoc("textures/entity/iron_spear.png");
+    public static final ResourceLocation TEXTURE_LOCATION = Minejago.modLoc("textures/entity/item/iron_spear.png");
     private final SpearModel model;
 
     public ThrownIronSpearRenderer(EntityRendererProvider.Context context) {

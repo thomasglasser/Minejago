@@ -2,7 +2,7 @@ package dev.thomasglasser.minejago.mixin.minejago.world.item;
 
 import com.google.common.collect.Multimap;
 import dev.thomasglasser.minejago.client.renderer.item.WoodenNunchucksRenderer;
-import dev.thomasglasser.minejago.world.item.IFabricGeoItem;
+import dev.thomasglasser.minejago.world.item.FabricGeoItem;
 import dev.thomasglasser.minejago.world.item.NunchucksItem;
 import net.fabricmc.fabric.api.item.v1.FabricItem;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -18,7 +18,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 @Mixin(NunchucksItem.class)
-public abstract class NunchucksItemMixin implements IFabricGeoItem, FabricItem
+public abstract class NunchucksItemMixin implements FabricGeoItem, FabricItem
 {
     Supplier<Object> renderProvider = GeoItem.makeRenderer((NunchucksItem)(Object)this);
 

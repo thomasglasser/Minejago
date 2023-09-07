@@ -3,7 +3,7 @@ package dev.thomasglasser.minejago.data.tags;
 import com.mojang.datafixers.util.Pair;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
-import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
+import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
@@ -46,7 +46,7 @@ public class MinejagoItemTagsProvider extends ItemTagsProvider
                 .addTag(MinejagoItemTags.GOLDEN_WEAPONS);
         tagDynamicLight("self", 10)
                 .addTag(MinejagoItemTags.GOLDEN_WEAPONS);
-        MinejagoArmor.ARMOR_SETS.forEach(set ->
+        MinejagoArmors.ARMOR_SETS.forEach(set ->
                 set.getAll().forEach(item ->
                 {
                     switch (set.getForItem(item.get())) {
@@ -56,8 +56,19 @@ public class MinejagoItemTagsProvider extends ItemTagsProvider
                         case FEET -> tagPair(BOOTS, item.get());
                     }
                 }));
-        MinejagoArmor.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
+        MinejagoArmors.POWER_SETS.forEach(set ->
+                set.getAll().forEach(item ->
+                {
+                    switch (set.getForItem(item.get())) {
+                        case HEAD -> tagPair(HELMETS, item.get());
+                        case CHEST -> tagPair(CHESTPLATES, item.get());
+                        case LEGS -> tagPair(LEGGINGS, item.get());
+                        case FEET -> tagPair(BOOTS, item.get());
+                    }
+                }));
+        MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
                 tagPair(CHESTPLATES, item.get()));
+        tagPair(CHESTPLATES, MinejagoArmors.SAMUKAIS_CHESTPLATE.get());
 
         tag(MinejagoItemTags.WOODEN_RODS)
                 .add(Items.STICK)
@@ -74,21 +85,7 @@ public class MinejagoItemTagsProvider extends ItemTagsProvider
                         .addOptionalTag(forgeLoc("dyes/" + dyeColor.getName()))
                         .addOptionalTag(cLoc(dyeColor.getName() + "_dyes")));
 
-        tag(ItemTags.DECORATED_POT_SHERDS)
-                .add(MinejagoItems.POTTERY_SHERD_ICE_CUBE.get())
-                .add(MinejagoItems.POTTERY_SHERD_THUNDER.get())
-                .add(MinejagoItems.POTTERY_SHERD_PEAKS.get())
-                .add(MinejagoItems.POTTERY_SHERD_MASTER.get())
-                .add(MinejagoItems.POTTERY_SHERD_YIN_YANG.get())
-                .add(MinejagoItems.POTTERY_SHERD_DRAGONS_HEAD.get())
-                .add(MinejagoItems.POTTERY_SHERD_DRAGONS_TAIL.get());
-
-        tag(ItemTags.TRIM_TEMPLATES)
-                .add(MinejagoItems.FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE.get());
-
-        IntrinsicTagAppender<Item> pots = tag(MinejagoItemTags.TEAPOTS);
-        pots.add(MinejagoItems.TEAPOT.get(), MinejagoItems.JASPOT.get());
-        MinejagoItems.TEAPOTS.forEach((color, pot) -> pots.add(pot.get()));
+        copy(MinejagoBlockTags.TEAPOTS, MinejagoItemTags.TEAPOTS);
 
         tag(MinejagoItemTags.LECTERN_SCROLLS)
                 .add(MinejagoItems.WRITABLE_SCROLL.get())
@@ -105,7 +102,7 @@ public class MinejagoItemTagsProvider extends ItemTagsProvider
     public TagAppender<Item> tagDynamicLight(String tag, int level)
     {
         level = Math.min(level, 15);
-        return tag(ItemTags.create(new ResourceLocation(Minejago.Dependencies.DYNAMIC_LIGHTS.getModId(), tag + "_" + level)));
+        return tag(ItemTags.create(Minejago.Dependencies.DYNAMIC_LIGHTS.modLoc(tag + "_" + level)));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package dev.thomasglasser.minejago;
 
+import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
 import dev.thomasglasser.minejago.client.MinejagoClientConfig;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
@@ -11,12 +12,12 @@ import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.ai.memory.MinejagoMemoryModuleTypes;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
-import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
+import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.inventory.MinejagoMenuTypes;
 import dev.thomasglasser.minejago.world.item.MinejagoCreativeModeTabs;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.MinejagoTiers;
-import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
+import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
 import dev.thomasglasser.minejago.world.item.crafting.MinejagoRecipeSerializers;
 import dev.thomasglasser.minejago.world.item.crafting.MinejagoRecipeTypes;
@@ -74,7 +75,7 @@ public class Minejago {
 
 		MinejagoRecipeTypes.init();
 		MinejagoRecipeSerializers.init();
-		MinejagoArmor.init();
+		MinejagoArmors.init();
 		MinejagoTiers.init();
 		MinejagoPowers.init();
 		MinejagoEntityTypes.init();
@@ -92,6 +93,7 @@ public class Minejago {
 		MinejagoGameEvents.init();
 		MinejagoMemoryModuleTypes.init();
 		MinejagoMenuTypes.init();
+		MinejagoCriteriaTriggers.init();
 	}
 
 	private static void registerConfigs()
@@ -108,6 +110,7 @@ public class Minejago {
 		SHERDSAPI("sherdsapi"),
 		PLAYER_ANIMATOR("playeranimator", "player-animator"),
 		REACH_ENTITY_ATTRIBUTES("forge", "reach-entity-attributes"),
+		MODONOMICON("modonomicon"),
 		TSLAT_ENTITY_STATUS("tslatentitystatus");
 
 		private final String forge;
@@ -130,6 +133,11 @@ public class Minejago {
 		public boolean isInstalled()
 		{
 			return Services.PLATFORM.isModLoaded(getModId());
+		}
+
+		public ResourceLocation modLoc(String path)
+		{
+			return new ResourceLocation(getModId(), path);
 		}
 	}
 

@@ -1,6 +1,18 @@
 {
   "parent": "minejago:adventure/kill_a_skulkin",
   "criteria": {
+    "collect_bone": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minejago:skeletal_chestplate_bone"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "collect_bow": {
       "conditions": {
         "items": [
@@ -68,16 +80,19 @@
   },
   "requirements": [
     [
-      "collect_strength"
-    ],
-    [
-      "collect_speed"
+      "collect_bone"
     ],
     [
       "collect_bow"
     ],
     [
       "collect_knife"
+    ],
+    [
+      "collect_speed"
+    ],
+    [
+      "collect_strength"
     ]
   ],
   "rewards": {

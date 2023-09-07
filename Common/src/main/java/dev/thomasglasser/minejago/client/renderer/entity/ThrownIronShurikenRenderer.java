@@ -16,7 +16,7 @@ import net.minecraft.util.Mth;
 
 public class ThrownIronShurikenRenderer extends EntityRenderer<ThrownIronShuriken>
 {
-    public static final ResourceLocation TEXTURE_LOCATION = Minejago.modLoc("textures/entity/iron_shuriken.png");
+    public static final ResourceLocation TEXTURE_LOCATION = Minejago.modLoc("textures/entity/item/iron_shuriken.png");
     private final ThrownIronShurikenModel model;
 
     public ThrownIronShurikenRenderer(EntityRendererProvider.Context context) {

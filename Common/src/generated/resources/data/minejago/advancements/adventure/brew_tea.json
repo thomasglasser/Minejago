@@ -1,0 +1,31 @@
+{
+  "parent": "minejago:adventure/get_teapot",
+  "criteria": {
+    "brewed_tea": {
+      "conditions": {},
+      "trigger": "minejago:brewed_tea"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.minejago.adventure.brew_tea.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minejago:filled_teacup",
+      "nbt": "{Potion:\"minejago:oak_tea\"}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.minejago.adventure.brew_tea.title"
+    }
+  },
+  "requirements": [
+    [
+      "brewed_tea"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

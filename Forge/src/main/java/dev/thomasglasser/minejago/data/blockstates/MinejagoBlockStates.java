@@ -30,10 +30,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -46,11 +43,13 @@ public class MinejagoBlockStates extends BlockStateProvider {
     private final Map<ResourceLocation, Supplier<JsonElement>> MODEL_MAP = Maps.newHashMap();
     private final MinejagoBlockModelGenerators blockModelGenerators;
     private final PackOutput output;
+    private final ExistingFileHelper existingFileHelper;
 
     public MinejagoBlockStates(PackOutput output, ExistingFileHelper exFileHelper) {
         super(output, Minejago.MOD_ID, exFileHelper);
         blockModelGenerators = makeBlockModelGenerators();
         this.output = output;
+        existingFileHelper = exFileHelper;
     }
 
     @Override
@@ -85,11 +84,28 @@ public class MinejagoBlockStates extends BlockStateProvider {
                     .rotationY((int) (facing.getOpposite()).toYRot())
                     .build();
         });
-      
+
         getVariantBuilder(MinejagoBlocks.TOP_POST.get()).forAllStates(blockState ->
         {
             Direction facing = blockState.getValue(TopPostBlock.FACING);
             ModelFile model = models().getExistingFile(blockModel("top_post"));
+
+            return ConfiguredModel.builder()
+                    .modelFile(model)
+                    .rotationY((int) (facing.getOpposite()).toYRot())
+                    .build();
+        });
+
+        getVariantBuilder(MinejagoBlocks.EARTH_DRAGON_HEAD.get()).forAllStates(blockState ->
+        {
+            Direction facing = blockState.getValue(TopPostBlock.FACING);
+            ModelFile model = new ModelFile.ExistingModelFile(modLoc("block/earth_dragon_head.geo.json"), existingFileHelper)
+            {
+                @Override
+                protected boolean exists() {
+                    return existingFileHelper.exists(getUncheckedLocation(), new ExistingFileHelper.ResourceType(PackType.CLIENT_RESOURCES, "", "geo"));
+                }
+            };
 
             return ConfiguredModel.builder()
                     .modelFile(model)
@@ -139,7 +155,8 @@ public class MinejagoBlockStates extends BlockStateProvider {
         {
             ResourceLocation resourcelocation = ModelLocationUtils.getModelLocation(block);
             MultiPartGenerator multipartgenerator = MultiPartGenerator.multiPart(block);
-            Map.of(Direction.NORTH, VariantProperties.Rotation.R0, Direction.EAST, VariantProperties.Rotation.R90, Direction.SOUTH, VariantProperties.Rotation.R180, Direction.WEST, VariantProperties.Rotation.R270).forEach((p_262541_, p_262542_) -> {
+            SortedMap<Direction, VariantProperties.Rotation> sm = new TreeMap<>(Map.of(Direction.NORTH, VariantProperties.Rotation.R0, Direction.EAST, VariantProperties.Rotation.R90, Direction.SOUTH, VariantProperties.Rotation.R180, Direction.WEST, VariantProperties.Rotation.R270));
+            sm.forEach((p_262541_, p_262542_) -> {
                 Condition.TerminalCondition condition$terminalcondition = Condition.condition().term(BlockStateProperties.HORIZONTAL_FACING, p_262541_);
                 multipartgenerator.with(condition$terminalcondition, Variant.variant().with(VariantProperties.MODEL, resourcelocation).with(VariantProperties.Y_ROT, p_262542_).with(VariantProperties.UV_LOCK, true));
                 addScrollSlotStateAndRotationVariants(multipartgenerator, condition$terminalcondition, p_262542_);
@@ -168,6 +185,7 @@ public class MinejagoBlockStates extends BlockStateProvider {
         @Override
         public void run() {
             createChiseledShelf(MinejagoBlocks.CHISELED_SCROLL_SHELF.get());
+            createBrushableBlock(MinejagoBlocks.SUSPICIOUS_RED_SAND.get());
         }
 
         public CompletableFuture<?> generateAll(CachedOutput cache)

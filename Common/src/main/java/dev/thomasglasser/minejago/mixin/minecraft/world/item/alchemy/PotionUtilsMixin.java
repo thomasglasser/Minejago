@@ -14,7 +14,7 @@ public class PotionUtilsMixin {
     @ModifyVariable(method = "addPotionTooltip(Ljava/util/List;Ljava/util/List;F)V", argsOnly = true, index = 0, at = @At("HEAD"))
     private static List<MobEffectInstance> minejago_addPotionTooltip(List<MobEffectInstance> value)
     {
-        value.removeIf(instance -> instance.getEffect() == MinejagoMobEffects.TEA.get());
+        value.removeIf(instance -> instance.getEffect() instanceof MinejagoMobEffects.EmptyMobEffect);
         return value;
     }
 }

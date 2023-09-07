@@ -2,10 +2,10 @@ package dev.thomasglasser.minejago.client;
 
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.client.MinejagoClientEvents;
 import dev.thomasglasser.minejago.client.animation.MinejagoPlayerAnimator;
 import dev.thomasglasser.minejago.client.model.*;
 import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
+import dev.thomasglasser.minejago.client.renderer.block.DragonHeadRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.*;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.BetaTesterLayer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.DevLayer;
@@ -15,16 +15,19 @@ import dev.thomasglasser.minejago.packs.PackHolder;
 import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
-import dev.thomasglasser.minejago.world.item.IModeledItem;
+import dev.thomasglasser.minejago.world.item.ModeledItem;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
-import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
+import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
+import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
 import dev.thomasglasser.minejago.world.level.block.entity.TeapotBlockEntity;
 import fuzs.forgeconfigapiport.api.config.v2.ModConfigEvents;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
-import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
+import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.*;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
@@ -35,6 +38,8 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.client.renderer.blockentity.BrushableBlockRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -52,6 +57,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.level.block.Block;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
@@ -79,15 +86,15 @@ public class MinejagoFabricClient implements ClientModInitializer {
 
         for (RegistryObject<Item> item : MinejagoItems.ITEMS.getEntries())
         {
-            if (item.get() instanceof IModeledItem)
+            if (item.get() instanceof ModeledItem)
             {
                 BuiltinItemRendererRegistry.INSTANCE.register(item.get(), (bewlr::renderByItem));
             }
         }
 
-        for (RegistryObject<Item> item : MinejagoArmor.ARMOR.getEntries())
+        for (RegistryObject<Item> item : MinejagoArmors.ARMOR.getEntries())
         {
-            if (item.get() instanceof IModeledItem)
+            if (item.get() instanceof ModeledItem)
             {
                 BuiltinItemRendererRegistry.INSTANCE.register(item.get(), (bewlr::renderByItem));
             }
@@ -103,11 +110,6 @@ public class MinejagoFabricClient implements ClientModInitializer {
         registerEvents();
 
         registerPackets();
-
-        for (PackHolder holder : MinejagoPacks.getPacks())
-        {
-            if (holder.type() == PackType.CLIENT_RESOURCES) ResourceManagerHelper.registerBuiltinResourcePack(holder.id(), FabricLoader.getInstance().getModContainer(Minejago.MOD_ID).get(), Component.translatable(holder.titleKey()), ResourcePackActivationType.NORMAL);
-        }
 
         MinejagoClientEvents.registerMenuScreens();
     }
@@ -125,10 +127,15 @@ public class MinejagoFabricClient implements ClientModInitializer {
         EntityRendererRegistry.register(MinejagoEntityTypes.JAY.get(), CharacterRenderer::new);
         EntityRendererRegistry.register(MinejagoEntityTypes.COLE.get(), CharacterRenderer::new);
         EntityRendererRegistry.register(MinejagoEntityTypes.ZANE.get(), CharacterRenderer::new);
-        EntityRendererRegistry.register(MinejagoEntityTypes.SKULKIN.get(), UnderworldSkeletonRenderer::new);
+        EntityRendererRegistry.register(MinejagoEntityTypes.SKULKIN.get(), SkulkinRenderer::new);
         EntityRendererRegistry.register(MinejagoEntityTypes.KRUNCHA.get(), KrunchaRenderer::new);
         EntityRendererRegistry.register(MinejagoEntityTypes.NUCKAL.get(), NuckalRenderer::new);
         EntityRendererRegistry.register(MinejagoEntityTypes.SKULKIN_HORSE.get(), SkulkinHorseRenderer::new);
+        EntityRendererRegistry.register(MinejagoEntityTypes.EARTH_DRAGON.get(), context -> new DragonRenderer<>(context, new DragonModel<>(Minejago.modLoc("dragon/earth_dragon"))));
+        EntityRendererRegistry.register(MinejagoEntityTypes.SAMUKAI.get(), SamukaiRenderer::new);
+
+        BlockEntityRenderers.register(MinejagoBlockEntityTypes.DRAGON_HEAD.get(), context -> new DragonHeadRenderer());
+        BlockEntityRenderers.register(MinejagoBlockEntityTypes.BRUSHABLE.get(), BrushableBlockRenderer::new);
     }
 
     private void registerModelLayers()
@@ -146,20 +153,23 @@ public class MinejagoFabricClient implements ClientModInitializer {
 
     private void registerModelProviders()
     {
-        ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, consumer) -> consumer.accept(new ModelResourceLocation(Minejago.MOD_ID, "iron_scythe_inventory", "inventory")));
-        ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, consumer) -> consumer.accept(new ModelResourceLocation(Minejago.MOD_ID, "scythe_of_quakes_inventory", "inventory")));
-        ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, consumer) -> consumer.accept(new ModelResourceLocation(Minejago.MOD_ID, "iron_spear_inventory", "inventory")));
-        ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, consumer) -> consumer.accept(new ModelResourceLocation(Minejago.MOD_ID, "wooden_nunchucks_inventory", "inventory")));
-        ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, consumer) -> consumer.accept(new ModelResourceLocation(Minejago.MOD_ID, "bamboo_staff_inventory", "inventory")));
-        ModelLoadingRegistry.INSTANCE.registerModelProvider(((manager, consumer) ->
+        ModelLoadingPlugin.register(context -> context.addModels(new ModelResourceLocation(Minejago.MOD_ID, "iron_scythe_inventory", "inventory")));
+        ModelLoadingPlugin.register(context -> context.addModels(new ModelResourceLocation(Minejago.MOD_ID, "scythe_of_quakes_inventory", "inventory")));
+        ModelLoadingPlugin.register(context -> context.addModels(new ModelResourceLocation(Minejago.MOD_ID, "iron_spear_inventory", "inventory")));
+        ModelLoadingPlugin.register(context -> context.addModels(new ModelResourceLocation(Minejago.MOD_ID, "wooden_nunchucks_inventory", "inventory")));
+        ModelLoadingPlugin.register(context -> context.addModels(new ModelResourceLocation(Minejago.MOD_ID, "bamboo_staff_inventory", "inventory")));
+        PreparableModelLoadingPlugin.register(((resourceManager, executor) ->
         {
-            Map<ResourceLocation, Resource> map = manager.listResources("models/item/minejago_armor", (location -> location.getPath().endsWith(".json")));
+            Map<ResourceLocation, Resource> map = resourceManager.listResources("models/item/minejago_armor", (location -> location.getPath().endsWith(".json")));
+            List<ModelResourceLocation> rls = new ArrayList<>();
             for (ResourceLocation rl : map.keySet())
             {
                 ResourceLocation stripped = new ResourceLocation(rl.getNamespace(), rl.getPath().substring("models/item/".length(), rl.getPath().indexOf(".json")));
-                consumer.accept(new ModelResourceLocation(stripped, "inventory"));
+                rls.add(new ModelResourceLocation(stripped, "inventory"));
             }
-        }));
+            return CompletableFuture.supplyAsync(() -> rls, executor);
+        }), (data, pluginContext) ->
+                pluginContext.addModels(data));
     }
 
     private void registerItemAndBlockColors()
@@ -176,7 +186,7 @@ public class MinejagoFabricClient implements ClientModInitializer {
                 return -1;
             if (i == 1 && blockAndTintGetter.getBlockEntity(blockPos) instanceof TeapotBlockEntity teapotBlockEntity && blockState.getValue(TeapotBlock.FILLED))
             {
-                return teapotBlockEntity.getPotion().getName("").contains("tea") || teapotBlockEntity.getPotion().getName("").contains("awkward") ? 7028992 : PotionUtils.getColor(PotionUtils.setPotion(new ItemStack(Items.POTION), teapotBlockEntity.getPotion()));
+                return PotionUtils.getColor(PotionUtils.setPotion(new ItemStack(Items.POTION), teapotBlockEntity.getPotion()));
             }
             return -1;
         }), MinejagoBlocks.allPots().toArray(new Block[0]));
@@ -204,55 +214,57 @@ public class MinejagoFabricClient implements ClientModInitializer {
                 MinejagoClientUtils.refreshVip());
         ItemGroupEvents.MODIFY_ENTRIES_ALL.register((group, entries) ->
                 entries.acceptAll(MinejagoItems.getItemsForTab(BuiltInRegistries.CREATIVE_MODE_TAB.getResourceKey(group).orElseThrow())));
+        ClientTickEvents.END_CLIENT_TICK.register(client ->
+                MinejagoClientEvents.onClientTick());
     }
 
     private void registerPackets()
     {
         ClientPlayNetworking.registerGlobalReceiver(ClientboundChangeVipDataPacket.ID, (client, handler, buf, responseSender) ->
-                {
-                    buf.retain();
-                    client.execute(() ->
-                    {
-                        new ClientboundChangeVipDataPacket(buf).handle();
-                        buf.release();
-                    });
-                });
+        {
+            buf.retain();
+            client.execute(() ->
+            {
+                new ClientboundChangeVipDataPacket(buf).handle();
+                buf.release();
+            });
+        });
         ClientPlayNetworking.registerGlobalReceiver(ClientboundRefreshVipDataPacket.ID, (client, handler, buf, responseSender) ->
-                {
-                    buf.retain();
-                    client.execute(() ->
-                    {
-                        new ClientboundRefreshVipDataPacket().handle();
-                        buf.release();
-                    });
-                });
+        {
+            buf.retain();
+            client.execute(() ->
+            {
+                new ClientboundRefreshVipDataPacket().handle();
+                buf.release();
+            });
+        });
         ClientPlayNetworking.registerGlobalReceiver(ClientboundStartScytheAnimationPacket.ID, (client, handler, buf, responseSender) ->
-                {
-                    buf.retain();
-                    client.execute(() ->
-                    {
-                        new ClientboundStartScytheAnimationPacket(buf).handle();
-                        buf.release();
-                    });
-                });
+        {
+            buf.retain();
+            client.execute(() ->
+            {
+                new ClientboundStartScytheAnimationPacket(buf).handle();
+                buf.release();
+            });
+        });
         ClientPlayNetworking.registerGlobalReceiver(ClientboundStartSpinjitzuPacket.ID, (client, handler, buf, responseSender) ->
-                {
-                    buf.retain();
-                    client.execute(() ->
-                    {
-                        new ClientboundStartSpinjitzuPacket(buf).handle();
-                        buf.release();
-                    });
-                });
+        {
+            buf.retain();
+            client.execute(() ->
+            {
+                new ClientboundStartSpinjitzuPacket(buf).handle();
+                buf.release();
+            });
+        });
         ClientPlayNetworking.registerGlobalReceiver(ClientboundStopAnimationPacket.ID, (client, handler, buf, responseSender) ->
-                {
-                    buf.retain();
-                    client.execute(() ->
-                    {
-                        new ClientboundStopAnimationPacket(buf).handle();
-                        buf.release();
-                    });
-                });
+        {
+            buf.retain();
+            client.execute(() ->
+            {
+                new ClientboundStopAnimationPacket(buf).handle();
+                buf.release();
+            });
+        });
         ClientPlayNetworking.registerGlobalReceiver(ClientboundSpawnParticlePacket.ID, (client, handler, buf, responseSender) ->
         {
             buf.retain();

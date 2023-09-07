@@ -1,7 +1,7 @@
 package dev.thomasglasser.minejago.mixin.minejago.world.item.armor;
 
 import dev.thomasglasser.minejago.client.renderer.armor.TrainingGiRenderer;
-import dev.thomasglasser.minejago.world.item.IFabricGeoItem;
+import dev.thomasglasser.minejago.world.item.FabricGeoItem;
 import dev.thomasglasser.minejago.world.item.armor.TrainingGiItem;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -17,7 +17,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 @Mixin(TrainingGiItem.class)
-public abstract class TrainingGiItemMixin implements IFabricGeoItem
+public abstract class TrainingGiItemMixin implements FabricGeoItem
 {
     Supplier<Object> renderProvider = GeoItem.makeRenderer((TrainingGiItem)(Object)this);
 

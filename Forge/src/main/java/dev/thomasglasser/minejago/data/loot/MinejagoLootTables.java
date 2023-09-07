@@ -16,6 +16,7 @@ public class MinejagoLootTables extends LootTableProvider
     public MinejagoLootTables(PackOutput packOutput) {
         super(packOutput, Set.of(), List.of(
                 new SubProviderEntry(MinejagoChestLoot::new, LootContextParamSets.CHEST),
+                new SubProviderEntry(MinejagoArchaeologyLoot::new, LootContextParamSets.ARCHAEOLOGY),
                 new SubProviderEntry(MinejagoBlockLoot::new, LootContextParamSets.BLOCK)));
     }
 

@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "id": "minejago",
-  "version": "1.0.0-00e01a",
+  "id": "${mod_id}",
+  "version": "${version}",
 
-  "name": "Minejago",
+  "name": "${mod_name}",
   "description": "Adds elements of the Ninjago franchise into Minecraft",
   "authors": [
-    "Thomas Glasser"
+    "${mod_author}"
   ],
   "contributors": [
     "waifu_png_pl",
@@ -46,28 +46,27 @@
   ],
 
   "depends": {
-    "fabricloader": ">=0.14.21",
-    "fabric": "*",
-    "minecraft": ">=1.20",
-    "java": ">=17",
-    "cardinal-components": ">=5.1.0",
-    "smartbrainlib": ">=1.9",
-    "geckolib": ">=4.2",
-    "sherdsapi": ">=3.0.0",
-    "forgeconfigapiport": ">=6.0.2",
-    "trimmed": ">=1.1.1"
+    "fabricloader": ">=${fabric_loader_version}",
+    "fabric-api": "*",
+    "minecraft": ">=${minecraft_version}",
+    "cardinal-components": ">=${cca_version}",
+    "smartbrainlib": ">=${sbl_version}",
+    "geckolib": ">=${geckolib_version}",
+    "sherdsapi": ">=${sherdsapi_version}",
+    "forgeconfigapiport": ">=${forgeconfigapiport_version}",
+    "trimmed": ">=${trimmed_version}"
   },
   "recommends": {
-    "reach-entity-attributes": ">=2.3.1"
+    "reach-entity-attributes": ">=${reachentityattributes_version}"
   },
   "suggests": {
-    "player-animator": ">=1.0.2+1.19.4",
-    "lambdynamiclights": ">=2.3.0+1.19.4",
+    "player-animator": ">=${playeranimator_version}",
+    "lambdynamiclights": ">=${lambdynamiclights_version}",
     "firstpersonmod": "*",
     "modmenu": "*",
-    "configured": ">=2.1.1",
-    "tslatentitystatus": ">=1.1.1",
-    "jade": ">=11.0.3"
+    "configured": ">=${configured_version}",
+    "tslatentitystatus": ">=${tes_version}",
+    "jade": ">=${jade_version}"
   },
 
   "accessWidener" : "minejago.accesswidener",

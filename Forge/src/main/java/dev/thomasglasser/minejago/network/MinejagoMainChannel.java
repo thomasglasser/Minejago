@@ -11,10 +11,6 @@ import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 
-import java.util.List;
-import java.util.function.BiConsumer;
-import java.util.stream.Stream;
-
 public class MinejagoMainChannel
 {
 
@@ -48,6 +44,16 @@ public class MinejagoMainChannel
         INSTANCE.messageBuilder(ServerboundSetPowerDataPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(ServerboundSetPowerDataPacket::new)
                 .encoder(ServerboundSetPowerDataPacket::toBytes)
+                .consumerMainThread((packet, context) -> packet.handle(context.get().getSender()))
+                .add();
+        INSTANCE.messageBuilder(ServerboundStopSpinjitzuPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder((buf) -> new ServerboundStopSpinjitzuPacket())
+                .encoder((packet, buf) -> {})
+                .consumerMainThread((packet, context) -> packet.handle(context.get().getSender()))
+                .add();
+        INSTANCE.messageBuilder(ServerboundFlyVehiclePacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(ServerboundFlyVehiclePacket::new)
+                .encoder(ServerboundFlyVehiclePacket::toBytes)
                 .consumerMainThread((packet, context) -> packet.handle(context.get().getSender()))
                 .add();
 

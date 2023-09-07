@@ -1,6 +1,6 @@
 {
   "criteria": {
-    "crafting_table": {
+    "get_crafting_table": {
       "conditions": {
         "items": [
           {
@@ -31,7 +31,7 @@
   },
   "requirements": [
     [
-      "crafting_table"
+      "get_crafting_table"
     ]
   ],
   "sends_telemetry_event": true

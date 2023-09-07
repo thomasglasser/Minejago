@@ -14,8 +14,8 @@ public class MinejagoChestLoot implements LootTableSubProvider
 {
     public static final LootTable.Builder FOUR_WEAPONS = LootTable.lootTable().withPool(
             LootPool.lootPool()
-            .add(LootItem.lootTableItem(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get()))
-            .add(LootItem.lootTableItem(MinejagoItems.FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE.get()))
+                    .add(LootItem.lootTableItem(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get()))
+                    .add(LootItem.lootTableItem(MinejagoItems.FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE.get()))
     );
 
     @Override

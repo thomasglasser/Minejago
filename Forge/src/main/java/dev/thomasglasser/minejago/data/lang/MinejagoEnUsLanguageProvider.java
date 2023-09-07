@@ -3,28 +3,23 @@ package dev.thomasglasser.minejago.data.lang;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.client.MinejagoWailaPlugin;
+import dev.thomasglasser.minejago.client.gui.screens.inventory.PowerSelectionScreen;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.ScrollEditScreen;
-import dev.thomasglasser.minejago.data.advancements.packs.MinejagoAdventureAdvancementKeys;
-import dev.thomasglasser.minejago.data.advancements.packs.MinejagoStoryAdvancementKeys;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.server.commands.PowerCommand;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
-import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
 import dev.thomasglasser.minejago.world.entity.character.Wu;
-import dev.thomasglasser.minejago.world.entity.powers.MinejagoPowers;
-import dev.thomasglasser.minejago.world.entity.powers.Power;
+import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
+import dev.thomasglasser.minejago.world.item.MinejagoCreativeModeTabs;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
-import dev.thomasglasser.minejago.world.item.armor.MinejagoArmor;
+import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.armor.SkeletalChestplateItem;
-import dev.thomasglasser.minejago.world.item.armortrim.MinejagoTrimPatterns;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPatterns;
-import dev.thomasglasser.minejago.client.gui.screens.inventory.PowerSelectionScreen;
-import net.minecraft.Util;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.data.PackOutput;
 import net.minecraft.network.chat.Component;
@@ -41,13 +36,10 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
-import net.minecraft.world.item.armortrim.TrimPattern;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraftforge.common.data.LanguageProvider;
 import org.apache.commons.lang3.text.WordUtils;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class MinejagoEnUsLanguageProvider extends LanguageProvider
 {
@@ -67,29 +59,42 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get(), "Banner Pattern");
         add(MinejagoItems.IRON_SPEAR.get(), "Iron Spear");
         add(MinejagoItems.IRON_SHURIKEN.get(), "Iron Shuriken");
-        MinejagoArmor.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
+        MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
                 add(item.get(), "Skeletal Chestplate"));
-        MinejagoArmor.ARMOR_SETS.forEach(set ->
+        MinejagoArmors.ARMOR_SETS.forEach(set ->
+                set.getAll().forEach(item ->
                 {
-                    set.getAll().forEach(item ->
-                    {
-                        String nameForSlot = switch (set.getForItem(item.get())) {
-                            case FEET -> "Boots";
-                            case LEGS -> "Pants";
-                            case CHEST -> "Jacket";
-                            case HEAD -> "Hood";
-                            default -> null;
-                        };
+                    String nameForSlot = switch (set.getForItem(item.get())) {
+                        case FEET -> "Boots";
+                        case LEGS -> "Pants";
+                        case CHEST -> "Jacket";
+                        case HEAD -> "Hood";
+                        default -> null;
+                    };
 
-                        add(item.get(), set.getDisplayName() + " " + nameForSlot);
-                    });
-                });
+                    add(item.get(), set.getDisplayName() + " " + nameForSlot);
+                }));
+        MinejagoArmors.POWER_SETS.forEach(set ->
+                set.getAll().forEach(item ->
+                {
+                    String nameForSlot = switch (set.getForItem(item.get())) {
+                        case FEET -> "Boots";
+                        case LEGS -> "Pants";
+                        case CHEST -> "Jacket";
+                        case HEAD -> "Hood";
+                        default -> null;
+                    };
+
+                    add(item.get(), set.getDisplayName() + " " + nameForSlot);
+                }));
+        add(MinejagoArmors.SAMUKAIS_CHESTPLATE.get(), "Samukai's Chestplate");
         add(MinejagoItems.IRON_KATANA.get(), "Iron Katana");
         add(MinejagoItems.IRON_SCYTHE.get(), "Iron Scythe");
         add(MinejagoItems.WOODEN_NUNCHUCKS.get(), "Wooden Nunchucks");
         add(MinejagoItems.SCROLL.get(), "Scroll");
         add(MinejagoItems.WRITABLE_SCROLL.get(), "Scroll and Quill");
         add(MinejagoItems.WRITTEN_SCROLL.get(), "Written Scroll");
+        add(MinejagoItems.EMPTY_GOLDEN_WEAPONS_MAP.get(), "Empty Golden Weapons Map");
 
         add(MinejagoBlocks.TEAPOT.get(), "Teapot");
         add(MinejagoBlocks.JASPOT.get(), "Jaspot");
@@ -98,20 +103,24 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
 
         add(MinejagoBlocks.GOLD_DISC.get(), "Gold Disc");
         add(MinejagoBlocks.TOP_POST.get(), "Top Post");
+        add(MinejagoBlocks.CHISELED_SCROLL_SHELF.get(), "Chiseled Scroll Shelf");
+        add(MinejagoBlocks.EARTH_DRAGON_HEAD.get(), "Earth Dragon Head");
+        add(MinejagoBlocks.SUSPICIOUS_RED_SAND.get(), "Suspicious Red Sand");
 
         addDesc(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get(), "Four Weapons");
 
-        MinejagoArmor.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
+        MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
         {
             if (item.get() instanceof SkeletalChestplateItem chestplate)
             {
                 String nameForVariant = switch (chestplate.getVariant())
-                        {
-                            case STRENGTH -> "Red";
-                            case SPEED -> "Blue";
-                            case BOW -> "White";
-                            case KNIFE -> "Black";
-                        };
+                {
+                    case STRENGTH -> "Red";
+                    case SPEED -> "Blue";
+                    case BOW -> "White";
+                    case KNIFE -> "Black";
+                    case BONE -> "Bone";
+                };
 
                 addDesc(item.get(), nameForVariant);
             }
@@ -140,6 +149,8 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(MinejagoEntityTypes.KRUNCHA.get(), "Kruncha", MinejagoItems.KRUNCHA_SPAWN_EGG.get());
         add(MinejagoEntityTypes.NUCKAL.get(), "Nuckal", MinejagoItems.NUCKAL_SPAWN_EGG.get());
         add(MinejagoEntityTypes.SKULKIN_HORSE.get(), "Skulkin Horse", MinejagoItems.SKULKIN_HORSE_SPAWN_EGG.get());
+        add(MinejagoEntityTypes.EARTH_DRAGON.get(), "Earth Dragon", MinejagoItems.EARTH_DRAGON_SPAWN_EGG.get());
+        add(MinejagoEntityTypes.SAMUKAI.get(), "Samukai", MinejagoItems.SAMUKAI_SPAWN_EGG.get());
 
         add(MinejagoBannerPatterns.FOUR_WEAPONS_LEFT.get(), "Four Weapons Left");
         add(MinejagoBannerPatterns.FOUR_WEAPONS_RIGHT.get(), "Four Weapons Right");
@@ -149,7 +160,15 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
 
         add("container.teapot", "Teapot");
 
-        addTea(MinejagoPotions.REGULAR_TEA.get(), "Regular Tea");
+        addTea(MinejagoPotions.ACACIA_TEA.get(), "Acacia Tea");
+        addTea(MinejagoPotions.OAK_TEA.get(), "Oak Tea");
+        addTea(MinejagoPotions.CHERRY_TEA.get(), "Cherry Tea");
+        addTea(MinejagoPotions.SPRUCE_TEA.get(), "Spruce Tea");
+        addTea(MinejagoPotions.MANGROVE_TEA.get(), "Mangrove Tea");
+        addTea(MinejagoPotions.JUNGLE_TEA.get(), "Jungle Tea");
+        addTea(MinejagoPotions.DARK_OAK_TEA.get(), "Dark Oak Tea");
+        addTea(MinejagoPotions.BIRCH_TEA.get(), "Birch Tea");
+
         add(MinejagoItems.FILLED_TEACUP.get().getDescriptionId() + ".milk", "Cup of Milk");
         addPotions(MinejagoPotions.MILK.get(), "Milk");
 
@@ -178,6 +197,8 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add("effect.minecraft.leaping", "Leaping");
 
         add(MinejagoKeyMappings.ACTIVATE_SPINJITZU, "Activate Spinjitzu");
+        add(MinejagoKeyMappings.ASCEND, "Ascend");
+        add(MinejagoKeyMappings.DESCEND, "Descend");
 
         add(PowerCommand.SUCCESS_SELF, "Set own power to %s");
         add(PowerCommand.CHANGED, "Your power has been updated to %s");
@@ -187,21 +208,10 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(PowerCommand.SUCCESS_CLEARED_OTHER, "Reset %s's power to %s and enabled power discovery");
         add(PowerCommand.QUERY, "Your power is currently set to: %s");
         add(PowerCommand.INVALID, "Power not found in world. Check enabled data packs.");
+        add(PowerCommand.NOT_LIVING_ENTITY, "Target %s (%s) is not a LivingEntity");
 
-        // TODO: Update other values
-        addPower(MinejagoPowers.EARTH, "Earth", "Solid as rock.", "Lore!", "Description!");
-        addPower(MinejagoPowers.FIRE, "Fire", "It burns bright in you.", "Lore!", "Description!");
-        addPower(MinejagoPowers.LIGHTNING, "Lightning", "yay spark", "Lore!", "Description!");
-        addPower(MinejagoPowers.ICE, "Ice", "yay ice", "Lore!", "Description!");
-        addPower(MinejagoPowers.NONE, "None", "no powers", "Lore!", "Description!");
-        addPower(MinejagoPowers.CREATION, "Creation", "wu hoo", "Lore!", "Description!");
-
-        addCreativeTab(Minejago.modLoc("gi"), "Gi");
-
-        addAdvancement(MinejagoAdventureAdvancementKeys.CATEGORY, MinejagoAdventureAdvancementKeys.KILL_A_SKULKIN, "Redead", "Kill a Skulkin Warrior");
-        addAdvancement(MinejagoAdventureAdvancementKeys.CATEGORY, MinejagoAdventureAdvancementKeys.COLLECT_ALL_SKELETAL_CHESTPLATES, "It's Always You Four Colors", "Collect all 4 Skeletal Chestplate variants");
-        addAdvancement(MinejagoStoryAdvancementKeys.CATEGORY, MinejagoStoryAdvancementKeys.ROOT, "Minejago", "Long before time had a name...");
-        addAdvancement(MinejagoStoryAdvancementKeys.CATEGORY, MinejagoStoryAdvancementKeys.INTERACT_WITH_MAIN_SIX, "Meet N' Greet", "Interact with Wu, Nya, and the Four Ninja");
+        addCreativeTab(MinejagoCreativeModeTabs.GI.getId(), "Gi");
+        addCreativeTab(MinejagoCreativeModeTabs.MINEJAGO.getId(), "Minejago");
 
         add(MinejagoPaintingVariants.A_MORNING_BREW, "A Morning Brew", "waifu_png_pl");
         add(MinejagoPaintingVariants.NEEDS_HAIR_GEL, "Needs Hair Gel", "waifu_png_pl");
@@ -225,11 +235,10 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         addSherd(MinejagoItems.POTTERY_SHERD_DRAGONS_HEAD.get(), "Dragon's Head");
         addSherd(MinejagoItems.POTTERY_SHERD_DRAGONS_TAIL.get(), "Dragon's Tail");
 
-        addPattern(MinejagoTrimPatterns.FOUR_WEAPONS, "Four Weapons");
-
         add(MinejagoItems.MOD_NEEDED, "To get the full functionality of this item, please install the %s mod.");
 
         add(MinejagoPacks.IMMERSION.titleKey(), "Minejago Immersion Pack");
+        add(MinejagoPacks.POTION_POT.titleKey(), "Minejago Potion Pot Pack");
 
         add(Wu.NO_POWER_GIVEN_KEY, "You feel no new power rise from within. You are not an elemental master...");
         add(Wu.POWER_GIVEN_KEY, "<%s> %s, Master of %s. %s");
@@ -255,8 +264,6 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(ScrollEditScreen.FINALIZE_WARNING_LABEL, "Note! When you sign the scroll, it will no longer be editable.");
 
         add("lectern.take_scroll", "Take Scroll");
-
-        add(MinejagoItems.CHISELED_SCROLL_SHELF.get(), "Chiseled Scroll Shelf");
     }
 
     public void addDesc(Item item, String desc)
@@ -300,14 +307,6 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(key.getName(), name);
     }
 
-    public void addPower(@NotNull ResourceKey<Power> power, @NotNull String name, @Nullable String tagline, @Nullable String lore, @Nullable String desc)
-    {
-        add(power.location().toLanguageKey("power"), name);
-        if (tagline != null) add(((TranslatableContents)(Power.defaultTagline(power.location()).getContents())).getKey(), tagline);
-        if (lore != null) add(((TranslatableContents)(Power.Display.withDefaultKeys(power.location()).lore().getContents())).getKey(), lore);
-        if (desc != null) add(((TranslatableContents)(Power.Display.withDefaultKeys(power.location()).description().getContents())).getKey(), desc);
-    }
-
     public void addAdvancement(String category, String key, String titleString, String descString) {
         String title = "advancement." + Minejago.MOD_ID + "." + category + "." + key + ".title";
         String desc = "advancement." + Minejago.MOD_ID + "." + category + "." + key + ".desc";
@@ -320,7 +319,7 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
     {
         add(location.toLanguageKey("item_group"), name);
     }
-    
+
     public void add(RegistryObject<SoundEvent> sound, String name)
     {
         add("subtitles." + sound.getId().getPath(), name);
@@ -340,11 +339,6 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
     public void addSherd(Item item, String name)
     {
         add(item, name + " Pottery Sherd");
-    }
-
-    public void addPattern(ResourceKey<TrimPattern> pattern, String name)
-    {
-        add(Util.makeDescriptionId("trim_pattern", pattern.location()), name + " Armor Trim");
     }
 
     public void addPluginConfig(ResourceLocation location, String name)

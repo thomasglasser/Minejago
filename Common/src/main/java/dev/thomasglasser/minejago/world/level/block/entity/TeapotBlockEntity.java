@@ -3,8 +3,7 @@ package dev.thomasglasser.minejago.world.level.block.entity;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
-import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotionBrewing;
-import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
+import dev.thomasglasser.minejago.util.MinejagoItemUtils;
 import dev.thomasglasser.minejago.world.item.crafting.MinejagoRecipeTypes;
 import dev.thomasglasser.minejago.world.item.crafting.TeapotBrewingRecipe;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
@@ -21,16 +20,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.RandomSource;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.alchemy.PotionBrewing;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.RecipeManager;
@@ -44,11 +41,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public class TeapotBlockEntity extends BlockEntity implements IItemHolder, Nameable
+public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameable
 {
+    private static final int MAX_CUPS = 6;
+
+    @NotNull
     private ItemStack item = ItemStack.EMPTY;
 
-    private short brewTime;
+    private int brewTime;
 
     private int cups = 0;
 
@@ -57,10 +57,11 @@ public class TeapotBlockEntity extends BlockEntity implements IItemHolder, Namea
     protected boolean done;
     protected boolean brewing;
     protected boolean heating;
-    protected Potion potion;
+    @NotNull
+    protected Potion potion = Potions.EMPTY;
 
     private float experiencePerCup = 0;
-    private int experienceCups = 6;
+    private int experienceCups = MAX_CUPS;
 
     private final RecipeManager.CachedCheck<Container, TeapotBrewingRecipe> quickCheck = RecipeManager.createCheck(MinejagoRecipeTypes.TEAPOT_BREWING.get());
 
@@ -83,16 +84,16 @@ public class TeapotBlockEntity extends BlockEntity implements IItemHolder, Namea
             pLevel.destroyBlock(pPos, true);
         }
 
+        if (pBlockEntity.cups < 3)
+            pLevel.setBlock(pPos, pState.setValue(TeapotBlock.FILLED, false), Block.UPDATE_ALL);
+        else
+            pLevel.setBlock(pPos, pState.setValue(TeapotBlock.FILLED, true), Block.UPDATE_ALL);
+
         if (pBlockEntity.cups > 0)
         {
-            Optional<TeapotBrewingRecipe> recipe = pBlockEntity.quickCheck.getRecipeFor(new SimpleContainer(pBlockEntity.item), pLevel);
+            Optional<TeapotBrewingRecipe> recipe = pBlockEntity.quickCheck.getRecipeFor(new SimpleContainer(pBlockEntity.item, MinejagoItemUtils.fillTeacup(pBlockEntity.getPotion())), pLevel);
 
-            pBlockEntity.cups = Math.min(pBlockEntity.cups, 6);
-
-            if (pBlockEntity.cups < 3)
-                pLevel.setBlock(pPos, pState.setValue(TeapotBlock.FILLED, false), Block.UPDATE_ALL);
-            else
-                pLevel.setBlock(pPos, pState.setValue(TeapotBlock.FILLED, true), Block.UPDATE_ALL);
+            pBlockEntity.cups = Math.min(pBlockEntity.cups, MAX_CUPS);
 
             if (pBlockEntity.brewing)
             {
@@ -103,30 +104,26 @@ public class TeapotBlockEntity extends BlockEntity implements IItemHolder, Namea
                     pBlockEntity.done = true;
                     pLevel.playSound(null, pPos, MinejagoSoundEvents.TEAPOT_WHISTLE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 
-                    ItemStack potionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), pBlockEntity.potion);
                     if (recipe.isPresent())
                     {
                         pBlockEntity.potion = PotionUtils.getPotion(recipe.get().getResultItem(pLevel.registryAccess()));
                         pBlockEntity.experiencePerCup = recipe.get().getExperience() / pBlockEntity.cups;
                         pBlockEntity.experienceCups = pBlockEntity.cups;
                     }
-                    else if (MinejagoPotionBrewing.hasTeaMix(PotionUtils.setPotion(new ItemStack(Items.POTION), pBlockEntity.potion), pBlockEntity.item))
-                        pBlockEntity.potion = PotionUtils.getPotion(MinejagoPotionBrewing.mix(pBlockEntity.item, potionStack));
-                    else if (PotionBrewing.hasPotionMix(PotionUtils.setPotion(new ItemStack(Items.POTION), pBlockEntity.potion), pBlockEntity.item))
-                        pBlockEntity.potion = PotionUtils.getPotion(PotionBrewing.mix(pBlockEntity.item, potionStack));
-                    pBlockEntity.item.shrink(1);
+                    pBlockEntity.item = ItemStack.EMPTY;
                     setChanged(pLevel, pPos, pState);
-                } else if (pBlockEntity.item.isEmpty()) {
+                } else if (pBlockEntity.item.isEmpty() && !pBlockEntity.done) {
                     pBlockEntity.brewTime = 0;
                     pBlockEntity.brewing = false;
                     pBlockEntity.boiling = true;
                     pLevel.playSound(null, pPos, MinejagoSoundEvents.TEAPOT_WHISTLE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
                 } else if (pBlockEntity.temp < 100) {
                     pBlockEntity.brewing = false;
+                    pBlockEntity.boiling = false;
                 }
                 setChanged(pLevel, pPos, pState);
             } else if (pBlockEntity.heating) {
-                pBlockEntity.temp += 0.1;
+                pBlockEntity.temp += 0.1f;
                 setChanged(pLevel, pPos, pState);
                 if (pBlockEntity.temp >= 100.0) {
                     pBlockEntity.heating = false;
@@ -134,8 +131,8 @@ public class TeapotBlockEntity extends BlockEntity implements IItemHolder, Namea
                     if (!pLevel.isClientSide) pLevel.playSound(null, pPos, MinejagoSoundEvents.TEAPOT_WHISTLE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
                     setChanged(pLevel, pPos, pState);
                 }
-            } else if (pBlockEntity.temp >= 100 && ((pBlockEntity.potion == Potions.WATER || !pBlockEntity.item.isEmpty()) && (PotionBrewing.hasPotionMix(PotionUtils.setPotion(new ItemStack(Items.POTION), pBlockEntity.potion), pBlockEntity.item) || recipe.isPresent() || (MinejagoPotionBrewing.hasTeaMix(PotionUtils.setPotion(new ItemStack(Items.POTION), pBlockEntity.getPotion()), pBlockEntity.item))))) {
-                pBlockEntity.brewTime = (recipe.map(TeapotBrewingRecipe::getCookingTime).orElseGet(() -> RandomSource.create().nextIntBetweenInclusive(1200, 2400))).shortValue();
+            } else if (pBlockEntity.temp >= 100 && recipe.isPresent()) {
+                pBlockEntity.brewTime = (recipe.map(TeapotBrewingRecipe::getCookingTime).orElseGet(() -> UniformInt.of(1200, 2400))).sample(pLevel.random);
                 pBlockEntity.brewing = true;
                 pBlockEntity.boiling = false;
                 pBlockEntity.done = false;
@@ -143,7 +140,7 @@ public class TeapotBlockEntity extends BlockEntity implements IItemHolder, Namea
             BlockState below = pLevel.getBlockState(pPos.below());
             if (pLevel.dimension() == Level.NETHER)
             {
-                if (pBlockEntity.temp < 100)
+                if (pBlockEntity.temp < 100 && !pBlockEntity.isBoiling())
                 {
                     pBlockEntity.temp = 100;
                     pBlockEntity.heating = true;
@@ -168,14 +165,14 @@ public class TeapotBlockEntity extends BlockEntity implements IItemHolder, Namea
         }
         else
         {
-            pBlockEntity.potion = null;
+            pBlockEntity.potion = Potions.EMPTY;
             pBlockEntity.boiling = false;
             pBlockEntity.done = false;
             pBlockEntity.item = ItemStack.EMPTY;
             pBlockEntity.heating = false;
             pBlockEntity.brewing = false;
             pBlockEntity.brewTime = 0;
-            pBlockEntity.temp = TeapotBlock.getBiomeTemperature(pLevel, pPos);
+            pBlockEntity.temp = (float) TeapotBlock.getBiomeTemperature(pLevel, pPos) / 2;
             setChanged(pLevel, pPos, pState);
         }
     }
@@ -213,23 +210,7 @@ public class TeapotBlockEntity extends BlockEntity implements IItemHolder, Namea
         pTag.putBoolean("Done", done);
         pTag.putFloat("Temperature", temp);
         pTag.putInt("Cups", cups);
-        pTag.putShort("BrewTime", brewTime);
-    }
-
-    /**
-     * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
-     */
-    public void setItem(int pIndex, ItemStack pStack) {
-        if (pIndex == 0)
-        {
-            ItemStack newStack = pStack.copy();
-            newStack.setCount(1);
-            item = newStack;
-        }
-        else
-        {
-            Minejago.LOGGER.error("Teapot index out of bounds!");
-        }
+        pTag.putInt("BrewTime", brewTime);
     }
 
     @Override
@@ -254,7 +235,7 @@ public class TeapotBlockEntity extends BlockEntity implements IItemHolder, Namea
         return temp;
     }
 
-    public short getBrewTime() {
+    public int getBrewTime() {
         return brewTime;
     }
 
@@ -263,9 +244,10 @@ public class TeapotBlockEntity extends BlockEntity implements IItemHolder, Namea
     }
 
     public boolean isDone() {
-        return done;
+        return done || boiling;
     }
 
+    @NotNull
     public Potion getPotion() {
         return potion;
     }
@@ -276,15 +258,16 @@ public class TeapotBlockEntity extends BlockEntity implements IItemHolder, Namea
 
     public boolean tryFill(int cups, Potion potion)
     {
-        if (this.cups >= 6 || potion == null)
+        if (cups > MAX_CUPS - getCups() || potion == null)
         {
             return false;
-        } else if (potion == this.potion)
+        }
+        else if (potion == this.potion)
         {
             this.cups += cups;
             setChanged(level, getBlockPos(), getBlockState());
             return true;
-        } else if (this.potion == null) {
+        } else if (this.potion == Potions.EMPTY) {
             this.cups = cups;
             this.potion = potion;
             setChanged(level, getBlockPos(), getBlockState());
@@ -310,7 +293,7 @@ public class TeapotBlockEntity extends BlockEntity implements IItemHolder, Namea
     }
 
 
-    public void setPotion(Potion potion) {
+    public void setPotion(@NotNull Potion potion) {
         this.potion = potion;
     }
 
@@ -333,10 +316,16 @@ public class TeapotBlockEntity extends BlockEntity implements IItemHolder, Namea
     public @NotNull ItemStack insert(int slot, @NotNull ItemStack stack) {
         if (slot == 0)
         {
-            (item = stack.copy()).setCount(1);
-            return stack.copy().split(1);
+            ItemStack newStack = stack.copy();
+            newStack.setCount(1);
+            item = newStack;
+            return item;
         }
-        return ItemStack.EMPTY;
+        else
+        {
+            Minejago.LOGGER.error("Teapot index out of bounds!");
+            return stack;
+        }
     }
 
     @Override
@@ -356,7 +345,7 @@ public class TeapotBlockEntity extends BlockEntity implements IItemHolder, Namea
 
     public boolean hasRecipe(ItemStack item, Level level)
     {
-        return quickCheck.getRecipeFor(new SimpleContainer(item), level).isPresent() && potion == MinejagoPotions.REGULAR_TEA.get();
+        return quickCheck.getRecipeFor(new SimpleContainer(item, MinejagoItemUtils.fillTeacup(potion)), level).isPresent();
     }
 
     public void giveExperienceForCup(ServerLevel serverLevel, Vec3 pos)

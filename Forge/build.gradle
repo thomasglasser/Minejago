@@ -1,7 +1,4 @@
 buildscript {
-    repositories {
-        maven { url = 'https://maven.parchmentmc.org' }
-    }
     dependencies {
         classpath 'org.parchmentmc:librarian:1.+'
         classpath 'org.spongepowered:mixingradle:0.7.+'
@@ -12,21 +9,18 @@ plugins {
     id 'java'
     id 'eclipse'
     id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '6.+'
+    id 'net.neoforged.gradle' version '6.+'
 }
 
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 apply plugin: 'org.spongepowered.mixin'
 
-archivesBaseName = "${mod_name}-forge-${minecraft_version}"
+archivesBaseName = "${mod_id}-neoforge-${minecraft_version}"
 
 minecraft {
-//    mappings channel: 'parchment', version: parchment_version + '-' + minecraft_version Waiting for 1.19.4
-    mappings channel: 'parchment', version: '1.19.3-' + parchment_version + '-' + minecraft_version
+    mappings channel: 'parchment', version: parchment_version + '-' + minecraft_version
 
     if (project.hasProperty('forge_ats_enabled') && project.findProperty('forge_ats_enabled').toBoolean()) {
-        // This location is hardcoded in Forge and can not be changed.
-        // https://github.com/MinecraftForge/MinecraftForge/blob/be1698bb1554f9c8fa2f58e32b9ab70bc4385e60/fmlloader/src/main/java/net/minecraftforge/fml/loading/moddiscovery/ModFile.java#L123
         accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
         project.logger.debug('Forge Access Transformers are enabled for this project.')
     }
@@ -86,40 +80,36 @@ dependencies {
     // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft', it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-
-    implementation project(':Common')
+    minecraft "net.neoforged:forge:${minecraft_version}-${forge_version}"
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
-//    compileOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}-FORGE:api")
+    implementation project(':Common')
+
+    implementation fg.deobf("dev.kosmx.player-anim:player-animation-lib-forge:${playeranimator_version}")
+    implementation fg.deobf("curse.maven:dynamiclights-227874:${dynamiclights_id}")
+    implementation fg.deobf("maven.modrinth:moonlight:${moonlight_forge_id}")
+    implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}")
+    implementation fg.deobf("dev._100media.capabilitysyncer:capabilitysyncer:${capabilitysyncer_version}")
+    implementation fg.deobf("net.tslat.smartbrainlib:SmartBrainLib-neoforge-${minecraft_version}:${sbl_version}")
+    implementation fg.deobf("maven.modrinth:jade:${jade_forge_id}")
+    implementation fg.deobf("me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}")
+    implementation fg.deobf("maven.modrinth:sherdsapi:${sherdsapi_version}+neoforge")
+    implementation fg.deobf("maven.modrinth:trimmed:${trimmed_version}+forge")
+    compileOnly fg.deobf("curse.maven:configured-457570:${configured_forge_id}")
+//    implementation fg.deobf("curse.maven:configured-457570:${configured_forge_id}") TODO: Update
+    implementation fg.deobf("net.tslat.tes:TES-neoforge-${minecraft_version}:${tes_version}")
+    implementation fg.deobf("com.klikli_dev:modonomicon-${minecraft_version}-forge:${modonomicon_version}")
 
     runtimeOnly fg.deobf("me.shedaniel:RoughlyEnoughItems-forge:$rei_version")
     runtimeOnly fg.deobf("dev.architectury:architectury-forge:$architectury_version")
     runtimeOnly fg.deobf("maven.modrinth:huge-structure-blocks:${hugestructureblocks_version}")
     runtimeOnly fg.deobf("curse.maven:worldedit-225608:${worldedit_id}")
-//    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}-FORGE")
     runtimeOnly fg.deobf("mysticdrew:common-networking:${common_networking_version}-forge")
-
-    implementation fg.deobf("dev.kosmx.player-anim:player-animation-lib-forge:${playeranimator_version}")
-    implementation fg.deobf("curse.maven:dynamiclights-227874:${dynamiclights_id}")
-    implementation fg.deobf("maven.modrinth:moonlight:${moonlight_forge_id}")
-//    implementation fg.deobf("curse.maven:ptd-585667:${ptd_id}")
-    implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${previous_minecraft_version}:${geckolib_version}")
-    implementation fg.deobf("dev._100media.capabilitysyncer:capabilitysyncer:${capabilitysyncer_version}")
-    implementation fg.deobf("net.tslat.smartbrainlib:SmartBrainLib-forge-${previous_minecraft_version}:${smartbrainlib_version}")
-    implementation fg.deobf("maven.modrinth:jade:${jade_forge_id}")
-    implementation(fg.deobf("me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}"))
-    implementation fg.deobf("dev.thomasglasser.sherdsapi:sherdsapi-forge-${minecraft_version}:${sherdsapi_version}")
-    implementation fg.deobf("dev.dhyces.trimmed:trimmed-forge-${previous_minecraft_version}:${trimmed_version}")
-//    implementation fg.deobf("dev.dhyces.trimmed:trimmed-forge-${minecraft_version}:${trimmed_version}") TODO: update
-    compileOnly fg.deobf("curse.maven:configured-457570:${configured_forge_id}")
-//    implementation fg.deobf("curse.maven:configured-457570:${configured_forge_id}") TODO: Update
-    implementation fg.deobf("net.tslat.tes:TES-forge-${previous_minecraft_version}:${tes_version}")
+    runtimeOnly("com.github.llamalad7.mixinextras:mixinextras-forge:${mixinextras_version}")
 
     jarJar(group: "dev.thomasglasser.sherdsapi", name: "sherdsapi-forge-${minecraft_version}", version: "[${sherdsapi_version},${sherdsapi_next_major_version})")
-//    jarJar(group: "dev.dhyces.trimmed", name: "trimmed-forge-${minecraft_version}", version: "[${trimmed_version},${trimmed_next_major_version})") // TODO: update
-    jarJar(group: "dev.dhyces.trimmed", name: "trimmed-forge-${previous_minecraft_version}", version: "[${trimmed_version},${trimmed_next_major_version})")
+    jarJar(group: "dev.dhyces.trimmed", name: "trimmed-forge-${minecraft_version}", version: "[${trimmed_version},${trimmed_next_major_version})")
     jarJar(group: "dev._100media.capabilitysyncer", name: "capabilitysyncer", version: "[${capabilitysyncer_version},${capabilitysyncer_next_major_version})")
 }
 
@@ -134,8 +124,35 @@ tasks.withType(JavaCompile) {
     source(project(":Common").sourceSets.main.allSource)
 }
 
+def resourceTargets = ['META-INF/mods.toml', 'pack.mcmeta']
+def replaceProperties = [
+        fml_version: fml_version,
+        mod_id: mod_id,
+        version: version,
+        mod_name: mod_name,
+        mod_author: mod_author,
+        forge_version: forge_version,
+        minecraft_version: minecraft_version,
+        playeranimator_version: playeranimator_version,
+        dynamiclights_version: dynamiclights_version,
+        moonlight_version: moonlight_version,
+        sbl_version: sbl_version,
+        geckolib_version: geckolib_version,
+        sherdsapi_version: sherdsapi_version,
+        trimmed_version: trimmed_version,
+        configured_version: configured_version,
+        tes_version: tes_version,
+        jade_version: jade_version
+]
 processResources {
     from project(":Common").sourceSets.main.resources
+
+    inputs.properties replaceProperties
+    replaceProperties.put 'project', project
+
+    filesMatching(resourceTargets) {
+        expand replaceProperties
+    }
 }
 
 publishing {
