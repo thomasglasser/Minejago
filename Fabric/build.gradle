@@ -37,7 +37,7 @@ dependencies {
     include modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${playeranimator_version}")
     include modImplementation("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forgeconfigapiport_version}")
     include modImplementation("com.jamieswhiteshirt:reach-entity-attributes:$reachentityattributes_version")
-    include modImplementation("maven.modrinth:sherdsapi:${sherdsapi_version}+fabric")
+    include modImplementation("maven.modrinth:sherdsapi:${sherdsapi_version}+Fabric")
 
     modRuntimeOnly "dev.lambdaurora:spruceui:${spruceui_version}"
     modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:$rei_version"

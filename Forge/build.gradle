@@ -94,7 +94,7 @@ dependencies {
     implementation fg.deobf("net.tslat.smartbrainlib:SmartBrainLib-neoforge-${minecraft_version}:${sbl_version}")
     implementation fg.deobf("maven.modrinth:jade:${jade_forge_id}")
     implementation fg.deobf("me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}")
-    implementation fg.deobf("maven.modrinth:sherdsapi:${sherdsapi_version}+neoforge")
+    implementation fg.deobf("maven.modrinth:sherdsapi:${sherdsapi_version}+Forge")
     implementation fg.deobf("maven.modrinth:trimmed:${trimmed_version}+forge")
     compileOnly fg.deobf("curse.maven:configured-457570:${configured_forge_id}")
 //    implementation fg.deobf("curse.maven:configured-457570:${configured_forge_id}") TODO: Update
@@ -108,7 +108,7 @@ dependencies {
     runtimeOnly fg.deobf("mysticdrew:common-networking:${common_networking_version}-forge")
     runtimeOnly("com.github.llamalad7.mixinextras:mixinextras-forge:${mixinextras_version}")
 
-    jarJar(group: "dev.thomasglasser.sherdsapi", name: "sherdsapi-forge-${minecraft_version}", version: "[${sherdsapi_version},${sherdsapi_next_major_version})")
+    jarJar(group: "dev.thomasglasser.sherdsapi", name: "sherdsapi-neoforge-${minecraft_version}", version: "[${sherdsapi_version},${sherdsapi_next_major_version})")
     jarJar(group: "dev.dhyces.trimmed", name: "trimmed-forge-${minecraft_version}", version: "[${trimmed_version},${trimmed_next_major_version})")
     jarJar(group: "dev._100media.capabilitysyncer", name: "capabilitysyncer", version: "[${capabilitysyncer_version},${capabilitysyncer_next_major_version})")
 }
