@@ -1,7 +1,7 @@
 package dev.thomasglasser.minejago.data.advancements.packs;
 
 import dev.thomasglasser.minejago.advancements.criterion.BrewedTeaTrigger;
-import dev.thomasglasser.minejago.data.advancements.AdvancementUtils;
+import dev.thomasglasser.minejago.data.advancements.AdvancementHelper;
 import dev.thomasglasser.minejago.data.tags.MinejagoEntityTypeTags;
 import dev.thomasglasser.minejago.data.tags.MinejagoItemTags;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
@@ -13,10 +13,7 @@ import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.FrameType;
-import net.minecraft.advancements.critereon.EntityPredicate;
-import net.minecraft.advancements.critereon.InventoryChangeTrigger;
-import net.minecraft.advancements.critereon.ItemPredicate;
-import net.minecraft.advancements.critereon.KilledTrigger;
+import net.minecraft.advancements.critereon.*;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.alchemy.PotionUtils;
@@ -39,17 +36,27 @@ public class MinejagoAdventureAdvancements implements ForgeAdvancementProvider.A
 
     @Override
     public void generate(HolderLookup.Provider registries, Consumer<Advancement> saver, ExistingFileHelper existingFileHelper) {
-        AdvancementUtils maker = new AdvancementUtils(saver, existingFileHelper, enUs, CATEGORY);
+        AdvancementHelper helper = new AdvancementHelper(saver, existingFileHelper, enUs, CATEGORY);
 
-        Advancement killASkulkin = maker.make(new ResourceLocation("adventure/kill_a_mob"), MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.SPEED).get(), KILL_A_SKULKIN, FrameType.TASK, true, true, false, null, Map.of(
+        Advancement interactWithMainSix = helper.make(new ResourceLocation("adventure/root"), MinejagoItems.IRON_KATANA.get(), INTERACT_WITH_MAIN_SIX, FrameType.GOAL, true, true, false, null,
+                Map.of(
+                        "interact_wu", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), EntityPredicate.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.WU.get()).build())),
+                        "interact_nya", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), EntityPredicate.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.NYA.get()).build())),
+                        "interact_jay", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), EntityPredicate.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.JAY.get()).build())),
+                        "interact_kai", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), EntityPredicate.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.KAI.get()).build())),
+                        "interact_cole", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), EntityPredicate.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.COLE.get()).build())),
+                        "interact_zane", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), EntityPredicate.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.ZANE.get()).build()))
+                ), "Meet N' Greet", "Interact with Wu, Nya, and the Four Ninja");
+
+        Advancement killASkulkin = helper.make(new ResourceLocation("adventure/kill_a_mob"), MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.SPEED).get(), KILL_A_SKULKIN, FrameType.TASK, true, true, false, null, Map.of(
                 "kill_skulkin", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(MinejagoEntityTypeTags.SKULKINS))
         ), "Redead", "Kill a Skulkin Warrior");
 
-        Advancement killSamukai = maker.make(killASkulkin, MinejagoArmors.SAMUKAIS_CHESTPLATE.get(), KILL_SAMUKAI, FrameType.CHALLENGE, true, true, false, AdvancementRewards.Builder.experience(10).build(), Map.of(
+        Advancement killSamukai = helper.make(killASkulkin, MinejagoArmors.SAMUKAIS_CHESTPLATE.get(), KILL_SAMUKAI, FrameType.CHALLENGE, true, true, false, AdvancementRewards.Builder.experience(10).build(), Map.of(
                 "kill_samukai", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.SAMUKAI.get()))
         ), "Knives Out", "Defeat Samukai");
 
-        Advancement collectAllSkeletalChestplates = maker.make(killASkulkin, MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.STRENGTH).get(), COLLECT_ALL_SKELETAL_CHESTPLATES, FrameType.CHALLENGE, true, true, false, AdvancementRewards.Builder.experience(25).build(), Map.of(
+        Advancement collectAllSkeletalChestplates = helper.make(killASkulkin, MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.STRENGTH).get(), COLLECT_ALL_SKELETAL_CHESTPLATES, FrameType.CHALLENGE, true, true, false, AdvancementRewards.Builder.experience(25).build(), Map.of(
                 "collect_strength", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.STRENGTH).get()).build()),
                 "collect_speed", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.SPEED).get()).build()),
                 "collect_bow", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.BOW).get()).build()),
@@ -57,15 +64,15 @@ public class MinejagoAdventureAdvancements implements ForgeAdvancementProvider.A
                 "collect_bone", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.BONE).get()).build())
         ), "It's Always You Four Colors", "Collect all of the Skeletal Chestplate variants");
 
-        Advancement getTeapot = maker.make(new ResourceLocation("adventure/root"), MinejagoBlocks.TEAPOT.get(), GET_TEAPOT, FrameType.TASK, true, true, false, null, Map.of(
+        Advancement getTeapot = helper.make(new ResourceLocation("adventure/root"), MinejagoBlocks.TEAPOT.get(), GET_TEAPOT, FrameType.TASK, true, true, false, null, Map.of(
                 "get_teapot", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(MinejagoItemTags.TEAPOTS).build())
         ), "Something is brewing...", "Acquire a teapot");
 
-        Advancement brewTea = maker.make(getTeapot, PotionUtils.setPotion(MinejagoItems.FILLED_TEACUP.get().getDefaultInstance(), MinejagoPotions.OAK_TEA.get()), BREW_TEA, FrameType.TASK, true, true, false, null, Map.of(
+        Advancement brewTea = helper.make(getTeapot, PotionUtils.setPotion(MinejagoItems.FILLED_TEACUP.get().getDefaultInstance(), MinejagoPotions.OAK_TEA.get()), BREW_TEA, FrameType.TASK, true, true, false, null, Map.of(
                 "brewed_tea", BrewedTeaTrigger.TriggerInstance.brewedTea()
         ), "Hot Leaf Juice", "Brew tea in a teapot");
 
-        Advancement getJaspot = maker.make(getTeapot, MinejagoBlocks.JASPOT.get(), GET_JASPOT, FrameType.CHALLENGE, true, true, true, AdvancementRewards.Builder.experience(10).build(), Map.of(
+        Advancement getJaspot = helper.make(getTeapot, MinejagoBlocks.JASPOT.get(), GET_JASPOT, FrameType.CHALLENGE, true, true, true, AdvancementRewards.Builder.experience(10).build(), Map.of(
                 "get_jaspot", InventoryChangeTrigger.TriggerInstance.hasItems(MinejagoBlocks.JASPOT.asItem())
         ), "Whistlepurr", "Acquire the Jaspot");
     }

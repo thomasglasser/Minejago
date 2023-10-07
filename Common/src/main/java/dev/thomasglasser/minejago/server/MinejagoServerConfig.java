@@ -7,12 +7,26 @@ import net.minecraftforge.fml.config.ModConfig;
 
 public class MinejagoServerConfig
 {
+    public static ForgeConfigSpec.BooleanValue ENABLE_TECH;
+
     public static void register()
     {
         ForgeConfigSpec.Builder SERVER_BUILDER = new ForgeConfigSpec.Builder();
 
+        registerFeatureToggles(SERVER_BUILDER);
         MinejagoPowersConfig.registerServer(SERVER_BUILDER);
 
         Services.CONFIG.registerConfig(ModConfig.Type.SERVER, SERVER_BUILDER.build());
+    }
+
+    private static void registerFeatureToggles(ForgeConfigSpec.Builder builder)
+    {
+        builder.comment("Optional features").push("features");
+
+        ENABLE_TECH = builder
+                .comment("Enable the technology of the mod, such as vehicles and computers")
+                .define("enable_tech", true);
+
+        builder.pop();
     }
 }

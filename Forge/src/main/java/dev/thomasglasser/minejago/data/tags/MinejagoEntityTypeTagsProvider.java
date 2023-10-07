@@ -26,5 +26,8 @@ public class MinejagoEntityTypeTagsProvider extends EntityTypeTagsProvider {
 
         tag(EntityTypeTags.SKELETONS)
                 .addTag(MinejagoEntityTypeTags.SKULKINS);
+
+        tag(MinejagoEntityTypeTags.DRAGONS)
+                .add(MinejagoEntityTypes.EARTH_DRAGON.get());
     }
 }

@@ -1,5 +1,5 @@
 plugins {
-    id 'org.quiltmc.loom' version '1.+'
+    id 'org.quiltmc.loom' version '1.2.+'
     id 'maven-publish'
 }
 
@@ -40,7 +40,8 @@ dependencies {
     modCompileOnly "dev.kosmx.player-anim:player-animation-lib:${playeranimator_version}"
     modCompileOnly "dev.kosmx.player-anim:anim-core:${playeranimator_version}"
     modCompileOnly "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}"
-    modCompileOnly "maven.modrinth:moonlight:${moonlight_version}"
+//    modCompileOnly "maven.modrinth:moonlight:${moonlight_version}"
+    modCompileOnly "maven.modrinth:moonlight:h6yrGow9"
     modCompileOnly "maven.modrinth:sherdsapi:${sherdsapi_version}+Fabric"
     modCompileOnly "curse.maven:configured-667378:${configured_fabric_id}"
     modCompileOnly "maven.modrinth:jade:${jade_version}"

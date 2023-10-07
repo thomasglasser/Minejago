@@ -8,10 +8,7 @@ import dev.thomasglasser.minejago.world.entity.character.Character;
 import dev.thomasglasser.minejago.world.entity.character.*;
 import dev.thomasglasser.minejago.world.entity.dragon.Dragon;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
-import dev.thomasglasser.minejago.world.entity.projectile.ThrownBambooStaff;
-import dev.thomasglasser.minejago.world.entity.projectile.ThrownBoneKnife;
-import dev.thomasglasser.minejago.world.entity.projectile.ThrownIronShuriken;
-import dev.thomasglasser.minejago.world.entity.projectile.ThrownIronSpear;
+import dev.thomasglasser.minejago.world.entity.projectile.*;
 import dev.thomasglasser.minejago.world.entity.skulkin.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
@@ -40,6 +37,9 @@ public class MinejagoEntityTypes
     public static final RegistryObject<EntityType<ThrownIronShuriken>> THROWN_IRON_SHURIKEN = ENTITY_TYPES.register("thrown_iron_shuriken", () -> EntityType.Builder.<ThrownIronShuriken>of(ThrownIronShuriken::new, MobCategory.MISC)
             .sized(0.5F, 0.5F)
             .build("thrown_iron_spear"));
+    public static final RegistryObject<EntityType<EarthBlast>> EARTH_BLAST = ENTITY_TYPES.register("earth_blast", () -> EntityType.Builder.of(((EntityType<EarthBlast> entityType, Level level) -> new EarthBlast(entityType, level)), MobCategory.MISC)
+            .sized(1.0F, 1.0F)
+            .build("earth_blast"));
 
     // MOBS
     public static final RegistryObject<EntityType<Wu>> WU = ENTITY_TYPES.register("wu", () -> EntityType.Builder.of(Wu::new, MobCategory.CREATURE)

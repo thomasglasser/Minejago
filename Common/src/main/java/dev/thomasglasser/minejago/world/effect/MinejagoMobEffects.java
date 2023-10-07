@@ -10,7 +10,6 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.alchemy.Potion;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -40,6 +39,8 @@ public class MinejagoMobEffects
             }
         }
     });
+
+    public static final RegistryObject<MobEffect> SKULKINS_CURSE = noEffects("skulkins_curse", 0xAD282D);
 
     private static RegistryObject<MobEffect> noEffects(String name, int color)
     {

@@ -19,14 +19,14 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.function.Consumer;
 
-public class AdvancementUtils
+public class AdvancementHelper
 {
     private final Consumer<Advancement> saver;
     private final ExistingFileHelper existingFileHelper;
     private final LanguageProvider enUs;
     private final String category;
 
-    public AdvancementUtils(Consumer<Advancement> saver, ExistingFileHelper existingFileHelper, LanguageProvider enUs, String category)
+    public AdvancementHelper(Consumer<Advancement> saver, ExistingFileHelper existingFileHelper, LanguageProvider enUs, String category)
     {
         this.saver = saver;
         this.existingFileHelper = existingFileHelper;

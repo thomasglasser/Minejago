@@ -5,6 +5,7 @@ import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.world.entity.PlayerRideableFlying;
 import dev.thomasglasser.minejago.world.entity.character.Character;
 import dev.thomasglasser.minejago.world.entity.power.Power;
+import dev.thomasglasser.minejago.world.entity.projectile.EarthBlast;
 import dev.thomasglasser.minejago.world.level.storage.PowerData;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
@@ -67,11 +68,12 @@ public class Dragon extends TamableAnimal implements GeoEntity, SmartBrainOwner<
 
     public final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    private TagKey<Power> acceptablePowers;
+    private final TagKey<Power> acceptablePowers;
     private boolean isLiftingOff;
     private boolean isShooting;
     private Flight flight = Flight.HOVERING;
     private int flyingTicks = 0;
+    private double bond;
 
     public Dragon(EntityType<? extends Dragon> entityType, Level level, ResourceKey<Power> power, TagKey<Power> acceptablePowers) {
         super(entityType, level);
@@ -304,7 +306,7 @@ public class Dragon extends TamableAnimal implements GeoEntity, SmartBrainOwner<
         Registry<Power> powerRegistry = level().registryAccess().registryOrThrow(MinejagoRegistries.POWER);
         if (isOwnedBy(player)) player.startRiding(this);
         else if (powerRegistry.getOrThrow(Services.DATA.getPowerData(player).power()).is(acceptablePowers, powerRegistry)) {
-            // TODO: improve taming
+            // TODO: improve taming and give DX suit
             tame(player);
         }
         return super.mobInteract(player, hand);
@@ -333,13 +335,22 @@ public class Dragon extends TamableAnimal implements GeoEntity, SmartBrainOwner<
     }
 
     @Override
-    public Vec3 getDismountLocationForPassenger(LivingEntity passenger) {
+    public @NotNull Vec3 getDismountLocationForPassenger(LivingEntity passenger) {
         return super.getDismountLocationForPassenger(passenger);
     }
 
     @Override
     public void performRangedAttack(LivingEntity target, float velocity) {
-        target.sendSystemMessage(Component.literal("Aw shoot!"));
+        Vec3 vec33 = this.getViewVector(1.0F);
+        double l = this.getX() - vec33.x;
+        double m = this.getY(0.5) + 0.5;
+        double n = this.getZ() - vec33.z;
+        double o = target.getX() - l;
+        double p = target.getY(0.5) - m;
+        double q = target.getZ() - n;
+        EarthBlast dragonFireball = new EarthBlast(level(), this, o, p, q);
+        dragonFireball.moveTo(l, m, n, 0.0F, 0.0F);
+        level().addFreshEntity(dragonFireball);
     }
 
     public double getPerceivedTargetDistanceSquareForMeleeAttack(LivingEntity entity) {
