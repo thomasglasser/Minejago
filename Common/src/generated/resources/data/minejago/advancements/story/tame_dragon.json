@@ -1,0 +1,43 @@
+{
+  "parent": "minejago:story/enter_golden_weapons_structure",
+  "criteria": {
+    "tame_dragon": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "#minejago:dragons"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:tame_animal"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.minejago.story.tame_dragon.desc"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:saddle"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.minejago.story.tame_dragon.title"
+    }
+  },
+  "requirements": [
+    [
+      "tame_dragon"
+    ]
+  ],
+  "rewards": {
+    "experience": 15
+  },
+  "sends_telemetry_event": true
+}

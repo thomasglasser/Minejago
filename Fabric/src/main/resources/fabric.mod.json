@@ -38,6 +38,9 @@
     ],
     "jade": [
       "dev.thomasglasser.minejago.client.MinejagoWailaPlugin"
+    ],
+    "rei_client": [
+      "dev.thomasglasser.minejago.client.rei.MinejagoREIClientPlugin"
     ]
   },
   "mixins": [

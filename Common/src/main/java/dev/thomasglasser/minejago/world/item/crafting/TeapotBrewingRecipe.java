@@ -111,4 +111,9 @@ public class TeapotBrewingRecipe implements Recipe<Container> {
     public @NotNull ItemStack getToastSymbol() {
         return MinejagoBlocks.TEAPOT.asItem().getDefaultInstance();
     }
+
+    public Potion getBase()
+    {
+        return base;
+    }
 }

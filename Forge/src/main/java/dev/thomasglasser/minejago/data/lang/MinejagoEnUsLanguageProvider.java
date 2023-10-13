@@ -5,6 +5,7 @@ import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.client.MinejagoWailaPlugin;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.PowerSelectionScreen;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.ScrollEditScreen;
+import dev.thomasglasser.minejago.client.rei.display.category.TeapotBrewingCategory;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.server.commands.PowerCommand;
@@ -264,6 +265,8 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(ScrollEditScreen.FINALIZE_WARNING_LABEL, "Note! When you sign the scroll, it will no longer be editable.");
 
         add("lectern.take_scroll", "Take Scroll");
+
+        add(TeapotBrewingCategory.CATEGORY_KEY, "Teapot Brewing");
     }
 
     public void addDesc(Item item, String desc)

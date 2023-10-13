@@ -14,14 +14,16 @@ dependencies {
         parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip")
     }
 
+    // Required for the rei forge annotation
+    modCompileOnly "me.shedaniel:RoughlyEnoughItems-forge:$rei_version"
+
     implementation project(":Common")
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
 
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
     modImplementation "maven.modrinth:lambdynamiclights:${lambdynamiclights_version}"
-    modImplementation "maven.modrinth:moonlight:IPLC6g62" // TODO: Fix moonlightlib
-//    modImplementation "maven.modrinth:moonlight:${moonlight_version}"
+    modImplementation "maven.modrinth:moonlight:${moonlight_version}-fabric"
     modImplementation "maven.modrinth:moonlight:h6yrGow9"
     modImplementation "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}"
     modImplementation "net.tslat.smartbrainlib:SmartBrainLib-fabric-${minecraft_version}:${sbl_version}"
@@ -35,6 +37,7 @@ dependencies {
     modImplementation "net.tslat.tes:TES-fabric-${minecraft_version}:${tes_version}"
     modImplementation "maven.modrinth:trimmed:${trimmed_version}+fabric"
     modImplementation "com.klikli_dev:modonomicon-${minecraft_version}-fabric:${modonomicon_version}"
+    modImplementation "me.shedaniel:RoughlyEnoughItems-fabric:$rei_version"
 
     include modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${playeranimator_version}")
     include modImplementation("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forgeconfigapiport_version}")
@@ -42,7 +45,6 @@ dependencies {
     include modImplementation("maven.modrinth:sherdsapi:${sherdsapi_version}+Fabric")
 
     modRuntimeOnly "dev.lambdaurora:spruceui:${spruceui_version}"
-    modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:$rei_version"
 //    modRuntimeOnly "maven.modrinth:huge-structure-blocks:${hugestructureblocks_version}"
     modRuntimeOnly "curse.maven:worldedit-225608:${worldedit_id}"
     modRuntimeOnly "maven.modrinth:midnightlib:${midnightlib_version}-fabric"
@@ -97,7 +99,8 @@ def replaceProperties = [
         lambdynamiclights_version: lambdynamiclights_version,
         configured_version: configured_version,
         tes_version: tes_version,
-        jade_version: jade_version
+        jade_version: jade_version,
+        moonlight_version: moonlight_version
 ]
 
 processResources {

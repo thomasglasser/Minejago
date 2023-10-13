@@ -1,5 +1,5 @@
 {
-  "parent": "minejago:story/root",
+  "parent": "minecraft:adventure/root",
   "criteria": {
     "interact_cole": {
       "conditions": {
@@ -95,7 +95,7 @@
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancement.minejago.story.interact_with_main_six.desc"
+      "translate": "advancement.minejago.adventure.interact_with_main_six.desc"
     },
     "frame": "goal",
     "hidden": false,
@@ -105,7 +105,7 @@
     },
     "show_toast": true,
     "title": {
-      "translate": "advancement.minejago.story.interact_with_main_six.title"
+      "translate": "advancement.minejago.adventure.interact_with_main_six.title"
     }
   },
   "requirements": [

@@ -88,11 +88,11 @@ dependencies {
 
     implementation fg.deobf("dev.kosmx.player-anim:player-animation-lib-forge:${playeranimator_version}")
     implementation fg.deobf("curse.maven:dynamiclights-227874:${dynamiclights_id}")
-    implementation fg.deobf("maven.modrinth:moonlight:${moonlight_forge_id}")
+    implementation fg.deobf("maven.modrinth:moonlight:${moonlight_version}-forge")
     implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}")
     implementation fg.deobf("dev._100media.capabilitysyncer:capabilitysyncer:${capabilitysyncer_version}")
     implementation fg.deobf("net.tslat.smartbrainlib:SmartBrainLib-neoforge-${minecraft_version}:${sbl_version}")
-    implementation fg.deobf("maven.modrinth:jade:${jade_forge_id}")
+    implementation fg.deobf("maven.modrinth:jade:${jade_version}-forge")
     implementation fg.deobf("me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}")
     implementation fg.deobf("maven.modrinth:sherdsapi:${sherdsapi_version}+Forge")
     implementation fg.deobf("maven.modrinth:trimmed:${trimmed_version}+forge")
@@ -100,9 +100,10 @@ dependencies {
 //    implementation fg.deobf("curse.maven:configured-457570:${configured_forge_id}") TODO: Update
     implementation fg.deobf("net.tslat.tes:TES-neoforge-${minecraft_version}:${tes_version}")
     implementation fg.deobf("com.klikli_dev:modonomicon-${minecraft_version}-forge:${modonomicon_version}")
+    implementation fg.deobf("me.shedaniel:RoughlyEnoughItems-forge:$rei_version")
+    // DO NOT USE - Only for REI
+    implementation fg.deobf("dev.architectury:architectury-forge:$architectury_version")
 
-    runtimeOnly fg.deobf("me.shedaniel:RoughlyEnoughItems-forge:$rei_version")
-    runtimeOnly fg.deobf("dev.architectury:architectury-forge:$architectury_version")
     runtimeOnly fg.deobf("maven.modrinth:huge-structure-blocks:${hugestructureblocks_version}")
     runtimeOnly fg.deobf("curse.maven:worldedit-225608:${worldedit_id}")
     runtimeOnly fg.deobf("mysticdrew:common-networking:${common_networking_version}-forge")
