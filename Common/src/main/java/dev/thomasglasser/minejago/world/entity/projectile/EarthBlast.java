@@ -1,6 +1,8 @@
 package dev.thomasglasser.minejago.world.entity.projectile;
 
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -37,6 +39,7 @@ public class EarthBlast extends AbstractHurtingProjectile
 		if (!this.level().isClientSide) {
 			this.discard();
 			level().destroyBlock(result.getBlockPos(), false);
+			((ServerLevel)level()).sendParticles(ParticleTypes.EXPLOSION, result.getBlockPos().getX(), result.getBlockPos().getY(), result.getBlockPos().getZ(), 1, 0, 0, 0, 0);
 		}
 	}
 
