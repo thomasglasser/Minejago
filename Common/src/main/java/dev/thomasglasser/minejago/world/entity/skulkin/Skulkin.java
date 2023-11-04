@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.world.entity.skulkin;
 
-import dev.thomasglasser.minejago.world.entity.MeleeSkeleton;
+import dev.thomasglasser.minejago.world.entity.skulkin.raid.MeleeCompatibleSkeletonRaider;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import net.minecraft.ChatFormatting;
@@ -15,12 +15,13 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-public class Skulkin extends MeleeSkeleton {
+public class Skulkin extends MeleeCompatibleSkeletonRaider
+{
     private Variant variant;
 
     public Skulkin(EntityType<? extends Skulkin> entityType, Level level) {
         super(entityType, level);
-        variant = Variant.values()[(int) (Math.random() * Variant.values().length)];
+        variant = Variant.values()[(int) (Math.random() * (Variant.values().length - 1))];
     }
 
     @Nullable

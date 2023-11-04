@@ -14,6 +14,7 @@ import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.character.Wu;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
+import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
 import dev.thomasglasser.minejago.world.item.MinejagoCreativeModeTabs;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
@@ -108,6 +109,8 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(MinejagoBlocks.EARTH_DRAGON_HEAD.get(), "Earth Dragon Head");
         add(MinejagoBlocks.SUSPICIOUS_RED_SAND.get(), "Suspicious Red Sand");
 
+        add(SkulkinRaid.SKULKINS_BANNER_PATTERN_NAME, "Cursed Banner");
+
         addDesc(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get(), "Four Weapons");
 
         MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
@@ -140,6 +143,7 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(MinejagoEntityTypes.THROWN_BAMBOO_STAFF.get(), "Bamboo Staff");
         add(MinejagoEntityTypes.THROWN_IRON_SHURIKEN.get(), "Iron Shuriken");
         add(MinejagoEntityTypes.THROWN_IRON_SPEAR.get(), "Iron Spear");
+        add(MinejagoEntityTypes.EARTH_BLAST.get(), "Earth Blast");
         add(MinejagoEntityTypes.WU.get(), "Wu", MinejagoItems.WU_SPAWN_EGG.get());
         add(MinejagoEntityTypes.KAI.get(), "Kai", MinejagoItems.KAI_SPAWN_EGG.get());
         add(MinejagoEntityTypes.NYA.get(), "Nya", MinejagoItems.NYA_SPAWN_EGG.get());
@@ -190,7 +194,16 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(MinejagoSoundEvents.SPEAR_THROW, "Spear tosses");
         add(MinejagoSoundEvents.SPEAR_IMPACT, "Spear lands");
 
+        add(MinejagoMobEffects.ACACIA_TEA.get(), "Acacia Tea");
+        add(MinejagoMobEffects.OAK_TEA.get(), "Oak Tea");
+        add(MinejagoMobEffects.CHERRY_TEA.get(), "Cherry Tea");
+        add(MinejagoMobEffects.SPRUCE_TEA.get(), "Spruce Tea");
+        add(MinejagoMobEffects.MANGROVE_TEA.get(), "Mangrove Tea");
+        add(MinejagoMobEffects.JUNGLE_TEA.get(), "Jungle Tea");
+        add(MinejagoMobEffects.DARK_OAK_TEA.get(), "Dark Oak Tea");
+        add(MinejagoMobEffects.BIRCH_TEA.get(), "Birch Tea");
         add(MinejagoMobEffects.CURE.get(), "Instant Cure");
+        add(MinejagoMobEffects.SKULKINS_CURSE.get(), "Skulkin's Curse");
 
         add("effect.minecraft.swiftness", "Swiftness");
         add("effect.minecraft.healing", "Healing");
@@ -267,6 +280,8 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add("lectern.take_scroll", "Take Scroll");
 
         add(TeapotBrewingCategory.CATEGORY_KEY, "Teapot Brewing");
+
+        add(SkulkinRaid.RAID_NAME_COMPONENT, "Skulkin Raid");
     }
 
     public void addDesc(Item item, String desc)

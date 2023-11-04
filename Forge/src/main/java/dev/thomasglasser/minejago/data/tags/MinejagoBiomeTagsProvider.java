@@ -24,5 +24,7 @@ public class MinejagoBiomeTagsProvider extends BiomeTagsProvider
                 .add(Biomes.MEADOW);
         tag(MinejagoBiomeTags.HAS_CAVE_OF_DESPAIR)
                 .addTag(BiomeTags.IS_BADLANDS);
+        tag(MinejagoBiomeTags.WITHOUT_SKULKIN_PATROL_SPAWNS)
+                .add(Biomes.MUSHROOM_FIELDS);
     }
 }

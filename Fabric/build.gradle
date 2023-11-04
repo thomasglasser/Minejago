@@ -32,8 +32,6 @@ dependencies {
         exclude group: "net.fabricmc.fabric-api"
     }
     modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-api:${cca_version}"
-    modCompileOnly "curse.maven:configured-667378:${configured_fabric_id}"
-//    modImplementation("curse.maven:configured-667378:${configured_fabric_id}") TODO: Update
     modImplementation "net.tslat.tes:TES-fabric-${minecraft_version}:${tes_version}"
     modImplementation "maven.modrinth:trimmed:${trimmed_version}+fabric"
     modImplementation "com.klikli_dev:modonomicon-${minecraft_version}-fabric:${modonomicon_version}"
@@ -97,7 +95,6 @@ def replaceProperties = [
         reachentityattributes_version: reachentityattributes_version,
         playeranimator_version: playeranimator_version,
         lambdynamiclights_version: lambdynamiclights_version,
-        configured_version: configured_version,
         tes_version: tes_version,
         jade_version: jade_version,
         moonlight_version: moonlight_version

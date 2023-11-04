@@ -209,7 +209,7 @@ public class MinejagoFabricClient implements ClientModInitializer {
         ModConfigEvents.reloading(Minejago.MOD_ID).register((config) ->
                 MinejagoClientUtils.refreshVip());
         ItemGroupEvents.MODIFY_ENTRIES_ALL.register((group, entries) ->
-                entries.acceptAll(MinejagoItems.getItemsForTab(BuiltInRegistries.CREATIVE_MODE_TAB.getResourceKey(group).orElseThrow())));
+                entries.acceptAll(MinejagoClientEvents.getItemsForTab(BuiltInRegistries.CREATIVE_MODE_TAB.getResourceKey(group).orElseThrow())));
         ClientTickEvents.END_CLIENT_TICK.register(client ->
                 MinejagoClientEvents.onClientTick());
     }

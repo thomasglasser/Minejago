@@ -5,6 +5,7 @@ import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.registration.RegistrationProvider;
 import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
+import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
 import dev.thomasglasser.minejago.world.item.armor.GeoArmorItem;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.armor.PoweredArmorItem;
@@ -51,6 +52,8 @@ public class MinejagoCreativeModeTabs
                 output.acceptAll(armorSet.getAll().stream().map(ro -> ro.get().getDefaultInstance()).toList()));
 
         output.acceptAll(MinejagoPowers.getArmorForAll(MinejagoPowers.getBasePowers()));
+
+        output.accept(SkulkinRaid.getLeaderBannerInstance());
     }, CreativeModeTabs.SPAWN_EGGS));
 
     public static void init() {}

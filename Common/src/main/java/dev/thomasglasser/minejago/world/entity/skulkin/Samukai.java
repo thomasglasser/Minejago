@@ -1,9 +1,9 @@
 package dev.thomasglasser.minejago.world.entity.skulkin;
 
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
-import dev.thomasglasser.minejago.world.entity.MeleeSkeleton;
 import dev.thomasglasser.minejago.world.entity.ai.behavior.RangedItemAttack;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownBoneKnife;
+import dev.thomasglasser.minejago.world.entity.skulkin.raid.MeleeCompatibleSkeletonRaider;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import net.minecraft.util.RandomSource;
@@ -27,7 +27,7 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class Samukai extends MeleeSkeleton implements GeoEntity {
+public class Samukai extends MeleeCompatibleSkeletonRaider implements GeoEntity {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public Samukai(EntityType<? extends Samukai> entityType, Level level) {

@@ -21,8 +21,7 @@ public class MinejagoEntityTypeTagsProvider extends EntityTypeTagsProvider {
         tag(MinejagoEntityTypeTags.SKULKINS)
                 .add(MinejagoEntityTypes.SKULKIN.get())
                 .add(MinejagoEntityTypes.NUCKAL.get())
-                .add(MinejagoEntityTypes.KRUNCHA.get())
-                .add(MinejagoEntityTypes.SKULKIN_HORSE.get());
+                .add(MinejagoEntityTypes.KRUNCHA.get());
 
         tag(EntityTypeTags.SKELETONS)
                 .addTag(MinejagoEntityTypeTags.SKULKINS);

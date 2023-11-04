@@ -17,6 +17,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import org.apache.commons.io.IOUtils;
 
 import javax.annotation.Nullable;
@@ -172,5 +173,10 @@ public class MinejagoClientUtils {
     public static Player getMainClientPlayer()
     {
         return Minecraft.getInstance().player;
+    }
+
+    public static Level getLevel()
+    {
+        return Minecraft.getInstance().level;
     }
 }

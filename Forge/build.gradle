@@ -96,8 +96,6 @@ dependencies {
     implementation fg.deobf("me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}")
     implementation fg.deobf("maven.modrinth:sherdsapi:${sherdsapi_version}+Forge")
     implementation fg.deobf("maven.modrinth:trimmed:${trimmed_version}+forge")
-    compileOnly fg.deobf("curse.maven:configured-457570:${configured_forge_id}")
-//    implementation fg.deobf("curse.maven:configured-457570:${configured_forge_id}") TODO: Update
     implementation fg.deobf("net.tslat.tes:TES-neoforge-${minecraft_version}:${tes_version}")
     implementation fg.deobf("com.klikli_dev:modonomicon-${minecraft_version}-forge:${modonomicon_version}")
     implementation fg.deobf("me.shedaniel:RoughlyEnoughItems-forge:$rei_version")
@@ -141,7 +139,6 @@ def replaceProperties = [
         geckolib_version: geckolib_version,
         sherdsapi_version: sherdsapi_version,
         trimmed_version: trimmed_version,
-        configured_version: configured_version,
         tes_version: tes_version,
         jade_version: jade_version
 ]

@@ -4,8 +4,11 @@ import com.mojang.datafixers.util.Either;
 import dev.thomasglasser.minejago.network.ClientboundOpenScrollPacket;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityEvents;
+import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
+import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaidsHolder;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Unit;
 import net.minecraft.world.InteractionHand;
@@ -16,14 +19,17 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.WrittenBookItem;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ServerPlayer.class)
-public class ServerPlayerMixin
+public abstract class ServerPlayerMixin
 {
+    @Shadow public abstract ServerLevel serverLevel();
+
     private final ServerPlayer INSTANCE = (ServerPlayer)(Object)this;
 
     @Inject(method = "attack", at = @At("HEAD"))
@@ -62,7 +68,8 @@ public class ServerPlayerMixin
     @Inject(method = "startSleepInBed", at = @At("HEAD"), cancellable = true)
     private void minejago_startSleepInBed(BlockPos bedPos, CallbackInfoReturnable<Either<Player.BedSleepingProblem, Unit>> cir)
     {
-        if (/*TODO: Make world boolean for skeleton event*/false)
+        SkulkinRaid raid = ((SkulkinRaidsHolder)serverLevel()).getSkulkinRaidAt(bedPos);
+        if (raid != null && raid.isActive())
             cir.setReturnValue(Either.left(Player.BedSleepingProblem.NOT_SAFE));
     }
 }

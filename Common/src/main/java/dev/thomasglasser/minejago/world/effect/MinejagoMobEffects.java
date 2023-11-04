@@ -3,7 +3,12 @@ package dev.thomasglasser.minejago.world.effect;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.registration.RegistrationProvider;
 import dev.thomasglasser.minejago.registration.RegistryObject;
+import dev.thomasglasser.minejago.util.MinejagoLevelUtils;
+import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaidsHolder;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.effect.InstantenousMobEffect;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -40,7 +45,26 @@ public class MinejagoMobEffects
         }
     });
 
-    public static final RegistryObject<MobEffect> SKULKINS_CURSE = noEffects("skulkins_curse", 0xAD282D);
+    public static final RegistryObject<MobEffect> SKULKINS_CURSE = MOB_EFFECTS.register("skulkins_curse", () -> new MobEffect(MobEffectCategory.NEUTRAL, 0xAD282D) {
+        @Override
+        public boolean isDurationEffectTick(int duration, int amplifier) {
+            return true;
+        }
+
+        @Override
+        public void applyEffectTick(LivingEntity livingEntity, int amplifier) {
+            if (livingEntity instanceof ServerPlayer serverPlayer && !livingEntity.isSpectator()) {
+                ServerLevel serverLevel = serverPlayer.serverLevel();
+                if (serverLevel.getDifficulty() == Difficulty.PEACEFUL) {
+                    return;
+                }
+
+                if (MinejagoLevelUtils.isGoldenWeaponsMapHolderNearby(serverPlayer, 16)) {
+                    ((SkulkinRaidsHolder)serverLevel).getSkulkinRaids().createOrExtendSkulkinRaid(serverPlayer);
+                }
+            }
+        }
+    });
 
     private static RegistryObject<MobEffect> noEffects(String name, int color)
     {

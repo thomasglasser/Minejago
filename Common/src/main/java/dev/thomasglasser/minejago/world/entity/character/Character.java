@@ -20,6 +20,9 @@ import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.behavior.LookAtTargetSink;
+import net.minecraft.world.entity.ai.behavior.Swim;
+import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -32,6 +35,7 @@ import net.tslat.smartbrainlib.api.core.behaviour.custom.attack.AnimatableMeleeA
 import net.tslat.smartbrainlib.api.core.behaviour.custom.misc.Idle;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.move.FloatToSurfaceOfFluid;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.move.MoveToWalkTarget;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetRandomWalkTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetWalkTargetToAttackTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.target.InvalidateAttackTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.target.SetPlayerLookTarget;
@@ -39,6 +43,7 @@ import net.tslat.smartbrainlib.api.core.behaviour.custom.target.SetRandomLookTar
 import net.tslat.smartbrainlib.api.core.behaviour.custom.target.TargetOrRetaliate;
 import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.HurtBySensor;
+import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyPlayersSensor;
 import net.tslat.smartbrainlib.util.BrainUtils;
 import org.jetbrains.annotations.NotNull;
@@ -95,12 +100,17 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
     public List<ExtendedSensor<Character>> getSensors() {
         return ObjectArrayList.of(
                 new NearbyPlayersSensor<>(),
-                new HurtBySensor<>());
+                new HurtBySensor<>(),
+                new NearbyLivingEntitySensor<Character>()
+                        .setPredicate((target, entity) ->
+                                !(target instanceof Creeper) &&
+                                target instanceof Enemy));
     }
 
     @Override
     public BrainActivityGroup<Character> getCoreTasks() {
         return BrainActivityGroup.coreTasks(
+                new Swim(1.0f),
                 new SetWalkTargetToAttackTarget<>(),
                 new LookAtTargetSink(40, 300), 														// Look at the look target
                 new MoveToWalkTarget<>().whenStopping(this::onMoveToWalkTargetStopping),
@@ -115,7 +125,8 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
                         new SetPlayerLookTarget<>(),					// Set the look target to a nearby player if available
                         new SetRandomLookTarget<>()), 					// Set the look target to a random nearby location
                 new OneRandomBehaviour<>( 								// Run only one of the below behaviours, picked at random
-                        new Idle<>().runFor(entity -> entity.getRandom().nextInt(30, 60)))); // Don't walk anywhere
+                        new Idle<>().runFor(entity -> entity.getRandom().nextInt(30, 60)),
+                        new SetRandomWalkTarget<>()));
     }
 
     @Override

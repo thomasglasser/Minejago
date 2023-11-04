@@ -171,7 +171,7 @@ public class MinejagoForgeClientEvents {
 
     public static void onBuildCreativeTabContent(BuildCreativeModeTabContentsEvent event)
     {
-        event.acceptAll(MinejagoItems.getItemsForTab(event.getTabKey()));
+        event.acceptAll(MinejagoClientEvents.getItemsForTab(event.getTabKey()));
     }
 
     public static void onClientConfigChanged(ModConfigEvent event)

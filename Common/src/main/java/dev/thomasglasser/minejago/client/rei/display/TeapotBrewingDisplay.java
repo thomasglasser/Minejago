@@ -66,7 +66,7 @@ public class TeapotBrewingDisplay extends BasicDisplay
 	{
 		return BasicDisplay.Serializer.of(TeapotBrewingDisplay::new, (display, tag) ->
 		{
-			tag.putString("base", display.getBase().toString());
+			tag.putString("base", BuiltInRegistries.POTION.getKey(display.getBase()).toString());
 			IntProvider.CODEC.encodeStart(NbtOps.INSTANCE, display.cookingTime);
 			tag.putFloat("xp", display.getExperience());
 		});

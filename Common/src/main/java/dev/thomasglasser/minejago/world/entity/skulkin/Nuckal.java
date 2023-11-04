@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.world.entity.skulkin;
 
-import dev.thomasglasser.minejago.world.entity.MeleeSkeleton;
+import dev.thomasglasser.minejago.world.entity.skulkin.raid.MeleeCompatibleSkeletonRaider;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -8,7 +8,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.level.Level;
 
-public class Nuckal extends MeleeSkeleton
+public class Nuckal extends MeleeCompatibleSkeletonRaider
 {
     public Nuckal(EntityType<? extends Nuckal> entityType, Level level) {
         super(entityType, level);

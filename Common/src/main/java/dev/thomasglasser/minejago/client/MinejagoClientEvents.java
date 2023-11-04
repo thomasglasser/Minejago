@@ -4,12 +4,28 @@ import dev.thomasglasser.minejago.client.gui.screens.inventory.ScrollLecternScre
 import dev.thomasglasser.minejago.network.ServerboundFlyVehiclePacket;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.util.MinejagoClientUtils;
+import dev.thomasglasser.minejago.util.MinejagoItemUtils;
 import dev.thomasglasser.minejago.world.entity.PlayerRideableFlying;
+import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
 import dev.thomasglasser.minejago.world.inventory.MinejagoMenuTypes;
+import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.Potions;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class MinejagoClientEvents
 {
@@ -49,5 +65,39 @@ public class MinejagoClientEvents
 
     public static boolean isRidingFlyable(Player player) {
         return player.getVehicle() instanceof PlayerRideableFlying && player.getVehicle().getControllingPassenger().is(player);
+    }
+
+    public static List<ItemStack> getItemsForTab(ResourceKey<CreativeModeTab> tab)
+    {
+        List<ItemStack> items = new ArrayList<>();
+
+        MinejagoItems.getItemTabs().forEach((itemTab, itemLikes) -> {
+            if (tab == itemTab)
+            {
+                itemLikes.forEach((itemLike) -> items.add(Objects.requireNonNull(BuiltInRegistries.ITEM.get(itemLike)).getDefaultInstance()));
+            }
+        });
+
+        if (tab == CreativeModeTabs.FOOD_AND_DRINKS)
+        {
+            for (Potion potion : BuiltInRegistries.POTION) {
+                if (potion != Potions.EMPTY) {
+                    items.add(MinejagoItemUtils.fillTeacup(potion));
+                }
+            }
+        }
+
+        if (tab == CreativeModeTabs.COMBAT)
+        {
+            MinejagoArmors.ARMOR_SETS.forEach(set ->
+                    items.addAll(set.getAllAsItems().stream().map(Item::getDefaultInstance).toList()));
+        }
+
+        if (tab == CreativeModeTabs.FUNCTIONAL_BLOCKS)
+        {
+            items.add(SkulkinRaid.getLeaderBannerInstance());
+        }
+
+        return items;
     }
 }

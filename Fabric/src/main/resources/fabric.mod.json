@@ -67,7 +67,6 @@
     "lambdynamiclights": ">=${lambdynamiclights_version}",
     "firstpersonmod": "*",
     "modmenu": "*",
-    "configured": ">=${configured_version}",
     "tslatentitystatus": ">=${tes_version}",
     "jade": ">=${jade_version}"
   },

@@ -101,6 +101,7 @@ public class MinejagoDataGenerators
         generator.addProvider(includeServer, new MinejagoGameEventTagsProvider(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(includeServer, new MinejagoBiomeTagsProvider(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(includeServer, new MinejagoStructureTagsProvider(packOutput, lookupProvider, existingFileHelper));
+        generator.addProvider(includeServer, new MinejagoDimensionTypeTagsProvider(packOutput, lookupProvider, existingFileHelper));
 
         //Client
         generator.addProvider(includeClient, new MinejagoItemModels(packOutput, existingFileHelper));

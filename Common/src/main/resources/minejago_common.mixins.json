@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "minejago.refmap.json",
   "mixins": [
+    "minecraft.server.level.ServerLevelMixin",
     "minecraft.server.network.ServerGamePacketListenerImplMixin",
     "minecraft.world.entity.EntityMixin",
     "minecraft.world.entity.LivingEntityMixin",
@@ -22,7 +23,6 @@
     "minecraft.client.OptionsMixin",
     "minecraft.client.model.HumanoidModelMixin",
     "minecraft.client.model.PlayerModelMixin",
-    "minecraft.client.multiplayer.MinejagoClientLevelMixin",
     "minecraft.client.player.LocalPlayerMixin",
     "minecraft.client.renderer.blockentity.LecternRendererMixin"
   ],

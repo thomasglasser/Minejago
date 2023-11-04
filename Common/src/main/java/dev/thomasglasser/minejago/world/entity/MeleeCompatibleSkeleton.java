@@ -7,9 +7,9 @@ import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetWalkTargetToAttackTarget;
 import net.tslat.smartbrainlib.example.SBLSkeleton;
 
-public class MeleeSkeleton extends SBLSkeleton
+public class MeleeCompatibleSkeleton extends SBLSkeleton
 {
-    public MeleeSkeleton(EntityType<? extends MeleeSkeleton> entityType, Level level) {
+    public MeleeCompatibleSkeleton(EntityType<? extends MeleeCompatibleSkeleton> entityType, Level level) {
         super(entityType, level);
     }
 

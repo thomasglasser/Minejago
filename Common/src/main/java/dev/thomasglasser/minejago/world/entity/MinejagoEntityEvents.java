@@ -236,10 +236,14 @@ public class MinejagoEntityEvents
 
     public static void onPlayerEntityInteract(Player player, Level world, InteractionHand hand, Entity entity)
     {
-        if (world instanceof ServerLevel serverLevel && hand == InteractionHand.MAIN_HAND && entity instanceof Painting painting && painting.getVariant().is(Minejago.modLoc( "four_weapons")) && !((DataHolder)painting).getPersistentData().getBoolean("MapTaken"))
+        if (world instanceof ServerLevel && hand == InteractionHand.MAIN_HAND && entity instanceof Painting painting && painting.getVariant().is(Minejago.modLoc( "four_weapons")) && !((DataHolder)painting).getPersistentData().getBoolean("MapTaken"))
         {
             player.addItem(MinejagoItems.EMPTY_GOLDEN_WEAPONS_MAP.get().getDefaultInstance());
-            if (player.isCreative()) ((DataHolder)painting).getPersistentData().putBoolean("MapTaken", true);
+            if (!player.isCreative())
+            {
+                ((DataHolder)painting).getPersistentData().putBoolean("MapTaken", true);
+                ((DataHolder)painting).getPersistentData().putBoolean("MapTakenByPlayer", true);
+            }
         }
     }
 

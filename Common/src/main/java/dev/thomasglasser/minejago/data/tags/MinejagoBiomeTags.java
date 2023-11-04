@@ -9,6 +9,7 @@ public class MinejagoBiomeTags
 {
     public static final TagKey<Biome> HAS_FOUR_WEAPONS = create("has_four_weapons");
     public static final TagKey<Biome> HAS_CAVE_OF_DESPAIR = create("has_cave_of_despair");
+    public static final TagKey<Biome> WITHOUT_SKULKIN_PATROL_SPAWNS = create("without_skulkin_patrol_spawns");
 
     private static TagKey<Biome> create(String name) {
         return TagKey.create(Registries.BIOME, Minejago.modLoc(name));
