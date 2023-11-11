@@ -44,7 +44,9 @@ public class Samukai extends MeleeCompatibleSkeletonRaider implements GeoEntity 
 
     public static AttributeSupplier.@NotNull Builder createAttributes()
     {
-        return AbstractSkeleton.createAttributes().add(Attributes.MAX_HEALTH, 50).add(Attributes.ATTACK_DAMAGE, 4.0);
+        return AbstractSkeleton.createAttributes()
+                .add(Attributes.MAX_HEALTH, 50)
+                .add(Attributes.ATTACK_DAMAGE, 4.0);
     }
 
     @Override
@@ -63,9 +65,7 @@ public class Samukai extends MeleeCompatibleSkeletonRaider implements GeoEntity 
     }
 
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-
-    }
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {}
 
     @Override
     public BrainActivityGroup<? extends SBLSkeleton> getFightTasks() {

@@ -10,10 +10,10 @@ import dev.thomasglasser.minejago.world.level.storage.PowerData;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.*;
@@ -252,6 +252,22 @@ public class Dragon extends TamableAnimal implements GeoEntity, SmartBrainOwner<
         }
     }
 
+    @Override
+    protected boolean canAddPassenger(Entity passenger) {
+        return this.getPassengers().size() < this.getMaxPassengers();
+    }
+
+    protected int getMaxPassengers() {
+        return 2;
+    }
+
+    @Nullable
+    @Override
+    public LivingEntity getControllingPassenger() {
+        return getFirstPassenger() instanceof LivingEntity livingEntity ? livingEntity : null;
+    }
+
+
     public double getVerticalSpeed() {
         return 0.5;
     }
@@ -291,10 +307,6 @@ public class Dragon extends TamableAnimal implements GeoEntity, SmartBrainOwner<
         this.flight = Flight.HOVERING;
     }
 
-    public LivingEntity getControllingPassenger() {
-        return getFirstPassenger() instanceof LivingEntity livingEntity ? livingEntity : null;
-    }
-
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel pLevel, AgeableMob pOtherParent) {
@@ -312,18 +324,38 @@ public class Dragon extends TamableAnimal implements GeoEntity, SmartBrainOwner<
         return super.mobInteract(player, hand);
     }
 
-    public int getPassengerCount(){
-        return 2;
-    }
     @Override
-    protected boolean canAddPassenger(Entity pPassenger) {
-        return this.getPassengers().size() < getPassengerCount();
+    protected void positionRider(Entity passenger, Entity.MoveFunction callback) {
+        int i = this.getPassengers().indexOf(passenger);
+        if (i >= 0) {
+            boolean bl = i == 0;
+            float f = 1.0F;
+            float g = (float)((this.isRemoved() ? 0.01F : this.getPassengersRidingOffset()) + passenger.getMyRidingOffset());
+            if (this.getPassengers().size() > 1) {
+                if (!bl) {
+                    f = -0.7F;
+                }
+            }
+
+            Vec3 vec3 = new Vec3(0.0, 0.0, (double)f).yRot(-this.yBodyRot * (float) (Math.PI / 180.0));
+            callback.accept(passenger, this.getX() + vec3.x, this.getY() + (double)g, this.getZ() + vec3.z);
+            clampRotation(this);
+        }
     }
-    
-    public void positionRider(Entity pPassenger, Entity.MoveFunction pCallback) {
-        Vec3 position = position();
-        pPassenger.setPos(position.x, position.y + getPassengersRidingOffset(), position.z);
-        pPassenger.setYBodyRot(getYRot());
+
+    @Override
+    public double getMyRidingOffset()
+    {
+        return -1.1;
+    }
+
+    protected void clampRotation(Entity entityToUpdate) {
+        entityToUpdate.setYBodyRot(this.getYRot());
+        float f = Mth.wrapDegrees(entityToUpdate.getYRot() - this.getYRot());
+        float g = Mth.clamp(f, -105.0F, 105.0F);
+        entityToUpdate.yRotO += g - f;
+        entityToUpdate.setYRot(entityToUpdate.getYRot() + g - f);
+        entityToUpdate.setYHeadRot(entityToUpdate.getYRot());
     }
 
     @Override
@@ -332,11 +364,6 @@ public class Dragon extends TamableAnimal implements GeoEntity, SmartBrainOwner<
         if (isNoGravity()) flyingTicks++;
         if (flyingTicks > 30)
             isLiftingOff = false;
-    }
-
-    @Override
-    public @NotNull Vec3 getDismountLocationForPassenger(LivingEntity passenger) {
-        return super.getDismountLocationForPassenger(passenger);
     }
 
     @Override

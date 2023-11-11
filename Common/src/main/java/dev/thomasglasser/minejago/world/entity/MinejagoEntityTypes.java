@@ -78,6 +78,9 @@ public class MinejagoEntityTypes
     public static final RegistryObject<EntityType<Samukai>> SAMUKAI = ENTITY_TYPES.register("samukai", () -> EntityType.Builder.of(Samukai::new, MobCategory.MONSTER)
             .sized(0.875f, 2.375f)
             .build("samukai"));
+    public static final RegistryObject<EntityType<SkullTruck>> SKULL_TRUCK = ENTITY_TYPES.register("skull_truck", () -> EntityType.Builder.of(SkullTruck::new, MobCategory.MISC)
+            .sized(3.5f, 3.1875f)
+            .build("skull_truck"));
 
     public static Map<EntityType<? extends LivingEntity>, AttributeSupplier> getAllAttributes() {
         Map<EntityType<? extends LivingEntity>, AttributeSupplier> map = new HashMap<>();
@@ -94,6 +97,7 @@ public class MinejagoEntityTypes
         map.put(SKULKIN_HORSE.get(), SkulkinHorse.createAttributes().build());
         map.put(EARTH_DRAGON.get(), Dragon.createAttributes().build());
         map.put(SAMUKAI.get(), Samukai.createAttributes().build());
+        map.put(SKULL_TRUCK.get(), SkullTruck.createAttributes().build());
 
         return map;
     }

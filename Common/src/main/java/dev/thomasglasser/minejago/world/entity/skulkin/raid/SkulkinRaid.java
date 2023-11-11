@@ -3,6 +3,7 @@ package dev.thomasglasser.minejago.world.entity.skulkin.raid;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.util.MinejagoLevelUtils;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.DataHolder;
@@ -10,6 +11,7 @@ import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.skulkin.Kruncha;
 import dev.thomasglasser.minejago.world.entity.skulkin.Nuckal;
 import dev.thomasglasser.minejago.world.entity.skulkin.Samukai;
+import dev.thomasglasser.minejago.world.entity.skulkin.SkullTruck;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -756,13 +758,29 @@ public class SkulkinRaid {
 		if (kruncha != null)
 			this.joinSkulkinRaid(i, kruncha, pos, false);
 
-/*
 		if (MinejagoServerConfig.ENABLE_SKULKIN_RAIDS.get())
 		{
-			// TODO: Truck with all riding
+			List<MeleeCompatibleSkeletonRaider> raiders = new ArrayList<>();
+			if (nuckal != null) raiders.add(nuckal);
+			if (kruncha != null) raiders.add(kruncha);
+
+			SkullTruck truck = MinejagoEntityTypes.SKULL_TRUCK.get().create(level);
+			if (truck == null)
+				return false;
+			truck.setPos((double)pos.getX() + 0.5, (double)pos.getY() + 1.0, (double)pos.getZ() + 0.5);
+			truck.finalizeSpawn(this.level, this.level.getCurrentDifficultyAt(pos), MobSpawnType.EVENT, null, null);
+			truck.setOnGround(true);
+			this.level.addFreshEntityWithPassengers(truck);
+			truck.moveTo(pos, 0.0F, 0.0F);
+
+			samukai.startRiding(truck);
+
+			for (MeleeCompatibleSkeletonRaider raider : raiders)
+			{
+				raider.startRiding(truck);
+			}
 		}
 		else
-*/
 		{
 			List<MeleeCompatibleSkeletonRaider> raiders = new ArrayList<>();
 			raiders.add(samukai);

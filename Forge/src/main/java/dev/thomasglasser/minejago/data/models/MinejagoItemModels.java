@@ -10,7 +10,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
-import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -79,6 +78,7 @@ public class MinejagoItemModels extends ItemModelProvider
         spawnEgg(MinejagoItems.SKULKIN_HORSE_SPAWN_EGG.getId().getPath());
         spawnEgg(MinejagoItems.EARTH_DRAGON_SPAWN_EGG.getId().getPath());
         spawnEgg(MinejagoItems.SAMUKAI_SPAWN_EGG.getId().getPath());
+        spawnEgg(MinejagoItems.SKULL_TRUCK_SPAWN_EGG.getId().getPath());
 
         withExistingParent(MinejagoItems.EMPTY_GOLDEN_WEAPONS_MAP.getId().getPath(), "item/map");
     }

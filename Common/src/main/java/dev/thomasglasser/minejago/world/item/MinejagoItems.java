@@ -69,6 +69,7 @@ public class MinejagoItems
     public static final RegistryObject<Item> SKULKIN_HORSE_SPAWN_EGG = register("skulkin_horse_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.SKULKIN_HORSE::get, 0xfffffd, 0xad282d, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
     public static final RegistryObject<Item> EARTH_DRAGON_SPAWN_EGG = register("earth_dragon_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.EARTH_DRAGON::get, 0x412017, 0xa08d71, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
     public static final RegistryObject<Item> SAMUKAI_SPAWN_EGG = register("samukai_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.SAMUKAI::get, 0xdbd7bd, 0xb90e04, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
+    public static final RegistryObject<Item> SKULL_TRUCK_SPAWN_EGG = register("skull_truck_spawn_egg", Services.ITEM.makeSpawnEgg(MinejagoEntityTypes.SKULL_TRUCK::get, 0xcbc6a5, 0x832696, new Item.Properties()), CreativeModeTabs.SPAWN_EGGS);
 
     @SafeVarargs
     public static RegistryObject<Item> register(String name, Supplier<? extends Item> supplier, ResourceKey<CreativeModeTab>... tabs)

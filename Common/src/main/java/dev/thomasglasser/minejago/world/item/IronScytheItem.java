@@ -37,6 +37,7 @@ public class IronScytheItem extends DiggerItem implements ModeledItem {
                 pContext.getItemInHand().hurtAndBreak(2, pContext.getPlayer(), (p_40665_) -> {
                     p_40665_.broadcastBreakEvent(pContext.getPlayer().getUsedItemHand());
                 });
+                return InteractionResult.CONSUME;
             }
         }
         else if (blockState.getBlock() instanceof BushBlock)

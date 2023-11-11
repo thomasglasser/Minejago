@@ -1,8 +1,11 @@
 package dev.thomasglasser.minejago.world.entity.ai.behavior;
 
 import com.mojang.datafixers.util.Pair;
+import dev.thomasglasser.minejago.data.tags.MinejagoEntityTypeTags;
+import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.util.MinejagoLevelUtils;
 import dev.thomasglasser.minejago.world.entity.skulkin.SkulkinHorse;
+import dev.thomasglasser.minejago.world.entity.skulkin.SkullTruck;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.MeleeCompatibleSkeletonRaider;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
 import net.minecraft.server.level.ServerLevel;
@@ -47,13 +50,26 @@ public class FleeSkulkinRaidAndDespawn<T extends MeleeCompatibleSkeletonRaider> 
 					entity.getVehicle().remove(Entity.RemovalReason.CHANGED_DIMENSION);
 				entity.remove(Entity.RemovalReason.CHANGED_DIMENSION);
 				raid.updateBossbar();
+				return;
+			}
+			else if (MinejagoServerConfig.ENABLE_TECH.get())
+			{
+				if (entity.getType().is(MinejagoEntityTypeTags.SKULL_TRUCK_RIDERS))
+				{
+					List<SkullTruck> trucks = entity.level().getEntitiesOfClass(SkullTruck.class, entity.getBoundingBox().inflate(8), truck -> truck.getPassengers().size() < 3);
+					if (!trucks.isEmpty()) entity.startRiding(trucks.get(0));
+				}
+				else
+				{
+					// TODO: Nearest bike
+				}
 			}
 			else
 			{
 				List<SkulkinHorse> horses = entity.level().getEntitiesOfClass(SkulkinHorse.class, entity.getBoundingBox().inflate(8), skulkinHorse -> !skulkinHorse.hasControllingPassenger());
 				if (!horses.isEmpty()) entity.startRiding(horses.get(0));
-				BrainUtils.setMemory(entity, MemoryModuleType.WALK_TARGET, new WalkTarget(raid.getEscapePos(), 1.4f, 4));
 			}
+			BrainUtils.setMemory(entity, MemoryModuleType.WALK_TARGET, new WalkTarget(raid.getEscapePos(), 1.4f, 4));
 		}
 	}
 
