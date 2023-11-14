@@ -1,0 +1,31 @@
+{
+  "parent": "minejago:adventure/kill_a_skulkin",
+  "criteria": {
+    "start_skulkin_raid": {
+      "conditions": {},
+      "trigger": "minejago:skulkin_raid_started"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.minejago.adventure.start_skulkin_raid.desc"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:black_banner",
+      "nbt": "{BlockEntityTag:{Patterns:[{Color:14,Pattern:\"cr\"},{Color:12,Pattern:\"mr\"},{Color:0,Pattern:\"sku\"}],id:\"minecraft:banner\"},HideFlags:32,display:{Name:'{\"color\":\"gold\",\"translate\":\"block.minejago.skulkins_banner\"}'}}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.minejago.adventure.start_skulkin_raid.title"
+    }
+  },
+  "requirements": [
+    [
+      "start_skulkin_raid"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

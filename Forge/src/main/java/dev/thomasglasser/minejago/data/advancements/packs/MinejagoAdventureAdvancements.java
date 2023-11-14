@@ -1,11 +1,13 @@
 package dev.thomasglasser.minejago.data.advancements.packs;
 
 import dev.thomasglasser.minejago.advancements.criterion.BrewedTeaTrigger;
+import dev.thomasglasser.minejago.advancements.criterion.SkulkinRaidTrigger;
 import dev.thomasglasser.minejago.data.advancements.AdvancementHelper;
 import dev.thomasglasser.minejago.data.tags.MinejagoEntityTypeTags;
 import dev.thomasglasser.minejago.data.tags.MinejagoItemTags;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;
+import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
@@ -16,6 +18,7 @@ import net.minecraft.advancements.FrameType;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.ForgeAdvancementProvider;
@@ -38,21 +41,28 @@ public class MinejagoAdventureAdvancements implements ForgeAdvancementProvider.A
     public void generate(HolderLookup.Provider registries, Consumer<Advancement> saver, ExistingFileHelper existingFileHelper) {
         AdvancementHelper helper = new AdvancementHelper(saver, existingFileHelper, enUs, CATEGORY);
 
-        Advancement interactWithMainSix = helper.make(new ResourceLocation("adventure/root"), MinejagoItems.IRON_KATANA.get(), INTERACT_WITH_MAIN_SIX, FrameType.GOAL, true, true, false, null,
-                Map.of(
-                        "interact_wu", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), EntityPredicate.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.WU.get()).build())),
-                        "interact_nya", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), EntityPredicate.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.NYA.get()).build())),
-                        "interact_jay", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), EntityPredicate.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.JAY.get()).build())),
-                        "interact_kai", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), EntityPredicate.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.KAI.get()).build())),
-                        "interact_cole", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), EntityPredicate.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.COLE.get()).build())),
-                        "interact_zane", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), EntityPredicate.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.ZANE.get()).build()))
-                ), "Meet N' Greet", "Interact with Wu, Nya, and the Four Ninja");
+        Advancement interactWithMainSix = helper.make(new ResourceLocation("adventure/root"), MinejagoItems.IRON_KATANA.get(), INTERACT_WITH_MAIN_SIX, FrameType.GOAL, true, true, false, null, Map.of(
+                "interact_wu", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), EntityPredicate.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.WU.get()).build())),
+                "interact_nya", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), EntityPredicate.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.NYA.get()).build())),
+                "interact_jay", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), EntityPredicate.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.JAY.get()).build())),
+                "interact_kai", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), EntityPredicate.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.KAI.get()).build())),
+                "interact_cole", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), EntityPredicate.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.COLE.get()).build())),
+                "interact_zane", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), EntityPredicate.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.ZANE.get()).build()))
+        ), "Meet N' Greet", "Interact with Wu, Nya, and the Four Ninja");
 
         Advancement killASkulkin = helper.make(new ResourceLocation("adventure/kill_a_mob"), MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.SPEED).get(), KILL_A_SKULKIN, FrameType.TASK, true, true, false, null, Map.of(
                 "kill_skulkin", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(MinejagoEntityTypeTags.SKULKINS))
         ), "Redead", "Kill a Skulkin Warrior");
 
-        Advancement killSamukai = helper.make(killASkulkin, MinejagoArmors.SAMUKAIS_CHESTPLATE.get(), KILL_SAMUKAI, FrameType.CHALLENGE, true, true, false, AdvancementRewards.Builder.experience(10).build(), Map.of(
+        Advancement startSkulkinRaid = helper.make(killASkulkin, SkulkinRaid.getLeaderBannerInstance(), START_SKULKIN_RAID, FrameType.GOAL, true, true, false, null, Map.of(
+                "start_skulkin_raid", SkulkinRaidTrigger.TriggerInstance.raidStarted()
+        ), "Ninja, GO!", "The Skulkin are coming!");
+
+        Advancement winSkulkinRaid = helper.make(startSkulkinRaid, Items.FILLED_MAP, WIN_SKULKIN_RAID, FrameType.CHALLENGE, true, true, false, AdvancementRewards.Builder.experience(10).build(), Map.of(
+                "win_skulkin_raid", SkulkinRaidTrigger.TriggerInstance.raidWon()
+        ), "Ninja, Gone!", "Defeat a Skulkin Raid");
+
+        Advancement killSamukai = helper.make(startSkulkinRaid, MinejagoArmors.SAMUKAIS_CHESTPLATE.get(), KILL_SAMUKAI, FrameType.CHALLENGE, true, true, false, AdvancementRewards.Builder.experience(10).build(), Map.of(
                 "kill_samukai", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.SAMUKAI.get()))
         ), "Knives Out", "Defeat Samukai");
 

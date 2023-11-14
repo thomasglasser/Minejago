@@ -3,6 +3,7 @@ package dev.thomasglasser.minejago.world.entity.skulkin.raid;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.util.MinejagoLevelUtils;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
@@ -329,6 +330,7 @@ public class SkulkinRaid {
 					BlockPos blockPos = this.waveSpawnPos.isPresent() ? this.waveSpawnPos.get() : this.findRandomSpawnPos(k, 20);
 					if (blockPos != null) {
 						this.started = true;
+						raidEvent.getPlayers().forEach(MinejagoCriteriaTriggers.SKULKIN_RAID_STARTED::trigger);
 						this.spawnGroup(blockPos);
 						if (!bl2) {
 							this.playSound(blockPos);
@@ -349,6 +351,8 @@ public class SkulkinRaid {
 						++this.postSkulkinRaidTicks;
 					} else {
 						this.status = SkulkinRaid.SkulkinRaidStatus.VICTORY;
+
+						raidEvent.getPlayers().forEach(MinejagoCriteriaTriggers.SKULKIN_RAID_WON::trigger);
 					}
 				}
 

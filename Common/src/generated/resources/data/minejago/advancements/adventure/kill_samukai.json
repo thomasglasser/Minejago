@@ -1,5 +1,5 @@
 {
-  "parent": "minejago:adventure/kill_a_skulkin",
+  "parent": "minejago:adventure/start_skulkin_raid",
   "criteria": {
     "kill_samukai": {
       "conditions": {
