@@ -55,7 +55,7 @@ public class Minejago {
 		{
 			TESAPI.addTESHudElement(Minejago.modLoc("power_symbol"), (guiGraphics, mc, partialTick, entity, opacity, inWorldHud) ->
 			{
-				if (mc.level != null && Services.DATA.getPowerData(entity) != null) {
+				if (mc.level != null && Services.DATA.getPowerData(entity) != null && !inWorldHud) {
 					TESClientUtil.prepRenderForTexture(MinejagoPowers.POWERS.get(mc.level.registryAccess()).get(Services.DATA.getPowerData(entity).power()).getIcon());
 					guiGraphics.pose().pushPose();
 					guiGraphics.pose().scale(0.5f, 0.5f, 1.0f);

@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import dev.thomasglasser.minejago.client.model.CharacterModel;
 import dev.thomasglasser.minejago.world.entity.character.Character;
@@ -12,6 +13,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShieldItem;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.renderer.DynamicGeoEntityRenderer;
 import software.bernie.geckolib.renderer.layer.BlockAndItemGeoLayer;
@@ -35,8 +37,8 @@ public class CharacterRenderer<T extends Character> extends DynamicGeoEntityRend
     protected ItemStack mainHandItem;
     protected ItemStack offhandItem;
 
-    public CharacterRenderer(EntityRendererProvider.Context context, boolean slim) {
-        super(context, new CharacterModel<>(slim));
+    public CharacterRenderer(EntityRendererProvider.Context context, CharacterModel<T> model) {
+        super(context, model);
 
         // Add some armor rendering
         addRenderLayer(new ItemArmorGeoLayer<>(this) {
@@ -90,7 +92,7 @@ public class CharacterRenderer<T extends Character> extends DynamicGeoEntityRend
             @Override
             protected ItemStack getStackForBone(GeoBone bone, T animatable) {
                 // Retrieve the items in the entity's hands for the relevant bone
-                return switch (bone.getName()) {
+	            return switch (bone.getName()) {
                     case LEFT_HAND -> animatable.isLeftHanded() ?
                             mainHandItem : offhandItem;
                     case RIGHT_HAND -> animatable.isLeftHanded() ?
@@ -102,8 +104,9 @@ public class CharacterRenderer<T extends Character> extends DynamicGeoEntityRend
             @Override
             protected ItemDisplayContext getTransformTypeForStack(GeoBone bone, ItemStack stack, T animatable) {
                 // Apply the camera transform for the given hand
-                return switch (bone.getName()) {
-                    case LEFT_HAND, RIGHT_HAND -> ItemDisplayContext.THIRD_PERSON_RIGHT_HAND;
+	            return switch (bone.getName()) {
+                    case RIGHT_HAND -> ItemDisplayContext.THIRD_PERSON_RIGHT_HAND;
+                    case LEFT_HAND -> ItemDisplayContext.THIRD_PERSON_LEFT_HAND;
                     default -> ItemDisplayContext.NONE;
                 };
             }
@@ -132,7 +135,18 @@ public class CharacterRenderer<T extends Character> extends DynamicGeoEntityRend
         });
     }
 
+    public CharacterRenderer(EntityRendererProvider.Context context, boolean slim) {
+        this(context, new CharacterModel<>(slim));
+    }
+
     public CharacterRenderer(EntityRendererProvider.Context context) {
         this(context, false);
+    }
+    @Override
+    public void preRender(PoseStack poseStack, T animatable, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+
+        this.mainHandItem = animatable.getMainHandItem();
+        this.offhandItem = animatable.getOffhandItem();
     }
 }

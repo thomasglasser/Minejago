@@ -17,6 +17,7 @@ import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
@@ -43,8 +44,8 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem implements ModeledItem
     }
 
     @Override
-    public boolean canPowerHandle(Power power, Registry<Power> registry) {
-        return power.is(MinejagoPowerTags.EARTH, registry);
+    public boolean canPowerHandle(ResourceKey<Power> power, Registry<Power> registry) {
+        return registry.get(power).is(MinejagoPowerTags.EARTH, registry);
     }
 
     @Override

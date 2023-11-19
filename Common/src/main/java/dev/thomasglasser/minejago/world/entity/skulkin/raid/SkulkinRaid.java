@@ -458,7 +458,7 @@ public class SkulkinRaid {
 			double e = vec3.x + 13.0 / d * (vec32.x - vec3.x);
 			double g = vec3.z + 13.0 / d * (vec32.z - vec3.z);
 			if (d <= 64.0 || collection.contains(serverPlayer)) {
-				serverPlayer.connection.send(new ClientboundSoundPacket(SoundEvents.RAID_HORN, SoundSource.NEUTRAL, e, serverPlayer.getY(), g, 64.0F, 1.0F, l)); // TODO: Custom horn?
+				serverPlayer.connection.send(new ClientboundSoundPacket(SoundEvents.RAID_HORN, SoundSource.NEUTRAL, e, serverPlayer.getY(), g, 64.0F, 1.0F, l)); // TODO: Custom horn
 			}
 		}
 	}

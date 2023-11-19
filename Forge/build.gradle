@@ -20,10 +20,7 @@ archivesBaseName = "${mod_id}-neoforge-${minecraft_version}"
 minecraft {
     mappings channel: 'parchment', version: parchment_version + '-' + minecraft_version
 
-    if (project.hasProperty('forge_ats_enabled') && project.findProperty('forge_ats_enabled').toBoolean()) {
-        accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-        project.logger.debug('Forge Access Transformers are enabled for this project.')
-    }
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
         client {
@@ -82,30 +79,34 @@ dependencies {
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     minecraft "net.neoforged:forge:${minecraft_version}-${forge_version}"
 
-    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
 
     implementation project(':Common')
 
+    // Common
     implementation fg.deobf("dev.kosmx.player-anim:player-animation-lib-forge:${playeranimator_version}")
-    implementation fg.deobf("curse.maven:dynamiclights-227874:${dynamiclights_id}")
-    implementation fg.deobf("maven.modrinth:moonlight:${moonlight_version}-forge")
-    implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}")
-    implementation fg.deobf("dev._100media.capabilitysyncer:capabilitysyncer:${capabilitysyncer_version}")
     implementation fg.deobf("net.tslat.smartbrainlib:SmartBrainLib-neoforge-${minecraft_version}:${sbl_version}")
+    implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}")
     implementation fg.deobf("maven.modrinth:jade:${jade_version}-forge")
-    implementation fg.deobf("me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}")
-    implementation fg.deobf("maven.modrinth:sherdsapi:${sherdsapi_version}+Forge")
-    implementation fg.deobf("maven.modrinth:trimmed:${trimmed_version}+forge")
-    implementation fg.deobf("net.tslat.tes:TES-neoforge-${minecraft_version}:${tes_version}")
-    implementation fg.deobf("com.klikli_dev:modonomicon-${minecraft_version}-forge:${modonomicon_version}")
     implementation fg.deobf("me.shedaniel:RoughlyEnoughItems-forge:$rei_version")
     // DO NOT USE - Only for REI
     implementation fg.deobf("dev.architectury:architectury-forge:$architectury_version")
+    implementation fg.deobf("me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}")
+    implementation fg.deobf("com.klikli_dev:modonomicon-${minecraft_version}-forge:${modonomicon_version}")
+    implementation fg.deobf("net.tslat.tes:TES-neoforge-${minecraft_version}:${tes_version}")
+    implementation fg.deobf("maven.modrinth:moonlight:${moonlight_version}-forge")
 
+    // Forge Only
+    implementation fg.deobf("maven.modrinth:sherdsapi:${sherdsapi_version}+Forge")
+    implementation fg.deobf("maven.modrinth:trimmed:${trimmed_version}+forge")
+    implementation fg.deobf("dev._100media.capabilitysyncer:capabilitysyncer:${capabilitysyncer_version}")
+
+    // Runtime Only Deps
+    runtimeOnly fg.deobf("curse.maven:dynamiclights-227874:${dynamiclights_id}")
+
+    // Runtime
     runtimeOnly fg.deobf("maven.modrinth:huge-structure-blocks:${hugestructureblocks_version}")
     runtimeOnly fg.deobf("curse.maven:worldedit-225608:${worldedit_id}")
-    runtimeOnly fg.deobf("mysticdrew:common-networking:${common_networking_version}-forge")
-    runtimeOnly("com.github.llamalad7.mixinextras:mixinextras-forge:${mixinextras_version}")
 
     jarJar(group: "dev.thomasglasser.sherdsapi", name: "sherdsapi-neoforge-${minecraft_version}", version: "[${sherdsapi_version},${sherdsapi_next_major_version})")
     jarJar(group: "dev.dhyces.trimmed", name: "trimmed-forge-${minecraft_version}", version: "[${trimmed_version},${trimmed_next_major_version})")

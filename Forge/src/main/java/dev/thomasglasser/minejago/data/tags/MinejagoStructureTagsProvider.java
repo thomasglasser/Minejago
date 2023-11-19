@@ -19,5 +19,8 @@ public class MinejagoStructureTagsProvider extends StructureTagsProvider {
     protected void addTags(HolderLookup.Provider pProvider) {
         tag(MinejagoStructureTags.CAVE_OF_DESPAIR)
                 .add(MinejagoStructures.CAVE_OF_DESPAIR);
+
+        tag(MinejagoStructureTags.GOLDEN_WEAPONS_HOLDER)
+                .addTag(MinejagoStructureTags.CAVE_OF_DESPAIR);
     }
 }

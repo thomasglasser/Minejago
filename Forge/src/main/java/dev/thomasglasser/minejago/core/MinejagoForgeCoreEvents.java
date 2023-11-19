@@ -36,7 +36,7 @@ public class MinejagoForgeCoreEvents {
             {
                 var resourcePath = ModList.get().getModFileById(Minejago.MOD_ID).getFile().findResource("resourcepacks/" + holder.id().getPath());
                 var pack = Pack.readMetaAndCreate("builtin/" + holder.id().getPath(), Component.translatable(holder.titleKey()), holder.required(),
-                        (path) -> new PathPackResources(path, false, resourcePath), holder.type(), Pack.Position.BOTTOM, PackSource.BUILT_IN);
+                        (path) -> new PathPackResources(path, true, resourcePath), holder.type(), Pack.Position.BOTTOM, PackSource.FEATURE);
                 event.addRepositorySource((packConsumer) -> packConsumer.accept(pack));
             }
         }

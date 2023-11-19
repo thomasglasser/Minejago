@@ -30,22 +30,19 @@ dependencies {
 
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
 
-    modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-common:${forgeconfigapiport_version}"
+    compileOnly group:'org.spongepowered', name:'mixin', version:"${mixin_version}"
+
     modImplementation "net.tslat.smartbrainlib:SmartBrainLib-common-${minecraft_version}:${sbl_version}"
-    modImplementation "net.tslat.tes:TES-common-${minecraft_version}:${tes_version}"
+    modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-common:${forgeconfigapiport_version}"
     modImplementation "com.klikli_dev:modonomicon-${minecraft_version}-common:${modonomicon_version}"
+    modImplementation "net.tslat.tes:TES-common-${minecraft_version}:${tes_version}"
 
-    compileOnly group:'org.spongepowered', name:'mixin', version:'0.8.5'
-
+    modCompileOnly "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}"
     modCompileOnly "dev.kosmx.player-anim:player-animation-lib:${playeranimator_version}"
     modCompileOnly "dev.kosmx.player-anim:anim-core:${playeranimator_version}"
-    modCompileOnly "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}"
-    modCompileOnly "maven.modrinth:moonlight:${moonlight_version}-fabric"
-    modCompileOnly "maven.modrinth:sherdsapi:${sherdsapi_version}+Fabric"
-    modCompileOnly "curse.maven:configured-667378:${configured_fabric_id}"
     modCompileOnly "maven.modrinth:jade:${jade_version}"
-    modCompileOnly "maven.modrinth:trimmed:${trimmed_version}+fabric"
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-forge:$rei_version"
+    modCompileOnly "maven.modrinth:moonlight:${moonlight_version}-fabric"
 }
 
 sourceSets.main.resources.srcDir './src/generated/resources'

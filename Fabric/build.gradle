@@ -20,35 +20,40 @@ dependencies {
     implementation project(":Common")
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
 
-    modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
-    modImplementation "maven.modrinth:lambdynamiclights:${lambdynamiclights_version}"
-    modImplementation "maven.modrinth:moonlight:${moonlight_version}-fabric"
-    modImplementation "maven.modrinth:moonlight:h6yrGow9"
-    modImplementation "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}"
-    modImplementation "net.tslat.smartbrainlib:SmartBrainLib-fabric-${minecraft_version}:${sbl_version}"
-    modImplementation "maven.modrinth:jade:${jade_version}"
-    modImplementation("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}") {
-        exclude group: "net.fabricmc.fabric-api"
-    }
-    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-api:${cca_version}"
-    modImplementation "net.tslat.tes:TES-fabric-${minecraft_version}:${tes_version}"
-    modImplementation "maven.modrinth:trimmed:${trimmed_version}+fabric"
-    modImplementation "com.klikli_dev:modonomicon-${minecraft_version}-fabric:${modonomicon_version}"
-    modImplementation "me.shedaniel:RoughlyEnoughItems-fabric:$rei_version"
-
+    // Common
     include modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${playeranimator_version}")
     include modImplementation("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forgeconfigapiport_version}")
     include modImplementation("com.jamieswhiteshirt:reach-entity-attributes:$reachentityattributes_version")
     include modImplementation("maven.modrinth:sherdsapi:${sherdsapi_version}+Fabric")
 
+    modImplementation "net.tslat.smartbrainlib:SmartBrainLib-fabric-${minecraft_version}:${sbl_version}"
+    modImplementation "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}"
+    modImplementation "maven.modrinth:jade:${jade_version}"
+    modImplementation "me.shedaniel:RoughlyEnoughItems-fabric:$rei_version"
+    modImplementation("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}") {
+        exclude group: "net.fabricmc.fabric-api"
+    }
+    modImplementation "com.klikli_dev:modonomicon-${minecraft_version}-fabric:${modonomicon_version}"
+    modImplementation "net.tslat.tes:TES-fabric-${minecraft_version}:${tes_version}"
+    modImplementation "maven.modrinth:moonlight:${moonlight_version}-fabric"
+    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-api:${cca_version}"
+    modImplementation "maven.modrinth:trimmed:${trimmed_version}+fabric"
+
+    // Fabric Only
+    modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
+
+    // Runtime Only Deps
+    modRuntimeOnly "maven.modrinth:lambdynamiclights:${lambdynamiclights_version}"
     modRuntimeOnly "dev.lambdaurora:spruceui:${spruceui_version}"
-//    modRuntimeOnly "maven.modrinth:huge-structure-blocks:${hugestructureblocks_version}"
-    modRuntimeOnly "curse.maven:worldedit-225608:${worldedit_id}"
-    modRuntimeOnly "maven.modrinth:midnightlib:${midnightlib_version}-fabric"
-    modRuntimeOnly "com.terraformersmc:modmenu:${modmenu_version}"
-    modRuntimeOnly "mysticdrew:common-networking:${common_networking_version}-fabric"
+
+    // Runtime
     runtimeOnly "com.github.llamalad7.mixinextras:mixinextras-fabric:${mixinextras_version}"
+
+    modRuntimeOnly "mysticdrew:common-networking:${common_networking_version}-fabric"
+    modRuntimeOnly "maven.modrinth:huge-structure-blocks:${hugestructureblocks_version}"
+    modRuntimeOnly "curse.maven:worldedit-225608:${worldedit_id}"
+    modRuntimeOnly "com.terraformersmc:modmenu:${modmenu_version}"
 
     include "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cca_version}"
     include "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cca_version}"

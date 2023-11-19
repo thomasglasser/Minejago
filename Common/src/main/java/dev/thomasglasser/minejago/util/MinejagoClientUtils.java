@@ -179,4 +179,9 @@ public class MinejagoClientUtils {
     {
         return Minecraft.getInstance().level;
     }
+
+    public static Minecraft getMinecraft()
+    {
+        return Minecraft.getInstance();
+    }
 }

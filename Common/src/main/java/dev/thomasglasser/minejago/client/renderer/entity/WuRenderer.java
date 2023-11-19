@@ -6,11 +6,10 @@ import dev.thomasglasser.minejago.world.entity.character.Character;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 import java.util.Calendar;
 
-public class WuRenderer<T extends Character> extends GeoEntityRenderer<T> {
+public class WuRenderer<T extends Character> extends CharacterRenderer<T> {
     public WuRenderer(EntityRendererProvider.Context context) {
         super(context, new WuModel<>());
     }

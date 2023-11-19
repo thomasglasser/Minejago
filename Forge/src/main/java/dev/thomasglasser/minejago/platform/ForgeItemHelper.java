@@ -3,6 +3,7 @@ package dev.thomasglasser.minejago.platform;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.platform.services.ItemHelper;
+import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
@@ -35,7 +36,7 @@ public class ForgeItemHelper implements ItemHelper {
 
     @Override
     public void renderItem(ItemStack itemStack, ItemDisplayContext displayContext, boolean leftHand, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, String modid, String model) {
-        Minecraft.getInstance().getItemRenderer().render(itemStack, displayContext, false, poseStack, buffer, combinedLight, combinedOverlay, Minecraft.getInstance().getModelManager().getModel(new ResourceLocation(modid, "item/" + model)));
+        MinejagoClientUtils.getMinecraft().getItemRenderer().render(itemStack, displayContext, false, poseStack, buffer, combinedLight, combinedOverlay, Minecraft.getInstance().getModelManager().getModel(new ResourceLocation(modid, "item/" + model)));
     }
 
     @SafeVarargs

@@ -114,6 +114,7 @@ public class SkulkinRaids extends SavedData
 		SkulkinRaids raids = new SkulkinRaids(level);
 		raids.nextAvailableID = tag.getInt("NextAvailableID");
 		raids.tick = tag.getInt("Tick");
+		raids.mapTaken = tag.getBoolean("MapTaken");
 		ListTag listTag = tag.getList("SkulkinRaids", 10);
 
 		for(int i = 0; i < listTag.size(); ++i) {
@@ -129,6 +130,7 @@ public class SkulkinRaids extends SavedData
 	public CompoundTag save(CompoundTag compoundTag) {
 		compoundTag.putInt("NextAvailableID", this.nextAvailableID);
 		compoundTag.putInt("Tick", this.tick);
+		compoundTag.putBoolean("MapTaken", mapTaken);
 		ListTag listTag = new ListTag();
 
 		for(SkulkinRaid raid : this.raidMap.values()) {
@@ -152,7 +154,7 @@ public class SkulkinRaids extends SavedData
 	@Nullable
 	public SkulkinRaid getNearbySkulkinRaid(BlockPos pos, int distance) {
 		SkulkinRaid raid = null;
-		double d = (double)distance;
+		double d = distance;
 
 		for(SkulkinRaid raid2 : this.raidMap.values()) {
 			double e = raid2.getCenter().distSqr(pos);

@@ -2,6 +2,7 @@ package dev.thomasglasser.minejago.mixin.minecraft.server.level;
 
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaids;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaidsHolder;
+import dev.thomasglasser.minejago.world.level.levelgen.SkulkinArmySpawner;
 import dev.thomasglasser.minejago.world.level.levelgen.SkulkinPatrolSpawner;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
@@ -60,6 +61,7 @@ public abstract class ServerLevelMixin extends Level implements SkulkinRaidsHold
 		customSpawners = new ArrayList<>();
 		customSpawners.addAll(spawners);
 		customSpawners.add(new SkulkinPatrolSpawner());
+		customSpawners.add(new SkulkinArmySpawner());
 	}
 
 	@Inject(method = "tick", at = @At("TAIL"))

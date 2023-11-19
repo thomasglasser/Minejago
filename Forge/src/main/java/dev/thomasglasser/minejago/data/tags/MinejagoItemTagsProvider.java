@@ -5,6 +5,7 @@ import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -97,6 +98,23 @@ public class MinejagoItemTagsProvider extends ItemTagsProvider
         tag(MinejagoItemTags.SCROLL_SHELF_SCROLLS)
                 .addTag(MinejagoItemTags.LECTERN_SCROLLS)
                 .add(MinejagoItems.SCROLL.get());
+
+        IntrinsicTagAppender<Item> meats = tag(MinejagoItemTags.MEATS);
+        for (Item item : BuiltInRegistries.ITEM.stream().toList())
+        {
+            if (item.isEdible() && item.getFoodProperties().isMeat())
+                meats.add(item);
+        }
+
+        tag(MinejagoItemTags.DRAGON_FOODS)
+                .addTag(MinejagoItemTags.MEATS)
+                .add(Items.SALMON)
+                .add(Items.TROPICAL_FISH)
+                .add(Items.COOKED_COD)
+                .add(Items.COD);
+
+        tag(MinejagoItemTags.DRAGON_TREATS)
+                .add(Items.COOKED_SALMON);
     }
 
     public TagAppender<Item> tagDynamicLight(String tag, int level)

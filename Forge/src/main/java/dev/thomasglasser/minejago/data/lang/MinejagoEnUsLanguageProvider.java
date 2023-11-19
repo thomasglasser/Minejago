@@ -269,9 +269,11 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add("block.minejago.teapot.waila.empty", "Empty");
 
         add("entity.minejago.living.waila.power", "Power: %s");
+        add("entity.minejago.dragon.waila.bond", "Bond: %s");
         add("entity.minejago.painting.waila.map", "Has Golden Weapons Map");
 
         addPluginConfig(MinejagoWailaPlugin.LIVING_ENTITY, "Living Entity");
+        addPluginConfig(MinejagoWailaPlugin.DRAGON, "Dragon");
         addPluginConfig(MinejagoWailaPlugin.PAINTING, "Painting");
         addPluginConfig(MinejagoWailaPlugin.TEAPOT_BLOCK, "Teapot");
 
