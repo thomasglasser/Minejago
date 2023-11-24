@@ -7,6 +7,9 @@ import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowersConfig;
 import dev.thomasglasser.minejago.world.entity.power.Power;
+import dev.thomasglasser.minejago.world.focus.FocusConstants;
+import dev.thomasglasser.minejago.world.focus.FocusData;
+import dev.thomasglasser.minejago.world.focus.FocusDataHolder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
@@ -86,6 +89,20 @@ public abstract class GoldenWeaponItem extends SimpleFoiledItem
                 return InteractionResult.CONSUME_PARTIAL;
             }
         }
+        Player player = pContext.getPlayer();
+        FocusData focusData = player == null ? null : ((FocusDataHolder)player).getFocusData();
+        if (focusData != null)
+        {
+            focusData.addExhaustion(FocusConstants.EXHAUSTION_USING_GOLDEN_WEAPON);
+            if (focusData.getFocusLevel() < FocusConstants.USING_GOLDEN_WEAPON_LEVEL)
+            {
+                if (this.getFailSound() != null)
+                {
+                    pContext.getLevel().playSound(null, player.blockPosition(), getFailSound(), SoundSource.PLAYERS);
+                }
+                return InteractionResult.CONSUME_PARTIAL;
+            }
+        }
         return doUseOn(pContext);
     }
 
@@ -107,6 +124,12 @@ public abstract class GoldenWeaponItem extends SimpleFoiledItem
                 return;
             }
         }
+        Player player = pLivingEntity instanceof Player p ? p : null;
+        FocusData focusData = player == null ? null : ((FocusDataHolder)player).getFocusData();
+        if (focusData != null)
+        {
+            focusData.addExhaustion(FocusConstants.EXHAUSTION_USING_GOLDEN_WEAPON);
+        }
         doReleaseUsing(pStack, pLevel, pLivingEntity, pTimeCharged);
         super.releaseUsing(pStack, pLevel, pLivingEntity, pTimeCharged);
     }
@@ -122,6 +145,20 @@ public abstract class GoldenWeaponItem extends SimpleFoiledItem
                 if (MinejagoPowersConfig.WEAPON_GOES_CRAZY.get()) {
                     goCrazy((Player) livingEntity);
                 }
+                if (this.getFailSound() != null)
+                {
+                    level.playSound(null, livingEntity.blockPosition(), getFailSound(), SoundSource.PLAYERS);
+                }
+                return;
+            }
+        }
+        Player player = livingEntity instanceof Player p ? p : null;
+        FocusData focusData = player == null ? null : ((FocusDataHolder)player).getFocusData();
+        if (focusData != null)
+        {
+            focusData.addExhaustion(FocusConstants.EXHAUSTION_USING_GOLDEN_WEAPON);
+            if (focusData.getFocusLevel() < FocusConstants.USING_GOLDEN_WEAPON_LEVEL)
+            {
                 if (this.getFailSound() != null)
                 {
                     level.playSound(null, livingEntity.blockPosition(), getFailSound(), SoundSource.PLAYERS);

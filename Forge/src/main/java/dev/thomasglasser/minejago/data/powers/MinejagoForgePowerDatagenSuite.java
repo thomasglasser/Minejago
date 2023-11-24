@@ -4,7 +4,6 @@ import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import dev.thomasglasser.minejago.core.particles.SpinjitzuParticleOptions;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
-import net.minecraft.ChatFormatting;
 import net.minecraftforge.common.data.LanguageProvider;
 import net.minecraftforge.data.event.GatherDataEvent;
 
@@ -52,7 +51,7 @@ public class MinejagoForgePowerDatagenSuite extends ForgePowerDatagenSuite
                         .defaultDisplay(),
                 MinejagoParticleTypes.BOLTS, "bolt", 4, true, config -> {});
         makePowerSuite(MinejagoPowers.CREATION, builder -> builder
-                        .color(ChatFormatting.GOLD)
+                        .color("#F8D66F")
                         .mainSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_DARK_GOLD)
                         .altSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_GOLD)
                         .defaultDisplay()

@@ -2,7 +2,7 @@ package dev.thomasglasser.minejago.network;
 
 import dev.kosmx.playerAnim.api.firstPerson.FirstPersonMode;
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.client.animation.definitions.SpinjitzuAnimations;
+import dev.thomasglasser.minejago.client.animation.definitions.PlayerAnimations;
 import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.util.MinejagoPacketUtils;
 import net.minecraft.network.FriendlyByteBuf;
@@ -33,7 +33,7 @@ public class ClientboundFailSpinjitzuPacket
     }
 
     public void handle() {
-        if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled()) MinejagoClientUtils.startAnimation(SpinjitzuAnimations.Animations.SPINJITZU_WOBBLE.getAnimation(), null, MinejagoClientUtils.getClientPlayerByUUID(uuid), FirstPersonMode.VANILLA);
+        if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled()) MinejagoClientUtils.startAnimation(PlayerAnimations.Spinjitzu.WOBBLE.getAnimation(), null, MinejagoClientUtils.getClientPlayerByUUID(uuid), FirstPersonMode.VANILLA);
     }
 
 }

@@ -6,11 +6,11 @@
       "required": false
     },
     {
-      "id": "#c:wood_sticks",
+      "id": "#c:wooden_rods",
       "required": false
     },
     {
-      "id": "#c:wooden_rods",
+      "id": "#c:wood_sticks",
       "required": false
     }
   ]

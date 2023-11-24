@@ -3,6 +3,7 @@ package dev.thomasglasser.minejago.client;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.animation.MinejagoPlayerAnimator;
+import dev.thomasglasser.minejago.client.gui.Guis;
 import dev.thomasglasser.minejago.client.model.*;
 import dev.thomasglasser.minejago.client.particle.*;
 import dev.thomasglasser.minejago.client.renderer.block.DragonHeadRenderer;
@@ -36,7 +37,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
-import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -183,8 +183,8 @@ public class MinejagoForgeClientEvents {
         }
     }
 
-    public static void onClientTick(TickEvent.ClientTickEvent event)
+    public static void onRegisterGuiOverlays(RegisterGuiOverlaysEvent event)
     {
-        MinejagoClientEvents.onClientTick();
+        event.registerAbove(new ResourceLocation("food_level"), "focus", (gui, guiGraphics, partialTick, screenWidth, screenHeight) -> Guis.renderFocusBar(guiGraphics, partialTick));
     }
 }

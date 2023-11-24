@@ -1,18 +1,25 @@
 package dev.thomasglasser.minejago.world.level.block;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.data.tags.MinejagoBlockTags;
+import dev.thomasglasser.minejago.data.tags.MinejagoItemTags;
+import dev.thomasglasser.minejago.data.worldgen.features.MinejagoTreeFeatures;
 import dev.thomasglasser.minejago.registration.BlockRegistryObject;
 import dev.thomasglasser.minejago.registration.RegistrationProvider;
 import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import dev.thomasglasser.minejago.world.level.block.grower.TreeGrower;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.*;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.grower.AbstractTreeGrower;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 
@@ -39,6 +46,9 @@ public class MinejagoBlocks
     public static final BlockRegistryObject<Block> SUSPICIOUS_RED_SAND = registerBlockAndItemAndWrap("suspicious_red_sand", () -> new MinejagoBrushableBlock(Blocks.RED_SAND, BlockBehaviour.Properties.copy(Blocks.SUSPICIOUS_SAND).mapColor(MapColor.COLOR_ORANGE), SoundEvents.BRUSH_SAND, SoundEvents.BRUSH_SAND_COMPLETED), CreativeModeTabs.FUNCTIONAL_BLOCKS);
 
     public static final BlockRegistryObject<Block> EARTH_DRAGON_HEAD = registerBlockAndWrap("earth_dragon_head", () -> new DragonHeadBlock(MinejagoEntityTypes.EARTH_DRAGON::get));
+
+    // Wood Sets
+    public static final WoodSet FOCUS_WOOD = registerWoodBlockSet("focus", MapColor.COLOR_CYAN, MapColor.COLOR_LIGHT_BLUE, new TreeGrower(MinejagoTreeFeatures.FOCUS, MinejagoTreeFeatures.FANCY_FOCUS, MinejagoTreeFeatures.FOCUS_BEES_005, MinejagoTreeFeatures.FANCY_FOCUS_BEES_005), () -> MinejagoBlockTags.FOCUS_LOGS, () -> MinejagoItemTags.FOCUS_LOGS); // TODO: Fix colors and add grower
 
     @SafeVarargs
     private static BlockRegistryObject<Block> registerBlockAndItemAndWrap(
@@ -76,6 +86,22 @@ public class MinejagoBlocks
             map.put(color, registerBlockAndItemAndWrap(color.getName() + "_teapot", () -> new TeapotBlock(BlockBehaviour.Properties.of().mapColor(color).instabreak().noOcclusion()), CreativeModeTabs.FUNCTIONAL_BLOCKS));
         }
         return map;
+    }
+
+    private static WoodSet registerWoodBlockSet(String id, MapColor mapColor, MapColor logMapColor, AbstractTreeGrower treeGrower, Supplier<TagKey<Block>> logsBlockTag, Supplier<TagKey<Item>> logsItemTag)
+    {
+        return new WoodSet(Minejago.modLoc(id),
+                registerBlockAndItemAndWrap(id + "_planks", () -> new Block(BlockBehaviour.Properties.of().mapColor(mapColor).instrument(NoteBlockInstrument.BASS).strength(2.0F, 3.0F).sound(SoundType.WOOD).ignitedByLava()), CreativeModeTabs.BUILDING_BLOCKS),
+                registerBlockAndItemAndWrap(id + "_sapling", () -> new SaplingBlock(treeGrower, BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.GRASS).pushReaction(PushReaction.DESTROY)), CreativeModeTabs.NATURAL_BLOCKS),
+                registerBlockAndItemAndWrap(id + "_log", () -> Blocks.log(mapColor, logMapColor), CreativeModeTabs.BUILDING_BLOCKS, CreativeModeTabs.NATURAL_BLOCKS),
+                registerBlockAndItemAndWrap("stripped_" + id + "_log", () -> Blocks.log(mapColor, mapColor), CreativeModeTabs.BUILDING_BLOCKS),
+                registerBlockAndItemAndWrap(id + "_wood", () -> new RotatedPillarBlock(BlockBehaviour.Properties.of().mapColor(mapColor).instrument(NoteBlockInstrument.BASS).strength(2.0F).sound(SoundType.WOOD).ignitedByLava()), CreativeModeTabs.BUILDING_BLOCKS),
+                registerBlockAndItemAndWrap("stripped_" + id + "_wood", () -> new RotatedPillarBlock(BlockBehaviour.Properties.of().mapColor(mapColor).instrument(NoteBlockInstrument.BASS).strength(2.0F).sound(SoundType.WOOD).ignitedByLava()), CreativeModeTabs.BUILDING_BLOCKS),
+                registerBlockAndItemAndWrap(id + "_leaves", () -> Blocks.leaves(SoundType.GRASS), CreativeModeTabs.NATURAL_BLOCKS),
+                registerBlockAndWrap("potted_" + id + "_sapling", () -> Blocks.flowerPot(BuiltInRegistries.BLOCK.get(Minejago.modLoc(id + "_sapling")))),
+                treeGrower,
+                logsBlockTag,
+                logsItemTag);
     }
 
     public static List<Block> allPots()

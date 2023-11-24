@@ -1,7 +1,10 @@
 package dev.thomasglasser.minejago.data.tags;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
+import dev.thomasglasser.minejago.world.level.block.WoodSet;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
@@ -24,9 +27,16 @@ public class MinejagoItemTags
     public static final TagKey<Item> DRAGON_FOODS = create("dragon_foods");
     public static final TagKey<Item> DRAGON_TREATS = create("dragon_treats");
 
+    // Logs
+    public static final TagKey<Item> FOCUS_LOGS = logs(MinejagoBlocks.FOCUS_WOOD);
+
     private static TagKey<Item> create(String name)
     {
         return TagKey.create(Registries.ITEM, Minejago.modLoc(name));
+    }
+    public static TagKey<Item> create(ResourceLocation name)
+    {
+        return TagKey.create(Registries.ITEM, name);
     }
     private static Map<DyeColor, TagKey<Item>> dyesTags()
     {
@@ -37,5 +47,8 @@ public class MinejagoItemTags
         }
         return map;
     }
-
+    public static TagKey<Item> logs(WoodSet set)
+    {
+        return create(new ResourceLocation(set.id().getNamespace(), set.id().getPath() + "_logs"));
+    }
 }

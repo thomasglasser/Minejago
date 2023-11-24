@@ -1,0 +1,17 @@
+{
+  "type": "minejago:teapot_brewing",
+  "base": "minecraft:water",
+  "brewingtime": {
+    "type": "minecraft:uniform",
+    "value": {
+      "max_inclusive": 2400,
+      "min_inclusive": 1200
+    }
+  },
+  "experience": 0.5,
+  "group": "focus_tea",
+  "ingredient": {
+    "item": "minejago:focus_leaves"
+  },
+  "result": "minejago:focus_tea"
+}

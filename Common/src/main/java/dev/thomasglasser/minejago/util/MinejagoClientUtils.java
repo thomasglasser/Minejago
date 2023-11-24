@@ -137,7 +137,7 @@ public class MinejagoClientUtils {
         return false;
     }
 
-    public static void startAnimation(KeyframeAnimation startAnim, @Nullable KeyframeAnimation goAnim, AbstractClientPlayer player, FirstPersonMode firstPersonMode)
+    public static void startAnimation(KeyframeAnimation startAnim, @Nullable KeyframeAnimation goAnim, Player player, FirstPersonMode firstPersonMode)
     {
         var animation = MinejagoPlayerAnimator.animationData.get(player);
         //Get the animation for that player

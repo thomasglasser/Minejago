@@ -7,6 +7,9 @@ import dev.thomasglasser.minejago.world.entity.PlayerRideableFlying;
 import dev.thomasglasser.minejago.world.entity.character.Character;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.entity.projectile.EarthBlast;
+import dev.thomasglasser.minejago.world.focus.FocusConstants;
+import dev.thomasglasser.minejago.world.focus.FocusData;
+import dev.thomasglasser.minejago.world.focus.FocusDataHolder;
 import dev.thomasglasser.minejago.world.item.GoldenWeaponItem;
 import dev.thomasglasser.minejago.world.level.storage.PowerData;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -341,6 +344,7 @@ public class Dragon extends TamableAnimal implements GeoEntity, SmartBrainOwner<
             ItemStack stack = player.getItemInHand(hand);
             boolean ownedBy = isOwnedBy(player);
             double bond = getBond(player);
+            FocusData focusData = ((FocusDataHolder)player).getFocusData();
             if (stack.is(MinejagoItemTags.DRAGON_FOODS) || stack.is(MinejagoItemTags.DRAGON_TREATS))
             {
                 if (!player.getAbilities().instabuild)
@@ -361,18 +365,19 @@ public class Dragon extends TamableAnimal implements GeoEntity, SmartBrainOwner<
                 increaseBond(player, stack.is(MinejagoItemTags.DRAGON_TREATS) ? TREAT_BOND : FOOD_BOND);
                 return InteractionResult.SUCCESS;
             }
-            else if (bond <= 50 && /*TODO: High focus && */random.nextInt(10) < 2){
+            else if (bond <= 50 && focusData.getFocusLevel() >= FocusConstants.TALK_LEVEL && random.nextInt(10) < 2){
                 double i = TALK_BOND;
                 if (powerRegistry.getOrThrow(Services.DATA.getPowerData(player).power()).is(acceptablePowers, powerRegistry)) i += 1.5;
                 increaseBond(player, i);
                 return InteractionResult.SUCCESS;
             }
-            else if ((bond >= 10 /*&& TODO: High focus*/) /*|| player.getAbilities().instabuild*/)
+            else if ((bond >= 10 && focusData.getFocusLevel() >= FocusConstants.TAME_LEVEL) || player.getAbilities().instabuild)
             {
                 if (ownedBy || hasControllingPassenger())
                     player.startRiding(this);
-                else if (powerRegistry.getOrThrow(Services.DATA.getPowerData(player).power()).is(acceptablePowers, powerRegistry)) {
+                else if (powerRegistry.getOrThrow(Services.DATA.getPowerData(player).power()).is(acceptablePowers, powerRegistry) && focusData.getFocusLevel() >= 14) {
                     // TODO: give DX suit
+                    ((FocusDataHolder)player).getFocusData().addExhaustion(FocusConstants.EXHAUSTION_TAME);
                     tame(player);
                     if (player.level() instanceof ServerLevel serverLevel)
                     {

@@ -1,5 +1,7 @@
 package dev.thomasglasser.minejago;
 
+import dev.thomasglasser.minejago.data.tags.MinejagoBiomeTags;
+import dev.thomasglasser.minejago.data.worldgen.placement.MinejagoVegetationPlacements;
 import dev.thomasglasser.minejago.network.*;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import dev.thomasglasser.minejago.packs.PackHolder;
@@ -22,6 +24,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
 
 public class MinejagoFabric implements ModInitializer {
@@ -74,12 +77,18 @@ public class MinejagoFabric implements ModInitializer {
                 new ServerboundStopSpinjitzuPacket().handle(player));
         ServerPlayNetworking.registerGlobalReceiver(ServerboundFlyVehiclePacket.ID, (server, player, handler, buf, responseSender) ->
                 new ServerboundFlyVehiclePacket(buf).handle(player));
+        ServerPlayNetworking.registerGlobalReceiver(ServerboundStartMeditationPacket.ID, (server, player, handler, buf, responseSender) ->
+                new ServerboundStartMeditationPacket().handle(player));
+        ServerPlayNetworking.registerGlobalReceiver(ServerboundStopMeditationPacket.ID, (server, player, handler, buf, responseSender) ->
+                new ServerboundStopMeditationPacket().handle(player));
     }
 
     private void addBiomeModifications()
     {
         BiomeModifications.addSpawn(context -> context.getBiomeKey() == Biomes.STONY_PEAKS, MobCategory.CREATURE, MinejagoEntityTypes.COLE.get(), 1, 1, 1);
         BiomeModifications.addSpawn(context -> context.getBiomeKey() == Biomes.FROZEN_RIVER, MobCategory.WATER_CREATURE, MinejagoEntityTypes.ZANE.get(), 1, 1, 1);
+
+        BiomeModifications.addFeature(biomeSelectionContext -> biomeSelectionContext.hasTag(MinejagoBiomeTags.HAS_FOCUS_TREES), GenerationStep.Decoration.VEGETAL_DECORATION, MinejagoVegetationPlacements.MEADOW_FOCUS_TREES);
     }
 
     private void registerEntitySpawnPlacements()

@@ -11,6 +11,7 @@
     "minecraft.world.entity.LivingEntityMixin",
     "minecraft.world.entity.MobMixin",
     "minecraft.world.entity.ServerPlayerMixin",
+    "minecraft.world.entity.player.PlayerMixin",
     "minecraft.world.item.MinejagoBottleItemMixin",
     "minecraft.world.item.MinejagoBucketItemMixin",
     "minecraft.world.item.MinejagoMilkBucketItemMixin",

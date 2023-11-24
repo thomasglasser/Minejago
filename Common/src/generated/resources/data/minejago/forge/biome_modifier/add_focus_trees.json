@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#minejago:has_focus_trees",
+  "features": "minejago:meadow_focus_trees",
+  "step": "vegetal_decoration"
+}

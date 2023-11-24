@@ -56,6 +56,16 @@ public class MinejagoMainChannel
                 .encoder(ServerboundFlyVehiclePacket::toBytes)
                 .consumerMainThread((packet, context) -> packet.handle(context.get().getSender()))
                 .add();
+        INSTANCE.messageBuilder(ServerboundStartMeditationPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder((buf) -> new ServerboundStartMeditationPacket())
+                .encoder((packet, buf) -> {})
+                .consumerMainThread((packet, context) -> packet.handle(context.get().getSender()))
+                .add();
+        INSTANCE.messageBuilder(ServerboundStopMeditationPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder((buf) -> new ServerboundStopMeditationPacket())
+                .encoder((packet, buf) -> {})
+                .consumerMainThread((packet, context) -> packet.handle(context.get().getSender()))
+                .add();
 
         // Client bound
         INSTANCE.messageBuilder(ClientboundStartSpinjitzuPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
@@ -101,6 +111,16 @@ public class MinejagoMainChannel
         INSTANCE.messageBuilder(ClientboundOpenScrollPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
                 .decoder(ClientboundOpenScrollPacket::new)
                 .encoder(ClientboundOpenScrollPacket::toBytes)
+                .consumerMainThread((packet, context) -> packet.handle())
+                .add();
+        INSTANCE.messageBuilder(ClientboundSetFocusPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(ClientboundSetFocusPacket::new)
+                .encoder(ClientboundSetFocusPacket::toBytes)
+                .consumerMainThread((packet, context) -> packet.handle())
+                .add();
+        INSTANCE.messageBuilder(ClientboundStartMeditationPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(ClientboundStartMeditationPacket::new)
+                .encoder(ClientboundStartMeditationPacket::toBytes)
                 .consumerMainThread((packet, context) -> packet.handle())
                 .add();
     }

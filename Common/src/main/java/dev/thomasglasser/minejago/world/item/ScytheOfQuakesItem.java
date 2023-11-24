@@ -95,7 +95,7 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem implements ModeledItem
         }
         else if (player.isShiftKeyDown())
         {
-            if (!level.isClientSide) Services.NETWORK.sendToAllClients(ClientboundStartScytheAnimationPacket.class, ClientboundStartScytheAnimationPacket.toBytes(player.getUUID(), ItemAnimations.Animations.SLAM_START, ItemAnimations.Animations.SLAM_RUMBLE), player.getServer());
+            if (!level.isClientSide) Services.NETWORK.sendToAllClients(ClientboundStartScytheAnimationPacket.class, ClientboundStartScytheAnimationPacket.toBytes(player.getUUID(), ItemAnimations.ScytheOfQuakes.SLAM_START, ItemAnimations.ScytheOfQuakes.SLAM_RUMBLE), player.getServer());
             BlockPos[] places = new BlockPos[] {pos.north(6), pos.north(4).east(4), pos.east(6), pos.east(4).south(4), pos.south(6), pos.south(4).west(4), pos.west(6), pos.west(4).north(4)};
             for (BlockPos place: places)
             {
@@ -108,7 +108,7 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem implements ModeledItem
         else
         {
             player.startUsingItem(pContext.getHand());
-            if (!level.isClientSide) Services.NETWORK.sendToAllClients(ClientboundStartScytheAnimationPacket.class, ClientboundStartScytheAnimationPacket.toBytes(player.getUUID(), ItemAnimations.Animations.BEAM_START, ItemAnimations.Animations.BEAM_ACTIVE), player.getServer());
+            if (!level.isClientSide) Services.NETWORK.sendToAllClients(ClientboundStartScytheAnimationPacket.class, ClientboundStartScytheAnimationPacket.toBytes(player.getUUID(), ItemAnimations.ScytheOfQuakes.BEAM_START, ItemAnimations.ScytheOfQuakes.BEAM_ACTIVE), player.getServer());
         }
         return InteractionResult.SUCCESS;
     }
@@ -287,7 +287,7 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem implements ModeledItem
         if (!player.level().isClientSide && !player.getAbilities().instabuild)
         {
             player.level().explode(null, player.getX(), player.getY() + 1, player.getZ(), 8.0F, Level.ExplosionInteraction.TNT);
-            Services.NETWORK.sendToAllClients(ClientboundStartScytheAnimationPacket.class, ClientboundStartScytheAnimationPacket.toBytes(player.getUUID(), ItemAnimations.Animations.SLAM_START, ItemAnimations.Animations.EMPTY), player.getServer());
+            Services.NETWORK.sendToAllClients(ClientboundStartScytheAnimationPacket.class, ClientboundStartScytheAnimationPacket.toBytes(player.getUUID(), ItemAnimations.ScytheOfQuakes.SLAM_START, ItemAnimations.ScytheOfQuakes.EMPTY), player.getServer());
         }
     }
 

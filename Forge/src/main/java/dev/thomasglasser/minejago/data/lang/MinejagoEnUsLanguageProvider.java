@@ -21,6 +21,7 @@ import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.armor.SkeletalChestplateItem;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
+import dev.thomasglasser.minejago.world.level.block.WoodSet;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPatterns;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.data.PackOutput;
@@ -109,6 +110,8 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(MinejagoBlocks.EARTH_DRAGON_HEAD.get(), "Earth Dragon Head");
         add(MinejagoBlocks.SUSPICIOUS_RED_SAND.get(), "Suspicious Red Sand");
 
+        add(MinejagoBlocks.FOCUS_WOOD, "Focus");
+
         add(SkulkinRaid.SKULKINS_BANNER_PATTERN_NAME, "Cursed Banner");
 
         addDesc(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get(), "Four Weapons");
@@ -175,6 +178,8 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         addTea(MinejagoPotions.DARK_OAK_TEA.get(), "Dark Oak Tea");
         addTea(MinejagoPotions.BIRCH_TEA.get(), "Birch Tea");
 
+        addTea(MinejagoPotions.FOCUS_TEA.get(), "Focus Tea");
+
         add(MinejagoItems.FILLED_TEACUP.get().getDescriptionId() + ".milk", "Cup of Milk");
         addPotions(MinejagoPotions.MILK.get(), "Milk");
 
@@ -205,6 +210,7 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(MinejagoMobEffects.BIRCH_TEA.get(), "Birch Tea");
         add(MinejagoMobEffects.CURE.get(), "Instant Cure");
         add(MinejagoMobEffects.SKULKINS_CURSE.get(), "Skulkin's Curse");
+        add(MinejagoMobEffects.HYPERFOCUS.get(), "Hyperfocus");
 
         add("effect.minecraft.swiftness", "Swiftness");
         add("effect.minecraft.healing", "Healing");
@@ -212,6 +218,7 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add("effect.minecraft.leaping", "Leaping");
 
         add(MinejagoKeyMappings.ACTIVATE_SPINJITZU, "Activate Spinjitzu");
+        add(MinejagoKeyMappings.MEDITATE, "Meditate");
         add(MinejagoKeyMappings.ASCEND, "Ascend");
         add(MinejagoKeyMappings.DESCEND, "Descend");
 
@@ -370,5 +377,17 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
     public void add(Component component, String name)
     {
         add(((TranslatableContents)component.getContents()).getKey(), name);
+    }
+
+    public void add(WoodSet set, String name)
+    {
+        add(set.planks().get(), name + " Planks");
+        add(set.sapling().get(), name + " Sapling");
+        add(set.log().get(), name + " Log");
+        add(set.strippedLog().get(), "Stripped " + name + " Log");
+        add(set.wood().get(), name + " Wood");
+        add(set.strippedWood().get(), "Stripped " + name + " Wood");
+        add(set.leaves().get(), name + " Leaves");
+        add(set.pottedSapling().get(), "Potted " + name + " Sapling");
     }
 }

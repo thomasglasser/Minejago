@@ -1,39 +1,24 @@
 package dev.thomasglasser.minejago.world.entity.skulkin;
 
-import dev.thomasglasser.minejago.world.entity.character.Character;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.tslat.smartbrainlib.api.SmartBrainOwner;
-import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
-import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.List;
-
-public class SkullTruck extends PathfinderMob implements GeoEntity, SmartBrainOwner<SkullTruck>, Enemy
+public class SkullTruck extends Mob implements GeoEntity, Enemy
 {
-	public static final RawAnimation ATTACK_RETRACT = RawAnimation.begin().thenPlay("attack.retract");
-
 	public final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-
-	private boolean handExtending = false; // TODO: Implement
 
 	public SkullTruck(EntityType<? extends SkullTruck> entityType, Level level)
 	{
@@ -53,28 +38,13 @@ public class SkullTruck extends PathfinderMob implements GeoEntity, SmartBrainOw
 	@Override
 	public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar)
 	{
-		controllerRegistrar.add(
-				DefaultAnimations.genericWalkController(this),
-				new AnimationController<>(this, "Cast/Retract", state ->
-				{
-					if (handExtending)
-						return state.setAndContinue(DefaultAnimations.ATTACK_CAST);
-					return state.setAndContinue(ATTACK_RETRACT);
-				}));
+		controllerRegistrar.add(DefaultAnimations.genericWalkController(this));
 	}
 
 	@Override
 	public AnimatableInstanceCache getAnimatableInstanceCache()
 	{
 		return cache;
-	}
-
-	@Override
-	public List<? extends ExtendedSensor<? extends SkullTruck>> getSensors()
-	{
-		return List.of(
-				new NearbyLivingEntitySensor<SkullTruck>().setPredicate((target, entity) -> target instanceof Character && !target.isInvulnerable())
-		);
 	}
 
 	@Override
@@ -138,10 +108,5 @@ public class SkullTruck extends PathfinderMob implements GeoEntity, SmartBrainOw
 		}
 
 		super.aiStep();
-	}
-
-	@Override
-	protected void customServerAiStep() {
-		tickBrain(this);
 	}
 }

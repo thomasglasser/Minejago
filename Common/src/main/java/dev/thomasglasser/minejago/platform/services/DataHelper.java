@@ -18,9 +18,5 @@ public interface DataHelper
     }
 
     SpinjitzuData getSpinjitzuData(LivingEntity entity);
-    default void setSpinjitzuData(SpinjitzuData data, LivingEntity entity)
-    {
-        if (data.active() && entity instanceof ServerPlayer serverPlayer)
-            MinejagoCriteriaTriggers.DO_SPINJITZU.trigger(serverPlayer);
-    }
+    void setSpinjitzuData(SpinjitzuData data, LivingEntity entity);
 }

@@ -5,6 +5,8 @@ import dev.thomasglasser.minejago.registration.RegistrationProvider;
 import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.util.MinejagoLevelUtils;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaidsHolder;
+import dev.thomasglasser.minejago.world.focus.FocusConstants;
+import dev.thomasglasser.minejago.world.focus.FocusDataHolder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -15,6 +17,7 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -32,6 +35,7 @@ public class MinejagoMobEffects
     public static final RegistryObject<MobEffect> DARK_OAK_TEA = noEffects("dark_oak_tea", 0x33200f);
     public static final RegistryObject<MobEffect> BIRCH_TEA = noEffects("birch_tea", 0x4d432f);
 
+    // Beneficial
     public static final RegistryObject<MobEffect> CURE = MOB_EFFECTS.register("instant_cure", () -> new InstantenousMobEffect(MobEffectCategory.BENEFICIAL, 16777215)
     {
         @Override
@@ -44,7 +48,26 @@ public class MinejagoMobEffects
             }
         }
     });
+    public static final RegistryObject<MobEffect> HYPERFOCUS = MOB_EFFECTS.register("hyperfocus", () -> new InstantenousMobEffect(MobEffectCategory.BENEFICIAL, 0x207100)
+    {
+        @Override
+        public void applyEffectTick(LivingEntity livingEntity, int amplifier)
+        {
+            if (!livingEntity.level().isClientSide && livingEntity instanceof Player player) {
+                ((FocusDataHolder)player).getFocusData().increase(amplifier + 1, FocusConstants.FOCUS_SATURATION_MAX);
+            }
+        }
 
+        @Override
+        public void applyInstantenousEffect(@Nullable Entity source, @Nullable Entity indirectSource, LivingEntity livingEntity, int amplifier, double health)
+        {
+            if (!livingEntity.level().isClientSide && livingEntity instanceof Player player) {
+                ((FocusDataHolder)player).getFocusData().increase(amplifier + 1, FocusConstants.FOCUS_SATURATION_MAX);
+            }
+        }
+    });
+
+    // Neutral
     public static final RegistryObject<MobEffect> SKULKINS_CURSE = MOB_EFFECTS.register("skulkins_curse", () -> new MobEffect(MobEffectCategory.NEUTRAL, 0xAD282D) {
         @Override
         public boolean isDurationEffectTick(int duration, int amplifier) {

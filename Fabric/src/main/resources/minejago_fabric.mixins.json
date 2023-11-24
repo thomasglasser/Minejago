@@ -18,6 +18,9 @@
     "minejago.world.item.armor.TrainingGiItemMixin"
   ],
   "client": [
+    "minecraft.client.KeyboardHandlerMixin",
+    "minecraft.client.MouseHandlerMixin",
+    "minecraft.client.gui.GuiMixin"
   ],
   "injectors": {
     "defaultRequire": 1

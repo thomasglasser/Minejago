@@ -2,10 +2,13 @@ package dev.thomasglasser.minejago.mixin.minecraft.world.entity;
 
 import com.mojang.datafixers.util.Either;
 import dev.thomasglasser.minejago.network.ClientboundOpenScrollPacket;
+import dev.thomasglasser.minejago.network.ClientboundSetFocusPacket;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityEvents;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaidsHolder;
+import dev.thomasglasser.minejago.world.focus.FocusData;
+import dev.thomasglasser.minejago.world.focus.FocusDataHolder;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -20,6 +23,7 @@ import net.minecraft.world.item.WrittenBookItem;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -30,7 +34,15 @@ public abstract class ServerPlayerMixin
 {
     @Shadow public abstract ServerLevel serverLevel();
 
+    @Unique
     private final ServerPlayer INSTANCE = (ServerPlayer)(Object)this;
+
+    @Unique
+    private FocusData focusData;
+    @Unique
+    private int lastSentFocus;
+    @Unique
+    private boolean lastFoodSaturationZero;
 
     @Inject(method = "attack", at = @At("HEAD"))
     private void minejago_attack(Entity target, CallbackInfo ci)
@@ -71,5 +83,17 @@ public abstract class ServerPlayerMixin
         SkulkinRaid raid = ((SkulkinRaidsHolder)serverLevel()).getSkulkinRaidAt(bedPos);
         if (raid != null && raid.isActive())
             cir.setReturnValue(Either.left(Player.BedSleepingProblem.NOT_SAFE));
+    }
+
+    @Inject(method = "doTick", at = @At("TAIL"))
+    private void minejago_doTick(CallbackInfo ci)
+    {
+        if (focusData == null)
+            focusData = ((FocusDataHolder)INSTANCE).getFocusData();
+        if (this.lastSentFocus != focusData.getFocusLevel() || this.focusData.getSaturationLevel() == 0.0F != this.lastFoodSaturationZero) {
+            Services.NETWORK.sendToClient(ClientboundSetFocusPacket.class, ClientboundSetFocusPacket.toBytes(focusData), INSTANCE);
+            this.lastSentFocus = this.focusData.getFocusLevel();
+            this.lastFoodSaturationZero = this.focusData.getSaturationLevel() == 0.0F;
+        }
     }
 }

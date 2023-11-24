@@ -4,6 +4,8 @@ import com.mojang.datafixers.util.Pair;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
+import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
+import dev.thomasglasser.minejago.world.level.block.WoodSet;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -28,6 +30,7 @@ public class MinejagoItemTagsProvider extends ItemTagsProvider
     public static final Pair<ResourceLocation, ResourceLocation> CHESTPLATES = Pair.of(forgeLoc("armors/chestplates"), cLoc("chestplates"));
     public static final Pair<ResourceLocation, ResourceLocation> LEGGINGS = Pair.of(forgeLoc("armors/leggings"), cLoc("leggings"));
     public static final Pair<ResourceLocation, ResourceLocation> BOOTS = Pair.of(forgeLoc("armors/boots"), cLoc("boots"));
+    public static final Pair<ResourceLocation, ResourceLocation> WOODEN_RODS = Pair.of(forgeLoc("rods/wooden"), cLoc("wooden_rods"));
 
     public MinejagoItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> future, CompletableFuture<TagsProvider.TagLookup<Block>> blockTagsProvider, ExistingFileHelper existingFileHelper) {
         super(output, future, blockTagsProvider, Minejago.MOD_ID, existingFileHelper);
@@ -73,9 +76,9 @@ public class MinejagoItemTagsProvider extends ItemTagsProvider
 
         tag(MinejagoItemTags.WOODEN_RODS)
                 .add(Items.STICK)
-                .addOptionalTag(forgeLoc("rods/wooden"))
-                .addOptionalTag(cLoc("wood_sticks"))
-                .addOptionalTag(cLoc("wooden_rods"));
+                .addOptionalTag(WOODEN_RODS.getFirst())
+                .addOptionalTag(WOODEN_RODS.getSecond())
+                .addOptionalTag(cLoc("wood_sticks"));
         tag(MinejagoItemTags.IRON_INGOTS)
                 .add(Items.IRON_INGOT)
                 .addOptionalTag(forgeLoc("ingots/iron"))
@@ -115,6 +118,9 @@ public class MinejagoItemTagsProvider extends ItemTagsProvider
 
         tag(MinejagoItemTags.DRAGON_TREATS)
                 .add(Items.COOKED_SALMON);
+
+        // Wood sets
+        woodSet(MinejagoBlocks.FOCUS_WOOD);
     }
 
     public TagAppender<Item> tagDynamicLight(String tag, int level)
@@ -143,5 +149,22 @@ public class MinejagoItemTagsProvider extends ItemTagsProvider
     {
         tag(TagKey.create(Registries.ITEM, tags.getFirst())).add(items);
         tag(TagKey.create(Registries.ITEM, tags.getSecond())).add(items);
+    }
+
+    private void woodSet(WoodSet set)
+    {
+        copy(set.logsBlockTag().get(), set.logsItemTag().get());
+
+        tag(ItemTags.PLANKS)
+                .add(set.planks().asItem());
+
+        tag(ItemTags.SAPLINGS)
+                .add(set.sapling().asItem());
+
+        tag(ItemTags.LOGS_THAT_BURN)
+                .addTag(set.logsItemTag().get());
+
+        tag(ItemTags.LEAVES)
+                .add(set.leaves().asItem());
     }
 }

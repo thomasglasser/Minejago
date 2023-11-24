@@ -9,9 +9,6 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.alchemy.Potion;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.function.Supplier;
 
 public class MinejagoPotions
@@ -27,11 +24,16 @@ public class MinejagoPotions
     public static final RegistryObject<Potion> DARK_OAK_TEA = register("dark_oak_tea", MinejagoMobEffects.DARK_OAK_TEA);
     public static final RegistryObject<Potion> BIRCH_TEA = register("birch_tea", MinejagoMobEffects.BIRCH_TEA);
     public static final RegistryObject<Potion> MILK = register("milk", MinejagoMobEffects.CURE);
+    public static final RegistryObject<Potion> FOCUS_TEA = register("focus_tea", 4, MinejagoMobEffects.HYPERFOCUS);
 
-    @SafeVarargs
-    private static RegistryObject<Potion> register(String name, Supplier<MobEffect>... effects)
+    private static RegistryObject<Potion> register(String name, Supplier<MobEffect> effect)
     {
-        return POTIONS.register(name, () -> new Potion(Arrays.stream(effects).map(mobEffectSupplier -> new MobEffectInstance(mobEffectSupplier.get())).toList().toArray(new MobEffectInstance[] {})));
+        return POTIONS.register(name, () -> new Potion(new MobEffectInstance(effect.get())));
+    }
+
+    private static RegistryObject<Potion> register(String name, int duration, Supplier<MobEffect> effect)
+    {
+        return POTIONS.register(name, () -> new Potion(new MobEffectInstance(effect.get(), duration)));
     }
 
     public static void init() {}

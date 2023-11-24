@@ -26,5 +26,7 @@ public class MinejagoBiomeTagsProvider extends BiomeTagsProvider
                 .addTag(BiomeTags.IS_BADLANDS);
         tag(MinejagoBiomeTags.WITHOUT_SKULKIN_PATROL_SPAWNS)
                 .add(Biomes.MUSHROOM_FIELDS);
+        tag(MinejagoBiomeTags.HAS_FOCUS_TREES)
+                .add(Biomes.MEADOW);
     }
 }

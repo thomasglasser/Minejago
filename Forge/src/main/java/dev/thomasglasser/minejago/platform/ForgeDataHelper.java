@@ -49,6 +49,5 @@ public class ForgeDataHelper implements DataHelper
             cap.setActive(data.active());
             cap.setUnlocked(data.unlocked());
         });
-        DataHelper.super.setSpinjitzuData(data, entity);
     }
 }

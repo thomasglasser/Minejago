@@ -46,11 +46,11 @@ public class FilledTeacupItem extends PotionItem implements PotionCupHolder
         }
 
         if (!pLevel.isClientSide) {
-            for(MobEffectInstance mobeffectinstance : PotionUtils.getMobEffects(pStack)) {
-                if (mobeffectinstance.getEffect().isInstantenous()) {
-                    mobeffectinstance.getEffect().applyInstantenousEffect(player, player, pEntityLiving, mobeffectinstance.getAmplifier(), 1.0D);
+            for(MobEffectInstance mobEffectInstance : PotionUtils.getMobEffects(pStack)) {
+                if (mobEffectInstance.getEffect().isInstantenous() && mobEffectInstance.getDuration() <= 1) {
+                    mobEffectInstance.getEffect().applyInstantenousEffect(player, player, pEntityLiving, mobEffectInstance.getAmplifier(), 1.0);
                 } else {
-                    pEntityLiving.addEffect(new MobEffectInstance(mobeffectinstance));
+                    pEntityLiving.addEffect(new MobEffectInstance(mobEffectInstance));
                 }
             }
         }

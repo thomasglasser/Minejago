@@ -10,7 +10,9 @@ import dev.thomasglasser.minejago.world.entity.MinejagoForgeEntityEvents;
 import dev.thomasglasser.minejago.world.level.storage.PowerCapabilityAttacher;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuCapabilityAttacher;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
+import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
@@ -64,6 +66,7 @@ public class MinejagoForge
         bus.addListener(MinejagoForgeClientEvents::registerClientReloadListeners);
         bus.addListener(MinejagoForgeClientEvents::onAddLayers);
         bus.addListener(MinejagoForgeClientEvents::onBuildCreativeTabContent);
+        bus.addListener(MinejagoForgeClientEvents::onRegisterGuiOverlays);
     }
 
     private void addForgeListeners()
@@ -79,7 +82,8 @@ public class MinejagoForge
     private void addForgeClientListeners()
     {
         MinecraftForge.EVENT_BUS.addListener((ClientPlayerNetworkEvent.LoggingIn event) -> MinejagoClientEvents.onPlayerLoggedIn());
-        MinecraftForge.EVENT_BUS.addListener(MinejagoForgeClientEvents::onClientTick);
+        MinecraftForge.EVENT_BUS.addListener((TickEvent.ClientTickEvent event) -> MinejagoClientEvents.onClientTick());
+        MinecraftForge.EVENT_BUS.addListener((InputEvent event) -> MinejagoClientEvents.onInput(event instanceof InputEvent.Key keyEvent ? keyEvent.getKey() : -1));
     }
 
     private void registerCapabilities()

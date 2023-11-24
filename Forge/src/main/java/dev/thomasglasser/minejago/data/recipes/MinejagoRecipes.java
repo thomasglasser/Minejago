@@ -4,6 +4,7 @@ import dev.thomasglasser.minejago.data.tags.MinejagoItemTags;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
+import dev.thomasglasser.minejago.world.level.block.WoodSet;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
@@ -113,6 +114,8 @@ public class MinejagoRecipes extends RecipeProvider {
                 .define('s', ItemTags.WOODEN_SLABS)
                 .unlockedBy("has_slab", has(ItemTags.WOODEN_SLABS))
                 .save(writer);
+
+        woodSet(writer, MinejagoBlocks.FOCUS_WOOD);
     }
 
     protected void coloredTeapotFromColoredTerracotta(Consumer<FinishedRecipe> writer, ItemLike pot, ItemLike color)
@@ -148,6 +151,7 @@ public class MinejagoRecipes extends RecipeProvider {
         normalTea(writer, Items.JUNGLE_LEAVES, MinejagoPotions.JUNGLE_TEA);
         normalTea(writer, Items.DARK_OAK_LEAVES, MinejagoPotions.DARK_OAK_TEA);
         normalTea(writer, Items.BIRCH_LEAVES, MinejagoPotions.BIRCH_TEA);
+        normalTea(writer, MinejagoBlocks.FOCUS_WOOD.leaves().asItem(), MinejagoPotions.FOCUS_TEA);
     }
 
     private void normalTea(Consumer<FinishedRecipe> writer, Item ingredient, Potion result)
@@ -166,5 +170,12 @@ public class MinejagoRecipes extends RecipeProvider {
     private void normalTea(Consumer<FinishedRecipe> writer, Item ingredient, Supplier<Potion> result)
     {
         normalTea(writer, ingredient, result.get());
+    }
+
+    private void woodSet(Consumer<FinishedRecipe> writer, WoodSet set)
+    {
+        planksFromLogs(writer, set.planks(), set.logsItemTag().get(), 4);
+        woodFromLogs(writer, set.wood(), set.log());
+        woodFromLogs(writer, set.strippedWood(), set.strippedLog());
     }
 }

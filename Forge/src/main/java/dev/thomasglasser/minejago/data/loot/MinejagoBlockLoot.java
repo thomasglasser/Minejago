@@ -3,6 +3,7 @@ package dev.thomasglasser.minejago.data.loot;
 import dev.thomasglasser.minejago.registration.BlockRegistryObject;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
+import dev.thomasglasser.minejago.world.level.block.WoodSet;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
@@ -39,6 +40,8 @@ public class MinejagoBlockLoot extends BlockLootSubProvider {
         add(MinejagoBlocks.SUSPICIOUS_RED_SAND.get(), noDrop());
 
         add(MinejagoBlocks.CHISELED_SCROLL_SHELF.get(), createSilkTouchOnlyTable(MinejagoBlocks.CHISELED_SCROLL_SHELF.get()));
+
+        woodSet(MinejagoBlocks.FOCUS_WOOD);
     }
 
     protected LootTable.Builder createTeapotBlock(Block block)
@@ -59,6 +62,20 @@ public class MinejagoBlockLoot extends BlockLootSubProvider {
                                                 .copy("Potion", "BlockEntityTag.Potion"))
                                         .apply(SetContainerContents.setContents(MinejagoBlockEntityTypes.TEAPOT.get()).withEntry(DynamicLoot.dynamicEntry(TeapotBlock.CONTENTS))))
                 );
+    }
+
+    private void woodSet(WoodSet set)
+    {
+        dropSelf(set.planks().get());
+        dropSelf(set.sapling().get());
+        dropSelf(set.log().get());
+        dropSelf(set.strippedLog().get());
+        dropSelf(set.wood().get());
+        dropSelf(set.strippedWood().get());
+
+        add(set.leaves().get(), createLeavesDrops(set.leaves().get(), set.sapling().get(), NORMAL_LEAVES_SAPLING_CHANCES));
+
+        dropPottedContents(set.pottedSapling().get());
     }
 
     @Override

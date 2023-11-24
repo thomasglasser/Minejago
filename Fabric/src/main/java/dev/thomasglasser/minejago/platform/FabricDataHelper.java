@@ -45,6 +45,5 @@ public class FabricDataHelper implements DataHelper {
             component.setUnlocked(data.unlocked());
             MinejagoFabricEntityComponents.SPINJITZU.sync(entity);
         }
-        DataHelper.super.setSpinjitzuData(data, entity);
     }
 }

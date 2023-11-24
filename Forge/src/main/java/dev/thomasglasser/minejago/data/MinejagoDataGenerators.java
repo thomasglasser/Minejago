@@ -18,6 +18,10 @@ import dev.thomasglasser.minejago.data.tags.*;
 import dev.thomasglasser.minejago.data.trimmed.MinejagoTrimDatagenSuite;
 import dev.thomasglasser.minejago.data.worldgen.MinejagoProcessorLists;
 import dev.thomasglasser.minejago.data.worldgen.biome.MinejagoBiomeModifiers;
+import dev.thomasglasser.minejago.data.worldgen.features.MinejagoTreeFeatures;
+import dev.thomasglasser.minejago.data.worldgen.features.MinejagoVegetationFeatures;
+import dev.thomasglasser.minejago.data.worldgen.placement.MinejagoTreePlacements;
+import dev.thomasglasser.minejago.data.worldgen.placement.MinejagoVegetationPlacements;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.MinejagoStructures;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.placement.MinejagoStructureSets;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.pools.MinejagoPools;
@@ -42,7 +46,17 @@ public class MinejagoDataGenerators
             .add(Registries.STRUCTURE, MinejagoStructures::bootstrap)
             .add(Registries.STRUCTURE_SET, MinejagoStructureSets::bootstrap)
             .add(Registries.PROCESSOR_LIST, MinejagoProcessorLists::bootstrap)
-            .add(ForgeRegistries.Keys.BIOME_MODIFIERS, MinejagoBiomeModifiers::bootstrap);
+            .add(ForgeRegistries.Keys.BIOME_MODIFIERS, MinejagoBiomeModifiers::bootstrap)
+            .add(Registries.CONFIGURED_FEATURE, (pContext ->
+            {
+                MinejagoTreeFeatures.bootstrap(pContext);
+                MinejagoVegetationFeatures.bootstrap(pContext);
+            }))
+            .add(Registries.PLACED_FEATURE, (pContext ->
+            {
+                MinejagoTreePlacements.bootstrap(pContext);
+                MinejagoVegetationPlacements.bootstrap(pContext);
+            }));
 
     public static void gatherData(GatherDataEvent event)
     {

@@ -1,6 +1,8 @@
 package dev.thomasglasser.minejago.data.worldgen.biome;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.data.tags.MinejagoBiomeTags;
+import dev.thomasglasser.minejago.data.worldgen.placement.MinejagoVegetationPlacements;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
@@ -14,6 +16,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraftforge.common.world.BiomeModifier;
 import net.minecraftforge.common.world.ForgeBiomeModifiers;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -30,8 +34,10 @@ public class MinejagoBiomeModifiers
 
     public static void bootstrap(BootstapContext<BiomeModifier> context)
     {
-        // Add spawns
         HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
+        HolderGetter<PlacedFeature> placedFeatures = context.lookup(Registries.PLACED_FEATURE);
+
+        // Add spawns
         HolderSet<Biome> mountains = biomes.get(BiomeTags.IS_MOUNTAIN).orElseThrow();
         context.register(register("add_cole"), addCharactersToBiomes(mountains, MinejagoEntityTypes.COLE.get()));
         Holder.Reference<Biome> frozen_lakes = biomes.get(Biomes.FROZEN_RIVER).orElseThrow();
@@ -40,6 +46,10 @@ public class MinejagoBiomeModifiers
         // Add charges
         context.register(register("charge_cole"), addCharge(mountains, MinejagoEntityTypes.COLE.get(), 0.15, 0.7));
 //        context.register(register("charge_zane"), addCharge(HolderSet.direct(frozen_lakes), MinejagoEntityTypes.ZANE.get(), 0.3, 1.0));
+
+        // Add features
+        Holder.Reference<PlacedFeature> focusTrees = placedFeatures.getOrThrow(MinejagoVegetationPlacements.MEADOW_FOCUS_TREES);
+        context.register(register("add_focus_trees"), new ForgeBiomeModifiers.AddFeaturesBiomeModifier(biomes.getOrThrow(MinejagoBiomeTags.HAS_FOCUS_TREES), HolderSet.direct(focusTrees), GenerationStep.Decoration.VEGETAL_DECORATION));
     }
 
     @SafeVarargs

@@ -298,5 +298,23 @@ public class MinejagoFabricClient implements ClientModInitializer {
                 buf.release();
             });
         });
+        ClientPlayNetworking.registerGlobalReceiver(ClientboundSetFocusPacket.ID, ((client, handler, buf, responseSender) ->
+        {
+            buf.retain();
+            client.execute(() ->
+            {
+                new ClientboundSetFocusPacket(buf).handle();
+                buf.release();
+            });
+        }));
+        ClientPlayNetworking.registerGlobalReceiver(ClientboundStartMeditationPacket.ID, (client, handler, buf, responseSender) ->
+        {
+            buf.retain();
+            client.execute(() ->
+            {
+                new ClientboundStartMeditationPacket(buf).handle();
+                buf.release();
+            });
+        });
     }
 }

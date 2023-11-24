@@ -2,11 +2,15 @@ package dev.thomasglasser.minejago.client;
 
 import dev.thomasglasser.minejago.client.gui.screens.inventory.ScrollLecternScreen;
 import dev.thomasglasser.minejago.network.ServerboundFlyVehiclePacket;
+import dev.thomasglasser.minejago.network.ServerboundStopMeditationPacket;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.util.MinejagoItemUtils;
+import dev.thomasglasser.minejago.world.entity.DataHolder;
 import dev.thomasglasser.minejago.world.entity.PlayerRideableFlying;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
+import dev.thomasglasser.minejago.world.focus.FocusData;
+import dev.thomasglasser.minejago.world.focus.FocusDataHolder;
 import dev.thomasglasser.minejago.world.inventory.MinejagoMenuTypes;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
@@ -22,6 +26,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.Potions;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,5 +104,20 @@ public class MinejagoClientEvents
         }
 
         return items;
+    }
+
+    public static void onInput(int key)
+    {
+        Player mainClientPlayer = MinejagoClientUtils.getMainClientPlayer();
+        if (mainClientPlayer != null && key != GLFW.GLFW_KEY_ESCAPE)
+        {
+            FocusData focusData = ((FocusDataHolder) mainClientPlayer).getFocusData();
+            if (focusData.isMeditating() && ((DataHolder)mainClientPlayer).getPersistentData().getInt("WaitTicks") <= 0)
+            {
+                Services.NETWORK.sendToServer(ServerboundStopMeditationPacket.class);
+                focusData.setMeditating(false);
+                ((DataHolder) mainClientPlayer).getPersistentData().putInt("WaitTicks", 5);
+            }
+        }
     }
 }
