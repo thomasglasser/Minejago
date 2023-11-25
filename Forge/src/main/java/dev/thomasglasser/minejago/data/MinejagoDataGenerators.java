@@ -118,8 +118,8 @@ public class MinejagoDataGenerators
         generator.addProvider(includeServer, new MinejagoDimensionTypeTagsProvider(packOutput, lookupProvider, existingFileHelper));
 
         //Client
-        generator.addProvider(includeClient, new MinejagoItemModels(packOutput, existingFileHelper));
         generator.addProvider(includeClient, new MinejagoBlockStates(packOutput, existingFileHelper));
+        generator.addProvider(includeClient, new MinejagoItemModels(packOutput, existingFileHelper));
         generator.addProvider(includeClient, new MinejagoSoundDefinitions(packOutput, existingFileHelper));
         generator.addProvider(includeClient, new MinejagoParticleDescriptionProvider(packOutput, existingFileHelper));
     }

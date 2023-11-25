@@ -1,7 +1,8 @@
 package dev.thomasglasser.minejago.network;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.client.renderer.entity.layers.BetaTesterLayerOptions;
+import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterLayerOptions;
+import dev.thomasglasser.minejago.client.renderer.entity.layers.VipData;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.util.MinejagoPacketUtils;
 import net.minecraft.network.FriendlyByteBuf;
@@ -14,36 +15,39 @@ public class ServerboundChangeVipDataPacket {
     public static final ResourceLocation ID = Minejago.modLoc("serverbound_change_vip_data");
 
     private final UUID uuid;
-    private final boolean beta;
-    private final BetaTesterLayerOptions choice;
-    private final boolean dev;
+    private final VipData vipData;
 
     public ServerboundChangeVipDataPacket(FriendlyByteBuf buf) {
         uuid = buf.readUUID();
-        beta = buf.readBoolean();
-        choice = buf.readEnum(BetaTesterLayerOptions.class);
-        dev = buf.readBoolean();
+        vipData = new VipData(
+                buf.readEnum(SnapshotTesterLayerOptions.class),
+                buf.readBoolean(),
+                buf.readBoolean(),
+                buf.readBoolean()
+        );
     }
 
     public void toBytes(FriendlyByteBuf buffer) {
         buffer.writeUUID(uuid);
-        buffer.writeBoolean(beta);
-        buffer.writeEnum(choice);
-        buffer.writeBoolean(dev);
+        buffer.writeEnum(vipData.choice());
+        buffer.writeBoolean(vipData.displaySnapshot());
+        buffer.writeBoolean(vipData.displayDev());
+        buffer.writeBoolean(vipData.displayOgDev());
     }
 
-    public static FriendlyByteBuf toBytes(UUID uuid, boolean beta, BetaTesterLayerOptions choice, boolean dev) {
-        FriendlyByteBuf buf = MinejagoPacketUtils.create();
+    public static FriendlyByteBuf toBytes(UUID uuid, VipData vipData) {
+        FriendlyByteBuf buffer = MinejagoPacketUtils.create();
 
-        buf.writeUUID(uuid);
-        buf.writeBoolean(beta);
-        buf.writeEnum(choice);
-        buf.writeBoolean(dev);
+        buffer.writeUUID(uuid);
+        buffer.writeEnum(vipData.choice());
+        buffer.writeBoolean(vipData.displaySnapshot());
+        buffer.writeBoolean(vipData.displayDev());
+        buffer.writeBoolean(vipData.displayOgDev());
 
-        return buf;
+        return buffer;
     }
 
     public void handle(ServerPlayer serverPlayer) {
-        Services.NETWORK.sendToAllClients(ClientboundChangeVipDataPacket.class, ClientboundChangeVipDataPacket.toBytes(uuid, beta, choice, dev), serverPlayer.getServer());
+        Services.NETWORK.sendToAllClients(ClientboundChangeVipDataPacket.class, ClientboundChangeVipDataPacket.toBytes(uuid, vipData), serverPlayer.getServer());
     }
 }

@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.data.sounds;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -9,6 +10,8 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.SoundDefinition;
 import net.minecraftforge.common.data.SoundDefinitionsProvider;
 
+import java.util.ArrayList;
+
 public class MinejagoSoundDefinitions extends SoundDefinitionsProvider {
     public MinejagoSoundDefinitions(PackOutput output, ExistingFileHelper helper) {
         super(output, Minejago.MOD_ID, helper);
@@ -16,22 +19,36 @@ public class MinejagoSoundDefinitions extends SoundDefinitionsProvider {
 
     @Override
     public void registerSounds() {
-        add(MinejagoSoundEvents.TEAPOT_WHISTLE.get(), define(MinejagoSoundEvents.TEAPOT_WHISTLE.getId().getPath(), sound(MinejagoSoundEvents.TEAPOT_WHISTLE.get().getLocation())));
-        add(MinejagoSoundEvents.SPINJITZU_START.get(), define(MinejagoSoundEvents.SPINJITZU_START.getId().getPath(), sound(MinejagoSoundEvents.SPINJITZU_START.get().getLocation())));
-        add(MinejagoSoundEvents.SPINJITZU_STOP.get(), define(MinejagoSoundEvents.SPINJITZU_STOP.getId().getPath(), sound(MinejagoSoundEvents.SPINJITZU_STOP.get().getLocation())));
-        add(MinejagoSoundEvents.SPINJITZU_ACTIVE.get(), define(MinejagoSoundEvents.SPINJITZU_ACTIVE.getId().getPath(), sound(MinejagoSoundEvents.SPINJITZU_ACTIVE.get().getLocation())));
-        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_PATH.get(), define(MinejagoSoundEvents.SCYTHE_OF_QUAKES_PATH.getId().getPath(), sound(MinejagoSoundEvents.SCYTHE_OF_QUAKES_PATH.get().getLocation())));
-        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_EXPLOSION.get(), define(MinejagoSoundEvents.SCYTHE_OF_QUAKES_EXPLOSION.getId().getPath(), sound(MinejagoSoundEvents.SCYTHE_OF_QUAKES_EXPLOSION.get().getLocation())));
-        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_FAIL.get(), define(MinejagoSoundEvents.SCYTHE_OF_QUAKES_FAIL.getId().getPath(), sound(MinejagoSoundEvents.SCYTHE_OF_QUAKES_FAIL.get().getLocation())));
-        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_CASCADE.get(), define(MinejagoSoundEvents.SCYTHE_OF_QUAKES_CASCADE.getId().getPath(), sound(MinejagoSoundEvents.SCYTHE_OF_QUAKES_CASCADE.get().getLocation())));
-        add(MinejagoSoundEvents.BONE_KNIFE_THROW.get(), define(MinejagoSoundEvents.BONE_KNIFE_THROW.getId().getPath(), sound(MinejagoSoundEvents.BONE_KNIFE_THROW.get().getLocation())));
-        add(MinejagoSoundEvents.BONE_KNIFE_IMPACT.get(), define(MinejagoSoundEvents.BONE_KNIFE_IMPACT.getId().getPath(), sound(MinejagoSoundEvents.BONE_KNIFE_IMPACT.get().getLocation())));
-        add(MinejagoSoundEvents.BAMBOO_STAFF_THROW.get(), define(MinejagoSoundEvents.BAMBOO_STAFF_THROW.getId().getPath(), sound(MinejagoSoundEvents.BAMBOO_STAFF_THROW.get().getLocation())));
-        add(MinejagoSoundEvents.BAMBOO_STAFF_IMPACT.get(), define(MinejagoSoundEvents.BAMBOO_STAFF_IMPACT.getId().getPath(), sound(MinejagoSoundEvents.BAMBOO_STAFF_IMPACT.get().getLocation())));
-        add(MinejagoSoundEvents.SHURIKEN_THROW.get(), define(MinejagoSoundEvents.SHURIKEN_THROW.getId().getPath(), sound(MinejagoSoundEvents.SHURIKEN_THROW.get().getLocation())));
-        add(MinejagoSoundEvents.SHURIKEN_IMPACT.get(), define(MinejagoSoundEvents.SHURIKEN_IMPACT.getId().getPath(), sound(MinejagoSoundEvents.SHURIKEN_IMPACT.get().getLocation())));
-        add(MinejagoSoundEvents.SPEAR_THROW.get(), define(MinejagoSoundEvents.SPEAR_THROW.getId().getPath(), sound(MinejagoSoundEvents.SPEAR_THROW.get().getLocation())));
-        add(MinejagoSoundEvents.SPEAR_IMPACT.get(), define(MinejagoSoundEvents.SPEAR_IMPACT.getId().getPath(), sound(MinejagoSoundEvents.SPEAR_IMPACT.get().getLocation())));
+        add(MinejagoSoundEvents.TEAPOT_WHISTLE);
+
+        add(MinejagoSoundEvents.SPINJITZU_START);
+        add(MinejagoSoundEvents.SPINJITZU_STOP);
+        add(MinejagoSoundEvents.SPINJITZU_ACTIVE);
+
+        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_PATH);
+        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_EXPLOSION);
+        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_FAIL);
+        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_CASCADE);
+
+        add(MinejagoSoundEvents.BONE_KNIFE_THROW);
+        add(MinejagoSoundEvents.BONE_KNIFE_IMPACT);
+
+        add(MinejagoSoundEvents.BAMBOO_STAFF_THROW);
+        add(MinejagoSoundEvents.BAMBOO_STAFF_IMPACT);
+
+        add(MinejagoSoundEvents.SHURIKEN_THROW);
+        add(MinejagoSoundEvents.SHURIKEN_IMPACT);
+
+        add(MinejagoSoundEvents.SPEAR_THROW);
+        add(MinejagoSoundEvents.SPEAR_IMPACT);
+
+        add(MinejagoSoundEvents.EARTH_DRAGON_AMBIENT, 4);
+        add(MinejagoSoundEvents.EARTH_DRAGON_AWAKEN);
+        add(MinejagoSoundEvents.EARTH_DRAGON_DEATH);
+        add(MinejagoSoundEvents.EARTH_DRAGON_FLAP, 2);
+        add(MinejagoSoundEvents.EARTH_DRAGON_HURT);
+        add(MinejagoSoundEvents.EARTH_DRAGON_ROAR);
+        add(MinejagoSoundEvents.EARTH_DRAGON_STEP);
     }
 
     private SoundDefinition define(String subtitle, SoundDefinition.Sound... sounds)
@@ -39,7 +56,27 @@ public class MinejagoSoundDefinitions extends SoundDefinitionsProvider {
         return SoundDefinition.definition().with(sounds).subtitle("subtitles." + subtitle);
     }
 
-    protected static SoundDefinition.Sound sound(ResourceLocation location)
+    private void add(RegistryObject<SoundEvent> sound)
+    {
+        add(sound, define(sound.get().getLocation().getPath(), sound(sound.get().getLocation())));
+    }
+
+    private void add(RegistryObject<SoundEvent> sound, int variants)
+    {
+        add(sound, defineVariants(sound.get().getLocation().getPath(), sound.get().getLocation(), variants));
+    }
+
+    private SoundDefinition defineVariants(String subtitle, ResourceLocation sound, int variants)
+    {
+        ArrayList<SoundDefinition.Sound> sounds = new ArrayList<>();
+        for (int i = 1; i < variants + 1; i++)
+        {
+            sounds.add(sound(new ResourceLocation(sound.getNamespace(), sound.getPath() + i)));
+        }
+        return define(subtitle, sounds.toArray(new SoundDefinition.Sound[] {}));
+    }
+
+    public static SoundDefinition.Sound sound(ResourceLocation location)
     {
         if (location.getPath().contains("."))
         {

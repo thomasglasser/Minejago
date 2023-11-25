@@ -2,6 +2,7 @@ package dev.thomasglasser.minejago.data.tags;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.registration.BlockRegistryObject;
+import dev.thomasglasser.minejago.world.level.block.LeavesSet;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.WoodSet;
 import net.minecraft.core.HolderLookup;
@@ -59,7 +60,8 @@ public class MinejagoBlockTagsProvider extends IntrinsicHolderTagsProvider<Block
         tag(BlockTags.SAND)
                 .add(MinejagoBlocks.SUSPICIOUS_RED_SAND.get());
 
-        woodSet(MinejagoBlocks.FOCUS_WOOD);
+        woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET);
+        leavesSet(MinejagoBlocks.FOCUS_LEAVES_SET);
     }
 
     private void woodSet(WoodSet set)
@@ -70,21 +72,24 @@ public class MinejagoBlockTagsProvider extends IntrinsicHolderTagsProvider<Block
         tag(BlockTags.PLANKS)
                 .add(set.planks().get());
 
-        tag(BlockTags.SAPLINGS)
-                .add(set.sapling().get());
-
         tag(BlockTags.LOGS_THAT_BURN)
                 .addTag(set.logsBlockTag().get());
 
         tag(BlockTags.OVERWORLD_NATURAL_LOGS)
                 .add(set.log().get());
 
-        tag(BlockTags.LEAVES)
-                .add(set.leaves().get());
-
         tag(BlockTags.MINEABLE_WITH_AXE)
                 .addTag(set.logsBlockTag().get())
                 .add(set.planks().get());
+    }
+
+    private void leavesSet(LeavesSet set)
+    {
+        tag(BlockTags.LEAVES)
+                .add(set.leaves().get());
+
+        tag(BlockTags.SAPLINGS)
+                .add(set.sapling().get());
     }
 
     @Override

@@ -4,7 +4,9 @@ import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.armor.SkeletalChestplateItem;
+import dev.thomasglasser.minejago.world.level.block.LeavesSet;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
+import dev.thomasglasser.minejago.world.level.block.WoodSet;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
@@ -81,6 +83,9 @@ public class MinejagoItemModels extends ItemModelProvider
         spawnEgg(MinejagoItems.SKULL_TRUCK_SPAWN_EGG.getId().getPath());
 
         withExistingParent(MinejagoItems.EMPTY_GOLDEN_WEAPONS_MAP.getId().getPath(), "item/map");
+
+        woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET);
+        leavesSet(MinejagoBlocks.FOCUS_LEAVES_SET);
     }
 
     protected void basicItemHandheld(ResourceLocation item)
@@ -96,5 +101,20 @@ public class MinejagoItemModels extends ItemModelProvider
     protected void spawnEgg(String path)
     {
         withExistingParent(path, mcLoc("item/template_spawn_egg"));
+    }
+
+    protected void woodSet(WoodSet set)
+    {
+        withExistingParent(set.planks().getId().getPath(), modLoc("block/" + set.planks().getId().getPath()));
+        withExistingParent(set.log().getId().getPath(), modLoc("block/" + set.log().getId().getPath()));
+//        withExistingParent(set.strippedLog().getId().getPath(), modBlockModel(set.strippedLog().getId().getPath()));
+        withExistingParent(set.wood().getId().getPath(), modLoc("block/" + set.wood().getId().getPath()));
+//        withExistingParent(set.strippedWood().getId().getPath(), modBlockModel(set.strippedWood().getId().getPath()));
+    }
+
+    protected void leavesSet(LeavesSet set)
+    {
+        withExistingParent(set.leaves().getId().getPath(), modLoc("block/" + set.leaves().getId().getPath()));
+//        singleTexture(set.sapling().getId().getPath(), mcItemModel("generated"), "layer0", modItemModel(set.sapling().getId().getPath()));
     }
 }

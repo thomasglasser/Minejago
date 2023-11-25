@@ -6,10 +6,7 @@ import com.google.common.collect.Sets;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.world.level.block.DiscBlock;
-import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
-import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
-import dev.thomasglasser.minejago.world.level.block.TopPostBlock;
+import dev.thomasglasser.minejago.world.level.block.*;
 import net.minecraft.core.Direction;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
@@ -21,6 +18,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
@@ -56,19 +54,19 @@ public class MinejagoBlockStates extends BlockStateProvider {
     protected void registerStatesAndModels() {
         getVariantBuilder(MinejagoBlocks.TEAPOT.get()).forAllStates(blockState ->
                 ConfiguredModel.builder()
-                        .modelFile(blockState.getValue(TeapotBlock.FILLED) ? models().withExistingParent("teapot_filled", blockModel("teapot_filled_base")) : models().withExistingParent("teapot", blockModel("teapot_base")))
+                        .modelFile(blockState.getValue(TeapotBlock.FILLED) ? models().withExistingParent("teapot_filled", modBlockModel("teapot_filled_base")) : models().withExistingParent("teapot", modBlockModel("teapot_base")))
                         .build());
         getVariantBuilder(MinejagoBlocks.JASPOT.get()).forAllStates(blockState ->
                 ConfiguredModel.builder()
-                        .modelFile(blockState.getValue(TeapotBlock.FILLED) ? models().withExistingParent("jaspot_filled", blockModel("teapot_filled_base")).texture("pot", blockModel("jaspot")).texture("particle", blockModel("jaspot")) : models().withExistingParent("jaspot", blockModel("teapot_base")).texture("pot", blockModel("jaspot")).texture("particle", blockModel("jaspot")))
+                        .modelFile(blockState.getValue(TeapotBlock.FILLED) ? models().withExistingParent("jaspot_filled", modBlockModel("teapot_filled_base")).texture("pot", modBlockModel("jaspot")).texture("particle", modBlockModel("jaspot")) : models().withExistingParent("jaspot", modBlockModel("teapot_base")).texture("pot", modBlockModel("jaspot")).texture("particle", modBlockModel("jaspot")))
                         .build());
         MinejagoBlocks.TEAPOTS.forEach((dyeColor, blockBlockRegistryObject) ->
         {
-            if (models().existingFileHelper.exists(blockModel(dyeColor.getName() + "_teapot"), TEXTURE))
+            if (models().existingFileHelper.exists(modBlockModel(dyeColor.getName() + "_teapot"), TEXTURE))
             {
                 getVariantBuilder(blockBlockRegistryObject.get()).forAllStates(blockState ->
                         ConfiguredModel.builder()
-                                .modelFile(blockState.getValue(TeapotBlock.FILLED) ? models().withExistingParent(dyeColor.getName() + "_teapot_filled", blockModel("teapot_filled_base")).texture("pot", blockModel(dyeColor.getName() + "_teapot")).texture("particle", blockModel(dyeColor.getName() + "_teapot")) : models().withExistingParent(dyeColor.getName() + "_teapot", blockModel("teapot_base")).texture("pot", blockModel(dyeColor.getName() + "_teapot")).texture("particle", blockModel(dyeColor.getName() + "_teapot")))
+                                .modelFile(blockState.getValue(TeapotBlock.FILLED) ? models().withExistingParent(dyeColor.getName() + "_teapot_filled", modBlockModel("teapot_filled_base")).texture("pot", modBlockModel(dyeColor.getName() + "_teapot")).texture("particle", modBlockModel(dyeColor.getName() + "_teapot")) : models().withExistingParent(dyeColor.getName() + "_teapot", modBlockModel("teapot_base")).texture("pot", modBlockModel(dyeColor.getName() + "_teapot")).texture("particle", modBlockModel(dyeColor.getName() + "_teapot")))
                                 .build());
             }
         });
@@ -77,7 +75,7 @@ public class MinejagoBlockStates extends BlockStateProvider {
         getVariantBuilder(MinejagoBlocks.GOLD_DISC.get()).forAllStates(blockState ->
         {
             Direction facing = blockState.getValue(DiscBlock.FACING);
-            ModelFile model = models().withExistingParent("gold_disc_" + blockState.getValue(DiscBlock.ROW).getSerializedName() + "_" + blockState.getValue(DiscBlock.COLUMN).getSerializedName(), blockModel("disc_" + blockState.getValue(DiscBlock.ROW).getSerializedName() + "_" + blockState.getValue(DiscBlock.COLUMN).getSerializedName())).texture("base", blockModel("gold_disc_base")).texture("bump", blockModel("gold_disc_bump"));
+            ModelFile model = models().withExistingParent("gold_disc_" + blockState.getValue(DiscBlock.ROW).getSerializedName() + "_" + blockState.getValue(DiscBlock.COLUMN).getSerializedName(), modBlockModel("disc_" + blockState.getValue(DiscBlock.ROW).getSerializedName() + "_" + blockState.getValue(DiscBlock.COLUMN).getSerializedName())).texture("base", modBlockModel("gold_disc_base")).texture("bump", modBlockModel("gold_disc_bump"));
 
             return ConfiguredModel.builder()
                     .modelFile(model)
@@ -88,7 +86,7 @@ public class MinejagoBlockStates extends BlockStateProvider {
         getVariantBuilder(MinejagoBlocks.TOP_POST.get()).forAllStates(blockState ->
         {
             Direction facing = blockState.getValue(TopPostBlock.FACING);
-            ModelFile model = models().getExistingFile(blockModel("top_post"));
+            ModelFile model = models().getExistingFile(modBlockModel("top_post"));
 
             return ConfiguredModel.builder()
                     .modelFile(model)
@@ -112,6 +110,9 @@ public class MinejagoBlockStates extends BlockStateProvider {
                     .rotationY((int) (facing.getOpposite()).toYRot())
                     .build();
         });
+
+        woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET);
+        leavesSet(MinejagoBlocks.FOCUS_LEAVES_SET);
     }
 
     private MinejagoBlockModelGenerators makeBlockModelGenerators()
@@ -140,9 +141,30 @@ public class MinejagoBlockStates extends BlockStateProvider {
         return CompletableFuture.allOf(super.run(cache), blockModelGenerators.generateAll(cache));
     }
 
-    public static ResourceLocation blockModel(String path)
+    public static ResourceLocation modBlockModel(String path)
     {
         return Minejago.modLoc("block/" + path);
+    }
+
+    public static ResourceLocation mcBlockModel(String path)
+    {
+        return new ResourceLocation("block/" + path);
+    }
+
+    private void woodSet(WoodSet set)
+    {
+        simpleBlock(set.planks().get());
+        logBlock((RotatedPillarBlock) set.log().get());
+//        logBlock((RotatedPillarBlock) set.strippedLog().get());
+        simpleBlock(set.wood().get(), models().cubeAll("enchanted_wood", modBlockModel("enchanted_log")));
+//        simpleBlock(set.strippedWood().get());
+    }
+
+    private void leavesSet(LeavesSet set)
+    {
+        simpleBlock(set.leaves().get(), models().withExistingParent(set.leaves().getId().getPath(), mcBlockModel("leaves")).texture("all", modBlockModel(set.leaves().getId().getPath())));
+//        simpleBlock(set.sapling().get(), models().cross(set.id().getPath() + "_sapling", modBlockModel(set.id().getPath() + "_sapling")));
+//        simpleBlock(set.pottedSapling().get(), models().withExistingParent("potted_" + set.id().getPath() + "_sapling", mcBlockModel("flower_pot_cross")));
     }
 
     private class MinejagoBlockModelGenerators extends BlockModelGenerators

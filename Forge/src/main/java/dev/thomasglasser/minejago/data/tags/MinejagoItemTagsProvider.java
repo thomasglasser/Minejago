@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Pair;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
+import dev.thomasglasser.minejago.world.level.block.LeavesSet;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.WoodSet;
 import net.minecraft.core.HolderLookup;
@@ -120,7 +121,8 @@ public class MinejagoItemTagsProvider extends ItemTagsProvider
                 .add(Items.COOKED_SALMON);
 
         // Wood sets
-        woodSet(MinejagoBlocks.FOCUS_WOOD);
+        woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET);
+        leavesSet(MinejagoBlocks.FOCUS_LEAVES_SET);
     }
 
     public TagAppender<Item> tagDynamicLight(String tag, int level)
@@ -158,13 +160,16 @@ public class MinejagoItemTagsProvider extends ItemTagsProvider
         tag(ItemTags.PLANKS)
                 .add(set.planks().asItem());
 
-        tag(ItemTags.SAPLINGS)
-                .add(set.sapling().asItem());
-
         tag(ItemTags.LOGS_THAT_BURN)
                 .addTag(set.logsItemTag().get());
+    }
 
+    private void leavesSet(LeavesSet set)
+    {
         tag(ItemTags.LEAVES)
                 .add(set.leaves().asItem());
+
+        tag(ItemTags.SAPLINGS)
+                .add(set.sapling().asItem());
     }
 }

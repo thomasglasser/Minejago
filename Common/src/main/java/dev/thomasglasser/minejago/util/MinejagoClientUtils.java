@@ -7,7 +7,7 @@ import dev.kosmx.playerAnim.core.data.KeyframeAnimation;
 import dev.kosmx.playerAnim.core.util.Ease;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.animation.MinejagoPlayerAnimator;
-import dev.thomasglasser.minejago.client.renderer.entity.layers.BetaTesterLayerOptions;
+import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterLayerOptions;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.LayersConfig;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.VipData;
 import dev.thomasglasser.minejago.network.ServerboundChangeVipDataPacket;
@@ -37,13 +37,13 @@ public class MinejagoClientUtils {
         return (AbstractClientPlayer) Minecraft.getInstance().level.getPlayerByUUID(uuid);
     }
 
-    public static boolean renderBetaLayer(AbstractClientPlayer player)
+    public static boolean renderSnapshotTesterLayer(AbstractClientPlayer player)
     {
-        return vipData.get(player) != null && vipData.get(player).displayBeta() && betaChoice(player) != null;
+        return vipData.get(player) != null && vipData.get(player).displaySnapshot() && snapshotChoice(player) != null;
     }
 
     @Nullable
-    public static BetaTesterLayerOptions betaChoice(AbstractClientPlayer player)
+    public static SnapshotTesterLayerOptions snapshotChoice(AbstractClientPlayer player)
     {
         return vipData.get(player) != null && vipData.get(player).choice() != null ? vipData.get(player).choice() : null;
     }
@@ -53,31 +53,43 @@ public class MinejagoClientUtils {
         return vipData.get(player) != null && vipData.get(player).displayDev();
     }
 
+    public static boolean renderOgDevLayer(AbstractClientPlayer player)
+    {
+        return vipData.get(player) != null && vipData.get(player).displayOgDev();
+    }
+
     public static void refreshVip()
     {
         if (Minecraft.getInstance().player != null)
         {
             UUID uuid = Minecraft.getInstance().player.getUUID();
 
+            boolean displaySnapshot;
             boolean displayDev;
-            boolean displayBeta;
+            boolean displayOgDev;
 
-            displayDev = LayersConfig.DISPLAY_DEV.get() && MinejagoClientUtils.checkDev(uuid);
-            displayBeta = LayersConfig.DISPLAY_BETA.get() && MinejagoClientUtils.checkBetaTester(uuid);
+            displaySnapshot = LayersConfig.DISPLAY_SNAPSHOT.get() && MinejagoClientUtils.checkSnapshotTester(uuid);
+            displayDev = LayersConfig.DISPLAY_DEV.get() && MinejagoClientUtils.checkDevTeam(uuid);
+            displayOgDev = LayersConfig.DISPLAY_OG_DEV.get() && MinejagoClientUtils.checkOgDevTeam(uuid);
 
-            Services.NETWORK.sendToServer(ServerboundChangeVipDataPacket.class, ServerboundChangeVipDataPacket.toBytes(uuid, displayBeta, LayersConfig.BETA_CHOICE.get(), displayDev));
+            Services.NETWORK.sendToServer(ServerboundChangeVipDataPacket.class, ServerboundChangeVipDataPacket.toBytes(uuid, new VipData(LayersConfig.SNAPSHOT_CHOICE.get(), displaySnapshot, displayDev, displayOgDev)));
         }
     }
 
 
-    public static boolean checkBetaTester(UUID uuid)
+    public static boolean checkSnapshotTester(UUID uuid)
     {
-        return isVip(uuid, "beta");
+        return isVip(uuid, "snapshot");
     }
 
-    public static boolean checkDev(UUID uuid)
+    public static boolean checkDevTeam(UUID uuid)
     {
         return isVip(uuid, "dev");
+    }
+
+    public static boolean checkOgDevTeam(UUID uuid)
+    {
+        return isVip(uuid, "og_dev");
     }
 
     public static void setVipData(Player player, VipData data) {

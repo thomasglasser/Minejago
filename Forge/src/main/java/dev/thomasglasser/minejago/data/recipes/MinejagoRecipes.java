@@ -115,7 +115,7 @@ public class MinejagoRecipes extends RecipeProvider {
                 .unlockedBy("has_slab", has(ItemTags.WOODEN_SLABS))
                 .save(writer);
 
-        woodSet(writer, MinejagoBlocks.FOCUS_WOOD);
+        woodSet(writer, MinejagoBlocks.ENCHANTED_WOOD_SET);
     }
 
     protected void coloredTeapotFromColoredTerracotta(Consumer<FinishedRecipe> writer, ItemLike pot, ItemLike color)
@@ -151,7 +151,7 @@ public class MinejagoRecipes extends RecipeProvider {
         normalTea(writer, Items.JUNGLE_LEAVES, MinejagoPotions.JUNGLE_TEA);
         normalTea(writer, Items.DARK_OAK_LEAVES, MinejagoPotions.DARK_OAK_TEA);
         normalTea(writer, Items.BIRCH_LEAVES, MinejagoPotions.BIRCH_TEA);
-        normalTea(writer, MinejagoBlocks.FOCUS_WOOD.leaves().asItem(), MinejagoPotions.FOCUS_TEA);
+        normalTea(writer, MinejagoBlocks.FOCUS_LEAVES_SET.leaves().asItem(), MinejagoPotions.FOCUS_TEA);
     }
 
     private void normalTea(Consumer<FinishedRecipe> writer, Item ingredient, Potion result)

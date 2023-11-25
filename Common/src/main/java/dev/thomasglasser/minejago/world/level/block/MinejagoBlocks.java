@@ -10,7 +10,6 @@ import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.level.block.grower.TreeGrower;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvents;
@@ -47,8 +46,9 @@ public class MinejagoBlocks
 
     public static final BlockRegistryObject<Block> EARTH_DRAGON_HEAD = registerBlockAndWrap("earth_dragon_head", () -> new DragonHeadBlock(MinejagoEntityTypes.EARTH_DRAGON::get));
 
-    // Wood Sets
-    public static final WoodSet FOCUS_WOOD = registerWoodBlockSet("focus", MapColor.COLOR_CYAN, MapColor.COLOR_LIGHT_BLUE, new TreeGrower(MinejagoTreeFeatures.FOCUS, MinejagoTreeFeatures.FANCY_FOCUS, MinejagoTreeFeatures.FOCUS_BEES_005, MinejagoTreeFeatures.FANCY_FOCUS_BEES_005), () -> MinejagoBlockTags.FOCUS_LOGS, () -> MinejagoItemTags.FOCUS_LOGS); // TODO: Fix colors and add grower
+    // Tea Trees
+    public static final WoodSet ENCHANTED_WOOD_SET = registerWoodSet("enchanted", MapColor.COLOR_PURPLE, MapColor.COLOR_GRAY, () -> MinejagoBlockTags.ENCHANTED_LOGS, () -> MinejagoItemTags.ENCHANTED_LOGS);
+    public static final LeavesSet FOCUS_LEAVES_SET = registerLeavesSet("focus", new TreeGrower(MinejagoTreeFeatures.FOCUS, MinejagoTreeFeatures.FANCY_FOCUS, MinejagoTreeFeatures.FOCUS_BEES_005, MinejagoTreeFeatures.FANCY_FOCUS_BEES_005));
 
     @SafeVarargs
     private static BlockRegistryObject<Block> registerBlockAndItemAndWrap(
@@ -88,20 +88,25 @@ public class MinejagoBlocks
         return map;
     }
 
-    private static WoodSet registerWoodBlockSet(String id, MapColor mapColor, MapColor logMapColor, AbstractTreeGrower treeGrower, Supplier<TagKey<Block>> logsBlockTag, Supplier<TagKey<Item>> logsItemTag)
+    private static WoodSet registerWoodSet(String id, MapColor mapColor, MapColor logMapColor, Supplier<TagKey<Block>> logsBlockTag, Supplier<TagKey<Item>> logsItemTag)
     {
         return new WoodSet(Minejago.modLoc(id),
                 registerBlockAndItemAndWrap(id + "_planks", () -> new Block(BlockBehaviour.Properties.of().mapColor(mapColor).instrument(NoteBlockInstrument.BASS).strength(2.0F, 3.0F).sound(SoundType.WOOD).ignitedByLava()), CreativeModeTabs.BUILDING_BLOCKS),
-                registerBlockAndItemAndWrap(id + "_sapling", () -> new SaplingBlock(treeGrower, BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.GRASS).pushReaction(PushReaction.DESTROY)), CreativeModeTabs.NATURAL_BLOCKS),
                 registerBlockAndItemAndWrap(id + "_log", () -> Blocks.log(mapColor, logMapColor), CreativeModeTabs.BUILDING_BLOCKS, CreativeModeTabs.NATURAL_BLOCKS),
                 registerBlockAndItemAndWrap("stripped_" + id + "_log", () -> Blocks.log(mapColor, mapColor), CreativeModeTabs.BUILDING_BLOCKS),
                 registerBlockAndItemAndWrap(id + "_wood", () -> new RotatedPillarBlock(BlockBehaviour.Properties.of().mapColor(mapColor).instrument(NoteBlockInstrument.BASS).strength(2.0F).sound(SoundType.WOOD).ignitedByLava()), CreativeModeTabs.BUILDING_BLOCKS),
                 registerBlockAndItemAndWrap("stripped_" + id + "_wood", () -> new RotatedPillarBlock(BlockBehaviour.Properties.of().mapColor(mapColor).instrument(NoteBlockInstrument.BASS).strength(2.0F).sound(SoundType.WOOD).ignitedByLava()), CreativeModeTabs.BUILDING_BLOCKS),
-                registerBlockAndItemAndWrap(id + "_leaves", () -> Blocks.leaves(SoundType.GRASS), CreativeModeTabs.NATURAL_BLOCKS),
-                registerBlockAndWrap("potted_" + id + "_sapling", () -> Blocks.flowerPot(BuiltInRegistries.BLOCK.get(Minejago.modLoc(id + "_sapling")))),
-                treeGrower,
                 logsBlockTag,
                 logsItemTag);
+    }
+
+    private static LeavesSet registerLeavesSet(String id, AbstractTreeGrower treeGrower)
+    {
+        BlockRegistryObject<Block> sapling = registerBlockAndItemAndWrap(id + "_sapling", () -> new SaplingBlock(treeGrower, BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.GRASS).pushReaction(PushReaction.DESTROY)), CreativeModeTabs.NATURAL_BLOCKS);
+        return new LeavesSet(Minejago.modLoc(id),
+                registerBlockAndItemAndWrap(id + "_leaves", () -> Blocks.leaves(SoundType.GRASS), CreativeModeTabs.NATURAL_BLOCKS),
+                sapling,
+                registerBlockAndWrap("potted_" + id + "_sapling", () -> Blocks.flowerPot(sapling.get())));
     }
 
     public static List<Block> allPots()

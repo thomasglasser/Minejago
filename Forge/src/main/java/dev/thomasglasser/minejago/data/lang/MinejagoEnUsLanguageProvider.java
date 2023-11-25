@@ -20,6 +20,7 @@ import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.armor.SkeletalChestplateItem;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
+import dev.thomasglasser.minejago.world.level.block.LeavesSet;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.WoodSet;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPatterns;
@@ -110,7 +111,9 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(MinejagoBlocks.EARTH_DRAGON_HEAD.get(), "Earth Dragon Head");
         add(MinejagoBlocks.SUSPICIOUS_RED_SAND.get(), "Suspicious Red Sand");
 
-        add(MinejagoBlocks.FOCUS_WOOD, "Focus");
+        add(MinejagoBlocks.ENCHANTED_WOOD_SET, "Enchanted");
+
+        add(MinejagoBlocks.FOCUS_LEAVES_SET, "Focus");
 
         add(SkulkinRaid.SKULKINS_BANNER_PATTERN_NAME, "Cursed Banner");
 
@@ -199,6 +202,13 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(MinejagoSoundEvents.SHURIKEN_IMPACT, "Shuriken sticks");
         add(MinejagoSoundEvents.SPEAR_THROW, "Spear tosses");
         add(MinejagoSoundEvents.SPEAR_IMPACT, "Spear lands");
+        add(MinejagoSoundEvents.EARTH_DRAGON_AMBIENT, "Earth Dragon breathes");
+        add(MinejagoSoundEvents.EARTH_DRAGON_AWAKEN, "Earth Dragon awakens");
+        add(MinejagoSoundEvents.EARTH_DRAGON_DEATH, "Earth Dragon dies");
+        add(MinejagoSoundEvents.EARTH_DRAGON_FLAP, "Earth Dragon awakens");
+        add(MinejagoSoundEvents.EARTH_DRAGON_HURT, "Earth Dragon flaps");
+        add(MinejagoSoundEvents.EARTH_DRAGON_ROAR, "Earth Dragon roars");
+        add(MinejagoSoundEvents.EARTH_DRAGON_STEP, "Earth Dragon steps");
 
         add(MinejagoMobEffects.ACACIA_TEA.get(), "Acacia Tea");
         add(MinejagoMobEffects.OAK_TEA.get(), "Oak Tea");
@@ -350,7 +360,7 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
 
     public void add(RegistryObject<SoundEvent> sound, String name)
     {
-        add("subtitles." + sound.getId().getPath(), name);
+        add("subtitles." + sound.get().getLocation().getPath(), name);
     }
 
     public void add(RegistryObject<PaintingVariant> painting, String title, String author)
@@ -382,11 +392,15 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
     public void add(WoodSet set, String name)
     {
         add(set.planks().get(), name + " Planks");
-        add(set.sapling().get(), name + " Sapling");
         add(set.log().get(), name + " Log");
         add(set.strippedLog().get(), "Stripped " + name + " Log");
         add(set.wood().get(), name + " Wood");
         add(set.strippedWood().get(), "Stripped " + name + " Wood");
+    }
+
+    public void add(LeavesSet set, String name)
+    {
+        add(set.sapling().get(), name + " Sapling");
         add(set.leaves().get(), name + " Leaves");
         add(set.pottedSapling().get(), "Potted " + name + " Sapling");
     }

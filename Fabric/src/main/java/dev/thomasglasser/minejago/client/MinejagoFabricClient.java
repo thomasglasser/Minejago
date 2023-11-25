@@ -7,8 +7,8 @@ import dev.thomasglasser.minejago.client.model.*;
 import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
 import dev.thomasglasser.minejago.client.renderer.block.DragonHeadRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.*;
-import dev.thomasglasser.minejago.client.renderer.entity.layers.BetaTesterLayer;
-import dev.thomasglasser.minejago.client.renderer.entity.layers.DevLayer;
+import dev.thomasglasser.minejago.client.renderer.entity.layers.OgDevTeamLayer;
+import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterLayer;
 import dev.thomasglasser.minejago.network.*;
 import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.util.MinejagoClientUtils;
@@ -33,6 +33,7 @@ import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.EntityModelSet;
+import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.blockentity.BrushableBlockRenderer;
@@ -46,11 +47,14 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -142,8 +146,8 @@ public class MinejagoFabricClient implements ClientModInitializer {
         EntityModelLayerRegistry.registerModelLayer(SpearModel.LAYER_LOCATION, SpearModel::createBodyLayer);
         EntityModelLayerRegistry.registerModelLayer(ThrownIronShurikenModel.LAYER_LOCATION, ThrownIronShurikenModel::createBodyLayer);
         EntityModelLayerRegistry.registerModelLayer(ScytheModel.LAYER_LOCATION, ScytheModel::createBodyLayer);
-        EntityModelLayerRegistry.registerModelLayer(BambooHatModel.LAYER_LOCATION, BambooHatModel::createBodyLayer);
-        EntityModelLayerRegistry.registerModelLayer(BeardModel.LAYER_LOCATION, BeardModel::createBodyLayer);
+        EntityModelLayerRegistry.registerModelLayer(PilotsSnapshotTesterHatModel.LAYER_LOCATION, PilotsSnapshotTesterHatModel::createBodyLayer);
+        EntityModelLayerRegistry.registerModelLayer(OgDevTeamBeardModel.LAYER_LOCATION, OgDevTeamBeardModel::createBodyLayer);
         EntityModelLayerRegistry.registerModelLayer(KrunchaModel.LAYER_LOCATION, KrunchaModel::createBodyLayer);
         EntityModelLayerRegistry.registerModelLayer(NuckalModel.LAYER_LOCATION, NuckalModel::createBodyLayer);
     }
@@ -176,6 +180,11 @@ public class MinejagoFabricClient implements ClientModInitializer {
                 return PotionUtils.getColor(pStack);
             return -1;
         }, MinejagoItems.FILLED_TEACUP.get());
+        ColorProviderRegistry.ITEM.register((itemStack, i) ->
+        {
+            BlockState blockstate = ((BlockItem)itemStack.getItem()).getBlock().defaultBlockState();
+            return MinejagoClientUtils.getMinecraft().getBlockColors().getColor(blockstate, null, null, i);
+        }, MinejagoBlocks.FOCUS_LEAVES_SET.leaves().get());
 
         ColorProviderRegistry.BLOCK.register(((blockState, blockAndTintGetter, blockPos, i) ->
         {
@@ -187,6 +196,7 @@ public class MinejagoFabricClient implements ClientModInitializer {
             }
             return -1;
         }), MinejagoBlocks.allPots().toArray(new Block[0]));
+        ColorProviderRegistry.BLOCK.register(((blockState, blockAndTintGetter, blockPos, i) -> blockAndTintGetter != null && blockPos != null ? BiomeColors.getAverageFoliageColor(blockAndTintGetter, blockPos) : FoliageColor.getDefaultColor()), MinejagoBlocks.FOCUS_LEAVES_SET.leaves().get());
     }
 
     private void registerEvents()
@@ -201,8 +211,8 @@ public class MinejagoFabricClient implements ClientModInitializer {
 
                 if (player != null)
                 {
-                    player.addLayer(new BetaTesterLayer<>(player, models));
-                    player.addLayer(new DevLayer<>(player, models));
+                    player.addLayer(new SnapshotTesterLayer<>(player, models));
+                    player.addLayer(new OgDevTeamLayer<>(player, models));
                 }
             }
         });

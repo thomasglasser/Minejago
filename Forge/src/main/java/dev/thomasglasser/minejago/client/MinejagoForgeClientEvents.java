@@ -8,8 +8,8 @@ import dev.thomasglasser.minejago.client.model.*;
 import dev.thomasglasser.minejago.client.particle.*;
 import dev.thomasglasser.minejago.client.renderer.block.DragonHeadRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.*;
-import dev.thomasglasser.minejago.client.renderer.entity.layers.BetaTesterLayer;
-import dev.thomasglasser.minejago.client.renderer.entity.layers.DevLayer;
+import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterLayer;
+import dev.thomasglasser.minejago.client.renderer.entity.layers.OgDevTeamLayer;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
@@ -25,15 +25,19 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.blockentity.BrushableBlockRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -58,8 +62,8 @@ public class MinejagoForgeClientEvents {
         event.registerLayerDefinition(SpearModel.LAYER_LOCATION, SpearModel::createBodyLayer);
         event.registerLayerDefinition(ThrownIronShurikenModel.LAYER_LOCATION, ThrownIronShurikenModel::createBodyLayer);
         event.registerLayerDefinition(ScytheModel.LAYER_LOCATION, ScytheModel::createBodyLayer);
-        event.registerLayerDefinition(BambooHatModel.LAYER_LOCATION, BambooHatModel::createBodyLayer);
-        event.registerLayerDefinition(BeardModel.LAYER_LOCATION, BeardModel::createBodyLayer);
+        event.registerLayerDefinition(PilotsSnapshotTesterHatModel.LAYER_LOCATION, PilotsSnapshotTesterHatModel::createBodyLayer);
+        event.registerLayerDefinition(OgDevTeamBeardModel.LAYER_LOCATION, OgDevTeamBeardModel::createBodyLayer);
         event.registerLayerDefinition(KrunchaModel.LAYER_LOCATION, KrunchaModel::createBodyLayer);
         event.registerLayerDefinition(NuckalModel.LAYER_LOCATION, NuckalModel::createBodyLayer);
     }
@@ -139,6 +143,11 @@ public class MinejagoForgeClientEvents {
                 return PotionUtils.getColor(pStack);
             return -1;
         }, MinejagoItems.FILLED_TEACUP.get());
+        event.register((itemStack, i) ->
+        {
+            BlockState blockstate = ((BlockItem)itemStack.getItem()).getBlock().defaultBlockState();
+            return MinejagoClientUtils.getMinecraft().getBlockColors().getColor(blockstate, MinejagoClientUtils.getLevel(), null, i);
+        }, MinejagoBlocks.FOCUS_LEAVES_SET.leaves().asItem());
     }
 
     public static void onRegisterBlockColorHandlers(RegisterColorHandlersEvent.Block event)
@@ -153,6 +162,7 @@ public class MinejagoForgeClientEvents {
             }
             return -1;
         }), MinejagoBlocks.allPots().toArray(new Block[0]));
+        event.register(((blockState, blockAndTintGetter, blockPos, i) -> blockAndTintGetter != null && blockPos != null ? BiomeColors.getAverageFoliageColor(blockAndTintGetter, blockPos) : FoliageColor.getDefaultColor()), MinejagoBlocks.FOCUS_LEAVES_SET.leaves().get());
     }
 
     public static void onAddLayers(EntityRenderersEvent.AddLayers event)
@@ -164,8 +174,8 @@ public class MinejagoForgeClientEvents {
 
             if (player != null)
             {
-                player.addLayer(new BetaTesterLayer<>(player, models));
-                player.addLayer(new DevLayer<>(player, models));
+                player.addLayer(new SnapshotTesterLayer<>(player, models));
+                player.addLayer(new OgDevTeamLayer<>(player, models));
             }
         }
     }

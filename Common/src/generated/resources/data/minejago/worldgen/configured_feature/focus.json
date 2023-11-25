@@ -42,7 +42,7 @@
     "trunk_provider": {
       "type": "minecraft:simple_state_provider",
       "state": {
-        "Name": "minejago:focus_log",
+        "Name": "minejago:enchanted_log",
         "Properties": {
           "axis": "y"
         }

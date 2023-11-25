@@ -28,7 +28,7 @@ public class MinejagoItemTags
     public static final TagKey<Item> DRAGON_TREATS = create("dragon_treats");
 
     // Logs
-    public static final TagKey<Item> FOCUS_LOGS = logs(MinejagoBlocks.FOCUS_WOOD);
+    public static final TagKey<Item> ENCHANTED_LOGS = logs(MinejagoBlocks.ENCHANTED_WOOD_SET);
 
     private static TagKey<Item> create(String name)
     {

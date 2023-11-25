@@ -6,7 +6,6 @@ import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.world.entity.PlayerRideableFlying;
 import dev.thomasglasser.minejago.world.entity.character.Character;
 import dev.thomasglasser.minejago.world.entity.power.Power;
-import dev.thomasglasser.minejago.world.entity.projectile.EarthBlast;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
 import dev.thomasglasser.minejago.world.focus.FocusData;
 import dev.thomasglasser.minejago.world.focus.FocusDataHolder;
@@ -18,6 +17,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
@@ -35,6 +35,7 @@ import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -75,8 +76,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Dragon extends TamableAnimal implements GeoEntity, SmartBrainOwner<Dragon>, PlayerRideableFlying, RangedAttackMob {
+public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBrainOwner<Dragon>, PlayerRideableFlying, RangedAttackMob {
     public static final RawAnimation LIFT = RawAnimation.begin().thenPlay("move.lift");
+    public static final int TICKS_PER_FLAP = 39;
 
     public static final double HEAL_BOND = 0.05;
     public static final double FOOD_BOND = 0.1;
@@ -445,20 +447,6 @@ public class Dragon extends TamableAnimal implements GeoEntity, SmartBrainOwner<
     }
 
     @Override
-    public void performRangedAttack(LivingEntity target, float velocity) {
-        Vec3 vec33 = this.getViewVector(1.0F);
-        double l = this.getX() - vec33.x;
-        double m = this.getY(0.5) + 0.5;
-        double n = this.getZ() - vec33.z;
-        double o = target.getX() - l;
-        double p = target.getY(0.5) - m;
-        double q = target.getZ() - n;
-        EarthBlast dragonFireball = new EarthBlast(level(), this, o, p, q);
-        dragonFireball.moveTo(l, m, n, 0.0F, 0.0F);
-        level().addFreshEntity(dragonFireball);
-    }
-
-    @Override
     public boolean hurt(DamageSource source, float amount)
     {
         if (source.getEntity() instanceof Player player)
@@ -556,4 +544,44 @@ public class Dragon extends TamableAnimal implements GeoEntity, SmartBrainOwner<
             }
         }
     }
+
+    @Override
+    protected void onFlap()
+    {
+        super.onFlap();
+        if (this.level().isClientSide && !this.isSilent() && getFlapSound() != null) {
+            this.level().playLocalSound(this.getX(), this.getY(), this.getZ(), getFlapSound(), this.getSoundSource(), 5.0F, 0.8F + this.random.nextFloat() * 0.3F, false);
+        }
+    }
+
+    @Override
+    protected boolean isFlapping()
+    {
+        return flyingTicks > 1 && tickCount % TICKS_PER_FLAP == 0;
+    }
+
+    @Nullable
+    public abstract SoundEvent getFlapSound();
+
+    @Override
+    public void performRangedAttack(LivingEntity target, float velocity) {
+        Vec3 vec33 = this.getViewVector(1.0F);
+        double l = this.getX() - vec33.x;
+        double m = this.getY(0.5) + 0.5;
+        double n = this.getZ() - vec33.z;
+        double o = target.getX() - l;
+        double p = target.getY(0.5) - m;
+        double q = target.getZ() - n;
+        AbstractHurtingProjectile projectile = getRangedAttackProjectile(o, p, q);
+        projectile.moveTo(l, m, n, 0.0F, 0.0F);
+        level().addFreshEntity(projectile);
+        if (level() instanceof ServerLevel serverLevel && getShootSound() != null)
+        {
+            serverLevel.playSound(null, getOnPos(), getShootSound(), getSoundSource(), 1.0F, 1.0F);
+        }
+    }
+
+    protected abstract AbstractHurtingProjectile getRangedAttackProjectile(double a, double b, double c);
+
+    protected abstract SoundEvent getShootSound();
 }

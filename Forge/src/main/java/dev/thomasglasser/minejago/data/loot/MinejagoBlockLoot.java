@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.data.loot;
 
 import dev.thomasglasser.minejago.registration.BlockRegistryObject;
+import dev.thomasglasser.minejago.world.level.block.LeavesSet;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.minejago.world.level.block.WoodSet;
@@ -41,7 +42,8 @@ public class MinejagoBlockLoot extends BlockLootSubProvider {
 
         add(MinejagoBlocks.CHISELED_SCROLL_SHELF.get(), createSilkTouchOnlyTable(MinejagoBlocks.CHISELED_SCROLL_SHELF.get()));
 
-        woodSet(MinejagoBlocks.FOCUS_WOOD);
+        woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET);
+        leavesSet(MinejagoBlocks.FOCUS_LEAVES_SET);
     }
 
     protected LootTable.Builder createTeapotBlock(Block block)
@@ -67,13 +69,18 @@ public class MinejagoBlockLoot extends BlockLootSubProvider {
     private void woodSet(WoodSet set)
     {
         dropSelf(set.planks().get());
-        dropSelf(set.sapling().get());
         dropSelf(set.log().get());
         dropSelf(set.strippedLog().get());
         dropSelf(set.wood().get());
         dropSelf(set.strippedWood().get());
 
+    }
+
+    private void leavesSet(LeavesSet set)
+    {
         add(set.leaves().get(), createLeavesDrops(set.leaves().get(), set.sapling().get(), NORMAL_LEAVES_SAPLING_CHANCES));
+
+        dropSelf(set.sapling().get());
 
         dropPottedContents(set.pottedSapling().get());
     }
