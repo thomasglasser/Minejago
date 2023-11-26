@@ -108,6 +108,8 @@ public class MinejagoFabricClient implements ClientModInitializer {
 
         BlockRenderLayerMap.INSTANCE.putBlock(MinejagoBlocks.TOP_POST.get(), RenderType.cutout());
 
+        BlockRenderLayerMap.INSTANCE.putBlocks(RenderType.cutout(), MinejagoBlocks.FOCUS_LEAVES_SET.sapling().get(), MinejagoBlocks.FOCUS_LEAVES_SET.pottedSapling().get());
+
         registerEvents();
 
         registerPackets();
