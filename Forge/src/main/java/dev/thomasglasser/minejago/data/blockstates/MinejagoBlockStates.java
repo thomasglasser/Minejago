@@ -169,8 +169,8 @@ public class MinejagoBlockStates extends BlockStateProvider {
     private void leavesSet(LeavesSet set)
     {
         simpleBlock(set.leaves().get(), models().withExistingParent(set.leaves().getId().getPath(), mcBlockModel("leaves")).texture("all", modBlockModel(set.leaves().getId().getPath())));
-//        simpleBlock(set.sapling().get(), models().cross(set.id().getPath() + "_sapling", modBlockModel(set.id().getPath() + "_sapling")));
-//        simpleBlock(set.pottedSapling().get(), models().withExistingParent("potted_" + set.id().getPath() + "_sapling", mcBlockModel("flower_pot_cross")));
+        simpleBlock(set.sapling().get(), models().cross(set.id().getPath() + "_sapling", modBlockModel(set.sapling().getId().getPath())).renderType("cutout"));
+        simpleBlock(set.pottedSapling().get(), models().withExistingParent("potted_" + set.id().getPath() + "_sapling", mcBlockModel("flower_pot_cross")).texture("plant", modBlockModel(set.sapling().getId().getPath())).renderType("cutout"));
     }
 
     private class MinejagoBlockModelGenerators extends BlockModelGenerators

@@ -23,6 +23,8 @@ public class MinejagoPaintingVariants
     public static final RegistryObject<PaintingVariant> NEEDS_HAIR_GEL = PAINTING_VARIANTS.register("needs_hair_gel", () -> new PaintingVariant(16, 32));
     public static final RegistryObject<PaintingVariant> THE_FOURTH_MOUNTAIN = PAINTING_VARIANTS.register("the_fourth_mountain", () -> new PaintingVariant(32, 32));
     public static final RegistryObject<PaintingVariant> NOT_FOR_FURNITURE = PAINTING_VARIANTS.register("not_for_furniture", () -> new PaintingVariant(16, 32));
+    public static final RegistryObject<PaintingVariant> IT_TAKES_A_VILLAGE = PAINTING_VARIANTS.register("it_takes_a_village", () -> new PaintingVariant(128, 64));
+    public static final RegistryObject<PaintingVariant> IT_TAKES_A_VILLAGE_WRECKED = PAINTING_VARIANTS.register("it_takes_a_village_wrecked", () -> new PaintingVariant(128, 64));
 
     public static void init() {}
 }

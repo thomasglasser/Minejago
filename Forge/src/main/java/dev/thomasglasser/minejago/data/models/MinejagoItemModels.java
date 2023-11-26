@@ -15,6 +15,8 @@ import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import static dev.thomasglasser.minejago.data.blockstates.MinejagoBlockStates.modBlockModel;
+
 public class MinejagoItemModels extends ItemModelProvider
 {
     public MinejagoItemModels(PackOutput output, ExistingFileHelper helper)
@@ -118,7 +120,17 @@ public class MinejagoItemModels extends ItemModelProvider
 
     protected void leavesSet(LeavesSet set)
     {
-        withExistingParent(set.leaves().getId().getPath(), modLoc("block/" + set.leaves().getId().getPath()));
-//        singleTexture(set.sapling().getId().getPath(), mcItemModel("generated"), "layer0", modItemModel(set.sapling().getId().getPath()));
+        withExistingParent(set.leaves().getId().getPath(), modBlockModel(set.leaves().getId().getPath()));
+        singleTexture(set.sapling().getId().getPath(), mcItemModel("generated"), "layer0", modBlockModel(set.sapling().getId().getPath()));
+    }
+
+    public static ResourceLocation modItemModel(String path)
+    {
+        return Minejago.modLoc("item/" + path);
+    }
+
+    public static ResourceLocation mcItemModel(String path)
+    {
+        return new ResourceLocation("item/" + path);
     }
 }

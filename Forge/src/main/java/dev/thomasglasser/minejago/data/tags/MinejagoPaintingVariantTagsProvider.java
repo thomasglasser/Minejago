@@ -30,6 +30,7 @@ public class MinejagoPaintingVariantTagsProvider extends PaintingVariantTagsProv
                 .add(MinejagoPaintingVariants.ICE.getResourceKey())
                 .add(MinejagoPaintingVariants.LIGHTNING.getResourceKey())
                 .add(MinejagoPaintingVariants.NEEDS_HAIR_GEL.getResourceKey())
-                .add(MinejagoPaintingVariants.NOT_FOR_FURNITURE.getResourceKey());
+                .add(MinejagoPaintingVariants.NOT_FOR_FURNITURE.getResourceKey())
+                .add(MinejagoPaintingVariants.IT_TAKES_A_VILLAGE.getResourceKey());
     }
 }
