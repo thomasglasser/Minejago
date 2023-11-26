@@ -52,7 +52,8 @@
     "fabricloader": ">=${fabric_loader_version}",
     "fabric-api": "*",
     "minecraft": ">=${minecraft_version}",
-    "cardinal-components": ">=${cca_version}",
+    "cardinal-components-base": ">=${cca_version}",
+    "cardinal-components-entity": ">=${cca_version}",
     "smartbrainlib": ">=${sbl_version}",
     "geckolib": ">=${geckolib_version}",
     "sherdsapi": ">=${sherdsapi_version}",
@@ -60,7 +61,8 @@
     "trimmed": ">=${trimmed_version}"
   },
   "recommends": {
-    "reach-entity-attributes": ">=${reachentityattributes_version}"
+    "reach-entity-attributes": ">=${reachentityattributes_version}",
+    "moonlight": ">={moonlight_version}"
   },
   "suggests": {
     "player-animator": ">=${playeranimator_version}",

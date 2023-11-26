@@ -7,6 +7,7 @@ import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.model.DefaultedItemGeoModel;
 
 public class NbtArmorGeoModel<T extends GeoAnimatable> extends DefaultedItemGeoModel<T> {
+    private final String nbtKey;
     private ResourceLocation location;
 
     /**
@@ -19,14 +20,15 @@ public class NbtArmorGeoModel<T extends GeoAnimatable> extends DefaultedItemGeoM
      *
      * @param assetSubpath
      */
-    public NbtArmorGeoModel(ResourceLocation assetSubpath) {
+    public NbtArmorGeoModel(ResourceLocation assetSubpath, String nbtKey) {
         super(assetSubpath);
+        this.nbtKey = nbtKey;
     }
 
     @Override
     public void setCustomAnimations(T animatable, long instanceId, AnimationState<T> animationState) {
         super.setCustomAnimations(animatable, instanceId, animationState);
-        location = ResourceLocation.of(animationState.getData(DataTickets.ITEMSTACK).getOrCreateTag().getString("Power"), ':');
+        location = ResourceLocation.of(animationState.getData(DataTickets.ITEMSTACK).getOrCreateTag().getString(nbtKey), ':');
     }
 
     public ResourceLocation getLocation() {

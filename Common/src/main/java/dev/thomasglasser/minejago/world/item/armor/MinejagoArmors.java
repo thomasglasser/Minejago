@@ -7,7 +7,6 @@ import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
 
 import java.util.ArrayList;
@@ -25,8 +24,8 @@ public class MinejagoArmors
     public static final SkeletalChestplateSet SKELETAL_CHESTPLATE_SET = new SkeletalChestplateSet();
     public static final RegistryObject<SamukaisChestplateItem> SAMUKAIS_CHESTPLATE = ARMOR.register("samukais_chestplate", () -> new SamukaisChestplateItem(MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
 
-    public static final ArmorSet BLACK_GI_SET = create("black_gi", "Black Gi", false, BlackGiItem.class, MinejagoArmorMaterials.BLACK_GI, DEFAULT_PROPERTIES);
-    public static final ArmorSet TRAINING_GI_SET = create("training_gi", "Training Gi", true, TrainingGiItem.class, MinejagoArmorMaterials.TRAINING_GI, DEFAULT_PROPERTIES);
+    public static final ArmorSet BLACK_GI_SET = create("black_gi", "Black Gi", false, BlackGiItem.class, DEFAULT_PROPERTIES);
+    public static final ArmorSet TRAINING_GI_SET = create("training_gi", "Training Gi", true, TrainingGiItem.class, DEFAULT_PROPERTIES);
 
     public static class SkeletalChestplateSet
     {
@@ -137,7 +136,7 @@ public class MinejagoArmors
         }
     }
 
-    private static ArmorSet create(String name, String displayName, boolean powered, Class<? extends ArmorItem> clazz, ArmorMaterial material, Item.Properties properties)
+    private static ArmorSet create(String name, String displayName, boolean powered, Class<? extends ArmorItem> clazz, Item.Properties properties)
     {
         Supplier<ArmorItem> headItem;
         Supplier<ArmorItem> chestItem;
@@ -146,28 +145,28 @@ public class MinejagoArmors
 
         headItem = () -> {
             try {
-                return clazz.getDeclaredConstructor(ArmorMaterial.class, ArmorItem.Type.class, Item.Properties.class).newInstance(material, ArmorItem.Type.HELMET, properties);
+                return clazz.getDeclaredConstructor(ArmorItem.Type.class, Item.Properties.class).newInstance(ArmorItem.Type.HELMET, properties);
             } catch (Exception e) {
                 throw new RuntimeException("Armor construction failed! Error: " + e);
             }
         };
         chestItem = () -> {
             try {
-                return clazz.getDeclaredConstructor(ArmorMaterial.class, ArmorItem.Type.class, Item.Properties.class).newInstance(material, ArmorItem.Type.CHESTPLATE, properties);
+                return clazz.getDeclaredConstructor(ArmorItem.Type.class, Item.Properties.class).newInstance(ArmorItem.Type.CHESTPLATE, properties);
             } catch (Exception e) {
                 throw new RuntimeException("Armor construction failed! Error: " + e);
             }
         };
         legsItem = () -> {
             try {
-                return clazz.getDeclaredConstructor(ArmorMaterial.class, ArmorItem.Type.class, Item.Properties.class).newInstance(material, ArmorItem.Type.LEGGINGS, properties);
+                return clazz.getDeclaredConstructor(ArmorItem.Type.class, Item.Properties.class).newInstance(ArmorItem.Type.LEGGINGS, properties);
             } catch (Exception e) {
                 throw new RuntimeException("Armor construction failed! Error: " + e);
             }
         };
         feetItem = () -> {
             try {
-                return clazz.getDeclaredConstructor(ArmorMaterial.class, ArmorItem.Type.class, Item.Properties.class).newInstance(material, ArmorItem.Type.BOOTS, properties);
+                return clazz.getDeclaredConstructor(ArmorItem.Type.class, Item.Properties.class).newInstance(ArmorItem.Type.BOOTS, properties);
             } catch (Exception e) {
                 throw new RuntimeException("Armor construction failed! Error: " + e);
             }

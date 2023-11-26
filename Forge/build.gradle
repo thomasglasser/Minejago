@@ -108,8 +108,8 @@ dependencies {
     runtimeOnly fg.deobf("maven.modrinth:huge-structure-blocks:${hugestructureblocks_version}")
     runtimeOnly fg.deobf("curse.maven:worldedit-225608:${worldedit_id}")
 
-    jarJar(group: "dev.thomasglasser.sherdsapi", name: "sherdsapi-neoforge-${minecraft_version}", version: "[${sherdsapi_version},${sherdsapi_next_major_version})")
-    jarJar(group: "dev.dhyces.trimmed", name: "trimmed-forge-${minecraft_version}", version: "[${trimmed_version},${trimmed_next_major_version})")
+    jarJar(group: "maven.modrinth", name: "sherdsapi", version: "[${sherdsapi_version},${sherdsapi_next_major_version})")
+    jarJar(group: "maven.modrinth", name: "trimmed", version: "[${trimmed_version},${trimmed_next_major_version})")
     jarJar(group: "dev._100media.capabilitysyncer", name: "capabilitysyncer", version: "[${capabilitysyncer_version},${capabilitysyncer_next_major_version})")
 }
 

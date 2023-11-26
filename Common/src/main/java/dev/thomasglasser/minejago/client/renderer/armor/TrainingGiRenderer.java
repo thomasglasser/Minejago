@@ -10,7 +10,7 @@ public class TrainingGiRenderer extends GeoArmorRenderer<TrainingGiItem> {
     private final NbtArmorGeoModel<?> model;
 
     public TrainingGiRenderer() {
-        super(new NbtArmorGeoModel<>(Minejago.modLoc("armor/training_gi")));
+        super(new NbtArmorGeoModel<>(Minejago.modLoc("armor/training_gi"), "Power"));
         model = (NbtArmorGeoModel<?>) this.getGeoModel();
     }
 

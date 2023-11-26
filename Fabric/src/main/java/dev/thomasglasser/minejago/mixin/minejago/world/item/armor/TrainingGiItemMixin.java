@@ -1,6 +1,5 @@
 package dev.thomasglasser.minejago.mixin.minejago.world.item.armor;
 
-import dev.thomasglasser.minejago.client.renderer.armor.TrainingGiRenderer;
 import dev.thomasglasser.minejago.world.item.FabricGeoItem;
 import dev.thomasglasser.minejago.world.item.armor.TrainingGiItem;
 import net.minecraft.client.model.HumanoidModel;
@@ -19,7 +18,8 @@ import java.util.function.Supplier;
 @Mixin(TrainingGiItem.class)
 public abstract class TrainingGiItemMixin implements FabricGeoItem
 {
-    Supplier<Object> renderProvider = GeoItem.makeRenderer((TrainingGiItem)(Object)this);
+    private final TrainingGiItem INSTANCE = ((TrainingGiItem)(Object)this);
+    Supplier<Object> renderProvider = GeoItem.makeRenderer(INSTANCE);
 
     @Override
     public Supplier<Object> getRenderProvider() {
@@ -34,7 +34,7 @@ public abstract class TrainingGiItemMixin implements FabricGeoItem
             @Override
             public @NotNull HumanoidModel<LivingEntity> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, HumanoidModel<LivingEntity> original) {
                 if (this.renderer == null)
-                    this.renderer = new TrainingGiRenderer();
+                    this.renderer = INSTANCE.newRenderer();
 
                 // This prepares our GeoArmorRenderer for the current render frame.
                 // These parameters may be null however, so we don't do anything further with them

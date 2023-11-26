@@ -36,8 +36,9 @@ public class MinejagoBlocks
 
     // POTS
     public static final BlockRegistryObject<Block> TEAPOT = registerBlockAndItemAndWrap("teapot", () -> new TeapotBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).instabreak().noOcclusion()), CreativeModeTabs.FUNCTIONAL_BLOCKS);
-    public static final BlockRegistryObject<Block> JASPOT = registerBlockAndItemAndWrap("jaspot", () -> new TeapotBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).instabreak().noOcclusion()), CreativeModeTabs.FUNCTIONAL_BLOCKS);
     public static final Map<DyeColor, BlockRegistryObject<Block>> TEAPOTS = teapots();
+    public static final BlockRegistryObject<Block> JASPOT = registerBlockAndItemAndWrap("jaspot", () -> new TeapotBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).instabreak().noOcclusion()), CreativeModeTabs.FUNCTIONAL_BLOCKS);
+    public static final BlockRegistryObject<Block> FLAME_TEAPOT = registerBlockAndItemAndWrap("flame_teapot", () -> new TeapotBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).instabreak().noOcclusion()), CreativeModeTabs.FUNCTIONAL_BLOCKS);
 
     public static final BlockRegistryObject<Block> GOLD_DISC = registerBlockAndItemAndWrap("gold_disc", () -> new DiscBlock(BlockBehaviour.Properties.of().instabreak().pushReaction(PushReaction.DESTROY)), CreativeModeTabs.BUILDING_BLOCKS);
     public static final BlockRegistryObject<Block> TOP_POST = registerBlockAndItemAndWrap("top_post", () -> new TopPostBlock(BlockBehaviour.Properties.of().instabreak().noCollission().pushReaction(PushReaction.DESTROY)), CreativeModeTabs.BUILDING_BLOCKS);
@@ -112,9 +113,10 @@ public class MinejagoBlocks
     public static List<Block> allPots()
     {
         List<Block> pots = new ArrayList<>();
-        pots.add(MinejagoBlocks.TEAPOT.get());
-        pots.add(MinejagoBlocks.JASPOT.get());
-        MinejagoBlocks.TEAPOTS.values().forEach(blockBlockRegistryObject -> pots.add(blockBlockRegistryObject.get()));
+        pots.add(TEAPOT.get());
+        TEAPOTS.values().forEach(blockBlockRegistryObject -> pots.add(blockBlockRegistryObject.get()));
+        pots.add(JASPOT.get());
+        pots.add(FLAME_TEAPOT.get());
         return pots;
     }
 

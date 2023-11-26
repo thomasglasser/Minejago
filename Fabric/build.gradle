@@ -25,6 +25,7 @@ dependencies {
     include modImplementation("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forgeconfigapiport_version}")
     include modImplementation("com.jamieswhiteshirt:reach-entity-attributes:$reachentityattributes_version")
     include modImplementation("maven.modrinth:sherdsapi:${sherdsapi_version}+Fabric")
+    include modImplementation("maven.modrinth:trimmed:${trimmed_version}+fabric")
 
     modImplementation "net.tslat.smartbrainlib:SmartBrainLib-fabric-${minecraft_version}:${sbl_version}"
     modImplementation "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}"
@@ -37,7 +38,6 @@ dependencies {
     modImplementation "net.tslat.tes:TES-fabric-${minecraft_version}:${tes_version}"
     modImplementation "maven.modrinth:moonlight:${moonlight_version}-fabric"
     modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-api:${cca_version}"
-    modImplementation "maven.modrinth:trimmed:${trimmed_version}+fabric"
 
     // Fabric Only
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"

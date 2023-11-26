@@ -88,11 +88,19 @@ public class MinejagoRecipes extends RecipeProvider {
                 .group("teapot")
                 .unlockedBy("has_self", has(MinejagoBlocks.JASPOT.get()))
                 .save(writer);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BREWING, MinejagoBlocks.FLAME_TEAPOT.get(), 1)
+                .requires(MinejagoBlocks.TEAPOTS.get(DyeColor.GRAY).get())
+                .requires(MinejagoItemTags.DYES_MAP.get(DyeColor.ORANGE))
+                .group("teapot")
+                .unlockedBy("has_self", has(MinejagoBlocks.FLAME_TEAPOT.get()))
+                .unlockedBy("has_orange_dye", has(MinejagoItemTags.DYES_MAP.get(DyeColor.ORANGE)))
+                .unlockedBy("has_teapot", has(MinejagoItemTags.TEAPOTS))
+                .save(writer);
 
         MinejagoBlocks.TEAPOTS.forEach((color, pot) ->
         {
             coloredTeapotFromColoredTerracotta(writer, pot.get(), ForgeRegistries.BLOCKS.getValue(new ResourceLocation(color.getName() + "_terracotta")));
-            coloredTeapotFromTeapotAndDye(writer, pot.get(), MinejagoItemTags.DYES_TAGS.get(color));
+            coloredTeapotFromTeapotAndDye(writer, pot.get(), MinejagoItemTags.DYES_MAP.get(color));
         });
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, MinejagoItems.SCROLL.get(), 1)

@@ -30,10 +30,10 @@ public class MinejagoBlockLoot extends BlockLootSubProvider {
     @Override
     public void generate() {
         add(MinejagoBlocks.TEAPOT.get(), createTeapotBlock(MinejagoBlocks.TEAPOT.get()));
-        add(MinejagoBlocks.JASPOT.get(), createTeapotBlock(MinejagoBlocks.JASPOT.get()));
-
         for (BlockRegistryObject<Block> pot : MinejagoBlocks.TEAPOTS.values())
             add(pot.get(), createTeapotBlock(pot.get()));
+        add(MinejagoBlocks.JASPOT.get(), createTeapotBlock(MinejagoBlocks.JASPOT.get()));
+        add(MinejagoBlocks.FLAME_TEAPOT.get(), createTeapotBlock(MinejagoBlocks.FLAME_TEAPOT.get()));
 
         dropSelf(MinejagoBlocks.GOLD_DISC.get());
         dropSelf(MinejagoBlocks.TOP_POST.get());

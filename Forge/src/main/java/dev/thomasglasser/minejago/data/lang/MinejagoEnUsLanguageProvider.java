@@ -101,9 +101,10 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(MinejagoItems.EMPTY_GOLDEN_WEAPONS_MAP.get(), "Empty Golden Weapons Map");
 
         add(MinejagoBlocks.TEAPOT.get(), "Teapot");
-        add(MinejagoBlocks.JASPOT.get(), "Jaspot");
         MinejagoBlocks.TEAPOTS.forEach((color, pot) ->
                 add(pot.get(), WordUtils.capitalize(color.getName().replace('_', ' ')) + " Teapot"));
+        add(MinejagoBlocks.JASPOT.get(), "Jaspot");
+        add(MinejagoBlocks.FLAME_TEAPOT.get(), "Flame Teapot");
 
         add(MinejagoBlocks.GOLD_DISC.get(), "Gold Disc");
         add(MinejagoBlocks.TOP_POST.get(), "Top Post");

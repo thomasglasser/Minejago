@@ -105,9 +105,6 @@ subprojects {
         maven {
             name = "Modrinth"
             url = "https://api.modrinth.com/maven"
-            content {
-                includeGroupAndSubgroups 'maven.modrinth'
-            }
         }
         maven {
             name = "CurseMaven"

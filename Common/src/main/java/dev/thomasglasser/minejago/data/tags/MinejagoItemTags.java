@@ -18,7 +18,7 @@ public class MinejagoItemTags
     public static final TagKey<Item> WOODEN_RODS = create("wooden_rods");
     public static final TagKey<Item> IRON_INGOTS = create("iron_ingots");
     public static final TagKey<Item> MEATS = create("meats");
-    public static final Map<DyeColor, TagKey<Item>> DYES_TAGS = dyesTags();
+    public static final Map<DyeColor, TagKey<Item>> DYES_MAP = dyesMap();
 
     public static final TagKey<Item> GOLDEN_WEAPONS = create("golden_weapons");
     public static final TagKey<Item> TEAPOTS = create("teapots");
@@ -38,7 +38,7 @@ public class MinejagoItemTags
     {
         return TagKey.create(Registries.ITEM, name);
     }
-    private static Map<DyeColor, TagKey<Item>> dyesTags()
+    private static Map<DyeColor, TagKey<Item>> dyesMap()
     {
         Map<DyeColor, TagKey<Item>> map = new HashMap<>();
         for (DyeColor color : DyeColor.values())

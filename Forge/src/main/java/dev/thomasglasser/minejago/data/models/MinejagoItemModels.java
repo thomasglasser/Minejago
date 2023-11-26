@@ -28,17 +28,20 @@ public class MinejagoItemModels extends ItemModelProvider
     {
         basicItemHandheld(MinejagoItems.BONE_KNIFE.get());
         basicItemHandheld(MinejagoItems.IRON_SHURIKEN.get());
-        MinejagoArmors.BLACK_GI_SET.getAll().forEach(item ->
+        MinejagoArmors.ARMOR_SETS.forEach(armorSet ->
         {
-            String nameForSlot = switch (MinejagoArmors.BLACK_GI_SET.getForItem(item.get())) {
-                case FEET -> "boots";
-                case LEGS -> "pants";
-                case CHEST -> "jacket";
-                case HEAD -> "hood";
-                default -> null;
-            };
+            armorSet.getAll().forEach(item ->
+            {
+                String nameForSlot = switch (armorSet.getForItem(item.get())) {
+                    case FEET -> "boots";
+                    case LEGS -> "pants";
+                    case CHEST -> "jacket";
+                    case HEAD -> "hood";
+                    default -> null;
+                };
 
-            singleTexture(item.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/black_gi_" + nameForSlot));
+                singleTexture(item.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/" + armorSet.getName() + "_" + nameForSlot));
+            });
         });
         MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
                 singleTexture(item.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/skeletal_chestplate_" + ((SkeletalChestplateItem)item.get()).getVariant().getColor().getName())));
@@ -56,6 +59,7 @@ public class MinejagoItemModels extends ItemModelProvider
         basicItem(MinejagoItems.FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE.get());
         basicItem(MinejagoBlocks.TEAPOT.asItem());
         basicItem(MinejagoBlocks.JASPOT.asItem());
+        basicItem(MinejagoBlocks.FLAME_TEAPOT.asItem());
         basicItem(MinejagoBlocks.GOLD_DISC.asItem());
         basicItem(MinejagoBlocks.TOP_POST.asItem());
         basicItem(MinejagoItems.SCROLL.get());

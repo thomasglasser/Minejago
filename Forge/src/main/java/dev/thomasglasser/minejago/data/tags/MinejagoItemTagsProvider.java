@@ -84,7 +84,7 @@ public class MinejagoItemTagsProvider extends ItemTagsProvider
                 .add(Items.IRON_INGOT)
                 .addOptionalTag(forgeLoc("ingots/iron"))
                 .addOptionalTag(cLoc("iron_ingots"));
-        MinejagoItemTags.DYES_TAGS.forEach((dyeColor, itemTagKey) ->
+        MinejagoItemTags.DYES_MAP.forEach((dyeColor, itemTagKey) ->
                 tag(itemTagKey)
                         .add(DyeItem.byColor(dyeColor))
                         .addOptionalTag(forgeLoc("dyes/" + dyeColor.getName()))

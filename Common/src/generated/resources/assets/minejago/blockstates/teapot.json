@@ -1,9 +1,27 @@
 {
   "variants": {
-    "filled=false": {
+    "facing=east,filled=false": {
       "model": "minejago:block/teapot"
     },
-    "filled=true": {
+    "facing=east,filled=true": {
+      "model": "minejago:block/teapot_filled"
+    },
+    "facing=north,filled=false": {
+      "model": "minejago:block/teapot"
+    },
+    "facing=north,filled=true": {
+      "model": "minejago:block/teapot_filled"
+    },
+    "facing=south,filled=false": {
+      "model": "minejago:block/teapot"
+    },
+    "facing=south,filled=true": {
+      "model": "minejago:block/teapot_filled"
+    },
+    "facing=west,filled=false": {
+      "model": "minejago:block/teapot"
+    },
+    "facing=west,filled=true": {
       "model": "minejago:block/teapot_filled"
     }
   }

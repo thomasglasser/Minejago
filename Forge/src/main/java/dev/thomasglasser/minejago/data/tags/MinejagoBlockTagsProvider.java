@@ -41,7 +41,8 @@ public class MinejagoBlockTagsProvider extends IntrinsicHolderTagsProvider<Block
 
         IntrinsicTagAppender<Block> pots = tag(MinejagoBlockTags.TEAPOTS);
         pots.add(MinejagoBlocks.TEAPOT.get(),
-                MinejagoBlocks.JASPOT.get());
+                MinejagoBlocks.JASPOT.get(),
+                MinejagoBlocks.FLAME_TEAPOT.get());
         for (BlockRegistryObject<Block> pot : MinejagoBlocks.TEAPOTS.values())
         {
             pots.add(pot.get());
