@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import dev.thomasglasser.minejago.client.model.CharacterModel;
+import dev.thomasglasser.minejago.client.renderer.entity.layers.geo.ElytraAndItemArmorGeoLayer;
 import dev.thomasglasser.minejago.world.entity.character.Character;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -17,7 +18,6 @@ import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.renderer.DynamicGeoEntityRenderer;
 import software.bernie.geckolib.renderer.layer.BlockAndItemGeoLayer;
-import software.bernie.geckolib.renderer.layer.ItemArmorGeoLayer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -41,7 +41,7 @@ public class CharacterRenderer<T extends Character> extends DynamicGeoEntityRend
         super(context, model);
 
         // Add some armor rendering
-        addRenderLayer(new ItemArmorGeoLayer<>(this) {
+        addRenderLayer(new ElytraAndItemArmorGeoLayer<>(this) {
             @Nullable
             @Override
             protected ItemStack getArmorItemForBone(GeoBone bone, T animatable) {
@@ -63,7 +63,7 @@ public class CharacterRenderer<T extends Character> extends DynamicGeoEntityRend
                     case LEFT_BOOT, RIGHT_BOOT -> EquipmentSlot.FEET;
                     case LEFT_ARMOR_LEG, RIGHT_ARMOR_LEG -> EquipmentSlot.LEGS;
                     case RIGHT_SLEEVE -> !animatable.isLeftHanded() ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
-                    case LEFT_SLEEVE -> animatable.isLeftHanded() ? EquipmentSlot.OFFHAND : EquipmentSlot.MAINHAND;
+                    case LEFT_SLEEVE -> !animatable.isLeftHanded() ? EquipmentSlot.OFFHAND : EquipmentSlot.MAINHAND;
                     case CHESTPLATE -> EquipmentSlot.CHEST;
                     case HELMET -> EquipmentSlot.HEAD;
                     default -> super.getEquipmentSlotForBone(bone, stack, animatable);
