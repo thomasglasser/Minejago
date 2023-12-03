@@ -4,6 +4,8 @@ import com.mojang.datafixers.util.Pair;
 import dev.thomasglasser.minejago.data.tags.MinejagoEntityTypeTags;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.util.MinejagoLevelUtils;
+import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
+import dev.thomasglasser.minejago.world.entity.skulkin.AbstractSkulkinVehicle;
 import dev.thomasglasser.minejago.world.entity.skulkin.SkulkinHorse;
 import dev.thomasglasser.minejago.world.entity.skulkin.SkullTruck;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.MeleeCompatibleSkeletonRaider;
@@ -61,7 +63,8 @@ public class FleeSkulkinRaidAndDespawn<T extends MeleeCompatibleSkeletonRaider> 
 				}
 				else
 				{
-					// TODO: Nearest bike
+					List<AbstractSkulkinVehicle> bikes = entity.level().getEntitiesOfClass(AbstractSkulkinVehicle.class, entity.getBoundingBox().inflate(8), bike -> bike.getType() == MinejagoEntityTypes.SKULL_MOTORBIKE.get() && bike.getControllingPassenger() == null);
+					if (!bikes.isEmpty()) entity.startRiding(bikes.get(0));
 				}
 			}
 			else

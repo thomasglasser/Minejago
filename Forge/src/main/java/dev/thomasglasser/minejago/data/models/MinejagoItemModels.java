@@ -87,6 +87,7 @@ public class MinejagoItemModels extends ItemModelProvider
         spawnEgg(MinejagoItems.EARTH_DRAGON_SPAWN_EGG.getId().getPath());
         spawnEgg(MinejagoItems.SAMUKAI_SPAWN_EGG.getId().getPath());
         spawnEgg(MinejagoItems.SKULL_TRUCK_SPAWN_EGG.getId().getPath());
+        spawnEgg(MinejagoItems.SKULL_MOTORBIKE_SPAWN_EGG.getId().getPath());
 
         withExistingParent(MinejagoItems.EMPTY_GOLDEN_WEAPONS_MAP.getId().getPath(), "item/map");
 

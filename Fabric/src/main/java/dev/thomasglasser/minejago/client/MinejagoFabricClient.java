@@ -138,6 +138,7 @@ public class MinejagoFabricClient implements ClientModInitializer {
         EntityRendererRegistry.register(MinejagoEntityTypes.EARTH_DRAGON.get(), context -> new DragonRenderer<>(context, new DragonModel<>(Minejago.modLoc("dragon/earth_dragon"))));
         EntityRendererRegistry.register(MinejagoEntityTypes.SAMUKAI.get(), SamukaiRenderer::new);
         EntityRendererRegistry.register(MinejagoEntityTypes.SKULL_TRUCK.get(), SkullTruckRenderer::new);
+        EntityRendererRegistry.register(MinejagoEntityTypes.SKULL_MOTORBIKE.get(), SkullMotorbikeRenderer::new);
 
         BlockEntityRenderers.register(MinejagoBlockEntityTypes.DRAGON_HEAD.get(), context -> new DragonHeadRenderer());
         BlockEntityRenderers.register(MinejagoBlockEntityTypes.BRUSHABLE.get(), BrushableBlockRenderer::new);

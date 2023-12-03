@@ -491,9 +491,9 @@ public class SkulkinRaid {
 			this.joinSkulkinRaid(i, raider, pos, false);
 			if (random.nextInt(10) + difficultyInstance.getDifficulty().getId() > 5) {
 				Mob raider2;
-//				if (MinejagoServerConfig.ENABLE_TECH.get())
-//					// TODO: Bike
-//				else
+				if (MinejagoServerConfig.ENABLE_TECH.get())
+					raider2 = MinejagoEntityTypes.SKULL_MOTORBIKE.get().create(level);
+				else
 					raider2 = MinejagoEntityTypes.SKULKIN_HORSE.get().create(level);
 				if (raider2 == null)
 					break;
