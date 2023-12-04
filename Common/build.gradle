@@ -43,6 +43,7 @@ dependencies {
     modCompileOnly "maven.modrinth:jade:${jade_version}"
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-forge:$rei_version"
     modCompileOnly "maven.modrinth:moonlight:${moonlight_version}-fabric"
+    modCompileOnly "maven.modrinth:lambdynamiclights:${lambdynamiclights_version}"
 }
 
 sourceSets.main.resources.srcDir './src/generated/resources'

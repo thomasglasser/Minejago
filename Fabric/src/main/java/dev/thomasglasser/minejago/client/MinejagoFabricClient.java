@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.client;
 
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
+import dev.lambdaurora.lambdynlights.api.DynamicLightsInitializer;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.animation.MinejagoPlayerAnimator;
 import dev.thomasglasser.minejago.client.model.*;
@@ -62,7 +63,8 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
-public class MinejagoFabricClient implements ClientModInitializer {
+public class MinejagoFabricClient implements ClientModInitializer, DynamicLightsInitializer
+{
     @Override
     public void onInitializeClient() {
         registerRenderers();
@@ -331,5 +333,11 @@ public class MinejagoFabricClient implements ClientModInitializer {
                 buf.release();
             });
         });
+    }
+
+    @Override
+    public void onInitializeDynamicLights()
+    {
+        MinejagoClientEvents.registerDynamicLights();
     }
 }

@@ -47,10 +47,6 @@ public class MinejagoItemTagsProvider extends ItemTagsProvider
                 MinejagoItems.IRON_KATANA.get());
         tag(MinejagoItemTags.GOLDEN_WEAPONS)
                 .add(MinejagoItems.SCYTHE_OF_QUAKES.get());
-        tagDynamicLight("dropped", 10)
-                .addTag(MinejagoItemTags.GOLDEN_WEAPONS);
-        tagDynamicLight("self", 10)
-                .addTag(MinejagoItemTags.GOLDEN_WEAPONS);
         MinejagoArmors.ARMOR_SETS.forEach(set ->
                 set.getAll().forEach(item ->
                 {
@@ -123,12 +119,6 @@ public class MinejagoItemTagsProvider extends ItemTagsProvider
         // Wood sets
         woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET);
         leavesSet(MinejagoBlocks.FOCUS_LEAVES_SET);
-    }
-
-    public TagAppender<Item> tagDynamicLight(String tag, int level)
-    {
-        level = Math.min(level, 15);
-        return tag(ItemTags.create(Minejago.Dependencies.DYNAMIC_LIGHTS.modLoc(tag + "_" + level)));
     }
 
     @Override

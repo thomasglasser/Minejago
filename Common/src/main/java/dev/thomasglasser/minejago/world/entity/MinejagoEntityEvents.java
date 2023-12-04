@@ -68,11 +68,11 @@ public class MinejagoEntityEvents
         int waitTicks = ((DataHolder)(player)).getPersistentData().getInt("WaitTicks");
         if (player instanceof ServerPlayer serverPlayer)
         {
-            if (serverPlayer.level().getDifficulty() == Difficulty.PEACEFUL && focusData.needsFocus() && player.tickCount % 10 == 0)
+            if ((serverPlayer.level().getDifficulty() == Difficulty.PEACEFUL || serverPlayer.getAbilities().instabuild) && focusData.needsFocus() && player.tickCount % 10 == 0)
                 focusData.setFocusLevel(focusData.getFocusLevel() + 1);
 
             int j = Mth.clamp(serverPlayer.getStats().getValue(Stats.CUSTOM.get(Stats.TIME_SINCE_REST)), 1, Integer.MAX_VALUE);
-            if (j >= 24000)
+            if (j >= 24000 && !serverPlayer.getAbilities().instabuild)
                 focusData.addExhaustion(FocusConstants.EXHAUSTION_INSOMNIA);
 
             if (!player.onGround())

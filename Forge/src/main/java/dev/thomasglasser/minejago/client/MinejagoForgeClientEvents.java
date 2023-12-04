@@ -8,8 +8,8 @@ import dev.thomasglasser.minejago.client.model.*;
 import dev.thomasglasser.minejago.client.particle.*;
 import dev.thomasglasser.minejago.client.renderer.block.DragonHeadRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.*;
-import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterLayer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.OgDevTeamLayer;
+import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterLayer;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
@@ -53,6 +53,7 @@ public class MinejagoForgeClientEvents {
     {
         if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled()) PlayerAnimationAccess.REGISTER_ANIMATION_EVENT.register(MinejagoPlayerAnimator::registerPlayerAnimation);
         MinejagoClientEvents.registerMenuScreens();
+        MinejagoClientEvents.registerDynamicLights();
     }
 
     public static void onRegisterLayers(EntityRenderersEvent.RegisterLayerDefinitions event)

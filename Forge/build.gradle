@@ -100,13 +100,12 @@ dependencies {
     implementation fg.deobf("maven.modrinth:sherdsapi:${sherdsapi_version}+Forge")
     implementation fg.deobf("maven.modrinth:trimmed:${trimmed_version}+forge")
     implementation fg.deobf("dev._100media.capabilitysyncer:capabilitysyncer:${capabilitysyncer_version}")
-
-    // Runtime Only Deps
-    runtimeOnly fg.deobf("curse.maven:dynamiclights-227874:${dynamiclights_id}")
+    implementation fg.deobf("maven.modrinth:ryoamiclights:${ryoamiclights_version}")
 
     // Runtime
     runtimeOnly fg.deobf("maven.modrinth:huge-structure-blocks:${hugestructureblocks_version}")
     runtimeOnly fg.deobf("curse.maven:worldedit-225608:${worldedit_id}")
+    runtimeOnly fg.deobf("maven.modrinth:obsidianui:${obsidianui_version}")
 
     jarJar(group: "maven.modrinth", name: "sherdsapi", version: "[${sherdsapi_version},${sherdsapi_next_major_version})")
     jarJar(group: "maven.modrinth", name: "trimmed", version: "[${trimmed_version},${trimmed_next_major_version})")
@@ -134,7 +133,7 @@ def replaceProperties = [
         forge_version: forge_version,
         minecraft_version: minecraft_version,
         playeranimator_version: playeranimator_version,
-        dynamiclights_version: dynamiclights_version,
+        ryoamiclights_version: ryoamiclights_version,
         moonlight_version: moonlight_version,
         sbl_version: sbl_version,
         geckolib_version: geckolib_version,

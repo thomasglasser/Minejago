@@ -68,11 +68,11 @@ ordering="NONE"
 side="CLIENT"
 [[dependencies.minejago]] #optional
 # the modid of the dependency
-modId="dynamiclights" #mandatory
+modId="ryoamiclights" #mandatory
 # Does this dependency have to exist - if not, ordering below must be specified
 mandatory=false #mandatory
 # The version range of the dependency
-versionRange="[${dynamiclights_version},)" #mandatory
+versionRange="[${ryoamiclights_version},)" #mandatory
 # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
 ordering="NONE"
 # Side this dependency is applied on - BOTH, CLIENT or SERVER

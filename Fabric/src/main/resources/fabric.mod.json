@@ -41,6 +41,9 @@
     ],
     "rei_client": [
       "dev.thomasglasser.minejago.client.rei.MinejagoREIClientPlugin"
+    ],
+    "dynamiclights": [
+      "dev.thomasglasser.minejago.client.MinejagoFabricClient"
     ]
   },
   "mixins": [

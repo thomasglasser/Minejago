@@ -105,7 +105,7 @@ public class Minejago {
 	public enum Dependencies
 	{
 		MOONLIGHT_LIB("moonlight"),
-		DYNAMIC_LIGHTS("dynamiclights", "lambdynlights"),
+		DYNAMIC_LIGHTS("ryoamiclights", "lambdynlights"),
 		TRIMMED("trimmed"),
 		SHERDSAPI("sherdsapi"),
 		PLAYER_ANIMATOR("playeranimator", "player-animator"),

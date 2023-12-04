@@ -38,13 +38,13 @@ dependencies {
     modImplementation "net.tslat.tes:TES-fabric-${minecraft_version}:${tes_version}"
     modImplementation "maven.modrinth:moonlight:${moonlight_version}-fabric"
     modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-api:${cca_version}"
+    modImplementation "maven.modrinth:lambdynamiclights:${lambdynamiclights_version}"
 
     // Fabric Only
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 
     // Runtime Only Deps
-    modRuntimeOnly "maven.modrinth:lambdynamiclights:${lambdynamiclights_version}"
     modRuntimeOnly "dev.lambdaurora:spruceui:${spruceui_version}"
 
     // Runtime
