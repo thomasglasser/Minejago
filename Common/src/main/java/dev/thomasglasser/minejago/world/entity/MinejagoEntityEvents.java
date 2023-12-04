@@ -1,11 +1,14 @@
 package dev.thomasglasser.minejago.world.entity;
 
+import com.google.common.util.concurrent.AtomicDouble;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleUtils;
 import dev.thomasglasser.minejago.core.particles.SpinjitzuParticleOptions;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
+import dev.thomasglasser.minejago.data.tags.MinejagoBlockTags;
+import dev.thomasglasser.minejago.data.tags.MinejagoItemTags;
 import dev.thomasglasser.minejago.network.*;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
@@ -31,15 +34,20 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.entity.decoration.Painting;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.npc.InventoryCarrier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 
+import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public class MinejagoEntityEvents
 {
@@ -132,7 +140,22 @@ public class MinejagoEntityEvents
             }
 
             if (focusData.isMeditating() && player.tickCount % 60 == 0)
-                focusData.increase(1, 0.1f);
+            {
+                AtomicDouble i = new AtomicDouble(1);
+                Stream<BlockState> blocks = serverPlayer.level().getBlockStates(player.getBoundingBox().inflate(2));
+                blocks.forEach(blockState ->
+                {
+                    if (blockState.is(MinejagoBlockTags.FOCUS_AMPLIFIERS)) i.addAndGet(0.2);
+                });
+                List<Entity> entities = serverPlayer.level().getEntities(serverPlayer, serverPlayer.getBoundingBox().inflate(2));
+                entities.forEach(entity ->
+                {
+                    if (entity instanceof ItemEntity item && item.getItem().is(MinejagoItemTags.FOCUS_AMPLIFIERS)) i.addAndGet(0.5);
+                    if (entity instanceof ItemFrame itemFrame && itemFrame.getItem().is(MinejagoItemTags.FOCUS_AMPLIFIERS)) i.addAndGet(0.5);
+                });
+                System.out.println(i.get());
+                focusData.increase((int) i.getAndSet(0), 0.1f);
+            }
         }
         else
         {

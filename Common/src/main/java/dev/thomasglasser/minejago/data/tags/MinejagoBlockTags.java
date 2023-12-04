@@ -13,6 +13,7 @@ public class MinejagoBlockTags
     public static final TagKey<Block> UNBREAKABLE = create("unbreakable");
     public static final TagKey<Block> TEAPOTS = create("teapots");
     public static final TagKey<Block> SHURIKEN_BREAKS = create("shuriken_breaks");
+    public static final TagKey<Block> FOCUS_AMPLIFIERS = create("focus_amplifiers");
 
     // Wood sets
     public static final TagKey<Block> ENCHANTED_LOGS = logs(MinejagoBlocks.ENCHANTED_WOOD_SET);

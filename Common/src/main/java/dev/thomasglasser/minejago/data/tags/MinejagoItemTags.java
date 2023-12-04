@@ -26,6 +26,7 @@ public class MinejagoItemTags
     public static final TagKey<Item> SCROLL_SHELF_SCROLLS = create("scroll_shelf_scrolls");
     public static final TagKey<Item> DRAGON_FOODS = create("dragon_foods");
     public static final TagKey<Item> DRAGON_TREATS = create("dragon_treats");
+    public static final TagKey<Item> FOCUS_AMPLIFIERS = create("focus_amplifiers");
 
     // Logs
     public static final TagKey<Item> ENCHANTED_LOGS = logs(MinejagoBlocks.ENCHANTED_WOOD_SET);

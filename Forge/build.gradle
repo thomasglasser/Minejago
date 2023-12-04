@@ -101,6 +101,7 @@ dependencies {
     implementation fg.deobf("maven.modrinth:trimmed:${trimmed_version}+forge")
     implementation fg.deobf("dev._100media.capabilitysyncer:capabilitysyncer:${capabilitysyncer_version}")
     implementation fg.deobf("maven.modrinth:ryoamiclights:${ryoamiclights_version}")
+//    compileOnly fg.deobf("maven.modrinth:ryoamiclights:${ryoamiclights_version}") // For forge datagen
 
     // Runtime
     runtimeOnly fg.deobf("maven.modrinth:huge-structure-blocks:${hugestructureblocks_version}")

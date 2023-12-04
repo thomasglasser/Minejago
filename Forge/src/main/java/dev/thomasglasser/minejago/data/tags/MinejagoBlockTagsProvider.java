@@ -61,6 +61,9 @@ public class MinejagoBlockTagsProvider extends IntrinsicHolderTagsProvider<Block
         tag(BlockTags.SAND)
                 .add(MinejagoBlocks.SUSPICIOUS_RED_SAND.get());
 
+        tag(MinejagoBlockTags.FOCUS_AMPLIFIERS)
+                .addTag(BlockTags.CANDLES);
+
         woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET);
         leavesSet(MinejagoBlocks.FOCUS_LEAVES_SET);
     }
