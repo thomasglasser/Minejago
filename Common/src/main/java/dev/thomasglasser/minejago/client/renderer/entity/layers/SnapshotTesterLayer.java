@@ -2,7 +2,6 @@ package dev.thomasglasser.minejago.client.renderer.entity.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.model.PilotsSnapshotTesterHatModel;
 import dev.thomasglasser.minejago.util.MinejagoClientUtils;
@@ -15,7 +14,6 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 
 import java.util.Calendar;
@@ -55,15 +53,7 @@ public class SnapshotTesterLayer<T extends LivingEntity> extends RenderLayer<T, 
     public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
         VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityCutout(getTextureLocation(entity)));
 
-        pilotsSnapshotTesterHatModel.body.copyFrom(getParentModel().getHead());
-        float f = Mth.lerp(partialTick, entity.yRotO, entity.getYRot()) - Mth.lerp(partialTick, entity.yBodyRotO, entity.yBodyRot);
-        float f1 = Mth.lerp(partialTick, entity.xRotO, entity.getXRot());
-        poseStack.pushPose();
-        poseStack.mulPose(Axis.YP.rotationDegrees(f));
-        poseStack.mulPose(Axis.XP.rotationDegrees(f1));
-        poseStack.translate(0.0D, -0.35D, 0.0D);
-        poseStack.mulPose(Axis.XP.rotationDegrees(-f1));
-        poseStack.mulPose(Axis.YP.rotationDegrees(-f));
+        getParentModel().getHead().translateAndRotate(poseStack);
         if (entity instanceof AbstractClientPlayer player)
         {
             if (MinejagoClientUtils.renderSnapshotTesterLayer(player))
@@ -76,6 +66,5 @@ public class SnapshotTesterLayer<T extends LivingEntity> extends RenderLayer<T, 
         }
         else
             pilotsSnapshotTesterHatModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-        poseStack.popPose();
     }
 }

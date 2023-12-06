@@ -36,10 +36,8 @@ public class OgDevTeamLayer<T extends LivingEntity> extends RenderLayer<T, Playe
     public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
         VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityCutout(getTextureLocation(entity)));
 
-        poseStack.pushPose();
-        getParentModel().getHead().translateAndRotate(poseStack);
+        poseStack.translate(0, -0.055, 0);
         if (!(entity instanceof AbstractClientPlayer) || MinejagoClientUtils.renderOgDevLayer((AbstractClientPlayer) entity))
             model.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-        poseStack.popPose();
     }
 }
