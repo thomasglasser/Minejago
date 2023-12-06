@@ -53,19 +53,17 @@ public class SnapshotTesterLayer<T extends LivingEntity> extends RenderLayer<T, 
 
     @Override
     public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
-        VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityTranslucent(getTextureLocation(entity)));
+        VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityCutout(getTextureLocation(entity)));
 
         pilotsSnapshotTesterHatModel.body.copyFrom(getParentModel().getHead());
-
         float f = Mth.lerp(partialTick, entity.yRotO, entity.getYRot()) - Mth.lerp(partialTick, entity.yBodyRotO, entity.yBodyRot);
         float f1 = Mth.lerp(partialTick, entity.xRotO, entity.getXRot());
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(f));
         poseStack.mulPose(Axis.XP.rotationDegrees(f1));
-        poseStack.translate(0.0D, 0.24D, 0.0D);
+        poseStack.translate(0.0D, -0.35D, 0.0D);
         poseStack.mulPose(Axis.XP.rotationDegrees(-f1));
         poseStack.mulPose(Axis.YP.rotationDegrees(-f));
-        poseStack.scale(1.3333334F, 1.3333334F, 1.3333334F);
         if (entity instanceof AbstractClientPlayer player)
         {
             if (MinejagoClientUtils.renderSnapshotTesterLayer(player))
