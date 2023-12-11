@@ -10,15 +10,14 @@ import java.util.Objects;
 public class PlayerAnimations
 {
     private static final List<KeyframeAnimation> SPINJITZU = AnimationSerializing.deserializeAnimation(new InputStreamReader(Objects.requireNonNull(PlayerAnimations.class.getClassLoader().getResourceAsStream("assets/minejago/animations/player/spinjitzu.animation.json"))));
-    // TODO: Meditation file
-//    private static final List<KeyframeAnimation> MEDITATION = AnimationSerializing.deserializeAnimation(new InputStreamReader(Objects.requireNonNull(PlayerAnimations.class.getClassLoader().getResourceAsStream("assets/minejago/animations/player/meditation.animation.json"))));
+    private static final List<KeyframeAnimation> MEDITATION = AnimationSerializing.deserializeAnimation(new InputStreamReader(Objects.requireNonNull(PlayerAnimations.class.getClassLoader().getResourceAsStream("assets/minejago/animations/player/meditation.animation.json"))));
 
     public enum Spinjitzu
     {
         START(SPINJITZU.get(0)),
         ACTIVE(SPINJITZU.get(1)),
-        WOBBLE(SPINJITZU.get(2))/*,
-        STOP(SPINJITZU.get(3))*/; // TODO: Stop anim
+        WOBBLE(SPINJITZU.get(2)),
+        FINISH(SPINJITZU.get(3));
 
         private final KeyframeAnimation animation;
 
@@ -32,12 +31,13 @@ public class PlayerAnimations
         }
     }
 
-    public enum Meditation // TODO: Meditation animations
+    public enum Meditation
     {
-        /*START(MEDITATION.get(0)),
-        ACTIVE(MEDITATION.get(1)),
-        WOBBLE(MEDITATION.get(2)),
-        STOP(SPINJITZU.get(3))*/;
+        START(MEDITATION.get(0)),
+        RISE(MEDITATION.get(1)),
+        FLOAT(MEDITATION.get(2)),
+        FALL(MEDITATION.get(3)),
+        FINISH(MEDITATION.get(4));
 
         private final KeyframeAnimation animation;
 

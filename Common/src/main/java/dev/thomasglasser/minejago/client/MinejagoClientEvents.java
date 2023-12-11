@@ -113,12 +113,12 @@ public class MinejagoClientEvents
     public static void onInput(int key)
     {
         Player mainClientPlayer = MinejagoClientUtils.getMainClientPlayer();
-        if (mainClientPlayer != null && key != GLFW.GLFW_KEY_ESCAPE)
+        if (mainClientPlayer != null && key != GLFW.GLFW_KEY_ESCAPE && !MinejagoKeyMappings.MEDITATE.isDown() && key != GLFW.GLFW_KEY_LEFT_SHIFT)
         {
             FocusData focusData = ((FocusDataHolder) mainClientPlayer).getFocusData();
             if (focusData.isMeditating() && ((DataHolder)mainClientPlayer).getPersistentData().getInt("WaitTicks") <= 0)
             {
-                Services.NETWORK.sendToServer(ServerboundStopMeditationPacket.class);
+                Services.NETWORK.sendToServer(ServerboundStopMeditationPacket.class, ServerboundStopMeditationPacket.toBytes(true));
                 focusData.setMeditating(false);
                 ((DataHolder) mainClientPlayer).getPersistentData().putInt("WaitTicks", 5);
             }

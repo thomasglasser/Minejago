@@ -3,7 +3,7 @@ package dev.thomasglasser.minejago.client;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.animation.MinejagoPlayerAnimator;
-import dev.thomasglasser.minejago.client.gui.Guis;
+import dev.thomasglasser.minejago.client.gui.MinejagoGuis;
 import dev.thomasglasser.minejago.client.model.*;
 import dev.thomasglasser.minejago.client.particle.*;
 import dev.thomasglasser.minejago.client.renderer.block.DragonHeadRenderer;
@@ -197,6 +197,6 @@ public class MinejagoForgeClientEvents {
 
     public static void onRegisterGuiOverlays(RegisterGuiOverlaysEvent event)
     {
-        event.registerAbove(new ResourceLocation("food_level"), "focus", (gui, guiGraphics, partialTick, screenWidth, screenHeight) -> Guis.renderFocusBar(guiGraphics, partialTick));
+        event.registerAbove(new ResourceLocation("food_level"), "focus", (gui, guiGraphics, partialTick, screenWidth, screenHeight) -> MinejagoGuis.renderFocusBar(guiGraphics, partialTick));
     }
 }

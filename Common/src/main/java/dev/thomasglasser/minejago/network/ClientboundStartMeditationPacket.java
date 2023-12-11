@@ -39,8 +39,7 @@ public class ClientboundStartMeditationPacket
         Player player = MinejagoClientUtils.getClientPlayerByUUID(uuid);
         ((FocusDataHolder)player).getFocusData().setMeditating(true);
 
-        // TODO: Meditation animations
         if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled())
-            MinejagoClientUtils.startAnimation(PlayerAnimations.Spinjitzu.START.getAnimation(), PlayerAnimations.Spinjitzu.ACTIVE.getAnimation(), player, FirstPersonMode.VANILLA);
+            MinejagoClientUtils.startAnimation(PlayerAnimations.Meditation.START.getAnimation(), null, player, FirstPersonMode.VANILLA);
     }
 }

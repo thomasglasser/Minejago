@@ -22,7 +22,10 @@ public class MinejagoForgeEntityEvents
     {
         Player player = event.player;
 
-        MinejagoEntityEvents.onPlayerTick(player);
+        if (event.phase == TickEvent.Phase.END)
+        {
+            MinejagoEntityEvents.onPlayerTick(player);
+        }
     }
 
     public static void onServerPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event)

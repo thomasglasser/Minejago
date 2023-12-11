@@ -97,19 +97,20 @@ dependencies {
     implementation fg.deobf("maven.modrinth:moonlight:${moonlight_version}-forge")
 
     // Forge Only
-    implementation fg.deobf("maven.modrinth:sherdsapi:${sherdsapi_version}+Forge")
+    implementation fg.deobf("maven.modrinth:sherdsapi:${sherdsapi_version}-forge")
     implementation fg.deobf("maven.modrinth:trimmed:${trimmed_version}+forge")
     implementation fg.deobf("dev._100media.capabilitysyncer:capabilitysyncer:${capabilitysyncer_version}")
-    implementation fg.deobf("maven.modrinth:ryoamiclights:${ryoamiclights_version}")
-//    compileOnly fg.deobf("maven.modrinth:ryoamiclights:${ryoamiclights_version}") // For forge datagen
+//    implementation fg.deobf("maven.modrinth:ryoamiclights:${ryoamiclights_version}")
+    compileOnly fg.deobf("maven.modrinth:ryoamiclights:${ryoamiclights_version}") // For forge datagen
 
     // Runtime
     runtimeOnly fg.deobf("maven.modrinth:huge-structure-blocks:${hugestructureblocks_version}")
     runtimeOnly fg.deobf("curse.maven:worldedit-225608:${worldedit_id}")
     runtimeOnly fg.deobf("maven.modrinth:obsidianui:${obsidianui_version}")
 
-    jarJar(group: "maven.modrinth", name: "sherdsapi", version: "[${sherdsapi_version},${sherdsapi_next_major_version})")
-    jarJar(group: "maven.modrinth", name: "trimmed", version: "[${trimmed_version},${trimmed_next_major_version})")
+    // TODO: Fix
+//    jarJar(group: "maven.modrinth", name: "sherdsapi", version: "[${sherdsapi_version},${sherdsapi_next_major_version})")
+//    jarJar(group: "maven.modrinth", name: "trimmed", version: "[${trimmed_version},${trimmed_next_major_version})")
     jarJar(group: "dev._100media.capabilitysyncer", name: "capabilitysyncer", version: "[${capabilitysyncer_version},${capabilitysyncer_next_major_version})")
 }
 

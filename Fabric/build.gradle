@@ -24,7 +24,7 @@ dependencies {
     include modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${playeranimator_version}")
     include modImplementation("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forgeconfigapiport_version}")
     include modImplementation("com.jamieswhiteshirt:reach-entity-attributes:$reachentityattributes_version")
-    include modImplementation("maven.modrinth:sherdsapi:${sherdsapi_version}+Fabric")
+    include modImplementation("maven.modrinth:sherdsapi:${sherdsapi_version}-fabric")
     include modImplementation("maven.modrinth:trimmed:${trimmed_version}+fabric")
 
     modImplementation "net.tslat.smartbrainlib:SmartBrainLib-fabric-${minecraft_version}:${sbl_version}"
@@ -90,6 +90,7 @@ def replaceProperties = [
         mod_name: mod_name,
         mod_author: mod_author,
         fabric_loader_version: fabric_loader_version,
+        fabric_version: fabric_version,
         minecraft_version: minecraft_version,
         cca_version: cca_version,
         sbl_version: sbl_version,
@@ -98,11 +99,11 @@ def replaceProperties = [
         forgeconfigapiport_version: forgeconfigapiport_version,
         trimmed_version: trimmed_version,
         reachentityattributes_version: reachentityattributes_version,
+        moonlight_version: moonlight_version,
         playeranimator_version: playeranimator_version,
         lambdynamiclights_version: lambdynamiclights_version,
         tes_version: tes_version,
-        jade_version: jade_version,
-        moonlight_version: moonlight_version
+        jade_version: jade_version
 ]
 
 processResources {

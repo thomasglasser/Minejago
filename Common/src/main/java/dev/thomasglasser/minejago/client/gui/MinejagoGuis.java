@@ -17,7 +17,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
-public class Guis
+public class MinejagoGuis
 {
 	private static final ResourceLocation EMPTY_FOCUS_LOCATION = Minejago.modLoc("textures/gui/focus_empty.png");
 	private static final ResourceLocation OUTER_HALF_FOCUS_LOCATION = Minejago.modLoc("textures/gui/focus_half_outer.png");
@@ -32,46 +32,46 @@ public class Guis
 			Gui gui = minecraft.gui;
 			Player player = MinejagoClientUtils.getMainClientPlayer();
 			LivingEntity livingEntity = gui.getPlayerVehicleWithHealth();
-			int x = gui.getVehicleMaxHearts(livingEntity);
-			if (x == 0) {
+			int vehicleMaxHearts = gui.getVehicleMaxHearts(livingEntity);
+			if (vehicleMaxHearts == 0) {
 				minecraft.getProfiler().popPush("focus");
 
 				FocusData focusData = ((FocusDataHolder)player).getFocusData();
-				int k = focusData.getFocusLevel();
-				int n = guiGraphics.guiWidth() / 2 + 91;
-				int o = guiGraphics.guiHeight() - 49;
+				int focusLevel = focusData.getFocusLevel();
+				int startX = guiGraphics.guiWidth() / 2 + 91;
+				int startY = guiGraphics.guiHeight() - 49;
 
-				for(int y = 0; y < 10; ++y) {
-					int z = o;
+				for(int i = 0; i < 10; ++i) {
+					int y = startY;
 
-					if (focusData.getSaturationLevel() <= 0.0F && partialTick % (k * 3 + 1) == 0) {
-						z = o + (RandomSource.create().nextInt(3) - 1);
+					if (focusData.getSaturationLevel() <= 0.0F && partialTick % (focusLevel * 3 + 1) == 0) {
+						y = startY + (minecraft.level.random.nextInt(3) - 1);
 					}
 
 					int color = MinejagoPowers.getPowerOrThrow(minecraft.level.registryAccess(), Services.DATA.getPowerData(player).power()).getColor().getValue();
 					
-					int ac = n - y * 8 - 9;
+					int x = startX - i * 8 - 9;
 
 					int xOff = FocusConfig.X_OFFSET.get();
 					int yOff = FocusConfig.Y_OFFSET.get();
 
-					ac += xOff;
-					z -= yOff;
+					x += xOff;
+					y -= yOff;
 
 					if ((Math.abs(xOff) < 80 && Math.abs(yOff) < 10) && (player.isEyeInFluid(FluidTags.WATER) || Math.min(player.getAirSupply(), player.getMaxAirSupply()) < player.getMaxAirSupply()))
-						z -= 10;
+						y -= 10;
 
-					guiGraphics.blit(EMPTY_FOCUS_LOCATION, ac, z, 0, 0, 9, 9, 9, 9);
-					if (y * 2 + 1 < k) {
-						renderEyes(guiGraphics, ac, z, OUTER_FULL_FOCUS_LOCATION, INNER_FULL_FOCUS_LOCATION, color);
+					guiGraphics.blit(EMPTY_FOCUS_LOCATION, x, y, 0, 0, 9, 9, 9, 9);
+					if (i * 2 + 1 < focusLevel) {
+						renderEyes(guiGraphics, x, y, OUTER_FULL_FOCUS_LOCATION, INNER_FULL_FOCUS_LOCATION, color);
 					}
 
-					if (y * 2 + 1 == k) {
-						renderEyes(guiGraphics, ac, z, OUTER_HALF_FOCUS_LOCATION, INNER_HALF_FOCUS_LOCATION, color);
+					if (i * 2 + 1 == focusLevel) {
+						renderEyes(guiGraphics, x, y, OUTER_HALF_FOCUS_LOCATION, INNER_HALF_FOCUS_LOCATION, color);
 					}
 				}
 			}
-
+			
 			minecraft.getProfiler().pop();
 		}
 	}

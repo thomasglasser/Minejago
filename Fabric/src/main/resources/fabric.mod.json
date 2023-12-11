@@ -43,7 +43,7 @@
       "dev.thomasglasser.minejago.client.rei.MinejagoREIClientPlugin"
     ],
     "dynamiclights": [
-      "dev.thomasglasser.minejago.client.MinejagoFabricClient"
+      "dev.thomasglasser.minejago.client.MinejagoDynamicLightsInitializer"
     ]
   },
   "mixins": [
@@ -53,7 +53,7 @@
 
   "depends": {
     "fabricloader": ">=${fabric_loader_version}",
-    "fabric-api": "*",
+    "fabric-api": ">=${fabric_version}",
     "minecraft": ">=${minecraft_version}",
     "cardinal-components-base": ">=${cca_version}",
     "cardinal-components-entity": ">=${cca_version}",
@@ -65,7 +65,7 @@
   },
   "recommends": {
     "reach-entity-attributes": ">=${reachentityattributes_version}",
-    "moonlight": ">={moonlight_version}"
+    "moonlight": ">=${moonlight_version}"
   },
   "suggests": {
     "player-animator": ">=${playeranimator_version}",

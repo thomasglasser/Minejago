@@ -80,7 +80,7 @@ public class MinejagoFabric implements ModInitializer {
         ServerPlayNetworking.registerGlobalReceiver(ServerboundStartMeditationPacket.ID, (server, player, handler, buf, responseSender) ->
                 new ServerboundStartMeditationPacket().handle(player));
         ServerPlayNetworking.registerGlobalReceiver(ServerboundStopMeditationPacket.ID, (server, player, handler, buf, responseSender) ->
-                new ServerboundStopMeditationPacket().handle(player));
+                new ServerboundStopMeditationPacket(buf).handle(player));
     }
 
     private void addBiomeModifications()

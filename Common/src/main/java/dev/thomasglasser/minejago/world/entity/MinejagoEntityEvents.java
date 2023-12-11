@@ -53,19 +53,29 @@ public class MinejagoEntityEvents
 {
     public static final Predicate<LivingEntity> NO_SPINJITZU = (player ->
             player.isCrouching() ||
+                    player.getVehicle() != null ||
+                    player.isVisuallySwimming() ||
+                    player.isUnderWater() ||
+                    player.isSleeping() ||
+                    player.isFreezing() ||
+                    player.isNoGravity() ||
+                    player.isInLava() ||
+                    player.isFallFlying() ||
+                    player.isBlocking() ||
+                    player.getActiveEffects().stream().anyMatch((mobEffectInstance -> mobEffectInstance.getEffect().getCategory() == MobEffectCategory.HARMFUL)) ||
+                    player.isInWater() ||
+                    ((DataHolder)player).getPersistentData().getInt("OffGroundTicks") > 30 ||
+                    ((FocusDataHolder)player).getFocusData().getFocusLevel() < FocusConstants.DOING_SPINJITZU_LEVEL);
+
+    public static final Predicate<LivingEntity> NO_MEDITATION = (player ->
+            player.isCrouching() ||
             player.getVehicle() != null ||
             player.isVisuallySwimming() ||
-            player.isUnderWater() ||
             player.isSleeping() ||
-            player.isFreezing() ||
             player.isNoGravity() ||
             player.isInLava() ||
             player.isFallFlying() ||
-            player.isBlocking() ||
-            player.getActiveEffects().stream().anyMatch((mobEffectInstance -> mobEffectInstance.getEffect().getCategory() == MobEffectCategory.HARMFUL)) ||
-            player.isInWater() ||
-            ((DataHolder)player).getPersistentData().getInt("OffGroundTicks") > 30 ||
-            ((FocusDataHolder)player).getFocusData().getFocusLevel() < FocusConstants.DOING_SPINJITZU_LEVEL);
+            !player.blockPosition().toString().equals(((DataHolder)player).getPersistentData().getString("StartPos")));
 
     public static void onPlayerTick(Player player)
     {
@@ -139,22 +149,36 @@ public class MinejagoEntityEvents
                 stopSpinjitzu(spinjitzu, serverPlayer, true);
             }
 
-            if (focusData.isMeditating() && player.tickCount % 60 == 0)
+            if (focusData.isMeditating())
             {
-                AtomicDouble i = new AtomicDouble(1);
-                Stream<BlockState> blocks = serverPlayer.level().getBlockStates(player.getBoundingBox().inflate(2));
-                blocks.forEach(blockState ->
+                if (NO_MEDITATION.test(serverPlayer))
                 {
-                    if (blockState.is(MinejagoBlockTags.FOCUS_AMPLIFIERS)) i.addAndGet(0.2);
-                });
-                List<Entity> entities = serverPlayer.level().getEntities(serverPlayer, serverPlayer.getBoundingBox().inflate(2));
-                entities.forEach(entity ->
+                    focusData.setMeditating(false);
+                    Services.NETWORK.sendToAllClients(ClientboundStopMeditationPacket.class, ClientboundStopMeditationPacket.toBytes(serverPlayer.getUUID(), false), serverPlayer.getServer());
+                }
+
+                if (player.tickCount % 60 == 0)
                 {
-                    if (entity instanceof ItemEntity item && item.getItem().is(MinejagoItemTags.FOCUS_AMPLIFIERS)) i.addAndGet(0.5);
-                    if (entity instanceof ItemFrame itemFrame && itemFrame.getItem().is(MinejagoItemTags.FOCUS_AMPLIFIERS)) i.addAndGet(0.5);
-                });
-                System.out.println(i.get());
-                focusData.increase((int) i.getAndSet(0), 0.1f);
+                    AtomicDouble i = new AtomicDouble(1);
+                    Stream<BlockState> blocks = serverPlayer.level().getBlockStates(player.getBoundingBox().inflate(2));
+                    blocks.forEach(blockState ->
+                    {
+                        if (blockState.is(MinejagoBlockTags.FOCUS_AMPLIFIERS)) i.addAndGet(0.2);
+                    });
+                    List<Entity> entities = serverPlayer.level().getEntities(serverPlayer, serverPlayer.getBoundingBox().inflate(2));
+                    entities.forEach(entity ->
+                    {
+                        if (entity instanceof ItemEntity item && item.getItem().is(MinejagoItemTags.FOCUS_AMPLIFIERS))
+                        {
+                            i.addAndGet(0.5);
+                        }
+                        if (entity instanceof ItemFrame itemFrame && itemFrame.getItem().is(MinejagoItemTags.FOCUS_AMPLIFIERS))
+                        {
+                            i.addAndGet(0.5);
+                        }
+                    });
+                    focusData.increase((int) i.getAndSet(0), 0.1f);
+                }
             }
         }
         else
@@ -180,7 +204,7 @@ public class MinejagoEntityEvents
                 if (focusData.isMeditating())
                 {
                     focusData.setMeditating(false);
-                    Services.NETWORK.sendToServer(ServerboundStopMeditationPacket.class);
+                    Services.NETWORK.sendToServer(ServerboundStopMeditationPacket.class, ServerboundStopMeditationPacket.toBytes(false));
                 }
                 else
                 {
@@ -197,7 +221,7 @@ public class MinejagoEntityEvents
                 if (focusData.isMeditating())
                 {
                     focusData.setMeditating(false);
-                    Services.NETWORK.sendToServer(ServerboundStopMeditationPacket.class);
+                    Services.NETWORK.sendToServer(ServerboundStopMeditationPacket.class, ServerboundStopMeditationPacket.toBytes(false));
                 }
                 ((DataHolder) player).getPersistentData().putInt("WaitTicks", 5);
             }
@@ -296,10 +320,7 @@ public class MinejagoEntityEvents
         if (spinjitzu.active())
         {
             Services.DATA.setSpinjitzuData(new SpinjitzuData(spinjitzu.unlocked(), false), serverPlayer);
-            if (fail)
-                Services.NETWORK.sendToAllClients(ClientboundFailSpinjitzuPacket.class, ClientboundFailSpinjitzuPacket.toBytes(serverPlayer.getUUID()), serverPlayer.getServer());
-            else
-                Services.NETWORK.sendToAllClients(ClientboundStopAnimationPacket.class, ClientboundStopAnimationPacket.toBytes(serverPlayer.getUUID()), serverPlayer.getServer());
+            Services.NETWORK.sendToAllClients(ClientboundStopSpinjitzuPacket.class, ClientboundStopSpinjitzuPacket.toBytes(serverPlayer.getUUID(), fail), serverPlayer.getServer());
             AttributeInstance speed = serverPlayer.getAttribute(Attributes.MOVEMENT_SPEED);
             if (speed != null && speed.hasModifier(SpinjitzuData.SPEED_MODIFIER))
                 speed.removeModifier(SpinjitzuData.SPEED_MODIFIER);

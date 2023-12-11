@@ -63,7 +63,7 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
-public class MinejagoFabricClient implements ClientModInitializer, DynamicLightsInitializer
+public class MinejagoFabricClient implements ClientModInitializer
 {
     @Override
     public void onInitializeClient() {
@@ -288,15 +288,6 @@ public class MinejagoFabricClient implements ClientModInitializer, DynamicLights
                 buf.release();
             });
         });
-        ClientPlayNetworking.registerGlobalReceiver(ClientboundFailSpinjitzuPacket.ID, (client, handler, buf, responseSender) ->
-        {
-            buf.retain();
-            client.execute(() ->
-            {
-                new ClientboundFailSpinjitzuPacket(buf).handle();
-                buf.release();
-            });
-        });
         ClientPlayNetworking.registerGlobalReceiver(ClientboundOpenPowerSelectionScreenPacket.ID, (client, handler, buf, responseSender) ->
         {
             buf.retain();
@@ -333,11 +324,23 @@ public class MinejagoFabricClient implements ClientModInitializer, DynamicLights
                 buf.release();
             });
         });
-    }
-
-    @Override
-    public void onInitializeDynamicLights()
-    {
-        MinejagoClientEvents.registerDynamicLights();
+        ClientPlayNetworking.registerGlobalReceiver(ClientboundStopSpinjitzuPacket.ID, (client, handler, buf, responseSender) ->
+        {
+            buf.retain();
+            client.execute(() ->
+            {
+                new ClientboundStopSpinjitzuPacket(buf).handle();
+                buf.release();
+            });
+        });
+        ClientPlayNetworking.registerGlobalReceiver(ClientboundStopMeditationPacket.ID, (client, handler, buf, responseSender) ->
+        {
+            buf.retain();
+            client.execute(() ->
+            {
+                new ClientboundStopMeditationPacket(buf).handle();
+                buf.release();
+            });
+        });
     }
 }

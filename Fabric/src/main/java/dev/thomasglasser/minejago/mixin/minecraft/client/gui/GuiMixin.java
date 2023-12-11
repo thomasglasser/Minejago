@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.mixin.minecraft.client.gui;
 
-import dev.thomasglasser.minejago.client.gui.Guis;
+import dev.thomasglasser.minejago.client.gui.MinejagoGuis;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import org.spongepowered.asm.mixin.Mixin;
@@ -17,6 +17,6 @@ public class GuiMixin
 	@Inject(method = "renderPlayerHealth", at = @At("TAIL"))
 	private void minejago_renderPlayerHealth(GuiGraphics guiGraphics, CallbackInfo ci)
 	{
-		Guis.renderFocusBar(guiGraphics, tickCount);
+		MinejagoGuis.renderFocusBar(guiGraphics, tickCount);
 	}
 }

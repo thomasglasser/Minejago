@@ -62,8 +62,8 @@ public class MinejagoMainChannel
                 .consumerMainThread((packet, context) -> packet.handle(context.get().getSender()))
                 .add();
         INSTANCE.messageBuilder(ServerboundStopMeditationPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder((buf) -> new ServerboundStopMeditationPacket())
-                .encoder((packet, buf) -> {})
+                .decoder(ServerboundStopMeditationPacket::new)
+                .encoder(ServerboundStopMeditationPacket::toBytes)
                 .consumerMainThread((packet, context) -> packet.handle(context.get().getSender()))
                 .add();
 
@@ -98,11 +98,6 @@ public class MinejagoMainChannel
                 .encoder(ClientboundStartScytheAnimationPacket::toBytes)
                 .consumerMainThread((packet, context) -> packet.handle())
                 .add();
-        INSTANCE.messageBuilder(ClientboundFailSpinjitzuPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(ClientboundFailSpinjitzuPacket::new)
-                .encoder(ClientboundFailSpinjitzuPacket::toBytes)
-                .consumerMainThread((packet, context) -> packet.handle())
-                .add();
         INSTANCE.messageBuilder(ClientboundOpenPowerSelectionScreenPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
                 .decoder(ClientboundOpenPowerSelectionScreenPacket::new)
                 .encoder(ClientboundOpenPowerSelectionScreenPacket::toBytes)
@@ -121,6 +116,16 @@ public class MinejagoMainChannel
         INSTANCE.messageBuilder(ClientboundStartMeditationPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
                 .decoder(ClientboundStartMeditationPacket::new)
                 .encoder(ClientboundStartMeditationPacket::toBytes)
+                .consumerMainThread((packet, context) -> packet.handle())
+                .add();
+        INSTANCE.messageBuilder(ClientboundStopSpinjitzuPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(ClientboundStopSpinjitzuPacket::new)
+                .encoder(ClientboundStopSpinjitzuPacket::toBytes)
+                .consumerMainThread((packet, context) -> packet.handle())
+                .add();
+        INSTANCE.messageBuilder(ClientboundStopMeditationPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(ClientboundStopMeditationPacket::new)
+                .encoder(ClientboundStopMeditationPacket::toBytes)
                 .consumerMainThread((packet, context) -> packet.handle())
                 .add();
     }
