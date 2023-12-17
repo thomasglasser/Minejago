@@ -19,12 +19,12 @@
   ],
   "contact": {
     "homepage": "https://github.com/thomasglasser/Minejago",
+    "sources": "https://github.com/thomasglasser/Minejago",
     "issues": "https://github.com/thomasglasser/Minejago/issues"
   },
 
   "license": "All Rights Reserved",
-  "icon": "assets/minejago/logo_1.0.png",
-
+  "icon": "assets/${mod_id}/logo_1.0.png",
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -47,9 +47,11 @@
     ]
   },
   "mixins": [
-    "minejago_fabric.mixins.json",
-    "minejago_common.mixins.json"
+    "${mod_id}_fabric.mixins.json",
+    "${mod_id}_common.mixins.json"
   ],
+
+  "accessWidener" : "${mod_id}.accesswidener",
 
   "depends": {
     "fabricloader": ">=${fabric_loader_version}",
@@ -76,13 +78,13 @@
     "jade": ">=${jade_version}"
   },
 
-  "accessWidener" : "minejago.accesswidener",
-
   "custom": {
     "cardinal-components": [
       "minejago:power",
       "minejago:spinjitzu"
-    ]
+    ],
+    "mc-publish": {
+      "loaders": ["fabric", "quilt"]
+    }
   }
 }
-  
