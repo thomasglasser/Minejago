@@ -39,13 +39,9 @@ public class MinejagoBiomeModifiers
 
         // Add spawns
         HolderSet<Biome> mountains = biomes.get(BiomeTags.IS_MOUNTAIN).orElseThrow();
-        context.register(register("add_cole"), addCharactersToBiomes(mountains, MinejagoEntityTypes.COLE.get()));
-        Holder.Reference<Biome> frozen_lakes = biomes.get(Biomes.FROZEN_RIVER).orElseThrow();
-        context.register(register("add_zane"), addCharactersToBiomes(HolderSet.direct(frozen_lakes), 100, MinejagoEntityTypes.ZANE.get()));
-
-        // Add charges
-        context.register(register("charge_cole"), addCharge(mountains, MinejagoEntityTypes.COLE.get(), 0.15, 0.7));
-//        context.register(register("charge_zane"), addCharge(HolderSet.direct(frozen_lakes), MinejagoEntityTypes.ZANE.get(), 0.3, 1.0));
+        context.register(register("add_cole"), addCharactersToBiomes(mountains, 100, MinejagoEntityTypes.COLE.get()));
+        Holder.Reference<Biome> frozen_river = biomes.get(Biomes.FROZEN_RIVER).orElseThrow();
+        context.register(register("add_zane"), addCharactersToBiomes(HolderSet.direct(frozen_river), 100, MinejagoEntityTypes.ZANE.get()));
 
         // Add features
         Holder.Reference<PlacedFeature> focusTrees = placedFeatures.getOrThrow(MinejagoVegetationPlacements.MEADOW_FOCUS_TREES);

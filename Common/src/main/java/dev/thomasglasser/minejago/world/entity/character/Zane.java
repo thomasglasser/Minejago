@@ -45,9 +45,8 @@ public class Zane extends Character
         return super.getMaxAirSupply() * 2;
     }
 
-    public static boolean checkSurfaceWaterAnimalSpawnRules(EntityType<?> animal, LevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        int i = level.getSeaLevel();
-        return pos.getY() <= i && level.getFluidState(pos.below()).is(FluidTags.WATER) && level.getBlockState(pos.above()).is(Blocks.WATER);
+    public static boolean checkZaneSpawnRules(EntityType<Zane> animal, LevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return Character.checkCharacterSpawnRules(Zane.class, animal, level, spawnType, pos, random) && level.getFluidState(pos).is(FluidTags.WATER) && level.getBlockState(pos.above()).is(Blocks.WATER);
     }
 
     @Override

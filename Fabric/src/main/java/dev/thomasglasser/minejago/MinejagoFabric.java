@@ -13,6 +13,8 @@ import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import dev.thomasglasser.minejago.packs.PackHolder;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityEvents;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
+import dev.thomasglasser.minejago.world.entity.character.Character;
+import dev.thomasglasser.minejago.world.entity.character.Cole;
 import dev.thomasglasser.minejago.world.entity.character.Zane;
 import dev.thomasglasser.minejago.world.focus.modifier.biome.BiomeFocusModifiers;
 import dev.thomasglasser.minejago.world.focus.modifier.blockstate.BlockStateFocusModifiers;
@@ -35,6 +37,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -120,14 +123,15 @@ public class MinejagoFabric implements ModInitializer {
 
     private void addBiomeModifications()
     {
-        BiomeModifications.addSpawn(context -> context.getBiomeKey() == Biomes.STONY_PEAKS, MobCategory.CREATURE, MinejagoEntityTypes.COLE.get(), 1, 1, 1);
-        BiomeModifications.addSpawn(context -> context.getBiomeKey() == Biomes.FROZEN_RIVER, MobCategory.WATER_CREATURE, MinejagoEntityTypes.ZANE.get(), 1, 1, 1);
+        BiomeModifications.addSpawn(context -> context.hasTag(BiomeTags.IS_MOUNTAIN), MobCategory.CREATURE, MinejagoEntityTypes.COLE.get(), 100, 1, 1);
+        BiomeModifications.addSpawn(context -> context.getBiomeKey() == Biomes.FROZEN_RIVER, MobCategory.WATER_CREATURE, MinejagoEntityTypes.ZANE.get(), 100, 1, 1);
 
         BiomeModifications.addFeature(biomeSelectionContext -> biomeSelectionContext.hasTag(MinejagoBiomeTags.HAS_FOCUS_TREES), GenerationStep.Decoration.VEGETAL_DECORATION, MinejagoVegetationPlacements.MEADOW_FOCUS_TREES);
     }
 
     private void registerEntitySpawnPlacements()
     {
-        SpawnPlacements.register(MinejagoEntityTypes.ZANE.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Zane::checkSurfaceWaterAnimalSpawnRules);
+        SpawnPlacements.register(MinejagoEntityTypes.ZANE.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.OCEAN_FLOOR_WG, Zane::checkZaneSpawnRules);
+        SpawnPlacements.register(MinejagoEntityTypes.COLE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ((entityType, serverLevelAccessor, mobSpawnType, blockPos, randomSource) -> Character.checkCharacterSpawnRules(Cole.class, entityType, serverLevelAccessor, mobSpawnType, blockPos, randomSource)));
     }
 }
