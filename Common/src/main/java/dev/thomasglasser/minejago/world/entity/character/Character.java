@@ -11,6 +11,10 @@ import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializer;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.sounds.SoundSource;
@@ -72,7 +76,18 @@ import java.util.List;
 
 public class Character extends AgeableMob implements SmartBrainOwner<Character>, GeoEntity, SpinjitzuDoer
 {
-    public static final RawAnimation SPIN = RawAnimation.begin().thenPlay("move.spinjitzu");
+    public static final RawAnimation SPINJITZU = RawAnimation.begin().thenPlay("move.spinjitzu");
+    public static final RawAnimation MEDITATION_START = RawAnimation.begin().thenPlay("move.meditation.start");
+    public static final RawAnimation MEDITATION_FLOAT = RawAnimation.begin().thenPlay("move.meditation.float");
+    public static final RawAnimation MEDITATION_FINISH = RawAnimation.begin().thenPlay("move.meditation.finish");
+
+    private static final EntityDataSerializer<MeditationStatus> MEDITATION_STATUS = EntityDataSerializer.simpleEnum(MeditationStatus.class);
+    private static final EntityDataAccessor<MeditationStatus> DATA_MEDITATION_STATUS = SynchedEntityData.defineId(Character.class, MEDITATION_STATUS);
+
+    static
+    {
+        EntityDataSerializers.registerSerializer(MEDITATION_STATUS);
+    }
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     protected boolean stopSpinjitzuOnNextStop;
@@ -106,6 +121,11 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
         tickBrain(this);
     }
 
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_MEDITATION_STATUS, MeditationStatus.STARTING);
+    }
+
     @Override
     public List<ExtendedSensor<Character>> getSensors() {
         return ObjectArrayList.of(
@@ -120,7 +140,7 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
     @Override
     public BrainActivityGroup<Character> getCoreTasks() {
         return BrainActivityGroup.coreTasks(
-                new FloatToSurfaceOfFluid<Character>().startCondition(this::shouldFloatToSurfaceOfFluid),
+                new FloatToSurfaceOfFluid<Character>().startCondition(this::shouldFloatToSurfaceOfFluid).whenStarting(this::onStartFloatingToSurfaceOfFluid).whenStopping(this::onStopFloatingToSurfaceOfFluid),
                 new SetWalkTargetToAttackTarget<>(),
                 new LookAtTargetSink(40, 300), 														// Look at the look target
                 new MoveToWalkTarget<>().whenStopping(this::onMoveToWalkTargetStopping));
@@ -153,6 +173,10 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
     {
         return true;
     }
+
+    public void onStartFloatingToSurfaceOfFluid(Character character) {}
+
+    public void onStopFloatingToSurfaceOfFluid(Character character) {}
 
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
@@ -195,12 +219,25 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
         controllerRegistrar.add(new AnimationController<GeoAnimatable>(this, "spinjitzu", animationState ->
         {
             if (isDoingSpinjitzu())
-                return animationState.setAndContinue(SPIN);
+                return animationState.setAndContinue(SPINJITZU);
 
             animationState.getController().forceAnimationReset();
 
             return PlayState.STOP;
         }));
+        controllerRegistrar.add(new AnimationController<GeoAnimatable>(this, "meditation", animationState ->
+            switch (getMeditationStatus())
+            {
+                case STARTING:
+                    yield animationState.setAndContinue(MEDITATION_START);
+                case FLOATING:
+                    yield animationState.setAndContinue(MEDITATION_FLOAT);
+                case FINISHING:
+                    yield animationState.setAndContinue(MEDITATION_FINISH);
+                default:
+                    yield PlayState.STOP;
+            }
+        ));
     }
 
     @Override
@@ -258,5 +295,23 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
             characters = level.getEntitiesOfClass(Character.class, AABB.ofSize(pos.getCenter(), 1024, 1024, 1024));
             return characters.isEmpty() && Mob.checkMobSpawnRules(character, level, spawnType, pos, random);
         }
+    }
+
+    public void setMeditationStatus(MeditationStatus meditationStatus)
+    {
+        this.entityData.set(DATA_MEDITATION_STATUS, meditationStatus);
+    }
+
+    public MeditationStatus getMeditationStatus()
+    {
+        return this.entityData.get(DATA_MEDITATION_STATUS);
+    }
+
+    public enum MeditationStatus
+    {
+        STARTING,
+        FLOATING,
+        FINISHING,
+        NONE
     }
 }

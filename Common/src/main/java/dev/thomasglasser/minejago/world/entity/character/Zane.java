@@ -36,6 +36,24 @@ public class Zane extends Character
     }
 
     @Override
+    public void onStartFloatingToSurfaceOfFluid(Character character)
+    {
+        setMeditationStatus(MeditationStatus.FINISHING);
+        super.onStartFloatingToSurfaceOfFluid(character);
+    }
+
+    @Override
+    public void onStopFloatingToSurfaceOfFluid(Character character)
+    {
+        System.out.println(character.getAirSupply());
+        if (character.onGround() || character.getAirSupply() < character.getMaxAirSupply() - 40 || character.getBrain().isActive(Activity.IDLE))
+            setMeditationStatus(MeditationStatus.NONE);
+        else
+            setMeditationStatus(MeditationStatus.STARTING);
+        super.onStopFloatingToSurfaceOfFluid(character);
+    }
+
+    @Override
     public boolean checkSpawnObstruction(LevelReader level) {
         return level.isUnobstructed(this);
     }
