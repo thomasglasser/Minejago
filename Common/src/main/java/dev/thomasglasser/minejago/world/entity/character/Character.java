@@ -191,6 +191,14 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
     }
 
+    @Override
+    public boolean removeWhenFarAway(double distanceToClosestPlayer)
+    {
+        List<? extends Character> list = level().getEntitiesOfClass(this.getClass(), getBoundingBox().inflate(1024));
+        list.remove(this);
+        return !list.isEmpty();
+    }
+
     public boolean shouldHelp(Character victim, LivingEntity helper)
     {
         LivingEntity helperTarget = null;

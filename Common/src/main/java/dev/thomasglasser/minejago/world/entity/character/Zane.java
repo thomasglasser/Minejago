@@ -45,8 +45,7 @@ public class Zane extends Character
     @Override
     public void onStopFloatingToSurfaceOfFluid(Character character)
     {
-        System.out.println(character.getAirSupply());
-        if (character.onGround() || character.getAirSupply() < character.getMaxAirSupply() - 40 || character.getBrain().isActive(Activity.IDLE))
+        if (character.onGround() || character.getAirSupply() < character.getMaxAirSupply() - 60)
             setMeditationStatus(MeditationStatus.NONE);
         else
             setMeditationStatus(MeditationStatus.STARTING);
