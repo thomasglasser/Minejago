@@ -13,7 +13,7 @@ public class ServerboundStartMeditationPacket
 
     // ON SERVER
     public void handle(ServerPlayer serverPlayer) {
-        ((FocusDataHolder)serverPlayer).getFocusData().setMeditating();
+        ((FocusDataHolder)serverPlayer).getFocusData().startMeditating();
         ((DataHolder)serverPlayer).getPersistentData().putString("StartPos", serverPlayer.blockPosition().toString());
         Services.NETWORK.sendToAllClients(ClientboundStartMeditationPacket.class, ClientboundStartMeditationPacket.toBytes(serverPlayer.getUUID()), serverPlayer.getServer());
     }

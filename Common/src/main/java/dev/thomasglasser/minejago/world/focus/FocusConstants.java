@@ -4,6 +4,8 @@ public class FocusConstants
 {
 	public static final int MAX_FOCUS = 20;
 	public static final int START_FOCUS = 2;
+	public static final int MIN_MEGA_FOCUS = 20;
+	public static final int MAX_MEGA_FOCUS = 40;
 	public static final float MAX_SATURATION = 20.0F;
 	public static final float START_SATURATION = 5.0F;
 	public static final float EXHAUSTION_DROP = 4.0F;

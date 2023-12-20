@@ -5,6 +5,7 @@ import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.animation.definitions.PlayerAnimations;
 import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.util.MinejagoPacketUtils;
+import dev.thomasglasser.minejago.world.focus.FocusData;
 import dev.thomasglasser.minejago.world.focus.FocusDataHolder;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -38,13 +39,14 @@ public class ClientboundStopMeditationPacket
     }
 
     public void handle() {
-        ((FocusDataHolder)MinejagoClientUtils.getClientPlayerByUUID(uuid)).getFocusData().setMeditating(false);
+        FocusData focusData = ((FocusDataHolder) MinejagoClientUtils.getClientPlayerByUUID(uuid)).getFocusData();
+        focusData.stopMeditating();
         if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled())
         {
             if (fail)
                 MinejagoClientUtils.stopAnimation(MinejagoClientUtils.getClientPlayerByUUID(uuid));
             else
-                MinejagoClientUtils.startAnimation(PlayerAnimations.Meditation.FINISH.getAnimation(), null, MinejagoClientUtils.getClientPlayerByUUID(uuid), FirstPersonMode.VANILLA);
+                MinejagoClientUtils.startAnimation(/*focusData.canDoMegaFocus() ? PlayerAnimations.Meditation.FALL.getAnimation() : */PlayerAnimations.Meditation.FINISH.getAnimation(), MinejagoClientUtils.getClientPlayerByUUID(uuid), FirstPersonMode.VANILLA);
         }
     }
 }

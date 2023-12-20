@@ -1,16 +1,50 @@
 package dev.thomasglasser.minejago.client;
 
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
-import dev.lambdaurora.lambdynlights.api.DynamicLightsInitializer;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.animation.MinejagoPlayerAnimator;
-import dev.thomasglasser.minejago.client.model.*;
+import dev.thomasglasser.minejago.client.model.BambooStaffModel;
+import dev.thomasglasser.minejago.client.model.DragonModel;
+import dev.thomasglasser.minejago.client.model.KrunchaModel;
+import dev.thomasglasser.minejago.client.model.NuckalModel;
+import dev.thomasglasser.minejago.client.model.OgDevTeamBeardModel;
+import dev.thomasglasser.minejago.client.model.PilotsSnapshotTesterHatModel;
+import dev.thomasglasser.minejago.client.model.ScytheModel;
+import dev.thomasglasser.minejago.client.model.SpearModel;
+import dev.thomasglasser.minejago.client.model.ThrownBoneKnifeModel;
+import dev.thomasglasser.minejago.client.model.ThrownIronShurikenModel;
 import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
 import dev.thomasglasser.minejago.client.renderer.block.DragonHeadRenderer;
-import dev.thomasglasser.minejago.client.renderer.entity.*;
+import dev.thomasglasser.minejago.client.renderer.entity.CharacterRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.DragonRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.EarthBlastRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.KrunchaRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.NuckalRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.SamukaiRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.SkulkinHorseRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.SkulkinRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.SkullMotorbikeRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.SkullTruckRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.ThrownBambooStaffRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.ThrownBoneKnifeRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.ThrownIronShurikenRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.ThrownIronSpearRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.WuRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.OgDevTeamLayer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterLayer;
-import dev.thomasglasser.minejago.network.*;
+import dev.thomasglasser.minejago.network.ClientboundChangeVipDataPacket;
+import dev.thomasglasser.minejago.network.ClientboundOpenPowerSelectionScreenPacket;
+import dev.thomasglasser.minejago.network.ClientboundOpenScrollPacket;
+import dev.thomasglasser.minejago.network.ClientboundRefreshVipDataPacket;
+import dev.thomasglasser.minejago.network.ClientboundSetFocusPacket;
+import dev.thomasglasser.minejago.network.ClientboundSpawnParticlePacket;
+import dev.thomasglasser.minejago.network.ClientboundStartMeditationPacket;
+import dev.thomasglasser.minejago.network.ClientboundStartMegaMeditationPacket;
+import dev.thomasglasser.minejago.network.ClientboundStartScytheAnimationPacket;
+import dev.thomasglasser.minejago.network.ClientboundStartSpinjitzuPacket;
+import dev.thomasglasser.minejago.network.ClientboundStopAnimationPacket;
+import dev.thomasglasser.minejago.network.ClientboundStopMeditationPacket;
+import dev.thomasglasser.minejago.network.ClientboundStopSpinjitzuPacket;
 import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
@@ -28,7 +62,11 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.client.rendering.v1.*;
+import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
@@ -321,6 +359,15 @@ public class MinejagoFabricClient implements ClientModInitializer
             client.execute(() ->
             {
                 new ClientboundStartMeditationPacket(buf).handle();
+                buf.release();
+            });
+        });
+        ClientPlayNetworking.registerGlobalReceiver(ClientboundStartMegaMeditationPacket.ID, (client, handler, buf, responseSender) ->
+        {
+            buf.retain();
+            client.execute(() ->
+            {
+                new ClientboundStartMegaMeditationPacket(buf).handle();
                 buf.release();
             });
         });

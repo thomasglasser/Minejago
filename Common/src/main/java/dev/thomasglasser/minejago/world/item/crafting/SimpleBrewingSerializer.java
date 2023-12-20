@@ -20,6 +20,7 @@ public class SimpleBrewingSerializer<T extends TeapotBrewingRecipe> implements R
         this.factory = cookieBaker;
     }
 
+    @Override
     public T fromJson(ResourceLocation recipeId, JsonObject json) {
         String string = GsonHelper.getAsString(json, "group", "");
         String base = GsonHelper.getAsString(json, "base");

@@ -47,10 +47,7 @@ public class ForgePowerDatagenSuite extends BasePowerDatagenSuite
         generator.addProvider(event.includeClient(), new ParticleDescriptionProvider(packOutput, event.getExistingFileHelper()) {
             @Override
             protected void addDescriptions() {
-                particleDescriptionTextures.forEach((particle, textures) ->
-                {
-                    spriteSet(particle.get().getType(), textures.remove(0), textures.toArray(new ResourceLocation[] {}));
-                });
+                particleDescriptionTextures.forEach((particle, textures) -> spriteSet(particle.get().getType(), textures.remove(0), textures.toArray(new ResourceLocation[] {})));
             }
 
             public String getName() {

@@ -116,9 +116,6 @@ public class MinejagoItemTagsProvider extends ItemTagsProvider
         tag(MinejagoItemTags.DRAGON_TREATS)
                 .add(Items.COOKED_SALMON);
 
-        tag(MinejagoItemTags.FOCUS_AMPLIFIERS)
-                .addTag(MinejagoItemTags.GOLDEN_WEAPONS);
-
         // Wood sets
         woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET);
         leavesSet(MinejagoBlocks.FOCUS_LEAVES_SET);

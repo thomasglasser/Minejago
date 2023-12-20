@@ -13,9 +13,10 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.FastColor;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+
+import javax.annotation.Nullable;
 
 public class MinejagoGuis
 {
@@ -24,6 +25,9 @@ public class MinejagoGuis
 	private static final ResourceLocation INNER_HALF_FOCUS_LOCATION = Minejago.modLoc("textures/gui/focus_half_inner.png");
 	private static final ResourceLocation OUTER_FULL_FOCUS_LOCATION = Minejago.modLoc("textures/gui/focus_full_outer.png");
 	private static final ResourceLocation INNER_FULL_FOCUS_LOCATION = Minejago.modLoc("textures/gui/focus_full_inner.png");
+	private static final ResourceLocation HALF_MEGA_FOCUS_LOCATION = Minejago.modLoc("textures/gui/mega_focus_half.png");
+	private static final ResourceLocation OUTER_FULL_MEGA_FOCUS_LOCATION = Minejago.modLoc("textures/gui/mega_focus_full_outer.png");
+	private static final ResourceLocation INNER_FULL_MEGA_FOCUS_LOCATION = Minejago.modLoc("textures/gui/mega_focus_full_inner.png");
 
 	public static void renderFocusBar(GuiGraphics guiGraphics, float partialTick)
 	{
@@ -62,13 +66,16 @@ public class MinejagoGuis
 						y -= 10;
 
 					guiGraphics.blit(EMPTY_FOCUS_LOCATION, x, y, 0, 0, 9, 9, 9, 9);
-					if (i * 2 + 1 < focusLevel) {
+					if (i * 2 + 1 < focusLevel)
 						renderEyes(guiGraphics, x, y, OUTER_FULL_FOCUS_LOCATION, INNER_FULL_FOCUS_LOCATION, color);
-					}
+					if (i * 2 + 21 < focusLevel)
+						renderEyes(guiGraphics, x, y, OUTER_FULL_MEGA_FOCUS_LOCATION, INNER_FULL_MEGA_FOCUS_LOCATION, color);
 
 					if (i * 2 + 1 == focusLevel) {
 						renderEyes(guiGraphics, x, y, OUTER_HALF_FOCUS_LOCATION, INNER_HALF_FOCUS_LOCATION, color);
 					}
+					if (i * 2 + 21 == focusLevel)
+						renderEyes(guiGraphics, x, y, HALF_MEGA_FOCUS_LOCATION, null, color);
 				}
 			}
 			
@@ -76,9 +83,9 @@ public class MinejagoGuis
 		}
 	}
 
-	private static void renderEyes(GuiGraphics guiGraphics, int x, int y, ResourceLocation outer, ResourceLocation inner, int color)
+	private static void renderEyes(GuiGraphics guiGraphics, int x, int y, ResourceLocation outer, @Nullable ResourceLocation inner, int color)
 	{
-		guiGraphics.innerBlit(inner, x, x + 9, y, y + 9, 0, 0, 1, 0, 1, FastColor.ARGB32.red(color) / 255f, FastColor.ARGB32.green(color) / 255f, FastColor.ARGB32.blue(color) / 255f, 1);
+		if (inner != null) guiGraphics.innerBlit(inner, x, x + 9, y, y + 9, 0, 0, 1, 0, 1, FastColor.ARGB32.red(color) / 255f, FastColor.ARGB32.green(color) / 255f, FastColor.ARGB32.blue(color) / 255f, 1);
 		guiGraphics.blit(outer, x, y, 0, 0, 9, 9, 9, 9);
 	}
 }

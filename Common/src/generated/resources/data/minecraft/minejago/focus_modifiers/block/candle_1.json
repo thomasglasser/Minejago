@@ -1,0 +1,12 @@
+{
+  "modifier": 0.25,
+  "operation": "addition",
+  "state": {
+    "Name": "minecraft:candle",
+    "Properties": {
+      "candles": "1",
+      "lit": "true",
+      "waterlogged": "false"
+    }
+  }
+}

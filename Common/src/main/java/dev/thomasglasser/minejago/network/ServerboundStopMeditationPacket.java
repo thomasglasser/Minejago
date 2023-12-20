@@ -31,7 +31,7 @@ public class ServerboundStopMeditationPacket
     }
 
     public void handle(ServerPlayer serverPlayer) {
-        ((FocusDataHolder)serverPlayer).getFocusData().setMeditating(false);
+        ((FocusDataHolder)serverPlayer).getFocusData().stopMeditating();
         Services.NETWORK.sendToAllClients(ClientboundStopMeditationPacket.class, ClientboundStopMeditationPacket.toBytes(serverPlayer.getUUID(), fail), serverPlayer.getServer());
     }
 }

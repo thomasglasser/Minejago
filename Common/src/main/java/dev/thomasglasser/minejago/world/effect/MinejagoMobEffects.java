@@ -53,16 +53,14 @@ public class MinejagoMobEffects
         @Override
         public void applyEffectTick(LivingEntity livingEntity, int amplifier)
         {
-            if (!livingEntity.level().isClientSide && livingEntity instanceof Player player) {
-                ((FocusDataHolder)player).getFocusData().increase(amplifier + 1, FocusConstants.FOCUS_SATURATION_MAX);
-            }
+            applyInstantenousEffect(null, null, livingEntity, amplifier, 1.0);
         }
 
         @Override
         public void applyInstantenousEffect(@Nullable Entity source, @Nullable Entity indirectSource, LivingEntity livingEntity, int amplifier, double health)
         {
             if (!livingEntity.level().isClientSide && livingEntity instanceof Player player) {
-                ((FocusDataHolder)player).getFocusData().increase(amplifier + 1, FocusConstants.FOCUS_SATURATION_MAX);
+                ((FocusDataHolder)player).getFocusData().increase(false, amplifier + 1, FocusConstants.FOCUS_SATURATION_MAX);
             }
         }
     });

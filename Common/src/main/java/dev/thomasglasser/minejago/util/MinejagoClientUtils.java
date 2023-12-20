@@ -163,6 +163,11 @@ public class MinejagoClientUtils {
 
     }
 
+    public static void startAnimation(KeyframeAnimation animation, Player player, FirstPersonMode firstPersonMode)
+    {
+        startAnimation(animation, null, player, firstPersonMode);
+    }
+
     public static void stopAnimation(AbstractClientPlayer player)
     {
         if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled())

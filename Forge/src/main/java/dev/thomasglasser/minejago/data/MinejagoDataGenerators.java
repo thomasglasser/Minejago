@@ -3,6 +3,7 @@ package dev.thomasglasser.minejago.data;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.data.advancements.MinejagoAdvancementProvider;
 import dev.thomasglasser.minejago.data.blockstates.MinejagoBlockStates;
+import dev.thomasglasser.minejago.data.focus.modifier.MinejagoFocusModifierProvider;
 import dev.thomasglasser.minejago.data.lang.MinejagoEnUsLanguageProvider;
 import dev.thomasglasser.minejago.data.lang.expansions.MinejagoImmersionPackEnUsLanguageProvider;
 import dev.thomasglasser.minejago.data.loot.MinejagoLootTables;
@@ -14,7 +15,16 @@ import dev.thomasglasser.minejago.data.recipes.MinejagoRecipes;
 import dev.thomasglasser.minejago.data.recipes.expansions.MinejagoPotionPotPackRecipes;
 import dev.thomasglasser.minejago.data.sherds.MinejagoForgeSherdDatagenSuite;
 import dev.thomasglasser.minejago.data.sounds.MinejagoSoundDefinitions;
-import dev.thomasglasser.minejago.data.tags.*;
+import dev.thomasglasser.minejago.data.tags.MinejagoBannerPatternTagsProvider;
+import dev.thomasglasser.minejago.data.tags.MinejagoBiomeTagsProvider;
+import dev.thomasglasser.minejago.data.tags.MinejagoBlockTagsProvider;
+import dev.thomasglasser.minejago.data.tags.MinejagoDimensionTypeTagsProvider;
+import dev.thomasglasser.minejago.data.tags.MinejagoEntityTypeTagsProvider;
+import dev.thomasglasser.minejago.data.tags.MinejagoGameEventTagsProvider;
+import dev.thomasglasser.minejago.data.tags.MinejagoItemTagsProvider;
+import dev.thomasglasser.minejago.data.tags.MinejagoPaintingVariantTagsProvider;
+import dev.thomasglasser.minejago.data.tags.MinejagoStructureTagsProvider;
+import dev.thomasglasser.minejago.data.tags.PowerTagsProvider;
 import dev.thomasglasser.minejago.data.trimmed.MinejagoTrimDatagenSuite;
 import dev.thomasglasser.minejago.data.worldgen.MinejagoProcessorLists;
 import dev.thomasglasser.minejago.data.worldgen.biome.MinejagoBiomeModifiers;
@@ -78,7 +88,7 @@ public class MinejagoDataGenerators
     {
         MinejagoBlockTagsProvider blockTags = new MinejagoBlockTagsProvider(packOutput, lookupProvider, existingFileHelper);
 
-        // LanugageProviders
+        // LanguageProviders
         LanguageProvider enUs = new MinejagoEnUsLanguageProvider(packOutput);
 
         // Modonomicons (on server)
@@ -116,6 +126,7 @@ public class MinejagoDataGenerators
         generator.addProvider(includeServer, new MinejagoBiomeTagsProvider(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(includeServer, new MinejagoStructureTagsProvider(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(includeServer, new MinejagoDimensionTypeTagsProvider(packOutput, lookupProvider, existingFileHelper));
+        generator.addProvider(includeServer, new MinejagoFocusModifierProvider(packOutput, lookupProvider));
 
         //Client
         generator.addProvider(includeClient, new MinejagoBlockStates(packOutput, existingFileHelper));

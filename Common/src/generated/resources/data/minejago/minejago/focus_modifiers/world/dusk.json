@@ -1,0 +1,11 @@
+{
+  "day_time": {
+    "type": "minecraft:uniform",
+    "value": {
+      "max_inclusive": 13000,
+      "min_inclusive": 12000
+    }
+  },
+  "modifier": 1.0,
+  "operation": "addition"
+}
