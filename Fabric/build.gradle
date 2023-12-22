@@ -35,8 +35,7 @@ dependencies {
     modImplementation("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}") {
         exclude group: "net.fabricmc.fabric-api"
     }
-//    modImplementation "com.klikli_dev:modonomicon-${minecraft_version}-fabric:${modonomicon_version}"
-    modImplementation "com.klikli_dev:modonomicon-1.20.2-fabric:${modonomicon_version}"
+    modImplementation "com.klikli_dev:modonomicon-${minecraft_version}-fabric:${modonomicon_version}"
     modImplementation "net.tslat.tes:TES-fabric-${minecraft_version}:${tes_version}"
     modImplementation "maven.modrinth:moonlight:fabric_${moonlight_version}"
     modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-api:${cca_version}"

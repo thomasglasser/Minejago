@@ -32,8 +32,7 @@ dependencies {
 
     modImplementation "net.tslat.smartbrainlib:SmartBrainLib-common-${minecraft_version}:${sbl_version}"
     modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-common:${forgeconfigapiport_version}"
-//    modImplementation "com.klikli_dev:modonomicon-${minecraft_version}-common:${modonomicon_version}"
-    modImplementation "com.klikli_dev:modonomicon-1.20.2-common:${modonomicon_version}"
+    modImplementation "com.klikli_dev:modonomicon-${minecraft_version}-common:${modonomicon_version}"
     modImplementation "net.tslat.tes:TES-common-${minecraft_version}:${tes_version}"
     modImplementation "mysticdrew:common-networking-common:${common_networking_version}"
 
@@ -45,8 +44,6 @@ dependencies {
     modCompileOnly "maven.modrinth:moonlight:fabric_${moonlight_version}"
     modCompileOnly "maven.modrinth:lambdynamiclights:${lambdynamiclights_version}"
 }
-
-sourceSets.main.resources.srcDir './src/generated/resources'
 
 import net.fabricmc.loom.task.AbstractRemapJarTask
 tasks.withType(AbstractRemapJarTask).each {
