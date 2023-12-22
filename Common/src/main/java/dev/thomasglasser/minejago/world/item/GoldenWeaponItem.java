@@ -3,8 +3,8 @@ package dev.thomasglasser.minejago.world.item;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.platform.Services;
-import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowersConfig;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
@@ -77,7 +77,7 @@ public abstract class GoldenWeaponItem extends SimpleFoiledItem
     public final InteractionResult useOn(UseOnContext pContext) {
         if (MinejagoPowersConfig.REQUIRE_FOR_GOLDEN_WEAPON.get())
         {
-            if (!canPowerHandle(Services.DATA.getPowerData(pContext.getPlayer()).power(), MinejagoPowers.POWERS.get(pContext.getLevel().registryAccess())))
+            if (!canPowerHandle(Services.DATA.getPowerData(pContext.getPlayer()).power(), pContext.getLevel().registryAccess().registryOrThrow(MinejagoRegistries.POWER)))
             {
                 if (MinejagoPowersConfig.WEAPON_GOES_CRAZY.get()) {
                     goCrazy(pContext.getPlayer());
@@ -112,7 +112,7 @@ public abstract class GoldenWeaponItem extends SimpleFoiledItem
     public final void releaseUsing(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity, int pTimeCharged) {
         if (pLivingEntity instanceof Player &&  MinejagoPowersConfig.REQUIRE_FOR_GOLDEN_WEAPON.get())
         {
-            if (!canPowerHandle(Services.DATA.getPowerData(pLivingEntity).power(), MinejagoPowers.POWERS.get(pLevel.registryAccess())))
+            if (!canPowerHandle(Services.DATA.getPowerData(pLivingEntity).power(), pLevel.registryAccess().registryOrThrow(MinejagoRegistries.POWER)))
             {
                 if (MinejagoPowersConfig.WEAPON_GOES_CRAZY.get()) {
                     goCrazy((Player) pLivingEntity);
@@ -140,7 +140,7 @@ public abstract class GoldenWeaponItem extends SimpleFoiledItem
     public final void onUseTick(Level level, LivingEntity livingEntity, ItemStack stack, int remainingUseDuration) {
         if (livingEntity instanceof Player &&  MinejagoPowersConfig.REQUIRE_FOR_GOLDEN_WEAPON.get())
         {
-            if (!canPowerHandle(Services.DATA.getPowerData(livingEntity).power(), MinejagoPowers.POWERS.get(level.registryAccess())))
+            if (!canPowerHandle(Services.DATA.getPowerData(livingEntity).power(), level.registryAccess().registryOrThrow(MinejagoRegistries.POWER)))
             {
                 if (MinejagoPowersConfig.WEAPON_GOES_CRAZY.get()) {
                     goCrazy((Player) livingEntity);

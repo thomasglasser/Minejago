@@ -23,7 +23,11 @@ import net.minecraft.world.level.storage.DimensionDataStorage;
 import net.minecraft.world.level.storage.LevelStorageSource;
 import net.minecraft.world.level.storage.ServerLevelData;
 import net.minecraft.world.level.storage.WritableLevelData;
-import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Mutable;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -58,8 +62,7 @@ public abstract class ServerLevelMixin extends Level implements SkulkinRaidsHold
 	@Inject(method = "<init>", at = @At("RETURN"))
 	private void minejago_init(MinecraftServer minecraftServer, Executor executor, LevelStorageSource.LevelStorageAccess levelStorageAccess, ServerLevelData serverLevelData, ResourceKey resourceKey, LevelStem levelStem, ChunkProgressListener chunkProgressListener, boolean bl, long l, List list, boolean bl2, RandomSequences randomSequences, CallbackInfo ci)
 	{
-		skulkinRaids = getDataStorage()
-				.computeIfAbsent(compoundTag -> SkulkinRaids.load(INSTANCE, compoundTag), () -> new SkulkinRaids(INSTANCE), SkulkinRaids.getFileId(dimensionTypeRegistration()));
+		skulkinRaids = this.getDataStorage().computeIfAbsent(SkulkinRaids.factory(INSTANCE), SkulkinRaids.getFileId(this.dimensionTypeRegistration()));
 		List<CustomSpawner> spawners = customSpawners;
 		customSpawners = new ArrayList<>();
 		customSpawners.addAll(spawners);

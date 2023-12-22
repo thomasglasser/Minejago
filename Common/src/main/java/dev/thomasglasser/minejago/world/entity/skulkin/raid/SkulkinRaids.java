@@ -12,6 +12,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.network.protocol.game.ClientboundEntityEventPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.saveddata.SavedData;
 import org.jetbrains.annotations.Nullable;
@@ -27,6 +28,10 @@ public class SkulkinRaids extends SavedData
 	private int nextAvailableID;
 	private int tick;
 	private boolean mapTaken;
+
+	public static SavedData.Factory<SkulkinRaids> factory(ServerLevel level) {
+		return new SavedData.Factory<SkulkinRaids>(() -> new SkulkinRaids(level), compoundTag -> SkulkinRaids.load(level, compoundTag), DataFixTypes.SAVED_DATA_RAIDS);
+	}
 
 	public SkulkinRaids(ServerLevel serverLevel) {
 		this.level = serverLevel;

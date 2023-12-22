@@ -38,7 +38,7 @@ public class TeapotBrewingCategory implements DisplayCategory<TeapotBrewingDispl
 	@Override
 	public Renderer getIcon()
 	{
-		return EntryStacks.of(MinejagoBlocks.TEAPOT.asItem());
+		return EntryStacks.of(MinejagoBlocks.TEAPOT.get().asItem());
 	}
 
 	@Override

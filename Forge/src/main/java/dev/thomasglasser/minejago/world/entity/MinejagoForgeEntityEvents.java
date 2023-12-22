@@ -1,20 +1,18 @@
 package dev.thomasglasser.minejago.world.entity;
 
-import dev.thomasglasser.minejago.platform.Services;
+import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.entity.character.Zane;
-import dev.thomasglasser.minejago.world.level.storage.SpinjitzuCapabilityAttacher;
-import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.TickEvent;
+import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.neoforge.event.entity.SpawnPlacementRegisterEvent;
+import net.neoforged.neoforge.event.entity.living.LivingEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 
 public class MinejagoForgeEntityEvents
 {
@@ -36,7 +34,14 @@ public class MinejagoForgeEntityEvents
     public static void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
         for (EntityType<? extends LivingEntity> type : MinejagoEntityTypes.getAllAttributes().keySet())
         {
-            event.put(type, MinejagoEntityTypes.getAllAttributes().get(type));
+            try
+            {
+                event.put(type, MinejagoEntityTypes.getAllAttributes().get(type));
+            }
+            catch (ClassCastException e)
+            {
+                Minejago.LOGGER.error("Non-living entity " + type + " has attributes registered!");
+            }
         }
     }
 
@@ -50,12 +55,6 @@ public class MinejagoForgeEntityEvents
     public static void onPlayerEntityInteract(PlayerInteractEvent.EntityInteract event)
     {
         MinejagoEntityEvents.onPlayerEntityInteract(event.getEntity(), event.getLevel(), event.getHand(), event.getTarget());
-    }
-
-    public static void onPlayerClone(PlayerEvent.Clone event)
-    {
-        event.getOriginal().getCapability(SpinjitzuCapabilityAttacher.SPINJITZU_CAPABILITY).ifPresent(spinjitzuCapability ->
-                Services.DATA.setSpinjitzuData(new SpinjitzuData(spinjitzuCapability.isUnlocked(), false), event.getEntity()));
     }
 
     public static void onSpawnPlacementsRegister(SpawnPlacementRegisterEvent event)

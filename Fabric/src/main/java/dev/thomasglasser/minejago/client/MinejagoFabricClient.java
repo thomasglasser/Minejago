@@ -1,17 +1,49 @@
 package dev.thomasglasser.minejago.client;
 
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
-import dev.lambdaurora.lambdynlights.api.DynamicLightsInitializer;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.animation.MinejagoPlayerAnimator;
-import dev.thomasglasser.minejago.client.model.*;
+import dev.thomasglasser.minejago.client.model.BambooStaffModel;
+import dev.thomasglasser.minejago.client.model.DragonModel;
+import dev.thomasglasser.minejago.client.model.KrunchaModel;
+import dev.thomasglasser.minejago.client.model.NuckalModel;
+import dev.thomasglasser.minejago.client.model.OgDevTeamBeardModel;
+import dev.thomasglasser.minejago.client.model.PilotsSnapshotTesterHatModel;
+import dev.thomasglasser.minejago.client.model.ScytheModel;
+import dev.thomasglasser.minejago.client.model.SpearModel;
+import dev.thomasglasser.minejago.client.model.ThrownBoneKnifeModel;
+import dev.thomasglasser.minejago.client.model.ThrownIronShurikenModel;
 import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
 import dev.thomasglasser.minejago.client.renderer.block.DragonHeadRenderer;
-import dev.thomasglasser.minejago.client.renderer.entity.*;
+import dev.thomasglasser.minejago.client.renderer.entity.CharacterRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.DragonRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.EarthBlastRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.KrunchaRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.NuckalRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.SamukaiRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.SkulkinHorseRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.SkulkinRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.SkullMotorbikeRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.SkullTruckRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.ThrownBambooStaffRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.ThrownBoneKnifeRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.ThrownIronShurikenRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.ThrownIronSpearRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.WuRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.OgDevTeamLayer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterLayer;
-import dev.thomasglasser.minejago.network.*;
-import dev.thomasglasser.minejago.registration.RegistryObject;
+import dev.thomasglasser.minejago.network.ClientboundChangeVipDataPacket;
+import dev.thomasglasser.minejago.network.ClientboundOpenPowerSelectionScreenPacket;
+import dev.thomasglasser.minejago.network.ClientboundOpenScrollPacket;
+import dev.thomasglasser.minejago.network.ClientboundRefreshVipDataPacket;
+import dev.thomasglasser.minejago.network.ClientboundSetFocusPacket;
+import dev.thomasglasser.minejago.network.ClientboundSpawnParticlePacket;
+import dev.thomasglasser.minejago.network.ClientboundStartMeditationPacket;
+import dev.thomasglasser.minejago.network.ClientboundStartScytheAnimationPacket;
+import dev.thomasglasser.minejago.network.ClientboundStartSpinjitzuPacket;
+import dev.thomasglasser.minejago.network.ClientboundStopAnimationPacket;
+import dev.thomasglasser.minejago.network.ClientboundStopMeditationPacket;
+import dev.thomasglasser.minejago.network.ClientboundStopSpinjitzuPacket;
 import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
@@ -28,7 +60,11 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.client.rendering.v1.*;
+import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
@@ -48,6 +84,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -62,6 +99,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+import java.util.function.Supplier;
 
 public class MinejagoFabricClient implements ClientModInitializer
 {
@@ -85,7 +123,7 @@ public class MinejagoFabricClient implements ClientModInitializer
             }
         });
 
-        for (RegistryObject<Item> item : MinejagoItems.ITEMS.getEntries())
+        for (Supplier<Item> item : MinejagoItems.ITEMS.getEntries())
         {
             if (item.get() instanceof ModeledItem)
             {
@@ -93,7 +131,7 @@ public class MinejagoFabricClient implements ClientModInitializer
             }
         }
 
-        for (RegistryObject<Item> item : MinejagoArmors.ARMOR.getEntries())
+        for (Supplier<? extends ArmorItem> item : MinejagoArmors.ALL)
         {
             if (item.get() instanceof ModeledItem)
             {
@@ -104,7 +142,7 @@ public class MinejagoFabricClient implements ClientModInitializer
         registerItemAndBlockColors();
 
         BlockRenderLayerMap.INSTANCE.putBlock(MinejagoBlocks.TEAPOT.get(), RenderType.cutout());
-        MinejagoBlocks.TEAPOTS.forEach((dyeColor, blockBlockRegistryObject) -> BlockRenderLayerMap.INSTANCE.putBlock(blockBlockRegistryObject.get(), RenderType.cutout()));
+        MinejagoBlocks.TEAPOTS.forEach((dyeColor, blockBlockSupplier) -> BlockRenderLayerMap.INSTANCE.putBlock(blockBlockSupplier.get(), RenderType.cutout()));
         BlockRenderLayerMap.INSTANCE.putBlock(MinejagoBlocks.JASPOT.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(MinejagoBlocks.FLAME_TEAPOT.get(), RenderType.cutout());
 

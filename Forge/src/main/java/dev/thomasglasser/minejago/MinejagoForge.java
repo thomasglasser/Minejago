@@ -5,31 +5,28 @@ import dev.thomasglasser.minejago.client.MinejagoForgeClientEvents;
 import dev.thomasglasser.minejago.commands.MinejagoForgeCommandEvents;
 import dev.thomasglasser.minejago.core.MinejagoForgeCoreEvents;
 import dev.thomasglasser.minejago.data.MinejagoDataGenerators;
-import dev.thomasglasser.minejago.data.worldgen.biome.MinejagoBiomeModifierSerializers;
+import dev.thomasglasser.minejago.platform.ForgeDataHelper;
+import dev.thomasglasser.minejago.platform.ForgeRegistrationHelper;
 import dev.thomasglasser.minejago.world.entity.MinejagoForgeEntityEvents;
-import dev.thomasglasser.minejago.world.level.storage.PowerCapabilityAttacher;
-import dev.thomasglasser.minejago.world.level.storage.SpinjitzuCapabilityAttacher;
-import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
-import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
+import net.neoforged.neoforge.client.event.InputEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.TickEvent;
 
 @Mod(Minejago.MOD_ID)
 public class MinejagoForge
 {
-    public MinejagoForge()
+    public MinejagoForge(IEventBus bus)
     {
+        ForgeRegistrationHelper.DEFERRED_REGISTERS.values().forEach(dr -> dr.register(bus));
+        ForgeDataHelper.ATTACHMENT_TYPES.register(bus);
+
         Minejago.init();
-
-        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-
-        MinejagoBiomeModifierSerializers.BIOME_MODIFIER_SERIALIZERS.register(bus);
-
+        
         bus.addListener(MinejagoForgeCoreEvents::onCommonSetup);
         if (FMLEnvironment.dist.isClient()) bus.addListener(MinejagoForgeClientEvents::onClientSetup);
 
@@ -38,8 +35,6 @@ public class MinejagoForge
 
         addForgeListeners();
         if (FMLEnvironment.dist.isClient()) addForgeClientListeners();
-
-        registerCapabilities();
 
         bus.addListener(MinejagoDataGenerators::gatherData);
 
@@ -71,24 +66,17 @@ public class MinejagoForge
 
     private void addForgeListeners()
     {
-        MinecraftForge.EVENT_BUS.addListener(MinejagoForgeEntityEvents::onLivingTick);
-        MinecraftForge.EVENT_BUS.addListener(MinejagoForgeEntityEvents::onPlayerEntityInteract);
-        MinecraftForge.EVENT_BUS.addListener(MinejagoForgeEntityEvents::onPlayerTick);
-        MinecraftForge.EVENT_BUS.addListener(MinejagoForgeEntityEvents::onServerPlayerLoggedIn);
-        MinecraftForge.EVENT_BUS.addListener(MinejagoForgeEntityEvents::onPlayerClone);
-        MinecraftForge.EVENT_BUS.addListener(MinejagoForgeCommandEvents::onCommandsRegister);
+        NeoForge.EVENT_BUS.addListener(MinejagoForgeEntityEvents::onLivingTick);
+        NeoForge.EVENT_BUS.addListener(MinejagoForgeEntityEvents::onPlayerEntityInteract);
+        NeoForge.EVENT_BUS.addListener(MinejagoForgeEntityEvents::onPlayerTick);
+        NeoForge.EVENT_BUS.addListener(MinejagoForgeEntityEvents::onServerPlayerLoggedIn);
+        NeoForge.EVENT_BUS.addListener(MinejagoForgeCommandEvents::onCommandsRegister);
     }
 
     private void addForgeClientListeners()
     {
-        MinecraftForge.EVENT_BUS.addListener((ClientPlayerNetworkEvent.LoggingIn event) -> MinejagoClientEvents.onPlayerLoggedIn());
-        MinecraftForge.EVENT_BUS.addListener((TickEvent.ClientTickEvent event) -> MinejagoClientEvents.onClientTick());
-        MinecraftForge.EVENT_BUS.addListener((InputEvent event) -> MinejagoClientEvents.onInput(event instanceof InputEvent.Key keyEvent ? keyEvent.getKey() : -1));
-    }
-
-    private void registerCapabilities()
-    {
-        PowerCapabilityAttacher.register();
-        SpinjitzuCapabilityAttacher.register();
+        NeoForge.EVENT_BUS.addListener((ClientPlayerNetworkEvent.LoggingIn event) -> MinejagoClientEvents.onPlayerLoggedIn());
+        NeoForge.EVENT_BUS.addListener((TickEvent.ClientTickEvent event) -> MinejagoClientEvents.onClientTick());
+        NeoForge.EVENT_BUS.addListener((InputEvent event) -> MinejagoClientEvents.onInput(event instanceof InputEvent.Key keyEvent ? keyEvent.getKey() : -1));
     }
 }

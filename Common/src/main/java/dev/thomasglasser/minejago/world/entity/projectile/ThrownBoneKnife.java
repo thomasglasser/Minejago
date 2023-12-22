@@ -20,7 +20,6 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
@@ -29,17 +28,14 @@ public class ThrownBoneKnife extends AbstractArrow
     private static final EntityDataAccessor<Byte> ID_LOYALTY = SynchedEntityData.defineId(ThrownBoneKnife.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<Boolean> ID_FOIL = SynchedEntityData.defineId(ThrownBoneKnife.class, EntityDataSerializers.BOOLEAN);
 
-    private ItemStack boneKnifeItem = new ItemStack(MinejagoItems.BONE_KNIFE.get());
-
     private boolean dealtDamage;
 
     public ThrownBoneKnife(EntityType<? extends ThrownBoneKnife> entity, Level level) {
-        super(entity, level);
+        super(entity, level, new ItemStack(MinejagoItems.BONE_KNIFE.get()));
     }
 
     public ThrownBoneKnife(Level pLevel, LivingEntity pShooter, ItemStack pStack) {
-        super(MinejagoEntityTypes.THROWN_BONE_KNIFE.get(), pShooter, pLevel);
-        this.boneKnifeItem = pStack.copy();
+        super(MinejagoEntityTypes.THROWN_BONE_KNIFE.get(), pShooter, pLevel, pStack);
         this.entityData.set(ID_LOYALTY, (byte) EnchantmentHelper.getLoyalty(pStack));
         this.entityData.set(ID_FOIL, pStack.hasFoil());
     }
@@ -93,10 +89,6 @@ public class ThrownBoneKnife extends AbstractArrow
         }
     }
 
-    protected @NotNull ItemStack getPickupItem() {
-        return this.boneKnifeItem.copy();
-    }
-
     public boolean isFoil() {
         return this.entityData.get(ID_FOIL);
     }
@@ -116,7 +108,7 @@ public class ThrownBoneKnife extends AbstractArrow
         Entity entity = pResult.getEntity();
         float f = 8.0F;
         if (entity instanceof LivingEntity livingentity) {
-            f += EnchantmentHelper.getDamageBonus(this.boneKnifeItem, livingentity.getMobType());
+            f += EnchantmentHelper.getDamageBonus(getPickupItem(), livingentity.getMobType());
         }
 
         Entity entity1 = this.getOwner();
@@ -160,17 +152,12 @@ public class ThrownBoneKnife extends AbstractArrow
      */
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
-        if (pCompound.contains("BoneKnife", 10)) {
-            this.boneKnifeItem = ItemStack.of(pCompound.getCompound("BoneKnife"));
-        }
-
         this.dealtDamage = pCompound.getBoolean("DealtDamage");
-        this.entityData.set(ID_LOYALTY, (byte)EnchantmentHelper.getLoyalty(this.boneKnifeItem));
+        this.entityData.set(ID_LOYALTY, (byte)EnchantmentHelper.getLoyalty(getPickupItemStackOrigin()));
     }
 
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
-        pCompound.put("BoneKnife", this.boneKnifeItem.save(new CompoundTag()));
         pCompound.putBoolean("DealtDamage", this.dealtDamage);
     }
 

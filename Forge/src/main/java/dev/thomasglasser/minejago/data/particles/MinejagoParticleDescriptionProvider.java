@@ -3,10 +3,11 @@ package dev.thomasglasser.minejago.data.particles;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import net.minecraft.data.PackOutput;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.common.data.ParticleDescriptionProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.data.ParticleDescriptionProvider;
 
-public class MinejagoParticleDescriptionProvider extends ParticleDescriptionProvider {
+public class MinejagoParticleDescriptionProvider extends ParticleDescriptionProvider
+{
     public MinejagoParticleDescriptionProvider(PackOutput output, ExistingFileHelper fileHelper) {
         super(output, fileHelper);
     }

@@ -1,16 +1,16 @@
 package dev.thomasglasser.minejago.client.renderer.entity.layers;
 
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class LayersConfig
 {
-    public static ForgeConfigSpec.BooleanValue DISPLAY_SNAPSHOT;
-    public static ForgeConfigSpec.EnumValue<SnapshotTesterLayerOptions> SNAPSHOT_CHOICE;
+    public static ModConfigSpec.BooleanValue DISPLAY_SNAPSHOT;
+    public static ModConfigSpec.EnumValue<SnapshotTesterLayerOptions> SNAPSHOT_CHOICE;
 
-    public static ForgeConfigSpec.BooleanValue DISPLAY_DEV;
-    public static ForgeConfigSpec.BooleanValue DISPLAY_OG_DEV;
+    public static ModConfigSpec.BooleanValue DISPLAY_DEV;
+    public static ModConfigSpec.BooleanValue DISPLAY_OG_DEV;
 
-    public static void registerClient(ForgeConfigSpec.Builder builder)
+    public static void registerClient(ModConfigSpec.Builder builder)
     {
         builder.comment("Settings for player layers").push("layers");
 

@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.world.entity.character;
 
 import com.mojang.datafixers.util.Pair;
+import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.network.ClientboundOpenPowerSelectionScreenPacket;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.world.entity.ai.behavior.GivePowerAndGi;
@@ -78,7 +79,7 @@ public class Wu extends Character
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (player.getInventory().hasAnyMatching(itemStack -> itemStack.is(Items.FILLED_MAP) && itemStack.getOrCreateTag().getBoolean("IsFourWeaponsMap")))
         {
-            Registry<Power> registry = MinejagoPowers.POWERS.get(level().registryAccess());
+            Registry<Power> registry = level().registryAccess().registryOrThrow(MinejagoRegistries.POWER);
 
             if (!MinejagoPowersConfig.DRAIN_POOL.get() || (powersToGive.size() <= 1)) {
                 powersToGive = new ArrayList<>(registry.registryKeySet());

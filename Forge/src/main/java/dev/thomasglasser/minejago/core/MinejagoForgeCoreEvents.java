@@ -9,12 +9,13 @@ import dev.thomasglasser.minejago.network.MinejagoMainChannel;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import dev.thomasglasser.minejago.packs.PackHolder;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.packs.PackResources;
+import net.minecraft.server.packs.PathPackResources;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
-import net.minecraftforge.event.AddPackFindersEvent;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.resource.PathPackResources;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.event.AddPackFindersEvent;
 
 public class MinejagoForgeCoreEvents {
     public static void onCommonSetup(FMLCommonSetupEvent event)
@@ -35,8 +36,19 @@ public class MinejagoForgeCoreEvents {
             if (event.getPackType() == holder.type())
             {
                 var resourcePath = ModList.get().getModFileById(Minejago.MOD_ID).getFile().findResource("resourcepacks/" + holder.id().getPath());
-                var pack = Pack.readMetaAndCreate("builtin/" + holder.id().getPath(), Component.translatable(holder.titleKey()), holder.required(),
-                        (path) -> new PathPackResources(path, true, resourcePath), holder.type(), Pack.Position.BOTTOM, PackSource.FEATURE);
+                var pack = Pack.readMetaAndCreate("builtin/" + holder.id().getPath(), Component.translatable(holder.titleKey()), holder.required(), new Pack.ResourcesSupplier() {
+                    @Override
+                    public PackResources openPrimary(String s)
+                    {
+                        return new PathPackResources(s, resourcePath, true);
+                    }
+
+                    @Override
+                    public PackResources openFull(String s, Pack.Info info)
+                    {
+                        return new PathPackResources(s, resourcePath, true);
+                    }
+                }, holder.type(), Pack.Position.BOTTOM, PackSource.FEATURE);
                 event.addRepositorySource((packConsumer) -> packConsumer.accept(pack));
             }
         }

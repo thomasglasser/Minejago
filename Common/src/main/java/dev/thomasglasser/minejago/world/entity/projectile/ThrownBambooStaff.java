@@ -27,17 +27,14 @@ public class ThrownBambooStaff extends AbstractArrow
     private static final EntityDataAccessor<Byte> ID_LOYALTY = SynchedEntityData.defineId(ThrownBambooStaff.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<Boolean> ID_FOIL = SynchedEntityData.defineId(ThrownBambooStaff.class, EntityDataSerializers.BOOLEAN);
 
-    private ItemStack bambooStaffItem = new ItemStack(MinejagoItems.BAMBOO_STAFF.get());
-
     private boolean dealtDamage;
 
     public ThrownBambooStaff(EntityType<? extends ThrownBambooStaff> entity, Level level) {
-        super(entity, level);
+        super(entity, level, new ItemStack(MinejagoItems.BAMBOO_STAFF.get()));
     }
 
     public ThrownBambooStaff(Level pLevel, LivingEntity pShooter, ItemStack pStack) {
-        super(MinejagoEntityTypes.THROWN_BAMBOO_STAFF.get(), pShooter, pLevel);
-        this.bambooStaffItem = pStack.copy();
+        super(MinejagoEntityTypes.THROWN_BAMBOO_STAFF.get(), pShooter, pLevel, pStack);
         this.entityData.set(ID_LOYALTY, (byte) EnchantmentHelper.getLoyalty(pStack));
         this.entityData.set(ID_FOIL, pStack.hasFoil());
     }
@@ -90,10 +87,6 @@ public class ThrownBambooStaff extends AbstractArrow
         }
     }
 
-    protected ItemStack getPickupItem() {
-        return this.bambooStaffItem.copy();
-    }
-
     public boolean isFoil() {
         return this.entityData.get(ID_FOIL);
     }
@@ -113,7 +106,7 @@ public class ThrownBambooStaff extends AbstractArrow
         Entity entity = pResult.getEntity();
         float f = 8.0F;
         if (entity instanceof LivingEntity livingentity) {
-            f += EnchantmentHelper.getDamageBonus(this.bambooStaffItem, livingentity.getMobType());
+            f += EnchantmentHelper.getDamageBonus(getPickupItem(), livingentity.getMobType());
         }
 
         Entity entity1 = this.getOwner();
@@ -157,17 +150,12 @@ public class ThrownBambooStaff extends AbstractArrow
      */
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
-        if (pCompound.contains("BambooStaff", 10)) {
-            this.bambooStaffItem = ItemStack.of(pCompound.getCompound("BambooStaff"));
-        }
-
         this.dealtDamage = pCompound.getBoolean("DealtDamage");
-        this.entityData.set(ID_LOYALTY, (byte)EnchantmentHelper.getLoyalty(this.bambooStaffItem));
+        this.entityData.set(ID_LOYALTY, (byte)EnchantmentHelper.getLoyalty(this.getPickupItemStackOrigin()));
     }
 
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
-        pCompound.put("BambooStaff", this.bambooStaffItem.save(new CompoundTag()));
         pCompound.putBoolean("DealtDamage", this.dealtDamage);
     }
 

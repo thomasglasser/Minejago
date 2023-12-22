@@ -144,7 +144,7 @@ versionRange="[${tes_version},)" #mandatory
 ordering="NONE"
 # Side this dependency is applied on - BOTH, CLIENT or SERVER
 side="CLIENT"
-[[dependencies.minejago]] #optional
+[[dependencies.${mod_id}]] #optional
 # the modid of the dependency
 modId="jade" #mandatory
 # Does this dependency have to exist - if not, ordering below must be specified

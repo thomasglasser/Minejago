@@ -110,7 +110,7 @@ public class MinejagoEntityEvents
                         stopSpinjitzu(spinjitzu, serverPlayer, !serverPlayer.isCrouching());
                         return;
                     }
-                    MinejagoCriteriaTriggers.DO_SPINJITZU.trigger(serverPlayer);
+                    MinejagoCriteriaTriggers.DID_SPINJITZU.get().trigger(serverPlayer);
                     focusData.addExhaustion(FocusConstants.EXHAUSTION_DOING_SPINJITZU);
                     if (player.tickCount % 20 == 0)
                     {
@@ -323,10 +323,10 @@ public class MinejagoEntityEvents
             Services.NETWORK.sendToAllClients(ClientboundStopSpinjitzuPacket.class, ClientboundStopSpinjitzuPacket.toBytes(serverPlayer.getUUID(), fail), serverPlayer.getServer());
             AttributeInstance speed = serverPlayer.getAttribute(Attributes.MOVEMENT_SPEED);
             if (speed != null && speed.hasModifier(SpinjitzuData.SPEED_MODIFIER))
-                speed.removeModifier(SpinjitzuData.SPEED_MODIFIER);
+                speed.removeModifier(SpinjitzuData.SPEED_MODIFIER.getId());
             AttributeInstance kb = serverPlayer.getAttribute(Attributes.ATTACK_KNOCKBACK);
             if (kb != null && kb.hasModifier(SpinjitzuData.KNOCKBACK_MODIFIER))
-                kb.removeModifier(SpinjitzuData.KNOCKBACK_MODIFIER);
+                kb.removeModifier(SpinjitzuData.KNOCKBACK_MODIFIER.getId());
             serverPlayer.level().playSound(null, serverPlayer.blockPosition(), MinejagoSoundEvents.SPINJITZU_STOP.get(), SoundSource.PLAYERS);
         }
     }

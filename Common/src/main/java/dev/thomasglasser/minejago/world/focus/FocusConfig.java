@@ -1,13 +1,13 @@
 package dev.thomasglasser.minejago.world.focus;
 
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class FocusConfig
 {
-	public static ForgeConfigSpec.IntValue X_OFFSET;
-	public static ForgeConfigSpec.IntValue Y_OFFSET;
+	public static ModConfigSpec.IntValue X_OFFSET;
+	public static ModConfigSpec.IntValue Y_OFFSET;
 
-	public static void registerClient(ForgeConfigSpec.Builder builder)
+	public static void registerClient(ModConfigSpec.Builder builder)
 	{
 		builder.comment("Settings for focus bar").push("focus");
 

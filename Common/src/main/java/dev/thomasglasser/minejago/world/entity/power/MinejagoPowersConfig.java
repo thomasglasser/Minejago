@@ -1,18 +1,18 @@
 package dev.thomasglasser.minejago.world.entity.power;
 
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class MinejagoPowersConfig
 {
-    public static ForgeConfigSpec.BooleanValue ALLOW_CHOOSE;
-    public static ForgeConfigSpec.BooleanValue ALLOW_CHANGE;
-    public static ForgeConfigSpec.BooleanValue DRAIN_POOL;
-    public static ForgeConfigSpec.BooleanValue ALLOW_NONE;
+    public static ModConfigSpec.BooleanValue ALLOW_CHOOSE;
+    public static ModConfigSpec.BooleanValue ALLOW_CHANGE;
+    public static ModConfigSpec.BooleanValue DRAIN_POOL;
+    public static ModConfigSpec.BooleanValue ALLOW_NONE;
 
-    public static ForgeConfigSpec.BooleanValue REQUIRE_FOR_GOLDEN_WEAPON;
-    public static ForgeConfigSpec.BooleanValue WEAPON_GOES_CRAZY;
+    public static ModConfigSpec.BooleanValue REQUIRE_FOR_GOLDEN_WEAPON;
+    public static ModConfigSpec.BooleanValue WEAPON_GOES_CRAZY;
 
-    public static void registerServer(ForgeConfigSpec.Builder builder)
+    public static void registerServer(ModConfigSpec.Builder builder)
     {
         builder.comment("Settings for powers (elemental or otherwise)").push("powers");
 

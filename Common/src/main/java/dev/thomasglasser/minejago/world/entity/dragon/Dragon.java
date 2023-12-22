@@ -400,28 +400,34 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
     }
 
     @Override
-    protected void positionRider(Entity passenger, Entity.MoveFunction callback) {
-        int i = this.getPassengers().indexOf(passenger);
+    public Vec3 getPassengerRidingPosition(Entity entity)
+    {
+        int i = this.getPassengers().indexOf(entity);
         if (i >= 0) {
             boolean bl = i == 0;
             float f = 1.0F;
-            float g = (float)((this.isRemoved() ? 0.01F : this.getPassengersRidingOffset()) + passenger.getMyRidingOffset());
             if (this.getPassengers().size() > 1) {
                 if (!bl) {
                     f = -0.7F;
                 }
             }
 
-            Vec3 vec3 = new Vec3(0.0, 0.0, (double)f).yRot(-this.yBodyRot * (float) (Math.PI / 180.0));
-            callback.accept(passenger, this.getX() + vec3.x, this.getY() + (double)g, this.getZ() + vec3.z);
-            clampRotation(this);
+            return new Vec3(0.0, 0.0, f).yRot(-this.yBodyRot * (float) (Math.PI / 180.0));
         }
+        return Vec3.ZERO;
     }
 
     @Override
-    public double getMyRidingOffset()
+    protected void positionRider(Entity passenger, MoveFunction callback) {
+        Vec3 vec3 = this.getPassengerRidingPosition(passenger);
+        callback.accept(passenger, vec3.x, vec3.y + (double)passenger.getMyRidingOffset(this), vec3.z);
+        clampRotation(this);
+    }
+
+    @Override
+    public float ridingOffset(Entity entity)
     {
-        return -1.1;
+        return -1.1f;
     }
 
     protected void clampRotation(Entity entityToUpdate) {

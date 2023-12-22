@@ -1,10 +1,10 @@
 package dev.thomasglasser.minejago.world.entity.character;
 
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleUtils;
+import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.entity.SpinjitzuDoer;
-import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
@@ -15,7 +15,13 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -195,7 +201,7 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
     @Override
     public void tick() {
         super.tick();
-        Power power1 = MinejagoPowers.POWERS.get(level().registryAccess()).get(Services.DATA.getPowerData(this).power());
+        Power power1 = level().registryAccess().registry(MinejagoRegistries.POWER).orElseThrow().get(Services.DATA.getPowerData(this).power());
         if (!level().isClientSide && isDoingSpinjitzu() && power1 != null) {
             if (tickCount % 20 == 0) {
                 level().playSound(null, blockPosition(), MinejagoSoundEvents.SPINJITZU_ACTIVE.get(), SoundSource.NEUTRAL);

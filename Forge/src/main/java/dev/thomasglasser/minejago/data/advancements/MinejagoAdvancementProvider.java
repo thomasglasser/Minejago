@@ -5,14 +5,15 @@ import dev.thomasglasser.minejago.data.advancements.packs.MinejagoHusbandryAdvan
 import dev.thomasglasser.minejago.data.advancements.packs.MinejagoStoryAdvancements;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.common.data.ForgeAdvancementProvider;
-import net.minecraftforge.common.data.LanguageProvider;
+import net.neoforged.neoforge.common.data.AdvancementProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.data.LanguageProvider;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class MinejagoAdvancementProvider extends ForgeAdvancementProvider {
+public class MinejagoAdvancementProvider extends AdvancementProvider
+{
     /**
      * Constructs an advancement provider using the generators to write the
      * advancements to a file.

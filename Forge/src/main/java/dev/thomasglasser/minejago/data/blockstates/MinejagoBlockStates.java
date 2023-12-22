@@ -6,14 +6,28 @@ import com.google.common.collect.Sets;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.world.level.block.*;
+import dev.thomasglasser.minejago.world.level.block.DiscBlock;
+import dev.thomasglasser.minejago.world.level.block.LeavesSet;
+import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
+import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
+import dev.thomasglasser.minejago.world.level.block.TopPostBlock;
+import dev.thomasglasser.minejago.world.level.block.WoodSet;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.models.BlockModelGenerators;
-import net.minecraft.data.models.blockstates.*;
-import net.minecraft.data.models.model.*;
+import net.minecraft.data.models.blockstates.BlockStateGenerator;
+import net.minecraft.data.models.blockstates.Condition;
+import net.minecraft.data.models.blockstates.MultiPartGenerator;
+import net.minecraft.data.models.blockstates.Variant;
+import net.minecraft.data.models.blockstates.VariantProperties;
+import net.minecraft.data.models.model.ModelLocationUtils;
+import net.minecraft.data.models.model.ModelTemplate;
+import net.minecraft.data.models.model.ModelTemplates;
+import net.minecraft.data.models.model.TextureMapping;
+import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.item.Item;
@@ -21,20 +35,25 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.client.model.generators.ConfiguredModel;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class MinejagoBlockStates extends BlockStateProvider {
+public class MinejagoBlockStates extends BlockStateProvider
+{
     protected static final ExistingFileHelper.ResourceType TEXTURE = new ExistingFileHelper.ResourceType(PackType.CLIENT_RESOURCES, ".png", "textures");
 
     private final Map<Block, BlockStateGenerator> STATE_MAP = Maps.newHashMap();
@@ -174,9 +193,9 @@ public class MinejagoBlockStates extends BlockStateProvider {
 
     private void leavesSet(LeavesSet set)
     {
-        simpleBlock(set.leaves().get(), models().withExistingParent(set.leaves().getId().getPath(), mcBlockModel("leaves")).texture("all", modBlockModel(set.leaves().getId().getPath())));
-        simpleBlock(set.sapling().get(), models().cross(set.id().getPath() + "_sapling", modBlockModel(set.sapling().getId().getPath())).renderType("cutout"));
-        simpleBlock(set.pottedSapling().get(), models().withExistingParent("potted_" + set.id().getPath() + "_sapling", mcBlockModel("flower_pot_cross")).texture("plant", modBlockModel(set.sapling().getId().getPath())).renderType("cutout"));
+        simpleBlock(set.leaves().get(), models().withExistingParent(BuiltInRegistries.BLOCK.getKey(set.leaves().get()).getPath(), mcBlockModel("leaves")).texture("all", modBlockModel(BuiltInRegistries.BLOCK.getKey(set.leaves().get()).getPath())));
+        simpleBlock(set.sapling().get(), models().cross(set.id().getPath() + "_sapling", modBlockModel(BuiltInRegistries.BLOCK.getKey(set.sapling().get()).getPath())).renderType("cutout"));
+        simpleBlock(set.pottedSapling().get(), models().withExistingParent("potted_" + set.id().getPath() + "_sapling", mcBlockModel("flower_pot_cross")).texture("plant", modBlockModel(BuiltInRegistries.BLOCK.getKey(set.sapling().get()).getPath())).renderType("cutout"));
     }
 
     private class MinejagoBlockModelGenerators extends BlockModelGenerators
@@ -242,7 +261,7 @@ public class MinejagoBlockStates extends BlockStateProvider {
         }
 
         private ResourceLocation key(Block block) {
-            return ForgeRegistries.BLOCKS.getKey(block);
+            return BuiltInRegistries.BLOCK.getKey(block);
         }
 
         protected Path getPath(ResourceLocation loc) {

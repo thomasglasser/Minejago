@@ -5,9 +5,15 @@ import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.WoodSet;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.*;
+import net.minecraft.data.recipes.RecipeBuilder;
+import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -20,23 +26,22 @@ import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.function.Consumer;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
 public class MinejagoRecipes extends RecipeProvider {
-    public MinejagoRecipes(PackOutput output) {
-        super(output);
+    public MinejagoRecipes(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+        super(output, lookupProvider);
     }
 
     @Override
-    protected void buildRecipes(Consumer<FinishedRecipe> writer) {
+    protected void buildRecipes(RecipeOutput writer) {
         buildCrafting(writer);
         buildBrewing(writer);
     }
 
-    private void buildCrafting(Consumer<FinishedRecipe> writer)
+    private void buildCrafting(RecipeOutput writer)
     {
         ShapedRecipeBuilder.shaped(RecipeCategory.BREWING, MinejagoItems.TEACUP.get(), 4)
                 .pattern("x x")
@@ -99,7 +104,7 @@ public class MinejagoRecipes extends RecipeProvider {
 
         MinejagoBlocks.TEAPOTS.forEach((color, pot) ->
         {
-            coloredTeapotFromColoredTerracotta(writer, pot.get(), ForgeRegistries.BLOCKS.getValue(new ResourceLocation(color.getName() + "_terracotta")));
+            coloredTeapotFromColoredTerracotta(writer, pot.get(), BuiltInRegistries.BLOCK.get(new ResourceLocation(color.getName() + "_terracotta")));
             coloredTeapotFromTeapotAndDye(writer, pot.get(), MinejagoItemTags.DYES_MAP.get(color));
         });
 
@@ -126,7 +131,7 @@ public class MinejagoRecipes extends RecipeProvider {
         woodSet(writer, MinejagoBlocks.ENCHANTED_WOOD_SET);
     }
 
-    protected void coloredTeapotFromColoredTerracotta(Consumer<FinishedRecipe> writer, ItemLike pot, ItemLike color)
+    protected void coloredTeapotFromColoredTerracotta(RecipeOutput writer, ItemLike pot, ItemLike color)
     {
         ShapedRecipeBuilder.shaped(RecipeCategory.BREWING, pot, 1)
                 .pattern("x")
@@ -139,7 +144,7 @@ public class MinejagoRecipes extends RecipeProvider {
                 .save(writer);
     }
 
-    protected void coloredTeapotFromTeapotAndDye(Consumer<FinishedRecipe> writer, ItemLike pColoredTeapot, TagKey<Item> pDye)
+    protected void coloredTeapotFromTeapotAndDye(RecipeOutput writer, ItemLike pColoredTeapot, TagKey<Item> pDye)
     {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.BREWING, pColoredTeapot, 1)
                 .requires(MinejagoBlocks.TEAPOT.get())
@@ -150,7 +155,7 @@ public class MinejagoRecipes extends RecipeProvider {
                 .save(writer, RecipeBuilder.getDefaultRecipeId(pColoredTeapot) + "_from_dye");
     }
 
-    private void buildBrewing(Consumer<FinishedRecipe> writer) {
+    private void buildBrewing(RecipeOutput writer) {
         normalTea(writer, Items.ACACIA_LEAVES, MinejagoPotions.ACACIA_TEA);
         normalTea(writer, Items.OAK_LEAVES, MinejagoPotions.OAK_TEA);
         normalTea(writer, Items.CHERRY_LEAVES, MinejagoPotions.CHERRY_TEA);
@@ -159,12 +164,13 @@ public class MinejagoRecipes extends RecipeProvider {
         normalTea(writer, Items.JUNGLE_LEAVES, MinejagoPotions.JUNGLE_TEA);
         normalTea(writer, Items.DARK_OAK_LEAVES, MinejagoPotions.DARK_OAK_TEA);
         normalTea(writer, Items.BIRCH_LEAVES, MinejagoPotions.BIRCH_TEA);
-        normalTea(writer, MinejagoBlocks.FOCUS_LEAVES_SET.leaves().asItem(), MinejagoPotions.FOCUS_TEA);
+        normalTea(writer, MinejagoBlocks.FOCUS_LEAVES_SET.leaves().get().asItem(), MinejagoPotions.FOCUS_TEA);
     }
 
-    private void normalTea(Consumer<FinishedRecipe> writer, Item ingredient, Potion result)
+    private void normalTea(RecipeOutput writer, Item ingredient, Potion result)
     {
-        SimpleBrewingRecipeBuilder.of(
+        SimpleBrewingRecipeBuilder.generic(
+                RecipeCategory.BREWING,
                 Potions.WATER,
                 Ingredient.of(ingredient),
                 result,
@@ -175,15 +181,15 @@ public class MinejagoRecipes extends RecipeProvider {
                 .save(writer);
     }
 
-    private void normalTea(Consumer<FinishedRecipe> writer, Item ingredient, Supplier<Potion> result)
+    private void normalTea(RecipeOutput writer, Item ingredient, Supplier<Potion> result)
     {
         normalTea(writer, ingredient, result.get());
     }
 
-    private void woodSet(Consumer<FinishedRecipe> writer, WoodSet set)
+    private void woodSet(RecipeOutput writer, WoodSet set)
     {
-        planksFromLogs(writer, set.planks(), set.logsItemTag().get(), 4);
-        woodFromLogs(writer, set.wood(), set.log());
-        woodFromLogs(writer, set.strippedWood(), set.strippedLog());
+        planksFromLogs(writer, set.planks().get(), set.logsItemTag().get(), 4);
+        woodFromLogs(writer, set.wood().get(), set.log().get());
+        woodFromLogs(writer, set.strippedWood().get(), set.strippedLog().get());
     }
 }

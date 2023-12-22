@@ -1,10 +1,8 @@
 package dev.thomasglasser.minejago.world.item.armor;
 
-import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.registration.RegistrationProvider;
-import dev.thomasglasser.minejago.registration.RegistryObject;
+import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
@@ -15,37 +13,38 @@ import java.util.function.Supplier;
 
 public class MinejagoArmors
 {
-    public static final RegistrationProvider<Item> ARMOR = RegistrationProvider.get(Registries.ITEM, Minejago.MOD_ID);
+    public static final List<Supplier<? extends ArmorItem>> ALL = new ArrayList<>();
+
     public static final List<ArmorSet> ARMOR_SETS = new ArrayList<>();
     public static final List<ArmorSet> POWER_SETS = new ArrayList<>();
 
     private static final Item.Properties DEFAULT_PROPERTIES = new Item.Properties().stacksTo(1);
 
     public static final SkeletalChestplateSet SKELETAL_CHESTPLATE_SET = new SkeletalChestplateSet();
-    public static final RegistryObject<SamukaisChestplateItem> SAMUKAIS_CHESTPLATE = ARMOR.register("samukais_chestplate", () -> new SamukaisChestplateItem(MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
+    public static final Supplier<SamukaisChestplateItem> SAMUKAIS_CHESTPLATE = register("samukais_chestplate", () -> new SamukaisChestplateItem(MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
 
     public static final ArmorSet BLACK_GI_SET = create("black_gi", "Black Gi", false, BlackGiItem.class, DEFAULT_PROPERTIES);
     public static final ArmorSet TRAINING_GI_SET = create("training_gi", "Training Gi", true, TrainingGiItem.class, DEFAULT_PROPERTIES);
 
     public static class SkeletalChestplateSet
     {
-        private final RegistryObject<Item> RED;
-        private final RegistryObject<Item> BLUE;
-        private final RegistryObject<Item> WHITE;
-        private final RegistryObject<Item> BLACK;
-        private final RegistryObject<Item> BONE;
+        private final Supplier<SkeletalChestplateItem> RED;
+        private final Supplier<SkeletalChestplateItem> BLUE;
+        private final Supplier<SkeletalChestplateItem> WHITE;
+        private final Supplier<SkeletalChestplateItem> BLACK;
+        private final Supplier<SkeletalChestplateItem> BONE;
 
         public SkeletalChestplateSet()
         {
             String name = "skeletal_chestplate";
-            RED = ARMOR.register(name + "_red", () -> new SkeletalChestplateItem(Skulkin.Variant.STRENGTH, MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
-            BLUE = ARMOR.register(name + "_blue", () -> new SkeletalChestplateItem(Skulkin.Variant.SPEED, MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
-            WHITE = ARMOR.register(name + "_white", () -> new SkeletalChestplateItem(Skulkin.Variant.BOW, MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
-            BLACK = ARMOR.register(name + "_black", () -> new SkeletalChestplateItem(Skulkin.Variant.KNIFE, MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
-            BONE = ARMOR.register(name + "_bone", () -> new SkeletalChestplateItem(Skulkin.Variant.BONE, MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
+            RED = register(name + "_red", () -> new SkeletalChestplateItem(Skulkin.Variant.STRENGTH, MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
+            BLUE = register(name + "_blue", () -> new SkeletalChestplateItem(Skulkin.Variant.SPEED, MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
+            WHITE = register(name + "_white", () -> new SkeletalChestplateItem(Skulkin.Variant.BOW, MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
+            BLACK = register(name + "_black", () -> new SkeletalChestplateItem(Skulkin.Variant.KNIFE, MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
+            BONE = register(name + "_bone", () -> new SkeletalChestplateItem(Skulkin.Variant.BONE, MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
         }
 
-        public RegistryObject<Item> getForVariant(Skulkin.Variant variant) {
+        public Supplier<SkeletalChestplateItem> getForVariant(Skulkin.Variant variant) {
             return switch (variant)
                     {
 
@@ -57,7 +56,7 @@ public class MinejagoArmors
                     };
         }
 
-        public List<RegistryObject<Item>> getAll()
+        public List<Supplier<SkeletalChestplateItem>> getAll()
         {
             return new ArrayList<>(List.of(RED, BLUE, WHITE, BLACK, BONE));
         }
@@ -65,15 +64,15 @@ public class MinejagoArmors
 
     public static class ArmorSet
     {
-        public final RegistryObject<ArmorItem> HEAD;
-        public final RegistryObject<ArmorItem> CHEST;
-        public final RegistryObject<ArmorItem> LEGS;
-        public final RegistryObject<ArmorItem> FEET;
+        public final Supplier<ArmorItem> HEAD;
+        public final Supplier<ArmorItem> CHEST;
+        public final Supplier<ArmorItem> LEGS;
+        public final Supplier<ArmorItem> FEET;
 
         private final String name;
         private final String displayName;
 
-        public ArmorSet(String name, String displayName, RegistryObject<ArmorItem> head, RegistryObject<ArmorItem> chest, RegistryObject<ArmorItem> legs, RegistryObject<ArmorItem> feet)
+        public ArmorSet(String name, String displayName, Supplier<ArmorItem> head, Supplier<ArmorItem> chest, Supplier<ArmorItem> legs, Supplier<ArmorItem> feet)
         {
             this.name = name;
             this.displayName = displayName;
@@ -84,7 +83,7 @@ public class MinejagoArmors
             FEET = feet;
         }
 
-        public RegistryObject<ArmorItem> getForSlot(EquipmentSlot slot)
+        public Supplier<ArmorItem> getForSlot(EquipmentSlot slot)
         {
             return switch (slot)
                     {
@@ -115,7 +114,7 @@ public class MinejagoArmors
             return null;
         }
 
-        public List<RegistryObject<ArmorItem>> getAll()
+        public List<Supplier<ArmorItem>> getAll()
         {
             return List.of(HEAD, CHEST, LEGS, FEET);
         }
@@ -172,10 +171,10 @@ public class MinejagoArmors
             }
         };
 
-        RegistryObject<ArmorItem> head = ARMOR.register(name + "_hood", headItem);
-        RegistryObject<ArmorItem> chest = ARMOR.register(name + "_jacket", chestItem);
-        RegistryObject<ArmorItem> legs = ARMOR.register(name + "_pants", legsItem);
-        RegistryObject<ArmorItem> feet = ARMOR.register(name + "_boots", feetItem);
+        Supplier<ArmorItem> head = register(name + "_hood", headItem);
+        Supplier<ArmorItem> chest = register(name + "_jacket", chestItem);
+        Supplier<ArmorItem> legs = register(name + "_pants", legsItem);
+        Supplier<ArmorItem> feet = register(name + "_boots", feetItem);
 
         ArmorSet set = new ArmorSet(name, displayName, head, chest, legs, feet);
 
@@ -185,6 +184,12 @@ public class MinejagoArmors
             ARMOR_SETS.add(set);
 
         return set;
+    }
+    
+    private static <T extends ArmorItem> Supplier<T> register(String name, Supplier<T> item)
+    {
+        ALL.add(item);
+        return Services.REGISTRATION.register(BuiltInRegistries.ITEM, name, item);
     }
 
     public static void init() {}

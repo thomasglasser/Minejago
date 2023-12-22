@@ -7,13 +7,14 @@ import dev.thomasglasser.minejago.world.item.armor.SkeletalChestplateItem;
 import dev.thomasglasser.minejago.world.level.block.LeavesSet;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.WoodSet;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.client.model.generators.ItemModelProvider;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraft.world.item.SpawnEggItem;
+import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import static dev.thomasglasser.minejago.data.blockstates.MinejagoBlockStates.modBlockModel;
 
@@ -42,11 +43,11 @@ public class MinejagoItemModels extends ItemModelProvider
                     default -> null;
                 };
 
-                singleTexture(item.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/" + armorSet.getName() + "_" + nameForSlot));
+                singleTexture(BuiltInRegistries.ITEM.getKey(item.get()).getPath(), mcLoc("item/generated"), "layer0", modLoc("item/" + armorSet.getName() + "_" + nameForSlot));
             });
         });
         MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
-                singleTexture(item.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/skeletal_chestplate_" + ((SkeletalChestplateItem)item.get()).getVariant().getColor().getName())));
+                singleTexture(BuiltInRegistries.ITEM.getKey(item.get()).getPath(), mcLoc("item/generated"), "layer0", modLoc("item/skeletal_chestplate_" + ((SkeletalChestplateItem)item.get()).getVariant().getColor().getName())));
         basicItem(MinejagoArmors.SAMUKAIS_CHESTPLATE.get());
         basicItem(MinejagoItems.TEACUP.get());
         basicItem(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get());
@@ -59,11 +60,11 @@ public class MinejagoItemModels extends ItemModelProvider
         basicItem(MinejagoItems.POTTERY_SHERD_DRAGONS_HEAD.get());
         basicItem(MinejagoItems.POTTERY_SHERD_DRAGONS_TAIL.get());
         basicItem(MinejagoItems.FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE.get());
-        basicItem(MinejagoBlocks.TEAPOT.asItem());
-        basicItem(MinejagoBlocks.JASPOT.asItem());
-        basicItem(MinejagoBlocks.FLAME_TEAPOT.asItem());
-        basicItem(MinejagoBlocks.GOLD_DISC.asItem());
-        basicItem(MinejagoBlocks.TOP_POST.asItem());
+        basicItem(MinejagoBlocks.TEAPOT.get().asItem());
+        basicItem(MinejagoBlocks.JASPOT.get().asItem());
+        basicItem(MinejagoBlocks.FLAME_TEAPOT.get().asItem());
+        basicItem(MinejagoBlocks.GOLD_DISC.get().asItem());
+        basicItem(MinejagoBlocks.TOP_POST.get().asItem());
         basicItem(MinejagoItems.SCROLL.get());
         basicItem(MinejagoItems.WRITABLE_SCROLL.get());
         basicItem(MinejagoItems.WRITTEN_SCROLL.get());
@@ -71,25 +72,25 @@ public class MinejagoItemModels extends ItemModelProvider
         MinejagoBlocks.TEAPOTS.forEach((dyeColor, itemRegistryObject) ->
         {
             if (existingFileHelper.exists(Minejago.modLoc("textures/item/" + dyeColor.getName() + "_teapot.png"), PackType.CLIENT_RESOURCES))
-                basicItem(itemRegistryObject.asItem());
+                basicItem(itemRegistryObject.get().asItem());
         });
 
-        spawnEgg(MinejagoItems.WU_SPAWN_EGG.getId().getPath());
-        spawnEgg(MinejagoItems.KAI_SPAWN_EGG.getId().getPath());
-        spawnEgg(MinejagoItems.NYA_SPAWN_EGG.getId().getPath());
-        spawnEgg(MinejagoItems.COLE_SPAWN_EGG.getId().getPath());
-        spawnEgg(MinejagoItems.JAY_SPAWN_EGG.getId().getPath());
-        spawnEgg(MinejagoItems.ZANE_SPAWN_EGG.getId().getPath());
-        spawnEgg(MinejagoItems.SKULKIN_SPAWN_EGG.getId().getPath());
-        spawnEgg(MinejagoItems.KRUNCHA_SPAWN_EGG.getId().getPath());
-        spawnEgg(MinejagoItems.NUCKAL_SPAWN_EGG.getId().getPath());
-        spawnEgg(MinejagoItems.SKULKIN_HORSE_SPAWN_EGG.getId().getPath());
-        spawnEgg(MinejagoItems.EARTH_DRAGON_SPAWN_EGG.getId().getPath());
-        spawnEgg(MinejagoItems.SAMUKAI_SPAWN_EGG.getId().getPath());
-        spawnEgg(MinejagoItems.SKULL_TRUCK_SPAWN_EGG.getId().getPath());
-        spawnEgg(MinejagoItems.SKULL_MOTORBIKE_SPAWN_EGG.getId().getPath());
+        spawnEgg(MinejagoItems.WU_SPAWN_EGG.get());
+        spawnEgg(MinejagoItems.KAI_SPAWN_EGG.get());
+        spawnEgg(MinejagoItems.NYA_SPAWN_EGG.get());
+        spawnEgg(MinejagoItems.COLE_SPAWN_EGG.get());
+        spawnEgg(MinejagoItems.JAY_SPAWN_EGG.get());
+        spawnEgg(MinejagoItems.ZANE_SPAWN_EGG.get());
+        spawnEgg(MinejagoItems.SKULKIN_SPAWN_EGG.get());
+        spawnEgg(MinejagoItems.KRUNCHA_SPAWN_EGG.get());
+        spawnEgg(MinejagoItems.NUCKAL_SPAWN_EGG.get());
+        spawnEgg(MinejagoItems.SKULKIN_HORSE_SPAWN_EGG.get());
+        spawnEgg(MinejagoItems.EARTH_DRAGON_SPAWN_EGG.get());
+        spawnEgg(MinejagoItems.SAMUKAI_SPAWN_EGG.get());
+        spawnEgg(MinejagoItems.SKULL_TRUCK_SPAWN_EGG.get());
+        spawnEgg(MinejagoItems.SKULL_MOTORBIKE_SPAWN_EGG.get());
 
-        withExistingParent(MinejagoItems.EMPTY_GOLDEN_WEAPONS_MAP.getId().getPath(), "item/map");
+        withExistingParent(BuiltInRegistries.ITEM.getKey(MinejagoItems.EMPTY_GOLDEN_WEAPONS_MAP.get()).getPath(), "item/map");
 
         woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET);
         leavesSet(MinejagoBlocks.FOCUS_LEAVES_SET);
@@ -102,7 +103,7 @@ public class MinejagoItemModels extends ItemModelProvider
 
     protected void basicItemHandheld(Item item)
     {
-        basicItemHandheld(ForgeRegistries.ITEMS.getKey(item));
+        basicItemHandheld(BuiltInRegistries.ITEM.getKey(item));
     }
 
     protected void spawnEgg(String path)
@@ -110,19 +111,24 @@ public class MinejagoItemModels extends ItemModelProvider
         withExistingParent(path, mcLoc("item/template_spawn_egg"));
     }
 
+    protected void spawnEgg(SpawnEggItem egg)
+    {
+        withExistingParent(BuiltInRegistries.ITEM.getKey(egg).getPath(), mcLoc("item/template_spawn_egg"));
+    }
+
     protected void woodSet(WoodSet set)
     {
-        withExistingParent(set.planks().getId().getPath(), modLoc("block/" + set.planks().getId().getPath()));
-        withExistingParent(set.log().getId().getPath(), modLoc("block/" + set.log().getId().getPath()));
-//        withExistingParent(set.strippedLog().getId().getPath(), modBlockModel(set.strippedLog().getId().getPath()));
-        withExistingParent(set.wood().getId().getPath(), modLoc("block/" + set.wood().getId().getPath()));
-//        withExistingParent(set.strippedWood().getId().getPath(), modBlockModel(set.strippedWood().getId().getPath()));
+        withExistingParent(BuiltInRegistries.BLOCK.getKey(set.planks().get()).getPath(), modLoc("block/" + set.planks().get()));
+        withExistingParent(BuiltInRegistries.BLOCK.getKey(set.log().get()).getPath(), modLoc("block/" + set.log().get()));
+//        withExistingParent(BuiltInRegistries.BLOCK.getKey(set.strippedLog().get()).getPath(), modBlockModel(set.strippedLog().get()));
+        withExistingParent(BuiltInRegistries.BLOCK.getKey(set.wood().get()).getPath(), modLoc("block/" + set.wood().get()));
+//        withExistingParent(BuiltInRegistries.BLOCK.getKey(set.strippedWood().get()).getPath(), modBlockModel(set.strippedWood().get()));
     }
 
     protected void leavesSet(LeavesSet set)
     {
-        withExistingParent(set.leaves().getId().getPath(), modBlockModel(set.leaves().getId().getPath()));
-        singleTexture(set.sapling().getId().getPath(), mcItemModel("generated"), "layer0", modBlockModel(set.sapling().getId().getPath()));
+        withExistingParent(BuiltInRegistries.BLOCK.getKey(set.leaves().get()).getPath(), modBlockModel(BuiltInRegistries.BLOCK.getKey(set.leaves().get()).getPath()));
+        singleTexture(BuiltInRegistries.BLOCK.getKey(set.sapling().get()).getPath(), mcItemModel("generated"), "layer0", modBlockModel(BuiltInRegistries.BLOCK.getKey(set.sapling().get()).getPath()));
     }
 
     public static ResourceLocation modItemModel(String path)

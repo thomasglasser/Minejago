@@ -21,7 +21,7 @@ public class EarthBlast extends AbstractHurtingProjectile
 	}
 
 	public EarthBlast(Level level, LivingEntity livingEntity, double d, double e, double f) {
-		super(MinejagoEntityTypes.EARTH_BLAST.get(), livingEntity, d, e, f, level);
+		super((EntityType<? extends AbstractHurtingProjectile>) MinejagoEntityTypes.EARTH_BLAST.get(), livingEntity, d, e, f, level);
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package dev.thomasglasser.minejago.data.lang;
 
+import com.klikli_dev.modonomicon.api.datagen.ModonomiconLanguageProvider;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.client.MinejagoWailaPlugin;
@@ -7,7 +8,6 @@ import dev.thomasglasser.minejago.client.gui.screens.inventory.PowerSelectionScr
 import dev.thomasglasser.minejago.client.gui.screens.inventory.ScrollEditScreen;
 import dev.thomasglasser.minejago.client.rei.display.category.TeapotBrewingCategory;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
-import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.server.commands.PowerCommand;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
@@ -18,13 +18,13 @@ import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
 import dev.thomasglasser.minejago.world.item.MinejagoCreativeModeTabs;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
-import dev.thomasglasser.minejago.world.item.armor.SkeletalChestplateItem;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
 import dev.thomasglasser.minejago.world.level.block.LeavesSet;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.WoodSet;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPatterns;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.contents.TranslatableContents;
@@ -33,6 +33,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.decoration.PaintingVariant;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -42,10 +43,14 @@ import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.entity.BannerPattern;
-import net.minecraftforge.common.data.LanguageProvider;
-import org.apache.commons.lang3.text.WordUtils;
+import net.neoforged.neoforge.common.data.LanguageProvider;
 
-public class MinejagoEnUsLanguageProvider extends LanguageProvider
+import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.function.Supplier;
+
+public class MinejagoEnUsLanguageProvider extends LanguageProvider implements ModonomiconLanguageProvider
 {
 
     public MinejagoEnUsLanguageProvider(PackOutput output)
@@ -102,7 +107,7 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
 
         add(MinejagoBlocks.TEAPOT.get(), "Teapot");
         MinejagoBlocks.TEAPOTS.forEach((color, pot) ->
-                add(pot.get(), WordUtils.capitalize(color.getName().replace('_', ' ')) + " Teapot"));
+                add(pot.get(), toCapitalCase(color.getName().replace('_', ' ')) + " Teapot"));
         add(MinejagoBlocks.JASPOT.get(), "Jaspot");
         add(MinejagoBlocks.FLAME_TEAPOT.get(), "Flame Teapot");
 
@@ -122,19 +127,16 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
 
         MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
         {
-            if (item.get() instanceof SkeletalChestplateItem chestplate)
+            String nameForVariant = switch (item.get().getVariant())
             {
-                String nameForVariant = switch (chestplate.getVariant())
-                {
-                    case STRENGTH -> "Red";
-                    case SPEED -> "Blue";
-                    case BOW -> "White";
-                    case KNIFE -> "Black";
-                    case BONE -> "Bone";
-                };
+                case STRENGTH -> "Red";
+                case SPEED -> "Blue";
+                case BOW -> "White";
+                case KNIFE -> "Black";
+                case BONE -> "Bone";
+            };
 
-                addDesc(item.get(), nameForVariant);
-            }
+            addDesc(item.get(), nameForVariant);
         });
 
         add(MinejagoItems.FILLED_TEACUP.get().getDescriptionId() + ".potion", "Tea of %s");
@@ -244,24 +246,24 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(PowerCommand.INVALID, "Power not found in world. Check enabled data packs.");
         add(PowerCommand.NOT_LIVING_ENTITY, "Target %s (%s) is not a LivingEntity");
 
-        addCreativeTab(MinejagoCreativeModeTabs.GI.getId(), "Gi");
-        addCreativeTab(MinejagoCreativeModeTabs.MINEJAGO.getId(), "Minejago");
+        addCreativeTab(MinejagoCreativeModeTabs.GI.get(), "Gi");
+        addCreativeTab(MinejagoCreativeModeTabs.MINEJAGO.get(), "Minejago");
 
-        add(MinejagoPaintingVariants.A_MORNING_BREW, "A Morning Brew", "waifu_png_pl");
-        add(MinejagoPaintingVariants.NEEDS_HAIR_GEL, "Needs Hair Gel", "waifu_png_pl");
-        add(MinejagoPaintingVariants.AMBUSHED, "Ambushed", "waifu_png_pl");
-        add(MinejagoPaintingVariants.BEFORE_THE_STORM, "Before the Storm", "waifu_png_pl");
-        add(MinejagoPaintingVariants.CREATION, "Creation", "waifu_png_pl");
-        add(MinejagoPaintingVariants.EARTH, "Earth", "waifu_png_pl");
-        add(MinejagoPaintingVariants.FIRE, "Fire", "waifu_png_pl");
-        add(MinejagoPaintingVariants.FRUIT_COLORED_NINJA, "Fruit Colored Ninja", "waifu_png_pl");
-        add(MinejagoPaintingVariants.ICE, "Ice", "waifu_png_pl");
-        add(MinejagoPaintingVariants.LIGHTNING, "Lightning", "waifu_png_pl");
-        add(MinejagoPaintingVariants.NOT_FOR_FURNITURE, "Not for Furniture", "waifu_png_pl");
-        add(MinejagoPaintingVariants.FOUR_WEAPONS, "Four Weapons", "waifu_png_pl");
-        add(MinejagoPaintingVariants.THE_FOURTH_MOUNTAIN, "The Fourth Mountain", "waifu_png_pl");
-        add(MinejagoPaintingVariants.IT_TAKES_A_VILLAGE, "It Takes A Village", "waifu_png_pl");
-        add(MinejagoPaintingVariants.IT_TAKES_A_VILLAGE_WRECKED, "It Takes A Village (Wrecked)", "waifu_png_pl");
+        add(MinejagoPaintingVariants.A_MORNING_BREW.get(), "A Morning Brew", "waifu_png_pl");
+        add(MinejagoPaintingVariants.NEEDS_HAIR_GEL.get(), "Needs Hair Gel", "waifu_png_pl");
+        add(MinejagoPaintingVariants.AMBUSHED.get(), "Ambushed", "waifu_png_pl");
+        add(MinejagoPaintingVariants.BEFORE_THE_STORM.get(), "Before the Storm", "waifu_png_pl");
+        add(MinejagoPaintingVariants.CREATION.get(), "Creation", "waifu_png_pl");
+        add(MinejagoPaintingVariants.EARTH.get(), "Earth", "waifu_png_pl");
+        add(MinejagoPaintingVariants.FIRE.get(), "Fire", "waifu_png_pl");
+        add(MinejagoPaintingVariants.FRUIT_COLORED_NINJA.get(), "Fruit Colored Ninja", "waifu_png_pl");
+        add(MinejagoPaintingVariants.ICE.get(), "Ice", "waifu_png_pl");
+        add(MinejagoPaintingVariants.LIGHTNING.get(), "Lightning", "waifu_png_pl");
+        add(MinejagoPaintingVariants.NOT_FOR_FURNITURE.get(), "Not for Furniture", "waifu_png_pl");
+        add(MinejagoPaintingVariants.FOUR_WEAPONS.get(), "Four Weapons", "waifu_png_pl");
+        add(MinejagoPaintingVariants.THE_FOURTH_MOUNTAIN.get(), "The Fourth Mountain", "waifu_png_pl");
+        add(MinejagoPaintingVariants.IT_TAKES_A_VILLAGE.get(), "It Takes A Village", "waifu_png_pl");
+        add(MinejagoPaintingVariants.IT_TAKES_A_VILLAGE_WRECKED.get(), "It Takes A Village (Wrecked)", "waifu_png_pl");
 
         addSherd(MinejagoItems.POTTERY_SHERD_ICE_CUBE.get(), "Ice Cube");
         addSherd(MinejagoItems.POTTERY_SHERD_THUNDER.get(), "Thunder");
@@ -317,7 +319,7 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
     {
         for (DyeColor color: DyeColor.values())
         {
-            add("block.minecraft.banner." + Minejago.MOD_ID + "." + pattern.getHashname() + "." + color.getName(), WordUtils.capitalize(color.getName().replace('_', ' ')) + " " + name);
+            add("block.minecraft.banner." + Minejago.MOD_ID + "." + pattern.getHashname() + "." + color.getName(), toCapitalCase(color.getName().replace('_', ' ')) + " " + name);
         }
     }
 
@@ -357,20 +359,20 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(desc, descString);
     }
 
-    public void addCreativeTab(ResourceLocation location, String name)
+    public void addCreativeTab(CreativeModeTab tab, String name)
     {
-        add(location.toLanguageKey("item_group"), name);
+        add(BuiltInRegistries.CREATIVE_MODE_TAB.getKey(tab).toLanguageKey("item_group"), name);
     }
 
-    public void add(RegistryObject<SoundEvent> sound, String name)
+    public void add(Supplier<SoundEvent> sound, String name)
     {
         add("subtitles." + sound.get().getLocation().getPath(), name);
     }
 
-    public void add(RegistryObject<PaintingVariant> painting, String title, String author)
+    public void add(PaintingVariant painting, String title, String author)
     {
-        add(painting.getId().toLanguageKey("painting") + ".title", title);
-        add(painting.getId().toLanguageKey("painting") + ".author", author);
+        add(BuiltInRegistries.PAINTING_VARIANT.getKey(painting).toLanguageKey("painting") + ".title", title);
+        add(BuiltInRegistries.PAINTING_VARIANT.getKey(painting).toLanguageKey("painting") + ".author", author);
     }
 
     public void add(EntityType<?> key, String name, Item egg) {
@@ -407,5 +409,53 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(set.sapling().get(), name + " Sapling");
         add(set.leaves().get(), name + " Leaves");
         add(set.pottedSapling().get(), "Potted " + name + " Sapling");
+    }
+
+    public static String toCapitalCase(String s, char... delimiters)
+    {
+        final int delimLen = delimiters == null ? -1 : delimiters.length;
+        if (s.isEmpty() || delimLen == 0) {
+            return s;
+        }
+        final char[] buffer = s.toCharArray();
+        boolean capitalizeNext = true;
+        for (int i = 0; i < buffer.length; i++) {
+            final char ch = buffer[i];
+            if (delimiters == null ? Character.isWhitespace(ch) : Arrays.asList(delimiters).contains(ch)) {
+                capitalizeNext = true;
+            } else if (capitalizeNext) {
+                buffer[i] = Character.toTitleCase(ch);
+                capitalizeNext = false;
+            }
+        }
+        return new String(buffer);
+    }
+
+    @Override
+    public String locale()
+    {
+	    try
+	    {
+		    Field locale = this.getClass().getDeclaredField("locale");
+            locale.setAccessible(true);
+            return (String) locale.get(this);
+	    } catch (Exception e)
+	    {
+		    throw new RuntimeException(e);
+	    }
+    }
+
+    @Override
+    public Map<String, String> data()
+    {
+        try
+        {
+            Field data = this.getClass().getDeclaredField("data");
+            data.setAccessible(true);
+            return (Map<String, String>) data.get(this);
+        } catch (Exception e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 }

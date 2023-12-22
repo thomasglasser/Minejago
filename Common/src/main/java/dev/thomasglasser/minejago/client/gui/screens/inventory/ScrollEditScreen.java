@@ -1,7 +1,5 @@
 package dev.thomasglasser.minejago.client.gui.screens.inventory;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.inventory.BookEditScreen;
@@ -26,7 +24,7 @@ public class ScrollEditScreen extends BookEditScreen {
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        renderBackground(guiGraphics);
+        renderBackground(guiGraphics, mouseX, mouseY, partialTick);
         setFocused(null);
         int i = (width - IMAGE_WIDTH) / 2;
         int j = 2;

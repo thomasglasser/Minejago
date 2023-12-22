@@ -3,6 +3,7 @@ package dev.thomasglasser.minejago.world.entity.component;
 import dev.thomasglasser.minejago.client.MinejagoWailaPlugin;
 import dev.thomasglasser.minejago.world.entity.DataHolder;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -22,7 +23,7 @@ public enum PaintingComponentProvider implements IEntityComponentProvider, IServ
     
     @Override
     public void appendTooltip(ITooltip iTooltip, EntityAccessor entityAccessor, IPluginConfig iPluginConfig) {
-        if (((Painting)entityAccessor.getEntity()).getVariant().is(MinejagoPaintingVariants.FOUR_WEAPONS.getResourceKey()) && !entityAccessor.getServerData().getBoolean("MapTaken"))
+        if (((Painting)entityAccessor.getEntity()).getVariant().is(BuiltInRegistries.PAINTING_VARIANT.getKey(MinejagoPaintingVariants.FOUR_WEAPONS.get())) && !entityAccessor.getServerData().getBoolean("MapTaken"))
         {
             IElementHelper elementHelper = iTooltip.getElementHelper();
             IElement icon = elementHelper.item(Items.MAP.getDefaultInstance(), 0.5f).translate(new Vec2(0, -2));

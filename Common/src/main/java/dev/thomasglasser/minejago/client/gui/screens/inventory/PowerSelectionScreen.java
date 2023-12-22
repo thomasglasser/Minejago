@@ -5,7 +5,6 @@ import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.network.ServerboundSetPowerDataPacket;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.world.entity.character.Wu;
-import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
@@ -115,7 +114,7 @@ public class PowerSelectionScreen extends Screen
 
     @Override
     public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        this.renderBackground(guiGraphics);
+        this.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
         this.renderBase(guiGraphics);
         this.renderArrows(guiGraphics, mouseX, mouseY);
         this.renderPowerInfo(guiGraphics);
@@ -210,7 +209,7 @@ public class PowerSelectionScreen extends Screen
             if (selected && power != null && minecraft != null && minecraft.level != null)
             {
                 selectedPower = power;
-                selectedPowerKey = MinejagoPowers.POWERS.get(minecraft.level.registryAccess()).getResourceKey(selectedPower).orElseThrow();
+                selectedPowerKey = minecraft.level.registryAccess().registryOrThrow(MinejagoRegistries.POWER).getResourceKey(selectedPower).orElseThrow();
             }
             selectedPowerButton = this;
         }
@@ -322,10 +321,11 @@ public class PowerSelectionScreen extends Screen
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
+    public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY)
+    {
         if (canScroll && descStart >= 0 && descStart <= 95) {
-            if (delta < 0) this.descStart++;
-            else if (delta > 0) this.descStart--;
+            if (scrollY < 0) this.descStart++;
+            else if (scrollY > 0) this.descStart--;
             if (descStart < 0) descStart = 0;
             else if (descStart > 95) descStart = 95;
             return true;
@@ -336,7 +336,7 @@ public class PowerSelectionScreen extends Screen
 
     public boolean mouseScrolled(double delta)
     {
-        return mouseScrolled(0, 0, delta);
+        return mouseScrolled(0, 0, 0, delta);
     }
 
     protected void renderSelectOrDoneButton()

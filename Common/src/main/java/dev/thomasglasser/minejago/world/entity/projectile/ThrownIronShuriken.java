@@ -29,19 +29,16 @@ public class ThrownIronShuriken extends AbstractArrow
 {
     private static final EntityDataAccessor<Boolean> ID_FOIL = SynchedEntityData.defineId(ThrownIronShuriken.class, EntityDataSerializers.BOOLEAN);
 
-    private ItemStack ironShurikenItem = new ItemStack(MinejagoItems.IRON_SHURIKEN.get());
-
     private boolean dealtDamage;
 
     private Vec3 pos;
 
     public ThrownIronShuriken(EntityType<? extends ThrownIronShuriken> entity, Level level) {
-        super(entity, level);
+        super(entity, level, new ItemStack(MinejagoItems.IRON_SHURIKEN.get()));
     }
 
     public ThrownIronShuriken(Level pLevel, LivingEntity pShooter, ItemStack pStack) {
-        super(MinejagoEntityTypes.THROWN_IRON_SHURIKEN.get(), pShooter, pLevel);
-        this.ironShurikenItem = pStack.copy();
+        super(MinejagoEntityTypes.THROWN_IRON_SHURIKEN.get(), pShooter, pLevel, pStack);
         this.entityData.set(ID_FOIL, pStack.hasFoil());
     }
 
@@ -91,10 +88,6 @@ public class ThrownIronShuriken extends AbstractArrow
         super.tick();
     }
 
-    protected ItemStack getPickupItem() {
-        return this.ironShurikenItem.copy();
-    }
-
     public boolean isFoil() {
         return this.entityData.get(ID_FOIL);
     }
@@ -114,7 +107,7 @@ public class ThrownIronShuriken extends AbstractArrow
         Entity entity = pResult.getEntity();
         float f = 8.0F;
         if (entity instanceof LivingEntity livingentity) {
-            f += EnchantmentHelper.getDamageBonus(this.ironShurikenItem, livingentity.getMobType());
+            f += EnchantmentHelper.getDamageBonus(getPickupItem(), livingentity.getMobType());
         }
 
         Entity entity1 = this.getOwner();
@@ -168,16 +161,11 @@ public class ThrownIronShuriken extends AbstractArrow
      */
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
-        if (pCompound.contains("IronShuriken", 10)) {
-            this.ironShurikenItem = ItemStack.of(pCompound.getCompound("IronShuriken"));
-        }
-
         this.dealtDamage = pCompound.getBoolean("DealtDamage");
     }
 
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
-        pCompound.put("IronShuriken", this.ironShurikenItem.save(new CompoundTag()));
         pCompound.putBoolean("DealtDamage", this.dealtDamage);
     }
 

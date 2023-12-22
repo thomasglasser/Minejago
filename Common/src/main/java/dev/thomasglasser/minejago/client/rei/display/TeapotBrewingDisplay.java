@@ -12,6 +12,7 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.crafting.RecipeHolder;
 
 import java.util.Collections;
 import java.util.List;
@@ -23,9 +24,9 @@ public class TeapotBrewingDisplay extends BasicDisplay
 	private IntProvider cookingTime;
 	private float experience;
 
-	public TeapotBrewingDisplay(TeapotBrewingRecipe recipe)
+	public TeapotBrewingDisplay(RecipeHolder<TeapotBrewingRecipe> recipe)
 	{
-		this(recipe.getBase(), EntryIngredients.ofIngredients(recipe.getIngredients()), Collections.singletonList(EntryIngredients.of(recipe.getResultItem(BasicDisplay.registryAccess()))), Optional.ofNullable(recipe).map(TeapotBrewingRecipe::getId), recipe.getCookingTime(), recipe.getExperience());
+		this(recipe.value().getBase(), EntryIngredients.ofIngredients(recipe.value().getIngredients()), Collections.singletonList(EntryIngredients.of(recipe.value().getResultItem(BasicDisplay.registryAccess()))), Optional.of(recipe.id()), recipe.value().getCookingTime(), recipe.value().getExperience());
 	}
 
 	public TeapotBrewingDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs, Optional<ResourceLocation> location, CompoundTag tag)

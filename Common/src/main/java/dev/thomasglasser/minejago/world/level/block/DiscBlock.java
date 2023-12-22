@@ -1,5 +1,6 @@
 package dev.thomasglasser.minejago.world.level.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
@@ -38,6 +39,12 @@ public class DiscBlock extends HorizontalDirectionalBlock {
                         .setValue(ROW, Row.TOP)
                         .setValue(COLUMN, Column.LEFT)
         );
+    }
+
+    @Override
+    protected MapCodec<? extends HorizontalDirectionalBlock> codec()
+    {
+        return simpleCodec(DiscBlock::new);
     }
 
     @Override

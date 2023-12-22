@@ -1,7 +1,5 @@
 package dev.thomasglasser.minejago.client.gui.screens.inventory;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import net.minecraft.client.gui.GuiGraphics;
@@ -28,7 +26,7 @@ public class ScrollViewScreen extends BookViewScreen {
 
     @Override
     public void render(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
-        this.renderBackground(guiGraphics);
+        this.renderBackground(guiGraphics, pMouseX, pMouseY, pPartialTick);
         int i = (this.width - 192) / 2;
         int j = 2;
         guiGraphics.blit(BACKGROUND, i, 2, 0, 0, 192, 192);

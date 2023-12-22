@@ -2,17 +2,17 @@ package dev.thomasglasser.minejago.server;
 
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowersConfig;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.config.ModConfig;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class MinejagoServerConfig
 {
-    public static ForgeConfigSpec.BooleanValue ENABLE_TECH;
-    public static ForgeConfigSpec.BooleanValue ENABLE_SKULKIN_RAIDS;
+    public static ModConfigSpec.BooleanValue ENABLE_TECH;
+    public static ModConfigSpec.BooleanValue ENABLE_SKULKIN_RAIDS;
 
     public static void register()
     {
-        ForgeConfigSpec.Builder SERVER_BUILDER = new ForgeConfigSpec.Builder();
+        ModConfigSpec.Builder SERVER_BUILDER = new ModConfigSpec.Builder();
 
         registerFeatureToggles(SERVER_BUILDER);
         MinejagoPowersConfig.registerServer(SERVER_BUILDER);
@@ -20,7 +20,7 @@ public class MinejagoServerConfig
         Services.CONFIG.registerConfig(ModConfig.Type.SERVER, SERVER_BUILDER.build());
     }
 
-    private static void registerFeatureToggles(ForgeConfigSpec.Builder builder)
+    private static void registerFeatureToggles(ModConfigSpec.Builder builder)
     {
         builder.comment("Optional features that enhance the mod, but may not match the desired experience of some players").push("features");
 

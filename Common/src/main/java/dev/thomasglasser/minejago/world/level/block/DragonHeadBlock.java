@@ -1,16 +1,22 @@
 package dev.thomasglasser.minejago.world.level.block;
 
-import dev.thomasglasser.minejago.world.entity.dragon.Dragon;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.thomasglasser.minejago.world.level.block.entity.DragonHeadBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -25,12 +31,13 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Supplier;
 
 public class DragonHeadBlock extends HorizontalDirectionalBlock implements EntityBlock {
-    private final Supplier<EntityType<? extends Dragon>> entityType;
+    private final Supplier<EntityType<?>> entityType;
 
     public static BooleanProperty ACTIVATED = BooleanProperty.create("activated");
+    public static MapCodec<DragonHeadBlock> CODEC;
 
-    public DragonHeadBlock(Supplier<EntityType<? extends Dragon>> entity) {
-        super(BlockBehaviour.Properties.copy(Blocks.BARRIER).noLootTable().lightLevel(state -> state.getValue(ACTIVATED) ? 0 : 10));
+    public DragonHeadBlock(Supplier<EntityType<?>> entity) {
+        super(BlockBehaviour.Properties.ofFullCopy(Blocks.BARRIER).noLootTable().lightLevel(state -> state.getValue(ACTIVATED) ? 0 : 10));
         this.registerDefaultState(
                 this.stateDefinition
                         .any()
@@ -77,7 +84,7 @@ public class DragonHeadBlock extends HorizontalDirectionalBlock implements Entit
         return new DragonHeadBlockEntity(pos, state);
     }
 
-    public EntityType<? extends Dragon> getEntityType() {
+    public EntityType<?> getEntityType() {
         return entityType.get();
     }
 
@@ -85,5 +92,13 @@ public class DragonHeadBlock extends HorizontalDirectionalBlock implements Entit
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         return DragonHeadBlockEntity::tick;
+    }
+
+    @Override
+    protected @NotNull MapCodec<? extends HorizontalDirectionalBlock> codec()
+    {
+        if (CODEC == null)
+            CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(BuiltInRegistries.ENTITY_TYPE.byNameCodec().fieldOf("entity_type").forGetter(DragonHeadBlock::getEntityType)).apply(instance, type -> new DragonHeadBlock(() -> type)));
+        return CODEC;
     }
 }
