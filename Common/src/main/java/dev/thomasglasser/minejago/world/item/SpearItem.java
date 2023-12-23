@@ -31,7 +31,7 @@ import static dev.thomasglasser.minejago.world.item.MinejagoItems.MOD_NEEDED;
 
 public class SpearItem extends ThrowableSwordItem implements ModeledItem {
     /** Modifiers applied when the item is in the mainhand of a user. */
-    private final ImmutableMultimap.Builder<Attribute, AttributeModifier> defaultModifiers;
+    private final ImmutableMultimap<Attribute, AttributeModifier> defaultModifiers;
 
     private BlockEntityWithoutLevelRenderer bewlr;
 
@@ -40,11 +40,11 @@ public class SpearItem extends ThrowableSwordItem implements ModeledItem {
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(Attributes.ATTACK_KNOCKBACK, new AttributeModifier("Weapon modifier", knockback, AttributeModifier.Operation.ADDITION));
         if (Services.ITEM.getAttackRangeAttribute() != null) builder.put(Services.ITEM.getAttackRangeAttribute(), new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", 2.0, AttributeModifier.Operation.ADDITION));
-        this.defaultModifiers = builder;
+        this.defaultModifiers = builder.putAll(super.getDefaultAttributeModifiers(EquipmentSlot.MAINHAND)).build();
     }
     @Override
     public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot) {
-        return equipmentSlot == EquipmentSlot.MAINHAND ? this.defaultModifiers.putAll(super.getDefaultAttributeModifiers(equipmentSlot)).build() : super.getDefaultAttributeModifiers(equipmentSlot);
+        return equipmentSlot == EquipmentSlot.MAINHAND ? this.defaultModifiers : super.getDefaultAttributeModifiers(equipmentSlot);
     }
 
     @Override
