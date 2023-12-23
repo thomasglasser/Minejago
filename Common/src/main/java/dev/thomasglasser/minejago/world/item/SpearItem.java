@@ -31,26 +31,23 @@ import static dev.thomasglasser.minejago.world.item.MinejagoItems.MOD_NEEDED;
 
 public class SpearItem extends ThrowableSwordItem implements ModeledItem {
     /** Modifiers applied when the item is in the mainhand of a user. */
-    private final Multimap<Attribute, AttributeModifier> defaultModifiers;
+    private final ImmutableMultimap.Builder<Attribute, AttributeModifier> defaultModifiers;
 
     private BlockEntityWithoutLevelRenderer bewlr;
 
-    public SpearItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
+    public SpearItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, float knockback, Properties pProperties) {
         super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
-        float attackDamage = (float) pAttackDamageModifier + pTier.getAttackDamageBonus();
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", attackDamage, AttributeModifier.Operation.ADDITION));
-        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", pAttackSpeedModifier, AttributeModifier.Operation.ADDITION));
-        builder.put(Attributes.ATTACK_KNOCKBACK, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", pAttackSpeedModifier, AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.ATTACK_KNOCKBACK, new AttributeModifier("Weapon modifier", knockback, AttributeModifier.Operation.ADDITION));
         if (Services.ITEM.getAttackRangeAttribute() != null) builder.put(Services.ITEM.getAttackRangeAttribute(), new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", 2.0, AttributeModifier.Operation.ADDITION));
-        this.defaultModifiers = builder.build();
+        this.defaultModifiers = builder;
+    }
+    @Override
+    public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot) {
+        return equipmentSlot == EquipmentSlot.MAINHAND ? this.defaultModifiers.putAll(super.getDefaultAttributeModifiers(equipmentSlot)).build() : super.getDefaultAttributeModifiers(equipmentSlot);
     }
 
     @Override
-    public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot pEquipmentSlot) {
-        return pEquipmentSlot == EquipmentSlot.MAINHAND ? this.defaultModifiers : super.getDefaultAttributeModifiers(pEquipmentSlot);
-    }
-
     public void releaseUsing(ItemStack pStack, Level pLevel, LivingEntity pEntityLiving, int pTimeLeft) {
         if (pEntityLiving instanceof Player player) {
             int i = this.getUseDuration(pStack) - pTimeLeft;
