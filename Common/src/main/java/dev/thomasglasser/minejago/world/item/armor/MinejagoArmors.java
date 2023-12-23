@@ -188,8 +188,9 @@ public class MinejagoArmors
     
     private static <T extends ArmorItem> Supplier<T> register(String name, Supplier<T> item)
     {
-        ALL.add(item);
-        return Services.REGISTRATION.register(BuiltInRegistries.ITEM, name, item);
+        Supplier<T> o = Services.REGISTRATION.register(BuiltInRegistries.ITEM, name, item);
+        ALL.add(o);
+        return o;
     }
 
     public static void init() {}

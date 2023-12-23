@@ -54,11 +54,11 @@ dependencies {
     implementation "com.klikli_dev:modonomicon-${minecraft_version}-neoforge:${modonomicon_version}"
     implementation "net.tslat.tes:TES-neoforge-${minecraft_version}:${tes_version}"
     implementation "maven.modrinth:moonlight:forge_${moonlight_version}"
-    implementation "mysticdrew:common-networking-forge:${common_networking_version}"
 
     // Forge Only
     implementation "maven.modrinth:sherdsapi:${sherdsapi_version}-neoforge"
-    implementation "maven.modrinth:trimmed:${trimmed_version}+forge"
+    compileOnly "maven.modrinth:trimmed:${trimmed_version}+forge"
+//    implementation "maven.modrinth:trimmed:${trimmed_version}+forge"
     implementation "maven.modrinth:ryoamiclights:${ryoamiclights_version}"
 
     // Runtime

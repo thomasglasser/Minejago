@@ -1,5 +1,6 @@
 package dev.thomasglasser.minejago.platform;
 
+import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.platform.services.RegistrationHelper;
 import net.minecraft.core.Registry;
 
@@ -10,7 +11,7 @@ public class FabricRegistrationHelper implements RegistrationHelper
 	@Override
 	public <V, T extends V> Supplier<T> register(Registry<V> registry, String name, Supplier<T> supplier)
 	{
-		T o = Registry.register(registry, name, supplier.get());
+		T o = Registry.register(registry, Minejago.modLoc(name), supplier.get());
 		return () -> o;
 	}
 }

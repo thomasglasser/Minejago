@@ -4,10 +4,12 @@ import com.klikli_dev.modonomicon.client.render.page.BookProcessingRecipePageRen
 import com.klikli_dev.modonomicon.client.render.page.PageRendererRegistry;
 import com.klikli_dev.modonomicon.data.LoaderRegistry;
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.data.modonomicons.pages.BookTeapotBrewingRecipePage;
 import dev.thomasglasser.minejago.network.MinejagoMainChannel;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import dev.thomasglasser.minejago.packs.PackHolder;
+import dev.thomasglasser.minejago.world.entity.power.Power;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PathPackResources;
@@ -16,6 +18,7 @@ import net.minecraft.server.packs.repository.PackSource;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
+import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 
 public class MinejagoForgeCoreEvents {
     public static void onCommonSetup(FMLCommonSetupEvent event)
@@ -52,5 +55,10 @@ public class MinejagoForgeCoreEvents {
                 event.addRepositorySource((packConsumer) -> packConsumer.accept(pack));
             }
         }
+    }
+
+    public static void onNewDataPackRegistry(DataPackRegistryEvent.NewRegistry event)
+    {
+        event.dataPackRegistry(MinejagoRegistries.POWER, Power.CODEC, Power.CODEC);
     }
 }

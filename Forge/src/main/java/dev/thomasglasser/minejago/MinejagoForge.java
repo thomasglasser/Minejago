@@ -48,6 +48,7 @@ public class MinejagoForge
         bus.addListener(MinejagoForgeEntityEvents::onEntityAttributeCreation);
         bus.addListener(MinejagoForgeEntityEvents::onSpawnPlacementsRegister);
         bus.addListener(MinejagoForgeCoreEvents::onAddPackFinders);
+        bus.addListener(MinejagoForgeCoreEvents::onNewDataPackRegistry);
     }
 
     private void addModClientListeners(IEventBus bus)

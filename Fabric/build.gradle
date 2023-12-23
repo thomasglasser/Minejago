@@ -24,9 +24,11 @@ dependencies {
     // Common
     include modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${playeranimator_version}")
     include modImplementation("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forgeconfigapiport_version}")
-    include modImplementation("com.jamieswhiteshirt:reach-entity-attributes:$reachentityattributes_version")
+    include modCompileOnly("com.jamieswhiteshirt:reach-entity-attributes:$reachentityattributes_version")
+//    include modImplementation("com.jamieswhiteshirt:reach-entity-attributes:$reachentityattributes_version")
     include modImplementation("maven.modrinth:sherdsapi:${sherdsapi_version}-fabric")
-    include modImplementation("maven.modrinth:trimmed:${trimmed_version}+fabric")
+//    include modImplementation("maven.modrinth:trimmed:${trimmed_version}+fabric")
+    include modCompileOnly("maven.modrinth:trimmed:${trimmed_version}+fabric")
 
     modImplementation "net.tslat.smartbrainlib:SmartBrainLib-fabric-${minecraft_version}:${sbl_version}"
     modImplementation "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}"
@@ -39,8 +41,8 @@ dependencies {
     modImplementation "net.tslat.tes:TES-fabric-${minecraft_version}:${tes_version}"
     modImplementation "maven.modrinth:moonlight:fabric_${moonlight_version}"
     modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-api:${cca_version}"
-    modImplementation "maven.modrinth:lambdynamiclights:${lambdynamiclights_version}"
-    modImplementation "mysticdrew:common-networking-fabric:${common_networking_version}"
+    modCompileOnly "maven.modrinth:lambdynamiclights:${lambdynamiclights_version}"
+//    modImplementation "maven.modrinth:lambdynamiclights:${lambdynamiclights_version}"
 
     // Fabric Only
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"

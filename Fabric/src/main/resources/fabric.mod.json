@@ -62,10 +62,10 @@
     "smartbrainlib": ">=${sbl_version}",
     "geckolib": ">=${geckolib_version}",
     "sherdsapi": ">=${sherdsapi_version}",
-    "forgeconfigapiport": ">=${forgeconfigapiport_version}",
-    "trimmed": ">=${trimmed_version}"
+    "forgeconfigapiport": ">=${forgeconfigapiport_version}"
   },
   "recommends": {
+    "trimmed": ">=${trimmed_version}",
     "reach-entity-attributes": ">=${reachentityattributes_version}",
     "moonlight": ">=${moonlight_version}"
   },

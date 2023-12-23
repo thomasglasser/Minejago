@@ -1,5 +1,6 @@
 package dev.thomasglasser.minejago;
 
+import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.data.tags.MinejagoBiomeTags;
 import dev.thomasglasser.minejago.data.worldgen.placement.MinejagoVegetationPlacements;
 import dev.thomasglasser.minejago.network.*;
@@ -8,9 +9,11 @@ import dev.thomasglasser.minejago.packs.PackHolder;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityEvents;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.character.Zane;
+import dev.thomasglasser.minejago.world.entity.power.Power;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
+import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
@@ -47,6 +50,8 @@ public class MinejagoFabric implements ModInitializer {
             if (holder.type() == PackType.SERVER_DATA) ResourceManagerHelper.registerBuiltinResourcePack(holder.id(), FabricLoader.getInstance().getModContainer(Minejago.MOD_ID).get(), Component.translatable(holder.titleKey()), ResourcePackActivationType.NORMAL);
             else if (holder.type() == PackType.CLIENT_RESOURCES) ResourceManagerHelper.registerBuiltinResourcePack(holder.id(), FabricLoader.getInstance().getModContainer(Minejago.MOD_ID).get(), Component.translatable(holder.titleKey()), ResourcePackActivationType.NORMAL);
         }
+
+        registerDynamicRegistries();
     }
 
     private void registerEvents()
@@ -94,5 +99,10 @@ public class MinejagoFabric implements ModInitializer {
     private void registerEntitySpawnPlacements()
     {
         SpawnPlacements.register(MinejagoEntityTypes.ZANE.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Zane::checkSurfaceWaterAnimalSpawnRules);
+    }
+
+    private void registerDynamicRegistries()
+    {
+        DynamicRegistries.registerSynced(MinejagoRegistries.POWER, Power.CODEC);
     }
 }
