@@ -1,7 +1,7 @@
 package dev.thomasglasser.minejago.data.worldgen.biome;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.data.tags.MinejagoBiomeTags;
+import dev.thomasglasser.minejago.tags.MinejagoBiomeTags;
 import dev.thomasglasser.minejago.data.worldgen.placement.MinejagoVegetationPlacements;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import net.minecraft.core.Holder;

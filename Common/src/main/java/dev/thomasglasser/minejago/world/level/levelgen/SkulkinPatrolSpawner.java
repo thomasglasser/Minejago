@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.world.level.levelgen;
 
-import dev.thomasglasser.minejago.data.tags.MinejagoBiomeTags;
+import dev.thomasglasser.minejago.tags.MinejagoBiomeTags;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.util.MinejagoLevelUtils;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;

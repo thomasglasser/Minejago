@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.mixin.minecraft.world.level.block.entity;
 
-import dev.thomasglasser.minejago.data.tags.MinejagoItemTags;
+import dev.thomasglasser.minejago.tags.MinejagoItemTags;
 import dev.thomasglasser.minejago.world.inventory.ScrollLecternMenu;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import net.minecraft.commands.CommandSourceStack;

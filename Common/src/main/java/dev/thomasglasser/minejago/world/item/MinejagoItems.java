@@ -1,7 +1,7 @@
 package dev.thomasglasser.minejago.world.item;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.data.tags.MinejagoBannerPatternTags;
+import dev.thomasglasser.minejago.tags.MinejagoBannerPatternTags;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.registration.RegistrationProvider;
 import dev.thomasglasser.minejago.registration.RegistryObject;

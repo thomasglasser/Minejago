@@ -1,7 +1,7 @@
 package dev.thomasglasser.minejago.world.item;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.data.tags.MinejagoStructureTags;
+import dev.thomasglasser.minejago.tags.MinejagoStructureTags;
 import dev.thomasglasser.minejago.world.level.saveddata.maps.MinejagoMapDecorations;
 import net.mehvahdjukaar.moonlight.api.map.MapHelper;
 import net.minecraft.core.BlockPos;

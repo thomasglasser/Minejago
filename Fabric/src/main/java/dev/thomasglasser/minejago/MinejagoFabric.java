@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago;
 
-import dev.thomasglasser.minejago.data.tags.MinejagoBiomeTags;
+import dev.thomasglasser.minejago.tags.MinejagoBiomeTags;
 import dev.thomasglasser.minejago.data.worldgen.placement.MinejagoVegetationPlacements;
 import dev.thomasglasser.minejago.network.ServerboundChangeVipDataPacket;
 import dev.thomasglasser.minejago.network.ServerboundFlyVehiclePacket;

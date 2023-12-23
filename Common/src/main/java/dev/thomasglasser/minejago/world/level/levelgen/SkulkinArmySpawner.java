@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.world.level.levelgen;
 
-import dev.thomasglasser.minejago.data.tags.MinejagoStructureTags;
+import dev.thomasglasser.minejago.tags.MinejagoStructureTags;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;

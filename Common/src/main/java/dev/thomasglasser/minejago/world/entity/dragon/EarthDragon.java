@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.world.entity.dragon;
 
-import dev.thomasglasser.minejago.data.tags.MinejagoPowerTags;
+import dev.thomasglasser.minejago.tags.MinejagoPowerTags;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.projectile.EarthBlast;

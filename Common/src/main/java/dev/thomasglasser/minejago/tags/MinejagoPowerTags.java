@@ -1,4 +1,4 @@
-package dev.thomasglasser.minejago.data.tags;
+package dev.thomasglasser.minejago.tags;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
