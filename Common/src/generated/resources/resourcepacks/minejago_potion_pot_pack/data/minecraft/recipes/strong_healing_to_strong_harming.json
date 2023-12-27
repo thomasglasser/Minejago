@@ -1,7 +1,7 @@
 {
   "type": "minejago:teapot_brewing",
   "base": "minecraft:strong_healing",
-  "brewingtime": 800,
+  "brewing_time": 800,
   "experience": 0.35,
   "group": "potion",
   "ingredient": {

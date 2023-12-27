@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.data;
 
-import com.klikli_dev.modonomicon.api.datagen.ModonomiconLanguageProvider;
+import com.klikli_dev.modonomicon.api.datagen.AbstractModonomiconLanguageProvider;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.data.advancements.MinejagoAdvancementProvider;
 import dev.thomasglasser.minejago.data.blockstates.MinejagoBlockStates;
@@ -87,11 +87,24 @@ public class MinejagoDataGenerators
     {
         MinejagoBlockTagsProvider blockTags = new MinejagoBlockTagsProvider(packOutput, lookupProvider, existingFileHelper);
 
-        // LanugageProviders
-        LanguageProvider enUs = new MinejagoEnUsLanguageProvider(packOutput);
-
         // Modonomicons (on server)
-        generator.addProvider(includeServer, new MinejagoWikiBookProvider(packOutput, (ModonomiconLanguageProvider) enUs));
+        AbstractModonomiconLanguageProvider mconEnUs = new AbstractModonomiconLanguageProvider(packOutput, Minejago.MOD_ID, "en_us") {
+            @Override
+            protected void addTranslations()
+            {}
+        };
+        generator.addProvider(includeServer, new MinejagoWikiBookProvider(packOutput, mconEnUs));
+
+        // LanugageProviders
+        LanguageProvider enUs = new MinejagoEnUsLanguageProvider(packOutput)
+        {
+            @Override
+            protected void addTranslations()
+            {
+                super.addTranslations();
+                mconEnUs.data().forEach(this::add);
+            }
+        };
 
         // AdvancementProvider
         generator.addProvider(includeServer, new MinejagoAdvancementProvider(packOutput, lookupProvider, existingFileHelper, enUs));

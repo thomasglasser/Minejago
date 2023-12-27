@@ -14,7 +14,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
@@ -101,7 +100,7 @@ public class MinejagoBlockEntityWithoutLevelRenderer extends BlockEntityWithoutL
                     {
                         if (stack.is(item.get()))
                         {
-                            path[0] = BuiltInRegistries.ITEM.getKey(item.get()).getPath();
+                            path[0] = item.getId().getPath();
                         }
                     }));
             if (!path[0].isEmpty())

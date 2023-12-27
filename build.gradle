@@ -172,6 +172,14 @@ subprojects {
                 includeGroupAndSubgroups 'com.github.llamalad7.mixinextras'
             }
         }
+        maven {
+            name = "TslatEffectsLib"
+            url = "https://dl.cloudsmith.io/public/tslat/tel/maven/"
+            content {
+                includeGroupAndSubgroups "net.tslat.effectslib"
+            }
+        }
+        mavenLocal()
     }
 
     tasks.withType(JavaCompile).configureEach {

@@ -7,6 +7,7 @@ import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
@@ -29,7 +30,7 @@ public class SimpleBrewingRecipeBuilder implements RecipeBuilder
     private final Potion base;
     private final Ingredient ingredient;
     private final float experience;
-    private final IntProvider cookingTime;
+    private final IntProvider brewingTime;
     private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
     @Nullable
     private String group;
@@ -41,7 +42,7 @@ public class SimpleBrewingRecipeBuilder implements RecipeBuilder
         this.ingredient = ingredient;
         this.result = result;
         this.experience = xp;
-        this.cookingTime = i;
+        this.brewingTime = i;
         this.factory = factory;
     }
 
@@ -72,12 +73,24 @@ public class SimpleBrewingRecipeBuilder implements RecipeBuilder
     }
 
     @Override
-    public void save(RecipeOutput recipeOutput, ResourceLocation id) {
+    public void save(RecipeOutput recipeOutput, ResourceLocation id)
+    {
         this.ensureValid(id);
         Advancement.Builder builder = recipeOutput.advancement().addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id)).rewards(AdvancementRewards.Builder.recipe(id)).requirements(AdvancementRequirements.Strategy.OR);
         this.criteria.forEach(builder::addCriterion);
-        Recipe<?> abstractCookingRecipe = this.factory.create(Objects.requireNonNullElse(this.group, ""), base, ingredient, result, this.experience, this.cookingTime);
+        Recipe<?> abstractCookingRecipe = this.factory.create(Objects.requireNonNullElse(this.group, ""), base, ingredient, result, this.experience, this.brewingTime);
         recipeOutput.accept(id, abstractCookingRecipe, builder.build(id.withPrefix("recipes/" + this.category.getFolderName() + "/")));
+    }
+
+    @Override
+    public void save(RecipeOutput recipeOutput)
+    {
+        this.save(recipeOutput, getDefaultRecipeId(base, result));
+    }
+
+    static ResourceLocation getDefaultRecipeId(Potion from, Potion to) {
+        ResourceLocation toLoc = BuiltInRegistries.POTION.getKey(to);
+        return new ResourceLocation(toLoc.getNamespace(), BuiltInRegistries.POTION.getKey(from).getPath() + "_to_" + toLoc.getPath());
     }
 
     /**

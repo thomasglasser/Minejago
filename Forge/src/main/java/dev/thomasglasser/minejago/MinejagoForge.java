@@ -6,7 +6,6 @@ import dev.thomasglasser.minejago.commands.MinejagoForgeCommandEvents;
 import dev.thomasglasser.minejago.core.MinejagoForgeCoreEvents;
 import dev.thomasglasser.minejago.data.MinejagoDataGenerators;
 import dev.thomasglasser.minejago.platform.ForgeDataHelper;
-import dev.thomasglasser.minejago.platform.ForgeRegistrationHelper;
 import dev.thomasglasser.minejago.world.entity.MinejagoForgeEntityEvents;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModList;
@@ -22,11 +21,10 @@ public class MinejagoForge
 {
     public MinejagoForge(IEventBus bus)
     {
-        ForgeRegistrationHelper.DEFERRED_REGISTERS.values().forEach(dr -> dr.register(bus));
         ForgeDataHelper.ATTACHMENT_TYPES.register(bus);
 
         Minejago.init();
-        
+
         bus.addListener(MinejagoForgeCoreEvents::onCommonSetup);
         if (FMLEnvironment.dist.isClient()) bus.addListener(MinejagoForgeClientEvents::onClientSetup);
 
@@ -78,6 +76,6 @@ public class MinejagoForge
     {
         NeoForge.EVENT_BUS.addListener((ClientPlayerNetworkEvent.LoggingIn event) -> MinejagoClientEvents.onPlayerLoggedIn());
         NeoForge.EVENT_BUS.addListener((TickEvent.ClientTickEvent event) -> MinejagoClientEvents.onClientTick());
-        NeoForge.EVENT_BUS.addListener((InputEvent event) -> MinejagoClientEvents.onInput(event instanceof InputEvent.Key keyEvent ? keyEvent.getKey() : -1));
+        NeoForge.EVENT_BUS.addListener((InputEvent.Key event) -> MinejagoClientEvents.onInput(event.getKey()));
     }
 }

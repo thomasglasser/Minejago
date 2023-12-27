@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.data.recipes;
 
 import dev.thomasglasser.minejago.data.tags.MinejagoItemTags;
+import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
@@ -28,7 +29,6 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Supplier;
 
 public class MinejagoRecipes extends RecipeProvider {
     public MinejagoRecipes(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
@@ -164,6 +164,8 @@ public class MinejagoRecipes extends RecipeProvider {
         normalTea(writer, Items.JUNGLE_LEAVES, MinejagoPotions.JUNGLE_TEA);
         normalTea(writer, Items.DARK_OAK_LEAVES, MinejagoPotions.DARK_OAK_TEA);
         normalTea(writer, Items.BIRCH_LEAVES, MinejagoPotions.BIRCH_TEA);
+        normalTea(writer, Items.AZALEA_LEAVES, MinejagoPotions.AZALEA_TEA);
+        normalTea(writer, Items.FLOWERING_AZALEA_LEAVES, MinejagoPotions.FLOWERING_AZALEA_TEA);
         normalTea(writer, MinejagoBlocks.FOCUS_LEAVES_SET.leaves().get().asItem(), MinejagoPotions.FOCUS_TEA);
     }
 
@@ -181,7 +183,7 @@ public class MinejagoRecipes extends RecipeProvider {
                 .save(writer);
     }
 
-    private void normalTea(RecipeOutput writer, Item ingredient, Supplier<Potion> result)
+    private void normalTea(RecipeOutput writer, Item ingredient, RegistryObject<Potion> result)
     {
         normalTea(writer, ingredient, result.get());
     }

@@ -44,7 +44,7 @@
     },
     {
       "apply": {
-        "model": "minejago:block/chiseled_scroll_shelf_occupied_slot_top_left",
+        "model": "minejago:block/chiseled_scroll_shelf_occupied_slot_top_mid",
         "y": 0
       },
       "when": {
@@ -53,14 +53,14 @@
             "facing": "north"
           },
           {
-            "slot_0_occupied": "true"
+            "slot_1_occupied": "true"
           }
         ]
       }
     },
     {
       "apply": {
-        "model": "minejago:block/chiseled_scroll_shelf_empty_slot_top_left",
+        "model": "minejago:block/chiseled_scroll_shelf_empty_slot_top_mid",
         "y": 0
       },
       "when": {
@@ -69,39 +69,7 @@
             "facing": "north"
           },
           {
-            "slot_0_occupied": "false"
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "minejago:block/chiseled_scroll_shelf_occupied_slot_top_right",
-        "y": 0
-      },
-      "when": {
-        "AND": [
-          {
-            "facing": "north"
-          },
-          {
-            "slot_2_occupied": "true"
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "minejago:block/chiseled_scroll_shelf_empty_slot_top_right",
-        "y": 0
-      },
-      "when": {
-        "AND": [
-          {
-            "facing": "north"
-          },
-          {
-            "slot_2_occupied": "false"
+            "slot_1_occupied": "false"
           }
         ]
       }
@@ -140,7 +108,7 @@
     },
     {
       "apply": {
-        "model": "minejago:block/chiseled_scroll_shelf_occupied_slot_top_mid",
+        "model": "minejago:block/chiseled_scroll_shelf_occupied_slot_top_right",
         "y": 0
       },
       "when": {
@@ -149,14 +117,14 @@
             "facing": "north"
           },
           {
-            "slot_1_occupied": "true"
+            "slot_2_occupied": "true"
           }
         ]
       }
     },
     {
       "apply": {
-        "model": "minejago:block/chiseled_scroll_shelf_empty_slot_top_mid",
+        "model": "minejago:block/chiseled_scroll_shelf_empty_slot_top_right",
         "y": 0
       },
       "when": {
@@ -165,7 +133,39 @@
             "facing": "north"
           },
           {
-            "slot_1_occupied": "false"
+            "slot_2_occupied": "false"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "minejago:block/chiseled_scroll_shelf_occupied_slot_top_left",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "north"
+          },
+          {
+            "slot_0_occupied": "true"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "minejago:block/chiseled_scroll_shelf_empty_slot_top_left",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "north"
+          },
+          {
+            "slot_0_occupied": "false"
           }
         ]
       }
@@ -246,7 +246,7 @@
     },
     {
       "apply": {
-        "model": "minejago:block/chiseled_scroll_shelf_occupied_slot_top_left",
+        "model": "minejago:block/chiseled_scroll_shelf_occupied_slot_top_mid",
         "y": 180
       },
       "when": {
@@ -255,14 +255,14 @@
             "facing": "south"
           },
           {
-            "slot_0_occupied": "true"
+            "slot_1_occupied": "true"
           }
         ]
       }
     },
     {
       "apply": {
-        "model": "minejago:block/chiseled_scroll_shelf_empty_slot_top_left",
+        "model": "minejago:block/chiseled_scroll_shelf_empty_slot_top_mid",
         "y": 180
       },
       "when": {
@@ -271,39 +271,7 @@
             "facing": "south"
           },
           {
-            "slot_0_occupied": "false"
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "minejago:block/chiseled_scroll_shelf_occupied_slot_top_right",
-        "y": 180
-      },
-      "when": {
-        "AND": [
-          {
-            "facing": "south"
-          },
-          {
-            "slot_2_occupied": "true"
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "minejago:block/chiseled_scroll_shelf_empty_slot_top_right",
-        "y": 180
-      },
-      "when": {
-        "AND": [
-          {
-            "facing": "south"
-          },
-          {
-            "slot_2_occupied": "false"
+            "slot_1_occupied": "false"
           }
         ]
       }
@@ -342,7 +310,7 @@
     },
     {
       "apply": {
-        "model": "minejago:block/chiseled_scroll_shelf_occupied_slot_top_mid",
+        "model": "minejago:block/chiseled_scroll_shelf_occupied_slot_top_right",
         "y": 180
       },
       "when": {
@@ -351,14 +319,14 @@
             "facing": "south"
           },
           {
-            "slot_1_occupied": "true"
+            "slot_2_occupied": "true"
           }
         ]
       }
     },
     {
       "apply": {
-        "model": "minejago:block/chiseled_scroll_shelf_empty_slot_top_mid",
+        "model": "minejago:block/chiseled_scroll_shelf_empty_slot_top_right",
         "y": 180
       },
       "when": {
@@ -367,7 +335,39 @@
             "facing": "south"
           },
           {
-            "slot_1_occupied": "false"
+            "slot_2_occupied": "false"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "minejago:block/chiseled_scroll_shelf_occupied_slot_top_left",
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "south"
+          },
+          {
+            "slot_0_occupied": "true"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "minejago:block/chiseled_scroll_shelf_empty_slot_top_left",
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "south"
+          },
+          {
+            "slot_0_occupied": "false"
           }
         ]
       }
@@ -448,7 +448,7 @@
     },
     {
       "apply": {
-        "model": "minejago:block/chiseled_scroll_shelf_occupied_slot_top_left",
+        "model": "minejago:block/chiseled_scroll_shelf_occupied_slot_top_mid",
         "y": 270
       },
       "when": {
@@ -457,14 +457,14 @@
             "facing": "west"
           },
           {
-            "slot_0_occupied": "true"
+            "slot_1_occupied": "true"
           }
         ]
       }
     },
     {
       "apply": {
-        "model": "minejago:block/chiseled_scroll_shelf_empty_slot_top_left",
+        "model": "minejago:block/chiseled_scroll_shelf_empty_slot_top_mid",
         "y": 270
       },
       "when": {
@@ -473,39 +473,7 @@
             "facing": "west"
           },
           {
-            "slot_0_occupied": "false"
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "minejago:block/chiseled_scroll_shelf_occupied_slot_top_right",
-        "y": 270
-      },
-      "when": {
-        "AND": [
-          {
-            "facing": "west"
-          },
-          {
-            "slot_2_occupied": "true"
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "minejago:block/chiseled_scroll_shelf_empty_slot_top_right",
-        "y": 270
-      },
-      "when": {
-        "AND": [
-          {
-            "facing": "west"
-          },
-          {
-            "slot_2_occupied": "false"
+            "slot_1_occupied": "false"
           }
         ]
       }
@@ -544,7 +512,7 @@
     },
     {
       "apply": {
-        "model": "minejago:block/chiseled_scroll_shelf_occupied_slot_top_mid",
+        "model": "minejago:block/chiseled_scroll_shelf_occupied_slot_top_right",
         "y": 270
       },
       "when": {
@@ -553,14 +521,14 @@
             "facing": "west"
           },
           {
-            "slot_1_occupied": "true"
+            "slot_2_occupied": "true"
           }
         ]
       }
     },
     {
       "apply": {
-        "model": "minejago:block/chiseled_scroll_shelf_empty_slot_top_mid",
+        "model": "minejago:block/chiseled_scroll_shelf_empty_slot_top_right",
         "y": 270
       },
       "when": {
@@ -569,7 +537,39 @@
             "facing": "west"
           },
           {
-            "slot_1_occupied": "false"
+            "slot_2_occupied": "false"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "minejago:block/chiseled_scroll_shelf_occupied_slot_top_left",
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "west"
+          },
+          {
+            "slot_0_occupied": "true"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "minejago:block/chiseled_scroll_shelf_empty_slot_top_left",
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "west"
+          },
+          {
+            "slot_0_occupied": "false"
           }
         ]
       }
@@ -650,7 +650,7 @@
     },
     {
       "apply": {
-        "model": "minejago:block/chiseled_scroll_shelf_occupied_slot_top_left",
+        "model": "minejago:block/chiseled_scroll_shelf_occupied_slot_top_mid",
         "y": 90
       },
       "when": {
@@ -659,14 +659,14 @@
             "facing": "east"
           },
           {
-            "slot_0_occupied": "true"
+            "slot_1_occupied": "true"
           }
         ]
       }
     },
     {
       "apply": {
-        "model": "minejago:block/chiseled_scroll_shelf_empty_slot_top_left",
+        "model": "minejago:block/chiseled_scroll_shelf_empty_slot_top_mid",
         "y": 90
       },
       "when": {
@@ -675,39 +675,7 @@
             "facing": "east"
           },
           {
-            "slot_0_occupied": "false"
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "minejago:block/chiseled_scroll_shelf_occupied_slot_top_right",
-        "y": 90
-      },
-      "when": {
-        "AND": [
-          {
-            "facing": "east"
-          },
-          {
-            "slot_2_occupied": "true"
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "minejago:block/chiseled_scroll_shelf_empty_slot_top_right",
-        "y": 90
-      },
-      "when": {
-        "AND": [
-          {
-            "facing": "east"
-          },
-          {
-            "slot_2_occupied": "false"
+            "slot_1_occupied": "false"
           }
         ]
       }
@@ -746,7 +714,7 @@
     },
     {
       "apply": {
-        "model": "minejago:block/chiseled_scroll_shelf_occupied_slot_top_mid",
+        "model": "minejago:block/chiseled_scroll_shelf_occupied_slot_top_right",
         "y": 90
       },
       "when": {
@@ -755,14 +723,14 @@
             "facing": "east"
           },
           {
-            "slot_1_occupied": "true"
+            "slot_2_occupied": "true"
           }
         ]
       }
     },
     {
       "apply": {
-        "model": "minejago:block/chiseled_scroll_shelf_empty_slot_top_mid",
+        "model": "minejago:block/chiseled_scroll_shelf_empty_slot_top_right",
         "y": 90
       },
       "when": {
@@ -771,7 +739,39 @@
             "facing": "east"
           },
           {
-            "slot_1_occupied": "false"
+            "slot_2_occupied": "false"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "minejago:block/chiseled_scroll_shelf_occupied_slot_top_left",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "east"
+          },
+          {
+            "slot_0_occupied": "true"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "minejago:block/chiseled_scroll_shelf_empty_slot_top_left",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "east"
+          },
+          {
+            "slot_0_occupied": "false"
           }
         ]
       }

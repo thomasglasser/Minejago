@@ -20,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_slab",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_slab"
     ]
   ],
   "rewards": {
     "recipes": [
       "minejago:chiseled_scroll_shelf"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

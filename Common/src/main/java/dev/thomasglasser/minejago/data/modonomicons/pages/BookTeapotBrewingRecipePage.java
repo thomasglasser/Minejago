@@ -10,13 +10,12 @@ import dev.thomasglasser.minejago.world.item.crafting.TeapotBrewingRecipe;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
-import net.minecraft.world.item.crafting.RecipeType;
 
 public class BookTeapotBrewingRecipePage extends BookProcessingRecipePage<TeapotBrewingRecipe> {
     public static final ResourceLocation ID = Minejago.modLoc("teapot_brewing_recipe");
 
     public BookTeapotBrewingRecipePage(BookTextHolder title1, ResourceLocation recipeId1, BookTextHolder title2, ResourceLocation recipeId2, BookTextHolder text, String anchor) {
-        super((RecipeType<TeapotBrewingRecipe>) MinejagoRecipeTypes.TEAPOT_BREWING.get(), title1, recipeId1, title2, recipeId2, text, anchor);
+        super(MinejagoRecipeTypes.TEAPOT_BREWING.get(), title1, recipeId1, title2, recipeId2, text, anchor);
     }
 
     public static BookTeapotBrewingRecipePage fromJson(JsonObject json) {

@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.platform;
 
 import dev.thomasglasser.minejago.platform.services.PlatformHelper;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLLoader;
 
@@ -22,5 +23,11 @@ public class ForgePlatformHelper implements PlatformHelper {
     public boolean isDevelopmentEnvironment() {
 
         return !FMLLoader.isProduction();
+    }
+
+    @Override
+    public boolean isClientSide()
+    {
+        return FMLLoader.getDist() == Dist.CLIENT;
     }
 }

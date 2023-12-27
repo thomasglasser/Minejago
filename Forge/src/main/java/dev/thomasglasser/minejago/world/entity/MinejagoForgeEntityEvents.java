@@ -1,6 +1,5 @@
 package dev.thomasglasser.minejago.world.entity;
 
-import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.entity.character.Zane;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -34,14 +33,7 @@ public class MinejagoForgeEntityEvents
     public static void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
         for (EntityType<? extends LivingEntity> type : MinejagoEntityTypes.getAllAttributes().keySet())
         {
-            try
-            {
-                event.put(type, MinejagoEntityTypes.getAllAttributes().get(type));
-            }
-            catch (ClassCastException e)
-            {
-                Minejago.LOGGER.error("Non-living entity " + type + " has attributes registered!");
-            }
+            event.put(type, MinejagoEntityTypes.getAllAttributes().get(type));
         }
     }
 

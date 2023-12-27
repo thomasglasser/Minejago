@@ -10,6 +10,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
@@ -29,6 +30,9 @@ import java.util.Optional;
 public class PowerSelectionScreen extends Screen
 {
     public static final String TITLE = "gui.power_selection.title";
+
+    public static final ResourceLocation SCROLLER_SPRITE = new ResourceLocation("container/creative_inventory/scroller");
+    public static final ResourceLocation SCROLLER_DISABLED_SPRITE = new ResourceLocation("container/creative_inventory/scroller_disabled");
 
     private static final ResourceLocation BACKGROUND = Minejago.modLoc("textures/gui/power_selection_screen.png");
     private final List<ResourceKey<Power>> powers;
@@ -103,7 +107,6 @@ public class PowerSelectionScreen extends Screen
             selectOrDone.setY(((this.height - BACKGROUND_VERTICAL_START) / 2) + 175);
             addRenderableWidget(selectOrDone);
         }
-        super.init();
     }
 
     public void renderBase(GuiGraphics guiGraphics) {
@@ -119,8 +122,10 @@ public class PowerSelectionScreen extends Screen
         this.renderArrows(guiGraphics, mouseX, mouseY);
         this.renderPowerInfo(guiGraphics);
         this.renderScrollBar(guiGraphics);
-        super.render(guiGraphics, mouseX, mouseY, partialTick);
         this.renderSelectOrDoneButton();
+        for (Renderable renderable : this.renderables) {
+            renderable.render(guiGraphics, mouseX, mouseY, partialTick);
+        }
     }
 
     public void renderPowerInfo(GuiGraphics guiGraphics)
@@ -140,20 +145,20 @@ public class PowerSelectionScreen extends Screen
             guiGraphics.pose().scale(1.5f, 1.5f, 1f);
             guiGraphics.pose().translate(-73f, -20f, 0f);
             FormattedCharSequence cutTitle = this.font.split(title, 60).get(0);
-            guiGraphics.drawString(this.font, cutTitle, x + 131, y + 49, Optional.ofNullable(title.getStyle().getColor()).orElseThrow().getValue());
+            guiGraphics.drawString(this.font, cutTitle, x + 131, y + 49, Optional.ofNullable(title.getStyle().getColor()).orElseThrow().getValue(), false);
             guiGraphics.pose().popPose();
             final int[] j = {0};
             this.font.split(lore, 89).forEach(formattedCharSequence ->
             {
                 if (j[0] < 9)
-                    guiGraphics.drawString(this.font, formattedCharSequence, x + 17, y + 59 + (j[0] * 10), lore.getStyle().getColor() != null ? lore.getStyle().getColor().getValue() : title.getStyle().getColor().getValue());
+                    guiGraphics.drawString(this.font, formattedCharSequence, x + 17, y + 59 + (j[0] * 10), lore.getStyle().getColor() != null ? lore.getStyle().getColor().getValue() : title.getStyle().getColor().getValue(), false);
                 j[0]++;
             });
             final int[] k = {0};
             this.font.split(sub, 89).forEach(formattedCharSequence ->
             {
                 if (k[0] < 2)
-                    guiGraphics.drawString(this.font, formattedCharSequence, x + 131, y + 64 + (k[0] * 10), sub.getStyle().getColor() != null ? sub.getStyle().getColor().getValue() : title.getStyle().getColor().getValue());
+                    guiGraphics.drawString(this.font, formattedCharSequence, x + 131, y + 64 + (k[0] * 10), sub.getStyle().getColor() != null ? sub.getStyle().getColor().getValue() : title.getStyle().getColor().getValue(), false);
                 k[0]++;
             });
             final int[] l = {0};
@@ -161,7 +166,7 @@ public class PowerSelectionScreen extends Screen
             descLines.forEach(formattedCharSequence ->
             {
                 if (l[0] < descStart + 7 && l[0] >= descStart)
-                    guiGraphics.drawString(this.font, formattedCharSequence, x + 131, y + 86 + ((l[0] - descStart) * 10), desc.getStyle().getColor() != null ? desc.getStyle().getColor().getValue() : Optional.ofNullable(ChatFormatting.BLACK.getColor()).orElseThrow());
+                    guiGraphics.drawString(this.font, formattedCharSequence, x + 131, y + 86 + ((l[0] - descStart) * 10), desc.getStyle().getColor() != null ? desc.getStyle().getColor().getValue() : Optional.ofNullable(ChatFormatting.BLACK.getColor()).orElseThrow(), false);
                 l[0]++;
             });
             canScroll = l[0] > 7;
@@ -174,7 +179,8 @@ public class PowerSelectionScreen extends Screen
         int j = ((this.height - BACKGROUND_VERTICAL_START) / 2);
         int k = i + 228;
         int l = j + 48;
-        guiGraphics.blit(new ResourceLocation("textures/gui/container/creative_inventory/tabs.png"), k, l + (descStart), 232 + (canScroll ? 0 : 12), 0, 12, 15);
+        ResourceLocation resourceLocation = this.canScroll ? SCROLLER_SPRITE : SCROLLER_DISABLED_SPRITE;
+        guiGraphics.blitSprite(resourceLocation, k, l + this.descStart, 12, 15);
     }
 
     protected void renderArrows(GuiGraphics guiGraphics, int mouseX, int mouseY)
@@ -202,7 +208,7 @@ public class PowerSelectionScreen extends Screen
 
         @Override
         public void onPress() {
-            shownPowerButtons.forEach(powerButton -> powerButton.setSelected(false));
+            allPowerButtons.forEach(powerButton -> powerButton.setSelected(false));
             setSelected(!selected);
             if (power != selectedPower)
                 descStart = 0;
@@ -380,6 +386,7 @@ public class PowerSelectionScreen extends Screen
                 addRenderableWidget(b);
                 shownPowerButtons.add(b);
             }
+            shownPowerButtons.get(shownPowerButtons.size() - 1).onPress();
         }
 
         refreshArrows();
@@ -401,6 +408,7 @@ public class PowerSelectionScreen extends Screen
                 addRenderableWidget(b);
                 shownPowerButtons.add(b);
             }
+            shownPowerButtons.get(0).onPress();
         }
 
         refreshArrows();
@@ -431,6 +439,11 @@ public class PowerSelectionScreen extends Screen
 
     protected boolean previousPower()
     {
+        if (selectedPowerButton == null || !shownPowerButtons.contains(selectedPowerButton))
+        {
+            shownPowerButtons.get(shownPowerButtons.size() - 1).onPress();
+            return true;
+        }
         if (shownPowerButtons.indexOf(selectedPowerButton) - 1 >= 0)
         {
             shownPowerButtons.get(shownPowerButtons.indexOf(selectedPowerButton) - 1).onPress();
@@ -438,7 +451,7 @@ public class PowerSelectionScreen extends Screen
         }
         else if (previousPage())
         {
-            shownPowerButtons.get(0).onPress();
+            shownPowerButtons.get(shownPowerButtons.size() - 1).onPress();
             return true;
         }
 

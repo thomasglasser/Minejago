@@ -26,17 +26,13 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.minejago.husbandry.harvest_with_scythe.desc"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "minejago:iron_scythe",
       "nbt": "{Damage:0}"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.minejago.husbandry.harvest_with_scythe.title"
     }

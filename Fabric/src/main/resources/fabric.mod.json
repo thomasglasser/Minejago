@@ -61,8 +61,7 @@
     "cardinal-components-entity": ">=${cca_version}",
     "smartbrainlib": ">=${sbl_version}",
     "geckolib": ">=${geckolib_version}",
-    "sherdsapi": ">=${sherdsapi_version}",
-    "forgeconfigapiport": ">=${forgeconfigapiport_version}"
+    "sherdsapi": ">=${sherdsapi_version}"
   },
   "recommends": {
     "trimmed": ">=${trimmed_version}",

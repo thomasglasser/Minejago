@@ -2,22 +2,17 @@
   "parent": "minejago:story/get_four_weapons_map",
   "criteria": {
     "get_power": {
-      "conditions": {},
       "trigger": "minejago:get_power"
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.minejago.story.get_power.desc"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "minejago:training_gi_hood",
       "nbt": "{Damage:0,Power:\"minejago:fire\"}"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.minejago.story.get_power.title"
     }

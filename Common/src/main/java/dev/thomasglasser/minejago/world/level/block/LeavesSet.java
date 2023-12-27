@@ -1,12 +1,11 @@
 package dev.thomasglasser.minejago.world.level.block;
 
+import dev.thomasglasser.minejago.registration.RegistryObject;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 
-import java.util.function.Supplier;
-
 public record LeavesSet(ResourceLocation id,
-                        Supplier<Block> leaves,
-                        Supplier<Block> sapling,
-                        Supplier<Block> pottedSapling)
+                        RegistryObject<Block> leaves,
+                        RegistryObject<Block> sapling,
+                        RegistryObject<Block> pottedSapling)
 {}

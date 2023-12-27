@@ -50,7 +50,7 @@ public class GivePowerAndGi<E extends PathfinderMob> extends MoveToWalkTarget<E>
     protected boolean checkExtraStartConditions(ServerLevel level, E entity) {
         this.target = BrainUtils.getMemory(entity, MemoryModuleType.INTERACTION_TARGET);
         this.originalPos = entity.blockPosition();
-        this.power = (ResourceKey<Power>) BrainUtils.getMemory(entity, MinejagoMemoryModuleTypes.SELECTED_POWER.get());
+        this.power = BrainUtils.getMemory(entity, MinejagoMemoryModuleTypes.SELECTED_POWER.get());
 
         BrainUtils.setMemory(entity, MemoryModuleType.WALK_TARGET, new WalkTarget(target, 1.2f, 1));
 

@@ -1,7 +1,7 @@
 package dev.thomasglasser.minejago.network;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterLayerOptions;
+import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterCosmeticOptions;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.VipData;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.util.MinejagoPacketUtils;
@@ -20,7 +20,7 @@ public class ServerboundChangeVipDataPacket {
     public ServerboundChangeVipDataPacket(FriendlyByteBuf buf) {
         uuid = buf.readUUID();
         vipData = new VipData(
-                buf.readEnum(SnapshotTesterLayerOptions.class),
+                buf.readEnum(SnapshotTesterCosmeticOptions.class),
                 buf.readBoolean(),
                 buf.readBoolean(),
                 buf.readBoolean()

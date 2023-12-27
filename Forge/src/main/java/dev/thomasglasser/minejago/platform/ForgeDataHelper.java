@@ -9,17 +9,16 @@ import dev.thomasglasser.minejago.world.level.storage.SpinjitzuAttachment;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.attachment.AttachmentType;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
-
-import java.util.function.Supplier;
 
 public class ForgeDataHelper implements DataHelper
 {
     public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, Minejago.MOD_ID);
 
-    private static final Supplier<AttachmentType<PowerAttachment>> POWER = ATTACHMENT_TYPES.register("power", () -> AttachmentType.builder(() -> new PowerAttachment(MinejagoPowers.NONE, false)).serialize(PowerAttachment.CODEC).build());
-    private static final Supplier<AttachmentType<SpinjitzuAttachment>> SPINJITZU = ATTACHMENT_TYPES.register("spinjitzu", () -> AttachmentType.builder(() -> new SpinjitzuAttachment(false, false)).serialize(SpinjitzuAttachment.CODEC).build());
+    private static final DeferredHolder<AttachmentType<?>, AttachmentType<PowerAttachment>> POWER = ATTACHMENT_TYPES.register("power", () -> AttachmentType.builder(() -> new PowerAttachment(MinejagoPowers.NONE, false)).serialize(PowerAttachment.CODEC).build());
+    private static final DeferredHolder<AttachmentType<?>, AttachmentType<SpinjitzuAttachment>> SPINJITZU = ATTACHMENT_TYPES.register("spinjitzu", () -> AttachmentType.builder(() -> new SpinjitzuAttachment(false, false)).serialize(SpinjitzuAttachment.CODEC).build());
 
     @Override
     public PowerData getPowerData(LivingEntity entity) {

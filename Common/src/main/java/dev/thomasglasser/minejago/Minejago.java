@@ -26,6 +26,7 @@ import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPatterns;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
 import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
+import eu.midnightdust.lib.config.MidnightConfig;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.tslat.tes.api.TESAPI;
@@ -105,8 +106,8 @@ public class Minejago {
 
 	private static void registerConfigs()
 	{
-		MinejagoServerConfig.register();
-		MinejagoClientConfig.register();
+		MidnightConfig.init(Minejago.MOD_ID, MinejagoServerConfig.class);
+		if (Services.PLATFORM.isClientSide()) MidnightConfig.init(Minejago.MOD_ID, MinejagoClientConfig.class);
 	}
 
 	public enum Dependencies

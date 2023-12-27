@@ -17,16 +17,13 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.minejago.story.tame_dragon.desc"
     },
     "frame": "challenge",
-    "hidden": false,
     "icon": {
       "item": "minecraft:saddle"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.minejago.story.tame_dragon.title"
     }

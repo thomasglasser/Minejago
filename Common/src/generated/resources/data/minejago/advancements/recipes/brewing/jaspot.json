@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_self",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_self"
     ]
   ],
   "rewards": {
     "recipes": [
       "minejago:jaspot"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

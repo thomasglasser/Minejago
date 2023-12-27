@@ -3,11 +3,11 @@ package dev.thomasglasser.minejago.network;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.platform.Services;
+import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.util.MinejagoPacketUtils;
 import dev.thomasglasser.minejago.world.entity.ai.memory.MinejagoMemoryModuleTypes;
 import dev.thomasglasser.minejago.world.entity.character.Wu;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
-import dev.thomasglasser.minejago.world.entity.power.MinejagoPowersConfig;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.level.storage.PowerData;
 import net.minecraft.network.FriendlyByteBuf;
@@ -67,7 +67,7 @@ public class ServerboundSetPowerDataPacket
         Wu wu = null;
         if (wuId != null && serverPlayer.level().getEntity(wuId) instanceof Wu) wu = (Wu) serverPlayer.level().getEntity(wuId);
         ResourceKey<Power> oldPower = Services.DATA.getPowerData(serverPlayer).power();
-        if (Services.DATA.getPowerData(serverPlayer).given() && oldPower != MinejagoPowers.NONE && MinejagoPowersConfig.DRAIN_POOL.get() && wu != null) wu.addPowersToGive(oldPower);
+        if (Services.DATA.getPowerData(serverPlayer).given() && oldPower != MinejagoPowers.NONE && MinejagoServerConfig.drainPool && wu != null) wu.addPowersToGive(oldPower);
         if (power != MinejagoPowers.NONE && wu != null) wu.removePowersToGive(power);
         if (power == MinejagoPowers.NONE)
         {

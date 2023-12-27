@@ -4,10 +4,10 @@ import com.mojang.datafixers.util.Pair;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.network.ClientboundOpenPowerSelectionScreenPacket;
 import dev.thomasglasser.minejago.platform.Services;
+import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.world.entity.ai.behavior.GivePowerAndGi;
 import dev.thomasglasser.minejago.world.entity.ai.memory.MinejagoMemoryModuleTypes;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
-import dev.thomasglasser.minejago.world.entity.power.MinejagoPowersConfig;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
@@ -81,21 +81,21 @@ public class Wu extends Character
         {
             Registry<Power> registry = level().registryAccess().registryOrThrow(MinejagoRegistries.POWER);
 
-            if (!MinejagoPowersConfig.DRAIN_POOL.get() || (powersToGive.size() <= 1)) {
+            if (!MinejagoServerConfig.drainPool || (powersToGive.size() <= 1)) {
                 powersToGive = new ArrayList<>(registry.registryKeySet());
-                if (!MinejagoPowersConfig.ALLOW_NONE.get())
+                if (!MinejagoServerConfig.enableNoPower)
                     removePowersToGive(MinejagoPowers.NONE);
                 powersToGive.removeIf(key -> registry.get(key) != null && registry.get(key).isSpecial());
             }
 
             if (player instanceof ServerPlayer serverPlayer && hand == InteractionHand.MAIN_HAND) {
-                givingPower = !Services.DATA.getPowerData(serverPlayer).given() || MinejagoPowersConfig.ALLOW_CHANGE.get();
+                givingPower = !Services.DATA.getPowerData(serverPlayer).given() || MinejagoServerConfig.allowChange;
                 if (givingPower) {
-                    if (MinejagoPowersConfig.ALLOW_CHOOSE.get()) {
+                    if (MinejagoServerConfig.allowChoose) {
                         Services.NETWORK.sendToClient(ClientboundOpenPowerSelectionScreenPacket.class, ClientboundOpenPowerSelectionScreenPacket.toBytes(powersToGive, this.getId()), serverPlayer);
                     } else if (this.distanceTo(serverPlayer) > 1.0f) {
                         ResourceKey<Power> oldPower = Services.DATA.getPowerData(serverPlayer).power();
-                        if (Services.DATA.getPowerData(serverPlayer).given() && oldPower != MinejagoPowers.NONE && MinejagoPowersConfig.DRAIN_POOL.get())
+                        if (Services.DATA.getPowerData(serverPlayer).given() && oldPower != MinejagoPowers.NONE && MinejagoServerConfig.drainPool)
                             addPowersToGive(oldPower);
                         ResourceKey<Power> newPower = powersToGive.get(random.nextInt(powersToGive.size()));
                         if (newPower != MinejagoPowers.NONE) removePowersToGive(newPower);

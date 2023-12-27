@@ -2,7 +2,6 @@ package dev.thomasglasser.minejago.world.entity.skulkin;
 
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.entity.ai.behavior.RangedItemAttack;
-import dev.thomasglasser.minejago.world.entity.projectile.ThrownBambooStaff;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownBoneKnife;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.MeleeCompatibleSkeletonRaider;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
@@ -28,7 +27,6 @@ import net.tslat.smartbrainlib.example.SBLSkeleton;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.constant.DefaultAnimations;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;

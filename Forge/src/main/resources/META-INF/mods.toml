@@ -39,7 +39,9 @@ description='''
 Adds elements of the Ninjago franchise into Minecraft
 '''
 [[mixins]]
-config = "${mod_id}.mixins.json"
+config = "${mod_id}_common.mixins.json"
+[[mixins]]
+config = "${mod_id}_forge.mixins.json"
 [mc-publish]
 loaders = ['neoforge']
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
@@ -122,17 +124,18 @@ versionRange="[${sherdsapi_version},)" #mandatory
 ordering="NONE"
 # Side this dependency is applied on - BOTH, CLIENT or SERVER
 side="BOTH"
-[[dependencies.${mod_id}]] #optional
-# the modid of the dependency
-modId="trimmed" #mandatory
-# Does this dependency have to exist - if not, ordering below must be specified
-type="required" #mandatory
-# The version range of the dependency
-versionRange="[${trimmed_version},)" #mandatory
-# An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
-ordering="NONE"
-# Side this dependency is applied on - BOTH, CLIENT or SERVER
-side="CLIENT"
+# TODO: Update trimmed
+#[[dependencies.${mod_id}]] #optional
+## the modid of the dependency
+#modId="trimmed" #mandatory
+## Does this dependency have to exist - if not, ordering below must be specified
+#type="required" #mandatory
+## The version range of the dependency
+#versionRange="[${trimmed_version},)" #mandatory
+## An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
+#ordering="NONE"
+## Side this dependency is applied on - BOTH, CLIENT or SERVER
+#side="CLIENT"
 [[dependencies.${mod_id}]] #optional
 # the modid of the dependency
 modId="tslatentitystatus" #mandatory

@@ -275,7 +275,7 @@ public abstract class MeleeCompatibleSkeletonRaider extends MeleeCompatibleSkele
 
 					i = Mth.clamp(i, 0, 4);
 					MobEffectInstance mobEffectInstance2 = new MobEffectInstance(MinejagoMobEffects.SKULKINS_CURSE.get(), 120000, i, false, false, true);
-					if (MinejagoServerConfig.ENABLE_SKULKIN_RAIDS.get()) {
+					if (MinejagoServerConfig.enableSkulkinRaids) {
 						player.addEffect(mobEffectInstance2);
 					}
 				}

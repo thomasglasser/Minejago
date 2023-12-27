@@ -1,11 +1,13 @@
 package dev.thomasglasser.minejago.world.entity.skulkin;
 
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Vector3f;
 
 public class SkullTruck extends AbstractSkulkinVehicle
 {
@@ -28,7 +30,7 @@ public class SkullTruck extends AbstractSkulkinVehicle
 	}
 
 	@Override
-	public Vec3 getPassengerRidingPosition(Entity entity)
+	protected Vector3f getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float scale)
 	{
 		int i = this.getPassengers().indexOf(entity);
 		if (i >= 0) {
@@ -46,9 +48,9 @@ public class SkullTruck extends AbstractSkulkinVehicle
 					e -= 0.4f;
 			}
 
-			return new Vec3(e, 0.0, f).yRot(-this.yBodyRot * (float) (Math.PI / 180.0));
+			return new Vec3(e, dimensions.height - 1.2f, f).toVector3f();
 		}
-		return Vec3.ZERO;
+		return Vec3.ZERO.toVector3f();
 	}
 
 	@Override

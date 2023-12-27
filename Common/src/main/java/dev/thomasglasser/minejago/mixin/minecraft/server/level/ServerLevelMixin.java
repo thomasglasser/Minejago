@@ -82,7 +82,7 @@ public abstract class ServerLevelMixin extends Level implements SkulkinRaidsHold
 		return skulkinRaids;
 	}
 
-	@Inject(method = {"method_18773", "m_184115_", "lambda$wakeUpAllPlayers$7"}, at = @At("TAIL"))
+	@Inject(method = {"method_18773", "m_184115_", "lambda$wakeUpAllPlayers$3"}, at = @At("TAIL"))
 	private static void minejago_lambda$wakeUpAllPlayers$7(ServerPlayer serverPlayer, CallbackInfo ci)
 	{
 		((FocusDataHolder)serverPlayer).getFocusData().increase(2, FocusConstants.FOCUS_SATURATION_LOW);

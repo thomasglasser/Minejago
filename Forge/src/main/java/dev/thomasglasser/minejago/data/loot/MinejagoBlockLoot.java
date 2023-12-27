@@ -1,5 +1,6 @@
 package dev.thomasglasser.minejago.data.loot;
 
+import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.world.level.block.LeavesSet;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
@@ -18,9 +19,7 @@ import net.minecraft.world.level.storage.loot.functions.SetContainerContents;
 import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
-import java.util.List;
 import java.util.Set;
-import java.util.function.Supplier;
 
 public class MinejagoBlockLoot extends BlockLootSubProvider {
     public MinejagoBlockLoot() {
@@ -30,7 +29,7 @@ public class MinejagoBlockLoot extends BlockLootSubProvider {
     @Override
     public void generate() {
         add(MinejagoBlocks.TEAPOT.get(), createTeapotBlock(MinejagoBlocks.TEAPOT.get()));
-        for (Supplier<TeapotBlock> pot : MinejagoBlocks.TEAPOTS.values())
+        for (RegistryObject<TeapotBlock> pot : MinejagoBlocks.TEAPOTS.values())
             add(pot.get(), createTeapotBlock(pot.get()));
         add(MinejagoBlocks.JASPOT.get(), createTeapotBlock(MinejagoBlocks.JASPOT.get()));
         add(MinejagoBlocks.FLAME_TEAPOT.get(), createTeapotBlock(MinejagoBlocks.FLAME_TEAPOT.get()));
@@ -87,6 +86,6 @@ public class MinejagoBlockLoot extends BlockLootSubProvider {
 
     @Override
     protected Iterable<Block> getKnownBlocks() {
-	    return List.of();
+	    return MinejagoBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).toList();
     }
 }

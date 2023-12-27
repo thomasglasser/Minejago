@@ -150,7 +150,7 @@ public class MinejagoForgeClientEvents {
 
     public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event)
     {
-        MinejagoArmors.ALL.forEach(armor ->
+        MinejagoArmors.ARMORS.getEntries().forEach(armor ->
         {
             if (armor.get() instanceof GeoArmorItem || armor.get() instanceof ModeledItem)
                 event.registerReloadListener(IClientItemExtensions.of(armor.get()).getCustomRenderer());

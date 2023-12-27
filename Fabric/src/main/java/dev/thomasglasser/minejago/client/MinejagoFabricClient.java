@@ -44,6 +44,7 @@ import dev.thomasglasser.minejago.network.ClientboundStartSpinjitzuPacket;
 import dev.thomasglasser.minejago.network.ClientboundStopAnimationPacket;
 import dev.thomasglasser.minejago.network.ClientboundStopMeditationPacket;
 import dev.thomasglasser.minejago.network.ClientboundStopSpinjitzuPacket;
+import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
@@ -53,7 +54,6 @@ import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
 import dev.thomasglasser.minejago.world.level.block.entity.TeapotBlockEntity;
-import fuzs.forgeconfigapiport.api.config.v2.ModConfigEvents;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -84,7 +84,6 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -99,7 +98,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
-import java.util.function.Supplier;
 
 public class MinejagoFabricClient implements ClientModInitializer
 {
@@ -123,7 +121,7 @@ public class MinejagoFabricClient implements ClientModInitializer
             }
         });
 
-        for (Supplier<Item> item : MinejagoItems.ITEMS.getEntries())
+        for (RegistryObject<Item> item : MinejagoItems.ITEMS.getEntries())
         {
             if (item.get() instanceof ModeledItem)
             {
@@ -131,7 +129,7 @@ public class MinejagoFabricClient implements ClientModInitializer
             }
         }
 
-        for (Supplier<? extends ArmorItem> item : MinejagoArmors.ALL)
+        for (RegistryObject<Item> item : MinejagoArmors.ARMORS.getEntries())
         {
             if (item.get() instanceof ModeledItem)
             {
@@ -262,8 +260,6 @@ public class MinejagoFabricClient implements ClientModInitializer
             }
         });
         if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled()) PlayerAnimationAccess.REGISTER_ANIMATION_EVENT.register(MinejagoPlayerAnimator::registerPlayerAnimation);
-        ModConfigEvents.reloading(Minejago.MOD_ID).register((config) ->
-                MinejagoClientUtils.refreshVip());
         ItemGroupEvents.MODIFY_ENTRIES_ALL.register((group, entries) ->
                 entries.acceptAll(MinejagoClientEvents.getItemsForTab(BuiltInRegistries.CREATIVE_MODE_TAB.getResourceKey(group).orElseThrow())));
         ClientTickEvents.END_CLIENT_TICK.register(client ->

@@ -30,15 +30,14 @@
   },
   "requirements": [
     [
+      "has_the_recipe",
       "has_teapot",
-      "has_dye",
-      "has_the_recipe"
+      "has_dye"
     ]
   ],
   "rewards": {
     "recipes": [
       "minejago:orange_teapot_from_dye"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

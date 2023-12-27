@@ -2,21 +2,20 @@
   "parent": "minejago:adventure/start_skulkin_raid",
   "criteria": {
     "win_skulkin_raid": {
-      "conditions": {},
-      "trigger": "minejago:skulkin_raid_won"
+      "conditions": {
+        "status": "WON"
+      },
+      "trigger": "minejago:skulkin_raid_status_changed"
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.minejago.adventure.win_skulkin_raid.desc"
     },
     "frame": "challenge",
-    "hidden": false,
     "icon": {
       "item": "minecraft:filled_map"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.minejago.adventure.win_skulkin_raid.title"
     }

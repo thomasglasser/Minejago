@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.data.sounds;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -10,7 +11,6 @@ import net.neoforged.neoforge.common.data.SoundDefinition;
 import net.neoforged.neoforge.common.data.SoundDefinitionsProvider;
 
 import java.util.ArrayList;
-import java.util.function.Supplier;
 
 public class MinejagoSoundDefinitions extends SoundDefinitionsProvider
 {
@@ -57,12 +57,12 @@ public class MinejagoSoundDefinitions extends SoundDefinitionsProvider
         return SoundDefinition.definition().with(sounds).subtitle("subtitles." + subtitle);
     }
 
-    private void add(Supplier<SoundEvent> sound)
+    private void add(RegistryObject<SoundEvent> sound)
     {
         add(sound, define(sound.get().getLocation().getPath(), sound(sound.get().getLocation())));
     }
 
-    private void add(Supplier<SoundEvent> sound, int variants)
+    private void add(RegistryObject<SoundEvent> sound, int variants)
     {
         add(sound, defineVariants(sound.get().getLocation().getPath(), sound.get().getLocation(), variants));
     }

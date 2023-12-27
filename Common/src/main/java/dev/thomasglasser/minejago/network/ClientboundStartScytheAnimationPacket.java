@@ -2,6 +2,7 @@ package dev.thomasglasser.minejago.network;
 
 import dev.kosmx.playerAnim.api.firstPerson.FirstPersonMode;
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.client.animation.MinejagoAnimationUtils;
 import dev.thomasglasser.minejago.client.animation.definitions.ItemAnimations;
 import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.util.MinejagoPacketUtils;
@@ -41,6 +42,6 @@ public class ClientboundStartScytheAnimationPacket {
 
     // ON CLIENT
     public void handle() {
-        if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled()) MinejagoClientUtils.startAnimation(startAnim.getAnimation(), goAnim != null ? goAnim.getAnimation() : null, MinejagoClientUtils.getClientPlayerByUUID(uuid), FirstPersonMode.THIRD_PERSON_MODEL);
+        if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled()) MinejagoAnimationUtils.startAnimation(startAnim.getAnimation(), goAnim != null ? goAnim.getAnimation() : null, MinejagoClientUtils.getClientPlayerByUUID(uuid), FirstPersonMode.THIRD_PERSON_MODEL);
     }
 }

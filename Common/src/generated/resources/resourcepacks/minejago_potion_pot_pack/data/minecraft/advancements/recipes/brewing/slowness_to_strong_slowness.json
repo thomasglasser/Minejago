@@ -16,14 +16,13 @@
   },
   "requirements": [
     [
-      "has_brewed_strong_slowness_in_stand",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_brewed_strong_slowness_in_stand"
     ]
   ],
   "rewards": {
     "recipes": [
       "minecraft:slowness_to_strong_slowness"
     ]
-  },
-  "sends_telemetry_event": true
+  }
 }

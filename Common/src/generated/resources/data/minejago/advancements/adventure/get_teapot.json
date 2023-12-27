@@ -13,16 +13,12 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.minejago.adventure.get_teapot.desc"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "minejago:teapot"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.minejago.adventure.get_teapot.title"
     }

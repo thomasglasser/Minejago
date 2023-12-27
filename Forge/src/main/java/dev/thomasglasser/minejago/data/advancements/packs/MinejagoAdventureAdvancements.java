@@ -85,8 +85,7 @@ public class MinejagoAdventureAdvancements implements AdvancementProvider.Advanc
                 "collect_strength", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.STRENGTH).get()).build()),
                 "collect_speed", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.SPEED).get()).build()),
                 "collect_bow", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.BOW).get()).build()),
-                "collect_knife", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.KNIFE).get()).build()),
-                "collect_bone", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.BONE).get()).build())
+                "collect_knife", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.KNIFE).get()).build())
         ), "It's Always You Four Colors", "Collect all of the Skeletal Chestplate variants");
 
         AdvancementHolder getTeapot = helper.make(new ResourceLocation("adventure/root"), MinejagoBlocks.TEAPOT.get(), GET_TEAPOT, AdvancementType.TASK, true, true, false, null, Map.of(

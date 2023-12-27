@@ -23,10 +23,6 @@ public class MinejagoMainChannel
 
     public static void register()
     {
-//        SimpleEntityCapabilityStatusPacket.register(INSTANCE, id());
-//        SimpleEntityCapabilityStatusPacket.registerRetriever(PowerCapabilityAttacher.POWER_CAPABILITY_RL, PowerCapabilityAttacher::getPowerCapabilityUnwrap);
-//        SimpleEntityCapabilityStatusPacket.registerRetriever(SpinjitzuCapabilityAttacher.SPINJITZU_CAPABILITY_RL, SpinjitzuCapabilityAttacher::getSpinjitzuCapabilityUnwrap);
-
         // Server bound
         INSTANCE.messageBuilder(ServerboundStartSpinjitzuPacket.class, id(), PlayNetworkDirection.PLAY_TO_SERVER)
                 .decoder((buf) -> new ServerboundStartSpinjitzuPacket())
@@ -140,9 +136,5 @@ public class MinejagoMainChannel
     public static <MSG> void sendToAllClients(MSG msg)
     {
         INSTANCE.send(PacketDistributor.ALL.noArg(), msg);
-    }
-
-    public static SimpleChannel getChannel() {
-        return INSTANCE;
     }
 }

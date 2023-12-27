@@ -23,12 +23,12 @@ dependencies {
 
     // Common
     include modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${playeranimator_version}")
-    include modImplementation("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forgeconfigapiport_version}")
     include modCompileOnly("com.jamieswhiteshirt:reach-entity-attributes:$reachentityattributes_version")
 //    include modImplementation("com.jamieswhiteshirt:reach-entity-attributes:$reachentityattributes_version")
     include modImplementation("maven.modrinth:sherdsapi:${sherdsapi_version}-fabric")
 //    include modImplementation("maven.modrinth:trimmed:${trimmed_version}+fabric")
     include modCompileOnly("maven.modrinth:trimmed:${trimmed_version}+fabric")
+    include modCompileOnly("maven.modrinth:midnightlib:${midnightlib_version}-fabric")
 
     modImplementation "net.tslat.smartbrainlib:SmartBrainLib-fabric-${minecraft_version}:${sbl_version}"
     modImplementation "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}"
@@ -43,6 +43,7 @@ dependencies {
     modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-api:${cca_version}"
     modCompileOnly "maven.modrinth:lambdynamiclights:${lambdynamiclights_version}"
 //    modImplementation "maven.modrinth:lambdynamiclights:${lambdynamiclights_version}"
+    modImplementation "net.tslat.effectslib:TslatEffectsLib-fabric-${minecraft_version}:${tslateffectslib_version}"
 
     // Fabric Only
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
@@ -114,7 +115,7 @@ tasks.withType(ProcessResources).configureEach {
     ]
     inputs.properties replaceProperties
 
-    filesMatching(['fabric.mod.json','pack.mcmeta']) {
+    filesMatching(['fabric.mod.json','pack.mcmeta', 'resourcepacks/minejago_immersion_pack/pack.mcmeta', 'resourcepacks/minejago_potion_pot_pack/pack.mcmeta']) {
         expand replaceProperties + [project: project]
     }
 }

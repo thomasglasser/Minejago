@@ -46,14 +46,18 @@ dependencies {
     // Common
     implementation "dev.kosmx.player-anim:player-animation-lib-forge:${playeranimator_version}"
     implementation "net.tslat.smartbrainlib:SmartBrainLib-neoforge-${minecraft_version}:${sbl_version}"
-    implementation "software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}"
-    implementation "maven.modrinth:jade:${jade_version}-forge"
-    implementation "me.shedaniel:RoughlyEnoughItems-forge:$rei_version"
-    implementation "dev.architectury:architectury-forge:$architectury_version" // DO NOT USE - Only for REI
-    implementation "me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}"
+    implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:4.3.2"
+//    implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
+    implementation "maven.modrinth:jade:13.2.2-neoforge"
+//    implementation "maven.modrinth:jade:${jade_version}-neoforge"
+    implementation "me.shedaniel:RoughlyEnoughItems-neoforge:$rei_version"
+    implementation "dev.architectury:architectury-neoforge:$architectury_version" // DO NOT USE - Only for REI
+    implementation "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
     implementation "com.klikli_dev:modonomicon-${minecraft_version}-neoforge:${modonomicon_version}"
     implementation "net.tslat.tes:TES-neoforge-${minecraft_version}:${tes_version}"
     implementation "maven.modrinth:moonlight:forge_${moonlight_version}"
+    implementation "net.tslat.effectslib:TslatEffectsLib-neoforge-${minecraft_version}:${tslateffectslib_version}"
+    implementation "maven.modrinth:midnightlib:${midnightlib_version}-neoforge"
 
     // Forge Only
     implementation "maven.modrinth:sherdsapi:${sherdsapi_version}-neoforge"
@@ -62,7 +66,6 @@ dependencies {
     implementation "maven.modrinth:ryoamiclights:${ryoamiclights_version}"
 
     // Runtime
-    runtimeOnly "maven.modrinth:huge-structure-blocks:${hugestructureblocks_version}"
 //    runtimeOnly "maven.modrinth:worldedit:${worldedit_version}"
     runtimeOnly "maven.modrinth:worldedit:${worldedit_id}"
     runtimeOnly "maven.modrinth:obsidianui:${obsidianui_version}"
@@ -98,7 +101,7 @@ tasks.withType(ProcessResources).configureEach {
     ]
     inputs.properties replaceProperties
 
-    filesMatching(['META-INF/mods.toml','pack.mcmeta']) {
+    filesMatching(['META-INF/mods.toml','pack.mcmeta', 'resourcepacks/minejago_immersion_pack/pack.mcmeta', 'resourcepacks/minejago_potion_pot_pack/pack.mcmeta']) {
         expand replaceProperties + [project: project]
     }
 }

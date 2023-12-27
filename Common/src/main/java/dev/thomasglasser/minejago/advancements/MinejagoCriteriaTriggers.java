@@ -1,10 +1,12 @@
 package dev.thomasglasser.minejago.advancements;
 
+import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.advancements.criterion.BrewedTeaTrigger;
 import dev.thomasglasser.minejago.advancements.criterion.DidSpinjitzuTrigger;
 import dev.thomasglasser.minejago.advancements.criterion.GotPowerTrigger;
 import dev.thomasglasser.minejago.advancements.criterion.SkulkinRaidTrigger;
-import dev.thomasglasser.minejago.platform.Services;
+import dev.thomasglasser.minejago.registration.RegistrationProvider;
+import dev.thomasglasser.minejago.registration.RegistryObject;
 import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.core.registries.BuiltInRegistries;
 
@@ -12,15 +14,16 @@ import java.util.function.Supplier;
 
 public class MinejagoCriteriaTriggers
 {
-    // TODO: Custom registration
-    public static final Supplier<DidSpinjitzuTrigger> DID_SPINJITZU = register("do_spinjitzu", DidSpinjitzuTrigger::new);
-    public static final Supplier<GotPowerTrigger> GOT_POWER = register("get_power", GotPowerTrigger::new);
-    public static final Supplier<BrewedTeaTrigger> BREWED_TEA = register("brewed_tea", BrewedTeaTrigger::new);
-    public static final Supplier<SkulkinRaidTrigger> SKULKIN_RAID_STATUS_CHANGED = register("skulkin_raid_status_changed", SkulkinRaidTrigger::new);
+    public static final RegistrationProvider<CriterionTrigger<?>> CRITERION_TRIGGERS = RegistrationProvider.get(BuiltInRegistries.TRIGGER_TYPES, Minejago.MOD_ID);
+
+    public static final RegistryObject<DidSpinjitzuTrigger> DID_SPINJITZU = register("do_spinjitzu", DidSpinjitzuTrigger::new);
+    public static final RegistryObject<GotPowerTrigger> GOT_POWER = register("get_power", GotPowerTrigger::new);
+    public static final RegistryObject<BrewedTeaTrigger> BREWED_TEA = register("brewed_tea", BrewedTeaTrigger::new);
+    public static final RegistryObject<SkulkinRaidTrigger> SKULKIN_RAID_STATUS_CHANGED = register("skulkin_raid_status_changed", SkulkinRaidTrigger::new);
     
-    private static <T extends CriterionTrigger<?>> Supplier<T> register(String name, Supplier<T> trigger)
+    private static <T extends CriterionTrigger<?>> RegistryObject<T> register(String name, Supplier<T> trigger)
     {
-        return Services.REGISTRATION.register(BuiltInRegistries.TRIGGER_TYPES, name, trigger);
+        return CRITERION_TRIGGERS.register(name, trigger);
     }
 
     public static void init() {}

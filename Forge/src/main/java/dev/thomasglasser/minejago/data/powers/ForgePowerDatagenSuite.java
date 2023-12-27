@@ -5,7 +5,6 @@ import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.annotation.Nullable;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -66,7 +65,7 @@ public class ForgePowerDatagenSuite extends BasePowerDatagenSuite
                         MinejagoArmors.POWER_SETS.forEach(armorSet ->
                                 armorSet.getAll().forEach(item ->
                                 {
-                                    String path = key.location().getPath() + "_" + BuiltInRegistries.ITEM.getKey(item.get()).getPath();
+                                    String path = key.location().getPath() + "_" + item.getId().getPath();
                                     singleTexture("item/minejago_armor/" + path, mcLoc("item/generated"), "layer0", modLoc("item/" + path));
                                 })));
             }

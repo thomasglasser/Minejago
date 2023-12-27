@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.data.tags;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.world.level.block.LeavesSet;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
@@ -16,7 +17,6 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Supplier;
 
 public class MinejagoBlockTagsProvider extends IntrinsicHolderTagsProvider<Block>
 {
@@ -44,7 +44,7 @@ public class MinejagoBlockTagsProvider extends IntrinsicHolderTagsProvider<Block
         pots.add(MinejagoBlocks.TEAPOT.get(),
                 MinejagoBlocks.JASPOT.get(),
                 MinejagoBlocks.FLAME_TEAPOT.get());
-        for (Supplier<TeapotBlock> pot : MinejagoBlocks.TEAPOTS.values())
+        for (RegistryObject<TeapotBlock> pot : MinejagoBlocks.TEAPOTS.values())
         {
             pots.add(pot.get());
         }
