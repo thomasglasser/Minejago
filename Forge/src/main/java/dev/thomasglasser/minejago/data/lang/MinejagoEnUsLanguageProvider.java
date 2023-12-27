@@ -311,13 +311,7 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
 
         add(SkulkinRaid.RAID_NAME_COMPONENT, "Skulkin Raid");
 
-	    try
-	    {
-		    addConfigs();
-	    } catch (NoSuchFieldException e)
-	    {
-		    throw new RuntimeException(e);
-	    }
+	    addConfigs();
     }
 
     public void addDesc(Item item, String desc)
@@ -421,7 +415,7 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(set.pottedSapling().get(), "Potted " + name + " Sapling");
     }
 
-    public void addConfigs() throws NoSuchFieldException
+    public void addConfigs()
     {
         // Server
         addConfigCategory("features", "Features");

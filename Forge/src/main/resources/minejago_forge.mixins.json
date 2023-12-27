@@ -9,7 +9,6 @@
     "minecraft.world.level.block.entity.CalibratedSculkSensorBlockEntityMixin",
     "minecraft.world.level.block.entity.SculkSensorBlockEntity$UserMixin",
     "minecraft.world.level.gameevent.vibrations.VibrationSelectorMixin",
-    "neoforged.neoforge.common.data.LanguageProviderMixin"
   ],
   "client": [
   ],
