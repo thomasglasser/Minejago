@@ -1,10 +1,11 @@
 package dev.thomasglasser.minejago.data.tags;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.registration.BlockRegistryObject;
+import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.tags.MinejagoBlockTags;
 import dev.thomasglasser.minejago.world.level.block.LeavesSet;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
+import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.minejago.world.level.block.WoodSet;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -13,7 +14,7 @@ import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
@@ -44,7 +45,7 @@ public class MinejagoBlockTagsProvider extends IntrinsicHolderTagsProvider<Block
         pots.add(MinejagoBlocks.TEAPOT.get(),
                 MinejagoBlocks.JASPOT.get(),
                 MinejagoBlocks.FLAME_TEAPOT.get());
-        for (BlockRegistryObject<Block> pot : MinejagoBlocks.TEAPOTS.values())
+        for (RegistryObject<TeapotBlock> pot : MinejagoBlocks.TEAPOTS.values())
         {
             pots.add(pot.get());
         }

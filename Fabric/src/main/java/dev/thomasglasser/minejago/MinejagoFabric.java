@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago;
 
 import dev.thomasglasser.minejago.tags.MinejagoBiomeTags;
+import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.data.worldgen.placement.MinejagoVegetationPlacements;
 import dev.thomasglasser.minejago.network.ServerboundChangeVipDataPacket;
 import dev.thomasglasser.minejago.network.ServerboundFlyVehiclePacket;
@@ -16,6 +17,7 @@ import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.character.Character;
 import dev.thomasglasser.minejago.world.entity.character.Cole;
 import dev.thomasglasser.minejago.world.entity.character.Zane;
+import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.focus.modifier.biome.BiomeFocusModifiers;
 import dev.thomasglasser.minejago.world.focus.modifier.blockstate.BlockStateFocusModifiers;
 import dev.thomasglasser.minejago.world.focus.modifier.dimension.DimensionFocusModifiers;
@@ -27,6 +29,7 @@ import dev.thomasglasser.minejago.world.focus.modifier.world.WorldFocusModifiers
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
+import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
@@ -85,6 +88,8 @@ public class MinejagoFabric implements ModInitializer {
                 WorldFocusModifiers.load(manager);
             }
         });
+
+        registerDynamicRegistries();
     }
 
     private void registerEvents()
@@ -133,5 +138,10 @@ public class MinejagoFabric implements ModInitializer {
     {
         SpawnPlacements.register(MinejagoEntityTypes.ZANE.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.OCEAN_FLOOR_WG, Zane::checkZaneSpawnRules);
         SpawnPlacements.register(MinejagoEntityTypes.COLE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ((entityType, serverLevelAccessor, mobSpawnType, blockPos, randomSource) -> Character.checkCharacterSpawnRules(Cole.class, entityType, serverLevelAccessor, mobSpawnType, blockPos, randomSource)));
+    }
+
+    private void registerDynamicRegistries()
+    {
+        DynamicRegistries.registerSynced(MinejagoRegistries.POWER, Power.CODEC);
     }
 }

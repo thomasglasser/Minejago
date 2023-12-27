@@ -2,6 +2,7 @@ package dev.thomasglasser.minejago.network;
 
 import dev.kosmx.playerAnim.api.firstPerson.FirstPersonMode;
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.client.animation.MinejagoAnimationUtils;
 import dev.thomasglasser.minejago.client.animation.definitions.PlayerAnimations;
 import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.util.MinejagoPacketUtils;
@@ -40,9 +41,9 @@ public class ClientboundStopSpinjitzuPacket
         if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled())
         {
             if (fail)
-                MinejagoClientUtils.startAnimation(PlayerAnimations.Spinjitzu.WOBBLE.getAnimation(), null, MinejagoClientUtils.getClientPlayerByUUID(uuid), FirstPersonMode.VANILLA);
+                MinejagoAnimationUtils.startAnimation(PlayerAnimations.Spinjitzu.WOBBLE.getAnimation(), null, MinejagoClientUtils.getClientPlayerByUUID(uuid), FirstPersonMode.VANILLA);
             else
-                MinejagoClientUtils.startAnimation(PlayerAnimations.Spinjitzu.FINISH.getAnimation(), null, MinejagoClientUtils.getClientPlayerByUUID(uuid), FirstPersonMode.VANILLA);
+                MinejagoAnimationUtils.startAnimation(PlayerAnimations.Spinjitzu.FINISH.getAnimation(), null, MinejagoClientUtils.getClientPlayerByUUID(uuid), FirstPersonMode.VANILLA);
         }
     }
 }

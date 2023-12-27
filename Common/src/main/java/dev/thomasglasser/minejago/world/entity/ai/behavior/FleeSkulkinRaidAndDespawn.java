@@ -54,7 +54,7 @@ public class FleeSkulkinRaidAndDespawn<T extends MeleeCompatibleSkeletonRaider> 
 				raid.updateBossbar();
 				return;
 			}
-			else if (MinejagoServerConfig.ENABLE_TECH.get())
+			else if (MinejagoServerConfig.enableTech)
 			{
 				if (entity.getType().is(MinejagoEntityTypeTags.SKULL_TRUCK_RIDERS))
 				{

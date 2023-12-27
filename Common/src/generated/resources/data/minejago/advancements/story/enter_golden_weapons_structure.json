@@ -19,16 +19,12 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.minejago.story.enter_golden_weapons_structure.desc"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "minejago:scythe_of_quakes"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.minejago.story.enter_golden_weapons_structure.title"
     }

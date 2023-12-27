@@ -14,7 +14,6 @@ public class Services {
     // For example this can be used to check if the code is running on Forge vs Fabric, or to ask the modloader if another
     // mod is loaded.
     public static final PlatformHelper PLATFORM = load(PlatformHelper.class);
-    public static final ConfigHelper CONFIG = load(ConfigHelper.class);
     public static final ParticleHelper PARTICLE = load(ParticleHelper.class);
     public static final DataHelper DATA = load(DataHelper.class);
     public static final NetworkHelper NETWORK = load(NetworkHelper.class);

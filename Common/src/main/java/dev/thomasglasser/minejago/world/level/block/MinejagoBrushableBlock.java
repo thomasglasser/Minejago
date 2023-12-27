@@ -10,8 +10,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 public class MinejagoBrushableBlock extends BrushableBlock {
-    public MinejagoBrushableBlock(Block block, Properties properties, SoundEvent soundEvent, SoundEvent soundEvent2) {
-        super(block, properties, soundEvent, soundEvent2);
+    public MinejagoBrushableBlock(Block block, SoundEvent soundEvent, SoundEvent soundEvent2, Properties properties) {
+        super(block, soundEvent, soundEvent2, properties);
     }
 
     @Override

@@ -1,6 +1,8 @@
 {
     "pack": {
-        "description": "Makes some slight changes to make the world of Minejago more immersive!",
-        "pack_format": 15
+        "description": {
+            "text": "${mod_name} resources"
+        },
+        "pack_format": ${resource_pack_format_number}
     }
 }

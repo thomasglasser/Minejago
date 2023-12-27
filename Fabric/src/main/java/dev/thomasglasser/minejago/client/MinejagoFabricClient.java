@@ -39,6 +39,18 @@ import dev.thomasglasser.minejago.network.ClientboundRefreshVipDataPacket;
 import dev.thomasglasser.minejago.network.ClientboundSetFocusPacket;
 import dev.thomasglasser.minejago.network.ClientboundSpawnParticlePacket;
 import dev.thomasglasser.minejago.network.ClientboundStartMeditationPacket;
+import dev.thomasglasser.minejago.network.ClientboundStartScytheAnimationPacket;
+import dev.thomasglasser.minejago.network.ClientboundStartSpinjitzuPacket;
+import dev.thomasglasser.minejago.network.ClientboundStopAnimationPacket;
+import dev.thomasglasser.minejago.network.ClientboundStopMeditationPacket;
+import dev.thomasglasser.minejago.network.ClientboundStopSpinjitzuPacket;
+import dev.thomasglasser.minejago.network.ClientboundChangeVipDataPacket;
+import dev.thomasglasser.minejago.network.ClientboundOpenPowerSelectionScreenPacket;
+import dev.thomasglasser.minejago.network.ClientboundOpenScrollPacket;
+import dev.thomasglasser.minejago.network.ClientboundRefreshVipDataPacket;
+import dev.thomasglasser.minejago.network.ClientboundSetFocusPacket;
+import dev.thomasglasser.minejago.network.ClientboundSpawnParticlePacket;
+import dev.thomasglasser.minejago.network.ClientboundStartMeditationPacket;
 import dev.thomasglasser.minejago.network.ClientboundStartMegaMeditationPacket;
 import dev.thomasglasser.minejago.network.ClientboundStartScytheAnimationPacket;
 import dev.thomasglasser.minejago.network.ClientboundStartSpinjitzuPacket;
@@ -55,7 +67,6 @@ import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
 import dev.thomasglasser.minejago.world.level.block.entity.TeapotBlockEntity;
-import fuzs.forgeconfigapiport.api.config.v2.ModConfigEvents;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -131,7 +142,7 @@ public class MinejagoFabricClient implements ClientModInitializer
             }
         }
 
-        for (RegistryObject<Item> item : MinejagoArmors.ARMOR.getEntries())
+        for (RegistryObject<Item> item : MinejagoArmors.ARMORS.getEntries())
         {
             if (item.get() instanceof ModeledItem)
             {
@@ -142,7 +153,7 @@ public class MinejagoFabricClient implements ClientModInitializer
         registerItemAndBlockColors();
 
         BlockRenderLayerMap.INSTANCE.putBlock(MinejagoBlocks.TEAPOT.get(), RenderType.cutout());
-        MinejagoBlocks.TEAPOTS.forEach((dyeColor, blockBlockRegistryObject) -> BlockRenderLayerMap.INSTANCE.putBlock(blockBlockRegistryObject.get(), RenderType.cutout()));
+        MinejagoBlocks.TEAPOTS.forEach((dyeColor, teapot) -> BlockRenderLayerMap.INSTANCE.putBlock(teapot.get(), RenderType.cutout()));
         BlockRenderLayerMap.INSTANCE.putBlock(MinejagoBlocks.JASPOT.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(MinejagoBlocks.FLAME_TEAPOT.get(), RenderType.cutout());
 
@@ -262,8 +273,6 @@ public class MinejagoFabricClient implements ClientModInitializer
             }
         });
         if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled()) PlayerAnimationAccess.REGISTER_ANIMATION_EVENT.register(MinejagoPlayerAnimator::registerPlayerAnimation);
-        ModConfigEvents.reloading(Minejago.MOD_ID).register((config) ->
-                MinejagoClientUtils.refreshVip());
         ItemGroupEvents.MODIFY_ENTRIES_ALL.register((group, entries) ->
                 entries.acceptAll(MinejagoClientEvents.getItemsForTab(BuiltInRegistries.CREATIVE_MODE_TAB.getResourceKey(group).orElseThrow())));
         ClientTickEvents.END_CLIENT_TICK.register(client ->

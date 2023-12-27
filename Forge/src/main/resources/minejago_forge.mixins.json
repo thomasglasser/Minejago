@@ -8,7 +8,7 @@
     "minecraft.world.item.ItemMixin",
     "minecraft.world.level.block.entity.CalibratedSculkSensorBlockEntityMixin",
     "minecraft.world.level.block.entity.SculkSensorBlockEntity$UserMixin",
-    "minecraft.world.level.gameevent.vibrations.VibrationSelectorMixin"
+    "minecraft.world.level.gameevent.vibrations.VibrationSelectorMixin",
   ],
   "client": [
   ],

@@ -4,8 +4,8 @@ import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import dev.thomasglasser.minejago.core.particles.SpinjitzuParticleOptions;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
-import net.minecraftforge.common.data.LanguageProvider;
-import net.minecraftforge.data.event.GatherDataEvent;
+import net.neoforged.neoforge.common.data.LanguageProvider;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 public class MinejagoForgePowerDatagenSuite extends ForgePowerDatagenSuite
 {

@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
+import dev.thomasglasser.minejago.advancements.criterion.SkulkinRaidTrigger;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.util.MinejagoLevelUtils;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
@@ -330,7 +331,7 @@ public class SkulkinRaid {
 					BlockPos blockPos = this.waveSpawnPos.isPresent() ? this.waveSpawnPos.get() : this.findRandomSpawnPos(k, 20);
 					if (blockPos != null) {
 						this.started = true;
-						raidEvent.getPlayers().forEach(MinejagoCriteriaTriggers.SKULKIN_RAID_STARTED::trigger);
+						raidEvent.getPlayers().forEach(serverPlayer -> MinejagoCriteriaTriggers.SKULKIN_RAID_STATUS_CHANGED.get().trigger(serverPlayer, SkulkinRaidTrigger.Status.STARTED));
 						this.spawnGroup(blockPos);
 						if (!bl2) {
 							this.playSound(blockPos);
@@ -352,7 +353,7 @@ public class SkulkinRaid {
 					} else {
 						this.status = SkulkinRaid.SkulkinRaidStatus.VICTORY;
 
-						raidEvent.getPlayers().forEach(MinejagoCriteriaTriggers.SKULKIN_RAID_WON::trigger);
+						raidEvent.getPlayers().forEach(serverPlayer -> MinejagoCriteriaTriggers.SKULKIN_RAID_STATUS_CHANGED.get().trigger(serverPlayer, SkulkinRaidTrigger.Status.WON));
 					}
 				}
 
@@ -491,7 +492,7 @@ public class SkulkinRaid {
 			this.joinSkulkinRaid(i, raider, pos, false);
 			if (random.nextInt(10) + difficultyInstance.getDifficulty().getId() > 5) {
 				Mob raider2;
-				if (MinejagoServerConfig.ENABLE_TECH.get())
+				if (MinejagoServerConfig.enableTech)
 					raider2 = MinejagoEntityTypes.SKULL_MOTORBIKE.get().create(level);
 				else
 					raider2 = MinejagoEntityTypes.SKULKIN_HORSE.get().create(level);
@@ -762,7 +763,7 @@ public class SkulkinRaid {
 		if (kruncha != null)
 			this.joinSkulkinRaid(i, kruncha, pos, false);
 
-		if (MinejagoServerConfig.ENABLE_SKULKIN_RAIDS.get())
+		if (MinejagoServerConfig.enableSkulkinRaids)
 		{
 			List<MeleeCompatibleSkeletonRaider> raiders = new ArrayList<>();
 			if (nuckal != null) raiders.add(nuckal);

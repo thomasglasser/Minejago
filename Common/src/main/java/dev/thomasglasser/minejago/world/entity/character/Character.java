@@ -1,10 +1,10 @@
 package dev.thomasglasser.minejago.world.entity.character;
 
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleUtils;
+import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.entity.SpinjitzuDoer;
-import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
@@ -123,7 +123,7 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
 
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(DATA_MEDITATION_STATUS, MeditationStatus.STARTING);
+        this.entityData.define(DATA_MEDITATION_STATUS, MeditationStatus.NONE);
     }
 
     @Override
@@ -256,7 +256,7 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
     @Override
     public void tick() {
         super.tick();
-        Power power1 = MinejagoPowers.POWERS.get(level().registryAccess()).get(Services.DATA.getPowerData(this).power());
+        Power power1 = level().registryAccess().registry(MinejagoRegistries.POWER).orElseThrow().get(Services.DATA.getPowerData(this).power());
         if (!level().isClientSide && isDoingSpinjitzu() && power1 != null) {
             if (tickCount % 20 == 0) {
                 level().playSound(null, blockPosition(), MinejagoSoundEvents.SPINJITZU_ACTIVE.get(), SoundSource.NEUTRAL);

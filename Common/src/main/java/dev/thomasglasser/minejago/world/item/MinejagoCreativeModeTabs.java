@@ -10,7 +10,6 @@ import dev.thomasglasser.minejago.world.item.armor.GeoArmorItem;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.armor.PoweredArmorItem;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
@@ -18,12 +17,13 @@ import net.minecraft.world.item.CreativeModeTabs;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class MinejagoCreativeModeTabs
 {
-    public static final RegistrationProvider<CreativeModeTab> CREATIVE_MODE_TABS = RegistrationProvider.get(Registries.CREATIVE_MODE_TAB, Minejago.MOD_ID);
+    public static final RegistrationProvider<CreativeModeTab> CREATIVE_MODE_TABS = RegistrationProvider.get(BuiltInRegistries.CREATIVE_MODE_TAB, Minejago.MOD_ID);
 
-    public static final RegistryObject<CreativeModeTab> GI = CREATIVE_MODE_TABS.register("gi", () -> Services.ITEM.newTab(Component.translatable(Minejago.modLoc("gi").toLanguageKey("item_group")), () -> MinejagoArmors.BLACK_GI_SET.HEAD.get().getDefaultInstance(), true, (parameters, output) ->
+    public static final RegistryObject<CreativeModeTab> GI = register("gi", () -> Services.ITEM.newTab(Component.translatable(Minejago.modLoc("gi").toLanguageKey("item_group")), () -> MinejagoArmors.BLACK_GI_SET.HEAD.get().getDefaultInstance(), true, (parameters, output) ->
     {
         MinejagoArmors.ARMOR_SETS.forEach(armorSet ->
                 armorSet.getAll().forEach(armor ->
@@ -35,7 +35,7 @@ public class MinejagoCreativeModeTabs
         output.acceptAll(MinejagoPowers.getArmorForAll(parameters.holders()));
     }, CreativeModeTabs.COMBAT));
 
-    public static final RegistryObject<CreativeModeTab> MINEJAGO = CREATIVE_MODE_TABS.register("minejago", () -> Services.ITEM.newTab(Component.translatable(Minejago.modLoc("minejago").toLanguageKey("item_group")), () -> MinejagoItems.SCYTHE_OF_QUAKES.get().getDefaultInstance(), true, (parameters, output) ->
+    public static final RegistryObject<CreativeModeTab> MINEJAGO = register("minejago", () -> Services.ITEM.newTab(Component.translatable(Minejago.modLoc("minejago").toLanguageKey("item_group")), () -> MinejagoItems.SCYTHE_OF_QUAKES.get().getDefaultInstance(), true, (parameters, output) ->
     {
         List<ResourceLocation> itemsToAdd = new ArrayList<>();
 
@@ -50,11 +50,16 @@ public class MinejagoCreativeModeTabs
 
         MinejagoArmors.ARMOR_SETS.forEach(armorSet ->
                 output.acceptAll(armorSet.getAll().stream().map(ro -> ro.get().getDefaultInstance()).toList()));
-
-        output.acceptAll(MinejagoPowers.getArmorForAll(MinejagoPowers.getBasePowers()));
+        MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(chestplate -> output.accept(chestplate.get()));
+        output.accept(MinejagoArmors.SAMUKAIS_CHESTPLATE.get());
 
         output.accept(SkulkinRaid.getLeaderBannerInstance());
     }, CreativeModeTabs.SPAWN_EGGS));
+    
+    private static RegistryObject<CreativeModeTab> register(String name, Supplier<CreativeModeTab> tab)
+    {
+        return CREATIVE_MODE_TABS.register(name, tab);
+    }
 
     public static void init() {}
 }

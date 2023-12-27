@@ -18,9 +18,9 @@ import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import net.minecraftforge.common.world.BiomeModifier;
-import net.minecraftforge.common.world.ForgeBiomeModifiers;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.common.world.BiomeModifier;
+import net.neoforged.neoforge.common.world.BiomeModifiers;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,7 @@ public class MinejagoBiomeModifiers
 {
     private static ResourceKey<BiomeModifier> register(String name)
     {
-        return ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, Minejago.modLoc(name));
+        return ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, Minejago.modLoc(name));
     }
 
     public static void bootstrap(BootstapContext<BiomeModifier> context)
@@ -45,17 +45,17 @@ public class MinejagoBiomeModifiers
 
         // Add features
         Holder.Reference<PlacedFeature> focusTrees = placedFeatures.getOrThrow(MinejagoVegetationPlacements.MEADOW_FOCUS_TREES);
-        context.register(register("add_focus_trees"), new ForgeBiomeModifiers.AddFeaturesBiomeModifier(biomes.getOrThrow(MinejagoBiomeTags.HAS_FOCUS_TREES), HolderSet.direct(focusTrees), GenerationStep.Decoration.VEGETAL_DECORATION));
+        context.register(register("add_focus_trees"), new BiomeModifiers.AddFeaturesBiomeModifier(biomes.getOrThrow(MinejagoBiomeTags.HAS_FOCUS_TREES), HolderSet.direct(focusTrees), GenerationStep.Decoration.VEGETAL_DECORATION));
     }
 
     @SafeVarargs
-    private static ForgeBiomeModifiers.AddSpawnsBiomeModifier addCharactersToBiomes(HolderSet<Biome> biomes, EntityType<? extends Entity>... entities)
+    private static BiomeModifiers.AddSpawnsBiomeModifier addCharactersToBiomes(HolderSet<Biome> biomes, EntityType<? extends Entity>... entities)
     {
         return addCharactersToBiomes(biomes, 1, entities);
     }
 
     @SafeVarargs
-    private static ForgeBiomeModifiers.AddSpawnsBiomeModifier addCharactersToBiomes(HolderSet<Biome> biomes, int weight, EntityType<? extends Entity>... entities)
+    private static BiomeModifiers.AddSpawnsBiomeModifier addCharactersToBiomes(HolderSet<Biome> biomes, int weight, EntityType<? extends Entity>... entities)
     {
         List<MobSpawnSettings.SpawnerData> data = new ArrayList<>();
 
@@ -69,18 +69,9 @@ public class MinejagoBiomeModifiers
             ));
         }
 
-        return new ForgeBiomeModifiers.AddSpawnsBiomeModifier(
+        return new BiomeModifiers.AddSpawnsBiomeModifier(
                 biomes,
                 data
-        );
-    }
-
-    private static AddSpawnCostsBiomeModifier addCharge(HolderSet<Biome> biomes, EntityType<? extends Entity> entity, double budget, double charge)
-    {
-        return new AddSpawnCostsBiomeModifier(
-                biomes,
-                entity,
-                new MobSpawnSettings.MobSpawnCost(budget, charge)
         );
     }
 }

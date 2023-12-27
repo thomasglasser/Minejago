@@ -1,18 +1,19 @@
 package dev.thomasglasser.minejago.data.advancements;
 
 import dev.thomasglasser.minejago.Minejago;
+import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.annotation.Nullable;
 import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementRewards;
-import net.minecraft.advancements.FrameType;
-import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
+import net.minecraft.advancements.AdvancementType;
+import net.minecraft.advancements.Criterion;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.common.data.LanguageProvider;
-import org.jetbrains.annotations.Nullable;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.data.LanguageProvider;
 
 import java.util.Map;
 import java.util.SortedMap;
@@ -21,12 +22,12 @@ import java.util.function.Consumer;
 
 public class AdvancementHelper
 {
-    private final Consumer<Advancement> saver;
+    private final Consumer<AdvancementHolder> saver;
     private final ExistingFileHelper existingFileHelper;
     private final LanguageProvider enUs;
     private final String category;
 
-    public AdvancementHelper(Consumer<Advancement> saver, ExistingFileHelper existingFileHelper, LanguageProvider enUs, String category)
+    public AdvancementHelper(Consumer<AdvancementHolder> saver, ExistingFileHelper existingFileHelper, LanguageProvider enUs, String category)
     {
         this.saver = saver;
         this.existingFileHelper = existingFileHelper;
@@ -44,7 +45,7 @@ public class AdvancementHelper
         return Component.translatable("advancement." + Minejago.MOD_ID + "." + category + "." + path + ".desc");
     }
 
-    public Advancement root(ItemLike displayItem, String id, ResourceLocation background, FrameType frameType, boolean toast, boolean announce, boolean hidden, @Nullable AdvancementRewards rewards, Map<String, AbstractCriterionTriggerInstance> triggers, String title, String desc)
+    public AdvancementHolder root(ItemLike displayItem, String id, ResourceLocation background, AdvancementType frameType, boolean toast, boolean announce, boolean hidden, @Nullable AdvancementRewards rewards, Map<String, Criterion<?>> triggers, String title, String desc)
     {
         Component titleKey = title(category, id);
         Component descKey = desc(category, id);
@@ -58,7 +59,7 @@ public class AdvancementHelper
         return makeInternal(builder, id, rewards, triggers);
     }
 
-    public Advancement make(Advancement root, ItemLike displayItem, String id, FrameType frameType, boolean toast, boolean announce, boolean hidden, @Nullable AdvancementRewards rewards, Map<String, AbstractCriterionTriggerInstance> triggers, String title, String desc)
+    public AdvancementHolder make(AdvancementHolder root, ItemLike displayItem, String id, AdvancementType frameType, boolean toast, boolean announce, boolean hidden, @Nullable AdvancementRewards rewards, Map<String, Criterion<?>> triggers, String title, String desc)
     {
         Component titleKey = title(category, id);
         Component descKey = desc(category, id);
@@ -73,7 +74,7 @@ public class AdvancementHelper
         return makeInternal(builder, id, rewards, triggers);
     }
 
-    public Advancement make(Advancement root, ItemStack displayItem, String id, FrameType frameType, boolean toast, boolean announce, boolean hidden, @Nullable AdvancementRewards rewards, Map<String, AbstractCriterionTriggerInstance> triggers, String title, String desc)
+    public AdvancementHolder make(AdvancementHolder root, ItemStack displayItem, String id, AdvancementType frameType, boolean toast, boolean announce, boolean hidden, @Nullable AdvancementRewards rewards, Map<String, Criterion<?>> triggers, String title, String desc)
     {
         Component titleKey = title(category, id);
         Component descKey = desc(category, id);
@@ -88,7 +89,7 @@ public class AdvancementHelper
         return makeInternal(builder, id, rewards, triggers);
     }
 
-    public Advancement make(ResourceLocation root, ItemLike displayItem, String id, FrameType frameType, boolean toast, boolean announce, boolean hidden, @Nullable AdvancementRewards rewards, Map<String, AbstractCriterionTriggerInstance> triggers, String title, String desc)
+    public AdvancementHolder make(ResourceLocation root, ItemLike displayItem, String id, AdvancementType frameType, boolean toast, boolean announce, boolean hidden, @Nullable AdvancementRewards rewards, Map<String, Criterion<?>> triggers, String title, String desc)
     {
         Component titleKey = title(category, id);
         Component descKey = desc(category, id);
@@ -97,13 +98,13 @@ public class AdvancementHelper
         add(descKey, desc);
 
         Advancement.Builder builder = Advancement.Builder.advancement()
-                .parent(root)
+                .parent(new AdvancementHolder(root, null))
                 .display(displayItem, titleKey, descKey, null, frameType, toast, announce, hidden);
 
         return makeInternal(builder, id, rewards, triggers);
     }
 
-    public Advancement make(ResourceLocation root, ItemStack displayItem, String id, FrameType frameType, boolean toast, boolean announce, boolean hidden, @Nullable AdvancementRewards rewards, Map<String, AbstractCriterionTriggerInstance> triggers, String title, String desc)
+    public AdvancementHolder make(ResourceLocation root, ItemStack displayItem, String id, AdvancementType frameType, boolean toast, boolean announce, boolean hidden, @Nullable AdvancementRewards rewards, Map<String, Criterion<?>> triggers, String title, String desc)
     {
         Component titleKey = title(category, id);
         Component descKey = desc(category, id);
@@ -112,18 +113,18 @@ public class AdvancementHelper
         add(descKey, desc);
 
         Advancement.Builder builder = Advancement.Builder.advancement()
-                .parent(root)
+                .parent(new AdvancementHolder(root, null))
                 .display(displayItem, titleKey, descKey, null, frameType, toast, announce, hidden);
 
         return makeInternal(builder, id, rewards, triggers);
     }
 
-    private Advancement makeInternal(Advancement.Builder builder, String id, @Nullable AdvancementRewards rewards, Map<String, AbstractCriterionTriggerInstance> triggers)
+    private AdvancementHolder makeInternal(Advancement.Builder builder, String id, @Nullable AdvancementRewards rewards, Map<String, Criterion<?>> triggers)
     {
         if (rewards != null)
             builder.rewards(rewards);
 
-        SortedMap<String, AbstractCriterionTriggerInstance> sm = new TreeMap<>(triggers);
+        SortedMap<String, Criterion<?>> sm = new TreeMap<>(triggers);
         sm.forEach(builder::addCriterion);
 
         return builder.save(saver, Minejago.modLoc(category + "/" + id), existingFileHelper);

@@ -4,6 +4,7 @@ import com.google.common.util.concurrent.AtomicDouble;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
+import dev.thomasglasser.minejago.client.animation.MinejagoAnimationUtils;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleUtils;
 import dev.thomasglasser.minejago.core.particles.SpinjitzuParticleOptions;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
@@ -19,7 +20,6 @@ import dev.thomasglasser.minejago.network.ServerboundStopMeditationPacket;
 import dev.thomasglasser.minejago.network.ServerboundStopSpinjitzuPacket;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
-import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
@@ -41,7 +41,7 @@ import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -109,8 +109,8 @@ public class MinejagoEntityEvents
         if (player instanceof ServerPlayer serverPlayer)
         {
             ServerLevel level = serverPlayer.serverLevel();
-            if ((level.getDifficulty() == Difficulty.PEACEFUL || serverPlayer.getAbilities().instabuild) && focusData.needsFocus() && player.tickCount % 10 == 0)
-                focusData.setFocusLevel(focusData.getFocusLevel() + 1);
+            if ((level.getDifficulty() == Difficulty.PEACEFUL || serverPlayer.getAbilities().instabuild) && focusData.needsFocus())
+                focusData.setFocusLevel(FocusConstants.MAX_FOCUS);
 
             int j = Mth.clamp(serverPlayer.getStats().getValue(Stats.CUSTOM.get(Stats.TIME_SINCE_REST)), 1, Integer.MAX_VALUE);
             if (j >= 24000 && !serverPlayer.getAbilities().instabuild)
@@ -133,7 +133,7 @@ public class MinejagoEntityEvents
                         stopSpinjitzu(spinjitzu, serverPlayer, !serverPlayer.isCrouching());
                         return;
                     }
-                    MinejagoCriteriaTriggers.DO_SPINJITZU.trigger(serverPlayer);
+                    MinejagoCriteriaTriggers.DID_SPINJITZU.get().trigger(serverPlayer);
                     focusData.addExhaustion(FocusConstants.EXHAUSTION_DOING_SPINJITZU);
                     if (player.tickCount % 20 == 0)
                     {
@@ -200,7 +200,7 @@ public class MinejagoEntityEvents
                     i.set(WorldFocusModifiers.applyModifier((int) level.getDayTime(), weather, playerPos.getY(), TeapotBlock.getBiomeTemperature(level, playerPos), i.get()));
                     i.set(BiomeFocusModifiers.applyModifier(level.getBiome(playerPos).unwrapKey().orElseThrow(), i.get()));
                     i.set(DimensionFocusModifiers.applyModifier(level.dimension(), i.get()));
-                    serverPlayer.serverLevel().structureManager().getAllStructuresAt(playerPos).keySet().forEach(structure -> i.set(StructureFocusModifiers.applyModifier(Holder.direct(structure).unwrapKey().orElseThrow(), i.get())));
+                    serverPlayer.serverLevel().structureManager().getAllStructuresAt(playerPos).keySet().forEach(structure -> i.set(StructureFocusModifiers.applyModifier(level.registryAccess().registryOrThrow(Registries.STRUCTURE).getResourceKey(structure).orElseThrow(), i.get())));
                     Stream<BlockState> blocks = level.getBlockStates(player.getBoundingBox().inflate(2));
                     blocks.forEach(blockState -> i.set(BlockStateFocusModifiers.applyModifier(blockState, i.get())));
                     serverPlayer.getActiveEffects().forEach(mobEffectInstance -> i.set(MobEffectFocusModifiers.applyModifier(mobEffectInstance.getEffect(), i.get()) * (mobEffectInstance.getAmplifier() + 1)));
@@ -258,7 +258,7 @@ public class MinejagoEntityEvents
             }
             else if (MinejagoKeyMappings.MEDITATE.isDown() && !spinjitzu.active())
             {
-                MinejagoClientUtils.stopAnimation((AbstractClientPlayer) player);
+                if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled()) MinejagoAnimationUtils.stopAnimation((AbstractClientPlayer) player);
                 if (focusData.isMeditating())
                 {
                     focusData.stopMeditating();
@@ -381,10 +381,10 @@ public class MinejagoEntityEvents
             Services.NETWORK.sendToAllClients(ClientboundStopSpinjitzuPacket.class, ClientboundStopSpinjitzuPacket.toBytes(serverPlayer.getUUID(), fail), serverPlayer.getServer());
             AttributeInstance speed = serverPlayer.getAttribute(Attributes.MOVEMENT_SPEED);
             if (speed != null && speed.hasModifier(SpinjitzuData.SPEED_MODIFIER))
-                speed.removeModifier(SpinjitzuData.SPEED_MODIFIER);
+                speed.removeModifier(SpinjitzuData.SPEED_MODIFIER.getId());
             AttributeInstance kb = serverPlayer.getAttribute(Attributes.ATTACK_KNOCKBACK);
             if (kb != null && kb.hasModifier(SpinjitzuData.KNOCKBACK_MODIFIER))
-                kb.removeModifier(SpinjitzuData.KNOCKBACK_MODIFIER);
+                kb.removeModifier(SpinjitzuData.KNOCKBACK_MODIFIER.getId());
             serverPlayer.level().playSound(null, serverPlayer.blockPosition(), MinejagoSoundEvents.SPINJITZU_STOP.get(), SoundSource.PLAYERS);
         }
     }

@@ -13,20 +13,20 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.item.*;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.common.ForgeSpawnEggItem;
+import net.neoforged.neoforge.common.DeferredSpawnEggItem;
+import net.neoforged.neoforge.common.NeoForgeMod;
 
 import java.util.function.Supplier;
 
 public class ForgeItemHelper implements ItemHelper {
     @Override
     public Attribute getAttackRangeAttribute() {
-        return ForgeMod.ENTITY_REACH.get();
+        return NeoForgeMod.ENTITY_REACH.value();
     }
 
     @Override
     public Supplier<SpawnEggItem> makeSpawnEgg(Supplier<EntityType<? extends Mob>> entityType, int bg, int fg, Item.Properties properties) {
-        return () -> new ForgeSpawnEggItem(entityType, bg, fg, properties);
+        return () -> new DeferredSpawnEggItem(entityType, bg, fg, properties);
     }
 
     @Override

@@ -1,8 +1,7 @@
 package dev.thomasglasser.minejago.commands;
 
-import dev.thomasglasser.minejago.server.commands.PowerCommand;
-import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.server.command.ConfigCommand;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.server.command.ConfigCommand;
 
 public class MinejagoForgeCommandEvents
 {

@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.network;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.client.animation.MinejagoAnimationUtils;
 import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.util.MinejagoPacketUtils;
 import net.minecraft.network.FriendlyByteBuf;
@@ -32,6 +33,6 @@ public class ClientboundStopAnimationPacket {
 
     // ON CLIENT
     public void handle() {
-        MinejagoClientUtils.stopAnimation(MinejagoClientUtils.getClientPlayerByUUID(uuid));
+        MinejagoAnimationUtils.stopAnimation(MinejagoClientUtils.getClientPlayerByUUID(uuid));
     }
 }

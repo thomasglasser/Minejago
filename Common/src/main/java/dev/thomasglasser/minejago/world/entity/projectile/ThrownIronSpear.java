@@ -28,18 +28,15 @@ public class ThrownIronSpear extends AbstractArrow
     private static final EntityDataAccessor<Byte> ID_LOYALTY = SynchedEntityData.defineId(ThrownIronSpear.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<Boolean> ID_FOIL = SynchedEntityData.defineId(ThrownIronSpear.class, EntityDataSerializers.BOOLEAN);
 
-    private ItemStack ironSpearItem = new ItemStack(MinejagoItems.IRON_SPEAR.get());
-
     private boolean dealtDamage;
     public int clientSideReturnIronSpearTickCount;
 
     public ThrownIronSpear(EntityType<? extends ThrownIronSpear> entity, Level level) {
-        super(entity, level);
+        super(entity, level, new ItemStack(MinejagoItems.IRON_SPEAR.get()));
     }
 
     public ThrownIronSpear(Level pLevel, LivingEntity pShooter, ItemStack pStack) {
-        super(MinejagoEntityTypes.THROWN_IRON_SPEAR.get(), pShooter, pLevel);
-        this.ironSpearItem = pStack.copy();
+        super(MinejagoEntityTypes.THROWN_IRON_SPEAR.get(), pShooter, pLevel, pStack);
         this.entityData.set(ID_LOYALTY, (byte) EnchantmentHelper.getLoyalty(pStack));
         this.entityData.set(ID_FOIL, pStack.hasFoil());
     }
@@ -92,10 +89,6 @@ public class ThrownIronSpear extends AbstractArrow
         }
     }
 
-    protected ItemStack getPickupItem() {
-        return this.ironSpearItem.copy();
-    }
-
     public boolean isFoil() {
         return this.entityData.get(ID_FOIL);
     }
@@ -115,7 +108,7 @@ public class ThrownIronSpear extends AbstractArrow
         Entity entity = pResult.getEntity();
         float f = 8.0F;
         if (entity instanceof LivingEntity livingentity) {
-            f += EnchantmentHelper.getDamageBonus(this.ironSpearItem, livingentity.getMobType());
+            f += EnchantmentHelper.getDamageBonus(getPickupItem(), livingentity.getMobType());
         }
 
         Entity entity1 = this.getOwner();
@@ -159,17 +152,12 @@ public class ThrownIronSpear extends AbstractArrow
      */
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
-        if (pCompound.contains("IronSpear", 10)) {
-            this.ironSpearItem = ItemStack.of(pCompound.getCompound("IronSpear"));
-        }
-
         this.dealtDamage = pCompound.getBoolean("DealtDamage");
-        this.entityData.set(ID_LOYALTY, (byte)EnchantmentHelper.getLoyalty(this.ironSpearItem));
+        this.entityData.set(ID_LOYALTY, (byte)EnchantmentHelper.getLoyalty(this.getPickupItemStackOrigin()));
     }
 
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
-        pCompound.put("IronSpear", this.ironSpearItem.save(new CompoundTag()));
         pCompound.putBoolean("DealtDamage", this.dealtDamage);
     }
 

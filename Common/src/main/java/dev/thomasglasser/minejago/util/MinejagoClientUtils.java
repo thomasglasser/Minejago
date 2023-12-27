@@ -1,14 +1,8 @@
 package dev.thomasglasser.minejago.util;
 
-import dev.kosmx.playerAnim.api.firstPerson.FirstPersonMode;
-import dev.kosmx.playerAnim.api.layered.KeyframeAnimationPlayer;
-import dev.kosmx.playerAnim.api.layered.modifier.AbstractFadeModifier;
-import dev.kosmx.playerAnim.core.data.KeyframeAnimation;
-import dev.kosmx.playerAnim.core.util.Ease;
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.client.animation.MinejagoPlayerAnimator;
-import dev.thomasglasser.minejago.client.renderer.entity.layers.LayersConfig;
-import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterLayerOptions;
+import dev.thomasglasser.minejago.client.MinejagoClientConfig;
+import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterCosmeticOptions;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.VipData;
 import dev.thomasglasser.minejago.network.ServerboundChangeVipDataPacket;
 import dev.thomasglasser.minejago.platform.Services;
@@ -43,7 +37,7 @@ public class MinejagoClientUtils {
     }
 
     @Nullable
-    public static SnapshotTesterLayerOptions snapshotChoice(AbstractClientPlayer player)
+    public static SnapshotTesterCosmeticOptions snapshotChoice(AbstractClientPlayer player)
     {
         return vipData.get(player) != null && vipData.get(player).choice() != null ? vipData.get(player).choice() : null;
     }
@@ -65,14 +59,14 @@ public class MinejagoClientUtils {
             UUID uuid = Minecraft.getInstance().player.getUUID();
 
             boolean displaySnapshot;
-            boolean displayDev;
+//            boolean displayDev;
             boolean displayOgDev;
 
-            displaySnapshot = LayersConfig.DISPLAY_SNAPSHOT.get() && MinejagoClientUtils.checkSnapshotTester(uuid);
-            displayDev = LayersConfig.DISPLAY_DEV.get() && MinejagoClientUtils.checkDevTeam(uuid);
-            displayOgDev = LayersConfig.DISPLAY_OG_DEV.get() && MinejagoClientUtils.checkOgDevTeam(uuid);
+            displaySnapshot = MinejagoClientConfig.displaySnapshotTesterCosmetic && MinejagoClientUtils.checkSnapshotTester(uuid);
+//            displayDev = MinejagoClientConfig.displayDevTeamCosmetic && MinejagoClientUtils.checkDevTeam(uuid);
+            displayOgDev = MinejagoClientConfig.displayOgDevTeamCosmetic && MinejagoClientUtils.checkOgDevTeam(uuid);
 
-            Services.NETWORK.sendToServer(ServerboundChangeVipDataPacket.class, ServerboundChangeVipDataPacket.toBytes(uuid, new VipData(LayersConfig.SNAPSHOT_CHOICE.get(), displaySnapshot, displayDev, displayOgDev)));
+            Services.NETWORK.sendToServer(ServerboundChangeVipDataPacket.class, ServerboundChangeVipDataPacket.toBytes(uuid, new VipData(MinejagoClientConfig.snapshotTesterCosmeticChoice, displaySnapshot, /*displayDev*/false, displayOgDev)));
         }
     }
 
@@ -147,34 +141,6 @@ public class MinejagoClientUtils {
         }
 
         return false;
-    }
-
-    public static void startAnimation(KeyframeAnimation startAnim, @Nullable KeyframeAnimation goAnim, Player player, FirstPersonMode firstPersonMode)
-    {
-        var animation = MinejagoPlayerAnimator.animationData.get(player);
-        //Get the animation for that player
-        if (animation != null) {
-            //You can set an animation from anywhere ON THE CLIENT
-            //Do not attempt to do this on a server, that will only fail
-            animation.setAnimation(new KeyframeAnimationPlayer(startAnim).setFirstPersonMode(firstPersonMode));
-            if (goAnim != null)
-                animation.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(20, Ease.CONSTANT), new KeyframeAnimationPlayer(goAnim).setFirstPersonMode(firstPersonMode));
-        }
-
-    }
-
-    public static void startAnimation(KeyframeAnimation animation, Player player, FirstPersonMode firstPersonMode)
-    {
-        startAnimation(animation, null, player, firstPersonMode);
-    }
-
-    public static void stopAnimation(AbstractClientPlayer player)
-    {
-        if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled())
-        {
-            var animation = MinejagoPlayerAnimator.animationData.get(player);
-            animation.setAnimation(null);
-        }
     }
 
     public static void setScreen(Screen screen)

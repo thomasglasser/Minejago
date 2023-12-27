@@ -30,6 +30,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -91,7 +92,7 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
 
         if (pBlockEntity.cups > 0)
         {
-            Optional<TeapotBrewingRecipe> recipe = pBlockEntity.quickCheck.getRecipeFor(new SimpleContainer(pBlockEntity.item, MinejagoItemUtils.fillTeacup(pBlockEntity.getPotion())), pLevel);
+            Optional<RecipeHolder<TeapotBrewingRecipe>> recipe = pBlockEntity.quickCheck.getRecipeFor(new SimpleContainer(pBlockEntity.item, MinejagoItemUtils.fillTeacup(pBlockEntity.getPotion())), pLevel);
 
             pBlockEntity.cups = Math.min(pBlockEntity.cups, MAX_CUPS);
 
@@ -106,8 +107,8 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
 
                     if (recipe.isPresent())
                     {
-                        pBlockEntity.potion = PotionUtils.getPotion(recipe.get().getResultItem(pLevel.registryAccess()));
-                        pBlockEntity.experiencePerCup = recipe.get().getExperience() / pBlockEntity.cups;
+                        pBlockEntity.potion = PotionUtils.getPotion(recipe.get().value().getResultItem(pLevel.registryAccess()));
+                        pBlockEntity.experiencePerCup = recipe.get().value().getExperience() / pBlockEntity.cups;
                         pBlockEntity.experienceCups = pBlockEntity.cups;
                     }
                     pBlockEntity.item = ItemStack.EMPTY;
@@ -132,7 +133,7 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
                     setChanged(pLevel, pPos, pState);
                 }
             } else if (pBlockEntity.temp >= 100 && recipe.isPresent()) {
-                pBlockEntity.brewTime = (recipe.map(TeapotBrewingRecipe::getCookingTime).orElseGet(() -> UniformInt.of(1200, 2400))).sample(pLevel.random);
+                pBlockEntity.brewTime = (recipe.map(holder -> holder.value().getCookingTime()).orElseGet(() -> UniformInt.of(1200, 2400))).sample(pLevel.random);
                 pBlockEntity.brewing = true;
                 pBlockEntity.boiling = false;
                 pBlockEntity.done = false;

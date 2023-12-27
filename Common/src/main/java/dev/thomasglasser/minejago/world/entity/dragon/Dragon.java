@@ -63,6 +63,7 @@ import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyPlayersSensor;
 import net.tslat.smartbrainlib.util.BrainUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -400,28 +401,33 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
     }
 
     @Override
-    protected void positionRider(Entity passenger, Entity.MoveFunction callback) {
-        int i = this.getPassengers().indexOf(passenger);
+    protected Vector3f getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float scale)
+    {
+        int i = this.getPassengers().indexOf(entity);
         if (i >= 0) {
             boolean bl = i == 0;
             float f = 1.0F;
-            float g = (float)((this.isRemoved() ? 0.01F : this.getPassengersRidingOffset()) + passenger.getMyRidingOffset());
             if (this.getPassengers().size() > 1) {
                 if (!bl) {
                     f = -0.7F;
                 }
             }
 
-            Vec3 vec3 = new Vec3(0.0, 0.0, (double)f).yRot(-this.yBodyRot * (float) (Math.PI / 180.0));
-            callback.accept(passenger, this.getX() + vec3.x, this.getY() + (double)g, this.getZ() + vec3.z);
-            clampRotation(this);
+            return new Vec3(0.0, dimensions.height - 0.2, f).toVector3f();
         }
+        return Vec3.ZERO.toVector3f();
     }
 
     @Override
-    public double getMyRidingOffset()
+    protected void positionRider(Entity passenger, MoveFunction callback) {
+        super.positionRider(passenger, callback);
+        clampRotation(this);
+    }
+
+    @Override
+    public float ridingOffset(Entity entity)
     {
-        return -1.1;
+        return -1.1f;
     }
 
     protected void clampRotation(Entity entityToUpdate) {

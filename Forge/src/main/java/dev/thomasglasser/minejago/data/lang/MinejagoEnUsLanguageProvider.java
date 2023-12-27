@@ -1,13 +1,16 @@
 package dev.thomasglasser.minejago.data.lang;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.client.MinejagoClientConfig;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.client.MinejagoWailaPlugin;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.PowerSelectionScreen;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.ScrollEditScreen;
 import dev.thomasglasser.minejago.client.rei.display.category.TeapotBrewingCategory;
+import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterCosmeticOptions;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import dev.thomasglasser.minejago.registration.RegistryObject;
+import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.server.commands.PowerCommand;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
@@ -18,7 +21,6 @@ import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
 import dev.thomasglasser.minejago.world.item.MinejagoCreativeModeTabs;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
-import dev.thomasglasser.minejago.world.item.armor.SkeletalChestplateItem;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
 import dev.thomasglasser.minejago.world.level.block.LeavesSet;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
@@ -33,6 +35,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.decoration.PaintingVariant;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -42,7 +45,7 @@ import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.entity.BannerPattern;
-import net.minecraftforge.common.data.LanguageProvider;
+import net.neoforged.neoforge.common.data.LanguageProvider;
 import org.apache.commons.lang3.text.WordUtils;
 
 public class MinejagoEnUsLanguageProvider extends LanguageProvider
@@ -122,19 +125,16 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
 
         MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
         {
-            if (item.get() instanceof SkeletalChestplateItem chestplate)
+            String nameForVariant = switch (item.get().getVariant())
             {
-                String nameForVariant = switch (chestplate.getVariant())
-                {
-                    case STRENGTH -> "Red";
-                    case SPEED -> "Blue";
-                    case BOW -> "White";
-                    case KNIFE -> "Black";
-                    case BONE -> "Bone";
-                };
+                case STRENGTH -> "Red";
+                case SPEED -> "Blue";
+                case BOW -> "White";
+                case KNIFE -> "Black";
+                case BONE -> "Bone";
+            };
 
-                addDesc(item.get(), nameForVariant);
-            }
+            addDesc(item.get(), nameForVariant);
         });
 
         add(MinejagoItems.FILLED_TEACUP.get().getDescriptionId() + ".potion", "Tea of %s");
@@ -182,6 +182,8 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         addTea(MinejagoPotions.JUNGLE_TEA.get(), "Jungle Tea");
         addTea(MinejagoPotions.DARK_OAK_TEA.get(), "Dark Oak Tea");
         addTea(MinejagoPotions.BIRCH_TEA.get(), "Birch Tea");
+        addTea(MinejagoPotions.AZALEA_TEA.get(), "Azalea Tea");
+        addTea(MinejagoPotions.FLOWERING_AZALEA_TEA.get(), "Flowering Azalea Tea");
 
         addTea(MinejagoPotions.FOCUS_TEA.get(), "Focus Tea");
 
@@ -220,6 +222,8 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(MinejagoMobEffects.JUNGLE_TEA.get(), "Jungle Tea");
         add(MinejagoMobEffects.DARK_OAK_TEA.get(), "Dark Oak Tea");
         add(MinejagoMobEffects.BIRCH_TEA.get(), "Birch Tea");
+        add(MinejagoMobEffects.AZALEA_TEA.get(), "Azalea Tea");
+        add(MinejagoMobEffects.FLOWERING_AZALEA_TEA.get(), "Flowering Azalea Tea");
         add(MinejagoMobEffects.CURE.get(), "Instant Cure");
         add(MinejagoMobEffects.SKULKINS_CURSE.get(), "Skulkin's Curse");
         add(MinejagoMobEffects.HYPERFOCUS.get(), "Hyperfocus");
@@ -244,8 +248,8 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(PowerCommand.INVALID, "Power not found in world. Check enabled data packs.");
         add(PowerCommand.NOT_LIVING_ENTITY, "Target %s (%s) is not a LivingEntity");
 
-        addCreativeTab(MinejagoCreativeModeTabs.GI.getId(), "Gi");
-        addCreativeTab(MinejagoCreativeModeTabs.MINEJAGO.getId(), "Minejago");
+        addCreativeTab(MinejagoCreativeModeTabs.GI, "Gi");
+        addCreativeTab(MinejagoCreativeModeTabs.MINEJAGO, "Minejago");
 
         add(MinejagoPaintingVariants.A_MORNING_BREW, "A Morning Brew", "waifu_png_pl");
         add(MinejagoPaintingVariants.NEEDS_HAIR_GEL, "Needs Hair Gel", "waifu_png_pl");
@@ -306,6 +310,8 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(TeapotBrewingCategory.CATEGORY_KEY, "Teapot Brewing");
 
         add(SkulkinRaid.RAID_NAME_COMPONENT, "Skulkin Raid");
+
+	    addConfigs();
     }
 
     public void addDesc(Item item, String desc)
@@ -357,9 +363,9 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(desc, descString);
     }
 
-    public void addCreativeTab(ResourceLocation location, String name)
+    public void addCreativeTab(RegistryObject<CreativeModeTab> tab, String name)
     {
-        add(location.toLanguageKey("item_group"), name);
+        add(tab.getId().toLanguageKey("item_group"), name);
     }
 
     public void add(RegistryObject<SoundEvent> sound, String name)
@@ -407,5 +413,70 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add(set.sapling().get(), name + " Sapling");
         add(set.leaves().get(), name + " Leaves");
         add(set.pottedSapling().get(), "Potted " + name + " Sapling");
+    }
+
+    public void addConfigs()
+    {
+        // Server
+        addConfigCategory("features", "Features");
+        addConfig("features_comment", MinejagoServerConfig.features_comment);
+        addConfig("features_comment_continued", MinejagoServerConfig.features_comment_continued);
+        addConfig("enable_tech_comment", MinejagoServerConfig.enable_tech_comment);
+        addConfig("enableTech", "Enable Tech");
+        addConfig("enable_skulkin_raids_comment", MinejagoServerConfig.enable_skulkin_raids_comment);
+        addConfig("enableSkulkinRaids", "Enable Skulkin Raids");
+
+        addConfigCategory("powers", "Powers");
+        addConfig("powers_comment", MinejagoServerConfig.powers_comment);
+        addConfig("allow_choose_comment", MinejagoServerConfig.allow_choose_comment);
+        addConfig("allowChoose", "Allow Power Choosing");
+        addConfig("allow_change_comment", MinejagoServerConfig.allow_change_comment);
+        addConfig("allowChange", "Allow Power Changing");
+        addConfig("drain_pool_comment", MinejagoServerConfig.drain_pool_comment);
+        addConfig("drainPool", "Drain Power Pool");
+        addConfig("enable_no_power_comment", MinejagoServerConfig.enable_no_power_comment);
+        addConfig("enableNoPower", "Enable No Power");
+
+        addConfigCategory("golden_weapons", "Golden Weapons");
+        addConfig("golden_weapons_comment", MinejagoServerConfig.golden_weapons_comment);
+        addConfig("require_compatible_power_comment", MinejagoServerConfig.require_compatible_power_comment);
+        addConfig("requireCompatiblePower", "Require Compatible Power");
+        addConfig("enable_malfunction_comment", MinejagoServerConfig.enable_malfunction_comment);
+        addConfig("enableMalfunction", "Enable Malfunction");
+
+        // Client
+        addConfigCategory("cosmetics", "Cosmetics");
+        addConfig("player_cosmetics_comment", MinejagoClientConfig.player_cosmetics_comment);
+        addConfig("display_snapshot_tester_cosmetic_comment", MinejagoClientConfig.display_snapshot_tester_cosmetic_comment);
+        addConfig("displaySnapshotTesterCosmetic", "Display Snapshot Tester Cosmetic");
+        addConfig(SnapshotTesterCosmeticOptions.BAMBOO_HAT, "Pilots (Bamboo Hat)");
+        addConfig("snapshot_tester_cosmetic_choice_comment", MinejagoClientConfig.snapshot_tester_cosmetic_choice_comment);
+        addConfig("snapshotTesterCosmeticChoice", "Snapshot Tester Cosmetic Choice");
+        addConfig("display_og_dev_team_cosmetic_comment", MinejagoClientConfig.display_og_dev_team_cosmetic_comment);
+        addConfig("displayOgDevTeamCosmetic", "Display OG Dev Team Cosmetic");
+
+        addConfigCategory("focus_bar", "Focus Bar");
+        addConfig("focus_bar_comment", MinejagoClientConfig.focus_bar_comment);
+        addConfig("x_offset_comment", MinejagoClientConfig.x_offset_comment);
+        addConfig("xOffset", "X Offset");
+        addConfig("y_offset_comment", MinejagoClientConfig.y_offset_comment);
+        addConfig("yOffset", "Y Offset");
+    }
+
+    private void addConfig(String field, String name)
+    {
+        add(Minejago.MOD_ID + ".midnightconfig." + field, name);
+    }
+
+    private void addConfig(Enum<?> e, String name)
+    {
+        {
+            add(Minejago.MOD_ID + ".midnightconfig.enum." + e.getDeclaringClass().getSimpleName() + "." + e.name(), name);
+        }
+    }
+
+    private void addConfigCategory(String field, String name)
+    {
+        add(Minejago.MOD_ID + ".midnightconfig.category." + field, name);
     }
 }

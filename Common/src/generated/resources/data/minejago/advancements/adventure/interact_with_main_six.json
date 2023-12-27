@@ -93,17 +93,14 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.minejago.adventure.interact_with_main_six.desc"
     },
     "frame": "goal",
-    "hidden": false,
     "icon": {
       "item": "minejago:iron_katana",
       "nbt": "{Damage:0}"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.minejago.adventure.interact_with_main_six.title"
     }

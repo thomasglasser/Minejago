@@ -1,5 +1,6 @@
 package dev.thomasglasser.minejago.world.level.block;
 
+import com.mojang.serialization.MapCodec;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
@@ -25,6 +26,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -52,6 +54,12 @@ public class TeapotBlock extends BaseEntityBlock {
     public TeapotBlock(Properties pProperties) {
         super(pProperties);
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(FILLED, Boolean.FALSE));
+    }
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec()
+    {
+        return simpleCodec(TeapotBlock::new);
     }
 
     @Override
@@ -107,7 +115,7 @@ public class TeapotBlock extends BaseEntityBlock {
                             MinejagoItemUtils.safeShrink(1, inHand, pPlayer);
                             pPlayer.addItem(potionCupHolder.getFilled(be.getPotion()));
                             be.take(potionCupHolder.getCups());
-                            MinejagoCriteriaTriggers.BREWED_TEA.trigger((ServerPlayer) pPlayer, be.getPotion());
+                            MinejagoCriteriaTriggers.BREWED_TEA.get().trigger((ServerPlayer) pPlayer, be.getPotion().builtInRegistryHolder());
                             pLevel.playSound(null, pPos, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
                             be.giveExperienceForCup((ServerLevel) pLevel, pPos.getCenter());
                         } else if (be.hasRecipe(inHand, pLevel)) {
@@ -172,9 +180,10 @@ public class TeapotBlock extends BaseEntityBlock {
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
+    public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState)
+    {
         ItemStack stack = new ItemStack(asItem());
-        TeapotBlockEntity be = (TeapotBlockEntity) level.getBlockEntity(pos);
+        TeapotBlockEntity be = (TeapotBlockEntity) levelReader.getBlockEntity(blockPos);
 
         be.saveToItem(stack);
 

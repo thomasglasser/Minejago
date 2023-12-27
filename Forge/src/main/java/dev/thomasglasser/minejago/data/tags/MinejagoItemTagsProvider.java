@@ -22,7 +22,7 @@ import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -150,7 +150,7 @@ public class MinejagoItemTagsProvider extends ItemTagsProvider
         copy(set.logsBlockTag().get(), set.logsItemTag().get());
 
         tag(ItemTags.PLANKS)
-                .add(set.planks().asItem());
+                .add(set.planks().get().asItem());
 
         tag(ItemTags.LOGS_THAT_BURN)
                 .addTag(set.logsItemTag().get());
@@ -159,9 +159,9 @@ public class MinejagoItemTagsProvider extends ItemTagsProvider
     private void leavesSet(LeavesSet set)
     {
         tag(ItemTags.LEAVES)
-                .add(set.leaves().asItem());
+                .add(set.leaves().get().asItem());
 
         tag(ItemTags.SAPLINGS)
-                .add(set.sapling().asItem());
+                .add(set.sapling().get().asItem());
     }
 }

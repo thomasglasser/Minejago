@@ -1,167 +1,135 @@
-buildscript {
-    dependencies {
-        classpath 'org.parchmentmc:librarian:1.+'
-        classpath 'org.spongepowered:mixingradle:0.7.+'
-    }
-}
-
 plugins {
-    id 'java'
-    id 'eclipse'
+    id 'idea'
     id 'maven-publish'
-    id 'net.neoforged.gradle' version '6.+'
+    id 'net.neoforged.gradle.userdev' version '7.+'
+    id 'java-library'
+}
+base {
+    archivesName = "${mod_id}-neoforge-${minecraft_version}"
 }
 
-apply plugin: 'org.parchmentmc.librarian.forgegradle'
-apply plugin: 'org.spongepowered.mixin'
+// Automatically enable neoforge AccessTransformers if the file exists
+// This location is hardcoded in FML and can not be changed.
+// https://github.com/neoforged/FancyModLoader/blob/a952595eaaddd571fbc53f43847680b00894e0c1/loader/src/main/java/net/neoforged/fml/loading/moddiscovery/ModFile.java#L118
+if (file('src/main/resources/META-INF/accesstransformer.cfg').exists()) {
+    minecraft.accessTransformers.file file('src/main/resources/META-INF/accesstransformer.cfg')
+}
+runs {
+    configureEach {
+        modSource project.sourceSets.main
+    }
+    client {
+        systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+    }
+    server {
+        systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        programArgument '--nogui'
+    }
 
-archivesBaseName = "${mod_id}-neoforge-${minecraft_version}"
+    gameTestServer {
+        systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+    }
 
-minecraft {
-    mappings channel: 'parchment', version: parchment_version + '-' + minecraft_version
-
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-
-    runs {
-        client {
-            workingDirectory project.file('run')
-            ideaModule "${rootProject.name}.${project.name}.main"
-            taskName 'Client'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            mods {
-                modClientRun {
-                    source sourceSets.main
-                    source project(":Common").sourceSets.main
-                }
-            }
-        }
-
-        server {
-            workingDirectory project.file('run')
-            ideaModule "${rootProject.name}.${project.name}.main"
-            taskName 'Server'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            arg("-Dmixin.debug=true")
-            mods {
-                modServerRun {
-                    source sourceSets.main
-                    source project(":Common").sourceSets.main
-                }
-            }
-        }
-
-        data {
-            workingDirectory project.file('run')
-            ideaModule "${rootProject.name}.${project.name}.main"
-            args '--mod', mod_id, '--all', '--output', file('../Common/src/generated/resources/'), '--existing', file('../Common/src/main/resources/')
-            taskName 'Data'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            mods {
-                modDataRun {
-                    source sourceSets.main
-                    source project(":Common").sourceSets.main
-                }
-            }
-        }
+    data {
+        programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('../Common/src/generated/resources/').getAbsolutePath(), '--existing', file('../Common/src/main/resources/').getAbsolutePath()
     }
 }
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 jarJar.enable()
 
-reg.configureJarTask(tasks.jarJar)
-
 dependencies {
-    // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft', it is assumed
-    // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
-    // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft "net.neoforged:forge:${minecraft_version}-${forge_version}"
-
-    annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
-
-    implementation project(':Common')
+    implementation "net.neoforged:neoforge:${neoforge_version}"
+    implementation project(":Common")
 
     // Common
-    implementation fg.deobf("dev.kosmx.player-anim:player-animation-lib-forge:${playeranimator_version}")
-    implementation fg.deobf("net.tslat.smartbrainlib:SmartBrainLib-neoforge-${minecraft_version}:${sbl_version}")
-    implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}")
-    implementation fg.deobf("maven.modrinth:jade:${jade_version}-forge")
-    implementation fg.deobf("me.shedaniel:RoughlyEnoughItems-forge:$rei_version")
-    // DO NOT USE - Only for REI
-    implementation fg.deobf("dev.architectury:architectury-forge:$architectury_version")
-    implementation fg.deobf("me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}")
-    implementation fg.deobf("com.klikli_dev:modonomicon-${minecraft_version}-forge:${modonomicon_version}")
-    implementation fg.deobf("net.tslat.tes:TES-neoforge-${minecraft_version}:${tes_version}")
-    implementation fg.deobf("maven.modrinth:moonlight:${moonlight_version}-forge")
+    implementation "dev.kosmx.player-anim:player-animation-lib-forge:${playeranimator_version}"
+    implementation "net.tslat.smartbrainlib:SmartBrainLib-neoforge-${minecraft_version}:${sbl_version}"
+    implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:4.3.2"
+//    implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
+    implementation "maven.modrinth:jade:13.2.2-neoforge"
+//    implementation "maven.modrinth:jade:${jade_version}-neoforge"
+    implementation "me.shedaniel:RoughlyEnoughItems-neoforge:$rei_version"
+    implementation "dev.architectury:architectury-neoforge:$architectury_version" // DO NOT USE - Only for REI
+    implementation "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
+    implementation "com.klikli_dev:modonomicon-${minecraft_version}-neoforge:${modonomicon_version}"
+    implementation "net.tslat.tes:TES-neoforge-${minecraft_version}:${tes_version}"
+    implementation "maven.modrinth:moonlight:forge_${moonlight_version}"
+    implementation "net.tslat.effectslib:TslatEffectsLib-neoforge-${minecraft_version}:${tslateffectslib_version}"
+    implementation "maven.modrinth:midnightlib:${midnightlib_version}-neoforge"
 
     // Forge Only
-    implementation fg.deobf("maven.modrinth:sherdsapi:${sherdsapi_version}-forge")
-    implementation fg.deobf("maven.modrinth:trimmed:${trimmed_version}+forge")
-    implementation fg.deobf("dev._100media.capabilitysyncer:capabilitysyncer:${capabilitysyncer_version}")
-//    implementation fg.deobf("maven.modrinth:ryoamiclights:${ryoamiclights_version}")
-    compileOnly fg.deobf("maven.modrinth:ryoamiclights:${ryoamiclights_version}") // For forge datagen
+    implementation "maven.modrinth:sherdsapi:${sherdsapi_version}-neoforge"
+    compileOnly "maven.modrinth:trimmed:${trimmed_version}+forge"
+//    implementation "maven.modrinth:trimmed:${trimmed_version}+forge"
+    implementation "maven.modrinth:ryoamiclights:${ryoamiclights_version}"
 
     // Runtime
-    runtimeOnly fg.deobf("maven.modrinth:huge-structure-blocks:${hugestructureblocks_version}")
-    runtimeOnly fg.deobf("curse.maven:worldedit-225608:${worldedit_id}")
-    runtimeOnly fg.deobf("maven.modrinth:obsidianui:${obsidianui_version}")
+//    runtimeOnly "maven.modrinth:worldedit:${worldedit_version}"
+    runtimeOnly "maven.modrinth:worldedit:${worldedit_id}"
+    runtimeOnly "maven.modrinth:obsidianui:${obsidianui_version}"
 
     // TODO: Fix
 //    jarJar(group: "maven.modrinth", name: "sherdsapi", version: "[${sherdsapi_version},${sherdsapi_next_major_version})")
 //    jarJar(group: "maven.modrinth", name: "trimmed", version: "[${trimmed_version},${trimmed_next_major_version})")
-    jarJar(group: "dev._100media.capabilitysyncer", name: "capabilitysyncer", version: "[${capabilitysyncer_version},${capabilitysyncer_next_major_version})")
 }
 
-mixin {
-    add sourceSets.main, "minejago.refmap.json"
+tasks.withType(ProcessResources).configureEach {
+    from project(":Common").sourceSets.main.resources
+    var replaceProperties = [
+            mod_name                   : mod_name,
+            resource_pack_format_number: resource_pack_format_number,
+            data_pack_format_number    : data_pack_format_number,
+            major_fml_version          : major_fml_version,
+            mod_id                     : mod_id,
+            version                    : project.version,
+            mod_author                 : mod_author,
+            neoforge_version           : neoforge_version,
+            minecraft_version          : minecraft_version,
+            next_minecraft_version     : next_minecraft_version,
+            playeranimator_version: playeranimator_version,
+            ryoamiclights_version: ryoamiclights_version,
+            moonlight_version: moonlight_version,
+            sbl_version: sbl_version,
+            geckolib_version: geckolib_version,
+            sherdsapi_version: sherdsapi_version,
+            trimmed_version: trimmed_version,
+            tes_version: tes_version,
+            jade_version: jade_version
 
-    config "minejago_forge.mixins.json"
-    config "minejago_common.mixins.json"
+    ]
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/mods.toml','pack.mcmeta', 'resourcepacks/minejago_immersion_pack/pack.mcmeta', 'resourcepacks/minejago_potion_pot_pack/pack.mcmeta']) {
+        expand replaceProperties + [project: project]
+    }
 }
 
-tasks.withType(JavaCompile) {
+// NeoGradle compiles the game, but we don't want to add our common code to the game's code
+Spec<Task> notNeoTask = { Task it -> !it.name.startsWith("neo") } as Spec<Task>
+
+tasks.withType(JavaCompile).matching(notNeoTask).configureEach {
     source(project(":Common").sourceSets.main.allSource)
 }
 
-def resourceTargets = ['META-INF/mods.toml', 'pack.mcmeta']
-def replaceProperties = [
-        fml_version: fml_version,
-        mod_id: mod_id,
-        version: version,
-        mod_name: mod_name,
-        mod_author: mod_author,
-        forge_version: forge_version,
-        minecraft_version: minecraft_version,
-        playeranimator_version: playeranimator_version,
-        ryoamiclights_version: ryoamiclights_version,
-        moonlight_version: moonlight_version,
-        sbl_version: sbl_version,
-        geckolib_version: geckolib_version,
-        sherdsapi_version: sherdsapi_version,
-        trimmed_version: trimmed_version,
-        tes_version: tes_version,
-        jade_version: jade_version
-]
-processResources {
+tasks.withType(Javadoc).matching(notNeoTask).configureEach {
+    source(project(":Common").sourceSets.main.allJava)
+}
+
+tasks.named("sourcesJar", Jar) {
+    from(project(":Common").sourceSets.main.allSource)
+}
+
+tasks.withType(ProcessResources).matching(notNeoTask).configureEach {
     from project(":Common").sourceSets.main.resources
-
-    inputs.properties replaceProperties
-    replaceProperties.put 'project', project
-
-    filesMatching(resourceTargets) {
-        expand replaceProperties
-    }
 }
 
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            groupId project.group
-            artifactId project.archivesBaseName
-            version project.version
-            artifact jar
+            artifactId base.archivesName.get()
+            from components.java
         }
     }
     repositories {
@@ -170,14 +138,3 @@ publishing {
         }
     }
 }
-
-jar{
-    archiveClassifier = 'slim'
-}
-jar.finalizedBy('reobfJar')
-
-reobf { jarJar {} }
-tasks.jarJar {
-    archiveClassifier = ''
-}
-tasks.jarJar.finalizedBy('reobfJarJar')

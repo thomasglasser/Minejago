@@ -13,6 +13,7 @@ import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.ai.memory.MinejagoMemoryModuleTypes;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
+import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.inventory.MinejagoMenuTypes;
 import dev.thomasglasser.minejago.world.item.MinejagoCreativeModeTabs;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
@@ -25,18 +26,20 @@ import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPatterns;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
 import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
+import eu.midnightdust.lib.config.MidnightConfig;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.tslat.tes.api.TESAPI;
 import net.tslat.tes.api.util.TESClientUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import software.bernie.geckolib.GeckoLib;
 
 public class Minejago {
 
 	public static final String MOD_ID = "minejago";
 	public static final String MOD_NAME = "Minejago";
-	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_NAME);
+	public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
 
 	public static ResourceLocation modLoc(String path)
 	{
@@ -56,12 +59,17 @@ public class Minejago {
 			TESAPI.addTESHudElement(Minejago.modLoc("power_symbol"), (guiGraphics, mc, partialTick, entity, opacity, inWorldHud) ->
 			{
 				if (mc.level != null && Services.DATA.getPowerData(entity) != null && !inWorldHud) {
-					TESClientUtil.prepRenderForTexture(MinejagoPowers.POWERS.get(mc.level.registryAccess()).get(Services.DATA.getPowerData(entity).power()).getIcon());
-					guiGraphics.pose().pushPose();
-					guiGraphics.pose().scale(0.5f, 0.5f, 1.0f);
-					TESClientUtil.drawSimpleTexture(guiGraphics, 0, 0, 32, 32, 0, 0, 32);
-					guiGraphics.pose().popPose();
-					return 16;
+					Registry<Power> powers = mc.level.registryAccess().registry(MinejagoRegistries.POWER).get();
+					Power power = powers.get(Services.DATA.getPowerData(entity).power());
+					if (power != null)
+					{
+						TESClientUtil.prepRenderForTexture(power.getIcon());
+						guiGraphics.pose().pushPose();
+						guiGraphics.pose().scale(0.5f, 0.5f, 1.0f);
+						TESClientUtil.drawSimpleTexture(guiGraphics, 0, 0, 32, 32, 0, 0, 32);
+						guiGraphics.pose().popPose();
+						return 16;
+					}
 				}
 
 				return 0;
@@ -98,8 +106,8 @@ public class Minejago {
 
 	private static void registerConfigs()
 	{
-		MinejagoServerConfig.register();
-		MinejagoClientConfig.register();
+		MidnightConfig.init(Minejago.MOD_ID, MinejagoServerConfig.class);
+		if (Services.PLATFORM.isClientSide()) MidnightConfig.init(Minejago.MOD_ID, MinejagoClientConfig.class);
 	}
 
 	public enum Dependencies

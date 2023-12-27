@@ -4,18 +4,20 @@ import dev.thomasglasser.minejago.util.MinejagoItemUtils;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.CookingBookCategory;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 public class TeapotBrewingRecipe implements Recipe<Container> {
-    protected final ResourceLocation id;
     protected final String group;
     protected final Potion base;
     protected final Ingredient ingredient;
@@ -24,20 +26,18 @@ public class TeapotBrewingRecipe implements Recipe<Container> {
     protected final IntProvider cookingTime;
 
     public TeapotBrewingRecipe(
-            ResourceLocation resourceLocation,
             String string,
             Potion base,
             Ingredient ingredient,
-            Potion potion,
-            float f,
+            Potion result,
+            float xp,
             IntProvider i
     ) {
-        this.id = resourceLocation;
         this.group = string;
         this.base = base;
         this.ingredient = ingredient;
-        this.result = potion;
-        this.experience = f;
+        this.result = result;
+        this.experience = xp;
         this.cookingTime = i;
     }
 
@@ -89,11 +89,6 @@ public class TeapotBrewingRecipe implements Recipe<Container> {
     }
 
     @Override
-    public ResourceLocation getId() {
-        return this.id;
-    }
-
-    @Override
     public RecipeSerializer<?> getSerializer() {
         return MinejagoRecipeSerializers.TEAPOT_BREWING_RECIPE.get();
     }
@@ -109,11 +104,20 @@ public class TeapotBrewingRecipe implements Recipe<Container> {
 
     @Override
     public @NotNull ItemStack getToastSymbol() {
-        return MinejagoBlocks.TEAPOT.asItem().getDefaultInstance();
+        return MinejagoBlocks.TEAPOT.get().asItem().getDefaultInstance();
     }
 
     public Potion getBase()
     {
         return base;
+    }
+
+    public interface Factory<T extends TeapotBrewingRecipe> {
+        T create(String group,
+                 Potion base,
+                 Ingredient ingredient,
+                 Potion result,
+                 float xp,
+                 IntProvider i);
     }
 }

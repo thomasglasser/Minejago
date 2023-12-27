@@ -42,16 +42,15 @@
   },
   "requirements": [
     [
+      "has_the_recipe",
       "has_self",
       "has_orange_dye",
-      "has_teapot",
-      "has_the_recipe"
+      "has_teapot"
     ]
   ],
   "rewards": {
     "recipes": [
       "minejago:flame_teapot"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

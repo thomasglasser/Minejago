@@ -1,19 +1,19 @@
 package dev.thomasglasser.minejago.data.modonomicons.wiki;
 
 import com.klikli_dev.modonomicon.api.datagen.BookProvider;
+import com.klikli_dev.modonomicon.api.datagen.ModonomiconLanguageProvider;
 import com.klikli_dev.modonomicon.api.datagen.book.BookModel;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.data.modonomicons.wiki.categories.CompatCategoryProvider;
 import dev.thomasglasser.minejago.world.item.MinejagoCreativeModeTabs;
 import net.minecraft.data.PackOutput;
-import net.minecraftforge.common.data.LanguageProvider;
 
 public class MinejagoWikiBookProvider extends BookProvider {
     /**
      * @param packOutput
      * @param defaultLang  The LanguageProvider to fill with this book provider. IMPORTANT: the Languag Provider needs to be added to the DataGenerator AFTER the BookProvider.
      */
-    public MinejagoWikiBookProvider(PackOutput packOutput, LanguageProvider defaultLang) {
+    public MinejagoWikiBookProvider(PackOutput packOutput, ModonomiconLanguageProvider defaultLang) {
         super("wiki", packOutput, Minejago.MOD_ID, defaultLang);
     }
 

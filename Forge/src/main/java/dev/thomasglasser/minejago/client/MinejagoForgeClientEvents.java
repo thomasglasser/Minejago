@@ -4,10 +4,39 @@ import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.animation.MinejagoPlayerAnimator;
 import dev.thomasglasser.minejago.client.gui.MinejagoGuis;
-import dev.thomasglasser.minejago.client.model.*;
-import dev.thomasglasser.minejago.client.particle.*;
+import dev.thomasglasser.minejago.client.model.BambooStaffModel;
+import dev.thomasglasser.minejago.client.model.DragonModel;
+import dev.thomasglasser.minejago.client.model.KrunchaModel;
+import dev.thomasglasser.minejago.client.model.NuckalModel;
+import dev.thomasglasser.minejago.client.model.OgDevTeamBeardModel;
+import dev.thomasglasser.minejago.client.model.PilotsSnapshotTesterHatModel;
+import dev.thomasglasser.minejago.client.model.ScytheModel;
+import dev.thomasglasser.minejago.client.model.SpearModel;
+import dev.thomasglasser.minejago.client.model.ThrownBoneKnifeModel;
+import dev.thomasglasser.minejago.client.model.ThrownIronShurikenModel;
+import dev.thomasglasser.minejago.client.particle.BoltsParticle;
+import dev.thomasglasser.minejago.client.particle.RocksParticle;
+import dev.thomasglasser.minejago.client.particle.SnowsParticle;
+import dev.thomasglasser.minejago.client.particle.SparklesParticle;
+import dev.thomasglasser.minejago.client.particle.SparksParticle;
+import dev.thomasglasser.minejago.client.particle.SpinjitzuParticle;
+import dev.thomasglasser.minejago.client.particle.VaporsParticle;
 import dev.thomasglasser.minejago.client.renderer.block.DragonHeadRenderer;
-import dev.thomasglasser.minejago.client.renderer.entity.*;
+import dev.thomasglasser.minejago.client.renderer.entity.CharacterRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.DragonRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.EarthBlastRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.KrunchaRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.NuckalRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.SamukaiRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.SkulkinHorseRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.SkulkinRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.SkullMotorbikeRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.SkullTruckRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.ThrownBambooStaffRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.ThrownBoneKnifeRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.ThrownIronShurikenRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.ThrownIronSpearRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.WuRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.OgDevTeamLayer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterLayer;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
@@ -28,6 +57,7 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.blockentity.BrushableBlockRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.resources.PlayerSkin;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -38,12 +68,17 @@ import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.event.*;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.config.ModConfigEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.config.ModConfigEvent;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.ModelEvent;
+import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
+import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
+import net.neoforged.neoforge.client.event.RegisterGuiOverlaysEvent;
+import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 
 import java.util.Map;
 
@@ -115,7 +150,7 @@ public class MinejagoForgeClientEvents {
 
     public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event)
     {
-        MinejagoArmors.ARMOR.getEntries().forEach(armor ->
+        MinejagoArmors.ARMORS.getEntries().forEach(armor ->
         {
             if (armor.get() instanceof GeoArmorItem || armor.get() instanceof ModeledItem)
                 event.registerReloadListener(IClientItemExtensions.of(armor.get()).getCustomRenderer());
@@ -149,7 +184,7 @@ public class MinejagoForgeClientEvents {
         {
             BlockState blockstate = ((BlockItem)itemStack.getItem()).getBlock().defaultBlockState();
             return MinejagoClientUtils.getMinecraft().getBlockColors().getColor(blockstate, MinejagoClientUtils.getLevel(), null, i);
-        }, MinejagoBlocks.FOCUS_LEAVES_SET.leaves().asItem());
+        }, MinejagoBlocks.FOCUS_LEAVES_SET.leaves().get());
     }
 
     public static void onRegisterBlockColorHandlers(RegisterColorHandlersEvent.Block event)
@@ -171,7 +206,7 @@ public class MinejagoForgeClientEvents {
     {
         EntityModelSet models = event.getEntityModels();
 
-        for (String skin : event.getSkins()) {
+        for (PlayerSkin.Model skin : event.getSkins()) {
             LivingEntityRenderer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> player = event.getSkin(skin);
 
             if (player != null)
@@ -197,6 +232,6 @@ public class MinejagoForgeClientEvents {
 
     public static void onRegisterGuiOverlays(RegisterGuiOverlaysEvent event)
     {
-        event.registerAbove(new ResourceLocation("food_level"), "focus", (gui, guiGraphics, partialTick, screenWidth, screenHeight) -> MinejagoGuis.renderFocusBar(guiGraphics, partialTick));
+        event.registerAbove(new ResourceLocation("food_level"), Minejago.modLoc("focus"), (gui, guiGraphics, partialTick, screenWidth, screenHeight) -> MinejagoGuis.renderFocusBar(guiGraphics, partialTick));
     }
 }

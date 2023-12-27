@@ -30,17 +30,13 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.minejago.story.get_black_gi.desc"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "minejago:black_gi_hood",
       "nbt": "{Damage:0}"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.minejago.story.get_black_gi.title"
     }

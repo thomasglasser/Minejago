@@ -1,10 +1,10 @@
 package dev.thomasglasser.minejago.client.gui;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.client.MinejagoClientConfig;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
-import dev.thomasglasser.minejago.world.focus.FocusConfig;
 import dev.thomasglasser.minejago.world.focus.FocusData;
 import dev.thomasglasser.minejago.world.focus.FocusDataHolder;
 import net.minecraft.client.Minecraft;
@@ -56,8 +56,8 @@ public class MinejagoGuis
 					
 					int x = startX - i * 8 - 9;
 
-					int xOff = FocusConfig.X_OFFSET.get();
-					int yOff = FocusConfig.Y_OFFSET.get();
+					int xOff = MinejagoClientConfig.xOffset;
+					int yOff = MinejagoClientConfig.yOffset;
 
 					x += xOff;
 					y -= yOff;

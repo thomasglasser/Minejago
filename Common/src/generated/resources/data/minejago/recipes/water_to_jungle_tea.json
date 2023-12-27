@@ -1,7 +1,7 @@
 {
   "type": "minejago:teapot_brewing",
   "base": "minecraft:water",
-  "brewingtime": {
+  "brewing_time": {
     "type": "minecraft:uniform",
     "value": {
       "max_inclusive": 2400,

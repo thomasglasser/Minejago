@@ -17,6 +17,6 @@ public class WuRenderer<T extends Character> extends CharacterRenderer<T> {
     @Override
     public ResourceLocation getTextureLocation(T animatable) {
         Calendar calendar = Calendar.getInstance();
-        return (calendar.get(Calendar.MONTH) + 1 == 12 && calendar.get(Calendar.DATE) >= 24 && calendar.get(Calendar.DATE) <= 26) ? Minejago.modLoc("textures/entity/character/holiday_" + BuiltInRegistries.ENTITY_TYPE.getKey(animatable.getType()).getPath() + ".png") : super.getTextureLocation(animatable);
+        return (calendar.get(Calendar.MONTH) + 1 == 12 && calendar.get(Calendar.DATE) >= 24 && calendar.get(Calendar.DATE) <= 26) ? Minejago.modLoc("textures/entity/character/holiday_" + BuiltInRegistries.ENTITY_TYPE.getKey(animatable.getType()).getPath() + ".png") : model.getTextureResource(animatable);
     }
 }

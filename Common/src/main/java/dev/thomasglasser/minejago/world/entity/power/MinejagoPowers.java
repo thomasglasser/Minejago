@@ -2,22 +2,17 @@ package dev.thomasglasser.minejago.world.entity.power;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
-import dev.thomasglasser.minejago.registration.registries.DatapackRegistry;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.RegistrySetBuilder;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MinejagoPowers {
-
-    public static final DatapackRegistry<Power> POWERS = DatapackRegistry.builder(MinejagoRegistries.POWER).withElementCodec(Power.CODEC).withNetworkCodec(Power.CODEC).build();
-
+public class MinejagoPowers
+{
     public static final ResourceKey<Power> NONE = create("none");
     public static final ResourceKey<Power> ICE = create("ice");
     public static final ResourceKey<Power> EARTH = create("earth");
@@ -47,14 +42,6 @@ public class MinejagoPowers {
             }
         });
         return list;
-    }
-
-    public static HolderLookup.Provider getBasePowers()
-    {
-        final RegistryAccess.Frozen access = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
-        final RegistrySetBuilder builder = new RegistrySetBuilder();
-        MinejagoPowers.POWERS.addToSet(builder);
-        return builder.build(access);
     }
 
     public static Power getPowerOrThrow(RegistryAccess registryAccess, ResourceKey<Power> key)

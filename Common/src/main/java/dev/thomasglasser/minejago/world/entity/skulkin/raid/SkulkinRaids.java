@@ -12,6 +12,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.network.protocol.game.ClientboundEntityEventPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.saveddata.SavedData;
 import org.jetbrains.annotations.Nullable;
@@ -27,6 +28,10 @@ public class SkulkinRaids extends SavedData
 	private int nextAvailableID;
 	private int tick;
 	private boolean mapTaken;
+
+	public static SavedData.Factory<SkulkinRaids> factory(ServerLevel level) {
+		return new SavedData.Factory<>(() -> new SkulkinRaids(level), compoundTag -> SkulkinRaids.load(level, compoundTag), DataFixTypes.SAVED_DATA_RAIDS);
+	}
 
 	public SkulkinRaids(ServerLevel serverLevel) {
 		this.level = serverLevel;
@@ -44,7 +49,7 @@ public class SkulkinRaids extends SavedData
 
 		while(iterator.hasNext()) {
 			SkulkinRaid raid = iterator.next();
-			if (!MinejagoServerConfig.ENABLE_SKULKIN_RAIDS.get()) {
+			if (!MinejagoServerConfig.enableSkulkinRaids) {
 				raid.stop();
 			}
 
@@ -73,7 +78,7 @@ public class SkulkinRaids extends SavedData
 	public SkulkinRaid createOrExtendSkulkinRaid(ServerPlayer serverPlayer) {
 		if (serverPlayer.isSpectator()) {
 			return null;
-		} else if (!MinejagoServerConfig.ENABLE_SKULKIN_RAIDS.get()) {
+		} else if (!MinejagoServerConfig.enableSkulkinRaids) {
 			return null;
 		} else {
 			if (Holder.Reference.createIntrusive(serverPlayer.level().registryAccess().registryOrThrow(Registries.DIMENSION_TYPE).holderOwner(), serverPlayer.level().dimensionType()).is(MinejagoDimensionTypeTags.HAS_SKULKIN_RAIDS)) {

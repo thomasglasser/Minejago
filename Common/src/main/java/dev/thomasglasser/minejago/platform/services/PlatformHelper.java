@@ -33,4 +33,6 @@ public interface PlatformHelper {
 
         return isDevelopmentEnvironment() ? "development" : "production";
     }
+
+    boolean isClientSide();
 }

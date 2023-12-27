@@ -7,7 +7,7 @@ import dev.thomasglasser.sherdsapi.impl.Sherd;
 import dev.thomasglasser.sherdsapi.impl.SherdsApiRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.data.event.GatherDataEvent;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 public class MinejagoForgeSherdDatagenSuite extends ForgeSherdDatagenSuite
 {

@@ -7,10 +7,10 @@ import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.client.model.generators.ItemModelProvider;
-import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
-import net.minecraftforge.common.data.ParticleDescriptionProvider;
-import net.minecraftforge.data.event.GatherDataEvent;
+import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
+import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
+import net.neoforged.neoforge.common.data.ParticleDescriptionProvider;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;

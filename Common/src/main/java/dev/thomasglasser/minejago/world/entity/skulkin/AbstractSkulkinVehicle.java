@@ -49,11 +49,6 @@ public class AbstractSkulkinVehicle extends Mob implements GeoEntity, Enemy
 		return cache;
 	}
 
-	@Override
-	protected boolean canAddPassenger(Entity passenger) {
-		return this.getPassengers().size() < this.getMaxPassengers();
-	}
-
 	protected int getMaxPassengers() {
 		return 1;
 	}

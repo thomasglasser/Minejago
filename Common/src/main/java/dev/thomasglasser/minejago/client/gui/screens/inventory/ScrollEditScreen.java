@@ -1,13 +1,8 @@
 package dev.thomasglasser.minejago.client.gui.screens.inventory;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.inventory.BookEditScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
-import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -25,40 +20,17 @@ public class ScrollEditScreen extends BookEditScreen {
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        renderBackground(guiGraphics);
-        setFocused(null);
-        int i = (width - IMAGE_WIDTH) / 2;
-        int j = 2;
-        guiGraphics.blit(BACKGROUND, i, j, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
-        if (isSigning) {
-            boolean bl = frameTick / 6 % 2 == 0;
-            FormattedCharSequence formattedCharSequence = FormattedCharSequence.composite(
-                    FormattedCharSequence.forward(title, Style.EMPTY), bl ? BLACK_CURSOR : GRAY_CURSOR
-            );
-            int k = font.width(EDIT_TITLE_LABEL);
-            guiGraphics.drawString(this.font, EDIT_TITLE_LABEL, (i + 36 + (114 - k) / 2), 34, 0);
-            int l = font.width(formattedCharSequence);
-            guiGraphics.drawString(this.font, formattedCharSequence, (i + 36 + (114 - l) / 2), 50, 0);
-            int m = font.width(ownerText);
-            guiGraphics.drawString(this.font, ownerText, (i + 36 + (114 - m) / 2), 60, 0);
-            guiGraphics.drawWordWrap(this.font, FINALIZE_WARNING_LABEL, i + 36, 82, 114, 0);
-        } else {
-            int n = font.width(pageMsg);
-            guiGraphics.drawString(this.font, pageMsg, (i - n + IMAGE_WIDTH - 44), 18, 0);
-            BookEditScreen.DisplayCache displayCache = getDisplayCache();
-
-            for(BookEditScreen.LineInfo lineInfo : displayCache.lines) {
-                guiGraphics.drawString(this.font, lineInfo.asComponent, lineInfo.x, lineInfo.y, -16777216);
-            }
-
-            renderHighlight(guiGraphics, displayCache.selection);
-            renderCursor(guiGraphics, displayCache.cursor, displayCache.cursorAtEnd);
+    public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
+    {
+        if ((this.minecraft != null ? this.minecraft.level : null) != null)
+        {
+            this.renderTransparentBackground(guiGraphics);
         }
-
-        for(Renderable renderable : this.renderables) {
-            renderable.render(guiGraphics, mouseX, mouseY, partialTick);
+        else
+        {
+            this.renderDirtBackground(guiGraphics);
         }
+        guiGraphics.blit(BACKGROUND, (this.width - 192) / 2, 2, 0, 0, 192, 192);
     }
 
     @Override

@@ -25,7 +25,7 @@ public class SkulkinPatrolSpawner implements CustomSpawner
 	public int tick(ServerLevel level, boolean spawnEnemies, boolean spawnFriendlies) {
 		if (!spawnEnemies) {
 			return 0;
-		} else if (!MinejagoServerConfig.ENABLE_SKULKIN_RAIDS.get()) {
+		} else if (!MinejagoServerConfig.enableSkulkinRaids) {
 			return 0;
 		} else {
 			RandomSource randomSource = level.random;
