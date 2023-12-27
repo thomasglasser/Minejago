@@ -1,5 +1,8 @@
 package dev.thomasglasser.minejago.world.entity;
 
+import dev.thomasglasser.minejago.platform.Services;
+import dev.thomasglasser.minejago.world.entity.character.Character;
+import dev.thomasglasser.minejago.world.entity.character.Cole;
 import dev.thomasglasser.minejago.world.entity.character.Zane;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -51,6 +54,7 @@ public class MinejagoForgeEntityEvents
 
     public static void onSpawnPlacementsRegister(SpawnPlacementRegisterEvent event)
     {
-        event.register(MinejagoEntityTypes.ZANE.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Zane::checkSurfaceWaterAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(MinejagoEntityTypes.ZANE.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.OCEAN_FLOOR_WG, Zane::checkZaneSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(MinejagoEntityTypes.COLE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ((entityType, serverLevelAccessor, mobSpawnType, blockPos, randomSource) -> Character.checkCharacterSpawnRules(Cole.class, entityType, serverLevelAccessor, mobSpawnType, blockPos, randomSource)), SpawnPlacementRegisterEvent.Operation.AND);
     }
 }

@@ -44,6 +44,19 @@ import dev.thomasglasser.minejago.network.ClientboundStartSpinjitzuPacket;
 import dev.thomasglasser.minejago.network.ClientboundStopAnimationPacket;
 import dev.thomasglasser.minejago.network.ClientboundStopMeditationPacket;
 import dev.thomasglasser.minejago.network.ClientboundStopSpinjitzuPacket;
+import dev.thomasglasser.minejago.network.ClientboundChangeVipDataPacket;
+import dev.thomasglasser.minejago.network.ClientboundOpenPowerSelectionScreenPacket;
+import dev.thomasglasser.minejago.network.ClientboundOpenScrollPacket;
+import dev.thomasglasser.minejago.network.ClientboundRefreshVipDataPacket;
+import dev.thomasglasser.minejago.network.ClientboundSetFocusPacket;
+import dev.thomasglasser.minejago.network.ClientboundSpawnParticlePacket;
+import dev.thomasglasser.minejago.network.ClientboundStartMeditationPacket;
+import dev.thomasglasser.minejago.network.ClientboundStartMegaMeditationPacket;
+import dev.thomasglasser.minejago.network.ClientboundStartScytheAnimationPacket;
+import dev.thomasglasser.minejago.network.ClientboundStartSpinjitzuPacket;
+import dev.thomasglasser.minejago.network.ClientboundStopAnimationPacket;
+import dev.thomasglasser.minejago.network.ClientboundStopMeditationPacket;
+import dev.thomasglasser.minejago.network.ClientboundStopSpinjitzuPacket;
 import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
@@ -140,7 +153,7 @@ public class MinejagoFabricClient implements ClientModInitializer
         registerItemAndBlockColors();
 
         BlockRenderLayerMap.INSTANCE.putBlock(MinejagoBlocks.TEAPOT.get(), RenderType.cutout());
-        MinejagoBlocks.TEAPOTS.forEach((dyeColor, blockBlockSupplier) -> BlockRenderLayerMap.INSTANCE.putBlock(blockBlockSupplier.get(), RenderType.cutout()));
+        MinejagoBlocks.TEAPOTS.forEach((dyeColor, teapot) -> BlockRenderLayerMap.INSTANCE.putBlock(teapot.get(), RenderType.cutout()));
         BlockRenderLayerMap.INSTANCE.putBlock(MinejagoBlocks.JASPOT.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(MinejagoBlocks.FLAME_TEAPOT.get(), RenderType.cutout());
 
@@ -355,6 +368,15 @@ public class MinejagoFabricClient implements ClientModInitializer
             client.execute(() ->
             {
                 new ClientboundStartMeditationPacket(buf).handle();
+                buf.release();
+            });
+        });
+        ClientPlayNetworking.registerGlobalReceiver(ClientboundStartMegaMeditationPacket.ID, (client, handler, buf, responseSender) ->
+        {
+            buf.retain();
+            client.execute(() ->
+            {
+                new ClientboundStartMegaMeditationPacket(buf).handle();
                 buf.release();
             });
         });

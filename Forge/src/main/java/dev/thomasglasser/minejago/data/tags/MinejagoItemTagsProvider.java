@@ -2,6 +2,8 @@ package dev.thomasglasser.minejago.data.tags;
 
 import com.mojang.datafixers.util.Pair;
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.tags.MinejagoBlockTags;
+import dev.thomasglasser.minejago.tags.MinejagoItemTags;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.level.block.LeavesSet;
@@ -115,9 +117,6 @@ public class MinejagoItemTagsProvider extends ItemTagsProvider
 
         tag(MinejagoItemTags.DRAGON_TREATS)
                 .add(Items.COOKED_SALMON);
-
-        tag(MinejagoItemTags.FOCUS_AMPLIFIERS)
-                .addTag(MinejagoItemTags.GOLDEN_WEAPONS);
 
         // Wood sets
         woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET);

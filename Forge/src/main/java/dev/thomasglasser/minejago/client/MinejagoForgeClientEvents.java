@@ -88,7 +88,7 @@ public class MinejagoForgeClientEvents {
     {
         if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled()) PlayerAnimationAccess.REGISTER_ANIMATION_EVENT.register(MinejagoPlayerAnimator::registerPlayerAnimation);
         MinejagoClientEvents.registerMenuScreens();
-        MinejagoClientEvents.registerDynamicLights();
+        if (Minejago.Dependencies.DYNAMIC_LIGHTS.isInstalled()) MinejagoClientEvents.registerDynamicLights();
     }
 
     public static void onRegisterLayers(EntityRenderersEvent.RegisterLayerDefinitions event)

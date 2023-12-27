@@ -1,7 +1,7 @@
 package dev.thomasglasser.minejago.world.entity.skulkin.raid;
 
 import com.google.common.collect.Maps;
-import dev.thomasglasser.minejago.data.tags.MinejagoDimensionTypeTags;
+import dev.thomasglasser.minejago.tags.MinejagoDimensionTypeTags;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import net.minecraft.core.BlockPos;

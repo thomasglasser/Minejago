@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.data.tags;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.tags.MinejagoStructureTags;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.MinejagoStructures;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;

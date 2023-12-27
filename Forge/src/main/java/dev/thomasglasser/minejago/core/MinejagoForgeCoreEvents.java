@@ -10,6 +10,14 @@ import dev.thomasglasser.minejago.network.MinejagoMainChannel;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import dev.thomasglasser.minejago.packs.PackHolder;
 import dev.thomasglasser.minejago.world.entity.power.Power;
+import dev.thomasglasser.minejago.world.focus.modifier.biome.BiomeFocusModifiers;
+import dev.thomasglasser.minejago.world.focus.modifier.blockstate.BlockStateFocusModifiers;
+import dev.thomasglasser.minejago.world.focus.modifier.dimension.DimensionFocusModifiers;
+import dev.thomasglasser.minejago.world.focus.modifier.effect.MobEffectFocusModifiers;
+import dev.thomasglasser.minejago.world.focus.modifier.entity.EntityFocusModifiers;
+import dev.thomasglasser.minejago.world.focus.modifier.itemstack.ItemStackFocusModifiers;
+import dev.thomasglasser.minejago.world.focus.modifier.structure.StructureFocusModifiers;
+import dev.thomasglasser.minejago.world.focus.modifier.world.WorldFocusModifiers;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PathPackResources;
@@ -19,6 +27,7 @@ import net.neoforged.fml.ModList;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
+import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 
 public class MinejagoForgeCoreEvents {
     public static void onCommonSetup(FMLCommonSetupEvent event)
@@ -60,5 +69,20 @@ public class MinejagoForgeCoreEvents {
     public static void onNewDataPackRegistry(DataPackRegistryEvent.NewRegistry event)
     {
         event.dataPackRegistry(MinejagoRegistries.POWER, Power.CODEC, Power.CODEC);
+    }
+
+    public static void onAddReloadListeners(AddReloadListenerEvent event)
+    {
+        event.addListener((ResourceManagerReloadListener) resourceManager ->
+        {
+            BiomeFocusModifiers.load(resourceManager);
+            BlockStateFocusModifiers.load(resourceManager);
+            DimensionFocusModifiers.load(resourceManager);
+            EntityFocusModifiers.load(resourceManager);
+            ItemStackFocusModifiers.load(resourceManager);
+            StructureFocusModifiers.load(resourceManager);
+            MobEffectFocusModifiers.load(resourceManager);
+            WorldFocusModifiers.load(resourceManager);
+        });
     }
 }

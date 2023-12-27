@@ -27,9 +27,27 @@ public class SimpleBrewingSerializer<T extends TeapotBrewingRecipe> implements R
     }
 
     @Override
-    public Codec<T> codec() {
-        return this.codec;
+    public T fromJson(ResourceLocation recipeId, JsonObject json) {
+        String string = GsonHelper.getAsString(json, "group", "");
+        String base = GsonHelper.getAsString(json, "base");
+        ResourceLocation baseRl = new ResourceLocation(base);
+        Potion basePotion = BuiltInRegistries.POTION.getOptional(baseRl).orElseThrow(() -> new IllegalStateException("Potion: " + baseRl + " does not exist"));
+        JsonElement jsonElement = GsonHelper.isArrayNode(json, "ingredient")
+                ? GsonHelper.getAsJsonArray(json, "ingredient")
+                : GsonHelper.getAsJsonObject(json, "ingredient");
+        Ingredient ingredient = Ingredient.fromJson(jsonElement);
+        String string2 = GsonHelper.getAsString(json, "result");
+        ResourceLocation resourceLocation = new ResourceLocation(string2);
+        Potion potion = BuiltInRegistries.POTION.getOptional(resourceLocation).orElseThrow(() -> new IllegalStateException("Potion: " + string2 + " does not exist"));
+        float f = GsonHelper.getAsFloat(json, "experience", 0.0F);
+        IntProvider i = IntProvider.CODEC.parse(JsonOps.INSTANCE, json.get("brewingtime")).result().orElse(ConstantInt.of(1200));
+        return this.factory.create(recipeId, string, basePotion, ingredient, potion, f, i);
     }
+
+	@Override
+	public Codec<T> codec() {
+		return this.codec;
+	}
 
     @Override
     public T fromNetwork(FriendlyByteBuf buffer) {

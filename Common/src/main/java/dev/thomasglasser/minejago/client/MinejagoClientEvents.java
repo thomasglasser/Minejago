@@ -119,7 +119,7 @@ public class MinejagoClientEvents
             if (focusData.isMeditating() && ((DataHolder)mainClientPlayer).getPersistentData().getInt("WaitTicks") <= 0)
             {
                 Services.NETWORK.sendToServer(ServerboundStopMeditationPacket.class, ServerboundStopMeditationPacket.toBytes(true));
-                focusData.setMeditating(false);
+                focusData.stopMeditating();
                 ((DataHolder) mainClientPlayer).getPersistentData().putInt("WaitTicks", 5);
             }
         }

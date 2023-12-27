@@ -80,8 +80,7 @@ public class MinejagoMobEffects
         {
             super.onApplication(effectInstance, source, entity, amplifier);
             if (!entity.level().isClientSide && entity instanceof Player player) {
-                ((FocusDataHolder)player).getFocusData().increase(amplifier + 1, FocusConstants.FOCUS_SATURATION_MAX);
-            }
+                ((FocusDataHolder)player).getFocusData().increase(false, amplifier + 1, FocusConstants.FOCUS_SATURATION_MAX);
         }
 
         @Override

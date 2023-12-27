@@ -70,6 +70,7 @@ public class MinejagoForge
         NeoForge.EVENT_BUS.addListener(MinejagoForgeEntityEvents::onPlayerTick);
         NeoForge.EVENT_BUS.addListener(MinejagoForgeEntityEvents::onServerPlayerLoggedIn);
         NeoForge.EVENT_BUS.addListener(MinejagoForgeCommandEvents::onCommandsRegister);
+	    NeoForge.EVENT_BUS.addListener(MinejagoForgeCoreEvents::onAddReloadListeners);
     }
 
     private void addForgeClientListeners()

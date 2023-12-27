@@ -1,7 +1,7 @@
 package dev.thomasglasser.minejago.world.item;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.data.tags.MinejagoBannerPatternTags;
+import dev.thomasglasser.minejago.tags.MinejagoBannerPatternTags;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.registration.RegistrationProvider;
 import dev.thomasglasser.minejago.registration.RegistryObject;
@@ -40,7 +40,7 @@ public class MinejagoItems
 
     public static final RegistryObject<BambooStaffItem> BAMBOO_STAFF = register("bamboo_staff", () -> new BambooStaffItem(Tiers.WOOD, 2, -1, new Item.Properties()), CreativeModeTabs.COMBAT);
     public static final RegistryObject<BoneKnifeItem> BONE_KNIFE = register("bone_knife", () -> new BoneKnifeItem(MinejagoTiers.BONE, 3, -2, new Item.Properties()), CreativeModeTabs.COMBAT);
-    public static final RegistryObject<SpearItem> IRON_SPEAR = register("iron_spear", () -> new SpearItem(Tiers.IRON, 4, -2.8F, (new Item.Properties())), CreativeModeTabs.COMBAT);
+    public static final RegistryObject<SpearItem> IRON_SPEAR = register("iron_spear", () -> new SpearItem(Tiers.IRON, 4, -2.8F, 1f, (new Item.Properties())), CreativeModeTabs.COMBAT);
     public static final RegistryObject<ScytheOfQuakesItem> SCYTHE_OF_QUAKES = register("scythe_of_quakes", () -> new ScytheOfQuakesItem(new Item.Properties().defaultDurability(0).rarity(Rarity.EPIC).fireResistant().stacksTo(1)), CreativeModeTabs.COMBAT, CreativeModeTabs.TOOLS_AND_UTILITIES);
     public static final RegistryObject<ShurikenItem> IRON_SHURIKEN = register("iron_shuriken", () -> new ShurikenItem(Tiers.IRON, 1, 1F, (new Item.Properties())), CreativeModeTabs.COMBAT);
     public static final RegistryObject<SwordItem> IRON_KATANA = register("iron_katana", () -> new SwordItem(Tiers.IRON, 1, -1.4F, (new Item.Properties())), CreativeModeTabs.COMBAT);

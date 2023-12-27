@@ -9,9 +9,16 @@ import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializer;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -26,12 +33,13 @@ import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.behavior.LookAtTargetSink;
-import net.minecraft.world.entity.ai.behavior.Swim;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.phys.AABB;
 import net.tslat.smartbrainlib.api.SmartBrainOwner;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
 import net.tslat.smartbrainlib.api.core.SmartBrainProvider;
@@ -68,7 +76,18 @@ import java.util.List;
 
 public class Character extends AgeableMob implements SmartBrainOwner<Character>, GeoEntity, SpinjitzuDoer
 {
-    public static final RawAnimation SPIN = RawAnimation.begin().thenPlay("move.spinjitzu");
+    public static final RawAnimation SPINJITZU = RawAnimation.begin().thenPlay("move.spinjitzu");
+    public static final RawAnimation MEDITATION_START = RawAnimation.begin().thenPlay("move.meditation.start");
+    public static final RawAnimation MEDITATION_FLOAT = RawAnimation.begin().thenPlay("move.meditation.float");
+    public static final RawAnimation MEDITATION_FINISH = RawAnimation.begin().thenPlay("move.meditation.finish");
+
+    private static final EntityDataSerializer<MeditationStatus> MEDITATION_STATUS = EntityDataSerializer.simpleEnum(MeditationStatus.class);
+    private static final EntityDataAccessor<MeditationStatus> DATA_MEDITATION_STATUS = SynchedEntityData.defineId(Character.class, MEDITATION_STATUS);
+
+    static
+    {
+        EntityDataSerializers.registerSerializer(MEDITATION_STATUS);
+    }
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     protected boolean stopSpinjitzuOnNextStop;
@@ -102,6 +121,11 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
         tickBrain(this);
     }
 
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_MEDITATION_STATUS, MeditationStatus.STARTING);
+    }
+
     @Override
     public List<ExtendedSensor<Character>> getSensors() {
         return ObjectArrayList.of(
@@ -116,11 +140,10 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
     @Override
     public BrainActivityGroup<Character> getCoreTasks() {
         return BrainActivityGroup.coreTasks(
-                new Swim(1.0f),
+                new FloatToSurfaceOfFluid<Character>().startCondition(this::shouldFloatToSurfaceOfFluid).whenStarting(this::onStartFloatingToSurfaceOfFluid).whenStopping(this::onStopFloatingToSurfaceOfFluid),
                 new SetWalkTargetToAttackTarget<>(),
                 new LookAtTargetSink(40, 300), 														// Look at the look target
-                new MoveToWalkTarget<>().whenStopping(this::onMoveToWalkTargetStopping),
-                new FloatToSurfaceOfFluid<Character>().startCondition(this::shouldFloatToSurfaceOfFluid));																					// Move to the current walk target
+                new MoveToWalkTarget<>().whenStopping(this::onMoveToWalkTargetStopping));
     }
 
     @Override
@@ -132,7 +155,7 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
                         new SetRandomLookTarget<>()), 					// Set the look target to a random nearby location
                 new OneRandomBehaviour<>( 								// Run only one of the below behaviours, picked at random
                         new Idle<>().runFor(entity -> entity.getRandom().nextInt(30, 60)),
-                        new SetRandomWalkTarget<>()));
+                        new SetRandomWalkTarget<Character>().startCondition(this::shouldFloatToSurfaceOfFluid)));
     }
 
     @Override
@@ -151,10 +174,29 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
         return true;
     }
 
+    public void onStartFloatingToSurfaceOfFluid(Character character) {}
+
+    public void onStopFloatingToSurfaceOfFluid(Character character) {}
+
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
         this.setCanPickUpLoot(true);
+        if (pReason == MobSpawnType.NATURAL || pReason == MobSpawnType.CHUNK_GENERATION)
+        {
+            List<? extends Character> list = level().getEntitiesOfClass(this.getClass(), getBoundingBox().inflate(1024));
+            list.remove(this);
+            if (!list.isEmpty())
+                discard();
+        }
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
+    }
+
+    @Override
+    public boolean removeWhenFarAway(double distanceToClosestPlayer)
+    {
+        List<? extends Character> list = level().getEntitiesOfClass(this.getClass(), getBoundingBox().inflate(1024));
+        list.remove(this);
+        return !list.isEmpty();
     }
 
     public boolean shouldHelp(Character victim, LivingEntity helper)
@@ -185,12 +227,25 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
         controllerRegistrar.add(new AnimationController<GeoAnimatable>(this, "spinjitzu", animationState ->
         {
             if (isDoingSpinjitzu())
-                return animationState.setAndContinue(SPIN);
+                return animationState.setAndContinue(SPINJITZU);
 
             animationState.getController().forceAnimationReset();
 
             return PlayState.STOP;
         }));
+        controllerRegistrar.add(new AnimationController<GeoAnimatable>(this, "meditation", animationState ->
+            switch (getMeditationStatus())
+            {
+                case STARTING:
+                    yield animationState.setAndContinue(MEDITATION_START);
+                case FLOATING:
+                    yield animationState.setAndContinue(MEDITATION_FLOAT);
+                case FINISHING:
+                    yield animationState.setAndContinue(MEDITATION_FINISH);
+                default:
+                    yield PlayState.STOP;
+            }
+        ));
     }
 
     @Override
@@ -235,8 +290,36 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
         Services.DATA.setSpinjitzuData(new SpinjitzuData(true, doingSpinjitzu), this);
     }
 
-    @Override
-    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
-        return false;
+    public static boolean checkCharacterSpawnRules(Class<? extends Character> clazz, EntityType<? extends Character> character, LevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random)
+    {
+        List<? extends Character> characters;
+        if (level instanceof WorldGenRegion worldGenRegion)
+        {
+            characters = worldGenRegion.getLevel().getEntitiesOfClass(clazz, AABB.ofSize(pos.getCenter(), 1024, 1024, 1024));
+            return characters.isEmpty() && Mob.checkMobSpawnRules(character, level, spawnType, pos, random);
+        }
+        else
+        {
+            characters = level.getEntitiesOfClass(Character.class, AABB.ofSize(pos.getCenter(), 1024, 1024, 1024));
+            return characters.isEmpty() && Mob.checkMobSpawnRules(character, level, spawnType, pos, random);
+        }
+    }
+
+    public void setMeditationStatus(MeditationStatus meditationStatus)
+    {
+        this.entityData.set(DATA_MEDITATION_STATUS, meditationStatus);
+    }
+
+    public MeditationStatus getMeditationStatus()
+    {
+        return this.entityData.get(DATA_MEDITATION_STATUS);
+    }
+
+    public enum MeditationStatus
+    {
+        STARTING,
+        FLOATING,
+        FINISHING,
+        NONE
     }
 }

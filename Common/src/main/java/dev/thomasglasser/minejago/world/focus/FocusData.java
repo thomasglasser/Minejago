@@ -4,23 +4,27 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.player.Player;
 
-import static dev.thomasglasser.minejago.world.focus.FocusConstants.*;
+import static dev.thomasglasser.minejago.world.focus.FocusConstants.EXHAUSTION_DROP;
+import static dev.thomasglasser.minejago.world.focus.FocusConstants.FOCUS_SATURATION_MAX;
+import static dev.thomasglasser.minejago.world.focus.FocusConstants.MAX_FOCUS;
+import static dev.thomasglasser.minejago.world.focus.FocusConstants.MAX_MEGA_FOCUS;
+import static dev.thomasglasser.minejago.world.focus.FocusConstants.START_FOCUS;
+import static dev.thomasglasser.minejago.world.focus.FocusConstants.START_SATURATION;
 
 public class FocusData
 {
 	private int focusLevel = START_FOCUS;
 	private float saturationLevel = START_SATURATION;
 	private float exhaustionLevel;
-	private int tickTimer;
 	private int lastFocusLevel = START_FOCUS;
-	private boolean meditating = false;
-	
+	private MeditationType meditationType = MeditationType.NORMAL;
+
 	/**
 	 * Add stats.
 	 */
-	public void increase(int focusLevelModifier, float saturationLevelModifier) {
-		this.focusLevel = Math.min(focusLevelModifier + this.focusLevel, MAX_FOCUS);
-		this.saturationLevel = Math.min(this.saturationLevel + (float)focusLevelModifier * saturationLevelModifier * 2.0F, (float)this.focusLevel);
+	public void increase(boolean mega, int focusLevelModifier, float saturationLevelModifier) {
+		this.focusLevel = Math.min(focusLevelModifier + this.focusLevel, mega ? MAX_MEGA_FOCUS : MAX_FOCUS);
+		this.saturationLevel = Math.min(this.saturationLevel + (float) focusLevelModifier * saturationLevelModifier * (mega ? 4.0F : 2.0F), (float) this.focusLevel);
 	}
 
 	/**
@@ -29,25 +33,23 @@ public class FocusData
 	public void tick(Player player) {
 		Difficulty difficulty = player.level().getDifficulty();
 		this.lastFocusLevel = this.focusLevel;
-		if (this.exhaustionLevel > EXHAUSTION_DROP) {
+		if (this.exhaustionLevel > EXHAUSTION_DROP)
+		{
 			this.exhaustionLevel -= EXHAUSTION_DROP;
-			if (this.saturationLevel > 0) {
+			if (this.saturationLevel > 0)
+			{
 				this.saturationLevel = Math.max(this.saturationLevel - FOCUS_SATURATION_MAX, 0);
-			} else if (difficulty != Difficulty.PEACEFUL) {
+			}
+			else if (difficulty != Difficulty.PEACEFUL)
+			{
 				this.focusLevel = Math.max(this.focusLevel - 1, 0);
 			}
 		}
+	}
 
-		if (this.focusLevel <= DISARRAYED_LEVEL) {
-			++this.tickTimer;
-			if (this.tickTimer >= TICK_COUNT) {
-				// TODO: Disarrayed effects
-
-				this.tickTimer = 0;
-			}
-		} else {
-			this.tickTimer = 0;
-		}
+	public boolean canMegaMeditate(Player player)
+	{
+		return focusLevel >= 20 && player.getHealth() >= player.getMaxHealth() && !player.getFoodData().needsFood();
 	}
 
 	/**
@@ -56,7 +58,6 @@ public class FocusData
 	public void readAdditionalSaveData(CompoundTag compoundTag) {
 		if (compoundTag.contains("focusLevel", 99)) {
 			this.focusLevel = compoundTag.getInt("focusLevel");
-			this.tickTimer = compoundTag.getInt("focusTickTimer");
 			this.saturationLevel = compoundTag.getFloat("focusSaturationLevel");
 			this.exhaustionLevel = compoundTag.getFloat("focusExhaustionLevel");
 		}
@@ -67,7 +68,6 @@ public class FocusData
 	 */
 	public void addAdditionalSaveData(CompoundTag compoundTag) {
 		compoundTag.putInt("focusLevel", this.focusLevel);
-		compoundTag.putInt("focusTickTimer", this.tickTimer);
 		compoundTag.putFloat("focusSaturationLevel", this.saturationLevel);
 		compoundTag.putFloat("focusExhaustionLevel", this.exhaustionLevel);
 	}
@@ -120,18 +120,50 @@ public class FocusData
 		this.exhaustionLevel = exhaustionLevel;
 	}
 
+	public MeditationType getMeditationType()
+	{
+		return meditationType;
+	}
+
+	public void setMeditationType(MeditationType meditationType)
+	{
+		this.meditationType = meditationType;
+	}
+
 	public boolean isMeditating()
 	{
-		return meditating;
+		return meditationType != MeditationType.NONE;
 	}
 
-	public void setMeditating(boolean meditating)
+	public boolean isMegaMeditating()
 	{
-		this.meditating = meditating;
+		return meditationType == MeditationType.MEGA;
 	}
 
-	public void setMeditating()
+	public boolean isNormalMeditating()
 	{
-		setMeditating(true);
+		return  meditationType == MeditationType.NORMAL;
+	}
+
+	public void startMeditating()
+	{
+		setMeditationType(MeditationType.NORMAL);
+	}
+
+	public void startMegaMeditating()
+	{
+		setMeditationType(MeditationType.MEGA);
+	}
+
+	public void stopMeditating()
+	{
+		setMeditationType(MeditationType.NONE);
+	}
+
+	public enum MeditationType
+	{
+		NONE,
+		NORMAL,
+		MEGA
 	}
 }

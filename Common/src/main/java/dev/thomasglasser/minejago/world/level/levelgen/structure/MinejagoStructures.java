@@ -1,7 +1,7 @@
 package dev.thomasglasser.minejago.world.level.levelgen.structure;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.data.tags.MinejagoBiomeTags;
+import dev.thomasglasser.minejago.tags.MinejagoBiomeTags;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.pools.CaveOfDespairPools;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.pools.FourWeaponsPools;
 import net.minecraft.core.HolderGetter;

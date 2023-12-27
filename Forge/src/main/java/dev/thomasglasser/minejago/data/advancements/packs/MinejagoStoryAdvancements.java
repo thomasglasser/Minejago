@@ -3,7 +3,7 @@ package dev.thomasglasser.minejago.data.advancements.packs;
 import dev.thomasglasser.minejago.advancements.criterion.DidSpinjitzuTrigger;
 import dev.thomasglasser.minejago.advancements.criterion.GotPowerTrigger;
 import dev.thomasglasser.minejago.data.advancements.AdvancementHelper;
-import dev.thomasglasser.minejago.data.tags.MinejagoEntityTypeTags;
+import dev.thomasglasser.minejago.tags.MinejagoEntityTypeTags;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.power.PowerUtils;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;

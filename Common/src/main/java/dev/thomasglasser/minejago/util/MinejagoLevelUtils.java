@@ -1,7 +1,7 @@
 package dev.thomasglasser.minejago.util;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.data.tags.MinejagoBlockTags;
+import dev.thomasglasser.minejago.tags.MinejagoBlockTags;
 import dev.thomasglasser.minejago.world.entity.DataHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;

@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.data.tags;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.tags.MinejagoDimensionTypeTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;

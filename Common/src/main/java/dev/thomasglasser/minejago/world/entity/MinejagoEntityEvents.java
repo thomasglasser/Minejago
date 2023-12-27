@@ -7,20 +7,41 @@ import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleUtils;
 import dev.thomasglasser.minejago.core.particles.SpinjitzuParticleOptions;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
-import dev.thomasglasser.minejago.data.tags.MinejagoBlockTags;
-import dev.thomasglasser.minejago.data.tags.MinejagoItemTags;
-import dev.thomasglasser.minejago.network.*;
+import dev.thomasglasser.minejago.network.ClientboundRefreshVipDataPacket;
+import dev.thomasglasser.minejago.network.ClientboundStartMeditationPacket;
+import dev.thomasglasser.minejago.network.ClientboundStartMegaMeditationPacket;
+import dev.thomasglasser.minejago.network.ClientboundStopAnimationPacket;
+import dev.thomasglasser.minejago.network.ClientboundStopMeditationPacket;
+import dev.thomasglasser.minejago.network.ClientboundStopSpinjitzuPacket;
+import dev.thomasglasser.minejago.network.ServerboundStartMeditationPacket;
+import dev.thomasglasser.minejago.network.ServerboundStartSpinjitzuPacket;
+import dev.thomasglasser.minejago.network.ServerboundStopMeditationPacket;
+import dev.thomasglasser.minejago.network.ServerboundStopSpinjitzuPacket;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
+import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
 import dev.thomasglasser.minejago.world.focus.FocusData;
 import dev.thomasglasser.minejago.world.focus.FocusDataHolder;
+import dev.thomasglasser.minejago.world.focus.modifier.biome.BiomeFocusModifiers;
+import dev.thomasglasser.minejago.world.focus.modifier.blockstate.BlockStateFocusModifiers;
+import dev.thomasglasser.minejago.world.focus.modifier.dimension.DimensionFocusModifiers;
+import dev.thomasglasser.minejago.world.focus.modifier.effect.MobEffectFocusModifiers;
+import dev.thomasglasser.minejago.world.focus.modifier.entity.EntityFocusModifiers;
+import dev.thomasglasser.minejago.world.focus.modifier.itemstack.ItemStackFocusModifiers;
+import dev.thomasglasser.minejago.world.focus.modifier.structure.StructureFocusModifiers;
+import dev.thomasglasser.minejago.world.focus.modifier.world.Weather;
+import dev.thomasglasser.minejago.world.focus.modifier.world.WorldFocusModifiers;
 import dev.thomasglasser.minejago.world.item.GoldenWeaponItem;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -42,6 +63,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.List;
@@ -86,7 +108,8 @@ public class MinejagoEntityEvents
         int waitTicks = ((DataHolder)(player)).getPersistentData().getInt("WaitTicks");
         if (player instanceof ServerPlayer serverPlayer)
         {
-            if ((serverPlayer.level().getDifficulty() == Difficulty.PEACEFUL || serverPlayer.getAbilities().instabuild) && focusData.needsFocus() && player.tickCount % 10 == 0)
+            ServerLevel level = serverPlayer.serverLevel();
+            if ((level.getDifficulty() == Difficulty.PEACEFUL || serverPlayer.getAbilities().instabuild) && focusData.needsFocus() && player.tickCount % 10 == 0)
                 focusData.setFocusLevel(focusData.getFocusLevel() + 1);
 
             int j = Mth.clamp(serverPlayer.getStats().getValue(Stats.CUSTOM.get(Stats.TIME_SINCE_REST)), 1, Integer.MAX_VALUE);
@@ -102,7 +125,7 @@ public class MinejagoEntityEvents
                 if (spinjitzu.active()) {
                     if (focusData.isMeditating())
                     {
-                        focusData.setMeditating(false);
+                        focusData.stopMeditating();
                         Services.NETWORK.sendToAllClients(ClientboundStopAnimationPacket.class, ClientboundStopAnimationPacket.toBytes(serverPlayer.getUUID()), serverPlayer.getServer());
                     }
 
@@ -114,8 +137,8 @@ public class MinejagoEntityEvents
                     focusData.addExhaustion(FocusConstants.EXHAUSTION_DOING_SPINJITZU);
                     if (player.tickCount % 20 == 0)
                     {
-                        serverPlayer.level().playSound(null, serverPlayer.blockPosition(), MinejagoSoundEvents.SPINJITZU_ACTIVE.get(), SoundSource.PLAYERS);
-                        serverPlayer.level().gameEvent(serverPlayer, MinejagoGameEvents.SPINJITZU.get(), serverPlayer.blockPosition());
+                        level.playSound(null, serverPlayer.blockPosition(), MinejagoSoundEvents.SPINJITZU_ACTIVE.get(), SoundSource.PLAYERS);
+                        level.gameEvent(serverPlayer, MinejagoGameEvents.SPINJITZU.get(), serverPlayer.blockPosition());
                     }
                     Power power = player.level().registryAccess().registryOrThrow(MinejagoRegistries.POWER).getHolderOrThrow(Services.DATA.getPowerData(player).power()).value();
                     if (!power.is(MinejagoPowers.NONE)) {
@@ -153,31 +176,65 @@ public class MinejagoEntityEvents
             {
                 if (NO_MEDITATION.test(serverPlayer))
                 {
-                    focusData.setMeditating(false);
+                    focusData.stopMeditating();
                     Services.NETWORK.sendToAllClients(ClientboundStopMeditationPacket.class, ClientboundStopMeditationPacket.toBytes(serverPlayer.getUUID(), false), serverPlayer.getServer());
                 }
 
-                if (player.tickCount % 60 == 0)
+                if ((focusData.isMegaMeditating() && player.tickCount % 200 == 0) || (focusData.isNormalMeditating() && player.tickCount % 60 == 0))
                 {
+                    BlockPos playerPos = player.blockPosition();
+                    Biome biome = level.getBiome(playerPos).value();
                     AtomicDouble i = new AtomicDouble(1);
-                    Stream<BlockState> blocks = serverPlayer.level().getBlockStates(player.getBoundingBox().inflate(2));
-                    blocks.forEach(blockState ->
+                    Weather weather = Weather.CLEAR;
+                    Biome.Precipitation precipitation = biome.getPrecipitationAt(playerPos);
+                    if (level.isThundering())
                     {
-                        if (blockState.is(MinejagoBlockTags.FOCUS_AMPLIFIERS)) i.addAndGet(0.2);
-                    });
-                    List<Entity> entities = serverPlayer.level().getEntities(serverPlayer, serverPlayer.getBoundingBox().inflate(2));
+                        if (precipitation == Biome.Precipitation.SNOW) weather = Weather.THUNDER_SNOW;
+                        else if (precipitation == Biome.Precipitation.RAIN) weather = Weather.THUNDER_RAIN;
+                    }
+                    else if (level.isRaining())
+                    {
+                        if (precipitation == Biome.Precipitation.SNOW) weather = Weather.SNOW;
+                        else if (precipitation == Biome.Precipitation.RAIN) weather = Weather.RAIN;
+                    }
+                    i.set(WorldFocusModifiers.applyModifier((int) level.getDayTime(), weather, playerPos.getY(), TeapotBlock.getBiomeTemperature(level, playerPos), i.get()));
+                    i.set(BiomeFocusModifiers.applyModifier(level.getBiome(playerPos).unwrapKey().orElseThrow(), i.get()));
+                    i.set(DimensionFocusModifiers.applyModifier(level.dimension(), i.get()));
+                    serverPlayer.serverLevel().structureManager().getAllStructuresAt(playerPos).keySet().forEach(structure -> i.set(StructureFocusModifiers.applyModifier(Holder.direct(structure).unwrapKey().orElseThrow(), i.get())));
+                    Stream<BlockState> blocks = level.getBlockStates(player.getBoundingBox().inflate(2));
+                    blocks.forEach(blockState -> i.set(BlockStateFocusModifiers.applyModifier(blockState, i.get())));
+                    serverPlayer.getActiveEffects().forEach(mobEffectInstance -> i.set(MobEffectFocusModifiers.applyModifier(mobEffectInstance.getEffect(), i.get()) * (mobEffectInstance.getAmplifier() + 1)));
+                    List<Entity> entities = level.getEntities(serverPlayer, serverPlayer.getBoundingBox().inflate(2));
                     entities.forEach(entity ->
                     {
-                        if (entity instanceof ItemEntity item && item.getItem().is(MinejagoItemTags.FOCUS_AMPLIFIERS))
+                        if (entity instanceof ItemEntity item)
                         {
-                            i.addAndGet(0.5);
+                            i.set(ItemStackFocusModifiers.applyModifier(item.getItem(), i.get()));
                         }
-                        if (entity instanceof ItemFrame itemFrame && itemFrame.getItem().is(MinejagoItemTags.FOCUS_AMPLIFIERS))
+                        else if (entity instanceof ItemFrame itemFrame)
                         {
-                            i.addAndGet(0.5);
+                            i.set(ItemStackFocusModifiers.applyModifier(itemFrame.getItem(), i.get()));
+                        }
+                        else
+                        {
+                            i.set(EntityFocusModifiers.applyModifier(entity, i.get()));
                         }
                     });
-                    focusData.increase((int) i.getAndSet(0), 0.1f);
+                    focusData.increase(focusData.isMegaMeditating(), (int) i.getAndSet(0), 0.1f);
+                }
+
+                if (focusData.canMegaMeditate(serverPlayer))
+                {
+                    if (!focusData.isMegaMeditating())
+                    {
+                        focusData.startMegaMeditating();
+                        Services.NETWORK.sendToAllClients(ClientboundStartMegaMeditationPacket.class, ClientboundStartMegaMeditationPacket.toBytes(player.getUUID()), level.getServer());
+                    }
+                }
+                else if (focusData.isMegaMeditating())
+                {
+                    focusData.startMeditating();
+                    Services.NETWORK.sendToAllClients(ClientboundStartMeditationPacket.class, ClientboundStartMeditationPacket.toBytes(player.getUUID()), level.getServer());
                 }
             }
         }
@@ -201,9 +258,10 @@ public class MinejagoEntityEvents
             }
             else if (MinejagoKeyMappings.MEDITATE.isDown() && !spinjitzu.active())
             {
+                MinejagoClientUtils.stopAnimation((AbstractClientPlayer) player);
                 if (focusData.isMeditating())
                 {
-                    focusData.setMeditating(false);
+                    focusData.stopMeditating();
                     Services.NETWORK.sendToServer(ServerboundStopMeditationPacket.class, ServerboundStopMeditationPacket.toBytes(false));
                 }
                 else
@@ -220,7 +278,7 @@ public class MinejagoEntityEvents
                 }
                 if (focusData.isMeditating())
                 {
-                    focusData.setMeditating(false);
+                    focusData.stopMeditating();
                     Services.NETWORK.sendToServer(ServerboundStopMeditationPacket.class, ServerboundStopMeditationPacket.toBytes(false));
                 }
                 ((DataHolder) player).getPersistentData().putInt("WaitTicks", 5);

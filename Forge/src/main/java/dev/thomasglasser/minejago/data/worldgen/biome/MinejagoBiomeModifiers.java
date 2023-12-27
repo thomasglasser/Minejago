@@ -1,7 +1,7 @@
 package dev.thomasglasser.minejago.data.worldgen.biome;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.data.tags.MinejagoBiomeTags;
+import dev.thomasglasser.minejago.tags.MinejagoBiomeTags;
 import dev.thomasglasser.minejago.data.worldgen.placement.MinejagoVegetationPlacements;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import net.minecraft.core.Holder;
@@ -39,9 +39,9 @@ public class MinejagoBiomeModifiers
 
         // Add spawns
         HolderSet<Biome> mountains = biomes.get(BiomeTags.IS_MOUNTAIN).orElseThrow();
-        context.register(register("add_cole"), addCharactersToBiomes(mountains, MinejagoEntityTypes.COLE.get()));
-        Holder.Reference<Biome> frozen_lakes = biomes.get(Biomes.FROZEN_RIVER).orElseThrow();
-        context.register(register("add_zane"), addCharactersToBiomes(HolderSet.direct(frozen_lakes), 100, MinejagoEntityTypes.ZANE.get()));
+        context.register(register("add_cole"), addCharactersToBiomes(mountains, 100, MinejagoEntityTypes.COLE.get()));
+        Holder.Reference<Biome> frozen_river = biomes.get(Biomes.FROZEN_RIVER).orElseThrow();
+        context.register(register("add_zane"), addCharactersToBiomes(HolderSet.direct(frozen_river), 100, MinejagoEntityTypes.ZANE.get()));
 
         // Add features
         Holder.Reference<PlacedFeature> focusTrees = placedFeatures.getOrThrow(MinejagoVegetationPlacements.MEADOW_FOCUS_TREES);
