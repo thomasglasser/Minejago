@@ -5,7 +5,6 @@ import dev.kosmx.playerAnim.api.layered.KeyframeAnimationPlayer;
 import dev.kosmx.playerAnim.api.layered.modifier.AbstractFadeModifier;
 import dev.kosmx.playerAnim.core.data.KeyframeAnimation;
 import dev.kosmx.playerAnim.core.util.Ease;
-import dev.thomasglasser.minejago.Minejago;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.world.entity.player.Player;
 
@@ -27,12 +26,14 @@ public class MinejagoAnimationUtils
 
 	}
 
+	public static void startAnimation(KeyframeAnimation anim, Player player, FirstPersonMode firstPersonMode)
+	{
+		startAnimation(anim, null, player, firstPersonMode);
+	}
+
 	public static void stopAnimation(AbstractClientPlayer player)
 	{
-		if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled())
-		{
-			var animation = MinejagoPlayerAnimator.animationData.get(player);
-			animation.setAnimation(null);
-		}
+		var animation = MinejagoPlayerAnimator.animationData.get(player);
+		animation.setAnimation(null);
 	}
 }

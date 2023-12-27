@@ -123,7 +123,7 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
 
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(DATA_MEDITATION_STATUS, MeditationStatus.STARTING);
+        this.entityData.define(DATA_MEDITATION_STATUS, MeditationStatus.NONE);
     }
 
     @Override

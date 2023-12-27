@@ -111,7 +111,7 @@ public class MinejagoMainChannel
                 .encoder(ClientboundStartMeditationPacket::toBytes)
                 .consumerMainThread((packet, context) -> packet.handle())
                 .add();
-        INSTANCE.messageBuilder(ClientboundStartMegaMeditationPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+        INSTANCE.messageBuilder(ClientboundStartMegaMeditationPacket.class, id(), PlayNetworkDirection.PLAY_TO_CLIENT)
                 .decoder(ClientboundStartMegaMeditationPacket::new)
                 .encoder(ClientboundStartMegaMeditationPacket::toBytes)
                 .consumerMainThread((packet, context) -> packet.handle())

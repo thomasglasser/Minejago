@@ -26,6 +26,7 @@ import net.minecraft.server.packs.repository.PackSource;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
+import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 

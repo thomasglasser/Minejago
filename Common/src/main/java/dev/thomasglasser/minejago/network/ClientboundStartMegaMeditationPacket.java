@@ -2,6 +2,7 @@ package dev.thomasglasser.minejago.network;
 
 import dev.kosmx.playerAnim.api.firstPerson.FirstPersonMode;
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.client.animation.MinejagoAnimationUtils;
 import dev.thomasglasser.minejago.client.animation.definitions.PlayerAnimations;
 import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.util.MinejagoPacketUtils;
@@ -40,7 +41,7 @@ public class ClientboundStartMegaMeditationPacket
         ((FocusDataHolder)player).getFocusData().startMegaMeditating();
 
         if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled())
-            MinejagoClientUtils.startAnimation(PlayerAnimations.Meditation.FLOAT.getAnimation(), player, FirstPersonMode.VANILLA);
+            MinejagoAnimationUtils.startAnimation(PlayerAnimations.Meditation.FLOAT.getAnimation(), player, FirstPersonMode.VANILLA);
 //            MinejagoClientUtils.startAnimation(PlayerAnimations.Meditation.RISE.getAnimation(), PlayerAnimations.Meditation.FLOAT.getAnimation(), player, FirstPersonMode.VANILLA);
     }
 }
