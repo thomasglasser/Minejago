@@ -8,12 +8,15 @@ import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.util.MinejagoPacketUtils;
 import dev.thomasglasser.minejago.world.focus.FocusData;
 import dev.thomasglasser.minejago.world.focus.FocusDataHolder;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
-public class ClientboundStopMeditationPacket
+public class ClientboundStopMeditationPacket implements CustomPacket
 {
     public static final ResourceLocation ID = Minejago.modLoc("clientbound_stop_meditation");
 
@@ -25,12 +28,12 @@ public class ClientboundStopMeditationPacket
         fail = buf.readBoolean();
     }
 
-    public void toBytes(FriendlyByteBuf buf) {
+    public void write(FriendlyByteBuf buf) {
         buf.writeUUID(uuid);
         buf.writeBoolean(fail);
     }
 
-    public static FriendlyByteBuf toBytes(UUID uuid, boolean fail) {
+    public static FriendlyByteBuf write(UUID uuid, boolean fail) {
         FriendlyByteBuf buf = MinejagoPacketUtils.create();
 
         buf.writeUUID(uuid);
@@ -39,15 +42,28 @@ public class ClientboundStopMeditationPacket
         return buf;
     }
 
-    public void handle() {
-        FocusData focusData = ((FocusDataHolder) MinejagoClientUtils.getClientPlayerByUUID(uuid)).getFocusData();
+    public void handle(@Nullable Player player) {
+        AbstractClientPlayer clientPlayer = MinejagoClientUtils.getClientPlayerByUUID(uuid);
+        FocusData focusData = ((FocusDataHolder) clientPlayer).getFocusData();
         focusData.stopMeditating();
         if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled())
         {
             if (fail)
-                MinejagoAnimationUtils.stopAnimation(MinejagoClientUtils.getClientPlayerByUUID(uuid));
+                MinejagoAnimationUtils.stopAnimation(clientPlayer);
             else
-                MinejagoAnimationUtils.startAnimation(/*focusData.canDoMegaFocus() ? PlayerAnimations.Meditation.FALL.getAnimation() : */PlayerAnimations.Meditation.FINISH.getAnimation(), MinejagoClientUtils.getClientPlayerByUUID(uuid), FirstPersonMode.VANILLA);
+                MinejagoAnimationUtils.startAnimation(PlayerAnimations.Meditation.FINISH.getAnimation(), clientPlayer, FirstPersonMode.VANILLA);
         }
+    }
+
+    @Override
+    public Direction direction()
+    {
+        return Direction.SERVER_TO_CLIENT;
+    }
+
+    @Override
+    public ResourceLocation id()
+    {
+        return ID;
     }
 }

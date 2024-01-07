@@ -17,7 +17,7 @@ public class FocusData
 	private float saturationLevel = START_SATURATION;
 	private float exhaustionLevel;
 	private int lastFocusLevel = START_FOCUS;
-	private MeditationType meditationType = MeditationType.NORMAL;
+	private MeditationType meditationType = MeditationType.NONE;
 
 	/**
 	 * Add stats.
@@ -49,7 +49,7 @@ public class FocusData
 
 	public boolean canMegaMeditate(Player player)
 	{
-		return focusLevel >= 20 && player.getHealth() >= player.getMaxHealth() && !player.getFoodData().needsFood();
+		return focusLevel >= 20 && player.getHealth() >= player.getMaxHealth() && !player.getFoodData().needsFood() && isMeditating();
 	}
 
 	/**

@@ -7,11 +7,13 @@ import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.util.MinejagoPacketUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
-public class ServerboundChangeVipDataPacket {
+public class ServerboundChangeVipDataPacket implements CustomPacket
+{
     public static final ResourceLocation ID = Minejago.modLoc("serverbound_change_vip_data");
 
     private final UUID uuid;
@@ -27,7 +29,7 @@ public class ServerboundChangeVipDataPacket {
         );
     }
 
-    public void toBytes(FriendlyByteBuf buffer) {
+    public void write(FriendlyByteBuf buffer) {
         buffer.writeUUID(uuid);
         buffer.writeEnum(vipData.choice());
         buffer.writeBoolean(vipData.displaySnapshot());
@@ -35,7 +37,7 @@ public class ServerboundChangeVipDataPacket {
         buffer.writeBoolean(vipData.displayOgDev());
     }
 
-    public static FriendlyByteBuf toBytes(UUID uuid, VipData vipData) {
+    public static FriendlyByteBuf write(UUID uuid, VipData vipData) {
         FriendlyByteBuf buffer = MinejagoPacketUtils.create();
 
         buffer.writeUUID(uuid);
@@ -47,7 +49,19 @@ public class ServerboundChangeVipDataPacket {
         return buffer;
     }
 
-    public void handle(ServerPlayer serverPlayer) {
-        Services.NETWORK.sendToAllClients(ClientboundChangeVipDataPacket.class, ClientboundChangeVipDataPacket.toBytes(uuid, vipData), serverPlayer.getServer());
+    public void handle(@Nullable Player player) {
+        Services.NETWORK.sendToAllClients(ClientboundChangeVipDataPacket.class, ClientboundChangeVipDataPacket.write(uuid, vipData), player.getServer());
+    }
+
+    @Override
+    public Direction direction()
+    {
+        return Direction.CLIENT_TO_SERVER;
+    }
+
+    @Override
+    public ResourceLocation id()
+    {
+        return ID;
     }
 }

@@ -6,10 +6,13 @@ import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.util.MinejagoPacketUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
-public class ClientboundStopAnimationPacket {
+public class ClientboundStopAnimationPacket implements CustomPacket
+{
     public static final ResourceLocation ID = Minejago.modLoc("clientbound_stop_animation");
 
     private final UUID uuid;
@@ -18,11 +21,11 @@ public class ClientboundStopAnimationPacket {
         uuid = buf.readUUID();
     }
 
-    public void toBytes(FriendlyByteBuf buf) {
+    public void write(FriendlyByteBuf buf) {
         buf.writeUUID(uuid);
     }
 
-    public static FriendlyByteBuf toBytes(UUID uuid)
+    public static FriendlyByteBuf write(UUID uuid)
     {
         FriendlyByteBuf buf = MinejagoPacketUtils.create();
 
@@ -32,7 +35,19 @@ public class ClientboundStopAnimationPacket {
     }
 
     // ON CLIENT
-    public void handle() {
+    public void handle(@Nullable Player player) {
         MinejagoAnimationUtils.stopAnimation(MinejagoClientUtils.getClientPlayerByUUID(uuid));
+    }
+
+    @Override
+    public Direction direction()
+    {
+        return Direction.SERVER_TO_CLIENT;
+    }
+
+    @Override
+    public ResourceLocation id()
+    {
+        return ID;
     }
 }

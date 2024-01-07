@@ -7,8 +7,10 @@ import dev.thomasglasser.minejago.world.focus.FocusDataHolder;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.Nullable;
 
-public class ServerboundStopMeditationPacket
+public class ServerboundStopMeditationPacket implements CustomPacket
 {
     public static final ResourceLocation ID = Minejago.modLoc("serverbound_stop_meditation");
 
@@ -18,11 +20,11 @@ public class ServerboundStopMeditationPacket
         fail = buf.readBoolean();
     }
 
-    public void toBytes(FriendlyByteBuf buf) {
+    public void write(FriendlyByteBuf buf) {
         buf.writeBoolean(fail);
     }
 
-    public static FriendlyByteBuf toBytes(boolean fail) {
+    public static FriendlyByteBuf write(boolean fail) {
         FriendlyByteBuf buf = MinejagoPacketUtils.create();
 
         buf.writeBoolean(fail);
@@ -30,8 +32,23 @@ public class ServerboundStopMeditationPacket
         return buf;
     }
 
-    public void handle(ServerPlayer serverPlayer) {
-        ((FocusDataHolder)serverPlayer).getFocusData().stopMeditating();
-        Services.NETWORK.sendToAllClients(ClientboundStopMeditationPacket.class, ClientboundStopMeditationPacket.toBytes(serverPlayer.getUUID(), fail), serverPlayer.getServer());
+    public void handle(@Nullable Player player) {
+        if (player instanceof ServerPlayer serverPlayer)
+        {
+            ((FocusDataHolder)serverPlayer).getFocusData().stopMeditating();
+            Services.NETWORK.sendToAllClients(ClientboundStopMeditationPacket.class, ClientboundStopMeditationPacket.write(serverPlayer.getUUID(), fail), serverPlayer.getServer());
+        }
+    }
+
+    @Override
+    public Direction direction()
+    {
+        return Direction.CLIENT_TO_SERVER;
+    }
+
+    @Override
+    public ResourceLocation id()
+    {
+        return ID;
     }
 }

@@ -8,7 +8,6 @@ import dev.thomasglasser.minejago.world.item.crafting.MinejagoRecipeTypes;
 import dev.thomasglasser.minejago.world.item.crafting.TeapotBrewingRecipe;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -34,7 +33,6 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SupportType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -80,11 +78,6 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
 
     public static void serverTick(Level pLevel, BlockPos pPos, BlockState pState, TeapotBlockEntity pBlockEntity)
     {
-        if (!pLevel.getBlockState(pPos.above()).isFaceSturdy(pLevel, pPos.above(), Direction.DOWN, SupportType.CENTER) && (pLevel.getBlockState(pPos.below()).is(BlockTags.FIRE) || pLevel.getBlockState(pPos.below()).is(BlockTags.CAMPFIRES)))
-        {
-            pLevel.destroyBlock(pPos, true);
-        }
-
         if (pBlockEntity.cups < 3)
             pLevel.setBlock(pPos, pState.setValue(TeapotBlock.FILLED, false), Block.UPDATE_ALL);
         else

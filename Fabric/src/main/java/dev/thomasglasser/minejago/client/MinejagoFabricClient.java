@@ -32,31 +32,6 @@ import dev.thomasglasser.minejago.client.renderer.entity.ThrownIronSpearRenderer
 import dev.thomasglasser.minejago.client.renderer.entity.WuRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.OgDevTeamLayer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterLayer;
-import dev.thomasglasser.minejago.network.ClientboundChangeVipDataPacket;
-import dev.thomasglasser.minejago.network.ClientboundOpenPowerSelectionScreenPacket;
-import dev.thomasglasser.minejago.network.ClientboundOpenScrollPacket;
-import dev.thomasglasser.minejago.network.ClientboundRefreshVipDataPacket;
-import dev.thomasglasser.minejago.network.ClientboundSetFocusPacket;
-import dev.thomasglasser.minejago.network.ClientboundSpawnParticlePacket;
-import dev.thomasglasser.minejago.network.ClientboundStartMeditationPacket;
-import dev.thomasglasser.minejago.network.ClientboundStartScytheAnimationPacket;
-import dev.thomasglasser.minejago.network.ClientboundStartSpinjitzuPacket;
-import dev.thomasglasser.minejago.network.ClientboundStopAnimationPacket;
-import dev.thomasglasser.minejago.network.ClientboundStopMeditationPacket;
-import dev.thomasglasser.minejago.network.ClientboundStopSpinjitzuPacket;
-import dev.thomasglasser.minejago.network.ClientboundChangeVipDataPacket;
-import dev.thomasglasser.minejago.network.ClientboundOpenPowerSelectionScreenPacket;
-import dev.thomasglasser.minejago.network.ClientboundOpenScrollPacket;
-import dev.thomasglasser.minejago.network.ClientboundRefreshVipDataPacket;
-import dev.thomasglasser.minejago.network.ClientboundSetFocusPacket;
-import dev.thomasglasser.minejago.network.ClientboundSpawnParticlePacket;
-import dev.thomasglasser.minejago.network.ClientboundStartMeditationPacket;
-import dev.thomasglasser.minejago.network.ClientboundStartMegaMeditationPacket;
-import dev.thomasglasser.minejago.network.ClientboundStartScytheAnimationPacket;
-import dev.thomasglasser.minejago.network.ClientboundStartSpinjitzuPacket;
-import dev.thomasglasser.minejago.network.ClientboundStopAnimationPacket;
-import dev.thomasglasser.minejago.network.ClientboundStopMeditationPacket;
-import dev.thomasglasser.minejago.network.ClientboundStopSpinjitzuPacket;
 import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
@@ -72,7 +47,6 @@ import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlugin;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
@@ -162,8 +136,6 @@ public class MinejagoFabricClient implements ClientModInitializer
         BlockRenderLayerMap.INSTANCE.putBlocks(RenderType.cutout(), MinejagoBlocks.FOCUS_LEAVES_SET.sapling().get(), MinejagoBlocks.FOCUS_LEAVES_SET.pottedSapling().get());
 
         registerEvents();
-
-        registerPackets();
 
         MinejagoClientEvents.registerMenuScreens();
     }
@@ -277,126 +249,5 @@ public class MinejagoFabricClient implements ClientModInitializer
                 entries.acceptAll(MinejagoClientEvents.getItemsForTab(BuiltInRegistries.CREATIVE_MODE_TAB.getResourceKey(group).orElseThrow())));
         ClientTickEvents.END_CLIENT_TICK.register(client ->
                 MinejagoClientEvents.onClientTick());
-    }
-
-    private void registerPackets()
-    {
-        ClientPlayNetworking.registerGlobalReceiver(ClientboundChangeVipDataPacket.ID, (client, handler, buf, responseSender) ->
-        {
-            buf.retain();
-            client.execute(() ->
-            {
-                new ClientboundChangeVipDataPacket(buf).handle();
-                buf.release();
-            });
-        });
-        ClientPlayNetworking.registerGlobalReceiver(ClientboundRefreshVipDataPacket.ID, (client, handler, buf, responseSender) ->
-        {
-            buf.retain();
-            client.execute(() ->
-            {
-                new ClientboundRefreshVipDataPacket().handle();
-                buf.release();
-            });
-        });
-        ClientPlayNetworking.registerGlobalReceiver(ClientboundStartScytheAnimationPacket.ID, (client, handler, buf, responseSender) ->
-        {
-            buf.retain();
-            client.execute(() ->
-            {
-                new ClientboundStartScytheAnimationPacket(buf).handle();
-                buf.release();
-            });
-        });
-        ClientPlayNetworking.registerGlobalReceiver(ClientboundStartSpinjitzuPacket.ID, (client, handler, buf, responseSender) ->
-        {
-            buf.retain();
-            client.execute(() ->
-            {
-                new ClientboundStartSpinjitzuPacket(buf).handle();
-                buf.release();
-            });
-        });
-        ClientPlayNetworking.registerGlobalReceiver(ClientboundStopAnimationPacket.ID, (client, handler, buf, responseSender) ->
-        {
-            buf.retain();
-            client.execute(() ->
-            {
-                new ClientboundStopAnimationPacket(buf).handle();
-                buf.release();
-            });
-        });
-        ClientPlayNetworking.registerGlobalReceiver(ClientboundSpawnParticlePacket.ID, (client, handler, buf, responseSender) ->
-        {
-            buf.retain();
-            client.execute(() ->
-            {
-                new ClientboundSpawnParticlePacket(buf).handle();
-                buf.release();
-            });
-        });
-        ClientPlayNetworking.registerGlobalReceiver(ClientboundOpenPowerSelectionScreenPacket.ID, (client, handler, buf, responseSender) ->
-        {
-            buf.retain();
-            client.execute(() ->
-            {
-                new ClientboundOpenPowerSelectionScreenPacket(buf).handle();
-                buf.release();
-            });
-        });
-        ClientPlayNetworking.registerGlobalReceiver(ClientboundOpenScrollPacket.ID, (client, handler, buf, responseSender) ->
-        {
-            buf.retain();
-            client.execute(() ->
-            {
-                new ClientboundOpenScrollPacket(buf).handle();
-                buf.release();
-            });
-        });
-        ClientPlayNetworking.registerGlobalReceiver(ClientboundSetFocusPacket.ID, ((client, handler, buf, responseSender) ->
-        {
-            buf.retain();
-            client.execute(() ->
-            {
-                new ClientboundSetFocusPacket(buf).handle();
-                buf.release();
-            });
-        }));
-        ClientPlayNetworking.registerGlobalReceiver(ClientboundStartMeditationPacket.ID, (client, handler, buf, responseSender) ->
-        {
-            buf.retain();
-            client.execute(() ->
-            {
-                new ClientboundStartMeditationPacket(buf).handle();
-                buf.release();
-            });
-        });
-        ClientPlayNetworking.registerGlobalReceiver(ClientboundStartMegaMeditationPacket.ID, (client, handler, buf, responseSender) ->
-        {
-            buf.retain();
-            client.execute(() ->
-            {
-                new ClientboundStartMegaMeditationPacket(buf).handle();
-                buf.release();
-            });
-        });
-        ClientPlayNetworking.registerGlobalReceiver(ClientboundStopSpinjitzuPacket.ID, (client, handler, buf, responseSender) ->
-        {
-            buf.retain();
-            client.execute(() ->
-            {
-                new ClientboundStopSpinjitzuPacket(buf).handle();
-                buf.release();
-            });
-        });
-        ClientPlayNetworking.registerGlobalReceiver(ClientboundStopMeditationPacket.ID, (client, handler, buf, responseSender) ->
-        {
-            buf.retain();
-            client.execute(() ->
-            {
-                new ClientboundStopMeditationPacket(buf).handle();
-                buf.release();
-            });
-        });
     }
 }

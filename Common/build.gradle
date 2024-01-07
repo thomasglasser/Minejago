@@ -4,7 +4,7 @@ plugins {
     id 'idea'
     id 'java'
     id 'maven-publish'
-    id 'fabric-loom'
+    id 'fabric-loom' version "${loom_version}"
 }
 
 base {
@@ -24,7 +24,7 @@ dependencies {
     mappings loom.layered() {
         officialMojangMappings()
 //        parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip")
-        parchment("org.parchmentmc.data:parchment-1.20.2:${parchment_version}@zip")
+        parchment("org.parchmentmc.data:parchment-1.20.3:${parchment_version}@zip")
     }
 
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
@@ -35,7 +35,6 @@ dependencies {
     modImplementation "net.tslat.tes:TES-common-${minecraft_version}:${tes_version}"
     modImplementation "net.tslat.effectslib:TslatEffectsLib-common-${minecraft_version}:${tslateffectslib_version}"
     modImplementation "maven.modrinth:midnightlib:${midnightlib_version}-fabric"
-
 
     modCompileOnly "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}"
     modCompileOnly "dev.kosmx.player-anim:player-animation-lib:${playeranimator_version}"

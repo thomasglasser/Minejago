@@ -7,8 +7,10 @@ import dev.thomasglasser.minejago.world.focus.FocusData;
 import dev.thomasglasser.minejago.world.focus.FocusDataHolder;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.Nullable;
 
-public class ClientboundSetFocusPacket
+public class ClientboundSetFocusPacket implements CustomPacket
 {
 	public static final ResourceLocation ID = Minejago.modLoc("clientbound_set_focus");
 
@@ -20,12 +22,18 @@ public class ClientboundSetFocusPacket
 		saturationLevel = buf.readFloat();
 	}
 
-	public void toBytes(FriendlyByteBuf buf) {
+	public void write(FriendlyByteBuf buf) {
 		buf.writeInt(focusLevel);
 		buf.writeFloat(saturationLevel);
 	}
 
-	public static FriendlyByteBuf toBytes(FocusData focusData) {
+	@Override
+	public ResourceLocation id()
+	{
+		return null;
+	}
+
+	public static FriendlyByteBuf write(FocusData focusData) {
 		FriendlyByteBuf buf = MinejagoPacketUtils.create();
 
 		buf.writeInt(focusData.getFocusLevel());
@@ -35,9 +43,15 @@ public class ClientboundSetFocusPacket
 	}
 
 	// ON CLIENT
-	public void handle()
+	public void handle(@Nullable Player player)
 	{
 		((FocusDataHolder)MinejagoClientUtils.getMainClientPlayer()).getFocusData().setFocusLevel(focusLevel);
 		((FocusDataHolder)MinejagoClientUtils.getMainClientPlayer()).getFocusData().setSaturation(saturationLevel);
+	}
+
+	@Override
+	public Direction direction()
+	{
+		return Direction.SERVER_TO_CLIENT;
 	}
 }

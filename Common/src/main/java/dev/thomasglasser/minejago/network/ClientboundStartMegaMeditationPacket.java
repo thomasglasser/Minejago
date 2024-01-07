@@ -10,10 +10,11 @@ import dev.thomasglasser.minejago.world.focus.FocusDataHolder;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
-public class ClientboundStartMegaMeditationPacket
+public class ClientboundStartMegaMeditationPacket implements CustomPacket
 {
     public static final ResourceLocation ID = Minejago.modLoc("clientbound_start_mega_meditation");
 
@@ -23,11 +24,11 @@ public class ClientboundStartMegaMeditationPacket
         uuid = buf.readUUID();
     }
 
-    public void toBytes(FriendlyByteBuf buf) {
+    public void write(FriendlyByteBuf buf) {
         buf.writeUUID(uuid);
     }
 
-    public static FriendlyByteBuf toBytes(UUID uuid) {
+    public static FriendlyByteBuf write(UUID uuid) {
         FriendlyByteBuf buf = MinejagoPacketUtils.create();
 
         buf.writeUUID(uuid);
@@ -35,13 +36,24 @@ public class ClientboundStartMegaMeditationPacket
         return buf;
     }
 
-    public void handle()
+    public void handle(@Nullable Player player)
     {
-        Player player = MinejagoClientUtils.getClientPlayerByUUID(uuid);
+        player = MinejagoClientUtils.getClientPlayerByUUID(uuid);
         ((FocusDataHolder)player).getFocusData().startMegaMeditating();
 
         if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled())
             MinejagoAnimationUtils.startAnimation(PlayerAnimations.Meditation.FLOAT.getAnimation(), player, FirstPersonMode.VANILLA);
-//            MinejagoClientUtils.startAnimation(PlayerAnimations.Meditation.RISE.getAnimation(), PlayerAnimations.Meditation.FLOAT.getAnimation(), player, FirstPersonMode.VANILLA);
+    }
+
+    @Override
+    public Direction direction()
+    {
+        return Direction.SERVER_TO_CLIENT;
+    }
+
+    @Override
+    public ResourceLocation id()
+    {
+        return ID;
     }
 }

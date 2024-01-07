@@ -1,17 +1,12 @@
 package dev.thomasglasser.minejago;
 
-import dev.thomasglasser.minejago.tags.MinejagoBiomeTags;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.data.worldgen.placement.MinejagoVegetationPlacements;
-import dev.thomasglasser.minejago.network.ServerboundChangeVipDataPacket;
-import dev.thomasglasser.minejago.network.ServerboundFlyVehiclePacket;
-import dev.thomasglasser.minejago.network.ServerboundSetPowerDataPacket;
-import dev.thomasglasser.minejago.network.ServerboundStartMeditationPacket;
-import dev.thomasglasser.minejago.network.ServerboundStartSpinjitzuPacket;
-import dev.thomasglasser.minejago.network.ServerboundStopMeditationPacket;
-import dev.thomasglasser.minejago.network.ServerboundStopSpinjitzuPacket;
+import dev.thomasglasser.minejago.network.CustomPacket;
+import dev.thomasglasser.minejago.network.MinejagoPackets;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import dev.thomasglasser.minejago.packs.PackHolder;
+import dev.thomasglasser.minejago.tags.MinejagoBiomeTags;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityEvents;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.character.Character;
@@ -28,6 +23,7 @@ import dev.thomasglasser.minejago.world.focus.modifier.structure.StructureFocusM
 import dev.thomasglasser.minejago.world.focus.modifier.world.WorldFocusModifiers;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -36,11 +32,14 @@ import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.tags.BiomeTags;
+import net.minecraft.util.thread.BlockableEventLoop;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -50,11 +49,14 @@ import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
 import org.jetbrains.annotations.NotNull;
+import software.bernie.geckolib.GeckoLib;
 
 public class MinejagoFabric implements ModInitializer {
     @Override
     public void onInitialize() {
         Minejago.init();
+
+        GeckoLib.initialize();
 
         registerEvents();
 
@@ -110,20 +112,54 @@ public class MinejagoFabric implements ModInitializer {
     }
 
     private void registerPackets() {
-        ServerPlayNetworking.registerGlobalReceiver(ServerboundChangeVipDataPacket.ID, (server, player, handler, buf, responseSender) ->
-                new ServerboundChangeVipDataPacket(buf).handle(player));
-        ServerPlayNetworking.registerGlobalReceiver(ServerboundStartSpinjitzuPacket.ID, (server, player, handler, buf, responseSender) ->
-                new ServerboundStartSpinjitzuPacket().handle(player));
-        ServerPlayNetworking.registerGlobalReceiver(ServerboundSetPowerDataPacket.ID, (server, player, handler, buf, responseSender) ->
-                new ServerboundSetPowerDataPacket(buf).handle(player));
-        ServerPlayNetworking.registerGlobalReceiver(ServerboundStopSpinjitzuPacket.ID, (server, player, handler, buf, responseSender) ->
-                new ServerboundStopSpinjitzuPacket().handle(player));
-        ServerPlayNetworking.registerGlobalReceiver(ServerboundFlyVehiclePacket.ID, (server, player, handler, buf, responseSender) ->
-                new ServerboundFlyVehiclePacket(buf).handle(player));
-        ServerPlayNetworking.registerGlobalReceiver(ServerboundStartMeditationPacket.ID, (server, player, handler, buf, responseSender) ->
-                new ServerboundStartMeditationPacket().handle(player));
-        ServerPlayNetworking.registerGlobalReceiver(ServerboundStopMeditationPacket.ID, (server, player, handler, buf, responseSender) ->
-                new ServerboundStopMeditationPacket(buf).handle(player));
+        MinejagoPackets.PACKETS.forEach((packet, pair) ->
+        {
+            if (pair.getSecond() == CustomPacket.Direction.CLIENT_TO_SERVER)
+            {
+                ServerPlayNetworking.registerGlobalReceiver(pair.getFirst(), (server, player, handler, buf, responseSender) ->
+                        handlePacket(server, packet, buf, player));
+            }
+            else
+            {
+                ClientPlayNetworking.registerGlobalReceiver(pair.getFirst(), (client, handler, buf, responseSender) ->
+                        handlePacket(client, packet, buf, null));
+            }
+        });
+    }
+
+    private void handlePacket(BlockableEventLoop<?> handler, Class<? extends CustomPacket> packet, FriendlyByteBuf buf, ServerPlayer player)
+    {
+        buf.retain();
+        handler.execute(() ->
+        {
+            try
+            {
+                packet.getConstructor(FriendlyByteBuf.class).newInstance(buf).handle(player);
+            }
+            catch (NoSuchMethodException e)
+            {
+                try
+                {
+                    packet.getConstructor().newInstance().handle(player);
+                }
+                catch (NoSuchMethodException nsm)
+                {
+                    throw new RuntimeException("Custom packets must have FriendlyByteBuf or empty constructor!");
+                }
+                catch (Exception ex)
+                {
+                    throw new RuntimeException(e);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
+            finally
+            {
+                buf.release();
+            }
+        });
     }
 
     private void addBiomeModifications()

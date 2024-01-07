@@ -8,10 +8,13 @@ import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.util.MinejagoPacketUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
-public class ClientboundStartSpinjitzuPacket {
+public class ClientboundStartSpinjitzuPacket implements CustomPacket
+{
     public static final ResourceLocation ID = Minejago.modLoc("clientbound_start_spinjitzu");
 
     private final UUID uuid;
@@ -20,11 +23,11 @@ public class ClientboundStartSpinjitzuPacket {
         uuid = buf.readUUID();
     }
 
-    public void toBytes(FriendlyByteBuf buf) {
+    public void write(FriendlyByteBuf buf) {
         buf.writeUUID(uuid);
     }
 
-    public static FriendlyByteBuf toBytes(UUID uuid) {
+    public static FriendlyByteBuf write(UUID uuid) {
         FriendlyByteBuf buf = MinejagoPacketUtils.create();
 
         buf.writeUUID(uuid);
@@ -32,7 +35,19 @@ public class ClientboundStartSpinjitzuPacket {
         return buf;
     }
 
-    public void handle() {
+    public void handle(@Nullable Player player) {
         if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled()) MinejagoAnimationUtils.startAnimation(PlayerAnimations.Spinjitzu.START.getAnimation(), PlayerAnimations.Spinjitzu.ACTIVE.getAnimation(), MinejagoClientUtils.getClientPlayerByUUID(uuid), FirstPersonMode.VANILLA);
+    }
+
+    @Override
+    public Direction direction()
+    {
+        return Direction.SERVER_TO_CLIENT;
+    }
+
+    @Override
+    public ResourceLocation id()
+    {
+        return ID;
     }
 }

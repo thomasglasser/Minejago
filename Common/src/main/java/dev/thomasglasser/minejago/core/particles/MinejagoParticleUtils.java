@@ -14,7 +14,7 @@ public class MinejagoParticleUtils {
         float up = 0.0f;
         for (int i = 0; i < height; i++) {
             ParticleOptions particle = new SpinjitzuParticleOptions(color1, scale);
-            FriendlyByteBuf buf = ClientboundSpawnParticlePacket.toBytes(particle, entity.getX(), entity.getY() + up, entity.getZ(), 0, 1, 0);
+            FriendlyByteBuf buf = ClientboundSpawnParticlePacket.write(particle, entity.getX(), entity.getY() + up, entity.getZ(), 0, 1, 0);
             Services.NETWORK.sendToAllClients(ClientboundSpawnParticlePacket.class, buf, entity.getServer());
             scale *= toc ? 1.1f : 1.18f;
             up += 0.2f;
@@ -23,7 +23,7 @@ public class MinejagoParticleUtils {
         up = 0.1f;
         for (int i = 0; i < height; i++) {
             ParticleOptions particle = new SpinjitzuParticleOptions(color2, scale);
-            FriendlyByteBuf buf = ClientboundSpawnParticlePacket.toBytes(particle, entity.getX(), entity.getY() + up, entity.getZ(), 0, 1, 0);
+            FriendlyByteBuf buf = ClientboundSpawnParticlePacket.write(particle, entity.getX(), entity.getY() + up, entity.getZ(), 0, 1, 0);
             Services.NETWORK.sendToAllClients(ClientboundSpawnParticlePacket.class, buf, entity.getServer());
             scale *= toc ? 1.1f : 1.18f;
             up += 0.2f;
@@ -32,13 +32,13 @@ public class MinejagoParticleUtils {
 
     public static void renderNormalSpinjitzuBorder(ParticleOptions particle, Entity entity, double height, boolean toc) {
         for (int i = 0; i < height / 4; i++) {
-            FriendlyByteBuf buf = ClientboundSpawnParticlePacket.toBytes(particle, entity.getX(), entity.getY(), entity.getZ(), 0.5, 0.5, 0.5);
+            FriendlyByteBuf buf = ClientboundSpawnParticlePacket.write(particle, entity.getX(), entity.getY(), entity.getZ(), 0.5, 0.5, 0.5);
             Services.NETWORK.sendToAllClients(ClientboundSpawnParticlePacket.class, buf, entity.getServer());
-            buf = ClientboundSpawnParticlePacket.toBytes(particle, entity.getX(), entity.getY(), entity.getZ(), -0.5, 0.5, -0.5);
+            buf = ClientboundSpawnParticlePacket.write(particle, entity.getX(), entity.getY(), entity.getZ(), -0.5, 0.5, -0.5);
             Services.NETWORK.sendToAllClients(ClientboundSpawnParticlePacket.class, buf, entity.getServer());
-            buf = ClientboundSpawnParticlePacket.toBytes(particle, entity.getX(), entity.getY(), entity.getZ(), 0.5, 0.5, -0.5);
+            buf = ClientboundSpawnParticlePacket.write(particle, entity.getX(), entity.getY(), entity.getZ(), 0.5, 0.5, -0.5);
             Services.NETWORK.sendToAllClients(ClientboundSpawnParticlePacket.class, buf, entity.getServer());
-            buf = ClientboundSpawnParticlePacket.toBytes(particle, entity.getX(), entity.getY(), entity.getZ(), -0.5, 0.5, 0.5);
+            buf = ClientboundSpawnParticlePacket.write(particle, entity.getX(), entity.getY(), entity.getZ(), -0.5, 0.5, 0.5);
             Services.NETWORK.sendToAllClients(ClientboundSpawnParticlePacket.class, buf, entity.getServer());
         }
     }

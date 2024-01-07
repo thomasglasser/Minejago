@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.+'
+    id 'fabric-loom' version "${loom_version}"
     id 'maven-publish'
     id 'idea'
 }
@@ -12,7 +12,7 @@ dependencies {
     mappings loom.layered() {
         officialMojangMappings()
 //        parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip")
-        parchment("org.parchmentmc.data:parchment-1.20.2:${parchment_version}@zip")
+        parchment("org.parchmentmc.data:parchment-1.20.3:${parchment_version}@zip")
     }
 
     // Required for the rei forge annotation
@@ -25,10 +25,9 @@ dependencies {
     include modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${playeranimator_version}")
     include modCompileOnly("com.jamieswhiteshirt:reach-entity-attributes:$reachentityattributes_version")
 //    include modImplementation("com.jamieswhiteshirt:reach-entity-attributes:$reachentityattributes_version")
-    include modImplementation("maven.modrinth:sherdsapi:${sherdsapi_version}-fabric")
 //    include modImplementation("maven.modrinth:trimmed:${trimmed_version}+fabric")
     include modCompileOnly("maven.modrinth:trimmed:${trimmed_version}+fabric")
-    include modCompileOnly("maven.modrinth:midnightlib:${midnightlib_version}-fabric")
+    include modImplementation("maven.modrinth:midnightlib:${midnightlib_version}-fabric")
 
     modImplementation "net.tslat.smartbrainlib:SmartBrainLib-fabric-${minecraft_version}:${sbl_version}"
     modImplementation "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}"
@@ -51,6 +50,7 @@ dependencies {
 
     // Runtime Only Deps
     modRuntimeOnly "dev.lambdaurora:spruceui:${spruceui_version}"
+    modRuntimeOnly "maven.modrinth:sherdsapi:${sherdsapi_version}-fabric"
 
     // Runtime
     runtimeOnly "com.github.llamalad7.mixinextras:mixinextras-fabric:${mixinextras_version}"

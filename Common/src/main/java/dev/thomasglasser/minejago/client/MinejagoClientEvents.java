@@ -57,17 +57,17 @@ public class MinejagoClientEvents
             if (MinejagoKeyMappings.ASCEND.isDown())
             {
                 ((PlayerRideableFlying)player.getVehicle()).ascend();
-                Services.NETWORK.sendToServer(ServerboundFlyVehiclePacket.class, ServerboundFlyVehiclePacket.toBytes(ServerboundFlyVehiclePacket.Type.START_ASCEND));
+                Services.NETWORK.sendToServer(ServerboundFlyVehiclePacket.class, ServerboundFlyVehiclePacket.write(ServerboundFlyVehiclePacket.Type.START_ASCEND));
             }
             else if (MinejagoKeyMappings.DESCEND.isDown())
             {
                 ((PlayerRideableFlying)player.getVehicle()).descend();
-                Services.NETWORK.sendToServer(ServerboundFlyVehiclePacket.class, ServerboundFlyVehiclePacket.toBytes(ServerboundFlyVehiclePacket.Type.START_DESCEND));
+                Services.NETWORK.sendToServer(ServerboundFlyVehiclePacket.class, ServerboundFlyVehiclePacket.write(ServerboundFlyVehiclePacket.Type.START_DESCEND));
             }
             else
             {
                 ((PlayerRideableFlying)player.getVehicle()).stop();
-                Services.NETWORK.sendToServer(ServerboundFlyVehiclePacket.class, ServerboundFlyVehiclePacket.toBytes(ServerboundFlyVehiclePacket.Type.STOP));
+                Services.NETWORK.sendToServer(ServerboundFlyVehiclePacket.class, ServerboundFlyVehiclePacket.write(ServerboundFlyVehiclePacket.Type.STOP));
             }
         }
     }
@@ -113,12 +113,12 @@ public class MinejagoClientEvents
     public static void onInput(int key)
     {
         Player mainClientPlayer = MinejagoClientUtils.getMainClientPlayer();
-        if (mainClientPlayer != null && key != GLFW.GLFW_KEY_ESCAPE && !MinejagoKeyMappings.MEDITATE.isDown() && key != GLFW.GLFW_KEY_LEFT_SHIFT)
+        if (mainClientPlayer != null && !(key >= GLFW.GLFW_KEY_F1 && key <= GLFW.GLFW_KEY_F25) && !MinejagoKeyMappings.MEDITATE.isDown() && key != GLFW.GLFW_KEY_LEFT_SHIFT && key != GLFW.GLFW_KEY_ESCAPE)
         {
             FocusData focusData = ((FocusDataHolder) mainClientPlayer).getFocusData();
             if (focusData.isMeditating() && ((DataHolder)mainClientPlayer).getPersistentData().getInt("WaitTicks") <= 0)
             {
-                Services.NETWORK.sendToServer(ServerboundStopMeditationPacket.class, ServerboundStopMeditationPacket.toBytes(true));
+                Services.NETWORK.sendToServer(ServerboundStopMeditationPacket.class, ServerboundStopMeditationPacket.write(true));
                 focusData.stopMeditating();
                 ((DataHolder) mainClientPlayer).getPersistentData().putInt("WaitTicks", 5);
             }

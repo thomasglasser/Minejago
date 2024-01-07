@@ -34,10 +34,8 @@ public class PlayerAnimations
     public enum Meditation
     {
         START(MEDITATION.get(0)),
-        RISE(MEDITATION.get(1)),
-        FLOAT(MEDITATION.get(2)),
-        FALL(MEDITATION.get(3)),
-        FINISH(MEDITATION.get(4));
+        FLOAT(MEDITATION.get(1)),
+        FINISH(MEDITATION.get(2));
 
         private final KeyframeAnimation animation;
 

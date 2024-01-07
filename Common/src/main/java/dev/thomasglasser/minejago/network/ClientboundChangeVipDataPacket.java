@@ -6,10 +6,13 @@ import dev.thomasglasser.minejago.client.renderer.entity.layers.VipData;
 import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
-public class ClientboundChangeVipDataPacket {
+public class ClientboundChangeVipDataPacket implements CustomPacket
+{
     public static final ResourceLocation ID = Minejago.modLoc("clientbound_change_vip_data");
 
     private final UUID uuid;
@@ -25,7 +28,8 @@ public class ClientboundChangeVipDataPacket {
         );
     }
 
-    public void toBytes(FriendlyByteBuf buffer) {
+    @Override
+    public void write(FriendlyByteBuf buffer) {
         buffer.writeUUID(uuid);
         buffer.writeEnum(vipData.choice());
         buffer.writeBoolean(vipData.displaySnapshot());
@@ -33,13 +37,26 @@ public class ClientboundChangeVipDataPacket {
         buffer.writeBoolean(vipData.displayOgDev());
     }
 
-    public static FriendlyByteBuf toBytes(UUID uuid, VipData vipData) {
-        return ServerboundChangeVipDataPacket.toBytes(uuid, vipData);
+    @Override
+    public ResourceLocation id()
+    {
+        return ID;
+    }
+
+    public static FriendlyByteBuf write(UUID uuid, VipData vipData) {
+        return ServerboundChangeVipDataPacket.write(uuid, vipData);
     }
 
     // ON CLIENT
-    public void handle()
+    @Override
+    public void handle(@Nullable Player player)
     {
         MinejagoClientUtils.setVipData(MinejagoClientUtils.getClientPlayerByUUID(uuid), vipData);
+    }
+
+    @Override
+    public Direction direction()
+    {
+        return Direction.SERVER_TO_CLIENT;
     }
 }

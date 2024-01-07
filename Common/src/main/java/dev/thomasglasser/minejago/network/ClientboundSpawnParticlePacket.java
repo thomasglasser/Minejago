@@ -8,8 +8,11 @@ import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.Nullable;
 
-public class ClientboundSpawnParticlePacket {
+public class ClientboundSpawnParticlePacket implements CustomPacket
+{
     public static final ResourceLocation ID = Minejago.modLoc("clientbound_spawn_particle");
 
     private final ParticleOptions particle;
@@ -31,7 +34,7 @@ public class ClientboundSpawnParticlePacket {
         this.zSpeed = buf.readDouble();
     }
 
-    public void toBytes(FriendlyByteBuf buf) {
+    public void write(FriendlyByteBuf buf) {
         buf.writeResourceLocation(BuiltInRegistries.PARTICLE_TYPE.getKey(this.particle.getType()));
         this.particle.writeToNetwork(buf);
         buf.writeDouble(this.x);
@@ -42,7 +45,7 @@ public class ClientboundSpawnParticlePacket {
         buf.writeDouble(this.zSpeed);
     }
 
-    public static FriendlyByteBuf toBytes(ParticleOptions particle, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
+    public static FriendlyByteBuf write(ParticleOptions particle, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
     {
         FriendlyByteBuf buf = MinejagoPacketUtils.create();
 
@@ -59,7 +62,19 @@ public class ClientboundSpawnParticlePacket {
     }
 
     // ON CLIENT
-    public void handle() {
+    public void handle(@Nullable Player player) {
         MinejagoParticleUtils.addClientParticle(particle, x, y, z, xSpeed, ySpeed, zSpeed);
+    }
+
+    @Override
+    public Direction direction()
+    {
+        return Direction.SERVER_TO_CLIENT;
+    }
+
+    @Override
+    public ResourceLocation id()
+    {
+        return ID;
     }
 }

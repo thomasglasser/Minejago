@@ -5,6 +5,7 @@ import dev.thomasglasser.minejago.client.MinejagoClientConfig;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
+import dev.thomasglasser.minejago.network.MinejagoPackets;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
@@ -33,7 +34,6 @@ import net.tslat.tes.api.TESAPI;
 import net.tslat.tes.api.util.TESClientUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import software.bernie.geckolib.GeckoLib;
 
 public class Minejago {
 
@@ -51,8 +51,6 @@ public class Minejago {
 		initRegistries();
 
 		registerConfigs();
-
-		GeckoLib.initialize();
 
 		if (Dependencies.TSLAT_ENTITY_STATUS.isInstalled())
 		{
@@ -75,6 +73,8 @@ public class Minejago {
 				return 0;
 			});
 		}
+
+		MinejagoPackets.init();
 	}
 
 	private static void initRegistries()

@@ -9,9 +9,11 @@ import net.minecraft.client.gui.screens.inventory.BookViewScreen;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
-public class ClientboundOpenScrollPacket
+public class ClientboundOpenScrollPacket implements CustomPacket
 {
     public static final ResourceLocation ID = Minejago.modLoc("clientbound_open_scroll");
 
@@ -21,11 +23,11 @@ public class ClientboundOpenScrollPacket
         hand = buf.readEnum(InteractionHand.class);
     }
 
-    public void toBytes(FriendlyByteBuf buf) {
+    public void write(FriendlyByteBuf buf) {
         buf.writeEnum(hand);
     }
 
-    public static FriendlyByteBuf toBytes(InteractionHand hand) {
+    public static FriendlyByteBuf write(InteractionHand hand) {
         FriendlyByteBuf buf = MinejagoPacketUtils.create();
 
         buf.writeEnum(hand);
@@ -34,11 +36,23 @@ public class ClientboundOpenScrollPacket
     }
 
     // ON CLIENT
-    public void handle()
+    public void handle(@Nullable Player player)
     {
         ItemStack itemStack = MinejagoClientUtils.getMainClientPlayer().getItemInHand(hand);
         if (itemStack.is(MinejagoItems.WRITTEN_SCROLL.get())) {
             MinejagoClientUtils.setScreen(new ScrollViewScreen(new BookViewScreen.WrittenBookAccess(itemStack)));
         }
+    }
+
+    @Override
+    public Direction direction()
+    {
+        return Direction.SERVER_TO_CLIENT;
+    }
+
+    @Override
+    public ResourceLocation id()
+    {
+        return ID;
     }
 }

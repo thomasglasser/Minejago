@@ -11,11 +11,12 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ClientboundOpenPowerSelectionScreenPacket
+public class ClientboundOpenPowerSelectionScreenPacket implements CustomPacket
 {
     public static final ResourceLocation ID = Minejago.modLoc("clientbound_open_power_selection_screen");
 
@@ -28,12 +29,13 @@ public class ClientboundOpenPowerSelectionScreenPacket
         wuId = buf.readNullable(FriendlyByteBuf::readInt);
     }
 
-    public void toBytes(FriendlyByteBuf buf) {
+    @Override
+    public void write(FriendlyByteBuf buf) {
         buf.writeCollection(powers, FriendlyByteBuf::writeResourceKey);
         buf.writeNullable(wuId, FriendlyByteBuf::writeInt);
     }
 
-    public static FriendlyByteBuf toBytes(List<ResourceKey<Power>> powers, @Nullable Integer wuId) {
+    public static FriendlyByteBuf write(List<ResourceKey<Power>> powers, @Nullable Integer wuId) {
         FriendlyByteBuf buf = MinejagoPacketUtils.create();
 
         buf.writeCollection(powers, FriendlyByteBuf::writeResourceKey);
@@ -42,7 +44,7 @@ public class ClientboundOpenPowerSelectionScreenPacket
         return buf;
     }
 
-    public static FriendlyByteBuf toBytes(List<ResourceKey<Power>> powers) {
+    public static FriendlyByteBuf write(List<ResourceKey<Power>> powers) {
         FriendlyByteBuf buf = MinejagoPacketUtils.create();
 
         buf.writeCollection(powers, FriendlyByteBuf::writeResourceKey);
@@ -52,7 +54,19 @@ public class ClientboundOpenPowerSelectionScreenPacket
     }
 
     // ON CLIENT
-    public void handle() {
+    public void handle(@org.jetbrains.annotations.Nullable Player player) {
         MinejagoClientUtils.setScreen(new PowerSelectionScreen(Component.translatable("gui.power_selection.title"), powers, wuId != null && MinejagoClientUtils.getEntityById(wuId) instanceof Wu wu ? wu : null));
+    }
+
+    @Override
+    public Direction direction()
+    {
+        return Direction.SERVER_TO_CLIENT;
+    }
+
+    @Override
+    public ResourceLocation id()
+    {
+        return ID;
     }
 }

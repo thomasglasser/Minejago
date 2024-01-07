@@ -73,7 +73,7 @@ public abstract class ServerPlayerMixin
                 INSTANCE.containerMenu.broadcastChanges();
             }
 
-            Services.NETWORK.sendToClient(ClientboundOpenScrollPacket.class, ClientboundOpenScrollPacket.toBytes(hand), INSTANCE);
+            Services.NETWORK.sendToClient(ClientboundOpenScrollPacket.class, ClientboundOpenScrollPacket.write(hand), INSTANCE);
         }
     }
 
@@ -91,7 +91,7 @@ public abstract class ServerPlayerMixin
         if (focusData == null)
             focusData = ((FocusDataHolder)INSTANCE).getFocusData();
         if (this.lastSentFocus != focusData.getFocusLevel() || this.focusData.getSaturationLevel() == 0.0F != this.lastFoodSaturationZero) {
-            Services.NETWORK.sendToClient(ClientboundSetFocusPacket.class, ClientboundSetFocusPacket.toBytes(focusData), INSTANCE);
+            Services.NETWORK.sendToClient(ClientboundSetFocusPacket.class, ClientboundSetFocusPacket.write(focusData), INSTANCE);
             this.lastSentFocus = this.focusData.getFocusLevel();
             this.lastFoodSaturationZero = this.focusData.getSaturationLevel() == 0.0F;
         }

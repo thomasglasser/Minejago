@@ -4,7 +4,6 @@ import com.google.common.util.concurrent.AtomicDouble;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
-import dev.thomasglasser.minejago.client.animation.MinejagoAnimationUtils;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleUtils;
 import dev.thomasglasser.minejago.core.particles.SpinjitzuParticleOptions;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
@@ -39,7 +38,6 @@ import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
-import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
@@ -126,7 +124,7 @@ public class MinejagoEntityEvents
                     if (focusData.isMeditating())
                     {
                         focusData.stopMeditating();
-                        Services.NETWORK.sendToAllClients(ClientboundStopAnimationPacket.class, ClientboundStopAnimationPacket.toBytes(serverPlayer.getUUID()), serverPlayer.getServer());
+                        Services.NETWORK.sendToAllClients(ClientboundStopAnimationPacket.class, ClientboundStopAnimationPacket.write(serverPlayer.getUUID()), serverPlayer.getServer());
                     }
 
                     if (NO_SPINJITZU.test(serverPlayer)) {
@@ -177,7 +175,7 @@ public class MinejagoEntityEvents
                 if (NO_MEDITATION.test(serverPlayer))
                 {
                     focusData.stopMeditating();
-                    Services.NETWORK.sendToAllClients(ClientboundStopMeditationPacket.class, ClientboundStopMeditationPacket.toBytes(serverPlayer.getUUID(), false), serverPlayer.getServer());
+                    Services.NETWORK.sendToAllClients(ClientboundStopMeditationPacket.class, ClientboundStopMeditationPacket.write(serverPlayer.getUUID(), true), serverPlayer.getServer());
                 }
 
                 if ((focusData.isMegaMeditating() && player.tickCount % 200 == 0) || (focusData.isNormalMeditating() && player.tickCount % 60 == 0))
@@ -228,13 +226,13 @@ public class MinejagoEntityEvents
                     if (!focusData.isMegaMeditating())
                     {
                         focusData.startMegaMeditating();
-                        Services.NETWORK.sendToAllClients(ClientboundStartMegaMeditationPacket.class, ClientboundStartMegaMeditationPacket.toBytes(player.getUUID()), level.getServer());
+                        Services.NETWORK.sendToAllClients(ClientboundStartMegaMeditationPacket.class, ClientboundStartMegaMeditationPacket.write(player.getUUID()), level.getServer());
                     }
                 }
                 else if (focusData.isMegaMeditating())
                 {
                     focusData.startMeditating();
-                    Services.NETWORK.sendToAllClients(ClientboundStartMeditationPacket.class, ClientboundStartMeditationPacket.toBytes(player.getUUID()), level.getServer());
+                    Services.NETWORK.sendToAllClients(ClientboundStartMeditationPacket.class, ClientboundStartMeditationPacket.write(player.getUUID()), level.getServer());
                 }
             }
         }
@@ -258,14 +256,14 @@ public class MinejagoEntityEvents
             }
             else if (MinejagoKeyMappings.MEDITATE.isDown() && !spinjitzu.active())
             {
-                if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled()) MinejagoAnimationUtils.stopAnimation((AbstractClientPlayer) player);
                 if (focusData.isMeditating())
                 {
                     focusData.stopMeditating();
-                    Services.NETWORK.sendToServer(ServerboundStopMeditationPacket.class, ServerboundStopMeditationPacket.toBytes(false));
+                    Services.NETWORK.sendToServer(ServerboundStopMeditationPacket.class, ServerboundStopMeditationPacket.write(false));
                 }
                 else
                 {
+                    focusData.startMeditating();
                     Services.NETWORK.sendToServer(ServerboundStartMeditationPacket.class);
                 }
                 ((DataHolder) player).getPersistentData().putInt("WaitTicks", 5);
@@ -279,7 +277,7 @@ public class MinejagoEntityEvents
                 if (focusData.isMeditating())
                 {
                     focusData.stopMeditating();
-                    Services.NETWORK.sendToServer(ServerboundStopMeditationPacket.class, ServerboundStopMeditationPacket.toBytes(false));
+                    Services.NETWORK.sendToServer(ServerboundStopMeditationPacket.class, ServerboundStopMeditationPacket.write(false));
                 }
                 ((DataHolder) player).getPersistentData().putInt("WaitTicks", 5);
             }
@@ -378,7 +376,7 @@ public class MinejagoEntityEvents
         if (spinjitzu.active())
         {
             Services.DATA.setSpinjitzuData(new SpinjitzuData(spinjitzu.unlocked(), false), serverPlayer);
-            Services.NETWORK.sendToAllClients(ClientboundStopSpinjitzuPacket.class, ClientboundStopSpinjitzuPacket.toBytes(serverPlayer.getUUID(), fail), serverPlayer.getServer());
+            Services.NETWORK.sendToAllClients(ClientboundStopSpinjitzuPacket.class, ClientboundStopSpinjitzuPacket.write(serverPlayer.getUUID(), fail), serverPlayer.getServer());
             AttributeInstance speed = serverPlayer.getAttribute(Attributes.MOVEMENT_SPEED);
             if (speed != null && speed.hasModifier(SpinjitzuData.SPEED_MODIFIER))
                 speed.removeModifier(SpinjitzuData.SPEED_MODIFIER.getId());

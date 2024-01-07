@@ -1,5 +1,6 @@
 package dev.thomasglasser.minejago.platform;
 
+import dev.thomasglasser.minejago.network.CustomPacket;
 import dev.thomasglasser.minejago.platform.services.NetworkHelper;
 import dev.thomasglasser.minejago.util.MinejagoPacketUtils;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -12,7 +13,7 @@ import net.minecraft.server.level.ServerPlayer;
 
 public class FabricNetworkHelper implements NetworkHelper {
     @Override
-    public <MSG> void sendToServer(Class<MSG> msgClass, FriendlyByteBuf args) {
+    public <MSG extends CustomPacket> void sendToServer(Class<MSG> msgClass, FriendlyByteBuf args) {
         try {
             ClientPlayNetworking.send(((ResourceLocation) msgClass.getDeclaredField("ID").get(this)), args);
         } catch (Exception e) {
@@ -21,7 +22,7 @@ public class FabricNetworkHelper implements NetworkHelper {
     }
 
     @Override
-    public <MSG> void sendToServer(Class<MSG> msgClass) {
+    public <MSG extends CustomPacket> void sendToServer(Class<MSG> msgClass) {
         try {
             ClientPlayNetworking.send(((ResourceLocation) msgClass.getDeclaredField("ID").get(this)), MinejagoPacketUtils.empty());
         } catch (Exception e) {
@@ -30,7 +31,7 @@ public class FabricNetworkHelper implements NetworkHelper {
     }
 
     @Override
-    public <MSG> void sendToClient(Class<MSG> msgClass, FriendlyByteBuf args, ServerPlayer player) {
+    public <MSG extends CustomPacket> void sendToClient(Class<MSG> msgClass, FriendlyByteBuf args, ServerPlayer player) {
         try {
             ServerPlayNetworking.send(player, ((ResourceLocation) msgClass.getDeclaredField("ID").get(this)), args);
         } catch (Exception e) {
@@ -39,7 +40,7 @@ public class FabricNetworkHelper implements NetworkHelper {
     }
 
     @Override
-    public <MSG> void sendToClient(Class<MSG> msgClass, ServerPlayer player) {
+    public <MSG extends CustomPacket> void sendToClient(Class<MSG> msgClass, ServerPlayer player) {
         try {
             ServerPlayNetworking.send(player, ((ResourceLocation) msgClass.getDeclaredField("ID").get(this)), MinejagoPacketUtils.empty());
         } catch (Exception e) {
@@ -48,7 +49,7 @@ public class FabricNetworkHelper implements NetworkHelper {
     }
 
     @Override
-    public <MSG> void sendToAllClients(Class<MSG> msgClass, FriendlyByteBuf args, MinecraftServer server) {
+    public <MSG extends CustomPacket> void sendToAllClients(Class<MSG> msgClass, FriendlyByteBuf args, MinecraftServer server) {
         for (ServerPlayer player : PlayerLookup.all(server))
         {
             try {
@@ -60,7 +61,7 @@ public class FabricNetworkHelper implements NetworkHelper {
     }
 
     @Override
-    public <MSG> void sendToAllClients(Class<MSG> msgClass, MinecraftServer server) {
+    public <MSG extends CustomPacket> void sendToAllClients(Class<MSG> msgClass, MinecraftServer server) {
         for (ServerPlayer player : PlayerLookup.all(server))
         {
             try {
