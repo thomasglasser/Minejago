@@ -23,7 +23,6 @@ import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
 import dev.thomasglasser.minejago.world.focus.FocusData;
-import dev.thomasglasser.minejago.world.focus.FocusDataHolder;
 import dev.thomasglasser.minejago.world.focus.modifier.biome.BiomeFocusModifiers;
 import dev.thomasglasser.minejago.world.focus.modifier.blockstate.BlockStateFocusModifiers;
 import dev.thomasglasser.minejago.world.focus.modifier.dimension.DimensionFocusModifiers;
@@ -85,7 +84,7 @@ public class MinejagoEntityEvents
                     player.getActiveEffects().stream().anyMatch((mobEffectInstance -> mobEffectInstance.getEffect().getCategory() == MobEffectCategory.HARMFUL)) ||
                     player.isInWater() ||
                     ((DataHolder)player).getPersistentData().getInt("OffGroundTicks") > 30 ||
-                    ((FocusDataHolder)player).getFocusData().getFocusLevel() < FocusConstants.DOING_SPINJITZU_LEVEL);
+                    Services.DATA.getFocusData(player).getFocusLevel() < FocusConstants.DOING_SPINJITZU_LEVEL);
 
     public static final Predicate<LivingEntity> NO_MEDITATION = (player ->
             player.isCrouching() ||
@@ -99,7 +98,7 @@ public class MinejagoEntityEvents
 
     public static void onPlayerTick(Player player)
     {
-        FocusData focusData = ((FocusDataHolder)player).getFocusData();
+        FocusData focusData = Services.DATA.getFocusData(player);
         focusData.tick(player);
 
         SpinjitzuData spinjitzu = Services.DATA.getSpinjitzuData(player);

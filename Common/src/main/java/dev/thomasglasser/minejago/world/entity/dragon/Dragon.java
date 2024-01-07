@@ -8,7 +8,6 @@ import dev.thomasglasser.minejago.world.entity.character.Character;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
 import dev.thomasglasser.minejago.world.focus.FocusData;
-import dev.thomasglasser.minejago.world.focus.FocusDataHolder;
 import dev.thomasglasser.minejago.world.item.GoldenWeaponItem;
 import dev.thomasglasser.minejago.world.level.storage.PowerData;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -347,7 +346,7 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
             ItemStack stack = player.getItemInHand(hand);
             boolean ownedBy = isOwnedBy(player);
             double bond = getBond(player);
-            FocusData focusData = ((FocusDataHolder)player).getFocusData();
+            FocusData focusData = Services.DATA.getFocusData(player);
             if (stack.is(MinejagoItemTags.DRAGON_FOODS) || stack.is(MinejagoItemTags.DRAGON_TREATS))
             {
                 if (!player.getAbilities().instabuild)
@@ -380,7 +379,7 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
                     player.startRiding(this);
                 else if (powerRegistry.getOrThrow(Services.DATA.getPowerData(player).power()).is(acceptablePowers, powerRegistry) && focusData.getFocusLevel() >= 14) {
                     // TODO: give DX suit
-                    ((FocusDataHolder)player).getFocusData().addExhaustion(FocusConstants.EXHAUSTION_TAME);
+                    Services.DATA.getFocusData(player).addExhaustion(FocusConstants.EXHAUSTION_TAME);
                     tame(player);
                     if (player.level() instanceof ServerLevel serverLevel)
                     {

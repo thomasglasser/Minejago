@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.platform.services;
 
 import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
+import dev.thomasglasser.minejago.world.focus.FocusData;
 import dev.thomasglasser.minejago.world.level.storage.PowerData;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,4 +19,7 @@ public interface DataHelper
 
     SpinjitzuData getSpinjitzuData(LivingEntity entity);
     void setSpinjitzuData(SpinjitzuData data, LivingEntity entity);
+
+    FocusData getFocusData(LivingEntity entity);
+    void setFocusData(FocusData data, LivingEntity entity);
 }

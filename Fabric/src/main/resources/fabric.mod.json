@@ -80,7 +80,8 @@
   "custom": {
     "cardinal-components": [
       "minejago:power",
-      "minejago:spinjitzu"
+      "minejago:spinjitzu",
+      "minejago:focus"
     ],
     "mc-publish": {
       "loaders": ["fabric", "quilt"]

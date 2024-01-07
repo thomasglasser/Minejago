@@ -9,7 +9,6 @@ import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
 import dev.thomasglasser.minejago.world.focus.FocusData;
-import dev.thomasglasser.minejago.world.focus.FocusDataHolder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
@@ -90,7 +89,7 @@ public abstract class GoldenWeaponItem extends SimpleFoiledItem
             }
         }
         Player player = pContext.getPlayer();
-        FocusData focusData = player == null ? null : ((FocusDataHolder)player).getFocusData();
+        FocusData focusData = player == null ? null : Services.DATA.getFocusData(player);
         if (focusData != null)
         {
             focusData.addExhaustion(FocusConstants.EXHAUSTION_USING_GOLDEN_WEAPON);
@@ -125,7 +124,7 @@ public abstract class GoldenWeaponItem extends SimpleFoiledItem
             }
         }
         Player player = pLivingEntity instanceof Player p ? p : null;
-        FocusData focusData = player == null ? null : ((FocusDataHolder)player).getFocusData();
+        FocusData focusData = player == null ? null : Services.DATA.getFocusData(player);
         if (focusData != null)
         {
             focusData.addExhaustion(FocusConstants.EXHAUSTION_USING_GOLDEN_WEAPON);
@@ -153,7 +152,7 @@ public abstract class GoldenWeaponItem extends SimpleFoiledItem
             }
         }
         Player player = livingEntity instanceof Player p ? p : null;
-        FocusData focusData = player == null ? null : ((FocusDataHolder)player).getFocusData();
+        FocusData focusData = player == null ? null : Services.DATA.getFocusData(player);
         if (focusData != null)
         {
             focusData.addExhaustion(FocusConstants.EXHAUSTION_USING_GOLDEN_WEAPON);

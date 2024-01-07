@@ -2,16 +2,38 @@ package dev.thomasglasser.minejago.world.level.storage;
 
 import dev.onyxstudios.cca.api.v3.component.ComponentV3;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
-import dev.thomasglasser.minejago.world.entity.power.Power;
-import net.minecraft.resources.ResourceKey;
+import dev.onyxstudios.cca.api.v3.entity.PlayerComponent;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 
-public interface PowerComponent extends ComponentV3, AutoSyncedComponent
+public class PowerComponent implements ComponentV3, AutoSyncedComponent, PlayerComponent<PowerComponent>
 {
-    ResourceKey<Power> getPower();
+	private PowerData powerData = new PowerData();
 
-    void setPower(ResourceKey<Power> newPower);
+	public PowerData getPowerData()
+	{
+		return powerData;
+	}
 
-    boolean isGiven();
+	public void setPowerData(PowerData powerData)
+	{
+		this.powerData = powerData;
+	}
 
-    void setGiven(boolean given);
+	@Override
+	public void readFromNbt(CompoundTag tag)
+	{
+		powerData = PowerData.CODEC.decode(NbtOps.INSTANCE, tag.get("PowerData")).get().orThrow().getFirst();
+	}
+
+	@Override
+	public void writeToNbt(CompoundTag tag)
+	{
+		tag.put("PowerData", PowerData.CODEC.encodeStart(NbtOps.INSTANCE, powerData).result().orElseThrow());
+	}
+
+	@Override
+	public boolean shouldCopyForRespawn(boolean lossless, boolean keepInventory, boolean sameCharacter) {
+		return lossless || keepInventory;
+	}
 }

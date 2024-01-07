@@ -1,12 +1,12 @@
 package dev.thomasglasser.minejago.world.effect;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.registration.RegistrationProvider;
 import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.util.MinejagoLevelUtils;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaidsHolder;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
-import dev.thomasglasser.minejago.world.focus.FocusDataHolder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -81,7 +81,7 @@ public class MinejagoMobEffects
         {
             super.onApplication(effectInstance, source, entity, amplifier);
             if (!entity.level().isClientSide && entity instanceof Player player)
-                ((FocusDataHolder)player).getFocusData().increase(false, amplifier + 1, FocusConstants.FOCUS_SATURATION_MAX);
+                Services.DATA.getFocusData(player).increase(false, amplifier + 1, FocusConstants.FOCUS_SATURATION_MAX);
         }
 
         @Override

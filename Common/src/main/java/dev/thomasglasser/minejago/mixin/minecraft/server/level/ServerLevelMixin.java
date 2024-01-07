@@ -1,9 +1,9 @@
 package dev.thomasglasser.minejago.mixin.minecraft.server.level;
 
+import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaids;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaidsHolder;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
-import dev.thomasglasser.minejago.world.focus.FocusDataHolder;
 import dev.thomasglasser.minejago.world.level.levelgen.SkulkinArmySpawner;
 import dev.thomasglasser.minejago.world.level.levelgen.SkulkinPatrolSpawner;
 import net.minecraft.core.Holder;
@@ -85,6 +85,6 @@ public abstract class ServerLevelMixin extends Level implements SkulkinRaidsHold
 	@Inject(method = {"method_18773", "m_184115_", "lambda$wakeUpAllPlayers$3"}, at = @At("TAIL"))
 	private static void minejago_lambda$wakeUpAllPlayers$7(ServerPlayer serverPlayer, CallbackInfo ci)
 	{
-		((FocusDataHolder)serverPlayer).getFocusData().increase(false, 2, FocusConstants.FOCUS_SATURATION_LOW);
+		Services.DATA.getFocusData(serverPlayer).increase(false, 2, FocusConstants.FOCUS_SATURATION_LOW);
 	}
 }

@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.world.focus;
 
-import net.minecraft.nbt.CompoundTag;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.player.Player;
 
@@ -13,11 +14,28 @@ import static dev.thomasglasser.minejago.world.focus.FocusConstants.START_SATURA
 
 public class FocusData
 {
+	public static final Codec<FocusData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+			Codec.INT.fieldOf("focusLevel").forGetter(FocusData::getFocusLevel),
+			Codec.FLOAT.fieldOf("saturationLevel").forGetter(FocusData::getSaturationLevel),
+			Codec.FLOAT.fieldOf("exhaustionLevel").forGetter(FocusData::getExhaustionLevel)
+	).apply(instance, FocusData::new));
+
 	private int focusLevel = START_FOCUS;
 	private float saturationLevel = START_SATURATION;
 	private float exhaustionLevel;
 	private int lastFocusLevel = START_FOCUS;
 	private MeditationType meditationType = MeditationType.NONE;
+
+	public FocusData()
+	{
+	}
+
+	public FocusData(int focusLevel, float saturationLevel, float exhaustionLevel)
+	{
+		this.focusLevel = focusLevel;
+		this.saturationLevel = saturationLevel;
+		this.exhaustionLevel = exhaustionLevel;
+	}
 
 	/**
 	 * Add stats.
@@ -50,26 +68,6 @@ public class FocusData
 	public boolean canMegaMeditate(Player player)
 	{
 		return focusLevel >= 20 && player.getHealth() >= player.getMaxHealth() && !player.getFoodData().needsFood() && isMeditating();
-	}
-
-	/**
-	 * Reads the focus data for the player.
-	 */
-	public void readAdditionalSaveData(CompoundTag compoundTag) {
-		if (compoundTag.contains("focusLevel", 99)) {
-			this.focusLevel = compoundTag.getInt("focusLevel");
-			this.saturationLevel = compoundTag.getFloat("focusSaturationLevel");
-			this.exhaustionLevel = compoundTag.getFloat("focusExhaustionLevel");
-		}
-	}
-
-	/**
-	 * Writes the focus data for the player.
-	 */
-	public void addAdditionalSaveData(CompoundTag compoundTag) {
-		compoundTag.putInt("focusLevel", this.focusLevel);
-		compoundTag.putFloat("focusSaturationLevel", this.saturationLevel);
-		compoundTag.putFloat("focusExhaustionLevel", this.exhaustionLevel);
 	}
 
 	/**

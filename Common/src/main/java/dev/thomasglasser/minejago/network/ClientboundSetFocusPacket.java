@@ -1,10 +1,10 @@
 package dev.thomasglasser.minejago.network;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.util.MinejagoPacketUtils;
 import dev.thomasglasser.minejago.world.focus.FocusData;
-import dev.thomasglasser.minejago.world.focus.FocusDataHolder;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -45,8 +45,9 @@ public class ClientboundSetFocusPacket implements CustomPacket
 	// ON CLIENT
 	public void handle(@Nullable Player player)
 	{
-		((FocusDataHolder)MinejagoClientUtils.getMainClientPlayer()).getFocusData().setFocusLevel(focusLevel);
-		((FocusDataHolder)MinejagoClientUtils.getMainClientPlayer()).getFocusData().setSaturation(saturationLevel);
+		FocusData focusData = Services.DATA.getFocusData(MinejagoClientUtils.getMainClientPlayer());
+		focusData.setFocusLevel(focusLevel);
+		focusData.setSaturation(saturationLevel);
 	}
 
 	@Override

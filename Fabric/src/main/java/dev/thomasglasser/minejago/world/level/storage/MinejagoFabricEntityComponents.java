@@ -11,13 +11,16 @@ public class MinejagoFabricEntityComponents implements EntityComponentInitialize
 {
     public static final ComponentKey<PowerComponent> POWER = ComponentRegistry.getOrCreate(Minejago.modLoc("power"), PowerComponent.class);
     public static final ComponentKey<SpinjitzuComponent> SPINJITZU = ComponentRegistry.getOrCreate(Minejago.modLoc("spinjitzu"), SpinjitzuComponent.class);
+    public static final ComponentKey<FocusComponent> FOCUS = ComponentRegistry.getOrCreate(Minejago.modLoc("focus"), FocusComponent.class);
 
     @Override
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
-        registry.registerForPlayers(POWER, entity -> new PlayerPowerComponent());
-        registry.registerForPlayers(SPINJITZU, entity -> new PlayerSpinjitzuComponent());
+        registry.registerForPlayers(POWER, entity -> new PowerComponent());
+        registry.registerForPlayers(SPINJITZU, entity -> new SpinjitzuComponent());
+        registry.registerForPlayers(FOCUS, entity -> new FocusComponent());
 
-        registry.registerFor(LivingEntity.class, POWER, entity -> new LivingEntityPowerComponent());
-        registry.registerFor(LivingEntity.class, SPINJITZU, entity -> new LivingEntitySpinjitzuComponent(true, false));
+        registry.registerFor(LivingEntity.class, POWER, entity -> new PowerComponent());
+        registry.registerFor(LivingEntity.class, SPINJITZU, entity -> new SpinjitzuComponent());
+        registry.registerFor(LivingEntity.class, FOCUS, entity -> new FocusComponent());
     }
 }

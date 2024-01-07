@@ -6,7 +6,6 @@ import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.focus.FocusData;
-import dev.thomasglasser.minejago.world.focus.FocusDataHolder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
@@ -40,7 +39,7 @@ public class MinejagoGuis
 			if (vehicleMaxHearts == 0) {
 				minecraft.getProfiler().popPush("focus");
 
-				FocusData focusData = ((FocusDataHolder)player).getFocusData();
+				FocusData focusData = Services.DATA.getFocusData(player);
 				int focusLevel = focusData.getFocusLevel();
 				int startX = guiGraphics.guiWidth() / 2 + 91;
 				int startY = guiGraphics.guiHeight() - 49;

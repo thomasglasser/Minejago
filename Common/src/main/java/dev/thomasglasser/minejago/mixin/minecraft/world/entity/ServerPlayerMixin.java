@@ -8,7 +8,6 @@ import dev.thomasglasser.minejago.world.entity.MinejagoEntityEvents;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaidsHolder;
 import dev.thomasglasser.minejago.world.focus.FocusData;
-import dev.thomasglasser.minejago.world.focus.FocusDataHolder;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -89,7 +88,7 @@ public abstract class ServerPlayerMixin
     private void minejago_doTick(CallbackInfo ci)
     {
         if (focusData == null)
-            focusData = ((FocusDataHolder)INSTANCE).getFocusData();
+            focusData = Services.DATA.getFocusData(INSTANCE);
         if (this.lastSentFocus != focusData.getFocusLevel() || this.focusData.getSaturationLevel() == 0.0F != this.lastFoodSaturationZero) {
             Services.NETWORK.sendToClient(ClientboundSetFocusPacket.class, ClientboundSetFocusPacket.write(focusData), INSTANCE);
             this.lastSentFocus = this.focusData.getFocusLevel();

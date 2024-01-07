@@ -4,9 +4,9 @@ import dev.kosmx.playerAnim.api.firstPerson.FirstPersonMode;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.animation.MinejagoAnimationUtils;
 import dev.thomasglasser.minejago.client.animation.definitions.PlayerAnimations;
+import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.util.MinejagoPacketUtils;
-import dev.thomasglasser.minejago.world.focus.FocusDataHolder;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -39,7 +39,7 @@ public class ClientboundStartMeditationPacket implements CustomPacket
     public void handle(@Nullable Player player)
     {
         player = MinejagoClientUtils.getClientPlayerByUUID(uuid);
-        ((FocusDataHolder)player).getFocusData().startMeditating();
+        Services.DATA.getFocusData(player).startMeditating();
 
         if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled())
             MinejagoAnimationUtils.startAnimation(PlayerAnimations.Meditation.START.getAnimation(), player, FirstPersonMode.VANILLA);
