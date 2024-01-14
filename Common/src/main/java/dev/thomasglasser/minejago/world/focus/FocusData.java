@@ -15,9 +15,9 @@ import static dev.thomasglasser.minejago.world.focus.FocusConstants.START_SATURA
 public class FocusData
 {
 	public static final Codec<FocusData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-			Codec.INT.fieldOf("focusLevel").forGetter(FocusData::getFocusLevel),
-			Codec.FLOAT.fieldOf("saturationLevel").forGetter(FocusData::getSaturationLevel),
-			Codec.FLOAT.fieldOf("exhaustionLevel").forGetter(FocusData::getExhaustionLevel)
+			Codec.INT.fieldOf("focus_level").forGetter(FocusData::getFocusLevel),
+			Codec.FLOAT.fieldOf("saturation_level").forGetter(FocusData::getSaturationLevel),
+			Codec.FLOAT.fieldOf("exhaustion_level").forGetter(FocusData::getExhaustionLevel)
 	).apply(instance, FocusData::new));
 
 	private int focusLevel = START_FOCUS;

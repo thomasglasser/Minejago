@@ -417,6 +417,8 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
 
     public void addConfigs()
     {
+        add(Minejago.MOD_ID + ".midnightconfig.title", Minejago.MOD_NAME);
+
         // Server
         addConfigCategory("features", "Features");
         addConfig("features_comment", MinejagoServerConfig.features_comment);

@@ -23,7 +23,7 @@
     "issues": "https://github.com/thomasglasser/Minejago/issues"
   },
 
-  "license": "All Rights Reserved",
+  "license": "${license}",
   "icon": "assets/${mod_id}/logo_1.0.png",
   "environment": "*",
   "entrypoints": {
@@ -79,9 +79,9 @@
 
   "custom": {
     "cardinal-components": [
-      "minejago:power",
-      "minejago:spinjitzu",
-      "minejago:focus"
+      "${mod_id}:power",
+      "${mod_id}:spinjitzu",
+      "${mod_id}:focus"
     ],
     "mc-publish": {
       "loaders": ["fabric", "quilt"]

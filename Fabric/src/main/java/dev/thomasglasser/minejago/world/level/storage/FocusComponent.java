@@ -32,9 +32,4 @@ public class FocusComponent implements ComponentV3, AutoSyncedComponent, PlayerC
 	{
 		tag.put("FocusData", FocusData.CODEC.encodeStart(NbtOps.INSTANCE, focusData).result().orElseThrow());
 	}
-
-	@Override
-	public boolean shouldCopyForRespawn(boolean lossless, boolean keepInventory, boolean sameCharacter) {
-		return lossless;
-	}
 }

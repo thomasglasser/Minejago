@@ -9,7 +9,7 @@ modLoader="javafml" #mandatory
 loaderVersion="[${major_fml_version},)" #mandatory
 # The license for you mod. This is mandatory metadata and allows for easier comprehension of your redistributive properties.
 # Review your options at https://choosealicense.com/. All rights reserved is the default copyright stance, and is thus the default here.
-license="All Rights Reserved"
+license="${license}"
 # A URL to refer people to when problems occur with this mod
 issueTrackerURL="https://github.com/thomasglasser/Minejago/issues" #optional
 # A list of mods - how many allowed here is determined by the individual mod loader

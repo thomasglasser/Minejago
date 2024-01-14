@@ -97,6 +97,7 @@ tasks.withType(ProcessResources).configureEach {
             mod_id: mod_id,
             version: project.version,
             mod_author: mod_author,
+            license: license,
             fabric_loader_version: fabric_loader_version,
             fabric_version: fabric_version,
             minecraft_version: minecraft_version,

@@ -61,8 +61,7 @@ dependencies {
     // Common
     implementation "dev.kosmx.player-anim:player-animation-lib-forge:${playeranimator_version}"
     implementation "net.tslat.smartbrainlib:SmartBrainLib-neoforge-${minecraft_version}:${sbl_version}"
-    implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:4.3.3"
-//    implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
+    implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
     implementation "maven.modrinth:jade:13.2.2-neoforge"
 //    implementation "maven.modrinth:jade:${jade_version}-neoforge"
     implementation "me.shedaniel:RoughlyEnoughItems-neoforge:$rei_version"
@@ -78,12 +77,12 @@ dependencies {
     implementation "maven.modrinth:sherdsapi:${sherdsapi_version}-neoforge"
     compileOnly "maven.modrinth:trimmed:${trimmed_version}+forge"
 //    implementation "maven.modrinth:trimmed:${trimmed_version}+forge"
-    implementation "maven.modrinth:ryoamiclights:${ryoamiclights_version}"
+    implementation "maven.modrinth:ryoamiclights:${ryoamiclights_version}-neoforge"
 
     // Runtime
 //    runtimeOnly "maven.modrinth:worldedit:${worldedit_version}"
     runtimeOnly "maven.modrinth:worldedit:${worldedit_id}"
-    runtimeOnly "maven.modrinth:obsidianui:${obsidianui_version}"
+    runtimeOnly "maven.modrinth:obsidianui:${obsidianui_version}-neoforge"
 
     // TODO: Fix
 //    jarJar(group: "maven.modrinth", name: "sherdsapi", version: "[${sherdsapi_version},${sherdsapi_next_major_version})")
@@ -100,6 +99,7 @@ tasks.withType(ProcessResources).configureEach {
             mod_id                     : mod_id,
             version                    : project.version,
             mod_author                 : mod_author,
+            license                    : license,
             neoforge_version           : neoforge_version,
             minecraft_version          : minecraft_version,
             next_minecraft_version     : next_minecraft_version,
