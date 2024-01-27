@@ -351,6 +351,7 @@
   "minejago.midnightconfig.require_compatible_power_comment": "Require users to have a compatible power",
   "minejago.midnightconfig.snapshotTesterCosmeticChoice": "Snapshot Tester Cosmetic Choice",
   "minejago.midnightconfig.snapshot_tester_cosmetic_choice_comment": "The Snapshot Tester Cosmetic to be displayed (if eligible)",
+  "minejago.midnightconfig.title": "Minejago",
   "minejago.midnightconfig.xOffset": "X Offset",
   "minejago.midnightconfig.x_offset_comment": "Horizontal pixels off from the normal position",
   "minejago.midnightconfig.yOffset": "Y Offset",

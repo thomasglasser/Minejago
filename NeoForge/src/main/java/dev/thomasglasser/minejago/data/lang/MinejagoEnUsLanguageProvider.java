@@ -3,7 +3,6 @@ package dev.thomasglasser.minejago.data.lang;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.MinejagoClientConfig;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
-import dev.thomasglasser.minejago.client.MinejagoWailaPlugin;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.PowerSelectionScreen;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.ScrollEditScreen;
 import dev.thomasglasser.minejago.client.rei.display.category.TeapotBrewingCategory;
@@ -297,10 +296,11 @@ public class MinejagoEnUsLanguageProvider extends LanguageProvider
         add("entity.minejago.dragon.waila.bond", "Bond: %s");
         add("entity.minejago.painting.waila.map", "Has Golden Weapons Map");
 
-        addPluginConfig(MinejagoWailaPlugin.LIVING_ENTITY, "Living Entity");
-        addPluginConfig(MinejagoWailaPlugin.DRAGON, "Dragon");
-        addPluginConfig(MinejagoWailaPlugin.PAINTING, "Painting");
-        addPluginConfig(MinejagoWailaPlugin.TEAPOT_BLOCK, "Teapot");
+        // TODO: Update Jade
+//        addPluginConfig(MinejagoWailaPlugin.LIVING_ENTITY, "Living Entity");
+//        addPluginConfig(MinejagoWailaPlugin.DRAGON, "Dragon");
+//        addPluginConfig(MinejagoWailaPlugin.PAINTING, "Painting");
+//        addPluginConfig(MinejagoWailaPlugin.TEAPOT_BLOCK, "Teapot");
 
         add(ScrollEditScreen.EDIT_TITLE_LABEL, "Enter Scroll Title:");
         add(ScrollEditScreen.FINALIZE_WARNING_LABEL, "Note! When you sign the scroll, it will no longer be editable.");
