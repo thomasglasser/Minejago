@@ -98,187 +98,235 @@ public class MinejagoEntityEvents
 
     public static void onPlayerTick(Player player)
     {
-        FocusData focusData = Services.DATA.getFocusData(player);
-        focusData.tick(player);
-
-        SpinjitzuData spinjitzu = Services.DATA.getSpinjitzuData(player);
-        int waitTicks = ((DataHolder)(player)).getPersistentData().getInt("WaitTicks");
-        if (player instanceof ServerPlayer serverPlayer)
+        if (player.level().tickRateManager().runsNormally())
         {
-            ServerLevel level = serverPlayer.serverLevel();
-            if ((level.getDifficulty() == Difficulty.PEACEFUL || serverPlayer.getAbilities().instabuild) && focusData.needsFocus())
-                focusData.setFocusLevel(FocusConstants.MAX_FOCUS);
+            FocusData focusData = Services.DATA.getFocusData(player);
+            focusData.tick(player);
 
-            int j = Mth.clamp(serverPlayer.getStats().getValue(Stats.CUSTOM.get(Stats.TIME_SINCE_REST)), 1, Integer.MAX_VALUE);
-            if (j >= 24000 && !serverPlayer.getAbilities().instabuild)
-                focusData.addExhaustion(FocusConstants.EXHAUSTION_INSOMNIA);
-
-            if (!player.onGround())
-                ((DataHolder)player).getPersistentData().putInt("OffGroundTicks", ((DataHolder)player).getPersistentData().getInt("OffGroundTicks") + 1);
-            else
-                ((DataHolder)player).getPersistentData().putInt("OffGroundTicks", 0);
-
-            if (spinjitzu.unlocked()) {
-                if (spinjitzu.active()) {
-                    if (focusData.isMeditating())
-                    {
-                        focusData.stopMeditating();
-                        Services.NETWORK.sendToAllClients(ClientboundStopAnimationPacket.class, ClientboundStopAnimationPacket.write(serverPlayer.getUUID()), serverPlayer.getServer());
-                    }
-
-                    if (NO_SPINJITZU.test(serverPlayer)) {
-                        stopSpinjitzu(spinjitzu, serverPlayer, !serverPlayer.isCrouching());
-                        return;
-                    }
-                    MinejagoCriteriaTriggers.DID_SPINJITZU.get().trigger(serverPlayer);
-                    focusData.addExhaustion(FocusConstants.EXHAUSTION_DOING_SPINJITZU);
-                    if (player.tickCount % 20 == 0)
-                    {
-                        level.playSound(null, serverPlayer.blockPosition(), MinejagoSoundEvents.SPINJITZU_ACTIVE.get(), SoundSource.PLAYERS);
-                        level.gameEvent(serverPlayer, MinejagoGameEvents.SPINJITZU.get(), serverPlayer.blockPosition());
-                    }
-                    Power power = player.level().registryAccess().registryOrThrow(MinejagoRegistries.POWER).getHolderOrThrow(Services.DATA.getPowerData(player).power()).value();
-                    if (!power.is(MinejagoPowers.NONE)) {
-                        MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, power.getMainSpinjitzuColor(), power.getAltSpinjitzuColor(), 10.5, false);
-                        if (power.getBorderParticle() != null)
-                            MinejagoParticleUtils.renderNormalSpinjitzuBorder(power.getBorderParticle(), serverPlayer, 4, false);
-                    } else if (serverPlayer.getTeam() != null)
-                        switch (serverPlayer.getTeam().getColor()) {
-                            case RED -> MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, SpinjitzuParticleOptions.TEAM_RED, SpinjitzuParticleOptions.TEAM_RED, 10.5, false);
-                            case AQUA -> MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, SpinjitzuParticleOptions.TEAM_AQUA, SpinjitzuParticleOptions.TEAM_AQUA, 10.5, false);
-                            case BLUE -> MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, SpinjitzuParticleOptions.TEAM_BLUE, SpinjitzuParticleOptions.TEAM_BLUE, 10.5, false);
-                            case GOLD -> MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, SpinjitzuParticleOptions.TEAM_GOLD, SpinjitzuParticleOptions.TEAM_GOLD, 10.5, false);
-                            case GRAY -> MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, SpinjitzuParticleOptions.TEAM_GRAY, SpinjitzuParticleOptions.TEAM_GRAY, 10.5, false);
-                            case BLACK -> MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, SpinjitzuParticleOptions.TEAM_BLACK, SpinjitzuParticleOptions.TEAM_BLACK, 10.5, false);
-                            case GREEN -> MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, SpinjitzuParticleOptions.TEAM_GREEN, SpinjitzuParticleOptions.TEAM_GREEN, 10.5, false);
-                            case WHITE -> MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, SpinjitzuParticleOptions.TEAM_WHITE, SpinjitzuParticleOptions.TEAM_WHITE, 10.5, false);
-                            case YELLOW -> MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, SpinjitzuParticleOptions.TEAM_YELLOW, SpinjitzuParticleOptions.TEAM_YELLOW, 10.5, false);
-                            case DARK_RED -> MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, SpinjitzuParticleOptions.TEAM_DARK_RED, SpinjitzuParticleOptions.TEAM_DARK_RED, 10.5, false);
-                            case DARK_AQUA -> MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, SpinjitzuParticleOptions.TEAM_DARK_AQUA, SpinjitzuParticleOptions.TEAM_DARK_AQUA, 10.5, false);
-                            case DARK_BLUE -> MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, SpinjitzuParticleOptions.TEAM_DARK_BLUE, SpinjitzuParticleOptions.TEAM_DARK_BLUE, 10.5, false);
-                            case DARK_GRAY -> MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, SpinjitzuParticleOptions.TEAM_DARK_GRAY, SpinjitzuParticleOptions.TEAM_DARK_GRAY, 10.5, false);
-                            case DARK_GREEN -> MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, SpinjitzuParticleOptions.TEAM_DARK_GREEN, SpinjitzuParticleOptions.TEAM_DARK_GREEN, 10.5, false);
-                            case DARK_PURPLE -> MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, SpinjitzuParticleOptions.TEAM_DARK_PURPLE, SpinjitzuParticleOptions.TEAM_DARK_PURPLE, 10.5, false);
-                            case LIGHT_PURPLE -> MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, SpinjitzuParticleOptions.TEAM_LIGHT_PURPLE, SpinjitzuParticleOptions.TEAM_LIGHT_PURPLE, 10.5, false);
-                            default -> MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, SpinjitzuParticleOptions.DEFAULT, SpinjitzuParticleOptions.DEFAULT, 10.5, false);
-                        }
-                    else
-                        MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, SpinjitzuParticleOptions.DEFAULT, SpinjitzuParticleOptions.DEFAULT, 10.5, false);
-                }
-            } else if (spinjitzu.active()) {
-                stopSpinjitzu(spinjitzu, serverPlayer, true);
-            }
-
-            if (focusData.isMeditating())
+            SpinjitzuData spinjitzu = Services.DATA.getSpinjitzuData(player);
+            int waitTicks = ((DataHolder) (player)).getPersistentData().getInt("WaitTicks");
+            if (player instanceof ServerPlayer serverPlayer)
             {
-                if (NO_MEDITATION.test(serverPlayer))
+                ServerLevel level = serverPlayer.serverLevel();
+                if ((level.getDifficulty() == Difficulty.PEACEFUL || serverPlayer.getAbilities().instabuild) && focusData.needsFocus())
                 {
-                    focusData.stopMeditating();
-                    Services.NETWORK.sendToAllClients(ClientboundStopMeditationPacket.class, ClientboundStopMeditationPacket.write(serverPlayer.getUUID(), true), serverPlayer.getServer());
+                    focusData.setFocusLevel(FocusConstants.MAX_FOCUS);
                 }
 
-                if ((focusData.isMegaMeditating() && player.tickCount % 200 == 0) || (focusData.isNormalMeditating() && player.tickCount % 60 == 0))
+                int j = Mth.clamp(serverPlayer.getStats().getValue(Stats.CUSTOM.get(Stats.TIME_SINCE_REST)), 1, Integer.MAX_VALUE);
+                if (j >= 24000 && !serverPlayer.getAbilities().instabuild)
                 {
-                    BlockPos playerPos = player.blockPosition();
-                    Biome biome = level.getBiome(playerPos).value();
-                    AtomicDouble i = new AtomicDouble(1);
-                    Weather weather = Weather.CLEAR;
-                    Biome.Precipitation precipitation = biome.getPrecipitationAt(playerPos);
-                    if (level.isThundering())
+                    focusData.addExhaustion(FocusConstants.EXHAUSTION_INSOMNIA);
+                }
+
+                if (!player.onGround())
+                {
+                    ((DataHolder) player).getPersistentData().putInt("OffGroundTicks", ((DataHolder) player).getPersistentData().getInt("OffGroundTicks") + 1);
+                }
+                else
+                {
+                    ((DataHolder) player).getPersistentData().putInt("OffGroundTicks", 0);
+                }
+
+                if (spinjitzu.unlocked())
+                {
+                    if (spinjitzu.active())
                     {
-                        if (precipitation == Biome.Precipitation.SNOW) weather = Weather.THUNDER_SNOW;
-                        else if (precipitation == Biome.Precipitation.RAIN) weather = Weather.THUNDER_RAIN;
-                    }
-                    else if (level.isRaining())
-                    {
-                        if (precipitation == Biome.Precipitation.SNOW) weather = Weather.SNOW;
-                        else if (precipitation == Biome.Precipitation.RAIN) weather = Weather.RAIN;
-                    }
-                    i.set(WorldFocusModifiers.applyModifier((int) level.getDayTime(), weather, playerPos.getY(), TeapotBlock.getBiomeTemperature(level, playerPos), i.get()));
-                    i.set(BiomeFocusModifiers.applyModifier(level.getBiome(playerPos).unwrapKey().orElseThrow(), i.get()));
-                    i.set(DimensionFocusModifiers.applyModifier(level.dimension(), i.get()));
-                    serverPlayer.serverLevel().structureManager().getAllStructuresAt(playerPos).keySet().forEach(structure -> i.set(StructureFocusModifiers.applyModifier(level.registryAccess().registryOrThrow(Registries.STRUCTURE).getResourceKey(structure).orElseThrow(), i.get())));
-                    Stream<BlockState> blocks = level.getBlockStates(player.getBoundingBox().inflate(2));
-                    blocks.forEach(blockState -> i.set(BlockStateFocusModifiers.applyModifier(blockState, i.get())));
-                    serverPlayer.getActiveEffects().forEach(mobEffectInstance -> i.set(MobEffectFocusModifiers.applyModifier(mobEffectInstance.getEffect(), i.get()) * (mobEffectInstance.getAmplifier() + 1)));
-                    List<Entity> entities = level.getEntities(serverPlayer, serverPlayer.getBoundingBox().inflate(2));
-                    entities.forEach(entity ->
-                    {
-                        if (entity instanceof ItemEntity item)
+                        if (focusData.isMeditating())
                         {
-                            i.set(ItemStackFocusModifiers.applyModifier(item.getItem(), i.get()));
+                            focusData.stopMeditating();
+                            Services.NETWORK.sendToAllClients(ClientboundStopAnimationPacket.class, ClientboundStopAnimationPacket.write(serverPlayer.getUUID()), serverPlayer.getServer());
                         }
-                        else if (entity instanceof ItemFrame itemFrame)
+
+                        if (NO_SPINJITZU.test(serverPlayer))
                         {
-                            i.set(ItemStackFocusModifiers.applyModifier(itemFrame.getItem(), i.get()));
+                            stopSpinjitzu(spinjitzu, serverPlayer, !serverPlayer.isCrouching());
+                            return;
+                        }
+                        MinejagoCriteriaTriggers.DID_SPINJITZU.get().trigger(serverPlayer);
+                        focusData.addExhaustion(FocusConstants.EXHAUSTION_DOING_SPINJITZU);
+                        if (player.tickCount % 20 == 0)
+                        {
+                            level.playSound(null, serverPlayer.blockPosition(), MinejagoSoundEvents.SPINJITZU_ACTIVE.get(), SoundSource.PLAYERS);
+                            level.gameEvent(serverPlayer, MinejagoGameEvents.SPINJITZU.get(), serverPlayer.blockPosition());
+                        }
+                        Power power = player.level().registryAccess().registryOrThrow(MinejagoRegistries.POWER).getHolderOrThrow(Services.DATA.getPowerData(player).power()).value();
+                        if (!power.is(MinejagoPowers.NONE))
+                        {
+                            MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, power.getMainSpinjitzuColor(), power.getAltSpinjitzuColor(), 10.5, false);
+                            if (power.getBorderParticle() != null)
+                            {
+                                MinejagoParticleUtils.renderNormalSpinjitzuBorder(power.getBorderParticle(), serverPlayer, 4, false);
+                            }
+                        }
+                        else if (serverPlayer.getTeam() != null)
+                        {
+                            switch (serverPlayer.getTeam().getColor())
+                            {
+                                case RED ->
+                                        MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, SpinjitzuParticleOptions.TEAM_RED, SpinjitzuParticleOptions.TEAM_RED, 10.5, false);
+                                case AQUA ->
+                                        MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, SpinjitzuParticleOptions.TEAM_AQUA, SpinjitzuParticleOptions.TEAM_AQUA, 10.5, false);
+                                case BLUE ->
+                                        MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, SpinjitzuParticleOptions.TEAM_BLUE, SpinjitzuParticleOptions.TEAM_BLUE, 10.5, false);
+                                case GOLD ->
+                                        MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, SpinjitzuParticleOptions.TEAM_GOLD, SpinjitzuParticleOptions.TEAM_GOLD, 10.5, false);
+                                case GRAY ->
+                                        MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, SpinjitzuParticleOptions.TEAM_GRAY, SpinjitzuParticleOptions.TEAM_GRAY, 10.5, false);
+                                case BLACK ->
+                                        MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, SpinjitzuParticleOptions.TEAM_BLACK, SpinjitzuParticleOptions.TEAM_BLACK, 10.5, false);
+                                case GREEN ->
+                                        MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, SpinjitzuParticleOptions.TEAM_GREEN, SpinjitzuParticleOptions.TEAM_GREEN, 10.5, false);
+                                case WHITE ->
+                                        MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, SpinjitzuParticleOptions.TEAM_WHITE, SpinjitzuParticleOptions.TEAM_WHITE, 10.5, false);
+                                case YELLOW ->
+                                        MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, SpinjitzuParticleOptions.TEAM_YELLOW, SpinjitzuParticleOptions.TEAM_YELLOW, 10.5, false);
+                                case DARK_RED ->
+                                        MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, SpinjitzuParticleOptions.TEAM_DARK_RED, SpinjitzuParticleOptions.TEAM_DARK_RED, 10.5, false);
+                                case DARK_AQUA ->
+                                        MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, SpinjitzuParticleOptions.TEAM_DARK_AQUA, SpinjitzuParticleOptions.TEAM_DARK_AQUA, 10.5, false);
+                                case DARK_BLUE ->
+                                        MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, SpinjitzuParticleOptions.TEAM_DARK_BLUE, SpinjitzuParticleOptions.TEAM_DARK_BLUE, 10.5, false);
+                                case DARK_GRAY ->
+                                        MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, SpinjitzuParticleOptions.TEAM_DARK_GRAY, SpinjitzuParticleOptions.TEAM_DARK_GRAY, 10.5, false);
+                                case DARK_GREEN ->
+                                        MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, SpinjitzuParticleOptions.TEAM_DARK_GREEN, SpinjitzuParticleOptions.TEAM_DARK_GREEN, 10.5, false);
+                                case DARK_PURPLE ->
+                                        MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, SpinjitzuParticleOptions.TEAM_DARK_PURPLE, SpinjitzuParticleOptions.TEAM_DARK_PURPLE, 10.5, false);
+                                case LIGHT_PURPLE ->
+                                        MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, SpinjitzuParticleOptions.TEAM_LIGHT_PURPLE, SpinjitzuParticleOptions.TEAM_LIGHT_PURPLE, 10.5, false);
+                                default ->
+                                        MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, SpinjitzuParticleOptions.DEFAULT, SpinjitzuParticleOptions.DEFAULT, 10.5, false);
+                            }
                         }
                         else
                         {
-                            i.set(EntityFocusModifiers.applyModifier(entity, i.get()));
+                            MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, SpinjitzuParticleOptions.DEFAULT, SpinjitzuParticleOptions.DEFAULT, 10.5, false);
                         }
-                    });
-                    focusData.increase(focusData.isMegaMeditating(), (int) i.getAndSet(0), 0.1f);
-                }
-
-                if (focusData.canMegaMeditate(serverPlayer))
-                {
-                    if (!focusData.isMegaMeditating())
-                    {
-                        focusData.startMegaMeditating();
-                        Services.NETWORK.sendToAllClients(ClientboundStartMegaMeditationPacket.class, ClientboundStartMegaMeditationPacket.write(player.getUUID()), level.getServer());
                     }
                 }
-                else if (focusData.isMegaMeditating())
+                else if (spinjitzu.active())
                 {
-                    focusData.startMeditating();
-                    Services.NETWORK.sendToAllClients(ClientboundStartMeditationPacket.class, ClientboundStartMeditationPacket.write(player.getUUID()), level.getServer());
+                    stopSpinjitzu(spinjitzu, serverPlayer, true);
                 }
-            }
-        }
-        else
-        {
-            if (waitTicks > 0)
-            {
-                ((DataHolder)player).getPersistentData().putInt("WaitTicks", --waitTicks);
-            }
-            else if (MinejagoKeyMappings.ACTIVATE_SPINJITZU.isDown() && !focusData.isMeditating())
-            {
-                if (spinjitzu.active())
-                {
-                    Services.NETWORK.sendToServer(ServerboundStopSpinjitzuPacket.class);
-                }
-                else
-                {
-                    Services.NETWORK.sendToServer(ServerboundStartSpinjitzuPacket.class);
-                }
-                ((DataHolder) player).getPersistentData().putInt("WaitTicks", 5);
-            }
-            else if (MinejagoKeyMappings.MEDITATE.isDown() && !spinjitzu.active())
-            {
+
                 if (focusData.isMeditating())
                 {
-                    focusData.stopMeditating();
-                    Services.NETWORK.sendToServer(ServerboundStopMeditationPacket.class, ServerboundStopMeditationPacket.write(false));
+                    if (NO_MEDITATION.test(serverPlayer))
+                    {
+                        focusData.stopMeditating();
+                        Services.NETWORK.sendToAllClients(ClientboundStopMeditationPacket.class, ClientboundStopMeditationPacket.write(serverPlayer.getUUID(), true), serverPlayer.getServer());
+                    }
+
+                    if ((focusData.isMegaMeditating() && player.tickCount % 200 == 0) || (focusData.isNormalMeditating() && player.tickCount % 60 == 0))
+                    {
+                        BlockPos playerPos = player.blockPosition();
+                        Biome biome = level.getBiome(playerPos).value();
+                        AtomicDouble i = new AtomicDouble(1);
+                        Weather weather = Weather.CLEAR;
+                        Biome.Precipitation precipitation = biome.getPrecipitationAt(playerPos);
+                        if (level.isThundering())
+                        {
+                            if (precipitation == Biome.Precipitation.SNOW)
+                            {
+                                weather = Weather.THUNDER_SNOW;
+                            }
+                            else if (precipitation == Biome.Precipitation.RAIN) weather = Weather.THUNDER_RAIN;
+                        }
+                        else if (level.isRaining())
+                        {
+                            if (precipitation == Biome.Precipitation.SNOW)
+                            {
+                                weather = Weather.SNOW;
+                            }
+                            else if (precipitation == Biome.Precipitation.RAIN) weather = Weather.RAIN;
+                        }
+                        i.set(WorldFocusModifiers.applyModifier((int) level.getDayTime(), weather, playerPos.getY(), TeapotBlock.getBiomeTemperature(level, playerPos), i.get()));
+                        i.set(BiomeFocusModifiers.applyModifier(level.getBiome(playerPos).unwrapKey().orElseThrow(), i.get()));
+                        i.set(DimensionFocusModifiers.applyModifier(level.dimension(), i.get()));
+                        serverPlayer.serverLevel().structureManager().getAllStructuresAt(playerPos).keySet().forEach(structure -> i.set(StructureFocusModifiers.applyModifier(level.registryAccess().registryOrThrow(Registries.STRUCTURE).getResourceKey(structure).orElseThrow(), i.get())));
+                        Stream<BlockState> blocks = level.getBlockStates(player.getBoundingBox().inflate(2));
+                        blocks.forEach(blockState -> i.set(BlockStateFocusModifiers.applyModifier(blockState, i.get())));
+                        serverPlayer.getActiveEffects().forEach(mobEffectInstance -> i.set(MobEffectFocusModifiers.applyModifier(mobEffectInstance.getEffect(), i.get()) * (mobEffectInstance.getAmplifier() + 1)));
+                        List<Entity> entities = level.getEntities(serverPlayer, serverPlayer.getBoundingBox().inflate(2));
+                        entities.forEach(entity ->
+                        {
+                            if (entity instanceof ItemEntity item)
+                            {
+                                i.set(ItemStackFocusModifiers.applyModifier(item.getItem(), i.get()));
+                            }
+                            else if (entity instanceof ItemFrame itemFrame)
+                            {
+                                i.set(ItemStackFocusModifiers.applyModifier(itemFrame.getItem(), i.get()));
+                            }
+                            else
+                            {
+                                i.set(EntityFocusModifiers.applyModifier(entity, i.get()));
+                            }
+                        });
+                        focusData.increase(focusData.isMegaMeditating(), (int) i.getAndSet(0), 0.1f);
+                    }
+
+                    if (focusData.canMegaMeditate(serverPlayer))
+                    {
+                        if (!focusData.isMegaMeditating())
+                        {
+                            focusData.startMegaMeditating();
+                            Services.NETWORK.sendToAllClients(ClientboundStartMegaMeditationPacket.class, ClientboundStartMegaMeditationPacket.write(player.getUUID()), level.getServer());
+                        }
+                    }
+                    else if (focusData.isMegaMeditating())
+                    {
+                        focusData.startMeditating();
+                        Services.NETWORK.sendToAllClients(ClientboundStartMeditationPacket.class, ClientboundStartMeditationPacket.write(player.getUUID()), level.getServer());
+                    }
                 }
-                else
-                {
-                    focusData.startMeditating();
-                    Services.NETWORK.sendToServer(ServerboundStartMeditationPacket.class);
-                }
-                ((DataHolder) player).getPersistentData().putInt("WaitTicks", 5);
             }
-            else if (player.isShiftKeyDown())
+            else
             {
-                if (spinjitzu.active())
+                if (waitTicks > 0)
                 {
-                    Services.NETWORK.sendToServer(ServerboundStopSpinjitzuPacket.class);
+                    ((DataHolder) player).getPersistentData().putInt("WaitTicks", --waitTicks);
                 }
-                if (focusData.isMeditating())
+                else if (MinejagoKeyMappings.ACTIVATE_SPINJITZU.isDown() && !focusData.isMeditating())
                 {
-                    focusData.stopMeditating();
-                    Services.NETWORK.sendToServer(ServerboundStopMeditationPacket.class, ServerboundStopMeditationPacket.write(false));
+                    if (spinjitzu.active())
+                    {
+                        Services.NETWORK.sendToServer(ServerboundStopSpinjitzuPacket.class);
+                    }
+                    else
+                    {
+                        Services.NETWORK.sendToServer(ServerboundStartSpinjitzuPacket.class);
+                    }
+                    ((DataHolder) player).getPersistentData().putInt("WaitTicks", 5);
                 }
-                ((DataHolder) player).getPersistentData().putInt("WaitTicks", 5);
+                else if (MinejagoKeyMappings.MEDITATE.isDown() && !spinjitzu.active())
+                {
+                    if (focusData.isMeditating())
+                    {
+                        focusData.stopMeditating();
+                        Services.NETWORK.sendToServer(ServerboundStopMeditationPacket.class, ServerboundStopMeditationPacket.write(false));
+                    }
+                    else
+                    {
+                        focusData.startMeditating();
+                        Services.NETWORK.sendToServer(ServerboundStartMeditationPacket.class);
+                    }
+                    ((DataHolder) player).getPersistentData().putInt("WaitTicks", 5);
+                }
+                else if (player.isShiftKeyDown())
+                {
+                    if (spinjitzu.active())
+                    {
+                        Services.NETWORK.sendToServer(ServerboundStopSpinjitzuPacket.class);
+                    }
+                    if (focusData.isMeditating())
+                    {
+                        focusData.stopMeditating();
+                        Services.NETWORK.sendToServer(ServerboundStopMeditationPacket.class, ServerboundStopMeditationPacket.write(false));
+                    }
+                    ((DataHolder) player).getPersistentData().putInt("WaitTicks", 5);
+                }
             }
         }
     }

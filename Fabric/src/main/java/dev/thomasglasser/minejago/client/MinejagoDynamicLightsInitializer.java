@@ -1,12 +1,12 @@
 package dev.thomasglasser.minejago.client;
 
-import dev.lambdaurora.lambdynlights.api.DynamicLightsInitializer;
+import org.thinkingstudio.ryoamiclights.api.DynamicLightsInitializer;
 
 public class MinejagoDynamicLightsInitializer implements DynamicLightsInitializer
 {
 	@Override
 	public void onInitializeDynamicLights()
 	{
-		MinejagoClientEvents.registerDynamicLights();
+		MinejagoDynamicLights.register();
 	}
 }

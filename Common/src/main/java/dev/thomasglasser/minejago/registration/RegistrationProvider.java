@@ -6,7 +6,7 @@
 
 package dev.thomasglasser.minejago.registration;
 
-import com.klikli_dev.modonomicon.platform.Services;
+import dev.thomasglasser.minejago.platform.Services;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 

@@ -49,18 +49,16 @@ public class CompatCategoryProvider extends CategoryProvider {
         lang().add(context().entryDescription(), "Mods that make the world of Minejago more visually appealing or add more viewing details");
 
         this.context().page("playeranimator_text");
-        var playerAnimatorText = BookTextPageModel.builder()
+        var playerAnimatorText = BookTextPageModel.create()
                 .withTitle(context().pageTitle())
-                .withText(context().pageText())
-                .build();
+                .withText(context().pageText());
         lang().add(context().pageTitle(), "playerAnimator");
         lang().add(context().pageText(), "The playerAnimator mod adds animations for actions such as performing spinjitzu and using the golden weapons, making your moves look much cooler.");
 
         this.context().page("playeranimator_image");
-        var playerAnimatorImage = BookImagePageModel.builder()
+        var playerAnimatorImage = BookImagePageModel.create()
                 .withImages(modLoc("textures/modonomicon/wiki/compat/visual/playeranimator.png"))
-                .withText(context().pageText())
-                .build();
+                .withText(context().pageText());
         lang().add(context().pageText(), "Using the Scythe of Quakes with playerAnimator installed");
 
         return BookEntryModel.create(

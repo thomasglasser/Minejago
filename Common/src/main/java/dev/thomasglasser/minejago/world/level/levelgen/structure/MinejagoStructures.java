@@ -61,7 +61,8 @@ public class MinejagoStructures
                         structure(
                                 holderGetter.getOrThrow(MinejagoBiomeTags.HAS_CAVE_OF_DESPAIR),
                                 Map.of(
-                                        MobCategory.MONSTER, new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create())
+                                        MobCategory.MONSTER, new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()),
+                                        MobCategory.AMBIENT, new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create())
                                 ),
                                 GenerationStep.Decoration.UNDERGROUND_STRUCTURES,
                                 TerrainAdjustment.BURY

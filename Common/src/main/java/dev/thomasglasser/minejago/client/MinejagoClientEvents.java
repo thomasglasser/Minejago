@@ -1,7 +1,5 @@
 package dev.thomasglasser.minejago.client;
 
-import dev.lambdaurora.lambdynlights.api.DynamicLightHandler;
-import dev.lambdaurora.lambdynlights.api.DynamicLightHandlers;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.ScrollLecternScreen;
 import dev.thomasglasser.minejago.network.ServerboundFlyVehiclePacket;
 import dev.thomasglasser.minejago.network.ServerboundStopMeditationPacket;
@@ -9,7 +7,6 @@ import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.util.MinejagoItemUtils;
 import dev.thomasglasser.minejago.world.entity.DataHolder;
-import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.PlayerRideableFlying;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
 import dev.thomasglasser.minejago.world.focus.FocusData;
@@ -21,7 +18,6 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -122,11 +118,5 @@ public class MinejagoClientEvents
                 ((DataHolder) mainClientPlayer).getPersistentData().putInt("WaitTicks", 5);
             }
         }
-    }
-
-    public static void registerDynamicLights()
-    {
-        DynamicLightHandlers.registerDynamicLightHandler(EntityType.PLAYER, DynamicLightHandler.makeHandler(player -> Services.DATA.getSpinjitzuData(player).active() ? 7 : 0, player -> false));
-        DynamicLightHandlers.registerDynamicLightHandler(MinejagoEntityTypes.WU.get(), DynamicLightHandler.makeHandler(wu -> Services.DATA.getSpinjitzuData(wu).active() ? 7 : 0, wu -> false));
     }
 }

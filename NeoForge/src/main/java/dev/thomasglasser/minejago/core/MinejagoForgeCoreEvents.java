@@ -21,7 +21,6 @@ import dev.thomasglasser.minejago.world.focus.modifier.structure.StructureFocusM
 import dev.thomasglasser.minejago.world.focus.modifier.world.WorldFocusModifiers;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PathPackResources;
 import net.minecraft.server.packs.repository.Pack;
@@ -121,12 +120,12 @@ public class MinejagoForgeCoreEvents {
         }, handler -> handler
             .client((payload, context) ->
             {
-                if (payload.direction() == CustomPacket.Direction.SERVER_TO_CLIENT) payload.handle((ServerPlayer) context.player().orElse(null));
+                if (payload.direction() == CustomPacket.Direction.SERVER_TO_CLIENT) payload.handle(context.player().orElse(null));
                 else throw new RuntimeException("Serverbound packet sent to client!");
             })
             .server((payload, context) ->
             {
-                if (payload.direction() == CustomPacket.Direction.CLIENT_TO_SERVER) payload.handle((ServerPlayer) context.player().orElse(null));
+                if (payload.direction() == CustomPacket.Direction.CLIENT_TO_SERVER) payload.handle(context.player().orElse(null));
                 else throw new RuntimeException("Clientbound packet sent to server!");
             })));
     }

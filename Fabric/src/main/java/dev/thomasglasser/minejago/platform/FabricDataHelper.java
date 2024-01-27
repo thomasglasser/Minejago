@@ -1,48 +1,50 @@
 package dev.thomasglasser.minejago.platform;
 
+import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.platform.services.DataHelper;
 import dev.thomasglasser.minejago.world.focus.FocusData;
-import dev.thomasglasser.minejago.world.level.storage.*;
+import dev.thomasglasser.minejago.world.level.storage.PowerData;
+import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.minecraft.world.entity.LivingEntity;
 
+@SuppressWarnings({"UnstableApiUsage"})
 public class FabricDataHelper implements DataHelper {
+    private static final AttachmentType<PowerData> POWER = AttachmentRegistry.<PowerData>builder().initializer(PowerData::new).persistent(PowerData.CODEC).buildAndRegister(Minejago.modLoc("power"));
+    private static final AttachmentType<SpinjitzuData> SPINJITZU = AttachmentRegistry.<SpinjitzuData>builder().initializer(SpinjitzuData::new).persistent(SpinjitzuData.CODEC).buildAndRegister(Minejago.modLoc("spinjitzu"));
+    public static final AttachmentType<FocusData> FOCUS = AttachmentRegistry.<FocusData>builder().initializer(FocusData::new).persistent(FocusData.CODEC).buildAndRegister(Minejago.modLoc("focus"));
+
     @Override
     public PowerData getPowerData(LivingEntity entity) {
-        if (MinejagoFabricEntityComponents.POWER.isProvidedBy(entity))
-            return MinejagoFabricEntityComponents.POWER.get(entity).getPowerData();
-        return null;
+        return entity.getAttachedOrCreate(POWER);
     }
 
     @Override
     public void setPowerData(PowerData data, LivingEntity entity) {
-        if (MinejagoFabricEntityComponents.POWER.isProvidedBy(entity))
-            MinejagoFabricEntityComponents.POWER.get(entity).setPowerData(data);
+        entity.setAttached(POWER, data);
         DataHelper.super.setPowerData(data, entity);
     }
 
     @Override
     public SpinjitzuData getSpinjitzuData(LivingEntity entity) {
-        if (MinejagoFabricEntityComponents.SPINJITZU.isProvidedBy(entity))
-            return MinejagoFabricEntityComponents.SPINJITZU.get(entity).getSpinjitzuData();
-        return null;
+        return entity.getAttachedOrCreate(SPINJITZU);
     }
 
     @Override
     public void setSpinjitzuData(SpinjitzuData data, LivingEntity entity) {
-        if (MinejagoFabricEntityComponents.SPINJITZU.isProvidedBy(entity))
-            MinejagoFabricEntityComponents.SPINJITZU.get(entity).setSpinjitzuData(data);
+        entity.setAttached(SPINJITZU, data);
     }
 
     @Override
-    public FocusData getFocusData(LivingEntity entity) {
-        if (MinejagoFabricEntityComponents.FOCUS.isProvidedBy(entity))
-            return MinejagoFabricEntityComponents.FOCUS.get(entity).getFocusData();
-        return null;
+    public FocusData getFocusData(LivingEntity entity)
+    {
+        return entity.getAttachedOrCreate(FOCUS);
     }
 
     @Override
-    public void setFocusData(FocusData data, LivingEntity entity) {
-        if (MinejagoFabricEntityComponents.FOCUS.isProvidedBy(entity))
-            MinejagoFabricEntityComponents.FOCUS.get(entity).setFocusData(data);
+    public void setFocusData(FocusData data, LivingEntity entity)
+    {
+        entity.setAttached(FOCUS, data);
     }
 }
