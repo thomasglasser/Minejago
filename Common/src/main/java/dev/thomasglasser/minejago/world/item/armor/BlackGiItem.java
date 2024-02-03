@@ -6,7 +6,8 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class BlackGiItem extends ArmorItem implements GeoArmorItem {
+public class BlackGiItem extends ArmorItem implements GiGeoArmorItem
+{
     private AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public BlackGiItem(Type type, Properties pProperties) {
@@ -25,11 +26,6 @@ public class BlackGiItem extends ArmorItem implements GeoArmorItem {
 
     @Override
     public boolean isSkintight() {
-        return true;
-    }
-
-    @Override
-    public boolean isGi() {
         return true;
     }
 }

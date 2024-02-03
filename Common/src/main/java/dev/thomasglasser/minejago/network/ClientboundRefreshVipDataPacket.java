@@ -1,7 +1,8 @@
 package dev.thomasglasser.minejago.network;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.util.MinejagoClientUtils;
+import dev.thomasglasser.minejago.client.MinejagoClientUtils;
+import dev.thomasglasser.tommylib.api.network.CustomPacket;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;

@@ -1,0 +1,29 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dev.thomasglasser.minejago.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "${mod_id}.refmap.json",
+  "mixins": [
+    "minecraft.commands.CommandsMixin",
+    "minecraft.server.players.PlayerListMixin",
+    "minecraft.world.entity.EntityMixinFabric",
+    "minecraft.world.entity.PlayerMixinFabric",
+    "minecraft.world.level.gameevent.vibrations.VibrationSystemMixin",
+    "minejago.world.item.GeoBlockItemMixin",
+    "minejago.world.item.NunchucksItemMixin",
+    "minejago.world.item.armor.BlackGiItemMixin",
+    "minejago.world.item.armor.SamukaisChestplateItemMixin",
+    "minejago.world.item.armor.SkeletalChestplateItemMixin",
+    "minejago.world.item.armor.TrainingGiItemMixin"
+  ],
+  "client": [
+    "minecraft.client.KeyboardHandlerMixin",
+    "minecraft.client.MouseHandlerMixin",
+    "minecraft.client.gui.GuiMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
+  

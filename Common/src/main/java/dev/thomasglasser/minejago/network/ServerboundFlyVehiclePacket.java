@@ -1,8 +1,9 @@
 package dev.thomasglasser.minejago.network;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.util.MinejagoPacketUtils;
-import dev.thomasglasser.minejago.world.entity.PlayerRideableFlying;
+import dev.thomasglasser.tommylib.api.network.CustomPacket;
+import dev.thomasglasser.tommylib.api.network.PacketUtils;
+import dev.thomasglasser.tommylib.api.world.entity.PlayerRideableFlying;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
@@ -24,7 +25,7 @@ public class ServerboundFlyVehiclePacket implements CustomPacket
     }
 
     public static FriendlyByteBuf write(Type type) {
-        FriendlyByteBuf buf = MinejagoPacketUtils.create();
+        FriendlyByteBuf buf = PacketUtils.create();
 
         buf.writeEnum(type);
 

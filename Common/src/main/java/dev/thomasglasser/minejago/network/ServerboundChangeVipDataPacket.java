@@ -3,8 +3,9 @@ package dev.thomasglasser.minejago.network;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterCosmeticOptions;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.VipData;
-import dev.thomasglasser.minejago.platform.Services;
-import dev.thomasglasser.minejago.util.MinejagoPacketUtils;
+import dev.thomasglasser.tommylib.api.network.CustomPacket;
+import dev.thomasglasser.tommylib.api.network.PacketUtils;
+import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -38,7 +39,7 @@ public class ServerboundChangeVipDataPacket implements CustomPacket
     }
 
     public static FriendlyByteBuf write(UUID uuid, VipData vipData) {
-        FriendlyByteBuf buffer = MinejagoPacketUtils.create();
+        FriendlyByteBuf buffer = PacketUtils.create();
 
         buffer.writeUUID(uuid);
         buffer.writeEnum(vipData.choice());
@@ -50,7 +51,7 @@ public class ServerboundChangeVipDataPacket implements CustomPacket
     }
 
     public void handle(@Nullable Player player) {
-        Services.NETWORK.sendToAllClients(ClientboundChangeVipDataPacket.class, ClientboundChangeVipDataPacket.write(uuid, vipData), player.getServer());
+        TommyLibServices.NETWORK.sendToAllClients(ClientboundChangeVipDataPacket.class, ClientboundChangeVipDataPacket.write(uuid, vipData), player.getServer());
     }
 
     @Override

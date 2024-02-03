@@ -4,27 +4,21 @@
   "version": "${version}",
 
   "name": "${mod_name}",
-  "description": "Adds elements of the Ninjago franchise into Minecraft",
+  "description": "${description}",
   "authors": [
     "${mod_author}"
   ],
   "contributors": [
-    "waifu_png_pl",
-    "Comerciante",
-    "Tir-Far-Thoinn",
-    "Watommeeeeeeeeee",
-    "Albert_1403",
-    "ChippiHeppu",
-    "Tslat"
+    "${contributors}"
   ],
   "contact": {
-    "homepage": "https://github.com/thomasglasser/Minejago",
-    "sources": "https://github.com/thomasglasser/Minejago",
-    "issues": "https://github.com/thomasglasser/Minejago/issues"
+    "homepage": "${homepage}",
+    "sources": "${sources}",
+    "issues": "${issues}"
   },
 
   "license": "${license}",
-  "icon": "assets/${mod_id}/logo_1.0.png",
+  "icon": "${icon}",
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -44,8 +38,8 @@
     ]
   },
   "mixins": [
-    "${mod_id}_fabric.mixins.json",
-    "${mod_id}_common.mixins.json"
+    "${mod_id}.fabric.mixins.json",
+    "${mod_id}.mixins.json"
   ],
 
   "accessWidener" : "${mod_id}.accesswidener",
@@ -73,11 +67,6 @@
   },
 
   "custom": {
-    "cardinal-components": [
-      "${mod_id}:power",
-      "${mod_id}:spinjitzu",
-      "${mod_id}:focus"
-    ],
     "mc-publish": {
       "loaders": ["fabric", "quilt"]
     }

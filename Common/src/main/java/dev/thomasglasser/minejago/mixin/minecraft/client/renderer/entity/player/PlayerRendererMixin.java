@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.mixin.minecraft.client.renderer.entity.player;
 
-import dev.thomasglasser.minejago.world.item.armor.GeoArmorItem;
+import dev.thomasglasser.tommylib.api.world.item.armor.GeoArmorItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
 import net.minecraft.client.model.PlayerModel;

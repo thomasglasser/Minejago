@@ -1,21 +1,20 @@
 package dev.thomasglasser.minejago.mixin.minecraft.world.level.gameevent.vibrations;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
-import net.minecraft.world.level.gameevent.vibrations.VibrationInfo;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.gameevent.vibrations.VibrationSelector;
-import org.apache.commons.lang3.tuple.Pair;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(VibrationSelector.class)
 public class VibrationSelectorMixin
 {
-    @Inject(method = "shouldReplaceVibration", at = @At("TAIL"), cancellable = true, locals = LocalCapture.CAPTURE_FAILSOFT)
-    private void minejago_shouldReplaceVibration(VibrationInfo vibrationInfo, long tick, CallbackInfoReturnable<Boolean> cir, Pair<VibrationInfo, Long> pair, long l, VibrationInfo currentInfo)
-    {
-        cir.setReturnValue(MinejagoGameEvents.getGameEventFrequency(vibrationInfo.gameEvent()) > MinejagoGameEvents.getGameEventFrequency(currentInfo.gameEvent()));
+    @ModifyExpressionValue(
+            method = "shouldReplaceVibration",
+            at = @At(value = "TAIL", target = "Lnet/minecraft/world/level/gameevent/vibrations/VibrationSystem;getGameEventFrequency(Lnet/minecraft/world/level/gameevent/GameEvent;)I")
+    )
+    private int minejago_shouldReplaceVibration(int original, GameEvent event) {
+        return Math.max(MinejagoGameEvents.getGameEventFrequency(event), original);
     }
 }

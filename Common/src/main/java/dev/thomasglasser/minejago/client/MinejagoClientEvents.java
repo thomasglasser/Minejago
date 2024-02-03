@@ -4,15 +4,15 @@ import dev.thomasglasser.minejago.client.gui.screens.inventory.ScrollLecternScre
 import dev.thomasglasser.minejago.network.ServerboundFlyVehiclePacket;
 import dev.thomasglasser.minejago.network.ServerboundStopMeditationPacket;
 import dev.thomasglasser.minejago.platform.Services;
-import dev.thomasglasser.minejago.util.MinejagoClientUtils;
-import dev.thomasglasser.minejago.util.MinejagoItemUtils;
-import dev.thomasglasser.minejago.world.entity.DataHolder;
-import dev.thomasglasser.minejago.world.entity.PlayerRideableFlying;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
 import dev.thomasglasser.minejago.world.focus.FocusData;
 import dev.thomasglasser.minejago.world.inventory.MinejagoMenuTypes;
-import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import dev.thomasglasser.minejago.world.item.MinejagoItemUtils;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
+import dev.thomasglasser.tommylib.api.client.ClientUtils;
+import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
+import dev.thomasglasser.tommylib.api.world.entity.DataHolder;
+import dev.thomasglasser.tommylib.api.world.entity.PlayerRideableFlying;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.player.LocalPlayer;
@@ -29,7 +29,6 @@ import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class MinejagoClientEvents
 {
@@ -48,39 +47,28 @@ public class MinejagoClientEvents
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null)
             return;
-        if (isRidingFlyable(player)) {
+        if (PlayerRideableFlying.isRidingFlyable(player)) {
             if (MinejagoKeyMappings.ASCEND.isDown())
             {
                 ((PlayerRideableFlying)player.getVehicle()).ascend();
-                Services.NETWORK.sendToServer(ServerboundFlyVehiclePacket.class, ServerboundFlyVehiclePacket.write(ServerboundFlyVehiclePacket.Type.START_ASCEND));
+                TommyLibServices.NETWORK.sendToServer(ServerboundFlyVehiclePacket.class, ServerboundFlyVehiclePacket.write(ServerboundFlyVehiclePacket.Type.START_ASCEND));
             }
             else if (MinejagoKeyMappings.DESCEND.isDown())
             {
                 ((PlayerRideableFlying)player.getVehicle()).descend();
-                Services.NETWORK.sendToServer(ServerboundFlyVehiclePacket.class, ServerboundFlyVehiclePacket.write(ServerboundFlyVehiclePacket.Type.START_DESCEND));
+                TommyLibServices.NETWORK.sendToServer(ServerboundFlyVehiclePacket.class, ServerboundFlyVehiclePacket.write(ServerboundFlyVehiclePacket.Type.START_DESCEND));
             }
             else
             {
                 ((PlayerRideableFlying)player.getVehicle()).stop();
-                Services.NETWORK.sendToServer(ServerboundFlyVehiclePacket.class, ServerboundFlyVehiclePacket.write(ServerboundFlyVehiclePacket.Type.STOP));
+                TommyLibServices.NETWORK.sendToServer(ServerboundFlyVehiclePacket.class, ServerboundFlyVehiclePacket.write(ServerboundFlyVehiclePacket.Type.STOP));
             }
         }
-    }
-
-    public static boolean isRidingFlyable(Player player) {
-        return player.getVehicle() instanceof PlayerRideableFlying && player.getVehicle().getControllingPassenger().is(player);
     }
 
     public static List<ItemStack> getItemsForTab(ResourceKey<CreativeModeTab> tab)
     {
         List<ItemStack> items = new ArrayList<>();
-
-        MinejagoItems.getItemTabs().forEach((itemTab, itemLikes) -> {
-            if (tab == itemTab)
-            {
-                itemLikes.forEach((itemLike) -> items.add(Objects.requireNonNull(BuiltInRegistries.ITEM.get(itemLike)).getDefaultInstance()));
-            }
-        });
 
         if (tab == CreativeModeTabs.FOOD_AND_DRINKS)
         {
@@ -107,13 +95,13 @@ public class MinejagoClientEvents
 
     public static void onInput(int key)
     {
-        Player mainClientPlayer = MinejagoClientUtils.getMainClientPlayer();
+        Player mainClientPlayer = ClientUtils.getMainClientPlayer();
         if (mainClientPlayer != null && !(key >= GLFW.GLFW_KEY_F1 && key <= GLFW.GLFW_KEY_F25) && !MinejagoKeyMappings.MEDITATE.isDown() && key != GLFW.GLFW_KEY_LEFT_SHIFT && key != GLFW.GLFW_KEY_ESCAPE)
         {
             FocusData focusData = Services.DATA.getFocusData(mainClientPlayer);
             if (focusData.isMeditating() && ((DataHolder)mainClientPlayer).getPersistentData().getInt("WaitTicks") <= 0)
             {
-                Services.NETWORK.sendToServer(ServerboundStopMeditationPacket.class, ServerboundStopMeditationPacket.write(true));
+                TommyLibServices.NETWORK.sendToServer(ServerboundStopMeditationPacket.class, ServerboundStopMeditationPacket.write(true));
                 focusData.stopMeditating();
                 ((DataHolder) mainClientPlayer).getPersistentData().putInt("WaitTicks", 5);
             }

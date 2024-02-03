@@ -2,10 +2,8 @@ package dev.thomasglasser.minejago;
 
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.data.worldgen.placement.MinejagoVegetationPlacements;
-import dev.thomasglasser.minejago.network.CustomPacket;
 import dev.thomasglasser.minejago.network.MinejagoPackets;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
-import dev.thomasglasser.minejago.packs.PackHolder;
 import dev.thomasglasser.minejago.tags.MinejagoBiomeTags;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityEvents;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
@@ -13,14 +11,14 @@ import dev.thomasglasser.minejago.world.entity.character.Character;
 import dev.thomasglasser.minejago.world.entity.character.Cole;
 import dev.thomasglasser.minejago.world.entity.character.Zane;
 import dev.thomasglasser.minejago.world.entity.power.Power;
-import dev.thomasglasser.minejago.world.focus.modifier.biome.BiomeFocusModifiers;
 import dev.thomasglasser.minejago.world.focus.modifier.blockstate.BlockStateFocusModifiers;
-import dev.thomasglasser.minejago.world.focus.modifier.dimension.DimensionFocusModifiers;
-import dev.thomasglasser.minejago.world.focus.modifier.effect.MobEffectFocusModifiers;
-import dev.thomasglasser.minejago.world.focus.modifier.entity.EntityFocusModifiers;
+import dev.thomasglasser.minejago.world.focus.modifier.entity.EntityTypeFocusModifiers;
 import dev.thomasglasser.minejago.world.focus.modifier.itemstack.ItemStackFocusModifiers;
-import dev.thomasglasser.minejago.world.focus.modifier.structure.StructureFocusModifiers;
+import dev.thomasglasser.minejago.world.focus.modifier.resourcekey.ResourceKeyFocusModifiers;
 import dev.thomasglasser.minejago.world.focus.modifier.world.WorldFocusModifiers;
+import dev.thomasglasser.tommylib.api.network.CustomPacket;
+import dev.thomasglasser.tommylib.api.packs.PackHolder;
+import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -70,8 +68,8 @@ public class MinejagoFabric implements ModInitializer {
 
         for (PackHolder holder : MinejagoPacks.getPacks())
         {
-            if (holder.type() == PackType.SERVER_DATA) ResourceManagerHelper.registerBuiltinResourcePack(holder.id(), FabricLoader.getInstance().getModContainer(Minejago.MOD_ID).get(), Component.translatable(holder.titleKey()), ResourcePackActivationType.NORMAL);
-            else if (holder.type() == PackType.CLIENT_RESOURCES) ResourceManagerHelper.registerBuiltinResourcePack(holder.id(), FabricLoader.getInstance().getModContainer(Minejago.MOD_ID).get(), Component.translatable(holder.titleKey()), ResourcePackActivationType.NORMAL);
+            if (holder.type() == PackType.CLIENT_RESOURCES && TommyLibServices.PLATFORM.isClientSide()) ResourceManagerHelper.registerBuiltinResourcePack(holder.id(), FabricLoader.getInstance().getModContainer(Minejago.MOD_ID).orElseThrow(), Component.translatable(holder.titleKey()), ResourcePackActivationType.NORMAL);
+            else if (holder.type() == PackType.SERVER_DATA) ResourceManagerHelper.registerBuiltinResourcePack(holder.id(), FabricLoader.getInstance().getModContainer(Minejago.MOD_ID).orElseThrow(), Component.translatable(holder.titleKey()), ResourcePackActivationType.NORMAL);
         }
 
         ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
@@ -80,13 +78,10 @@ public class MinejagoFabric implements ModInitializer {
             }
 
             public void onResourceManagerReload(@NotNull ResourceManager manager) {
-                BiomeFocusModifiers.load(manager);
+                ResourceKeyFocusModifiers.load(manager);
                 BlockStateFocusModifiers.load(manager);
-                DimensionFocusModifiers.load(manager);
-                EntityFocusModifiers.load(manager);
+                EntityTypeFocusModifiers.load(manager);
                 ItemStackFocusModifiers.load(manager);
-                StructureFocusModifiers.load(manager);
-                MobEffectFocusModifiers.load(manager);
                 WorldFocusModifiers.load(manager);
             }
         });

@@ -2,12 +2,13 @@ package dev.thomasglasser.minejago.network;
 
 import dev.kosmx.playerAnim.api.firstPerson.FirstPersonMode;
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.client.animation.MinejagoAnimationUtils;
 import dev.thomasglasser.minejago.client.animation.definitions.PlayerAnimations;
 import dev.thomasglasser.minejago.platform.Services;
-import dev.thomasglasser.minejago.util.MinejagoClientUtils;
-import dev.thomasglasser.minejago.util.MinejagoPacketUtils;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
+import dev.thomasglasser.tommylib.api.client.ClientUtils;
+import dev.thomasglasser.tommylib.api.client.animation.AnimationUtils;
+import dev.thomasglasser.tommylib.api.network.CustomPacket;
+import dev.thomasglasser.tommylib.api.network.PacketUtils;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -31,7 +32,7 @@ public class ClientboundStartSpinjitzuPacket implements CustomPacket
     }
 
     public static FriendlyByteBuf write(UUID uuid) {
-        FriendlyByteBuf buf = MinejagoPacketUtils.create();
+        FriendlyByteBuf buf = PacketUtils.create();
 
         buf.writeUUID(uuid);
 
@@ -39,9 +40,9 @@ public class ClientboundStartSpinjitzuPacket implements CustomPacket
     }
 
     public void handle(@Nullable Player player) {
-        AbstractClientPlayer clientPlayer = MinejagoClientUtils.getClientPlayerByUUID(uuid);
+        AbstractClientPlayer clientPlayer = ClientUtils.getClientPlayerByUUID(uuid);
         Services.DATA.setSpinjitzuData(new SpinjitzuData(true, true), clientPlayer);
-        if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled()) MinejagoAnimationUtils.startAnimation(PlayerAnimations.Spinjitzu.START.getAnimation(), PlayerAnimations.Spinjitzu.ACTIVE.getAnimation(), clientPlayer, FirstPersonMode.VANILLA);
+        if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled()) AnimationUtils.startAnimation(PlayerAnimations.Spinjitzu.START.getAnimation(), PlayerAnimations.Spinjitzu.ACTIVE.getAnimation(), clientPlayer, FirstPersonMode.VANILLA);
     }
 
     @Override

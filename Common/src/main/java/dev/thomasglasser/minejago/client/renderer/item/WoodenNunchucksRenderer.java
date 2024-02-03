@@ -4,8 +4,8 @@ import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.world.item.NunchucksItem;
+import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -33,7 +33,7 @@ public class WoodenNunchucksRenderer extends GeoItemRenderer<NunchucksItem> {
             poseStack.mulPose(Axis.YN.rotationDegrees(90));
             poseStack.mulPose(Axis.ZN.rotationDegrees(0.1f));
             if (displayContext == ItemDisplayContext.GUI) Lighting.setupForFlatItems();
-            Services.ITEM.renderItem(stack, displayContext, false, poseStack, bufferSource, packedLight, packedOverlay, "wooden_nunchucks_inventory");
+            TommyLibServices.ITEM.renderItem(stack, displayContext, false, poseStack, bufferSource, packedLight, packedOverlay, Minejago.MOD_ID, "wooden_nunchucks_inventory");
         }
         else
             super.renderByItem(stack, displayContext, poseStack, bufferSource, packedLight, packedOverlay);

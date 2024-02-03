@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.mixin.minecraft.world.item.enchantment;
 
-import dev.thomasglasser.minejago.world.item.Enchantable;
+import dev.thomasglasser.tommylib.api.world.item.Enchantable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import org.spongepowered.asm.mixin.Mixin;

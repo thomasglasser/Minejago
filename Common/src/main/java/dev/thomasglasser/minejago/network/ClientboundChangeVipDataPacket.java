@@ -1,9 +1,11 @@
 package dev.thomasglasser.minejago.network;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.client.MinejagoClientUtils;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterCosmeticOptions;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.VipData;
-import dev.thomasglasser.minejago.util.MinejagoClientUtils;
+import dev.thomasglasser.tommylib.api.client.ClientUtils;
+import dev.thomasglasser.tommylib.api.network.CustomPacket;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -51,7 +53,7 @@ public class ClientboundChangeVipDataPacket implements CustomPacket
     @Override
     public void handle(@Nullable Player player)
     {
-        MinejagoClientUtils.setVipData(MinejagoClientUtils.getClientPlayerByUUID(uuid), vipData);
+        MinejagoClientUtils.setVipData(ClientUtils.getClientPlayerByUUID(uuid), vipData);
     }
 
     @Override

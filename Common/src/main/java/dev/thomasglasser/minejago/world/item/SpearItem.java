@@ -4,9 +4,10 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
-import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownIronSpear;
+import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
+import dev.thomasglasser.tommylib.api.world.item.ModeledItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.network.chat.Component;
@@ -29,7 +30,8 @@ import java.util.List;
 
 import static dev.thomasglasser.minejago.world.item.MinejagoItems.MOD_NEEDED;
 
-public class SpearItem extends ThrowableSwordItem implements ModeledItem {
+public class SpearItem extends ThrowableSwordItem implements ModeledItem
+{
     /** Modifiers applied when the item is in the mainhand of a user. */
     private final ImmutableMultimap<Attribute, AttributeModifier> defaultModifiers;
 
@@ -39,7 +41,7 @@ public class SpearItem extends ThrowableSwordItem implements ModeledItem {
         super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(Attributes.ATTACK_KNOCKBACK, new AttributeModifier("Weapon modifier", knockback, AttributeModifier.Operation.ADDITION));
-        if (Services.ITEM.getAttackRangeAttribute() != null) builder.put(Services.ITEM.getAttackRangeAttribute(), new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", 2.0, AttributeModifier.Operation.ADDITION));
+        if (TommyLibServices.ITEM.getAttackRangeAttribute() != null) builder.put(TommyLibServices.ITEM.getAttackRangeAttribute(), new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", 2.0, AttributeModifier.Operation.ADDITION));
         this.defaultModifiers = builder.putAll(super.getDefaultAttributeModifiers(EquipmentSlot.MAINHAND)).build();
     }
     @Override

@@ -9,9 +9,9 @@ import dev.thomasglasser.minejago.client.particle.SparklesParticle;
 import dev.thomasglasser.minejago.client.particle.SparksParticle;
 import dev.thomasglasser.minejago.client.particle.SpinjitzuParticle;
 import dev.thomasglasser.minejago.client.particle.VaporsParticle;
-import dev.thomasglasser.minejago.platform.Services;
-import dev.thomasglasser.minejago.registration.RegistrationProvider;
-import dev.thomasglasser.minejago.registration.RegistryObject;
+import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
+import dev.thomasglasser.tommylib.api.registration.RegistrationProvider;
+import dev.thomasglasser.tommylib.api.registration.RegistryObject;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -31,16 +31,16 @@ public class MinejagoParticleTypes
                 return SpinjitzuParticleOptions.CODEC;
             }
         };
-        Services.PARTICLE.fabricRegister(particle, SpinjitzuParticle.Provider::new);
+        TommyLibServices.PARTICLE.fabricRegister(particle, SpinjitzuParticle.Provider::new);
         return particle;
     });
 
-    public static final RegistryObject<SimpleParticleType> SPARKS = register("sparks", () -> Services.PARTICLE.simple("sparks", SparksParticle.Provider::new, false));
-    public static final RegistryObject<SimpleParticleType> SNOWS = register("snows", () -> Services.PARTICLE.simple("snows", SnowsParticle.Provider::new,  false));
-    public static final RegistryObject<SimpleParticleType> ROCKS = register("rocks", () -> Services.PARTICLE.simple("rocks", RocksParticle.Provider::new,  false));
-    public static final RegistryObject<SimpleParticleType> BOLTS = register("bolts", () -> Services.PARTICLE.simple("bolts", BoltsParticle.Provider::new,  false));
-    public static final RegistryObject<SimpleParticleType> SPARKLES = register("sparkles", () -> Services.PARTICLE.simple("sparkles", SparklesParticle.Provider::new,  false));
-    public static final RegistryObject<SimpleParticleType> VAPORS = register("vapors", () -> Services.PARTICLE.simple("vapors", VaporsParticle.Provider::new,  false));
+    public static final RegistryObject<SimpleParticleType> SPARKS = register("sparks", () -> TommyLibServices.PARTICLE.simple("sparks", SparksParticle.Provider::new, false));
+    public static final RegistryObject<SimpleParticleType> SNOWS = register("snows", () -> TommyLibServices.PARTICLE.simple("snows", SnowsParticle.Provider::new,  false));
+    public static final RegistryObject<SimpleParticleType> ROCKS = register("rocks", () -> TommyLibServices.PARTICLE.simple("rocks", RocksParticle.Provider::new,  false));
+    public static final RegistryObject<SimpleParticleType> BOLTS = register("bolts", () -> TommyLibServices.PARTICLE.simple("bolts", BoltsParticle.Provider::new,  false));
+    public static final RegistryObject<SimpleParticleType> SPARKLES = register("sparkles", () -> TommyLibServices.PARTICLE.simple("sparkles", SparklesParticle.Provider::new,  false));
+    public static final RegistryObject<SimpleParticleType> VAPORS = register("vapors", () -> TommyLibServices.PARTICLE.simple("vapors", VaporsParticle.Provider::new,  false));
     
     private static <T extends ParticleType<?>> RegistryObject<T> register(String name, Supplier<T> RegistryObject)
     {

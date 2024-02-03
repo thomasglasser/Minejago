@@ -2,9 +2,13 @@ package dev.thomasglasser.minejago.world.entity.skulkin.raid;
 
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
-import dev.thomasglasser.minejago.world.entity.MeleeCompatibleSkeleton;
-import dev.thomasglasser.minejago.world.entity.ai.behavior.*;
+import dev.thomasglasser.minejago.world.entity.ai.behavior.FleeSkulkinRaidAndDespawn;
+import dev.thomasglasser.minejago.world.entity.ai.behavior.LongDistanceRaiderPatrol;
+import dev.thomasglasser.minejago.world.entity.ai.behavior.ObtainNearbyRaidBanner;
+import dev.thomasglasser.minejago.world.entity.ai.behavior.PathfindToSkulkinRaid;
+import dev.thomasglasser.minejago.world.entity.ai.behavior.SeekAndTakeFourWeaponsMap;
 import dev.thomasglasser.minejago.world.entity.character.Character;
+import dev.thomasglasser.tommylib.api.world.entity.MeleeCompatibleSkeleton;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -18,7 +22,12 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.behavior.Swim;
 import net.minecraft.world.entity.animal.Wolf;
@@ -77,8 +86,8 @@ public abstract class MeleeCompatibleSkeletonRaider extends MeleeCompatibleSkele
 	{
 		return BrainActivityGroup.coreTasks(
 				new Swim(1.0f),
-				new LongDistancePatrol<>().speedModifier(0.7F).leaderSpeedModifier(0.595F),
-				new ObtainNearbyItem<>(ALLOWED_ITEMS, ALLOWED_STACKS),
+				new LongDistanceRaiderPatrol<>().speedModifier(0.7F).leaderSpeedModifier(0.595F),
+				new ObtainNearbyRaidBanner<>(ALLOWED_ITEMS, ALLOWED_STACKS),
 				new PathfindToSkulkinRaid<>(),
 				new SeekAndTakeFourWeaponsMap<>(),
 				new FleeSkulkinRaidAndDespawn<>()

@@ -3,7 +3,7 @@ package dev.thomasglasser.minejago.world.item.armor;
 import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.world.entity.power.Power;
-import dev.thomasglasser.minejago.world.item.ModeledItem;
+import dev.thomasglasser.tommylib.api.world.item.ModeledItem;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public abstract class PoweredArmorItem extends ArmorItem implements GeoArmorItem, ModeledItem
+public abstract class PoweredArmorItem extends ArmorItem implements GiGeoArmorItem, ModeledItem
 {
     BlockEntityWithoutLevelRenderer bewlr;
 
@@ -45,10 +45,5 @@ public abstract class PoweredArmorItem extends ArmorItem implements GeoArmorItem
     public BlockEntityWithoutLevelRenderer getBEWLR() {
         if (bewlr == null) bewlr = new MinejagoBlockEntityWithoutLevelRenderer();
         return bewlr;
-    }
-
-    @Override
-    public boolean isGi() {
-        return true;
     }
 }

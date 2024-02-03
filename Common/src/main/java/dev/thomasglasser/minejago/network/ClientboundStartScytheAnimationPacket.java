@@ -2,10 +2,11 @@ package dev.thomasglasser.minejago.network;
 
 import dev.kosmx.playerAnim.api.firstPerson.FirstPersonMode;
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.client.animation.MinejagoAnimationUtils;
 import dev.thomasglasser.minejago.client.animation.definitions.ItemAnimations;
-import dev.thomasglasser.minejago.util.MinejagoClientUtils;
-import dev.thomasglasser.minejago.util.MinejagoPacketUtils;
+import dev.thomasglasser.tommylib.api.client.ClientUtils;
+import dev.thomasglasser.tommylib.api.client.animation.AnimationUtils;
+import dev.thomasglasser.tommylib.api.network.CustomPacket;
+import dev.thomasglasser.tommylib.api.network.PacketUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -34,7 +35,7 @@ public class ClientboundStartScytheAnimationPacket implements CustomPacket
     }
 
     public static FriendlyByteBuf write(UUID uuid, ItemAnimations.ScytheOfQuakes startAnim, ItemAnimations.ScytheOfQuakes goAnim) {
-        FriendlyByteBuf buf = MinejagoPacketUtils.create();
+        FriendlyByteBuf buf = PacketUtils.create();
 
         buf.writeUUID(uuid);
         buf.writeEnum(startAnim);
@@ -45,7 +46,7 @@ public class ClientboundStartScytheAnimationPacket implements CustomPacket
 
     // ON CLIENT
     public void handle(@Nullable Player player) {
-        if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled()) MinejagoAnimationUtils.startAnimation(startAnim.getAnimation(), goAnim != null ? goAnim.getAnimation() : null, MinejagoClientUtils.getClientPlayerByUUID(uuid), FirstPersonMode.THIRD_PERSON_MODEL);
+        if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled()) AnimationUtils.startAnimation(startAnim.getAnimation(), goAnim != null ? goAnim.getAnimation() : null, ClientUtils.getClientPlayerByUUID(uuid), FirstPersonMode.THIRD_PERSON_MODEL);
     }
 
     @Override

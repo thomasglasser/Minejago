@@ -9,6 +9,7 @@ import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaidsHolder;
 import dev.thomasglasser.minejago.world.focus.FocusData;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -72,7 +73,7 @@ public abstract class ServerPlayerMixin
                 INSTANCE.containerMenu.broadcastChanges();
             }
 
-            Services.NETWORK.sendToClient(ClientboundOpenScrollPacket.class, ClientboundOpenScrollPacket.write(hand), INSTANCE);
+            TommyLibServices.NETWORK.sendToClient(ClientboundOpenScrollPacket.class, ClientboundOpenScrollPacket.write(hand), INSTANCE);
         }
     }
 
@@ -90,7 +91,7 @@ public abstract class ServerPlayerMixin
         if (focusData == null)
             focusData = Services.DATA.getFocusData(INSTANCE);
         if (this.lastSentFocus != focusData.getFocusLevel() || this.focusData.getSaturationLevel() == 0.0F != this.lastFoodSaturationZero) {
-            Services.NETWORK.sendToClient(ClientboundSetFocusPacket.class, ClientboundSetFocusPacket.write(focusData), INSTANCE);
+            TommyLibServices.NETWORK.sendToClient(ClientboundSetFocusPacket.class, ClientboundSetFocusPacket.write(focusData), INSTANCE);
             this.lastSentFocus = this.focusData.getFocusLevel();
             this.lastFoodSaturationZero = this.focusData.getSaturationLevel() == 0.0F;
         }

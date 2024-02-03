@@ -2,7 +2,7 @@ package dev.thomasglasser.minejago.tags;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
-import dev.thomasglasser.minejago.world.level.block.WoodSet;
+import dev.thomasglasser.tommylib.api.world.level.block.WoodSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -10,7 +10,6 @@ import net.minecraft.world.level.block.Block;
 
 public class MinejagoBlockTags
 {
-    public static final TagKey<Block> UNBREAKABLE = create("unbreakable");
     public static final TagKey<Block> TEAPOTS = create("teapots");
     public static final TagKey<Block> SHURIKEN_BREAKS = create("shuriken_breaks");
 

@@ -2,11 +2,11 @@ package dev.thomasglasser.minejago.world.entity.ai.behavior;
 
 import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
-import dev.thomasglasser.minejago.util.MinejagoLevelUtils;
-import dev.thomasglasser.minejago.world.entity.DataHolder;
+import dev.thomasglasser.minejago.world.level.MinejagoLevelUtils;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.MeleeCompatibleSkeletonRaider;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaidsHolder;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import dev.thomasglasser.tommylib.api.world.entity.DataHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EquipmentSlot;

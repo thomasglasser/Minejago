@@ -1,9 +1,10 @@
 package dev.thomasglasser.minejago.network;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.client.animation.MinejagoAnimationUtils;
-import dev.thomasglasser.minejago.util.MinejagoClientUtils;
-import dev.thomasglasser.minejago.util.MinejagoPacketUtils;
+import dev.thomasglasser.tommylib.api.client.ClientUtils;
+import dev.thomasglasser.tommylib.api.client.animation.AnimationUtils;
+import dev.thomasglasser.tommylib.api.network.CustomPacket;
+import dev.thomasglasser.tommylib.api.network.PacketUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -27,7 +28,7 @@ public class ClientboundStopAnimationPacket implements CustomPacket
 
     public static FriendlyByteBuf write(UUID uuid)
     {
-        FriendlyByteBuf buf = MinejagoPacketUtils.create();
+        FriendlyByteBuf buf = PacketUtils.create();
 
         buf.writeUUID(uuid);
 
@@ -36,7 +37,7 @@ public class ClientboundStopAnimationPacket implements CustomPacket
 
     // ON CLIENT
     public void handle(@Nullable Player player) {
-        MinejagoAnimationUtils.stopAnimation(MinejagoClientUtils.getClientPlayerByUUID(uuid));
+        AnimationUtils.stopAnimation(ClientUtils.getClientPlayerByUUID(uuid));
     }
 
     @Override

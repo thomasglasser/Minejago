@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.world.item.crafting;
 
-import dev.thomasglasser.minejago.util.MinejagoItemUtils;
+import dev.thomasglasser.minejago.world.item.MinejagoItemUtils;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;

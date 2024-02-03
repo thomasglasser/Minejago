@@ -1,8 +1,8 @@
 package dev.thomasglasser.minejago.mixin.minecraft.client.player;
 
 import dev.thomasglasser.minejago.client.gui.screens.inventory.ScrollEditScreen;
-import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import dev.thomasglasser.tommylib.api.client.ClientUtils;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
@@ -20,7 +20,7 @@ public class LocalPlayerMixin
     private void minejago_openItemGui(ItemStack stack, InteractionHand hand, CallbackInfo ci)
     {
         if (stack.is(MinejagoItems.WRITABLE_SCROLL.get())) {
-            MinejagoClientUtils.setScreen(new ScrollEditScreen(INSTANCE, stack, hand));
+            ClientUtils.setScreen(new ScrollEditScreen(INSTANCE, stack, hand));
         }
 
     }

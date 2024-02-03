@@ -4,12 +4,13 @@ import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
-import dev.thomasglasser.minejago.util.MinejagoPacketUtils;
 import dev.thomasglasser.minejago.world.entity.ai.memory.MinejagoMemoryModuleTypes;
 import dev.thomasglasser.minejago.world.entity.character.Wu;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.level.storage.PowerData;
+import dev.thomasglasser.tommylib.api.network.CustomPacket;
+import dev.thomasglasser.tommylib.api.network.PacketUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -43,7 +44,7 @@ public class ServerboundSetPowerDataPacket implements CustomPacket
     }
 
     public static FriendlyByteBuf write(ResourceKey<Power> key, boolean markGiven, @Nullable Integer wuId) {
-        FriendlyByteBuf buf = MinejagoPacketUtils.create();
+        FriendlyByteBuf buf = PacketUtils.create();
 
         buf.writeResourceKey(key);
         buf.writeBoolean(markGiven);
@@ -53,7 +54,7 @@ public class ServerboundSetPowerDataPacket implements CustomPacket
     }
 
     public static FriendlyByteBuf write(ResourceKey<Power> key, boolean markGiven) {
-        FriendlyByteBuf buf = MinejagoPacketUtils.create();
+        FriendlyByteBuf buf = PacketUtils.create();
 
         buf.writeResourceKey(key);
         buf.writeBoolean(markGiven);

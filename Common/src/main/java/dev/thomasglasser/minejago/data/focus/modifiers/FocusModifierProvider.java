@@ -3,13 +3,10 @@ package dev.thomasglasser.minejago.data.focus.modifiers;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.focus.modifier.FocusModifier;
 import dev.thomasglasser.minejago.world.focus.modifier.Operation;
-import dev.thomasglasser.minejago.world.focus.modifier.biome.BiomeFocusModifier;
 import dev.thomasglasser.minejago.world.focus.modifier.blockstate.BlockStateFocusModifier;
-import dev.thomasglasser.minejago.world.focus.modifier.dimension.DimensionFocusModifier;
-import dev.thomasglasser.minejago.world.focus.modifier.effect.MobEffectFocusModifier;
-import dev.thomasglasser.minejago.world.focus.modifier.entity.EntityFocusModifier;
+import dev.thomasglasser.minejago.world.focus.modifier.entity.EntityTypeFocusModifier;
 import dev.thomasglasser.minejago.world.focus.modifier.itemstack.ItemStackFocusModifier;
-import dev.thomasglasser.minejago.world.focus.modifier.structure.StructureFocusModifier;
+import dev.thomasglasser.minejago.world.focus.modifier.resourcekey.ResourceKeyFocusModifier;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.CachedOutput;
@@ -87,7 +84,7 @@ public abstract class FocusModifierProvider implements DataProvider
 	}
 	protected void addBiome(ResourceLocation location, ResourceKey<Biome> biome, double modifier, Operation operation)
 	{
-		add(new BiomeFocusModifier(location, biome, modifier, operation));
+		add(new ResourceKeyFocusModifier<>(location, biome, modifier, operation));
 	}
 
 	protected void add(double modifier, Operation operation, BlockState... states)
@@ -119,19 +116,20 @@ public abstract class FocusModifierProvider implements DataProvider
 	}
 	protected void addDimension(ResourceLocation location, ResourceKey<Level> dimension, double modifier, Operation operation)
 	{
-		add(new DimensionFocusModifier(location, dimension, modifier, operation));
+		add(new ResourceKeyFocusModifier<>(location, dimension, modifier, operation));
 	}
 
 	protected void add(double modifier, Operation operation, MobEffect... effects)
 	{
 		for (MobEffect effect : effects)
 		{
-			add(BuiltInRegistries.MOB_EFFECT.getKey(effect), effect, modifier, operation);
+			ResourceKey<MobEffect> resourceKey = BuiltInRegistries.MOB_EFFECT.getResourceKey(effect).orElseThrow();
+			add(resourceKey.location(), resourceKey, modifier, operation);
 		}
 	}
-	protected void add(ResourceLocation location, MobEffect effect, double modifier, Operation operation)
+	protected void add(ResourceLocation location, ResourceKey<MobEffect> effect, double modifier, Operation operation)
 	{
-		add(new MobEffectFocusModifier(location, effect, modifier, operation));
+		add(new ResourceKeyFocusModifier<>(location, effect, modifier, operation));
 	}
 
 	protected void add(EntityType<?> type, CompoundTag nbt, double modifier, Operation operation)
@@ -147,7 +145,7 @@ public abstract class FocusModifierProvider implements DataProvider
 	}
 	protected void add(ResourceLocation location, EntityType<?> type, CompoundTag nbt, double modifier, Operation operation)
 	{
-		add(new EntityFocusModifier(location, type, nbt, modifier, operation));
+		add(new EntityTypeFocusModifier(location, type, nbt, modifier, operation));
 	}
 
 	protected void add(double modifier, Operation operation, ItemStack... stacks)
@@ -172,7 +170,7 @@ public abstract class FocusModifierProvider implements DataProvider
 	}
 	protected void addStructure(ResourceLocation location, ResourceKey<Structure> structure, double modifier, Operation operation)
 	{
-		add(new StructureFocusModifier(location, structure, modifier, operation));
+		add(new ResourceKeyFocusModifier<>(location, structure, modifier, operation));
 	}
 
 	@Override

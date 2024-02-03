@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.world.item;
 
 import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
+import dev.thomasglasser.tommylib.api.world.item.ModeledItem;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
@@ -16,7 +17,8 @@ import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class IronScytheItem extends DiggerItem implements ModeledItem {
+public class IronScytheItem extends DiggerItem implements ModeledItem
+{
     private BlockEntityWithoutLevelRenderer bewlr;
 
     public IronScytheItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, TagKey<Block> blocks, Properties pProperties) {

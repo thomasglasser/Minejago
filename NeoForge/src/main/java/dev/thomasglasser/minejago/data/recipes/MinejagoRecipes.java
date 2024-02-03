@@ -1,18 +1,18 @@
 package dev.thomasglasser.minejago.data.recipes;
 
-import dev.thomasglasser.minejago.registration.RegistryObject;
 import dev.thomasglasser.minejago.tags.MinejagoItemTags;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
-import dev.thomasglasser.minejago.world.level.block.WoodSet;
+import dev.thomasglasser.tommylib.api.data.recipes.ExtendedRecipeProvider;
+import dev.thomasglasser.tommylib.api.registration.RegistryObject;
+import dev.thomasglasser.tommylib.api.tags.TommyLibItemTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
@@ -30,7 +30,8 @@ import net.minecraft.world.level.block.Blocks;
 
 import java.util.concurrent.CompletableFuture;
 
-public class MinejagoRecipes extends RecipeProvider {
+public class MinejagoRecipes extends ExtendedRecipeProvider
+{
     public MinejagoRecipes(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
         super(output, lookupProvider);
     }
@@ -53,28 +54,28 @@ public class MinejagoRecipes extends RecipeProvider {
                 .pattern("o  ")
                 .pattern(" x ")
                 .pattern("  x")
-                .define('x', MinejagoItemTags.WOODEN_RODS)
-                .define('o', MinejagoItemTags.IRON_INGOTS)
-                .unlockedBy("has_iron", has(MinejagoItemTags.IRON_INGOTS))
+                .define('x', TommyLibItemTags.WOODEN_RODS)
+                .define('o', TommyLibItemTags.IRON_INGOTS)
+                .unlockedBy("has_iron", has(TommyLibItemTags.IRON_INGOTS))
                 .save(writer);
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, MinejagoItems.IRON_KATANA.get(), 1)
                 .pattern("  x")
                 .pattern(" x ")
                 .pattern("o  ")
-                .define('x', MinejagoItemTags.IRON_INGOTS)
-                .define('o', MinejagoItemTags.WOODEN_RODS)
-                .unlockedBy("has_iron", has(MinejagoItemTags.IRON_INGOTS))
+                .define('x', TommyLibItemTags.IRON_INGOTS)
+                .define('o', TommyLibItemTags.WOODEN_RODS)
+                .unlockedBy("has_iron", has(TommyLibItemTags.IRON_INGOTS))
                 .save(writer);
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, MinejagoItems.IRON_SCYTHE.get(), 1)
                 .pattern(" x ")
                 .pattern("xo ")
                 .pattern(" o ")
-                .define('x', MinejagoItemTags.IRON_INGOTS)
-                .define('o', MinejagoItemTags.WOODEN_RODS)
-                .unlockedBy("has_iron", has(MinejagoItemTags.IRON_INGOTS))
+                .define('x', TommyLibItemTags.IRON_INGOTS)
+                .define('o', TommyLibItemTags.WOODEN_RODS)
+                .unlockedBy("has_iron", has(TommyLibItemTags.IRON_INGOTS))
                 .save(writer);
         ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, MinejagoItems.WOODEN_NUNCHUCKS.get(), 1)
-                .requires(Ingredient.of(MinejagoItemTags.WOODEN_RODS), 2)
+                .requires(Ingredient.of(TommyLibItemTags.WOODEN_RODS), 2)
                 .requires(Items.CHAIN)
                 .unlockedBy("has_chain", has(Items.CHAIN))
                 .save(writer);
@@ -95,17 +96,17 @@ public class MinejagoRecipes extends RecipeProvider {
                 .save(writer);
         ShapelessRecipeBuilder.shapeless(RecipeCategory.BREWING, MinejagoBlocks.FLAME_TEAPOT.get(), 1)
                 .requires(MinejagoBlocks.TEAPOTS.get(DyeColor.GRAY).get())
-                .requires(MinejagoItemTags.DYES_MAP.get(DyeColor.ORANGE))
+                .requires(TommyLibItemTags.DYES_MAP.get(DyeColor.ORANGE))
                 .group("teapot")
                 .unlockedBy("has_self", has(MinejagoBlocks.FLAME_TEAPOT.get()))
-                .unlockedBy("has_orange_dye", has(MinejagoItemTags.DYES_MAP.get(DyeColor.ORANGE)))
+                .unlockedBy("has_orange_dye", has(TommyLibItemTags.DYES_MAP.get(DyeColor.ORANGE)))
                 .unlockedBy("has_teapot", has(MinejagoItemTags.TEAPOTS))
                 .save(writer);
 
         MinejagoBlocks.TEAPOTS.forEach((color, pot) ->
         {
             coloredTeapotFromColoredTerracotta(writer, pot.get(), BuiltInRegistries.BLOCK.get(new ResourceLocation(color.getName() + "_terracotta")));
-            coloredTeapotFromTeapotAndDye(writer, pot.get(), MinejagoItemTags.DYES_MAP.get(color));
+            coloredTeapotFromTeapotAndDye(writer, pot.get(), TommyLibItemTags.DYES_MAP.get(color));
         });
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, MinejagoItems.SCROLL.get(), 1)
@@ -136,7 +137,7 @@ public class MinejagoRecipes extends RecipeProvider {
         ShapedRecipeBuilder.shaped(RecipeCategory.BREWING, pot, 1)
                 .pattern("x")
                 .pattern("o")
-                .define('x', MinejagoItemTags.WOODEN_RODS)
+                .define('x', TommyLibItemTags.WOODEN_RODS)
                 .define('o', color)
                 .group("teapot")
                 .unlockedBy("has_terracotta", has(ItemTags.TERRACOTTA))
@@ -186,12 +187,5 @@ public class MinejagoRecipes extends RecipeProvider {
     private void normalTea(RecipeOutput writer, Item ingredient, RegistryObject<Potion> result)
     {
         normalTea(writer, ingredient, result.get());
-    }
-
-    private void woodSet(RecipeOutput writer, WoodSet set)
-    {
-        planksFromLogs(writer, set.planks().get(), set.logsItemTag().get(), 4);
-        woodFromLogs(writer, set.wood().get(), set.log().get());
-        woodFromLogs(writer, set.strippedWood().get(), set.strippedLog().get());
     }
 }

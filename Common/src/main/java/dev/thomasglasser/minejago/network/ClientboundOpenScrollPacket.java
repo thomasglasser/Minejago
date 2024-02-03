@@ -2,9 +2,10 @@ package dev.thomasglasser.minejago.network;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.ScrollViewScreen;
-import dev.thomasglasser.minejago.util.MinejagoClientUtils;
-import dev.thomasglasser.minejago.util.MinejagoPacketUtils;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import dev.thomasglasser.tommylib.api.client.ClientUtils;
+import dev.thomasglasser.tommylib.api.network.CustomPacket;
+import dev.thomasglasser.tommylib.api.network.PacketUtils;
 import net.minecraft.client.gui.screens.inventory.BookViewScreen;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -28,7 +29,7 @@ public class ClientboundOpenScrollPacket implements CustomPacket
     }
 
     public static FriendlyByteBuf write(InteractionHand hand) {
-        FriendlyByteBuf buf = MinejagoPacketUtils.create();
+        FriendlyByteBuf buf = PacketUtils.create();
 
         buf.writeEnum(hand);
 
@@ -38,9 +39,9 @@ public class ClientboundOpenScrollPacket implements CustomPacket
     // ON CLIENT
     public void handle(@Nullable Player player)
     {
-        ItemStack itemStack = MinejagoClientUtils.getMainClientPlayer().getItemInHand(hand);
+        ItemStack itemStack = ClientUtils.getMainClientPlayer().getItemInHand(hand);
         if (itemStack.is(MinejagoItems.WRITTEN_SCROLL.get())) {
-            MinejagoClientUtils.setScreen(new ScrollViewScreen(new BookViewScreen.WrittenBookAccess(itemStack)));
+            ClientUtils.setScreen(new ScrollViewScreen(new BookViewScreen.WrittenBookAccess(itemStack)));
         }
     }
 

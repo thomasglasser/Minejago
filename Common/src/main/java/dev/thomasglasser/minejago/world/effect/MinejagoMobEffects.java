@@ -2,16 +2,16 @@ package dev.thomasglasser.minejago.world.effect;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.platform.Services;
-import dev.thomasglasser.minejago.registration.RegistrationProvider;
-import dev.thomasglasser.minejago.registration.RegistryObject;
-import dev.thomasglasser.minejago.util.MinejagoLevelUtils;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaidsHolder;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
+import dev.thomasglasser.minejago.world.level.MinejagoLevelUtils;
+import dev.thomasglasser.tommylib.api.world.effect.EmptyMobEffect;
+import dev.thomasglasser.tommylib.api.registration.RegistrationProvider;
+import dev.thomasglasser.tommylib.api.registration.RegistryObject;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.effect.InstantenousMobEffect;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -123,33 +123,13 @@ public class MinejagoMobEffects
 
     private static RegistryObject<MobEffect> noEffects(String name, int color)
     {
-        return register(name, () -> new MinejagoMobEffects.EmptyMobEffect(color));
+        return register(name, () -> new EmptyMobEffect(color));
     }
 
     private static RegistryObject<MobEffect> instantNoEffects(String name, int color)
     {
-        return register(name, () -> new MinejagoMobEffects.InstantaneousEmptyMobEffect(color));
+        return register(name, () -> new EmptyMobEffect.Instantaneous(color));
     }
 
     public static void init() {}
-
-    public static class EmptyMobEffect extends MobEffect
-    {
-        public EmptyMobEffect(int color) {
-            super(MobEffectCategory.NEUTRAL, color);
-        }
-    }
-
-    public static class InstantaneousEmptyMobEffect extends InstantenousMobEffect
-    {
-        public InstantaneousEmptyMobEffect(int color) {
-            super(MobEffectCategory.NEUTRAL, color);
-        }
-
-        @Override
-        public boolean isInstantenous()
-        {
-            return true;
-        }
-    }
 }

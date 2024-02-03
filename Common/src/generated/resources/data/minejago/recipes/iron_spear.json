@@ -3,10 +3,10 @@
   "category": "equipment",
   "key": {
     "o": {
-      "tag": "minejago:iron_ingots"
+      "tag": "tommylib:iron_ingots"
     },
     "x": {
-      "tag": "minejago:wooden_rods"
+      "tag": "tommylib:wooden_rods"
     }
   },
   "pattern": [

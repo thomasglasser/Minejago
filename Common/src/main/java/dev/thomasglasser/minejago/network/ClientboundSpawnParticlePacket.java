@@ -2,7 +2,8 @@ package dev.thomasglasser.minejago.network;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleUtils;
-import dev.thomasglasser.minejago.util.MinejagoPacketUtils;
+import dev.thomasglasser.tommylib.api.network.CustomPacket;
+import dev.thomasglasser.tommylib.api.network.PacketUtils;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -47,7 +48,7 @@ public class ClientboundSpawnParticlePacket implements CustomPacket
 
     public static FriendlyByteBuf write(ParticleOptions particle, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
     {
-        FriendlyByteBuf buf = MinejagoPacketUtils.create();
+        FriendlyByteBuf buf = PacketUtils.create();
 
         buf.writeResourceLocation(BuiltInRegistries.PARTICLE_TYPE.getKey(particle.getType()));
         particle.writeToNetwork(buf);

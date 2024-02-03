@@ -181,7 +181,46 @@ subprojects {
             name = 'Mojang and Mixins'
             url = 'https://repo.spongepowered.org/repository/maven-public/'
         }
-        mavenLocal()
+    }
+
+    processResources {
+        var replaceProperties = [
+                mod_name: mod_name,
+                resource_pack_format_number: resource_pack_format_number,
+                data_pack_format_number: data_pack_format_number,
+                mod_id: mod_id,
+                major_fml_version: major_fml_version,
+                version: project.version,
+                contributors: contributors,
+                description: project.description,
+                mod_author: mod_author,
+                homepage: homepage,
+                sources: sources,
+                issues: issues,
+                license: license,
+                icon: icon,
+                neoforge_version: neoforge_version,
+                fabric_loader_version: fabric_loader_version,
+                fabric_version: fabric_version,
+                minecraft_version: minecraft_version,
+                next_minecraft_version: next_minecraft_version,
+                playeranimator_version: playeranimator_version,
+                ryoamiclights_version: ryoamiclights_version,
+                moonlight_version: moonlight_version,
+                sbl_version: sbl_version,
+                geckolib_version: geckolib_version,
+                sherdsapi_version: sherdsapi_version,
+                trimmed_version: trimmed_version,
+                tes_version: tes_version,
+                jade_version: jade_version,
+                reachentityattributes_version: reachentityattributes_version,
+                tommylib_version: tommylib_version
+        ]
+        inputs.properties replaceProperties
+
+        filesMatching(['META-INF/mods.toml','fabric.mod.json','**/pack.mcmeta','*.mixins.json']) {
+            expand replaceProperties + [project: project]
+        }
     }
 
     tasks.withType(JavaCompile).configureEach {

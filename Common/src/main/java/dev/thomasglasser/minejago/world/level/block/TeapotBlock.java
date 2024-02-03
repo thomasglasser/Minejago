@@ -4,10 +4,10 @@ import com.mojang.serialization.MapCodec;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
-import dev.thomasglasser.minejago.util.MinejagoItemUtils;
 import dev.thomasglasser.minejago.world.item.PotionCupHolder;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
 import dev.thomasglasser.minejago.world.level.block.entity.TeapotBlockEntity;
+import dev.thomasglasser.tommylib.api.world.item.ItemUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -28,7 +28,14 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.SupportType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -106,7 +113,7 @@ public class TeapotBlock extends BaseEntityBlock {
                     {
                         if (be.tryFill(holder.getCups(), holder.getPotion(inHand)))
                         {
-                            MinejagoItemUtils.safeShrink(1, inHand, pPlayer);
+                            ItemUtils.safeShrink(1, inHand, pPlayer);
                             pPlayer.addItem(holder.getDrained(pPlayer.getItemInHand(pHand)));
                             pLevel.playSound(null, pPos, SoundEvents.BOTTLE_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
                         }
@@ -114,7 +121,7 @@ public class TeapotBlock extends BaseEntityBlock {
                     else if (be.getCups() > 0)
                     {
                         if (inHand.getItem() instanceof PotionCupHolder potionCupHolder && potionCupHolder.canBeFilled(inHand, be.getPotion(), be.getCups())) {
-                            MinejagoItemUtils.safeShrink(1, inHand, pPlayer);
+                            ItemUtils.safeShrink(1, inHand, pPlayer);
                             pPlayer.addItem(potionCupHolder.getFilled(be.getPotion()));
                             be.take(potionCupHolder.getCups());
                             MinejagoCriteriaTriggers.BREWED_TEA.get().trigger((ServerPlayer) pPlayer, be.getPotion().builtInRegistryHolder());
@@ -122,7 +129,7 @@ public class TeapotBlock extends BaseEntityBlock {
                             be.giveExperienceForCup((ServerLevel) pLevel, pPos.getCenter());
                         } else if (be.hasRecipe(inHand, pLevel)) {
                             be.insert(0, inHand);
-                            MinejagoItemUtils.safeShrink(1, inHand, pPlayer);
+                            ItemUtils.safeShrink(1, inHand, pPlayer);
                         }
                     }
                     return InteractionResult.SUCCESS;

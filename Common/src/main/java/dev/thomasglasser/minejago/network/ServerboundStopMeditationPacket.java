@@ -2,7 +2,9 @@ package dev.thomasglasser.minejago.network;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.platform.Services;
-import dev.thomasglasser.minejago.util.MinejagoPacketUtils;
+import dev.thomasglasser.tommylib.api.network.CustomPacket;
+import dev.thomasglasser.tommylib.api.network.PacketUtils;
+import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -24,7 +26,7 @@ public class ServerboundStopMeditationPacket implements CustomPacket
     }
 
     public static FriendlyByteBuf write(boolean fail) {
-        FriendlyByteBuf buf = MinejagoPacketUtils.create();
+        FriendlyByteBuf buf = PacketUtils.create();
 
         buf.writeBoolean(fail);
 
@@ -35,7 +37,7 @@ public class ServerboundStopMeditationPacket implements CustomPacket
         if (player instanceof ServerPlayer serverPlayer)
         {
             Services.DATA.getFocusData(player).stopMeditating();
-            Services.NETWORK.sendToAllClients(ClientboundStopMeditationPacket.class, ClientboundStopMeditationPacket.write(serverPlayer.getUUID(), fail), serverPlayer.getServer());
+            TommyLibServices.NETWORK.sendToAllClients(ClientboundStopMeditationPacket.class, ClientboundStopMeditationPacket.write(serverPlayer.getUUID(), fail), serverPlayer.getServer());
         }
     }
 

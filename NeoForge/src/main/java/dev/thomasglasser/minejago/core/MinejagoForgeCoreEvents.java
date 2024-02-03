@@ -6,19 +6,16 @@ import com.klikli_dev.modonomicon.data.LoaderRegistry;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.data.modonomicons.pages.BookTeapotBrewingRecipePage;
-import dev.thomasglasser.minejago.network.CustomPacket;
 import dev.thomasglasser.minejago.network.MinejagoPackets;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
-import dev.thomasglasser.minejago.packs.PackHolder;
 import dev.thomasglasser.minejago.world.entity.power.Power;
-import dev.thomasglasser.minejago.world.focus.modifier.biome.BiomeFocusModifiers;
 import dev.thomasglasser.minejago.world.focus.modifier.blockstate.BlockStateFocusModifiers;
-import dev.thomasglasser.minejago.world.focus.modifier.dimension.DimensionFocusModifiers;
-import dev.thomasglasser.minejago.world.focus.modifier.effect.MobEffectFocusModifiers;
-import dev.thomasglasser.minejago.world.focus.modifier.entity.EntityFocusModifiers;
+import dev.thomasglasser.minejago.world.focus.modifier.entity.EntityTypeFocusModifiers;
 import dev.thomasglasser.minejago.world.focus.modifier.itemstack.ItemStackFocusModifiers;
-import dev.thomasglasser.minejago.world.focus.modifier.structure.StructureFocusModifiers;
+import dev.thomasglasser.minejago.world.focus.modifier.resourcekey.ResourceKeyFocusModifiers;
 import dev.thomasglasser.minejago.world.focus.modifier.world.WorldFocusModifiers;
+import dev.thomasglasser.tommylib.api.network.CustomPacket;
+import dev.thomasglasser.tommylib.api.packs.PackHolder;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackResources;
@@ -78,13 +75,10 @@ public class MinejagoForgeCoreEvents {
     {
         event.addListener((ResourceManagerReloadListener) resourceManager ->
         {
-            BiomeFocusModifiers.load(resourceManager);
+            ResourceKeyFocusModifiers.load(resourceManager);
             BlockStateFocusModifiers.load(resourceManager);
-            DimensionFocusModifiers.load(resourceManager);
-            EntityFocusModifiers.load(resourceManager);
+            EntityTypeFocusModifiers.load(resourceManager);
             ItemStackFocusModifiers.load(resourceManager);
-            StructureFocusModifiers.load(resourceManager);
-            MobEffectFocusModifiers.load(resourceManager);
             WorldFocusModifiers.load(resourceManager);
         });
     }

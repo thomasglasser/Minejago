@@ -2,12 +2,13 @@ package dev.thomasglasser.minejago.network;
 
 import dev.kosmx.playerAnim.api.firstPerson.FirstPersonMode;
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.client.animation.MinejagoAnimationUtils;
 import dev.thomasglasser.minejago.client.animation.definitions.PlayerAnimations;
 import dev.thomasglasser.minejago.platform.Services;
-import dev.thomasglasser.minejago.util.MinejagoClientUtils;
-import dev.thomasglasser.minejago.util.MinejagoPacketUtils;
 import dev.thomasglasser.minejago.world.focus.FocusData;
+import dev.thomasglasser.tommylib.api.client.ClientUtils;
+import dev.thomasglasser.tommylib.api.client.animation.AnimationUtils;
+import dev.thomasglasser.tommylib.api.network.CustomPacket;
+import dev.thomasglasser.tommylib.api.network.PacketUtils;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -34,7 +35,7 @@ public class ClientboundStopMeditationPacket implements CustomPacket
     }
 
     public static FriendlyByteBuf write(UUID uuid, boolean fail) {
-        FriendlyByteBuf buf = MinejagoPacketUtils.create();
+        FriendlyByteBuf buf = PacketUtils.create();
 
         buf.writeUUID(uuid);
         buf.writeBoolean(fail);
@@ -43,15 +44,15 @@ public class ClientboundStopMeditationPacket implements CustomPacket
     }
 
     public void handle(@Nullable Player player) {
-        AbstractClientPlayer clientPlayer = MinejagoClientUtils.getClientPlayerByUUID(uuid);
+        AbstractClientPlayer clientPlayer = ClientUtils.getClientPlayerByUUID(uuid);
         FocusData focusData = Services.DATA.getFocusData(clientPlayer);
         focusData.stopMeditating();
         if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled())
         {
             if (fail)
-                MinejagoAnimationUtils.stopAnimation(clientPlayer);
+                AnimationUtils.stopAnimation(clientPlayer);
             else
-                MinejagoAnimationUtils.startAnimation(PlayerAnimations.Meditation.FINISH.getAnimation(), clientPlayer, FirstPersonMode.VANILLA);
+                AnimationUtils.startAnimation(PlayerAnimations.Meditation.FINISH.getAnimation(), clientPlayer, FirstPersonMode.VANILLA);
         }
     }
 

@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.network;
 
 import com.mojang.datafixers.util.Pair;
+import dev.thomasglasser.tommylib.api.network.CustomPacket;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.HashMap;

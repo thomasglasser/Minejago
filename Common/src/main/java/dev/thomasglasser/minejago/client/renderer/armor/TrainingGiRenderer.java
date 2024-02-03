@@ -1,8 +1,8 @@
 package dev.thomasglasser.minejago.client.renderer.armor;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.client.model.NbtArmorGeoModel;
 import dev.thomasglasser.minejago.world.item.armor.TrainingGiItem;
+import dev.thomasglasser.tommylib.api.client.model.NbtArmorGeoModel;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 

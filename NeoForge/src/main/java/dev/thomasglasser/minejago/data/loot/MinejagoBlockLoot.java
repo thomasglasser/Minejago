@@ -1,12 +1,10 @@
 package dev.thomasglasser.minejago.data.loot;
 
-import dev.thomasglasser.minejago.registration.RegistryObject;
-import dev.thomasglasser.minejago.world.level.block.LeavesSet;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
-import dev.thomasglasser.minejago.world.level.block.WoodSet;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
-import net.minecraft.data.loot.BlockLootSubProvider;
+import dev.thomasglasser.tommylib.api.data.loot.ExtendedBlockLootSubProvider;
+import dev.thomasglasser.tommylib.api.registration.RegistryObject;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -21,7 +19,8 @@ import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
 import java.util.Set;
 
-public class MinejagoBlockLoot extends BlockLootSubProvider {
+public class MinejagoBlockLoot extends ExtendedBlockLootSubProvider
+{
     public MinejagoBlockLoot() {
         super(Set.of(), FeatureFlags.REGISTRY.allFlags());
     }
@@ -63,25 +62,6 @@ public class MinejagoBlockLoot extends BlockLootSubProvider {
                                                 .copy("Potion", "BlockEntityTag.Potion"))
                                         .apply(SetContainerContents.setContents(MinejagoBlockEntityTypes.TEAPOT.get()).withEntry(DynamicLoot.dynamicEntry(TeapotBlock.CONTENTS))))
                 );
-    }
-
-    private void woodSet(WoodSet set)
-    {
-        dropSelf(set.planks().get());
-        dropSelf(set.log().get());
-        dropSelf(set.strippedLog().get());
-        dropSelf(set.wood().get());
-        dropSelf(set.strippedWood().get());
-
-    }
-
-    private void leavesSet(LeavesSet set)
-    {
-        add(set.leaves().get(), createLeavesDrops(set.leaves().get(), set.sapling().get(), NORMAL_LEAVES_SAPLING_CHANCES));
-
-        dropSelf(set.sapling().get());
-
-        dropPottedContents(set.pottedSapling().get());
     }
 
     @Override

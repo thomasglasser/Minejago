@@ -1,12 +1,13 @@
 package dev.thomasglasser.minejago.world.level.block.entity;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
-import dev.thomasglasser.minejago.util.MinejagoItemUtils;
+import dev.thomasglasser.minejago.world.item.MinejagoItemUtils;
 import dev.thomasglasser.minejago.world.item.crafting.MinejagoRecipeTypes;
 import dev.thomasglasser.minejago.world.item.crafting.TeapotBrewingRecipe;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
+import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
+import dev.thomasglasser.tommylib.api.world.level.block.entity.ItemHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -277,7 +278,7 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
 
     @Override
     public void handleTag(CompoundTag tag) {
-        Services.BLOCK_ENTITY.handleUpdateTag(this, tag);
+        TommyLibServices.BLOCK_ENTITY.handleUpdateTag(this, tag);
         load(tag);
     }
 

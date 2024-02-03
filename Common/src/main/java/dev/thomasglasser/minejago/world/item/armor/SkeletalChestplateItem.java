@@ -2,6 +2,7 @@ package dev.thomasglasser.minejago.world.item.armor;
 
 import dev.thomasglasser.minejago.client.renderer.armor.SkeletalArmorRenderer;
 import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;
+import dev.thomasglasser.tommylib.api.world.item.armor.GeoArmorItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ArmorItem;
@@ -17,7 +18,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class SkeletalChestplateItem extends ArmorItem implements GeoArmorItem {
+public class SkeletalChestplateItem extends ArmorItem implements GeoArmorItem
+{
     private final Skulkin.Variant variant;
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 

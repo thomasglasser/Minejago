@@ -23,13 +23,10 @@ import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
 import dev.thomasglasser.minejago.world.focus.FocusData;
-import dev.thomasglasser.minejago.world.focus.modifier.biome.BiomeFocusModifiers;
 import dev.thomasglasser.minejago.world.focus.modifier.blockstate.BlockStateFocusModifiers;
-import dev.thomasglasser.minejago.world.focus.modifier.dimension.DimensionFocusModifiers;
-import dev.thomasglasser.minejago.world.focus.modifier.effect.MobEffectFocusModifiers;
-import dev.thomasglasser.minejago.world.focus.modifier.entity.EntityFocusModifiers;
+import dev.thomasglasser.minejago.world.focus.modifier.entity.EntityTypeFocusModifiers;
 import dev.thomasglasser.minejago.world.focus.modifier.itemstack.ItemStackFocusModifiers;
-import dev.thomasglasser.minejago.world.focus.modifier.structure.StructureFocusModifiers;
+import dev.thomasglasser.minejago.world.focus.modifier.resourcekey.ResourceKeyFocusModifiers;
 import dev.thomasglasser.minejago.world.focus.modifier.world.Weather;
 import dev.thomasglasser.minejago.world.focus.modifier.world.WorldFocusModifiers;
 import dev.thomasglasser.minejago.world.item.GoldenWeaponItem;
@@ -37,7 +34,10 @@ import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
+import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
+import dev.thomasglasser.tommylib.api.world.entity.DataHolder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -135,7 +135,7 @@ public class MinejagoEntityEvents
                         if (focusData.isMeditating())
                         {
                             focusData.stopMeditating();
-                            Services.NETWORK.sendToAllClients(ClientboundStopAnimationPacket.class, ClientboundStopAnimationPacket.write(serverPlayer.getUUID()), serverPlayer.getServer());
+                            TommyLibServices.NETWORK.sendToAllClients(ClientboundStopAnimationPacket.class, ClientboundStopAnimationPacket.write(serverPlayer.getUUID()), serverPlayer.getServer());
                         }
 
                         if (NO_SPINJITZU.test(serverPlayer))
@@ -215,7 +215,7 @@ public class MinejagoEntityEvents
                     if (NO_MEDITATION.test(serverPlayer))
                     {
                         focusData.stopMeditating();
-                        Services.NETWORK.sendToAllClients(ClientboundStopMeditationPacket.class, ClientboundStopMeditationPacket.write(serverPlayer.getUUID(), true), serverPlayer.getServer());
+                        TommyLibServices.NETWORK.sendToAllClients(ClientboundStopMeditationPacket.class, ClientboundStopMeditationPacket.write(serverPlayer.getUUID(), true), serverPlayer.getServer());
                     }
 
                     if ((focusData.isMegaMeditating() && player.tickCount % 200 == 0) || (focusData.isNormalMeditating() && player.tickCount % 60 == 0))
@@ -242,12 +242,12 @@ public class MinejagoEntityEvents
                             else if (precipitation == Biome.Precipitation.RAIN) weather = Weather.RAIN;
                         }
                         i.set(WorldFocusModifiers.applyModifier((int) level.getDayTime(), weather, playerPos.getY(), TeapotBlock.getBiomeTemperature(level, playerPos), i.get()));
-                        i.set(BiomeFocusModifiers.applyModifier(level.getBiome(playerPos).unwrapKey().orElseThrow(), i.get()));
-                        i.set(DimensionFocusModifiers.applyModifier(level.dimension(), i.get()));
-                        serverPlayer.serverLevel().structureManager().getAllStructuresAt(playerPos).keySet().forEach(structure -> i.set(StructureFocusModifiers.applyModifier(level.registryAccess().registryOrThrow(Registries.STRUCTURE).getResourceKey(structure).orElseThrow(), i.get())));
+                        i.set(ResourceKeyFocusModifiers.applyModifier(level.getBiome(playerPos).unwrapKey().orElseThrow(), i.get()));
+                        i.set(ResourceKeyFocusModifiers.applyModifier(level.dimension(), i.get()));
+                        serverPlayer.serverLevel().structureManager().getAllStructuresAt(playerPos).keySet().forEach(structure -> i.set(ResourceKeyFocusModifiers.applyModifier(level.registryAccess().registryOrThrow(Registries.STRUCTURE).getResourceKey(structure).orElseThrow(), i.get())));
                         Stream<BlockState> blocks = level.getBlockStates(player.getBoundingBox().inflate(2));
                         blocks.forEach(blockState -> i.set(BlockStateFocusModifiers.applyModifier(blockState, i.get())));
-                        serverPlayer.getActiveEffects().forEach(mobEffectInstance -> i.set(MobEffectFocusModifiers.applyModifier(mobEffectInstance.getEffect(), i.get()) * (mobEffectInstance.getAmplifier() + 1)));
+                        serverPlayer.getActiveEffects().forEach(mobEffectInstance -> i.set(ResourceKeyFocusModifiers.applyModifier(BuiltInRegistries.MOB_EFFECT.getResourceKey(mobEffectInstance.getEffect()).orElseThrow(), i.get()) * (mobEffectInstance.getAmplifier() + 1)));
                         List<Entity> entities = level.getEntities(serverPlayer, serverPlayer.getBoundingBox().inflate(2));
                         entities.forEach(entity ->
                         {
@@ -261,7 +261,7 @@ public class MinejagoEntityEvents
                             }
                             else
                             {
-                                i.set(EntityFocusModifiers.applyModifier(entity, i.get()));
+                                i.set(EntityTypeFocusModifiers.applyModifier(entity, i.get()));
                             }
                         });
                         focusData.increase(focusData.isMegaMeditating(), (int) i.getAndSet(0), 0.1f);
@@ -272,13 +272,13 @@ public class MinejagoEntityEvents
                         if (!focusData.isMegaMeditating())
                         {
                             focusData.startMegaMeditating();
-                            Services.NETWORK.sendToAllClients(ClientboundStartMegaMeditationPacket.class, ClientboundStartMegaMeditationPacket.write(player.getUUID()), level.getServer());
+                            TommyLibServices.NETWORK.sendToAllClients(ClientboundStartMegaMeditationPacket.class, ClientboundStartMegaMeditationPacket.write(player.getUUID()), level.getServer());
                         }
                     }
                     else if (focusData.isMegaMeditating())
                     {
                         focusData.startMeditating();
-                        Services.NETWORK.sendToAllClients(ClientboundStartMeditationPacket.class, ClientboundStartMeditationPacket.write(player.getUUID()), level.getServer());
+                        TommyLibServices.NETWORK.sendToAllClients(ClientboundStartMeditationPacket.class, ClientboundStartMeditationPacket.write(player.getUUID()), level.getServer());
                     }
                 }
             }
@@ -292,11 +292,11 @@ public class MinejagoEntityEvents
                 {
                     if (spinjitzu.active())
                     {
-                        Services.NETWORK.sendToServer(ServerboundStopSpinjitzuPacket.class);
+                        TommyLibServices.NETWORK.sendToServer(ServerboundStopSpinjitzuPacket.class);
                     }
                     else
                     {
-                        Services.NETWORK.sendToServer(ServerboundStartSpinjitzuPacket.class);
+                        TommyLibServices.NETWORK.sendToServer(ServerboundStartSpinjitzuPacket.class);
                     }
                     ((DataHolder) player).getPersistentData().putInt("WaitTicks", 5);
                 }
@@ -305,12 +305,12 @@ public class MinejagoEntityEvents
                     if (focusData.isMeditating())
                     {
                         focusData.stopMeditating();
-                        Services.NETWORK.sendToServer(ServerboundStopMeditationPacket.class, ServerboundStopMeditationPacket.write(false));
+                        TommyLibServices.NETWORK.sendToServer(ServerboundStopMeditationPacket.class, ServerboundStopMeditationPacket.write(false));
                     }
                     else
                     {
                         focusData.startMeditating();
-                        Services.NETWORK.sendToServer(ServerboundStartMeditationPacket.class);
+                        TommyLibServices.NETWORK.sendToServer(ServerboundStartMeditationPacket.class);
                     }
                     ((DataHolder) player).getPersistentData().putInt("WaitTicks", 5);
                 }
@@ -318,12 +318,12 @@ public class MinejagoEntityEvents
                 {
                     if (spinjitzu.active())
                     {
-                        Services.NETWORK.sendToServer(ServerboundStopSpinjitzuPacket.class);
+                        TommyLibServices.NETWORK.sendToServer(ServerboundStopSpinjitzuPacket.class);
                     }
                     if (focusData.isMeditating())
                     {
                         focusData.stopMeditating();
-                        Services.NETWORK.sendToServer(ServerboundStopMeditationPacket.class, ServerboundStopMeditationPacket.write(false));
+                        TommyLibServices.NETWORK.sendToServer(ServerboundStopMeditationPacket.class, ServerboundStopMeditationPacket.write(false));
                     }
                     ((DataHolder) player).getPersistentData().putInt("WaitTicks", 5);
                 }
@@ -335,7 +335,7 @@ public class MinejagoEntityEvents
     {
         for (ServerPlayer serverPlayer : ((ServerLevel) player.level()).getPlayers(serverPlayer -> true))
         {
-            Services.NETWORK.sendToAllClients(ClientboundRefreshVipDataPacket.class, serverPlayer.getServer());
+            TommyLibServices.NETWORK.sendToAllClients(ClientboundRefreshVipDataPacket.class, serverPlayer.getServer());
         }
     }
 
@@ -423,7 +423,7 @@ public class MinejagoEntityEvents
         if (spinjitzu.active())
         {
             Services.DATA.setSpinjitzuData(new SpinjitzuData(spinjitzu.unlocked(), false), serverPlayer);
-            Services.NETWORK.sendToAllClients(ClientboundStopSpinjitzuPacket.class, ClientboundStopSpinjitzuPacket.write(serverPlayer.getUUID(), fail), serverPlayer.getServer());
+            TommyLibServices.NETWORK.sendToAllClients(ClientboundStopSpinjitzuPacket.class, ClientboundStopSpinjitzuPacket.write(serverPlayer.getUUID(), fail), serverPlayer.getServer());
             AttributeInstance speed = serverPlayer.getAttribute(Attributes.MOVEMENT_SPEED);
             if (speed != null && speed.hasModifier(SpinjitzuData.SPEED_MODIFIER))
                 speed.removeModifier(SpinjitzuData.SPEED_MODIFIER.getId());

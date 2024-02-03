@@ -1,10 +1,11 @@
 package dev.thomasglasser.minejago.mixin.minecraft.world.entity;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import dev.thomasglasser.minejago.platform.Services;
-import dev.thomasglasser.minejago.world.entity.DataHolder;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityEvents;
-import dev.thomasglasser.minejago.world.item.armor.GeoArmorItem;
+import dev.thomasglasser.minejago.world.item.armor.GiGeoArmorItem;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
+import dev.thomasglasser.tommylib.api.world.entity.DataHolder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
@@ -20,7 +21,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -47,25 +47,21 @@ public class EntityMixin implements DataHolder
         }
     }
 
-    @Inject(method = "dampensVibrations", at = @At("HEAD"), cancellable = true)
-    private void minejago_dampensVibrations(CallbackInfoReturnable<Boolean> cir)
+    @ModifyReturnValue(method = "dampensVibrations", at = @At("TAIL"))
+    private boolean minejago_dampensVibrations(boolean original)
     {
         AtomicBoolean flag = new AtomicBoolean(true);
 
         INSTANCE.getArmorSlots().forEach(stack ->
                 {
-                    if (stack.getItem() instanceof GeoArmorItem geoArmorItem)
-                    {
-                        if (!geoArmorItem.isGi()) flag.set(false);
-                    }
-                    else
+                    if (!(stack.getItem() instanceof GiGeoArmorItem))
                     {
                         flag.set(false);
                     }
                 }
         );
 
-        if (flag.get()) cir.setReturnValue(true);
+        return flag.get() || original;
     }
 
     @Inject(method = "makeStuckInBlock", at = @At("TAIL"))

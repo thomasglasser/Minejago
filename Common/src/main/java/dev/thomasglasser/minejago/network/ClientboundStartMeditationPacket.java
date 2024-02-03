@@ -2,11 +2,12 @@ package dev.thomasglasser.minejago.network;
 
 import dev.kosmx.playerAnim.api.firstPerson.FirstPersonMode;
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.client.animation.MinejagoAnimationUtils;
 import dev.thomasglasser.minejago.client.animation.definitions.PlayerAnimations;
 import dev.thomasglasser.minejago.platform.Services;
-import dev.thomasglasser.minejago.util.MinejagoClientUtils;
-import dev.thomasglasser.minejago.util.MinejagoPacketUtils;
+import dev.thomasglasser.tommylib.api.client.ClientUtils;
+import dev.thomasglasser.tommylib.api.client.animation.AnimationUtils;
+import dev.thomasglasser.tommylib.api.network.CustomPacket;
+import dev.thomasglasser.tommylib.api.network.PacketUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -29,7 +30,7 @@ public class ClientboundStartMeditationPacket implements CustomPacket
     }
 
     public static FriendlyByteBuf write(UUID uuid) {
-        FriendlyByteBuf buf = MinejagoPacketUtils.create();
+        FriendlyByteBuf buf = PacketUtils.create();
 
         buf.writeUUID(uuid);
 
@@ -38,11 +39,11 @@ public class ClientboundStartMeditationPacket implements CustomPacket
 
     public void handle(@Nullable Player player)
     {
-        player = MinejagoClientUtils.getClientPlayerByUUID(uuid);
+        player = ClientUtils.getClientPlayerByUUID(uuid);
         Services.DATA.getFocusData(player).startMeditating();
 
         if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled())
-            MinejagoAnimationUtils.startAnimation(PlayerAnimations.Meditation.START.getAnimation(), player, FirstPersonMode.VANILLA);
+            AnimationUtils.startAnimation(PlayerAnimations.Meditation.START.getAnimation(), player, FirstPersonMode.VANILLA);
     }
 
     @Override

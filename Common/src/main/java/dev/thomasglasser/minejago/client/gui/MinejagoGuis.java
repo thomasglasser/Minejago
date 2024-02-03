@@ -3,9 +3,9 @@ package dev.thomasglasser.minejago.client.gui;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.MinejagoClientConfig;
 import dev.thomasglasser.minejago.platform.Services;
-import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.focus.FocusData;
+import dev.thomasglasser.tommylib.api.client.ClientUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
@@ -33,7 +33,7 @@ public class MinejagoGuis
 		Minecraft minecraft = Minecraft.getInstance();
 		if (minecraft.gameMode != null && minecraft.gameMode.canHurtPlayer()) {
 			Gui gui = minecraft.gui;
-			Player player = MinejagoClientUtils.getMainClientPlayer();
+			Player player = ClientUtils.getMainClientPlayer();
 			LivingEntity livingEntity = gui.getPlayerVehicleWithHealth();
 			int vehicleMaxHearts = gui.getVehicleMaxHearts(livingEntity);
 			if (vehicleMaxHearts == 0) {

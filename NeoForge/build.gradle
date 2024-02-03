@@ -71,6 +71,7 @@ dependencies {
     implementation "maven.modrinth:moonlight:forge_${moonlight_version}"
     implementation "net.tslat.effectslib:TslatEffectsLib-neoforge-${minecraft_version}:${tslateffectslib_version}"
     implementation "maven.modrinth:midnightlib:${midnightlib_version}-neoforge"
+    implementation "dev.thomasglasser.tommylib:tommylib-neoforge-${minecraft_version}:${tommylib_version}"
 
     // Forge Only
     implementation "maven.modrinth:sherdsapi:${sherdsapi_version}-neoforge"
@@ -88,37 +89,8 @@ dependencies {
     // TODO: Fix
 //    jarJar(group: "maven.modrinth", name: "sherdsapi", version: "[${sherdsapi_version},${sherdsapi_next_major_version})")
 //    jarJar(group: "maven.modrinth", name: "trimmed", version: "[${trimmed_version},${trimmed_next_major_version})")
-}
-
-tasks.withType(ProcessResources).configureEach {
-    from project(":Common").sourceSets.main.resources
-    var replaceProperties = [
-            mod_name                   : mod_name,
-            resource_pack_format_number: resource_pack_format_number,
-            data_pack_format_number    : data_pack_format_number,
-            major_fml_version          : major_fml_version,
-            mod_id                     : mod_id,
-            version                    : project.version,
-            mod_author                 : mod_author,
-            license                    : license,
-            neoforge_version           : neoforge_version,
-            minecraft_version          : minecraft_version,
-            next_minecraft_version     : next_minecraft_version,
-            playeranimator_version: playeranimator_version,
-            ryoamiclights_version: ryoamiclights_version,
-            moonlight_version: moonlight_version,
-            sbl_version: sbl_version,
-            geckolib_version: geckolib_version,
-            sherdsapi_version: sherdsapi_version,
-            trimmed_version: trimmed_version,
-            tes_version: tes_version,
-            jade_version: jade_version
-
-    ]
-    inputs.properties replaceProperties
-
-    filesMatching(['META-INF/mods.toml','pack.mcmeta', 'resourcepacks/minejago_immersion_pack/pack.mcmeta', 'resourcepacks/minejago_potion_pot_pack/pack.mcmeta']) {
-        expand replaceProperties + [project: project]
+    jarJar(group: "dev.thomasglasser.tommylib", name: "tommylib-neoforge-${minecraft_version}", version: "[${tommylib_version},${tommylib_next_major_version})") {
+        transitive = false
     }
 }
 

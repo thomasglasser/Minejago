@@ -15,6 +15,7 @@ import dev.thomasglasser.minejago.world.entity.ai.memory.MinejagoMemoryModuleTyp
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.power.Power;
+import dev.thomasglasser.minejago.world.focus.modifier.resourcekey.ResourceKeyFocusModifiers;
 import dev.thomasglasser.minejago.world.inventory.MinejagoMenuTypes;
 import dev.thomasglasser.minejago.world.item.MinejagoCreativeModeTabs;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
@@ -27,6 +28,7 @@ import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPatterns;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
 import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
+import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import eu.midnightdust.lib.config.MidnightConfig;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
@@ -102,12 +104,13 @@ public class Minejago {
 		MinejagoMemoryModuleTypes.init();
 		MinejagoMenuTypes.init();
 		MinejagoCriteriaTriggers.init();
+		ResourceKeyFocusModifiers.init();
 	}
 
 	private static void registerConfigs()
 	{
 		MidnightConfig.init(Minejago.MOD_ID, MinejagoServerConfig.class);
-		if (Services.PLATFORM.isClientSide()) MidnightConfig.init(Minejago.MOD_ID, MinejagoClientConfig.class);
+		if (TommyLibServices.PLATFORM.isClientSide()) MidnightConfig.init(Minejago.MOD_ID, MinejagoClientConfig.class);
 	}
 
 	public enum Dependencies
@@ -135,12 +138,12 @@ public class Minejago {
 		}
 
 		public String getModId() {
-			return Services.PLATFORM.getPlatformName().equals("Forge") ? forge : fabric;
+			return TommyLibServices.PLATFORM.getPlatformName().equals("Forge") ? forge : fabric;
 		}
 
 		public boolean isInstalled()
 		{
-			return Services.PLATFORM.isModLoaded(getModId());
+			return TommyLibServices.PLATFORM.isModLoaded(getModId());
 		}
 
 		public ResourceLocation modLoc(String path)

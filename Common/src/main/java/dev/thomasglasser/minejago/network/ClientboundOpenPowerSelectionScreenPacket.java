@@ -3,10 +3,11 @@ package dev.thomasglasser.minejago.network;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.PowerSelectionScreen;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
-import dev.thomasglasser.minejago.util.MinejagoClientUtils;
-import dev.thomasglasser.minejago.util.MinejagoPacketUtils;
 import dev.thomasglasser.minejago.world.entity.character.Wu;
 import dev.thomasglasser.minejago.world.entity.power.Power;
+import dev.thomasglasser.tommylib.api.client.ClientUtils;
+import dev.thomasglasser.tommylib.api.network.CustomPacket;
+import dev.thomasglasser.tommylib.api.network.PacketUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -36,7 +37,7 @@ public class ClientboundOpenPowerSelectionScreenPacket implements CustomPacket
     }
 
     public static FriendlyByteBuf write(List<ResourceKey<Power>> powers, @Nullable Integer wuId) {
-        FriendlyByteBuf buf = MinejagoPacketUtils.create();
+        FriendlyByteBuf buf = PacketUtils.create();
 
         buf.writeCollection(powers, FriendlyByteBuf::writeResourceKey);
         buf.writeNullable(wuId, FriendlyByteBuf::writeInt);
@@ -45,7 +46,7 @@ public class ClientboundOpenPowerSelectionScreenPacket implements CustomPacket
     }
 
     public static FriendlyByteBuf write(List<ResourceKey<Power>> powers) {
-        FriendlyByteBuf buf = MinejagoPacketUtils.create();
+        FriendlyByteBuf buf = PacketUtils.create();
 
         buf.writeCollection(powers, FriendlyByteBuf::writeResourceKey);
         buf.writeNullable(null, FriendlyByteBuf::writeInt);
@@ -55,7 +56,7 @@ public class ClientboundOpenPowerSelectionScreenPacket implements CustomPacket
 
     // ON CLIENT
     public void handle(@org.jetbrains.annotations.Nullable Player player) {
-        MinejagoClientUtils.setScreen(new PowerSelectionScreen(Component.translatable("gui.power_selection.title"), powers, wuId != null && MinejagoClientUtils.getEntityById(wuId) instanceof Wu wu ? wu : null));
+        ClientUtils.setScreen(new PowerSelectionScreen(Component.translatable("gui.power_selection.title"), powers, wuId != null && ClientUtils.getEntityById(wuId) instanceof Wu wu ? wu : null));
     }
 
     @Override

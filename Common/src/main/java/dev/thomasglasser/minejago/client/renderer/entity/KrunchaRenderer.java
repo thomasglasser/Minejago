@@ -2,8 +2,8 @@ package dev.thomasglasser.minejago.client.renderer.entity;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.model.KrunchaModel;
-import dev.thomasglasser.minejago.client.renderer.entity.layers.HumanoidSelectiveArmorLayer;
 import dev.thomasglasser.minejago.world.entity.skulkin.Kruncha;
+import dev.thomasglasser.tommylib.api.client.renderer.entity.layers.HumanoidSelectiveArmorLayer;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;

@@ -5,8 +5,8 @@ import dev.thomasglasser.minejago.advancements.criterion.BrewedTeaTrigger;
 import dev.thomasglasser.minejago.advancements.criterion.DidSpinjitzuTrigger;
 import dev.thomasglasser.minejago.advancements.criterion.GotPowerTrigger;
 import dev.thomasglasser.minejago.advancements.criterion.SkulkinRaidTrigger;
-import dev.thomasglasser.minejago.registration.RegistrationProvider;
-import dev.thomasglasser.minejago.registration.RegistryObject;
+import dev.thomasglasser.tommylib.api.registration.RegistrationProvider;
+import dev.thomasglasser.tommylib.api.registration.RegistryObject;
 import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.core.registries.BuiltInRegistries;
 

@@ -1,7 +1,7 @@
 package dev.thomasglasser.minejago.mixin.minecraft.world.item;
 
-import dev.thomasglasser.minejago.world.item.ModeledItem;
-import dev.thomasglasser.minejago.world.item.armor.GeoArmorItem;
+import dev.thomasglasser.tommylib.api.world.item.ModeledItem;
+import dev.thomasglasser.tommylib.api.world.item.armor.GeoArmorItem;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.entity.EquipmentSlot;

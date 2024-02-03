@@ -1,7 +1,7 @@
 package dev.thomasglasser.minejago.world.item.crafting;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.registration.RegistrationProvider;
+import dev.thomasglasser.tommylib.api.registration.RegistrationProvider;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;

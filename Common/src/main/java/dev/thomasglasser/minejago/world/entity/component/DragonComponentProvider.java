@@ -1,8 +1,8 @@
 package dev.thomasglasser.minejago.world.entity.component;
 
 import dev.thomasglasser.minejago.client.MinejagoWailaPlugin;
-import dev.thomasglasser.minejago.util.MinejagoClientUtils;
 import dev.thomasglasser.minejago.world.entity.dragon.Dragon;
+import dev.thomasglasser.tommylib.api.client.ClientUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -21,7 +21,7 @@ public enum DragonComponentProvider implements IEntityComponentProvider, IServer
 	{
 		if (entityAccessor.getEntity() instanceof Dragon dragon)
 		{
-			iTooltip.add(Component.translatable("entity.minejago.dragon.waila.bond", String.format("%.2f", entityAccessor.getServerData().getCompound("Bonds").getDouble(MinejagoClientUtils.getMainClientPlayer().getStringUUID()))));
+			iTooltip.add(Component.translatable("entity.minejago.dragon.waila.bond", String.format("%.2f", entityAccessor.getServerData().getCompound("Bonds").getDouble(ClientUtils.getMainClientPlayer().getStringUUID()))));
 		}
 	}
 

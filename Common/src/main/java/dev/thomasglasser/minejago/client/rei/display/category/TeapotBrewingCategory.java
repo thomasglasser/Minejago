@@ -3,7 +3,7 @@ package dev.thomasglasser.minejago.client.rei.display.category;
 import com.google.common.collect.Lists;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.rei.display.TeapotBrewingDisplay;
-import dev.thomasglasser.minejago.util.MinejagoItemUtils;
+import dev.thomasglasser.minejago.world.item.MinejagoItemUtils;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;

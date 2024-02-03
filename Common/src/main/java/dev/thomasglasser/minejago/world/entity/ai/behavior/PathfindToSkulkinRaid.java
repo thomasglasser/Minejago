@@ -2,7 +2,7 @@ package dev.thomasglasser.minejago.world.entity.ai.behavior;
 
 import com.google.common.collect.Sets;
 import com.mojang.datafixers.util.Pair;
-import dev.thomasglasser.minejago.util.MinejagoLevelUtils;
+import dev.thomasglasser.minejago.world.level.MinejagoLevelUtils;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.MeleeCompatibleSkeletonRaider;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaids;

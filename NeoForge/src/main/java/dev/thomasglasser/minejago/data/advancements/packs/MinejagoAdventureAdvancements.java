@@ -1,8 +1,8 @@
 package dev.thomasglasser.minejago.data.advancements.packs;
 
+import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.advancements.criterion.BrewedTeaTrigger;
 import dev.thomasglasser.minejago.advancements.criterion.SkulkinRaidTrigger;
-import dev.thomasglasser.minejago.data.advancements.AdvancementHelper;
 import dev.thomasglasser.minejago.tags.MinejagoEntityTypeTags;
 import dev.thomasglasser.minejago.tags.MinejagoItemTags;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
@@ -12,6 +12,7 @@ import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
+import dev.thomasglasser.tommylib.api.data.advancements.AdvancementHelper;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.AdvancementType;
@@ -54,7 +55,7 @@ public class MinejagoAdventureAdvancements implements AdvancementProvider.Advanc
     @Override
     public void generate(HolderLookup.Provider provider, Consumer<AdvancementHolder> consumer, ExistingFileHelper existingFileHelper)
     {
-        AdvancementHelper helper = new AdvancementHelper(consumer, existingFileHelper, enUs, CATEGORY);
+        AdvancementHelper helper = new AdvancementHelper(consumer, Minejago.MOD_ID, existingFileHelper, enUs, CATEGORY);
 
         AdvancementHolder interactWithMainSix = helper.make(new ResourceLocation("adventure/root"), MinejagoItems.IRON_KATANA.get(), INTERACT_WITH_MAIN_SIX, AdvancementType.GOAL, true, true, false, null, Map.of(
                 "interact_wu", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), Optional.of(EntityPredicate.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.WU.get()).build()))),

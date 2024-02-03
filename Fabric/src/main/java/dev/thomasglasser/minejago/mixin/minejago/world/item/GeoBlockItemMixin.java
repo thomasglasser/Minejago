@@ -1,7 +1,7 @@
 package dev.thomasglasser.minejago.mixin.minejago.world.item;
 
-import dev.thomasglasser.minejago.world.item.FabricGeoItem;
-import dev.thomasglasser.minejago.world.item.GeoBlockItem;
+import dev.thomasglasser.tommylib.api.world.item.FabricGeoItem;
+import dev.thomasglasser.tommylib.api.world.item.GeoBlockItem;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import software.bernie.geckolib.animatable.GeoItem;

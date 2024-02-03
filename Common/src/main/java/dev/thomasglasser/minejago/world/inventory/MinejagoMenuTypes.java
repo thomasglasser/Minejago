@@ -1,15 +1,12 @@
 package dev.thomasglasser.minejago.world.inventory;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.platform.Services;
-import dev.thomasglasser.minejago.registration.RegistrationProvider;
-import dev.thomasglasser.minejago.registration.RegistryObject;
+import dev.thomasglasser.tommylib.api.registration.RegistrationProvider;
+import dev.thomasglasser.tommylib.api.registration.RegistryObject;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
-
-import java.util.function.Supplier;
 
 public class MinejagoMenuTypes
 {

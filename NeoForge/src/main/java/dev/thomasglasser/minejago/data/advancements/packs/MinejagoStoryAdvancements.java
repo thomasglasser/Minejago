@@ -1,8 +1,8 @@
 package dev.thomasglasser.minejago.data.advancements.packs;
 
+import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.advancements.criterion.DidSpinjitzuTrigger;
 import dev.thomasglasser.minejago.advancements.criterion.GotPowerTrigger;
-import dev.thomasglasser.minejago.data.advancements.AdvancementHelper;
 import dev.thomasglasser.minejago.tags.MinejagoEntityTypeTags;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.power.PowerUtils;
@@ -10,6 +10,7 @@ import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.MinejagoStructures;
+import dev.thomasglasser.tommylib.api.data.advancements.AdvancementHelper;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.AdvancementType;
@@ -56,7 +57,7 @@ public class MinejagoStoryAdvancements implements AdvancementProvider.Advancemen
     @ParametersAreNonnullByDefault
     @Override
     public void generate(HolderLookup.Provider registries, Consumer<AdvancementHolder> saver, ExistingFileHelper existingFileHelper) {
-        AdvancementHelper helper = new AdvancementHelper(saver, existingFileHelper, enUs, CATEGORY);
+        AdvancementHelper helper = new AdvancementHelper(saver, Minejago.MOD_ID, existingFileHelper, enUs, CATEGORY);
 
         AdvancementHolder root = helper.root(MinejagoItems.SCYTHE_OF_QUAKES.get(), ROOT, new ResourceLocation("textures/gui/advancements/backgrounds/stone.png"), AdvancementType.TASK, false, false, false, null, Map.of(
                 "get_crafting_table", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.CRAFTING_TABLE)

@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dev.thomasglasser.minejago.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "${mod_id}.refmap.json",
+  "mixins": [
+    "minecraft.world.item.ItemMixin",
+    "minecraft.world.level.block.entity.CalibratedSculkSensorBlockEntityVibrationUserMixin",
+    "minecraft.world.level.block.entity.SculkSensorBlockEntityVibrationUserMixin",
+    "minecraft.world.level.gameevent.vibrations.VibrationSelectorMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+  }
+  

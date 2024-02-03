@@ -1,6 +1,8 @@
 {
     "pack": {
-        "description": "Makes vanilla potions brewable in the teapot",
+        "description": {
+            "text": "Makes vanilla potions brewable in the teapot"
+        },
         "pack_format": ${data_pack_format_number}
     }
 }
