@@ -13,7 +13,6 @@ import java.util.Map;
 public class MinejagoGameEvents {
     public static final RegistrationProvider<GameEvent> GAME_EVENTS = RegistrationProvider.get(BuiltInRegistries.GAME_EVENT, Minejago.MOD_ID);
 
-    // TODO: Move to data map
     public static final Map<ResourceLocation, Integer> VIBRATION_FREQUENCY_FOR_EVENT = new HashMap<>();
     public static RegistryObject<GameEvent> SPINJITZU = register("spinjitzu", 9);
 
