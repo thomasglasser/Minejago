@@ -13,7 +13,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializer;
-import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.WorldGenRegion;
@@ -81,13 +80,8 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
     public static final RawAnimation MEDITATION_FLOAT = RawAnimation.begin().thenPlay("move.meditation.float");
     public static final RawAnimation MEDITATION_FINISH = RawAnimation.begin().thenPlay("move.meditation.finish");
 
-    private static final EntityDataSerializer<MeditationStatus> MEDITATION_STATUS = EntityDataSerializer.simpleEnum(MeditationStatus.class);
+    public static final EntityDataSerializer<MeditationStatus> MEDITATION_STATUS = EntityDataSerializer.simpleEnum(MeditationStatus.class);
     private static final EntityDataAccessor<MeditationStatus> DATA_MEDITATION_STATUS = SynchedEntityData.defineId(Character.class, MEDITATION_STATUS);
-
-    static
-    {
-        EntityDataSerializers.registerSerializer(MEDITATION_STATUS);
-    }
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     protected boolean stopSpinjitzuOnNextStop;

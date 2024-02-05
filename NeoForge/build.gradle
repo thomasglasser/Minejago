@@ -77,8 +77,7 @@ dependencies {
     implementation "maven.modrinth:sherdsapi:${sherdsapi_version}-neoforge"
     compileOnly "maven.modrinth:trimmed:${trimmed_version}+forge"
 //    implementation "maven.modrinth:trimmed:${trimmed_version}+forge"
-    compileOnly "maven.modrinth:ryoamiclights:${ryoamiclights_version}-neoforge"
-//    implementation "maven.modrinth:ryoamiclights:${ryoamiclights_version}-neoforge"
+    implementation "maven.modrinth:ryoamiclights:${ryoamiclights_version}-neoforge"
 
     // Runtime
 //    runtimeOnly "maven.modrinth:worldedit:${worldedit_version}"

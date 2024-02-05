@@ -12,6 +12,7 @@ import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.ai.memory.MinejagoMemoryModuleTypes;
+import dev.thomasglasser.minejago.world.entity.character.Character;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.power.Power;
@@ -37,6 +38,8 @@ import net.tslat.tes.api.util.TESClientUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Map;
+
 public class Minejago {
 
 	public static final String MOD_ID = "minejago";
@@ -50,6 +53,8 @@ public class Minejago {
 
 	public static void init()
 	{
+		LOGGER.info("Initializing {} for {} in a {} environment...", MOD_NAME, TommyLibServices.PLATFORM.getPlatformName(), TommyLibServices.PLATFORM.getEnvironmentName());
+
 		initRegistries();
 
 		registerConfigs();
@@ -77,6 +82,10 @@ public class Minejago {
 		}
 
 		MinejagoPackets.init();
+
+		TommyLibServices.ENTITY.registerDataSerializers(Minejago.MOD_ID, Map.of(
+				"meditation_status", Character.MEDITATION_STATUS
+		));
 	}
 
 	private static void initRegistries()

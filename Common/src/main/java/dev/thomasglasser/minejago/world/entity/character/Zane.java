@@ -10,12 +10,14 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.tslat.smartbrainlib.util.BrainUtils;
 import org.jetbrains.annotations.NotNull;
 
 public class Zane extends Character
@@ -45,7 +47,7 @@ public class Zane extends Character
     @Override
     public void onStopFloatingToSurfaceOfFluid(Character character)
     {
-        if (character.onGround() || character.getAirSupply() < character.getMaxAirSupply() - 60)
+        if (character.onGround() || character.getAirSupply() < character.getMaxAirSupply() - 60 || BrainUtils.hasMemory(character, MemoryModuleType.ATTACK_TARGET))
             setMeditationStatus(MeditationStatus.NONE);
         else
             setMeditationStatus(MeditationStatus.STARTING);
