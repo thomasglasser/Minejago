@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.client;
 
-import org.thinkingstudio.ryoamiclights.api.DynamicLightsInitializer;
+import org.thinkingstudio.ryoamiclights.fabric.api.DynamicLightsInitializer;
 
 public class MinejagoDynamicLightsInitializer implements DynamicLightsInitializer
 {
