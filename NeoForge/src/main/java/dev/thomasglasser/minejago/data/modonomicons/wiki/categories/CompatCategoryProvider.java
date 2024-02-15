@@ -39,6 +39,7 @@ public class CompatCategoryProvider extends CategoryProvider {
         lang().add(context().categoryName(), "Mod Compatibilities & Enhancements");
 
         return BookCategoryModel.create(this.modLoc(this.context().categoryId()), this.context().categoryName())
+                // TODO: Category description
                 .withIcon(MinejagoItems.IRON_SPEAR.get());
     }
 

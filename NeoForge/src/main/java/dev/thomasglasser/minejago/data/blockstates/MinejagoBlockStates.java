@@ -31,7 +31,7 @@ import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.apache.commons.lang3.function.TriFunction;
 
-import java.util.Map;
+import java.util.LinkedHashMap;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.function.BiConsumer;
@@ -132,7 +132,11 @@ public class MinejagoBlockStates extends ExtendedBlockStateProvider
         {
             ResourceLocation resourcelocation = ModelLocationUtils.getModelLocation(block);
             MultiPartGenerator multipartgenerator = MultiPartGenerator.multiPart(block);
-            SortedMap<Direction, VariantProperties.Rotation> sm = new TreeMap<>(Map.of(Direction.NORTH, VariantProperties.Rotation.R0, Direction.EAST, VariantProperties.Rotation.R90, Direction.SOUTH, VariantProperties.Rotation.R180, Direction.WEST, VariantProperties.Rotation.R270));
+            SortedMap<Direction, VariantProperties.Rotation> sm = new TreeMap<>();
+            sm.put(Direction.NORTH, VariantProperties.Rotation.R0);
+            sm.put(Direction.EAST, VariantProperties.Rotation.R90);
+            sm.put(Direction.SOUTH, VariantProperties.Rotation.R180);
+            sm.put(Direction.WEST, VariantProperties.Rotation.R270);
             sm.forEach((p_262541_, p_262542_) -> {
                 Condition.TerminalCondition condition$terminalcondition = Condition.condition().term(BlockStateProperties.HORIZONTAL_FACING, p_262541_);
                 multipartgenerator.with(condition$terminalcondition, Variant.variant().with(VariantProperties.MODEL, resourcelocation).with(VariantProperties.Y_ROT, p_262542_).with(VariantProperties.UV_LOCK, true));
@@ -153,9 +157,16 @@ public class MinejagoBlockStates extends ExtendedBlockStateProvider
         }
 
         public void addScrollSlotStateAndRotationVariants(MultiPartGenerator p_261951_, Condition.TerminalCondition p_261482_, VariantProperties.Rotation p_262169_) {
-            Map.of(BlockStateProperties.CHISELED_BOOKSHELF_SLOT_0_OCCUPIED, ModelTemplates.CHISELED_BOOKSHELF_SLOT_TOP_LEFT, BlockStateProperties.CHISELED_BOOKSHELF_SLOT_1_OCCUPIED, ModelTemplates.CHISELED_BOOKSHELF_SLOT_TOP_MID, BlockStateProperties.CHISELED_BOOKSHELF_SLOT_2_OCCUPIED, ModelTemplates.CHISELED_BOOKSHELF_SLOT_TOP_RIGHT, BlockStateProperties.CHISELED_BOOKSHELF_SLOT_3_OCCUPIED, ModelTemplates.CHISELED_BOOKSHELF_SLOT_BOTTOM_LEFT, BlockStateProperties.CHISELED_BOOKSHELF_SLOT_4_OCCUPIED, ModelTemplates.CHISELED_BOOKSHELF_SLOT_BOTTOM_MID, BlockStateProperties.CHISELED_BOOKSHELF_SLOT_5_OCCUPIED, ModelTemplates.CHISELED_BOOKSHELF_SLOT_BOTTOM_RIGHT).forEach((p_261410_, p_261411_) -> {
-                this.addScrollSlotModel(p_261951_, p_261482_, p_262169_, p_261410_, p_261411_, true);
-                this.addScrollSlotModel(p_261951_, p_261482_, p_262169_, p_261410_, p_261411_, false);
+            LinkedHashMap<BooleanProperty, ModelTemplate> sortedmap = new LinkedHashMap<>();
+            sortedmap.put(BlockStateProperties.CHISELED_BOOKSHELF_SLOT_0_OCCUPIED, ModelTemplates.CHISELED_BOOKSHELF_SLOT_TOP_LEFT);
+            sortedmap.put(BlockStateProperties.CHISELED_BOOKSHELF_SLOT_1_OCCUPIED, ModelTemplates.CHISELED_BOOKSHELF_SLOT_TOP_MID);
+            sortedmap.put(BlockStateProperties.CHISELED_BOOKSHELF_SLOT_2_OCCUPIED, ModelTemplates.CHISELED_BOOKSHELF_SLOT_TOP_RIGHT);
+            sortedmap.put(BlockStateProperties.CHISELED_BOOKSHELF_SLOT_3_OCCUPIED, ModelTemplates.CHISELED_BOOKSHELF_SLOT_BOTTOM_LEFT);
+            sortedmap.put(BlockStateProperties.CHISELED_BOOKSHELF_SLOT_4_OCCUPIED, ModelTemplates.CHISELED_BOOKSHELF_SLOT_BOTTOM_MID);
+            sortedmap.put(BlockStateProperties.CHISELED_BOOKSHELF_SLOT_5_OCCUPIED, ModelTemplates.CHISELED_BOOKSHELF_SLOT_BOTTOM_RIGHT);
+            sortedmap.forEach((p_261961_, p_261962_) -> {
+                addScrollSlotModel(p_261951_, p_261482_, p_262169_, p_261961_, p_261962_, false);
+                addScrollSlotModel(p_261951_, p_261482_, p_262169_, p_261961_, p_261962_, true);
             });
         }
 
