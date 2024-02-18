@@ -14,6 +14,10 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializer;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -84,8 +88,9 @@ import java.util.Map;
 
 public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBrainOwner<Dragon>, PlayerRideableFlying, RangedAttackMob {
     public static final RawAnimation LIFT = RawAnimation.begin().thenPlay("move.lift");
+    public static final EntityDataSerializer<Boolean> SHOOTING = EntityDataSerializers.BOOLEAN;
+    private static final EntityDataAccessor<Boolean> DATA_SHOOTING = SynchedEntityData.defineId(Dragon.class, SHOOTING);
     public static final int TICKS_PER_FLAP = 39;
-
     public static final double HEAL_BOND = 0.05;
     public static final double FOOD_BOND = 0.1;
     public static final double TREAT_BOND = 0.15;
@@ -96,7 +101,6 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
     private final TagKey<Power> acceptablePowers;
 
     private boolean isLiftingOff;
-    private boolean isShooting;
     private Flight flight = Flight.HOVERING;
     private int flyingTicks = 0;
     private double speedMultiplier = 1;
@@ -147,12 +151,18 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
                 }),
                 new AnimationController<>(this, "Shoot", 0, state ->
                 {
-                    if (isShooting)
+                    if (isShooting())
                         return state.setAndContinue(DefaultAnimations.ATTACK_SHOOT);
                     else
                         return PlayState.STOP;
                 })
         );
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_SHOOTING, false);
     }
 
     @Override
@@ -236,8 +246,8 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
         return BrainActivityGroup.fightTasks(
                 new InvalidateAttackTarget<>().invalidateIf((entity, target) -> target instanceof Player pl && (pl.isCreative() || pl.isSpectator() || (getBond(pl) >= 0 && !pl.getInventory().items.stream().anyMatch(stack -> stack.getItem() instanceof GoldenWeaponItem goldenWeaponItem && goldenWeaponItem.canPowerHandle(Services.DATA.getPowerData(this).power(), level().registryAccess().registryOrThrow(MinejagoRegistries.POWER)))))), 	 // Invalidate the attack target if it's no longer applicable
                 new FirstApplicableBehaviour<>( 																							  	 // Run only one of the below behaviours, trying each one in order
-                        new AnimatableMeleeAttack<>(0).whenStarting(entity -> setAggressive(true)).whenStarting(entity -> setAggressive(false))/*.startCondition(dragon -> BrainUtils.getTargetOfEntity(dragon) != null && BrainUtils.getTargetOfEntity(dragon).position().distanceTo(dragon.position()) < 20)*/, // Melee attack
-                        new AnimatableRangedAttack<>(20))	 												 // Fire a bow, if holding one
+                        new AnimatableMeleeAttack<>(0).whenStarting(entity -> setAggressive(false)), // Melee attack
+                        new AnimatableRangedAttack<Dragon>(20).whenStarting(dragon -> dragon.setShooting(true)).whenStopping(dragon -> dragon.setShooting(false)))	 												 // Fire a bow, if holding one
         );
     }
 
@@ -595,4 +605,14 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
     protected abstract AbstractHurtingProjectile getRangedAttackProjectile(double a, double b, double c);
 
     protected abstract SoundEvent getShootSound();
+
+    public boolean isShooting()
+    {
+        return this.entityData.get(DATA_SHOOTING);
+    }
+
+    public void setShooting(boolean shooting)
+    {
+        this.entityData.set(DATA_SHOOTING, shooting);
+    }
 }
