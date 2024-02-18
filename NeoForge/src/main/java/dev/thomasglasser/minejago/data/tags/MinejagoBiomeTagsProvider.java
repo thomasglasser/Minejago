@@ -29,5 +29,8 @@ public class MinejagoBiomeTagsProvider extends BiomeTagsProvider
                 .add(Biomes.MUSHROOM_FIELDS);
         tag(MinejagoBiomeTags.HAS_FOCUS_TREES)
                 .add(Biomes.MEADOW);
+        tag(MinejagoBiomeTags.HAS_NINJAGO_CITY)
+                .add(Biomes.PLAINS)
+                .add(Biomes.SAVANNA);
     }
 }

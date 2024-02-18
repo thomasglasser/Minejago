@@ -79,7 +79,7 @@ public class ResourceKeyFocusModifiers
 
 	public static double applyModifier(ResourceKey<?> key, double oldValue) {
 		List<DoubleUnaryOperator> data = RESOURCE_KEY_FOCUS_MODIFIERS.get(key);
-		if (!data.isEmpty())
+		if (data != null && !data.isEmpty())
 		{
 			double newValue = oldValue;
 			for (DoubleUnaryOperator operation : data)
