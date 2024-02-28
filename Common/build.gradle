@@ -22,8 +22,7 @@ dependencies {
 
     mappings loom.layered() {
         officialMojangMappings()
-//        parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip")
-        parchment("org.parchmentmc.data:parchment-1.20.3:${parchment_version}@zip")
+        parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip")
     }
 
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
@@ -49,20 +48,6 @@ dependencies {
 import net.fabricmc.loom.task.AbstractRemapJarTask
 tasks.withType(AbstractRemapJarTask).each {
     it.targetNamespace = "named"
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifactId base.archivesName.get()
-            from components.java
-        }
-    }
-    repositories {
-        maven {
-            url "file://" + System.getenv("local_maven")
-        }
-    }
 }
 
 sourceSets.main.resources.srcDir './src/generated/resources'

@@ -13,8 +13,7 @@ subsystems {
         // The Minecraft version for which the Parchment mappings were created.
         // This does not necessarily need to match the Minecraft version your mod targets
         // Defaults to the value of Gradle property neogradle.subsystems.parchment.minecraftVersion
-        minecraftVersion = "1.20.3"
-//        minecraftVersion = minecraft_version
+        minecraftVersion = minecraft_version
 
         // The version of Parchment mappings to apply.
         // See https://parchmentmc.org/docs/getting-started for a list.
@@ -86,11 +85,11 @@ dependencies {
     runtimeOnly "dev.architectury:architectury-neoforge:$architectury_version"
 
     // TODO: Fix
-//    jarJar(group: "maven.modrinth", name: "sherdsapi", version: "[${sherdsapi_version},${sherdsapi_next_major_version})")
 //    jarJar(group: "maven.modrinth", name: "trimmed", version: "[${trimmed_version},${trimmed_next_major_version})")
     jarJar(group: "dev.thomasglasser.tommylib", name: "tommylib-neoforge-${minecraft_version}", version: "[${tommylib_version},${tommylib_next_major_version})") {
         transitive = false
     }
+    jarJar(group: "dev.thomasglasser.sherdsapi", name: "sherdsapi-neoforge-${minecraft_version}", version: "[${sherdsapi_version},${sherdsapi_next_major_version})")
 }
 
 // NeoGradle compiles the game, but we don't want to add our common code to the game's code
@@ -112,16 +111,6 @@ tasks.withType(ProcessResources).matching(notNeoTask).configureEach {
     from project(":Common").sourceSets.main.resources
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifactId base.archivesName.get()
-            from components.java
-        }
-    }
-    repositories {
-        maven {
-            url "file://" + System.getenv("local_maven")
-        }
-    }
+tasks.named('jarJar') {
+    archiveClassifier = ''
 }

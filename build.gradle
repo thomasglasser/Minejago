@@ -4,6 +4,12 @@ plugins {
 
 subprojects {
     apply plugin: 'java'
+    apply plugin: 'maven-publish'
+    apply plugin: 'signing'
+
+    base {
+        archivesName = "${mod_id}-${project.name}-${minecraft_version}"
+    }
 
     java.toolchain.languageVersion = JavaLanguageVersion.of(17)
     java.withSourcesJar()
@@ -236,5 +242,61 @@ subprojects {
     tasks.withType(GenerateModuleMetadata) {
 
         enabled = false
+    }
+
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                groupId = project.group
+                artifactId = base.archivesName.get()
+                version project.version
+                from components.java
+
+                pom {
+                    name = project.mod_name
+                    description = project.description
+                    url = "https://github.com/thomasglasser/${github_name}/wiki"
+                    licenses {
+                        license {
+                            name = project.license
+                            url = project.license_url
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = project.mod_author
+                            name = project.mod_author
+                        }
+                    }
+                    issueManagement {
+                        system = 'GitHub'
+                        url = "https://github.com/thomasglasser/${github_name}/issues"
+                    }
+                    scm
+                            {
+                                connection = "scm:git:git://github.com/thomasglasser/${github_name}.git"
+                                developerConnection = "scm:git:ssh://github.com:thomasglasser/${github_name}.git"
+                                url = "http://github.com/thomasglasser/${github_name}/tree/${minecraft_version}"
+                            }
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                credentials {
+                    username = project.findProperty("MAVEN_USER") ?: System.getenv("MAVEN_USER")
+                    password = project.findProperty("MAVEN_PASSWORD") ?: System.getenv("MAVEN_PASSWORD")
+                }
+
+                url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            }
+        }
+    }
+
+    signing {
+        useGpgCmd()
+        sign publishing.publications
     }
 }
