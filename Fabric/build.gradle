@@ -22,8 +22,6 @@ dependencies {
 
     // Common
     include modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${playeranimator_version}")
-    include modCompileOnly("com.jamieswhiteshirt:reach-entity-attributes:$reachentityattributes_version")
-//    include modImplementation("com.jamieswhiteshirt:reach-entity-attributes:$reachentityattributes_version")
 //    include modImplementation("maven.modrinth:trimmed:${trimmed_version}+fabric")
     include modCompileOnly("maven.modrinth:trimmed:${trimmed_version}+fabric")
     include modImplementation("maven.modrinth:midnightlib:${midnightlib_version}-fabric")

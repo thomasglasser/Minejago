@@ -54,7 +54,6 @@
   },
   "recommends": {
     "trimmed": ">=${trimmed_version}",
-    "reach-entity-attributes": ">=${reachentityattributes_version}",
     "moonlight": ">=${moonlight_version}"
   },
   "suggests": {

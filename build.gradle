@@ -220,7 +220,6 @@ subprojects {
                 trimmed_version: trimmed_version,
                 tes_version: tes_version,
                 jade_version: jade_version,
-                reachentityattributes_version: reachentityattributes_version,
                 tommylib_version: tommylib_version
         ]
         inputs.properties replaceProperties
