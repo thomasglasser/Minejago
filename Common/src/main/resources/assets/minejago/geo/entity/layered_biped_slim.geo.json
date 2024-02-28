@@ -3,7 +3,7 @@
 	"minecraft:geometry": [
 		{
 			"description": {
-				"identifier": "geometry.layered_slim",
+				"identifier": "geometry.layered_biped_slim",
 				"texture_width": 64,
 				"texture_height": 64,
 				"visible_bounds_width": 4,
@@ -25,21 +25,21 @@
 					"parent": "legs",
 					"pivot": [2, 12, 0],
 					"cubes": [
-						{"origin": [0, 0, -2], "size": [4, 12, 4], "uv": [16, 48]},
-						{"origin": [0, 0, -2], "size": [4, 12, 4], "inflate": 0.5, "uv": [0, 48]}
-					]
-				},
-				{
-					"name": "armorBipedLeftLeg",
-					"parent": "left_leg",
-					"pivot": [2, 12, 0],
-					"mirror": true,
-					"cubes": [
 						{"origin": [0, 0, -2], "size": [4, 12, 4], "uv": [16, 48]}
 					]
 				},
 				{
-					"name": "armorBipedLeftFoot",
+					"name": "outer_left_leg",
+					"parent": "left_leg",
+					"pivot": [2, 12, 0],
+					"mirror": true,
+					"cubes": [
+						{"origin": [0, 0, -2], "size": [4, 12, 4], "uv": [16, 48]},
+						{"origin": [0, 0, -2], "size": [4, 12, 4], "inflate": 0.5, "uv": [0, 48], "mirror": false}
+					]
+				},
+				{
+					"name": "left_foot",
 					"parent": "left_leg",
 					"pivot": [2, 12, 0],
 					"mirror": true,
@@ -52,8 +52,7 @@
 					"parent": "legs",
 					"pivot": [-2, 12, 0],
 					"cubes": [
-						{"origin": [-4, 0, -2], "size": [4, 12, 4], "uv": [0, 16]},
-						{"origin": [-4, 0, -2], "size": [4, 12, 4], "inflate": 0.5, "uv": [0, 32]}
+						{"origin": [-4, 0, -2], "size": [4, 12, 4], "uv": [0, 16]}
 					]
 				},
 				{
@@ -61,7 +60,8 @@
 					"parent": "right_leg",
 					"pivot": [-2, 12, 0],
 					"cubes": [
-						{"origin": [-4, 0, -2], "size": [4, 12, 4], "uv": [0, 16]}
+						{"origin": [-4, 0, -2], "size": [4, 12, 4], "uv": [0, 16]},
+						{"origin": [-4, 0, -2], "size": [4, 12, 4], "inflate": 0.5, "uv": [0, 32]}
 					]
 				},
 				{
@@ -149,8 +149,7 @@
 					"parent": "body",
 					"pivot": [0, 24, 0],
 					"cubes": [
-						{"origin": [-4, 24, -4], "size": [8, 8, 8], "uv": [0, 0]},
-						{"origin": [-4, 24, -4], "size": [8, 8, 8], "inflate": 0.5, "uv": [32, 0]}
+						{"origin": [-4, 24, -4], "size": [8, 8, 8], "uv": [0, 0]}
 					]
 				},
 				{
@@ -158,7 +157,8 @@
 					"parent": "head",
 					"pivot": [0, 24, 0],
 					"cubes": [
-						{"origin": [-4, 24, -4], "size": [8, 8, 8], "uv": [0, 0]}
+						{"origin": [-4, 24, -4], "size": [8, 8, 8], "uv": [0, 0]},
+						{"origin": [-4, 24, -4], "size": [8, 8, 8], "inflate": 0.5, "uv": [32, 0]}
 					]
 				}
 			]
