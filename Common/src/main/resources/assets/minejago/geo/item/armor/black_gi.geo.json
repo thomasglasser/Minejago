@@ -62,7 +62,7 @@
 				},
 				{
 					"name": "bipedLeftLeg",
-					"pivot": [-2, 12, 0]
+					"pivot": [2, 12, 0]
 				},
 				{
 					"name": "armorLeftLeg",
@@ -82,7 +82,7 @@
 				},
 				{
 					"name": "bipedRightLeg",
-					"pivot": [2, 12, 0]
+					"pivot": [-2, 12, 0]
 				},
 				{
 					"name": "armorRightLeg",
