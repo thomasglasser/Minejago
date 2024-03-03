@@ -29,6 +29,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.level.Level;
 
 import java.util.HashMap;
@@ -115,9 +116,9 @@ public class MinejagoEntityTypes
         map.put(COLE.get(), Cole.createAttributes().build());
         map.put(JAY.get(), Jay.createAttributes().build());
         map.put(ZANE.get(), Zane.createAttributes().build());
-        map.put(SKULKIN.get(), Skulkin.createAttributes().build());
-        map.put(KRUNCHA.get(), Kruncha.createAttributes().build());
-        map.put(NUCKAL.get(), Nuckal.createAttributes().build());
+        map.put(SKULKIN.get(), AbstractSkeleton.createAttributes().build());
+        map.put(KRUNCHA.get(), AbstractSkeleton.createAttributes().build());
+        map.put(NUCKAL.get(), AbstractSkeleton.createAttributes().build());
         map.put(SKULKIN_HORSE.get(), SkulkinHorse.createAttributes().build());
         map.put(EARTH_DRAGON.get(), Dragon.createAttributes().build());
         map.put(SAMUKAI.get(), Samukai.createAttributes().build());

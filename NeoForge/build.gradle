@@ -1,11 +1,7 @@
 plugins {
     id 'idea'
-    id 'maven-publish'
     id 'net.neoforged.gradle.userdev' version '7.+'
     id 'java-library'
-}
-base {
-    archivesName = "${mod_id}-neoforge-${minecraft_version}"
 }
 
 subsystems {
@@ -45,7 +41,7 @@ runs {
     }
 
     data {
-        programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('../Common/src/generated/resources/').getAbsolutePath(), '--existing', file('../Common/src/main/resources/').getAbsolutePath()
+        programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('../common/src/generated/resources/').getAbsolutePath(), '--existing', file('../common/src/main/resources/').getAbsolutePath()
     }
 }
 
@@ -55,7 +51,7 @@ jarJar.enable()
 
 dependencies {
     implementation "net.neoforged:neoforge:${neoforge_version}"
-    implementation project(":Common")
+    implementation project(":common")
 
     // Common
     implementation "dev.kosmx.player-anim:player-animation-lib-forge:${playeranimator_version}"
@@ -84,6 +80,7 @@ dependencies {
     runtimeOnly "maven.modrinth:obsidianui:${obsidianui_version}-neoforge"
     runtimeOnly "dev.architectury:architectury-neoforge:$architectury_version"
 
+    // Jar-in-Jar
     // TODO: Fix
 //    jarJar(group: "maven.modrinth", name: "trimmed", version: "[${trimmed_version},${trimmed_next_major_version})")
     jarJar(group: "dev.thomasglasser.tommylib", name: "tommylib-neoforge-${minecraft_version}", version: "[${tommylib_version},${tommylib_next_major_version})") {
@@ -96,19 +93,19 @@ dependencies {
 Spec<Task> notNeoTask = { Task it -> !it.name.startsWith("neo") } as Spec<Task>
 
 tasks.withType(JavaCompile).matching(notNeoTask).configureEach {
-    source(project(":Common").sourceSets.main.allSource)
+    source(project(":common").sourceSets.main.allSource)
 }
 
 tasks.withType(Javadoc).matching(notNeoTask).configureEach {
-    source(project(":Common").sourceSets.main.allJava)
+    source(project(":common").sourceSets.main.allJava)
 }
 
 tasks.named("sourcesJar", Jar) {
-    from(project(":Common").sourceSets.main.allSource)
+    from(project(":common").sourceSets.main.allSource)
 }
 
 tasks.withType(ProcessResources).matching(notNeoTask).configureEach {
-    from project(":Common").sourceSets.main.resources
+    from project(":common").sourceSets.main.resources
 }
 
 tasks.named('jarJar') {

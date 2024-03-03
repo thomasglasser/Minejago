@@ -6,9 +6,9 @@
   "background_width": 512,
   "entry_textures": "modonomicon:textures/gui/entry_textures.png",
   "icon": {
-    "item": "minejago:scythe_of_quakes"
+    "item": "minejago:teacup"
   },
-  "name": "book.minejago.wiki.compat.name",
+  "name": "book.minejago.wiki.expansions.name",
   "show_category_button": true,
   "sort_number": -1
 }

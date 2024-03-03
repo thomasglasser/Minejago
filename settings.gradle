@@ -44,4 +44,4 @@ pluginManagement {
 }
 
 rootProject.name = 'Minejago'
-include("Common", "Fabric", "NeoForge")
+include("common", "fabric", "neoforge")

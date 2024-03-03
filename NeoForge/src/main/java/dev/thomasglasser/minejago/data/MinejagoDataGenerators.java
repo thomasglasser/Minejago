@@ -97,7 +97,7 @@ public class MinejagoDataGenerators
         };
         generator.addProvider(includeServer, new MinejagoWikiBookProvider(packOutput, mconEnUs));
 
-        // LanugageProviders
+        // LanguageProviders
         LanguageProvider enUs = new MinejagoEnUsLanguageProvider(packOutput)
         {
             @Override

@@ -1,10 +1,7 @@
 plugins {
     id 'fabric-loom' version "${loom_version}"
-    id 'maven-publish'
     id 'idea'
 }
-
-archivesBaseName = "${mod_id}-fabric-${minecraft_version}"
 
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
@@ -17,7 +14,7 @@ dependencies {
     // Required for the rei forge annotation
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-forge:$rei_version"
 
-    implementation project(":Common")
+    implementation project(":common")
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
 
     // Common
@@ -47,7 +44,6 @@ dependencies {
     // Runtime Only Deps
     modRuntimeOnly "maven.modrinth:sherdsapi:${sherdsapi_version}-fabric"
     modRuntimeOnly "dev.architectury:architectury-fabric:$architectury_version"
-
 //    modRuntimeOnly "maven.modrinth:worldedit:${worldedit_version}"
     modRuntimeOnly "maven.modrinth:worldedit:${worldedit_id}"
     modRuntimeOnly "com.terraformersmc:modmenu:${modmenu_version}"
@@ -55,6 +51,11 @@ dependencies {
 }
 
 loom {
+    if (project(":common").file("src/main/resources/${mod_id}.accesswidener").exists()) {
+        // Must specify "accesswidener" field in fabric.mod.json
+        accessWidenerPath.set(project(":common").file("src/main/resources/${mod_id}.accesswidener"))
+    }
+
     runs {
         client {
             client()
@@ -73,14 +74,12 @@ loom {
     mixin {
         add sourceSets.main, "${mod_id}.refmap.json"
     }
-
-    accessWidenerPath = project(":Common").file("src/main/resources/${mod_id}.accesswidener")
 }
 
 tasks.withType(ProcessResources).configureEach {
-    from project(":Common").sourceSets.main.resources
+    from project(":common").sourceSets.main.resources
 }
 
 tasks.withType(JavaCompile).configureEach {
-    source(project(":Common").sourceSets.main.allSource)
+    source(project(":common").sourceSets.main.allSource)
 }
