@@ -1,0 +1,8 @@
+{
+  "advancements.husbandry.allay_deliver_cake_to_note_block.description": "Spraw, by otuszek upuścił ciasto na bęben",
+  "block.minecraft.note_block": "Bęben",
+  "soundCategory.record": "Szafa grająca/bębny",
+  "stat.minecraft.play_noteblock": "Użytych bębnów",
+  "stat.minecraft.tune_noteblock": "Nastrojonych bębnów",
+  "subtitles.block.note_block.note": "Bęben gra"
+}
