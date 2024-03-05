@@ -1,8 +1,8 @@
 package dev.thomasglasser.minejago.world.entity.component;
 
 import dev.thomasglasser.minejago.client.MinejagoWailaPlugin;
-import dev.thomasglasser.minejago.world.entity.DataHolder;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
+import dev.thomasglasser.tommylib.api.world.entity.DataHolder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;

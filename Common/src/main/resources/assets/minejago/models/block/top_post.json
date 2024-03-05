@@ -4,7 +4,7 @@
 	"render_type": "cutout",
 	"textures": {
 		"post": "minejago:block/top_post",
-		"particle": "#post"
+		"particle": "minejago:item/top_post"
 	},
 	"elements": [
 		{

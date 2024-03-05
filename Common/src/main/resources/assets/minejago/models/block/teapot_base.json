@@ -3,7 +3,7 @@
 	"parent": "block/block",
 	"render_type": "cutout",
 	"textures": {
-		"particle": "minejago:block/teapot",
+		"particle": "minejago:item/teapot",
 		"pot": "minejago:block/teapot"
 	},
 	"elements": [

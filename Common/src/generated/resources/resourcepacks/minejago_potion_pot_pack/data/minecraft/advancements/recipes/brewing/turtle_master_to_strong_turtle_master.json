@@ -16,14 +16,13 @@
   },
   "requirements": [
     [
-      "has_brewed_strong_turtle_master_in_stand",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_brewed_strong_turtle_master_in_stand"
     ]
   ],
   "rewards": {
     "recipes": [
       "minecraft:turtle_master_to_strong_turtle_master"
     ]
-  },
-  "sends_telemetry_event": true
+  }
 }

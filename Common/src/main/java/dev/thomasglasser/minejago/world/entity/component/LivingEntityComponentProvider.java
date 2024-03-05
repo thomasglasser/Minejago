@@ -1,8 +1,8 @@
 package dev.thomasglasser.minejago.world.entity.component;
 
 import dev.thomasglasser.minejago.client.MinejagoWailaPlugin;
+import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.platform.Services;
-import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -22,7 +22,7 @@ public enum LivingEntityComponentProvider implements IEntityComponentProvider {
     @Override
     public void appendTooltip(ITooltip iTooltip, EntityAccessor entityAccessor, IPluginConfig iPluginConfig) {
         if (entityAccessor.getEntity() instanceof LivingEntity livingEntity && entityAccessor.getLevel() != null && Services.DATA.getPowerData(livingEntity) != null) {
-            Power power = MinejagoPowers.POWERS.get(entityAccessor.getLevel().registryAccess()).get(Services.DATA.getPowerData(livingEntity).power());
+            Power power = entityAccessor.getLevel().registryAccess().registryOrThrow(MinejagoRegistries.POWER).get(Services.DATA.getPowerData(livingEntity).power());
             IElement icon = new Element() {
                 private Vec2 size;
 

@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "minejago:iron_ingots"
+            "tag": "tommylib:iron_ingots"
           }
         ]
       },
@@ -20,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_iron",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_iron"
     ]
   ],
   "rewards": {
     "recipes": [
       "minejago:iron_scythe"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

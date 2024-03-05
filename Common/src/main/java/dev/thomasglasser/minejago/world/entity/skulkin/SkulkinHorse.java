@@ -1,15 +1,24 @@
 package dev.thomasglasser.minejago.world.entity.skulkin;
 
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
+import dev.thomasglasser.minejago.world.entity.character.Character;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.FleeSunGoal;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RestrictSunGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.animal.horse.SkeletonHorse;
 import net.minecraft.world.entity.animal.horse.SkeletonTrapGoal;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Skeleton;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.HorseArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -17,18 +26,68 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-public class SkulkinHorse extends SkeletonHorse {
+public class SkulkinHorse extends SkeletonHorse implements Enemy
+{
 
     public SkulkinHorse(EntityType<? extends SkulkinHorse> entityType, Level level) {
         super(entityType, level);
         this.skeletonTrapGoal = new SkulkinTrapGoal(this);
     }
 
+    public static AttributeSupplier.Builder createAttributes() {
+        return SkeletonHorse.createAttributes().add(Attributes.ATTACK_DAMAGE, 2.0f).add(Attributes.MOVEMENT_SPEED, 0.25F);
+    }
 
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob otherParent) {
         return MinejagoEntityTypes.SKULKIN_HORSE.get().create(level);
+    }
+
+    @Override
+    protected void registerGoals()
+    {
+        super.registerGoals();
+        this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(0, new MeleeAttackGoal(this, 1.2, false));
+        this.goalSelector.addGoal(1, new RestrictSunGoal(this));
+        this.goalSelector.addGoal(1, new FleeSunGoal(this, 1.1));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Character.class, false));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
+    }
+
+    @Override
+    public void aiStep() {
+        if (this.isAlive()) {
+            boolean bl = this.isSunBurnTick();
+            if (bl) {
+                ItemStack itemStack = this.getItemBySlot(EquipmentSlot.CHEST);
+                if (!itemStack.isEmpty()) {
+                    if (itemStack.isDamageableItem()) {
+                        itemStack.setDamageValue(itemStack.getDamageValue() + this.random.nextInt(2));
+                        if (itemStack.getDamageValue() >= itemStack.getMaxDamage()) {
+                            this.broadcastBreakEvent(EquipmentSlot.HEAD);
+                            this.setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
+                        }
+                    }
+
+                    bl = false;
+                }
+
+                if (bl) {
+                    this.setSecondsOnFire(8);
+                }
+            }
+        }
+
+        super.aiStep();
+    }
+
+    public void equipArmor(ItemStack itemStack) {
+        if (itemStack.getItem() instanceof HorseArmorItem) {
+            setItemSlot(EquipmentSlot.CHEST, itemStack);
+        }
     }
 
     public static class SkulkinTrapGoal extends SkeletonTrapGoal
@@ -104,43 +163,6 @@ public class SkulkinHorse extends SkeletonHorse {
         private boolean equipArmor(Mob mob)
         {
             return (mob.level().isDay() && mob.level().canSeeSky(mob.blockPosition()));
-        }
-    }
-
-    public static AttributeSupplier.Builder createAttributes() {
-        return SkeletonHorse.createAttributes().add(Attributes.MOVEMENT_SPEED, 0.25F);
-    }
-
-    @Override
-    public void aiStep() {
-        if (this.isAlive()) {
-            boolean bl = this.isSunBurnTick();
-            if (bl) {
-                ItemStack itemStack = this.getItemBySlot(EquipmentSlot.CHEST);
-                if (!itemStack.isEmpty()) {
-                    if (itemStack.isDamageableItem()) {
-                        itemStack.setDamageValue(itemStack.getDamageValue() + this.random.nextInt(2));
-                        if (itemStack.getDamageValue() >= itemStack.getMaxDamage()) {
-                            this.broadcastBreakEvent(EquipmentSlot.HEAD);
-                            this.setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
-                        }
-                    }
-
-                    bl = false;
-                }
-
-                if (bl) {
-                    this.setSecondsOnFire(8);
-                }
-            }
-        }
-
-        super.aiStep();
-    }
-
-    public void equipArmor(ItemStack itemStack) {
-        if (itemStack.getItem() instanceof HorseArmorItem) {
-            setItemSlot(EquipmentSlot.CHEST, itemStack);
         }
     }
 }

@@ -1,8 +1,8 @@
 package dev.thomasglasser.minejago.mixin.minejago.world.item.armor;
 
 import dev.thomasglasser.minejago.client.renderer.armor.SamukaisChestplateRenderer;
-import dev.thomasglasser.minejago.world.item.FabricGeoItem;
 import dev.thomasglasser.minejago.world.item.armor.SamukaisChestplateItem;
+import dev.thomasglasser.tommylib.api.world.item.FabricGeoItem;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,7 +17,8 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 @Mixin(SamukaisChestplateItem.class)
-public abstract class SamukaisChestplateItemMixin implements FabricGeoItem {
+public abstract class SamukaisChestplateItemMixin implements FabricGeoItem
+{
     Supplier<Object> renderProvider = GeoItem.makeRenderer((SamukaisChestplateItem)(Object)this);
 
     @Override

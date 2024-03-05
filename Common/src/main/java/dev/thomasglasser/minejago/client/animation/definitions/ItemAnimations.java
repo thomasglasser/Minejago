@@ -11,7 +11,7 @@ public class ItemAnimations
 {
     private static final List<KeyframeAnimation> SCYTHE_OF_QUAKES = AnimationSerializing.deserializeAnimation(new InputStreamReader(Objects.requireNonNull(ItemAnimations.class.getClassLoader().getResourceAsStream("assets/minejago/animations/player/scythe_of_quakes.animation.json"))));
 
-    public enum Animations
+    public enum ScytheOfQuakes
     {
         EMPTY(null),
         SLAM_START(SCYTHE_OF_QUAKES.get(0)),
@@ -21,7 +21,7 @@ public class ItemAnimations
 
         final KeyframeAnimation animation;
 
-        Animations(KeyframeAnimation animation) {
+        ScytheOfQuakes(KeyframeAnimation animation) {
             this.animation = animation;
         }
 

@@ -15,7 +15,6 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.minejago.adventure.get_jaspot.desc"
     },
@@ -24,7 +23,6 @@
     "icon": {
       "item": "minejago:jaspot"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.minejago.adventure.get_jaspot.title"
     }

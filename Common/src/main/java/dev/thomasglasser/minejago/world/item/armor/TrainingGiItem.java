@@ -1,7 +1,6 @@
 package dev.thomasglasser.minejago.world.item.armor;
 
 import dev.thomasglasser.minejago.client.renderer.armor.TrainingGiRenderer;
-import net.minecraft.world.item.ArmorMaterial;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
@@ -10,8 +9,8 @@ public class TrainingGiItem extends PoweredArmorItem
 {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public TrainingGiItem(ArmorMaterial pMaterial, Type type, Properties pProperties) {
-        super(pMaterial, type, pProperties);
+    public TrainingGiItem(Type type, Properties pProperties) {
+        super(MinejagoArmorMaterials.TRAINING_GI, type, pProperties);
     }
 
     @Override

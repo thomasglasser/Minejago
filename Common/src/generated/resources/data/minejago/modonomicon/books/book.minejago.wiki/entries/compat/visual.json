@@ -4,7 +4,9 @@
   "category": "minejago:compat",
   "description": "book.minejago.wiki.compat.visual.description",
   "hide_while_locked": false,
-  "icon": "minecraft:spyglass",
+  "icon": {
+    "item": "minecraft:spyglass"
+  },
   "name": "book.minejago.wiki.compat.visual.name",
   "pages": [
     {
@@ -26,6 +28,7 @@
       "title": ""
     }
   ],
+  "show_when_any_parent_unlocked": false,
   "x": -5,
   "y": -4
 }

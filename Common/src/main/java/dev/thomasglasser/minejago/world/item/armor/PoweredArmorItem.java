@@ -1,10 +1,9 @@
 package dev.thomasglasser.minejago.world.item.armor;
 
 import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
-import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
+import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.world.entity.power.Power;
-import dev.thomasglasser.minejago.world.item.ModeledItem;
-import net.minecraft.ChatFormatting;
+import dev.thomasglasser.tommylib.api.world.item.ModeledItem;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -18,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public abstract class PoweredArmorItem extends ArmorItem implements GeoArmorItem, ModeledItem
+public abstract class PoweredArmorItem extends ArmorItem implements GiGeoArmorItem, ModeledItem
 {
     BlockEntityWithoutLevelRenderer bewlr;
 
@@ -31,7 +30,7 @@ public abstract class PoweredArmorItem extends ArmorItem implements GeoArmorItem
         if (level != null && stack.getOrCreateTag().contains("Power"))
         {
             ResourceLocation location = ResourceLocation.of(stack.getOrCreateTag().getString("Power"), ':');
-            Power power = MinejagoPowers.POWERS.get(level.registryAccess()).get(location);
+            Power power = level.registryAccess().registry(MinejagoRegistries.POWER).orElseThrow().get(location);
             if (power != null)
             {
                 MutableComponent component = Component.translatable(location.toLanguageKey("power"));
@@ -46,10 +45,5 @@ public abstract class PoweredArmorItem extends ArmorItem implements GeoArmorItem
     public BlockEntityWithoutLevelRenderer getBEWLR() {
         if (bewlr == null) bewlr = new MinejagoBlockEntityWithoutLevelRenderer();
         return bewlr;
-    }
-
-    @Override
-    public boolean isGi() {
-        return true;
     }
 }

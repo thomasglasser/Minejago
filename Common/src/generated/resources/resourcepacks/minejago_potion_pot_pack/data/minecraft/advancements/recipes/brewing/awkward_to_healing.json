@@ -16,14 +16,13 @@
   },
   "requirements": [
     [
-      "has_brewed_healing_in_stand",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_brewed_healing_in_stand"
     ]
   ],
   "rewards": {
     "recipes": [
       "minecraft:awkward_to_healing"
     ]
-  },
-  "sends_telemetry_event": true
+  }
 }

@@ -7,7 +7,7 @@
       "item": "minecraft:pink_terracotta"
     },
     "x": {
-      "tag": "minejago:wooden_rods"
+      "tag": "tommylib:wooden_rods"
     }
   },
   "pattern": [
@@ -16,6 +16,5 @@
   ],
   "result": {
     "item": "minejago:pink_teapot"
-  },
-  "show_notification": true
+  }
 }

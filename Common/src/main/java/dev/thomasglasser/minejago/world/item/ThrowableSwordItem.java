@@ -1,5 +1,6 @@
 package dev.thomasglasser.minejago.world.item;
 
+import dev.thomasglasser.tommylib.api.world.item.Enchantable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;

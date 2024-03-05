@@ -10,5 +10,5 @@ public class MinejagoStoryAdvancementKeys
     public static final String GET_FOUR_WEAPONS_MAP = "get_four_weapons_map";
     public static final String GET_POWER = "get_power";
     public static final String ENTER_GOLDEN_WEAPONS_STRUCTURE = "enter_golden_weapons_structure";
-    public static final String INTERACT_WITH_MAIN_SIX = "interact_with_main_six";
+    public static final String TAME_DRAGON = "tame_dragon";
 }

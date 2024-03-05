@@ -1,0 +1,8 @@
+{
+    "pack": {
+        "description": {
+            "text": "Increases Ninjago immersion with slight cosmetic changes"
+        },
+        "pack_format": ${resource_pack_format_number}
+    }
+}

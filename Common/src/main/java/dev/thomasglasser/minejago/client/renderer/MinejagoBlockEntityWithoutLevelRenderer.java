@@ -6,10 +6,10 @@ import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.model.BambooStaffModel;
 import dev.thomasglasser.minejago.client.model.ScytheModel;
 import dev.thomasglasser.minejago.client.model.SpearModel;
-import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.armor.PoweredArmorItem;
+import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -47,7 +47,7 @@ public class MinejagoBlockEntityWithoutLevelRenderer extends BlockEntityWithoutL
             else
             {
                 poseStack.translate(0.5D, 0.5D, 0.5D);
-                Services.ITEM.renderItem(stack, displayContext, false, poseStack, buffer, packedLight, packedOverlay, "iron_scythe_inventory");
+                TommyLibServices.ITEM.renderItem(stack, displayContext, false, poseStack, buffer, packedLight, packedOverlay, Minejago.MOD_ID, "iron_scythe_inventory");
             }
         }
         else if (stack.is(MinejagoItems.BAMBOO_STAFF.get())) {
@@ -61,7 +61,7 @@ public class MinejagoBlockEntityWithoutLevelRenderer extends BlockEntityWithoutL
             else
             {
                 poseStack.translate(0.5D, 0.5D, 0.5D);
-                Services.ITEM.renderItem(stack, displayContext, false, poseStack, buffer, packedLight, packedOverlay, "bamboo_staff_inventory");
+                TommyLibServices.ITEM.renderItem(stack, displayContext, false, poseStack, buffer, packedLight, packedOverlay, Minejago.MOD_ID, "bamboo_staff_inventory");
             }
         }
         else if (stack.is(MinejagoItems.SCYTHE_OF_QUAKES.get())) {
@@ -74,7 +74,7 @@ public class MinejagoBlockEntityWithoutLevelRenderer extends BlockEntityWithoutL
             else
             {
                 poseStack.translate(0.5D, 0.5D, 0.5D);
-                Services.ITEM.renderItem(stack, displayContext, false, poseStack, buffer, packedLight, packedOverlay, "scythe_of_quakes_inventory");
+                TommyLibServices.ITEM.renderItem(stack, displayContext, false, poseStack, buffer, packedLight, packedOverlay, Minejago.MOD_ID, "scythe_of_quakes_inventory");
             }
         }
         else if (stack.is(MinejagoItems.IRON_SPEAR.get())) {
@@ -87,7 +87,7 @@ public class MinejagoBlockEntityWithoutLevelRenderer extends BlockEntityWithoutL
             else
             {
                 poseStack.translate(0.5D, 0.5D, 0.5D);
-                Services.ITEM.renderItem(stack, displayContext, false, poseStack, buffer, packedLight, packedOverlay, "iron_spear_inventory");
+                TommyLibServices.ITEM.renderItem(stack, displayContext, false, poseStack, buffer, packedLight, packedOverlay, Minejago.MOD_ID, "iron_spear_inventory");
             }
         }
         else if (stack.getItem() instanceof PoweredArmorItem)
@@ -105,7 +105,7 @@ public class MinejagoBlockEntityWithoutLevelRenderer extends BlockEntityWithoutL
                     }));
             if (!path[0].isEmpty())
             {
-                Services.ITEM.renderItem(stack, displayContext, false, poseStack, buffer, packedLight, packedOverlay, location.getNamespace(), "minejago_armor/" + location.getPath() + "_" + path[0]);
+                TommyLibServices.ITEM.renderItem(stack, displayContext, false, poseStack, buffer, packedLight, packedOverlay, location.getNamespace(), "minejago_armor/" + location.getPath() + "_" + path[0]);
             }
         }
         poseStack.popPose();

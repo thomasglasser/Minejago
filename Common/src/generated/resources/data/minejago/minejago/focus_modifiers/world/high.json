@@ -1,0 +1,11 @@
+{
+  "modifier": 1.0,
+  "operation": "addition",
+  "y": {
+    "type": "minecraft:uniform",
+    "value": {
+      "max_inclusive": 2147483647,
+      "min_inclusive": 100
+    }
+  }
+}

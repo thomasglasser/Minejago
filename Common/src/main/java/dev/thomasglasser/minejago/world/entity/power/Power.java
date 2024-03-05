@@ -12,17 +12,17 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.ExtraCodecs;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
-import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -30,7 +30,7 @@ public class Power {
     public static final Codec<Power> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ResourceLocation.CODEC.fieldOf("id").forGetter(Power::getId),
             TextColor.CODEC.optionalFieldOf("power_color", TextColor.fromLegacyFormat(ChatFormatting.GRAY)).forGetter(Power::getColor),
-            ExtraCodecs.COMPONENT.optionalFieldOf("tagline", Component.empty()).forGetter(Power::getTagline),
+            ComponentSerialization.CODEC.optionalFieldOf("tagline", Component.empty()).forGetter(Power::getTagline),
             ExtraCodecs.VECTOR3F.optionalFieldOf("main_spinjitzu_color", SpinjitzuParticleOptions.DEFAULT).forGetter(Power::getMainSpinjitzuColor),
             ExtraCodecs.VECTOR3F.optionalFieldOf("alt_spinjitzu_color", SpinjitzuParticleOptions.DEFAULT).forGetter(Power::getAltSpinjitzuColor),
             BuiltInRegistries.PARTICLE_TYPE.byNameCodec().optionalFieldOf("border_particle").forGetter(Power::getBorderParticleType),
@@ -180,8 +180,8 @@ public class Power {
         public static final Display EMPTY = new Display(Component.empty(), Component.empty());
 
         public static final Codec<Display> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            ExtraCodecs.COMPONENT.optionalFieldOf("lore", Component.empty()).forGetter(Display::lore),
-            ExtraCodecs.COMPONENT.optionalFieldOf("description", Component.empty()).forGetter(Display::description)
+            ComponentSerialization.CODEC.optionalFieldOf("lore", Component.empty()).forGetter(Display::lore),
+            ComponentSerialization.CODEC.optionalFieldOf("description", Component.empty()).forGetter(Display::description)
         ).apply(instance, Display::new));
 
         public static Display withDefaultKeys(ResourceLocation id)
@@ -234,7 +234,7 @@ public class Power {
 
         public Builder color(String colorCode)
         {
-            this.color = TextColor.parseColor(colorCode);
+            this.color = TextColor.parseColor(colorCode).get().left().orElse(TextColor.fromLegacyFormat(ChatFormatting.GRAY));
             return this;
         }
 

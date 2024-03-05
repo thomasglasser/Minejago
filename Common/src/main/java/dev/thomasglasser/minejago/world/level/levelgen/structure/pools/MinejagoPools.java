@@ -32,6 +32,7 @@ public class MinejagoPools
 
         FourWeaponsPools.bootstrap(context);
         CaveOfDespairPools.bootstrap(context);
+        NinjagoCityPools.bootstrap(context);
     }
 
     public static Function<StructureTemplatePool.Projection, SinglePoolElement> singleElement(ResourceLocation rl) {

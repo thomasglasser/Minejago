@@ -16,14 +16,13 @@
   },
   "requirements": [
     [
-      "has_brewed_strong_strength_in_stand",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_brewed_strong_strength_in_stand"
     ]
   ],
   "rewards": {
     "recipes": [
       "minecraft:strength_to_strong_strength"
     ]
-  },
-  "sends_telemetry_event": true
+  }
 }

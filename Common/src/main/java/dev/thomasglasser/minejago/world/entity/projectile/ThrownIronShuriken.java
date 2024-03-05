@@ -1,10 +1,9 @@
 package dev.thomasglasser.minejago.world.entity.projectile;
 
-import dev.thomasglasser.minejago.data.tags.MinejagoBlockTags;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
+import dev.thomasglasser.minejago.tags.MinejagoBlockTags;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -29,19 +28,17 @@ public class ThrownIronShuriken extends AbstractArrow
 {
     private static final EntityDataAccessor<Boolean> ID_FOIL = SynchedEntityData.defineId(ThrownIronShuriken.class, EntityDataSerializers.BOOLEAN);
 
-    private ItemStack ironShurikenItem = new ItemStack(MinejagoItems.IRON_SHURIKEN.get());
-
     private boolean dealtDamage;
+    private boolean returned = false;
 
     private Vec3 pos;
 
     public ThrownIronShuriken(EntityType<? extends ThrownIronShuriken> entity, Level level) {
-        super(entity, level);
+        super(entity, level, new ItemStack(MinejagoItems.IRON_SHURIKEN.get()));
     }
 
     public ThrownIronShuriken(Level pLevel, LivingEntity pShooter, ItemStack pStack) {
-        super(MinejagoEntityTypes.THROWN_IRON_SHURIKEN.get(), pShooter, pLevel);
-        this.ironShurikenItem = pStack.copy();
+        super(MinejagoEntityTypes.THROWN_IRON_SHURIKEN.get(), pShooter, pLevel, pStack);
         this.entityData.set(ID_FOIL, pStack.hasFoil());
     }
 
@@ -58,17 +55,15 @@ public class ThrownIronShuriken extends AbstractArrow
         if (pos == null)
             pos = this.position();
 
-        BlockPos blockPos = new BlockPos((int) pos.x, (int) pos.y, (int) pos.z);
-
-        if (this.inGroundTime > 4) {
+	    if (this.inGroundTime > 4) {
             this.dealtDamage = true;
             level().broadcastEntityEvent(this, (byte) 100);
         }
 
-        if (!this.dealtDamage && this.tickCount > 40)
+        if (!this.dealtDamage && this.tickCount > 40 && !returned)
         {
             Vec3 vec3 = pos.subtract(this.position());
-            this.setPosRaw(this.getX(), this.getY() + vec3.y * 0.015D, this.getZ());
+            this.setPos(this.getX(), this.getY() + vec3.y * 0.015D, this.getZ());
             if (this.level().isClientSide) {
                 this.yOld = this.getY();
             }
@@ -78,10 +73,11 @@ public class ThrownIronShuriken extends AbstractArrow
 
             if (this.position().closerThan(pos, 2))
             {
-                this.setNoGravity(false);
-                do {
-                    pos = pos.subtract(0, 1, 0);
-                } while (level().getBlockState(blockPos).isAir());
+//                this.setNoGravity(false);
+//                do {
+//                    pos = pos.subtract(0, 1, 0);
+//                } while (level().getBlockState(BlockPos.containing(pos)).isAir());
+                returned = true;
             }
         }
         else {
@@ -89,10 +85,6 @@ public class ThrownIronShuriken extends AbstractArrow
         }
 
         super.tick();
-    }
-
-    protected ItemStack getPickupItem() {
-        return this.ironShurikenItem.copy();
     }
 
     public boolean isFoil() {
@@ -112,32 +104,40 @@ public class ThrownIronShuriken extends AbstractArrow
      */
     protected void onHitEntity(EntityHitResult pResult) {
         Entity entity = pResult.getEntity();
-        float f = 8.0F;
-        if (entity instanceof LivingEntity livingentity) {
-            f += EnchantmentHelper.getDamageBonus(this.ironShurikenItem, livingentity.getMobType());
-        }
-
-        Entity entity1 = this.getOwner();
-        DamageSource damagesource = damageSources().trident(this, (entity1 == null ? this : entity1));
-        this.dealtDamage = true;
-        this.setNoGravity(false);
-        if (entity.hurt(damagesource, f)) {
-            if (entity.getType() == EntityType.ENDERMAN) {
-                return;
+        if (!(entity instanceof AbstractArrow))
+        {
+            float f = 8.0F;
+            if (entity instanceof LivingEntity livingentity)
+            {
+                f += EnchantmentHelper.getDamageBonus(getPickupItem(), livingentity.getMobType());
             }
 
-            if (entity instanceof LivingEntity livingentity1) {
-                if (entity1 instanceof LivingEntity) {
-                    EnchantmentHelper.doPostHurtEffects(livingentity1, entity1);
-                    EnchantmentHelper.doPostDamageEffects((LivingEntity)entity1, livingentity1);
+            Entity entity1 = this.getOwner();
+            DamageSource damagesource = damageSources().trident(this, (entity1 == null ? this : entity1));
+            this.dealtDamage = true;
+            this.setNoGravity(false);
+            if (entity.hurt(damagesource, f))
+            {
+                if (entity.getType() == EntityType.ENDERMAN)
+                {
+                    return;
                 }
 
-                this.doPostHurtEffects(livingentity1);
-            }
-        }
+                if (entity instanceof LivingEntity livingentity1)
+                {
+                    if (entity1 instanceof LivingEntity)
+                    {
+                        EnchantmentHelper.doPostHurtEffects(livingentity1, entity1);
+                        EnchantmentHelper.doPostDamageEffects((LivingEntity) entity1, livingentity1);
+                    }
 
-        this.setDeltaMovement(this.getDeltaMovement().multiply(-0.01D, -0.1D, -0.01D));
-        this.playSound(getDefaultHitGroundSoundEvent());
+                    this.doPostHurtEffects(livingentity1);
+                }
+            }
+
+            this.setDeltaMovement(this.getDeltaMovement().multiply(-0.01D, -0.1D, -0.01D));
+            this.playSound(getDefaultHitGroundSoundEvent());
+        }
     }
 
     protected boolean tryPickup(Player p_150196_) {
@@ -153,7 +153,10 @@ public class ThrownIronShuriken extends AbstractArrow
             if (!(pEntity.swinging || inGround))
                 onHitEntity(new EntityHitResult(this.getOwner() == null ? this : this.getOwner()));
             if (!this.level().isClientSide()) {
-                this.setNoPhysics(true);
+                if (tickCount > 40)
+                {
+                    this.setNoPhysics(true);
+                }
                 super.playerTouch(pEntity);
             }
         }
@@ -168,24 +171,20 @@ public class ThrownIronShuriken extends AbstractArrow
      */
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
-        if (pCompound.contains("IronShuriken", 10)) {
-            this.ironShurikenItem = ItemStack.of(pCompound.getCompound("IronShuriken"));
-        }
-
         this.dealtDamage = pCompound.getBoolean("DealtDamage");
+//        this.pos = NbtUtils.readBlockPos(pCompound.getCompound("Pos")).getCenter();
     }
 
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
-        pCompound.put("IronShuriken", this.ironShurikenItem.save(new CompoundTag()));
         pCompound.putBoolean("DealtDamage", this.dealtDamage);
+//        pCompound.put("Pos", NbtUtils.writeBlockPos(BlockPos.containing(pos)));
     }
 
     public void tickDespawn() {
         if (this.pickup != Pickup.ALLOWED) {
             super.tickDespawn();
         }
-
     }
 
     public boolean shouldRender(double pX, double pY, double pZ) {

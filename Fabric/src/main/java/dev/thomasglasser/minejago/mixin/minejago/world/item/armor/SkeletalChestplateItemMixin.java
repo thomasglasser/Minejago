@@ -1,8 +1,8 @@
 package dev.thomasglasser.minejago.mixin.minejago.world.item.armor;
 
 import dev.thomasglasser.minejago.client.renderer.armor.SkeletalArmorRenderer;
-import dev.thomasglasser.minejago.world.item.FabricGeoItem;
 import dev.thomasglasser.minejago.world.item.armor.SkeletalChestplateItem;
+import dev.thomasglasser.tommylib.api.world.item.FabricGeoItem;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;

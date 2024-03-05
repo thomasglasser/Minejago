@@ -1,12 +1,13 @@
 package dev.thomasglasser.minejago.world.level.block;
 
+import com.mojang.serialization.MapCodec;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
-import dev.thomasglasser.minejago.util.MinejagoItemUtils;
 import dev.thomasglasser.minejago.world.item.PotionCupHolder;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
 import dev.thomasglasser.minejago.world.level.block.entity.TeapotBlockEntity;
+import dev.thomasglasser.tommylib.api.world.item.ItemUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -25,9 +26,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SupportType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -35,12 +42,14 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -49,16 +58,23 @@ public class TeapotBlock extends BaseEntityBlock {
     public static final VoxelShape SHAPE = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 10.0D, 13.0D);
     public static final ResourceLocation CONTENTS = new ResourceLocation(Minejago.MOD_ID, "teapot_contents");
     public static final BooleanProperty FILLED = BooleanProperty.create("filled");
+    public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
     public TeapotBlock(Properties pProperties) {
         super(pProperties);
-        this.registerDefaultState(this.getStateDefinition().any().setValue(FILLED, Boolean.FALSE));
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(FILLED, Boolean.FALSE));
+    }
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec()
+    {
+        return simpleCodec(TeapotBlock::new);
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder);
         builder.add(FILLED);
+        builder.add(FACING);
     }
 
     @Override
@@ -97,7 +113,7 @@ public class TeapotBlock extends BaseEntityBlock {
                     {
                         if (be.tryFill(holder.getCups(), holder.getPotion(inHand)))
                         {
-                            MinejagoItemUtils.safeShrink(1, inHand, pPlayer);
+                            ItemUtils.safeShrink(1, inHand, pPlayer);
                             pPlayer.addItem(holder.getDrained(pPlayer.getItemInHand(pHand)));
                             pLevel.playSound(null, pPos, SoundEvents.BOTTLE_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
                         }
@@ -105,15 +121,15 @@ public class TeapotBlock extends BaseEntityBlock {
                     else if (be.getCups() > 0)
                     {
                         if (inHand.getItem() instanceof PotionCupHolder potionCupHolder && potionCupHolder.canBeFilled(inHand, be.getPotion(), be.getCups())) {
-                            MinejagoItemUtils.safeShrink(1, inHand, pPlayer);
+                            ItemUtils.safeShrink(1, inHand, pPlayer);
                             pPlayer.addItem(potionCupHolder.getFilled(be.getPotion()));
                             be.take(potionCupHolder.getCups());
-                            MinejagoCriteriaTriggers.BREWED_TEA.trigger((ServerPlayer) pPlayer, be.getPotion());
+                            MinejagoCriteriaTriggers.BREWED_TEA.get().trigger((ServerPlayer) pPlayer, be.getPotion().builtInRegistryHolder());
                             pLevel.playSound(null, pPos, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
                             be.giveExperienceForCup((ServerLevel) pLevel, pPos.getCenter());
                         } else if (be.hasRecipe(inHand, pLevel)) {
                             be.insert(0, inHand);
-                            MinejagoItemUtils.safeShrink(1, inHand, pPlayer);
+                            ItemUtils.safeShrink(1, inHand, pPlayer);
                         }
                     }
                     return InteractionResult.SUCCESS;
@@ -165,7 +181,6 @@ public class TeapotBlock extends BaseEntityBlock {
                 for(int i = 0; i < be.getContainerSize(); ++i) {
                     consumer.accept(be.getInSlot(i));
                 }
-
             });
         }
 
@@ -173,9 +188,10 @@ public class TeapotBlock extends BaseEntityBlock {
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
+    public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState)
+    {
         ItemStack stack = new ItemStack(asItem());
-        TeapotBlockEntity be = (TeapotBlockEntity) level.getBlockEntity(pos);
+        TeapotBlockEntity be = (TeapotBlockEntity) levelReader.getBlockEntity(blockPos);
 
         be.saveToItem(stack);
 
@@ -214,9 +230,39 @@ public class TeapotBlock extends BaseEntityBlock {
         return temp;
     }
 
+    @Override
+    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos currentPos, BlockPos neighborPos) {
+        if (!state.canSurvive(level, currentPos))
+        {
+            return Blocks.AIR.defaultBlockState();
+        }
+
+        return super.updateShape(state, direction, neighborState, level, currentPos, neighborPos);
+    }
+
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        return pContext.getLevel().getBlockState(pContext.getClickedPos().above()).isFaceSturdy(pContext.getLevel(), pContext.getClickedPos().above(), Direction.DOWN, SupportType.CENTER) || !(pContext.getLevel().getBlockState(pContext.getClickedPos().below()).is(BlockTags.FIRE) || pContext.getLevel().getBlockState(pContext.getClickedPos().below()).is(BlockTags.CAMPFIRES)) ? this.defaultBlockState() : null;
+        return pContext.getLevel().getBlockState(pContext.getClickedPos().above()).isFaceSturdy(pContext.getLevel(), pContext.getClickedPos().above(), Direction.DOWN, SupportType.CENTER) || !(pContext.getLevel().getBlockState(pContext.getClickedPos().below()).is(BlockTags.FIRE) || pContext.getLevel().getBlockState(pContext.getClickedPos().below()).is(BlockTags.CAMPFIRES)) ? this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection().getOpposite()) : null;
+    }
+
+    @Override
+    public BlockState rotate(BlockState state, Rotation rotation) {
+        return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
+    }
+
+    @Override
+    public BlockState mirror(BlockState state, Mirror mirror) {
+        return state.rotate(mirror.getRotation(state.getValue(FACING)));
+    }
+
+    @Override
+    public boolean canSurvive(@NotNull BlockState state, LevelReader level, BlockPos pos)
+    {
+        if (level.getBlockState(pos.below()).is(BlockTags.FIRE) || level.getBlockState(pos.below()).is(BlockTags.CAMPFIRES))
+        {
+            return level.getBlockState(pos.above()).isFaceSturdy(level, pos.above(), Direction.DOWN, SupportType.CENTER);
+        }
+        return true;
     }
 }

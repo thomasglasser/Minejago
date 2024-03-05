@@ -2,48 +2,68 @@ package dev.thomasglasser.minejago.client;
 
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.client.animation.MinejagoPlayerAnimator;
-import dev.thomasglasser.minejago.client.model.*;
+import dev.thomasglasser.minejago.client.model.BambooStaffModel;
+import dev.thomasglasser.minejago.client.model.DragonModel;
+import dev.thomasglasser.minejago.client.model.KrunchaModel;
+import dev.thomasglasser.minejago.client.model.NuckalModel;
+import dev.thomasglasser.minejago.client.model.OgDevTeamBeardModel;
+import dev.thomasglasser.minejago.client.model.PilotsSnapshotTesterHatModel;
+import dev.thomasglasser.minejago.client.model.ScytheModel;
+import dev.thomasglasser.minejago.client.model.SpearModel;
+import dev.thomasglasser.minejago.client.model.ThrownBoneKnifeModel;
+import dev.thomasglasser.minejago.client.model.ThrownIronShurikenModel;
 import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
 import dev.thomasglasser.minejago.client.renderer.block.DragonHeadRenderer;
-import dev.thomasglasser.minejago.client.renderer.entity.*;
-import dev.thomasglasser.minejago.client.renderer.entity.layers.BetaTesterLayer;
-import dev.thomasglasser.minejago.client.renderer.entity.layers.DevLayer;
-import dev.thomasglasser.minejago.network.*;
-import dev.thomasglasser.minejago.packs.MinejagoPacks;
-import dev.thomasglasser.minejago.packs.PackHolder;
-import dev.thomasglasser.minejago.registration.RegistryObject;
-import dev.thomasglasser.minejago.util.MinejagoClientUtils;
+import dev.thomasglasser.minejago.client.renderer.entity.CharacterRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.DragonRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.EarthBlastRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.KrunchaRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.NuckalRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.SamukaiRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.SkulkinHorseRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.SkulkinRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.SkullMotorbikeRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.SkullTruckRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.ThrownBambooStaffRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.ThrownBoneKnifeRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.ThrownIronShurikenRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.ThrownIronSpearRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.WuRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.layers.OgDevTeamLayer;
+import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterLayer;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
-import dev.thomasglasser.minejago.world.item.ModeledItem;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
 import dev.thomasglasser.minejago.world.level.block.entity.TeapotBlockEntity;
-import fuzs.forgeconfigapiport.api.config.v2.ModConfigEvents;
+import dev.thomasglasser.tommylib.api.client.ClientUtils;
+import dev.thomasglasser.tommylib.api.client.animation.AnimationUtils;
+import dev.thomasglasser.tommylib.api.registration.RegistryObject;
+import dev.thomasglasser.tommylib.api.world.item.ModeledItem;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlugin;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.client.rendering.v1.*;
+import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
-import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.EntityModelSet;
+import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.blockentity.BrushableBlockRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.Resource;
@@ -51,11 +71,14 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +86,8 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
-public class MinejagoFabricClient implements ClientModInitializer {
+public class MinejagoFabricClient implements ClientModInitializer
+{
     @Override
     public void onInitializeClient() {
         registerRenderers();
@@ -92,7 +116,7 @@ public class MinejagoFabricClient implements ClientModInitializer {
             }
         }
 
-        for (RegistryObject<Item> item : MinejagoArmors.ARMOR.getEntries())
+        for (RegistryObject<Item> item : MinejagoArmors.ARMORS.getEntries())
         {
             if (item.get() instanceof ModeledItem)
             {
@@ -103,13 +127,15 @@ public class MinejagoFabricClient implements ClientModInitializer {
         registerItemAndBlockColors();
 
         BlockRenderLayerMap.INSTANCE.putBlock(MinejagoBlocks.TEAPOT.get(), RenderType.cutout());
+        MinejagoBlocks.TEAPOTS.forEach((dyeColor, teapot) -> BlockRenderLayerMap.INSTANCE.putBlock(teapot.get(), RenderType.cutout()));
         BlockRenderLayerMap.INSTANCE.putBlock(MinejagoBlocks.JASPOT.get(), RenderType.cutout());
-        MinejagoBlocks.TEAPOTS.forEach((dyeColor, blockBlockRegistryObject) -> BlockRenderLayerMap.INSTANCE.putBlock(blockBlockRegistryObject.get(), RenderType.cutout()));
+        BlockRenderLayerMap.INSTANCE.putBlock(MinejagoBlocks.FLAME_TEAPOT.get(), RenderType.cutout());
+
         BlockRenderLayerMap.INSTANCE.putBlock(MinejagoBlocks.TOP_POST.get(), RenderType.cutout());
 
-        registerEvents();
+        BlockRenderLayerMap.INSTANCE.putBlocks(RenderType.cutout(), MinejagoBlocks.FOCUS_LEAVES_SET.sapling().get(), MinejagoBlocks.FOCUS_LEAVES_SET.pottedSapling().get());
 
-        registerPackets();
+        registerEvents();
 
         MinejagoClientEvents.registerMenuScreens();
     }
@@ -120,6 +146,7 @@ public class MinejagoFabricClient implements ClientModInitializer {
         EntityRendererRegistry.register(MinejagoEntityTypes.THROWN_BAMBOO_STAFF.get(), ThrownBambooStaffRenderer::new);
         EntityRendererRegistry.register(MinejagoEntityTypes.THROWN_IRON_SPEAR.get(), ThrownIronSpearRenderer::new);
         EntityRendererRegistry.register(MinejagoEntityTypes.THROWN_IRON_SHURIKEN.get(), ThrownIronShurikenRenderer::new);
+        EntityRendererRegistry.register(MinejagoEntityTypes.EARTH_BLAST.get(), EarthBlastRenderer::new);
 
         EntityRendererRegistry.register(MinejagoEntityTypes.WU.get(), WuRenderer::new);
         EntityRendererRegistry.register(MinejagoEntityTypes.KAI.get(), CharacterRenderer::new);
@@ -133,6 +160,8 @@ public class MinejagoFabricClient implements ClientModInitializer {
         EntityRendererRegistry.register(MinejagoEntityTypes.SKULKIN_HORSE.get(), SkulkinHorseRenderer::new);
         EntityRendererRegistry.register(MinejagoEntityTypes.EARTH_DRAGON.get(), context -> new DragonRenderer<>(context, new DragonModel<>(Minejago.modLoc("dragon/earth_dragon"))));
         EntityRendererRegistry.register(MinejagoEntityTypes.SAMUKAI.get(), SamukaiRenderer::new);
+        EntityRendererRegistry.register(MinejagoEntityTypes.SKULL_TRUCK.get(), SkullTruckRenderer::new);
+        EntityRendererRegistry.register(MinejagoEntityTypes.SKULL_MOTORBIKE.get(), SkullMotorbikeRenderer::new);
 
         BlockEntityRenderers.register(MinejagoBlockEntityTypes.DRAGON_HEAD.get(), context -> new DragonHeadRenderer());
         BlockEntityRenderers.register(MinejagoBlockEntityTypes.BRUSHABLE.get(), BrushableBlockRenderer::new);
@@ -145,8 +174,8 @@ public class MinejagoFabricClient implements ClientModInitializer {
         EntityModelLayerRegistry.registerModelLayer(SpearModel.LAYER_LOCATION, SpearModel::createBodyLayer);
         EntityModelLayerRegistry.registerModelLayer(ThrownIronShurikenModel.LAYER_LOCATION, ThrownIronShurikenModel::createBodyLayer);
         EntityModelLayerRegistry.registerModelLayer(ScytheModel.LAYER_LOCATION, ScytheModel::createBodyLayer);
-        EntityModelLayerRegistry.registerModelLayer(BambooHatModel.LAYER_LOCATION, BambooHatModel::createBodyLayer);
-        EntityModelLayerRegistry.registerModelLayer(BeardModel.LAYER_LOCATION, BeardModel::createBodyLayer);
+        EntityModelLayerRegistry.registerModelLayer(PilotsSnapshotTesterHatModel.LAYER_LOCATION, PilotsSnapshotTesterHatModel::createBodyLayer);
+        EntityModelLayerRegistry.registerModelLayer(OgDevTeamBeardModel.LAYER_LOCATION, OgDevTeamBeardModel::createBodyLayer);
         EntityModelLayerRegistry.registerModelLayer(KrunchaModel.LAYER_LOCATION, KrunchaModel::createBodyLayer);
         EntityModelLayerRegistry.registerModelLayer(NuckalModel.LAYER_LOCATION, NuckalModel::createBodyLayer);
     }
@@ -179,6 +208,11 @@ public class MinejagoFabricClient implements ClientModInitializer {
                 return PotionUtils.getColor(pStack);
             return -1;
         }, MinejagoItems.FILLED_TEACUP.get());
+        ColorProviderRegistry.ITEM.register((itemStack, i) ->
+        {
+            BlockState blockstate = ((BlockItem)itemStack.getItem()).getBlock().defaultBlockState();
+            return ClientUtils.getMinecraft().getBlockColors().getColor(blockstate, null, null, i);
+        }, MinejagoBlocks.FOCUS_LEAVES_SET.leaves().get());
 
         ColorProviderRegistry.BLOCK.register(((blockState, blockAndTintGetter, blockPos, i) ->
         {
@@ -190,6 +224,7 @@ public class MinejagoFabricClient implements ClientModInitializer {
             }
             return -1;
         }), MinejagoBlocks.allPots().toArray(new Block[0]));
+        ColorProviderRegistry.BLOCK.register(((blockState, blockAndTintGetter, blockPos, i) -> blockAndTintGetter != null && blockPos != null ? BiomeColors.getAverageFoliageColor(blockAndTintGetter, blockPos) : FoliageColor.getDefaultColor()), MinejagoBlocks.FOCUS_LEAVES_SET.leaves().get());
     }
 
     private void registerEvents()
@@ -204,102 +239,15 @@ public class MinejagoFabricClient implements ClientModInitializer {
 
                 if (player != null)
                 {
-                    player.addLayer(new BetaTesterLayer<>(player, models));
-                    player.addLayer(new DevLayer<>(player, models));
+                    player.addLayer(new SnapshotTesterLayer<>(player, models));
+                    player.addLayer(new OgDevTeamLayer<>(player, models));
                 }
             }
         });
-        if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled()) PlayerAnimationAccess.REGISTER_ANIMATION_EVENT.register(MinejagoPlayerAnimator::registerPlayerAnimation);
-        ModConfigEvents.reloading(Minejago.MOD_ID).register((config) ->
-                MinejagoClientUtils.refreshVip());
+        if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled()) PlayerAnimationAccess.REGISTER_ANIMATION_EVENT.register(AnimationUtils::registerPlayerAnimation);
         ItemGroupEvents.MODIFY_ENTRIES_ALL.register((group, entries) ->
-                entries.acceptAll(MinejagoItems.getItemsForTab(BuiltInRegistries.CREATIVE_MODE_TAB.getResourceKey(group).orElseThrow())));
+                entries.acceptAll(MinejagoClientEvents.getItemsForTab(BuiltInRegistries.CREATIVE_MODE_TAB.getResourceKey(group).orElseThrow())));
         ClientTickEvents.END_CLIENT_TICK.register(client ->
                 MinejagoClientEvents.onClientTick());
-    }
-
-    private void registerPackets()
-    {
-        ClientPlayNetworking.registerGlobalReceiver(ClientboundChangeVipDataPacket.ID, (client, handler, buf, responseSender) ->
-        {
-            buf.retain();
-            client.execute(() ->
-            {
-                new ClientboundChangeVipDataPacket(buf).handle();
-                buf.release();
-            });
-        });
-        ClientPlayNetworking.registerGlobalReceiver(ClientboundRefreshVipDataPacket.ID, (client, handler, buf, responseSender) ->
-        {
-            buf.retain();
-            client.execute(() ->
-            {
-                new ClientboundRefreshVipDataPacket().handle();
-                buf.release();
-            });
-        });
-        ClientPlayNetworking.registerGlobalReceiver(ClientboundStartScytheAnimationPacket.ID, (client, handler, buf, responseSender) ->
-        {
-            buf.retain();
-            client.execute(() ->
-            {
-                new ClientboundStartScytheAnimationPacket(buf).handle();
-                buf.release();
-            });
-        });
-        ClientPlayNetworking.registerGlobalReceiver(ClientboundStartSpinjitzuPacket.ID, (client, handler, buf, responseSender) ->
-        {
-            buf.retain();
-            client.execute(() ->
-            {
-                new ClientboundStartSpinjitzuPacket(buf).handle();
-                buf.release();
-            });
-        });
-        ClientPlayNetworking.registerGlobalReceiver(ClientboundStopAnimationPacket.ID, (client, handler, buf, responseSender) ->
-        {
-            buf.retain();
-            client.execute(() ->
-            {
-                new ClientboundStopAnimationPacket(buf).handle();
-                buf.release();
-            });
-        });
-        ClientPlayNetworking.registerGlobalReceiver(ClientboundSpawnParticlePacket.ID, (client, handler, buf, responseSender) ->
-        {
-            buf.retain();
-            client.execute(() ->
-            {
-                new ClientboundSpawnParticlePacket(buf).handle();
-                buf.release();
-            });
-        });
-        ClientPlayNetworking.registerGlobalReceiver(ClientboundFailSpinjitzuPacket.ID, (client, handler, buf, responseSender) ->
-        {
-            buf.retain();
-            client.execute(() ->
-            {
-                new ClientboundFailSpinjitzuPacket(buf).handle();
-                buf.release();
-            });
-        });
-        ClientPlayNetworking.registerGlobalReceiver(ClientboundOpenPowerSelectionScreenPacket.ID, (client, handler, buf, responseSender) ->
-        {
-            buf.retain();
-            client.execute(() ->
-            {
-                new ClientboundOpenPowerSelectionScreenPacket(buf).handle();
-                buf.release();
-            });
-        });
-        ClientPlayNetworking.registerGlobalReceiver(ClientboundOpenScrollPacket.ID, (client, handler, buf, responseSender) ->
-        {
-            buf.retain();
-            client.execute(() ->
-            {
-                new ClientboundOpenScrollPacket(buf).handle();
-                buf.release();
-            });
-        });
     }
 }

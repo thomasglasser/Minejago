@@ -1,8 +1,7 @@
 package dev.thomasglasser.minejago.world.level.block.entity;
 
-import dev.thomasglasser.minejago.data.tags.MinejagoItemTags;
+import dev.thomasglasser.minejago.tags.MinejagoItemTags;
 import net.minecraft.core.BlockPos;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.ChiseledBookShelfBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;

@@ -1,14 +1,14 @@
 package dev.thomasglasser.minejago.world.level.block.entity;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
-import dev.thomasglasser.minejago.util.MinejagoItemUtils;
+import dev.thomasglasser.minejago.world.item.MinejagoItemUtils;
 import dev.thomasglasser.minejago.world.item.crafting.MinejagoRecipeTypes;
 import dev.thomasglasser.minejago.world.item.crafting.TeapotBrewingRecipe;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
+import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
+import dev.thomasglasser.tommylib.api.world.level.block.entity.ItemHolder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -30,10 +30,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SupportType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -79,11 +79,6 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
 
     public static void serverTick(Level pLevel, BlockPos pPos, BlockState pState, TeapotBlockEntity pBlockEntity)
     {
-        if (!pLevel.getBlockState(pPos.above()).isFaceSturdy(pLevel, pPos.above(), Direction.DOWN, SupportType.CENTER) && (pLevel.getBlockState(pPos.below()).is(BlockTags.FIRE) || pLevel.getBlockState(pPos.below()).is(BlockTags.CAMPFIRES)))
-        {
-            pLevel.destroyBlock(pPos, true);
-        }
-
         if (pBlockEntity.cups < 3)
             pLevel.setBlock(pPos, pState.setValue(TeapotBlock.FILLED, false), Block.UPDATE_ALL);
         else
@@ -91,7 +86,7 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
 
         if (pBlockEntity.cups > 0)
         {
-            Optional<TeapotBrewingRecipe> recipe = pBlockEntity.quickCheck.getRecipeFor(new SimpleContainer(pBlockEntity.item, MinejagoItemUtils.fillTeacup(pBlockEntity.getPotion())), pLevel);
+            Optional<RecipeHolder<TeapotBrewingRecipe>> recipe = pBlockEntity.quickCheck.getRecipeFor(new SimpleContainer(pBlockEntity.item, MinejagoItemUtils.fillTeacup(pBlockEntity.getPotion())), pLevel);
 
             pBlockEntity.cups = Math.min(pBlockEntity.cups, MAX_CUPS);
 
@@ -106,8 +101,8 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
 
                     if (recipe.isPresent())
                     {
-                        pBlockEntity.potion = PotionUtils.getPotion(recipe.get().getResultItem(pLevel.registryAccess()));
-                        pBlockEntity.experiencePerCup = recipe.get().getExperience() / pBlockEntity.cups;
+                        pBlockEntity.potion = PotionUtils.getPotion(recipe.get().value().getResultItem(pLevel.registryAccess()));
+                        pBlockEntity.experiencePerCup = recipe.get().value().getExperience() / pBlockEntity.cups;
                         pBlockEntity.experienceCups = pBlockEntity.cups;
                     }
                     pBlockEntity.item = ItemStack.EMPTY;
@@ -132,7 +127,7 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
                     setChanged(pLevel, pPos, pState);
                 }
             } else if (pBlockEntity.temp >= 100 && recipe.isPresent()) {
-                pBlockEntity.brewTime = (recipe.map(TeapotBrewingRecipe::getCookingTime).orElseGet(() -> UniformInt.of(1200, 2400))).sample(pLevel.random);
+                pBlockEntity.brewTime = (recipe.map(holder -> holder.value().getCookingTime()).orElseGet(() -> UniformInt.of(1200, 2400))).sample(pLevel.random);
                 pBlockEntity.brewing = true;
                 pBlockEntity.boiling = false;
                 pBlockEntity.done = false;
@@ -283,7 +278,7 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
 
     @Override
     public void handleTag(CompoundTag tag) {
-        Services.BLOCK_ENTITY.handleUpdateTag(this, tag);
+        TommyLibServices.BLOCK_ENTITY.handleUpdateTag(this, tag);
         load(tag);
     }
 

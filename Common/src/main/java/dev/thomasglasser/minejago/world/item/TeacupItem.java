@@ -1,6 +1,5 @@
 package dev.thomasglasser.minejago.world.item;
 
-import dev.thomasglasser.minejago.util.MinejagoItemUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;

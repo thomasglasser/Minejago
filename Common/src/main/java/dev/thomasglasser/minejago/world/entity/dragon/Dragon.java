@@ -2,20 +2,39 @@ package dev.thomasglasser.minejago.world.entity.dragon;
 
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.platform.Services;
-import dev.thomasglasser.minejago.world.entity.PlayerRideableFlying;
+import dev.thomasglasser.minejago.tags.MinejagoItemTags;
 import dev.thomasglasser.minejago.world.entity.character.Character;
 import dev.thomasglasser.minejago.world.entity.power.Power;
+import dev.thomasglasser.minejago.world.focus.FocusConstants;
+import dev.thomasglasser.minejago.world.focus.FocusData;
+import dev.thomasglasser.minejago.world.item.GoldenWeaponItem;
 import dev.thomasglasser.minejago.world.level.storage.PowerData;
+import dev.thomasglasser.tommylib.api.world.entity.PlayerRideableFlying;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
-import net.minecraft.network.chat.Component;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializer;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -25,6 +44,8 @@ import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -51,6 +72,7 @@ import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyPlayersSensor;
 import net.tslat.smartbrainlib.util.BrainUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -60,20 +82,30 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class Dragon extends TamableAnimal implements GeoEntity, SmartBrainOwner<Dragon>, PlayerRideableFlying, RangedAttackMob {
+public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBrainOwner<Dragon>, PlayerRideableFlying, RangedAttackMob {
     public static final RawAnimation LIFT = RawAnimation.begin().thenPlay("move.lift");
+    public static final EntityDataSerializer<Boolean> SHOOTING = EntityDataSerializers.BOOLEAN;
+    private static final EntityDataAccessor<Boolean> DATA_SHOOTING = SynchedEntityData.defineId(Dragon.class, SHOOTING);
+    public static final int TICKS_PER_FLAP = 39;
+    public static final double HEAL_BOND = 0.05;
+    public static final double FOOD_BOND = 0.1;
+    public static final double TREAT_BOND = 0.15;
+    public static final double TALK_BOND = 1;
 
     public final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private final Map<Player, Double> bond = new HashMap<>();
+    private final TagKey<Power> acceptablePowers;
 
-    private TagKey<Power> acceptablePowers;
     private boolean isLiftingOff;
-    private boolean isShooting;
     private Flight flight = Flight.HOVERING;
     private int flyingTicks = 0;
+    private double speedMultiplier = 1;
 
-    public Dragon(EntityType<? extends Dragon> entityType, Level level, ResourceKey<Power> power, TagKey<Power> acceptablePowers) {
+    public Dragon(EntityType<? extends Dragon> entityType, Level level, ResourceKey<Power> power, TagKey<Power> powers) {
         super(entityType, level);
         Services.DATA.setPowerData(new PowerData(power, false), this);
         navigation = new GroundPathNavigation(this, level)
@@ -84,7 +116,7 @@ public class Dragon extends TamableAnimal implements GeoEntity, SmartBrainOwner<
             }
         };
         this.setMaxUpStep(1.0f);
-        this.acceptablePowers = acceptablePowers;
+        this.acceptablePowers = powers;
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -119,12 +151,18 @@ public class Dragon extends TamableAnimal implements GeoEntity, SmartBrainOwner<
                 }),
                 new AnimationController<>(this, "Shoot", 0, state ->
                 {
-                    if (isShooting)
+                    if (isShooting())
                         return state.setAndContinue(DefaultAnimations.ATTACK_SHOOT);
                     else
                         return PlayState.STOP;
                 })
         );
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_SHOOTING, false);
     }
 
     @Override
@@ -153,8 +191,13 @@ public class Dragon extends TamableAnimal implements GeoEntity, SmartBrainOwner<
                             LivingEntity owner = dragon.getOwner();
                             if (owner == null)
                             {
-                                if (target instanceof Player) return true;
-                                return target instanceof TamableAnimal tamableAnimal && tamableAnimal.getOwner() != null;
+                                if (target instanceof Player player)
+                                {
+                                    if (getBond(player) < 0) return true;
+                                    Registry<Power> powerRegistry = level().registryAccess().registryOrThrow(MinejagoRegistries.POWER);
+                                    if (player.getInventory().items.stream().anyMatch(stack -> stack.getItem() instanceof GoldenWeaponItem goldenWeaponItem && goldenWeaponItem.canPowerHandle(Services.DATA.getPowerData(this).power(), powerRegistry))) return true;
+                                }
+                                return target instanceof TamableAnimal tamableAnimal && tamableAnimal.getOwner() instanceof Player player && getBond(player) < 0;
                             }
                             else
                             {
@@ -201,10 +244,10 @@ public class Dragon extends TamableAnimal implements GeoEntity, SmartBrainOwner<
     @Override
     public BrainActivityGroup<? extends Dragon> getFightTasks() {
         return BrainActivityGroup.fightTasks(
-                new InvalidateAttackTarget<>(), 	 // Invalidate the attack target if it's no longer applicable
+                new InvalidateAttackTarget<>().invalidateIf((entity, target) -> target instanceof Player pl && (pl.isCreative() || pl.isSpectator() || (getBond(pl) >= 0 && !pl.getInventory().items.stream().anyMatch(stack -> stack.getItem() instanceof GoldenWeaponItem goldenWeaponItem && goldenWeaponItem.canPowerHandle(Services.DATA.getPowerData(this).power(), level().registryAccess().registryOrThrow(MinejagoRegistries.POWER)))))), 	 // Invalidate the attack target if it's no longer applicable
                 new FirstApplicableBehaviour<>( 																							  	 // Run only one of the below behaviours, trying each one in order
-                        new AnimatableMeleeAttack<>(0).whenStarting(entity -> setAggressive(true)).whenStarting(entity -> setAggressive(false))/*.startCondition(dragon -> BrainUtils.getTargetOfEntity(dragon) != null && BrainUtils.getTargetOfEntity(dragon).position().distanceTo(dragon.position()) < 20)*/, // Melee attack
-                        new AnimatableRangedAttack<>(20))	 												 // Fire a bow, if holding one
+                        new AnimatableMeleeAttack<>(0).whenStarting(entity -> setAggressive(false)), // Melee attack
+                        new AnimatableRangedAttack<Dragon>(20).whenStarting(dragon -> dragon.setShooting(true)).whenStopping(dragon -> dragon.setShooting(false)))	 												 // Fire a bow, if holding one
         );
     }
 
@@ -250,6 +293,22 @@ public class Dragon extends TamableAnimal implements GeoEntity, SmartBrainOwner<
         }
     }
 
+    @Override
+    protected boolean canAddPassenger(Entity passenger) {
+        return this.getPassengers().size() < this.getMaxPassengers();
+    }
+
+    protected int getMaxPassengers() {
+        return 2;
+    }
+
+    @Nullable
+    @Override
+    public LivingEntity getControllingPassenger() {
+        return getFirstPassenger() instanceof LivingEntity livingEntity ? livingEntity : null;
+    }
+
+
     public double getVerticalSpeed() {
         return 0.5;
     }
@@ -257,8 +316,8 @@ public class Dragon extends TamableAnimal implements GeoEntity, SmartBrainOwner<
     @Override
     public float getSpeed() {
         if (isNoGravity())
-            return (float) getAttributeValue(Attributes.FLYING_SPEED);
-        return (float) getAttributeValue(Attributes.MOVEMENT_SPEED);
+            return (float) (getAttributeValue(Attributes.FLYING_SPEED) * speedMultiplier);
+        return (float) (getAttributeValue(Attributes.MOVEMENT_SPEED) * speedMultiplier);
     }
 
     @Override
@@ -289,10 +348,6 @@ public class Dragon extends TamableAnimal implements GeoEntity, SmartBrainOwner<
         this.flight = Flight.HOVERING;
     }
 
-    public LivingEntity getControllingPassenger() {
-        return getFirstPassenger() instanceof LivingEntity livingEntity ? livingEntity : null;
-    }
-
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel pLevel, AgeableMob pOtherParent) {
@@ -301,27 +356,102 @@ public class Dragon extends TamableAnimal implements GeoEntity, SmartBrainOwner<
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        Registry<Power> powerRegistry = level().registryAccess().registryOrThrow(MinejagoRegistries.POWER);
-        if (isOwnedBy(player)) player.startRiding(this);
-        else if (powerRegistry.getOrThrow(Services.DATA.getPowerData(player).power()).is(acceptablePowers, powerRegistry)) {
-            // TODO: improve taming
-            tame(player);
+        if (hand == InteractionHand.MAIN_HAND && !player.level().isClientSide)
+        {
+            Registry<Power> powerRegistry = level().registryAccess().registryOrThrow(MinejagoRegistries.POWER);
+            ItemStack stack = player.getItemInHand(hand);
+            boolean ownedBy = isOwnedBy(player);
+            double bond = getBond(player);
+            FocusData focusData = Services.DATA.getFocusData(player);
+            if (stack.is(MinejagoItemTags.DRAGON_FOODS) || stack.is(MinejagoItemTags.DRAGON_TREATS))
+            {
+                if (!player.getAbilities().instabuild)
+                {
+                    stack.shrink(1);
+                }
+
+                if (ownedBy)
+                {
+                    if (this.getHealth() < this.getMaxHealth() && stack.getItem().getFoodProperties() != null)
+                    {
+                        this.heal((float) stack.getItem().getFoodProperties().getNutrition());
+                        increaseBond(player, HEAL_BOND);
+                        return InteractionResult.SUCCESS;
+                    }
+                }
+
+                increaseBond(player, stack.is(MinejagoItemTags.DRAGON_TREATS) ? TREAT_BOND : FOOD_BOND);
+                return InteractionResult.SUCCESS;
+            }
+            else if (bond <= 50 && focusData.getFocusLevel() >= FocusConstants.TALK_LEVEL && random.nextInt(10) < 2){
+                double i = TALK_BOND;
+                if (powerRegistry.getOrThrow(Services.DATA.getPowerData(player).power()).is(acceptablePowers, powerRegistry)) i += 1.5;
+                increaseBond(player, i);
+                return InteractionResult.SUCCESS;
+            }
+            else if ((bond >= 10 && focusData.getFocusLevel() >= FocusConstants.TAME_LEVEL) || player.getAbilities().instabuild)
+            {
+                if (ownedBy || hasControllingPassenger())
+                    player.startRiding(this);
+                else if (powerRegistry.getOrThrow(Services.DATA.getPowerData(player).power()).is(acceptablePowers, powerRegistry) && focusData.getFocusLevel() >= 14) {
+                    // TODO: give DX suit
+                    Services.DATA.getFocusData(player).addExhaustion(FocusConstants.EXHAUSTION_TAME);
+                    tame(player);
+                    if (player.level() instanceof ServerLevel serverLevel)
+                    {
+                        double d0 = this.random.nextGaussian() * 0.02D;
+                        double d1 = this.random.nextGaussian() * 0.02D;
+                        double d2 = this.random.nextGaussian() * 0.02D;
+                        for (int i = 0; i < 5; i++)
+                        {
+                            serverLevel.sendParticles(ParticleTypes.HEART, this.getRandomX(1.0D), this.getRandomY(), this.getRandomZ(1.0D), 1, d0, d1, d2, 1);
+                        }
+                        serverLevel.playSound(null, this.blockPosition(), SoundEvents.PLAYER_LEVELUP/*TODO:Tame,purr?*/, SoundSource.AMBIENT);
+                    }
+                }
+                return InteractionResult.SUCCESS;
+            }
         }
-        return super.mobInteract(player, hand);
+        return InteractionResult.CONSUME;
     }
 
-    public int getPassengerCount(){
-        return 2;
-    }
     @Override
-    protected boolean canAddPassenger(Entity pPassenger) {
-        return this.getPassengers().size() < getPassengerCount();
+    protected Vector3f getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float scale)
+    {
+        int i = this.getPassengers().indexOf(entity);
+        if (i >= 0) {
+            boolean bl = i == 0;
+            float f = 1.0F;
+            if (this.getPassengers().size() > 1) {
+                if (!bl) {
+                    f = -0.7F;
+                }
+            }
+
+            return new Vec3(0.0, dimensions.height - 0.2, f).toVector3f();
+        }
+        return Vec3.ZERO.toVector3f();
     }
-    
-    public void positionRider(Entity pPassenger, Entity.MoveFunction pCallback) {
-        Vec3 position = position();
-        pPassenger.setPos(position.x, position.y + getPassengersRidingOffset(), position.z);
-        pPassenger.setYBodyRot(getYRot());
+
+    @Override
+    protected void positionRider(Entity passenger, MoveFunction callback) {
+        super.positionRider(passenger, callback);
+        clampRotation(this);
+    }
+
+    @Override
+    public float ridingOffset(Entity entity)
+    {
+        return -1.1f;
+    }
+
+    protected void clampRotation(Entity entityToUpdate) {
+        entityToUpdate.setYBodyRot(this.getYRot());
+        float f = Mth.wrapDegrees(entityToUpdate.getYRot() - this.getYRot());
+        float g = Mth.clamp(f, -105.0F, 105.0F);
+        entityToUpdate.yRotO += g - f;
+        entityToUpdate.setYRot(entityToUpdate.getYRot() + g - f);
+        entityToUpdate.setYHeadRot(entityToUpdate.getYRot());
     }
 
     @Override
@@ -330,19 +460,159 @@ public class Dragon extends TamableAnimal implements GeoEntity, SmartBrainOwner<
         if (isNoGravity()) flyingTicks++;
         if (flyingTicks > 30)
             isLiftingOff = false;
+        if (getOwner() instanceof Player player && getBond(player) <= -10)
+        {
+            setTame(false);
+            this.setOwnerUUID(null);
+        }
     }
 
     @Override
-    public Vec3 getDismountLocationForPassenger(LivingEntity passenger) {
-        return super.getDismountLocationForPassenger(passenger);
-    }
-
-    @Override
-    public void performRangedAttack(LivingEntity target, float velocity) {
-        target.sendSystemMessage(Component.literal("Aw shoot!"));
+    public boolean hurt(DamageSource source, float amount)
+    {
+        if (source.getEntity() instanceof Player player)
+            decreaseBond(player, amount * 2);
+        return super.hurt(source, amount);
     }
 
     public double getPerceivedTargetDistanceSquareForMeleeAttack(LivingEntity entity) {
         return this.distanceToSqr(entity.position()) * 2.0;
+    }
+
+    public double increaseBond(Player player, double amount)
+    {
+        double oldBond = getBond(player);
+
+        if (isOwnedBy(player)) amount *= 2;
+        bond.put(player, oldBond + amount);
+        recalculateBoosts();
+
+        if (player.level() instanceof ServerLevel serverLevel)
+        {
+            double d0 = this.random.nextGaussian() * 0.02D;
+            double d1 = this.random.nextGaussian() * 0.02D;
+            double d2 = this.random.nextGaussian() * 0.02D;
+            for (int i = 0; i < 5; i++)
+            {
+                serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, this.getRandomX(1.0D), this.getRandomY(), this.getRandomZ(1.0D), 1, d0, d1, d2, 1);
+            }
+            serverLevel.playSound(null, this.blockPosition(), SoundEvents.VILLAGER_YES/*TODO:Happy*/, SoundSource.AMBIENT);
+        }
+
+        return bond.get(player);
+    }
+
+    public double decreaseBond(Player player, double amount)
+    {
+        double oldBond = getBond(player);
+
+        if (isOwnedBy(player)) amount /= 1.5;
+        bond.put(player, oldBond - amount);
+        recalculateBoosts();
+
+        if (player.level() instanceof ServerLevel serverLevel)
+        {
+            double d0 = this.random.nextGaussian() * 0.02D;
+            double d1 = this.random.nextGaussian() * 0.02D;
+            double d2 = this.random.nextGaussian() * 0.02D;
+            for (int i = 0; i < 5; i++)
+            {
+                serverLevel.sendParticles(ParticleTypes.ANGRY_VILLAGER, this.getRandomX(1.0D), this.getRandomY(), this.getRandomZ(1.0D), 1, d0, d1, d2, 1);
+            }
+            serverLevel.playSound(null, this.blockPosition(), SoundEvents.VILLAGER_NO /*TODO:Growl*/, SoundSource.AMBIENT);
+        }
+
+        return bond.get(player);
+    }
+
+    public double getBond(Player player)
+    {
+        if (bond.containsKey(player))
+            return bond.get(player);
+        bond.put(player, 0.0);
+        return bond.get(player);
+    }
+
+    public Map<Player, Double> getBondMap()
+    {
+        return bond;
+    }
+
+    private void recalculateBoosts()
+    {
+        if (getOwner() instanceof Player player)
+        {
+            double bond = getBond(player);
+            if (bond >= 100)
+            {
+                speedMultiplier = 2;
+            }
+            else if (bond >= 75)
+            {
+                speedMultiplier = 1.5;
+            }
+            else if (bond >= 50)
+            {
+                speedMultiplier = 1.25;
+            }
+            else if (bond >= 0)
+            {
+                speedMultiplier = 1;
+            }
+            else
+            {
+                speedMultiplier = 0.5;
+            }
+        }
+    }
+
+    @Override
+    protected void onFlap()
+    {
+        super.onFlap();
+        if (this.level().isClientSide && !this.isSilent() && getFlapSound() != null) {
+            this.level().playLocalSound(this.getX(), this.getY(), this.getZ(), getFlapSound(), this.getSoundSource(), 5.0F, 0.8F + this.random.nextFloat() * 0.3F, false);
+        }
+    }
+
+    @Override
+    protected boolean isFlapping()
+    {
+        return flyingTicks > 1 && tickCount % TICKS_PER_FLAP == 0;
+    }
+
+    @Nullable
+    public abstract SoundEvent getFlapSound();
+
+    @Override
+    public void performRangedAttack(LivingEntity target, float velocity) {
+        Vec3 vec33 = this.getViewVector(1.0F);
+        double l = this.getX() - vec33.x;
+        double m = this.getY(0.5) + 0.5;
+        double n = this.getZ() - vec33.z;
+        double o = target.getX() - l;
+        double p = target.getY(0.5) - m;
+        double q = target.getZ() - n;
+        AbstractHurtingProjectile projectile = getRangedAttackProjectile(o, p, q);
+        projectile.moveTo(l, m, n, 0.0F, 0.0F);
+        level().addFreshEntity(projectile);
+        if (level() instanceof ServerLevel serverLevel && getShootSound() != null)
+        {
+            serverLevel.playSound(null, getOnPos(), getShootSound(), getSoundSource(), 1.0F, 1.0F);
+        }
+    }
+
+    protected abstract AbstractHurtingProjectile getRangedAttackProjectile(double a, double b, double c);
+
+    protected abstract SoundEvent getShootSound();
+
+    public boolean isShooting()
+    {
+        return this.entityData.get(DATA_SHOOTING);
+    }
+
+    public void setShooting(boolean shooting)
+    {
+        this.entityData.set(DATA_SHOOTING, shooting);
     }
 }

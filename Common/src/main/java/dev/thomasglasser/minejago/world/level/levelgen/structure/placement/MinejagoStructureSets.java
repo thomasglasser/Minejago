@@ -15,6 +15,7 @@ public class MinejagoStructureSets
 {
     public static final ResourceKey<StructureSet> FOUR_WEAPONS = register("four_weapons");
     public static final ResourceKey<StructureSet> CAVE_OF_DESPAIR = register("cave_of_despair");
+    public static final ResourceKey<StructureSet> NINJAGO_CITY = register("ninjago_city");
 
     public static void bootstrap(BootstapContext<StructureSet> context) {
         HolderGetter<Structure> holderGetter = context.lookup(Registries.STRUCTURE);
@@ -27,6 +28,11 @@ public class MinejagoStructureSets
         context.register(
                 CAVE_OF_DESPAIR,
                 new StructureSet(holderGetter.getOrThrow(MinejagoStructures.CAVE_OF_DESPAIR), new RandomSpreadStructurePlacement(32, 8, RandomSpreadType.LINEAR, 14357614))
+        );
+
+        context.register(
+                NINJAGO_CITY,
+                new StructureSet(holderGetter.getOrThrow(MinejagoStructures.NINJAGO_CITY), new RandomSpreadStructurePlacement(128, 32, RandomSpreadType.LINEAR, 14357615))
         );
     }
 

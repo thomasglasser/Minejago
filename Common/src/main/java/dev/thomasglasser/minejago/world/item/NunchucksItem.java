@@ -3,7 +3,8 @@ package dev.thomasglasser.minejago.world.item;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import dev.thomasglasser.minejago.client.renderer.item.WoodenNunchucksRenderer;
-import dev.thomasglasser.minejago.annotations.LoaderOverride;
+import dev.thomasglasser.tommylib.api.world.item.FabricGeoItem;
+import dev.thomasglasser.tommylib.api.world.item.ModeledItem;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -55,7 +56,7 @@ public class NunchucksItem extends Item implements ModeledItem, FabricGeoItem
         return cache;
     }
 
-    @LoaderOverride
+    // Loader override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
         CompoundTag tag = stack.getOrCreateTag();
 

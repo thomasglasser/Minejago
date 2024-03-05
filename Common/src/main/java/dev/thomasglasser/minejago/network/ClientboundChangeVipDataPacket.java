@@ -1,51 +1,64 @@
 package dev.thomasglasser.minejago.network;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.client.renderer.entity.layers.BetaTesterLayerOptions;
+import dev.thomasglasser.minejago.client.MinejagoClientUtils;
+import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterCosmeticOptions;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.VipData;
-import dev.thomasglasser.minejago.util.MinejagoClientUtils;
-import dev.thomasglasser.minejago.util.MinejagoPacketUtils;
+import dev.thomasglasser.tommylib.api.client.ClientUtils;
+import dev.thomasglasser.tommylib.api.network.CustomPacket;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
-public class ClientboundChangeVipDataPacket {
+public class ClientboundChangeVipDataPacket implements CustomPacket
+{
     public static final ResourceLocation ID = Minejago.modLoc("clientbound_change_vip_data");
 
     private final UUID uuid;
-    private final boolean beta;
-    private final BetaTesterLayerOptions choice;
-    private final boolean dev;
+    private final VipData vipData;
 
     public ClientboundChangeVipDataPacket(FriendlyByteBuf buf) {
         uuid = buf.readUUID();
-        beta = buf.readBoolean();
-        choice = buf.readEnum(BetaTesterLayerOptions.class);
-        dev = buf.readBoolean();
+        vipData = new VipData(
+                buf.readEnum(SnapshotTesterCosmeticOptions.class),
+                buf.readBoolean(),
+                buf.readBoolean(),
+                buf.readBoolean()
+        );
     }
 
-    public void toBytes(FriendlyByteBuf buf) {
-        buf.writeUUID(uuid);
-        buf.writeBoolean(beta);
-        buf.writeEnum(choice);
-        buf.writeBoolean(dev);
+    @Override
+    public void write(FriendlyByteBuf buffer) {
+        buffer.writeUUID(uuid);
+        buffer.writeEnum(vipData.choice());
+        buffer.writeBoolean(vipData.displaySnapshot());
+        buffer.writeBoolean(vipData.displayDev());
+        buffer.writeBoolean(vipData.displayOgDev());
     }
 
-    public static FriendlyByteBuf toBytes(UUID uuid, boolean beta, BetaTesterLayerOptions choice, boolean dev) {
-        FriendlyByteBuf buf = MinejagoPacketUtils.create();
+    @Override
+    public ResourceLocation id()
+    {
+        return ID;
+    }
 
-        buf.writeUUID(uuid);
-        buf.writeBoolean(beta);
-        buf.writeEnum(choice);
-        buf.writeBoolean(dev);
-
-        return buf;
+    public static FriendlyByteBuf write(UUID uuid, VipData vipData) {
+        return ServerboundChangeVipDataPacket.write(uuid, vipData);
     }
 
     // ON CLIENT
-    public void handle()
+    @Override
+    public void handle(@Nullable Player player)
     {
-        MinejagoClientUtils.setVipData(MinejagoClientUtils.getClientPlayerByUUID(uuid), new VipData(choice, beta, dev));
+        MinejagoClientUtils.setVipData(ClientUtils.getClientPlayerByUUID(uuid), vipData);
+    }
+
+    @Override
+    public Direction direction()
+    {
+        return Direction.SERVER_TO_CLIENT;
     }
 }

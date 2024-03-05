@@ -30,15 +30,14 @@
   },
   "requirements": [
     [
+      "has_the_recipe",
       "has_terracotta",
-      "has_teapot",
-      "has_the_recipe"
+      "has_teapot"
     ]
   ],
   "rewards": {
     "recipes": [
       "minejago:red_teapot"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

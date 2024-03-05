@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 14357615,
+    "separation": 32,
+    "spacing": 128
+  },
+  "structures": [
+    {
+      "structure": "minejago:ninjago_city",
+      "weight": 1
+    }
+  ]
+}

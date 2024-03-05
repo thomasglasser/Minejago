@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "minejago:light_gray_dyes"
+            "tag": "tommylib:light_gray_dyes"
           }
         ]
       },
@@ -30,15 +30,14 @@
   },
   "requirements": [
     [
+      "has_the_recipe",
       "has_teapot",
-      "has_dye",
-      "has_the_recipe"
+      "has_dye"
     ]
   ],
   "rewards": {
     "recipes": [
       "minejago:light_gray_teapot_from_dye"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

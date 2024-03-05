@@ -20,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_terracotta",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_terracotta"
     ]
   ],
   "rewards": {
     "recipes": [
       "minejago:teacup"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

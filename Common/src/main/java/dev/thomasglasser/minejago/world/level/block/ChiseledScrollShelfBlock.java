@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.world.level.block;
 
-import dev.thomasglasser.minejago.data.tags.MinejagoItemTags;
+import dev.thomasglasser.minejago.tags.MinejagoItemTags;
 import dev.thomasglasser.minejago.world.level.block.entity.ChiseledScrollShelfBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;

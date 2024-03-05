@@ -23,13 +23,13 @@ public class SpinjitzuParticleOptions implements ParticleOptions {
     // ELEMENTAL COLORS
     public static final Vector3f ELEMENT_BLUE = new Vector3f(142, 76, 3);
     public static final Vector3f ELEMENT_BROWN = new Vector3f(157, 193, 240);
-    public static final Vector3f ELEMENT_DARK_GOLD = new Vector3f(103, 126, 242);
+    public static final Vector3f ELEMENT_DARK_GOLD = new Vector3f(8, 41, 144);
     public static final Vector3f ELEMENT_LIGHT_BLUE = new Vector3f(78, 5, 2);
     public static final Vector3f ELEMENT_ORANGE = new Vector3f(37, 144, 211);
     public static final Vector3f ELEMENT_TAN = new Vector3f(25, 76, 138);
     public static final Vector3f ELEMENT_WHITE = new Vector3f(7, 2, 3);
     public static final Vector3f ELEMENT_YELLOW = new Vector3f(1, 21, 134);
-    public static final Vector3f ELEMENT_GOLD = new Vector3f(1, 19, 123);
+    public static final Vector3f ELEMENT_GOLD = new Vector3f(4, 25, 84);
 
     // TEAM COLORS
     public static final Vector3f TEAM_BLACK = new Vector3f(0, 0, 0);

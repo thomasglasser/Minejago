@@ -2,8 +2,8 @@ package dev.thomasglasser.minejago.mixin.minejago.world.item;
 
 import com.google.common.collect.Multimap;
 import dev.thomasglasser.minejago.client.renderer.item.WoodenNunchucksRenderer;
-import dev.thomasglasser.minejago.world.item.FabricGeoItem;
 import dev.thomasglasser.minejago.world.item.NunchucksItem;
+import dev.thomasglasser.tommylib.api.world.item.FabricGeoItem;
 import net.fabricmc.fabric.api.item.v1.FabricItem;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.entity.EquipmentSlot;

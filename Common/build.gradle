@@ -1,69 +1,74 @@
+import net.fabricmc.loom.task.RemapJarTask
+
 plugins {
-    id 'org.quiltmc.loom' version '1.+'
+    id 'idea'
+    id 'java'
     id 'maven-publish'
+    id 'fabric-loom' version "${loom_version}"
 }
 
-archivesBaseName = "${mod_id}-common-${minecraft_version}"
+base {
+    archivesName = "${mod_id}-common-${minecraft_version}"
+}
 
 loom {
-    runConfigs.configureEach {
-        ideConfigGenerated = false
+    if (project(":Common").file("src/main/resources/${mod_id}.accesswidener").exists()) {
+        accessWidenerPath.set(project(":Common").file("src/main/resources/${mod_id}.accesswidener"))
     }
-
-    accessWidenerPath = file("src/main/resources/minejago.accesswidener")
-}
-
-configurations {
-    testCompileOnly.extendsFrom(compileOnly)
 }
 
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
+
     mappings loom.layered() {
         officialMojangMappings()
-        parchment "org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip"
+        parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip")
     }
 
-    //DO NOT USE IN PROJECT
-    //Provides necessary stuff for project to compile
-    modCompileOnly "org.quiltmc:quilt-loader:${quilt_loader_version}"
-
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
+    implementation "com.github.llamalad7.mixinextras:mixinextras-fabric:0.2.+"
+    compileOnly group:'org.spongepowered', name:'mixin', version:"0.8.5"
 
-    modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-common:${forgeconfigapiport_version}"
     modImplementation "net.tslat.smartbrainlib:SmartBrainLib-common-${minecraft_version}:${sbl_version}"
-    modImplementation "net.tslat.tes:TES-common-${minecraft_version}:${tes_version}"
     modImplementation "com.klikli_dev:modonomicon-${minecraft_version}-common:${modonomicon_version}"
+    modImplementation "net.tslat.tes:TES-common-${minecraft_version}:${tes_version}"
+    modImplementation "net.tslat.effectslib:TslatEffectsLib-common-${minecraft_version}:${tslateffectslib_version}"
+    modImplementation "dev.thomasglasser.tommylib:tommylib-common-${minecraft_version}:${tommylib_version}"
 
-    compileOnly group:'org.spongepowered', name:'mixin', version:'0.8.5'
-
+    modCompileOnly "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}"
     modCompileOnly "dev.kosmx.player-anim:player-animation-lib:${playeranimator_version}"
     modCompileOnly "dev.kosmx.player-anim:anim-core:${playeranimator_version}"
-    modCompileOnly "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}"
-    modCompileOnly "maven.modrinth:moonlight:${moonlight_version}"
-    modCompileOnly "maven.modrinth:sherdsapi:${sherdsapi_version}+fabric"
-    modCompileOnly "curse.maven:configured-667378:${configured_fabric_id}"
     modCompileOnly "maven.modrinth:jade:${jade_version}"
-    modCompileOnly "maven.modrinth:trimmed:${trimmed_version}+fabric"
+    modCompileOnly "me.shedaniel:RoughlyEnoughItems-forge:$rei_version"
+    modCompileOnly "maven.modrinth:moonlight:fabric_${moonlight_version}"
+    modCompileOnly "maven.modrinth:ryoamiclights:${ryoamiclights_version}-fabric"
+    modCompileOnly "maven.modrinth:midnightlib:${midnightlib_version}-fabric"
 }
-
-sourceSets.main.resources.srcDir './src/generated/resources'
 
 import net.fabricmc.loom.task.AbstractRemapJarTask
 tasks.withType(AbstractRemapJarTask).each {
     it.targetNamespace = "named"
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            groupId project.group
-            artifactId project.archivesBaseName
-            version project.version
-            from components.java
-        }
-    }
+sourceSets.main.resources.srcDir './src/generated/resources'
 
-    repositories {
-    }
+/*
+Generates a new common artifact in intermediary mappings.
+*/
+
+remapJar {
+    targetNamespace.set("named")
+    dependsOn("remapCommonJar")
 }
+
+tasks.register("remapCommonJar", RemapJarTask,  task -> {
+    final AbstractArchiveTask jarTask = getTasks().named(JavaPlugin.JAR_TASK_NAME, AbstractArchiveTask.class).get();
+    task.dependsOn(jarTask);
+    task.setDescription("Remaps the built project jar to intermediary mappings.");
+
+    task.getInputFile().convention(jarTask.getArchiveFile());
+    task.dependsOn(getTasks().named(JavaPlugin.JAR_TASK_NAME));
+    task.archiveFileName.set(archiveFileName.get().replace(".jar", "-intermediary.jar"))
+    task.targetNamespace.set("intermediary")
+    task.setGroup("fabric")
+})

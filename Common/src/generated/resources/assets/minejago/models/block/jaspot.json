@@ -1,7 +1,7 @@
 {
   "parent": "minejago:block/teapot_base",
   "textures": {
-    "particle": "minejago:block/jaspot",
+    "particle": "minejago:item/jaspot",
     "pot": "minejago:block/jaspot"
   }
 }

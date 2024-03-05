@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.packs;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.tommylib.api.packs.PackHolder;
 import net.minecraft.server.packs.PackType;
 
 import java.util.List;

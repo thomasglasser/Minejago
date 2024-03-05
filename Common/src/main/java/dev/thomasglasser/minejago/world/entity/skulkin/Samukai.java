@@ -1,11 +1,14 @@
 package dev.thomasglasser.minejago.world.entity.skulkin;
 
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
-import dev.thomasglasser.minejago.world.entity.MeleeSkeleton;
-import dev.thomasglasser.minejago.world.entity.ai.behavior.RangedItemAttack;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownBoneKnife;
+import dev.thomasglasser.minejago.world.entity.skulkin.raid.MeleeCompatibleSkeletonRaider;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
+import dev.thomasglasser.tommylib.api.world.entity.ai.behavior.RangedItemAttack;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntityType;
@@ -23,15 +26,26 @@ import net.tslat.smartbrainlib.api.core.behaviour.custom.target.InvalidateAttack
 import net.tslat.smartbrainlib.example.SBLSkeleton;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class Samukai extends MeleeSkeleton implements GeoEntity {
+public class Samukai extends MeleeCompatibleSkeletonRaider implements GeoEntity {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private static final EntityDataAccessor<Boolean> THROWING = SynchedEntityData.defineId(Samukai.class, EntityDataSerializers.BOOLEAN);
 
     public Samukai(EntityType<? extends Samukai> entityType, Level level) {
         super(entityType, level);
+        this.entityData.set(THROWING, false);
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(THROWING, false);
     }
 
     @Override
@@ -44,11 +58,14 @@ public class Samukai extends MeleeSkeleton implements GeoEntity {
 
     public static AttributeSupplier.@NotNull Builder createAttributes()
     {
-        return AbstractSkeleton.createAttributes().add(Attributes.MAX_HEALTH, 50).add(Attributes.ATTACK_DAMAGE, 4.0);
+        return AbstractSkeleton.createAttributes()
+                .add(Attributes.MAX_HEALTH, 50)
+                .add(Attributes.ATTACK_DAMAGE, 4.0);
     }
 
     @Override
-    public void performRangedAttack(LivingEntity target, float velocity) {
+    public void performRangedAttack(LivingEntity target, float velocity)
+    {
         for (int i = -1; i < 3; i++)
         {
             ThrownBoneKnife thrownBoneKnife = new ThrownBoneKnife(this.level(), this, MinejagoItems.BONE_KNIFE.get().getDefaultInstance());
@@ -64,7 +81,15 @@ public class Samukai extends MeleeSkeleton implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+        controllerRegistrar.add(DefaultAnimations.genericWalkController(this));
+        controllerRegistrar.add(new AnimationController<>(this, "Throw", 0, state ->
+        {
+            if (entityData.get(THROWING))
+                return state.setAndContinue(DefaultAnimations.ATTACK_THROW);
 
+            return PlayState.STOP;
+        }));
+        controllerRegistrar.add(DefaultAnimations.genericAttackAnimation(this, DefaultAnimations.ATTACK_STRIKE));
     }
 
     @Override
@@ -72,8 +97,8 @@ public class Samukai extends MeleeSkeleton implements GeoEntity {
         return BrainActivityGroup.fightTasks(
                 new InvalidateAttackTarget<>(), 	 // Invalidate the attack target if it's no longer applicable
                 new FirstApplicableBehaviour<>( 																							  	 // Run only one of the below behaviours, trying each one in order
-                        new RangedItemAttack<>(20, MinejagoItems.BONE_KNIFE.get()).startCondition(entity -> entity.isHolding(MinejagoItems.BONE_KNIFE.get()) && entity.getHealth() <= (entity.getMaxHealth() / 4.0f)),	 												 // Fire a bow, if holding one
-                        new AnimatableMeleeAttack<>(0).whenStarting(entity -> setAggressive(true)).whenStarting(entity -> setAggressive(false)))// Melee attack
+                        new RangedItemAttack<>(20, MinejagoItems.BONE_KNIFE.get()).startCondition(entity -> entity.isHolding(MinejagoItems.BONE_KNIFE.get()) && entity.getHealth() <= (entity.getMaxHealth() / 4.0f)).whenStarting(entity -> entity.getEntityData().set(THROWING, true)).whenStopping(entity -> entity.getEntityData().set(THROWING, false)),	 												 // Fire a bow, if holding one
+                        new AnimatableMeleeAttack<>(0)) // Melee attack
         );
     }
 

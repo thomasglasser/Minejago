@@ -6,11 +6,10 @@ import dev.thomasglasser.minejago.world.entity.character.Character;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 import java.util.Calendar;
 
-public class WuRenderer<T extends Character> extends GeoEntityRenderer<T> {
+public class WuRenderer<T extends Character> extends CharacterRenderer<T> {
     public WuRenderer(EntityRendererProvider.Context context) {
         super(context, new WuModel<>());
     }
@@ -18,6 +17,6 @@ public class WuRenderer<T extends Character> extends GeoEntityRenderer<T> {
     @Override
     public ResourceLocation getTextureLocation(T animatable) {
         Calendar calendar = Calendar.getInstance();
-        return (calendar.get(Calendar.MONTH) + 1 == 12 && calendar.get(Calendar.DATE) >= 24 && calendar.get(Calendar.DATE) <= 26) ? Minejago.modLoc("textures/entity/character/holiday_" + BuiltInRegistries.ENTITY_TYPE.getKey(animatable.getType()).getPath() + ".png") : super.getTextureLocation(animatable);
+        return (calendar.get(Calendar.MONTH) + 1 == 12 && calendar.get(Calendar.DATE) >= 24 && calendar.get(Calendar.DATE) <= 26) ? Minejago.modLoc("textures/entity/character/holiday_" + BuiltInRegistries.ENTITY_TYPE.getKey(animatable.getType()).getPath() + ".png") : model.getTextureResource(animatable);
     }
 }

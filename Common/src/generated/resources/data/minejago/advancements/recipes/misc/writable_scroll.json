@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_scroll",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_scroll"
     ]
   ],
   "rewards": {
     "recipes": [
       "minejago:writable_scroll"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

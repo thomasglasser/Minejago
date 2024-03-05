@@ -19,8 +19,6 @@
     "description": {
       "translate": "advancement.minejago.story.root.desc"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "minejago:scythe_of_quakes"
     },

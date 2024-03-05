@@ -3,6 +3,7 @@ package dev.thomasglasser.minejago.world.item;
 import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownBambooStaff;
+import dev.thomasglasser.tommylib.api.world.item.ModeledItem;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
