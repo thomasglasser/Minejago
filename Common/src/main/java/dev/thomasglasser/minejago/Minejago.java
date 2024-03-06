@@ -165,7 +165,7 @@ public class Minejago {
 
 	public enum Expansions
 	{
-		IMMERSION_PACK("minejago_immersion_pack");
+		IMMERSION_PACK("immersion");
 
 		private final String id;
 

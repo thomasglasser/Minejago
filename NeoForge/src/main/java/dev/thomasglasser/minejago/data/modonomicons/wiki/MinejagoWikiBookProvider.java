@@ -11,6 +11,17 @@ import net.minecraft.data.PackOutput;
 
 public class MinejagoWikiBookProvider extends BookProvider {
     public static final String ID = "wiki";
+    public static final String[] SIMPLE_ENTRY_MAP = new String[]
+            {
+                    "_____a____b____c_____",
+                    "_____d____e____f_____",
+                    "_____g____h____i_____",
+                    "_____j____k____l_____",
+                    "_____m____n____o_____",
+                    "_____p____q____r_____",
+                    "_____s____t____u_____",
+                    "_____v____x____y_____"
+            };
 
     /**
      * @param packOutput

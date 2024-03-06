@@ -20,19 +20,20 @@ public class MinejagoStructureSets
     public static void bootstrap(BootstapContext<StructureSet> context) {
         HolderGetter<Structure> holderGetter = context.lookup(Registries.STRUCTURE);
 
+        // Fun Easter egg: the number used for four weapons and the starting number is the word "ninja" numerically
         context.register(
                 FOUR_WEAPONS,
-                new StructureSet(holderGetter.getOrThrow(MinejagoStructures.FOUR_WEAPONS), new RandomSpreadStructurePlacement(32, 8, RandomSpreadType.LINEAR, 14357613))
+                new StructureSet(holderGetter.getOrThrow(MinejagoStructures.FOUR_WEAPONS), new RandomSpreadStructurePlacement(64, 16, RandomSpreadType.LINEAR, 14914101))
         );
 
         context.register(
                 CAVE_OF_DESPAIR,
-                new StructureSet(holderGetter.getOrThrow(MinejagoStructures.CAVE_OF_DESPAIR), new RandomSpreadStructurePlacement(32, 8, RandomSpreadType.LINEAR, 14357614))
+                new StructureSet(holderGetter.getOrThrow(MinejagoStructures.CAVE_OF_DESPAIR), new RandomSpreadStructurePlacement(32, 8, RandomSpreadType.LINEAR, 14914102))
         );
 
         context.register(
                 NINJAGO_CITY,
-                new StructureSet(holderGetter.getOrThrow(MinejagoStructures.NINJAGO_CITY), new RandomSpreadStructurePlacement(128, 32, RandomSpreadType.LINEAR, 14357615))
+                new StructureSet(holderGetter.getOrThrow(MinejagoStructures.NINJAGO_CITY), new RandomSpreadStructurePlacement(128, 32, RandomSpreadType.LINEAR, 14914103))
         );
     }
 

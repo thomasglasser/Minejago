@@ -19,6 +19,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.grower.TreeGrower;
@@ -40,7 +41,7 @@ public class MinejagoBlocks
     // POTS
     public static final RegistryObject<TeapotBlock> TEAPOT = registerBlockAndItemAndWrap("teapot", () -> new TeapotBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).instabreak().noOcclusion()), List.of(CreativeModeTabs.FUNCTIONAL_BLOCKS));
     public static final SortedMap<DyeColor, RegistryObject<TeapotBlock>> TEAPOTS = teapots();
-    public static final RegistryObject<TeapotBlock> JASPOT = registerBlockAndItemAndWrap("jaspot", () -> new TeapotBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).instabreak().noOcclusion()), List.of(CreativeModeTabs.FUNCTIONAL_BLOCKS));
+    public static final RegistryObject<TeapotBlock> JASPOT = registerBlockAndItemAndWrap("jaspot", () -> new TeapotBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).instabreak().noOcclusion()), new Item.Properties().rarity(Rarity.EPIC), List.of(CreativeModeTabs.FUNCTIONAL_BLOCKS));
     public static final RegistryObject<TeapotBlock> FLAME_TEAPOT = registerBlockAndItemAndWrap("flame_teapot", () -> new TeapotBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).instabreak().noOcclusion()), List.of(CreativeModeTabs.FUNCTIONAL_BLOCKS));
 
     public static final RegistryObject<DiscBlock> GOLD_DISC = registerBlockAndItemAndWrap("gold_disc", () -> new DiscBlock(BlockBehaviour.Properties.of().instabreak().pushReaction(PushReaction.DESTROY)), List.of(CreativeModeTabs.BUILDING_BLOCKS));
@@ -62,9 +63,9 @@ public class MinejagoBlocks
         return BlockUtils.registerBlockAndItemAndWrap(BLOCKS, name, blockFactory, MinejagoItems::register, tabs);
     }
 
-    private static RegistryObject<Block> registerBlockAndItemAndWrap(
+    private static <T extends Block> RegistryObject<T> registerBlockAndItemAndWrap(
             String name,
-            Supplier<Block> blockFactory,
+            Supplier<T> blockFactory,
             Item.Properties properties,
             List<ResourceKey<CreativeModeTab>> tabs)
     {

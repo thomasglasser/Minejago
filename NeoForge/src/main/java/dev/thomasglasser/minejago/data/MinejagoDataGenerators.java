@@ -33,6 +33,7 @@ import dev.thomasglasser.minejago.data.worldgen.features.MinejagoTreeFeatures;
 import dev.thomasglasser.minejago.data.worldgen.features.MinejagoVegetationFeatures;
 import dev.thomasglasser.minejago.data.worldgen.placement.MinejagoTreePlacements;
 import dev.thomasglasser.minejago.data.worldgen.placement.MinejagoVegetationPlacements;
+import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.MinejagoStructures;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.placement.MinejagoStructureSets;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.pools.MinejagoPools;
@@ -81,8 +82,8 @@ public class MinejagoDataGenerators
         boolean includeClient = event.includeClient();
 
         genMain(event, generator, packOutput, lookupProvider, existingFileHelper, includeServer, includeClient);
-        genImmersionPack(event, generator, new PackOutput(packOutput.getOutputFolder().resolve("resourcepacks/minejago_immersion_pack")), lookupProvider, existingFileHelper, includeServer, includeClient);
-        genPotionPotPack(event, generator, new PackOutput(packOutput.getOutputFolder().resolve("resourcepacks/minejago_potion_pot_pack")), lookupProvider, existingFileHelper, includeServer, includeClient);
+        genImmersionPack(event, generator, new PackOutput(packOutput.getOutputFolder().resolve("packs/" + MinejagoPacks.IMMERSION.id().getNamespace() + "/" + MinejagoPacks.IMMERSION.id().getPath())), lookupProvider, existingFileHelper, includeServer, includeClient);
+        genPotionPotPack(event, generator, new PackOutput(packOutput.getOutputFolder().resolve("packs/" + MinejagoPacks.POTION_POT.id().getNamespace() + "/" + MinejagoPacks.POTION_POT.id().getPath())), lookupProvider, existingFileHelper, includeServer, includeClient);
     }
 
     private static void genMain(GatherDataEvent event, DataGenerator generator, PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper, boolean includeServer, boolean includeClient)

@@ -258,8 +258,8 @@ public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider
 
         add(MinejagoItems.MOD_NEEDED, "To get the full functionality of this item, please install the %s mod.");
 
-        add(MinejagoPacks.IMMERSION.titleKey(), "Minejago Immersion Pack");
-        add(MinejagoPacks.POTION_POT.titleKey(), "Minejago Potion Pot Pack");
+        add(MinejagoPacks.IMMERSION, "Minejago Immersion Pack", "Increases Ninjago immersion with slight cosmetic changes");
+        add(MinejagoPacks.POTION_POT, "Minejago Potion Pot Pack", "Makes vanilla potions brewable in the teapot");
 
         add(Wu.NO_POWER_GIVEN_KEY, "You feel no new power rise from within. You are not an elemental master...");
         add(Wu.POWER_GIVEN_KEY, "<%s> %s, Master of %s. %s");

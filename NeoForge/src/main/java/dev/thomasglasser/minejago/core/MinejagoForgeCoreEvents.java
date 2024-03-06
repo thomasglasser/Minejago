@@ -47,7 +47,7 @@ public class MinejagoForgeCoreEvents {
         {
             if (event.getPackType() == holder.type())
             {
-                var resourcePath = ModList.get().getModFileById(Minejago.MOD_ID).getFile().findResource("resourcepacks/" + holder.id().getPath());
+                var resourcePath = ModList.get().getModFileById(Minejago.MOD_ID).getFile().findResource("packs/" + holder.id().getNamespace() + "/" + holder.id().getPath());
                 var pack = Pack.readMetaAndCreate("builtin/" + holder.id().getPath(), Component.translatable(holder.titleKey()), holder.required(), new Pack.ResourcesSupplier() {
                     @Override
                     public PackResources openPrimary(String s)

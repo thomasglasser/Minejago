@@ -9,6 +9,8 @@ import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import net.minecraft.world.item.Items;
 
+import static dev.thomasglasser.minejago.data.modonomicons.wiki.MinejagoWikiBookProvider.SIMPLE_ENTRY_MAP;
+
 public class CompatCategoryProvider extends CategoryProvider {
     public CompatCategoryProvider(BookProvider parent) {
         super(parent, "compat");
@@ -16,17 +18,7 @@ public class CompatCategoryProvider extends CategoryProvider {
 
     @Override
     protected String[] generateEntryMap() {
-        return new String[]
-                {
-                        "_____v_______________",
-                        "_____________________",
-                        "_____________________",
-                        "_____________________",
-                        "_____________________",
-                        "_____________________",
-                        "_____________________",
-                        "_____________________"
-                };
+        return SIMPLE_ENTRY_MAP;
     }
 
     @Override
@@ -50,14 +42,14 @@ public class CompatCategoryProvider extends CategoryProvider {
         lang().add(context().entryDescription(), "Mods that make the world of Minejago more visually appealing or add more viewing details");
 
         this.context().page("playeranimator_text");
-        var playerAnimatorText = BookTextPageModel.create()
+        BookTextPageModel playerAnimatorText = BookTextPageModel.create()
                 .withTitle(context().pageTitle())
                 .withText(context().pageText());
         lang().add(context().pageTitle(), "playerAnimator");
         lang().add(context().pageText(), "The playerAnimator mod adds animations for actions such as performing spinjitzu and using the golden weapons, making your moves look much cooler.");
 
         this.context().page("playeranimator_image");
-        var playerAnimatorImage = BookImagePageModel.create()
+        BookImagePageModel playerAnimatorImage = BookImagePageModel.create()
                 .withImages(modLoc("textures/modonomicon/wiki/compat/visual/playeranimator.png"))
                 .withText(context().pageText());
         lang().add(context().pageText(), "Using the Scythe of Quakes with playerAnimator installed");

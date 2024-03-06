@@ -1,7 +1,7 @@
 {
     "pack": {
         "description": {
-            "text": "Increases Ninjago immersion with slight cosmetic changes"
+            "translate": "pack.minejago.immersion.description"
         },
         "pack_format": ${resource_pack_format_number}
     }

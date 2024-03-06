@@ -123,7 +123,7 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
                 if (pBlockEntity.temp >= 100.0) {
                     pBlockEntity.heating = false;
                     pBlockEntity.boiling = true;
-                    if (!pLevel.isClientSide) pLevel.playSound(null, pPos, MinejagoSoundEvents.TEAPOT_WHISTLE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+                    pLevel.playSound(null, pPos, MinejagoSoundEvents.TEAPOT_WHISTLE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
                     setChanged(pLevel, pPos, pState);
                 }
             } else if (pBlockEntity.temp >= 100 && recipe.isPresent()) {
@@ -157,6 +157,11 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
                 pBlockEntity.temp--;
                 setChanged(pLevel, pPos, pState);
             }
+            if (pBlockEntity.temp < 100 && pBlockEntity.isBoiling())
+            {
+                pBlockEntity.boiling = false;
+                setChanged(pLevel, pPos, pState);
+            }
         }
         else
         {
@@ -185,12 +190,9 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
                 level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_ALL);
         }
         this.temp = pTag.getShort("Temperature");
+        this.boiling = pTag.getBoolean("Boiling");
+        this.done = pTag.getBoolean("Done");
         this.cups = pTag.getShort("Cups");
-        if (this.level != null && this.level.isClientSide)
-        {
-            this.boiling = pTag.getBoolean("Boiling");
-            this.done = pTag.getBoolean("Done");
-        }
         this.brewTime = pTag.getShort("BrewTime");
     }
 
@@ -201,9 +203,9 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
         if (this.potion != Potions.EMPTY) {
             pTag.putString("Potion", BuiltInRegistries.POTION.getKey(this.potion).toString());
         }
+        pTag.putFloat("Temperature", temp);
         pTag.putBoolean("Boiling", boiling);
         pTag.putBoolean("Done", done);
-        pTag.putFloat("Temperature", temp);
         pTag.putInt("Cups", cups);
         pTag.putInt("BrewTime", brewTime);
     }

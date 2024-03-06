@@ -29,6 +29,7 @@ import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRe
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
+import net.fabricmc.fabric.impl.resource.loader.ResourceManagerHelperImpl;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -68,8 +69,8 @@ public class MinejagoFabric implements ModInitializer {
 
         for (PackHolder holder : MinejagoPacks.getPacks())
         {
-            if (holder.type() == PackType.CLIENT_RESOURCES && TommyLibServices.PLATFORM.isClientSide()) ResourceManagerHelper.registerBuiltinResourcePack(holder.id(), FabricLoader.getInstance().getModContainer(Minejago.MOD_ID).orElseThrow(), Component.translatable(holder.titleKey()), ResourcePackActivationType.NORMAL);
-            else if (holder.type() == PackType.SERVER_DATA) ResourceManagerHelper.registerBuiltinResourcePack(holder.id(), FabricLoader.getInstance().getModContainer(Minejago.MOD_ID).orElseThrow(), Component.translatable(holder.titleKey()), ResourcePackActivationType.NORMAL);
+            if ((holder.type() == PackType.CLIENT_RESOURCES && TommyLibServices.PLATFORM.isClientSide()) || holder.type() == PackType.SERVER_DATA)
+                ResourceManagerHelperImpl.registerBuiltinResourcePack(holder.id(), "packs/" + holder.id().getNamespace() + "/" + holder.id().getPath(), FabricLoader.getInstance().getModContainer(Minejago.MOD_ID).orElseThrow(), Component.translatable(holder.titleKey()), ResourcePackActivationType.NORMAL);
         }
 
         ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
