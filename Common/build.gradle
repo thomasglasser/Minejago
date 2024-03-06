@@ -20,9 +20,9 @@ dependencies {
         parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip")
     }
 
-    compileOnly group:'org.spongepowered', name:'mixin', version:'0.8.5'
-    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
+    compileOnly group:'net.fabricmc', name:'sponge-mixin', version:mixin_version
     implementation "com.github.llamalad7.mixinextras:mixinextras-fabric:${mixinextras_version}"
+    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
 
     modImplementation "net.tslat.smartbrainlib:SmartBrainLib-common-${minecraft_version}:${sbl_version}"
     modImplementation "com.klikli_dev:modonomicon-${minecraft_version}-common:${modonomicon_version}"
