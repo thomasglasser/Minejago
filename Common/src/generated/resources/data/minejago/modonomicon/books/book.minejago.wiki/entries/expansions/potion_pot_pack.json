@@ -2,12 +2,12 @@
   "background_u_index": 0,
   "background_v_index": 0,
   "category": "minejago:expansions",
-  "description": "book.minejago.wiki.expansions.potion_pot_pack.description",
+  "description": "pack.minejago.potion_pot.description",
   "hide_while_locked": false,
   "icon": {
     "item": "minejago:teapot"
   },
-  "name": "book.minejago.wiki.expansions.potion_pot_pack.name",
+  "name": "pack.minejago.potion_pot.name",
   "pages": [
     {
       "type": "modonomicon:text",

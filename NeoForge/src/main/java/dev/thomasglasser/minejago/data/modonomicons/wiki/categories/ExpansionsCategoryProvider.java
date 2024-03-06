@@ -6,6 +6,7 @@ import com.klikli_dev.modonomicon.api.datagen.book.BookCategoryModel;
 import com.klikli_dev.modonomicon.api.datagen.book.BookEntryModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookImagePageModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
+import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import net.minecraft.world.item.Items;
@@ -42,9 +43,6 @@ public class ExpansionsCategoryProvider extends CategoryProvider
 
 	protected BookEntryModel generateImmersionPackEntry() {
 		context().entry("immersion_pack");
-		// TODO: Set name and desc to refer to pack name and desc
-		lang().add(context().entryName(), "Immersion Pack");
-		lang().add(context().entryDescription(), "Increases Ninjago immersion with slight cosmetic changes");
 
 		context().page("summary_text");
 		BookTextPageModel summaryText = BookTextPageModel.create()
@@ -61,9 +59,9 @@ public class ExpansionsCategoryProvider extends CategoryProvider
 
 		return BookEntryModel.create(
 						this.modLoc(this.context().categoryId() + "/" + this.context().entryId()),
-						this.context().entryName()
+						MinejagoPacks.IMMERSION.titleKey()
 				)
-				.withDescription(this.context().entryDescription())
+				.withDescription(MinejagoPacks.IMMERSION.descriptionKey())
 				.withIcon(Items.NOTE_BLOCK)
 				.withPages(
 						summaryText, summaryImage
@@ -73,9 +71,6 @@ public class ExpansionsCategoryProvider extends CategoryProvider
 	protected BookEntryModel generatePotionPotPackEntry()
 	{
 		context().entry("potion_pot_pack");
-		// TODO: Set name and desc to refer to pack name and desc
-		lang().add(context().entryName(), "Potion Pot Pack");
-		lang().add(context().entryDescription(), "Makes vanilla potions brewable in the teapot");
 
 		context().page("summary_text");
 		BookTextPageModel summaryText = BookTextPageModel.create()
@@ -90,9 +85,9 @@ public class ExpansionsCategoryProvider extends CategoryProvider
 
 		return BookEntryModel.create(
 						this.modLoc(this.context().categoryId() + "/" + this.context().entryId()),
-						this.context().entryName()
+						MinejagoPacks.POTION_POT.titleKey()
 				)
-				.withDescription(this.context().entryDescription())
+				.withDescription(MinejagoPacks.POTION_POT.descriptionKey())
 				.withIcon(MinejagoBlocks.TEAPOT.get())
 				.withPages(
 						summaryText,

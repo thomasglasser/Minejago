@@ -2,12 +2,12 @@
   "background_u_index": 0,
   "background_v_index": 0,
   "category": "minejago:expansions",
-  "description": "book.minejago.wiki.expansions.immersion_pack.description",
+  "description": "pack.minejago.immersion.description",
   "hide_while_locked": false,
   "icon": {
     "item": "minecraft:note_block"
   },
-  "name": "book.minejago.wiki.expansions.immersion_pack.name",
+  "name": "pack.minejago.immersion.name",
   "pages": [
     {
       "type": "modonomicon:text",
@@ -30,7 +30,7 @@
       "images": [
         "minejago:textures/modonomicon/wiki/expansions/immersion_pack/drum_scene.png"
       ],
-      "text": "",
+      "text": "book.minejago.wiki.expansions.immersion_pack.summary_image.text",
       "title": ""
     }
   ],

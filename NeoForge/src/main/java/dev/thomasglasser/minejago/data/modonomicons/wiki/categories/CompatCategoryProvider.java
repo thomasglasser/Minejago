@@ -23,7 +23,7 @@ public class CompatCategoryProvider extends CategoryProvider {
 
     @Override
     protected void generateEntries() {
-        add(generateVisualEntry().withLocation(entryMap.get('v')));
+        add(generateVisualEntry().withLocation(entryMap.get('a')));
     }
 
     @Override
