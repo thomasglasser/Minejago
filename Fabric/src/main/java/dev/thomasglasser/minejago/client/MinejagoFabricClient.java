@@ -42,6 +42,7 @@ import dev.thomasglasser.tommylib.api.client.ClientUtils;
 import dev.thomasglasser.tommylib.api.client.animation.AnimationUtils;
 import dev.thomasglasser.tommylib.api.registration.RegistryObject;
 import dev.thomasglasser.tommylib.api.world.item.ModeledItem;
+import dev.thomasglasser.tommylib.api.world.item.armor.ArmorSet;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -71,6 +72,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -116,11 +118,14 @@ public class MinejagoFabricClient implements ClientModInitializer
             }
         }
 
-        for (RegistryObject<Item> item : MinejagoArmors.ARMORS.getEntries())
+        for (ArmorSet armorSet : MinejagoArmors.POWER_SETS)
         {
-            if (item.get() instanceof ModeledItem)
+            for (RegistryObject<ArmorItem> item : armorSet.getAll())
             {
-                BuiltinItemRendererRegistry.INSTANCE.register(item.get(), (bewlr::renderByItem));
+                if (item.get() instanceof ModeledItem)
+                {
+                    BuiltinItemRendererRegistry.INSTANCE.register(item.get(), (bewlr::renderByItem));
+                }
             }
         }
 

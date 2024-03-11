@@ -22,10 +22,8 @@
   ],
   "client": [
     "minecraft.client.OptionsMixin",
-    "minecraft.client.model.HumanoidModelMixin",
     "minecraft.client.player.LocalPlayerMixin",
     "minecraft.client.renderer.blockentity.LecternRendererMixin",
-    "minecraft.client.renderer.entity.player.PlayerRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

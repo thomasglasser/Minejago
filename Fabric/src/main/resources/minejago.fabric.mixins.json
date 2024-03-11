@@ -10,7 +10,6 @@
     "minecraft.world.entity.EntityMixinFabric",
     "minecraft.world.entity.PlayerMixinFabric",
     "minecraft.world.level.gameevent.vibrations.VibrationSystemMixin",
-    "minejago.world.item.GeoBlockItemMixin",
     "minejago.world.item.NunchucksItemMixin",
     "minejago.world.item.armor.BlackGiItemMixin",
     "minejago.world.item.armor.SamukaisChestplateItemMixin",

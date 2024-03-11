@@ -9,6 +9,7 @@ import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.entity.power.PowerUtils;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.level.storage.PowerData;
+import dev.thomasglasser.tommylib.api.world.item.armor.ArmorSet;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -75,7 +76,7 @@ public class GivePowerAndGi<E extends PathfinderMob> extends MoveToWalkTarget<E>
 
     protected void equipGi()
     {
-        MinejagoArmors.ArmorSet set = MinejagoArmors.TRAINING_GI_SET;
+        ArmorSet set = MinejagoArmors.TRAINING_GI_SET;
         for (ArmorItem.Type value : ArmorItem.Type.values()) {
             ArmorItem armor = set.getForSlot(value.getSlot()).get();
             if (target instanceof Player player)

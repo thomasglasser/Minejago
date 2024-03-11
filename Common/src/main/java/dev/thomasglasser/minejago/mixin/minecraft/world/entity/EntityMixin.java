@@ -5,8 +5,6 @@ import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityEvents;
 import dev.thomasglasser.minejago.world.item.armor.GiGeoArmorItem;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
-import dev.thomasglasser.tommylib.api.world.entity.DataHolder;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -17,7 +15,6 @@ import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -25,18 +22,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Mixin(Entity.class)
-public class EntityMixin implements DataHolder
+public class EntityMixin
 {
     @Shadow @Final protected RandomSource random;
     private final Entity INSTANCE = ((Entity)(Object)this);
-
-    private final CompoundTag persistentData = new CompoundTag();
-
-    @Unique(silent = true)
-    @Override
-    public CompoundTag getPersistentData() {
-        return persistentData;
-    }
 
     @Inject(method = "playerTouch", at = @At("TAIL"))
     private void minejago_playerTouch(Player player, CallbackInfo ci)

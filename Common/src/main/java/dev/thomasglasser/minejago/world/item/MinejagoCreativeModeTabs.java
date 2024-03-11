@@ -36,14 +36,14 @@ public class MinejagoCreativeModeTabs
         output.acceptAll(MinejagoPowers.getArmorForAll(parameters.holders()));
     }, CreativeModeTabs.COMBAT));
 
-    public static final RegistryObject<CreativeModeTab> MINEJAGO = register("minejago", () -> TommyLibServices.ITEM.newTab(Component.translatable(Minejago.modLoc("minejago").toLanguageKey("item_group")), () -> MinejagoItems.SCYTHE_OF_QUAKES.get().getDefaultInstance(), true, (parameters, output) ->
+    public static final RegistryObject<CreativeModeTab> MINEJAGO = register("minejago", () -> TommyLibServices.ITEM.newTab(Component.translatable(Minejago.modLoc(Minejago.MOD_ID).toLanguageKey("item_group")), () -> MinejagoItems.SCYTHE_OF_QUAKES.get().getDefaultInstance(), true, (parameters, output) ->
     {
         List<ResourceLocation> itemsToAdd = new ArrayList<>();
 
         ItemUtils.getItemTabs().values().forEach(rls ->
                 rls.forEach(rl ->
                 {
-                    if (!itemsToAdd.contains(rl))
+                    if (rl.getNamespace().equals(Minejago.MOD_ID) && !itemsToAdd.contains(rl))
                         itemsToAdd.add(rl);
                 }));
 
