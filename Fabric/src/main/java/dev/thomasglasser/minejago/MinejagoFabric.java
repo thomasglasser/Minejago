@@ -17,7 +17,7 @@ import dev.thomasglasser.minejago.world.focus.modifier.itemstack.ItemStackFocusM
 import dev.thomasglasser.minejago.world.focus.modifier.resourcekey.ResourceKeyFocusModifiers;
 import dev.thomasglasser.minejago.world.focus.modifier.world.WorldFocusModifiers;
 import dev.thomasglasser.tommylib.api.network.CustomPacket;
-import dev.thomasglasser.tommylib.api.packs.PackHolder;
+import dev.thomasglasser.tommylib.api.packs.PackInfo;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
@@ -67,7 +67,7 @@ public class MinejagoFabric implements ModInitializer {
 
         registerEntitySpawnPlacements();
 
-        for (PackHolder holder : MinejagoPacks.getPacks())
+        for (PackInfo holder : MinejagoPacks.getPacks())
         {
             if ((holder.type() == PackType.CLIENT_RESOURCES && TommyLibServices.PLATFORM.isClientSide()) || holder.type() == PackType.SERVER_DATA)
                 ResourceManagerHelperImpl.registerBuiltinResourcePack(holder.id(), "packs/" + holder.id().getNamespace() + "/" + holder.id().getPath(), FabricLoader.getInstance().getModContainer(Minejago.MOD_ID).orElseThrow(), Component.translatable(holder.titleKey()), ResourcePackActivationType.NORMAL);

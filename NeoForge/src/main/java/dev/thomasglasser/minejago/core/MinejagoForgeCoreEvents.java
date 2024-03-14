@@ -15,7 +15,7 @@ import dev.thomasglasser.minejago.world.focus.modifier.itemstack.ItemStackFocusM
 import dev.thomasglasser.minejago.world.focus.modifier.resourcekey.ResourceKeyFocusModifiers;
 import dev.thomasglasser.minejago.world.focus.modifier.world.WorldFocusModifiers;
 import dev.thomasglasser.tommylib.api.network.CustomPacket;
-import dev.thomasglasser.tommylib.api.packs.PackHolder;
+import dev.thomasglasser.tommylib.api.packs.PackInfo;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackResources;
@@ -43,7 +43,7 @@ public class MinejagoForgeCoreEvents {
 
     public static void onAddPackFinders(AddPackFindersEvent event)
     {
-        for (PackHolder holder : MinejagoPacks.getPacks())
+        for (PackInfo holder : MinejagoPacks.getPacks())
         {
             if (event.getPackType() == holder.type())
             {
