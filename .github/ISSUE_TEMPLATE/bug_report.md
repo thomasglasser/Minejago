@@ -23,7 +23,7 @@ A clear and concise description of what you expected to happen.
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
- - Loader [e.g. fabric, forge]
+ - Loader [e.g. fabric, neoforge]
  - Mod Version [e.g. 1.0.0-00e01a]
  - Minecraft Version [e.g. 1.19.4]
 

@@ -115,6 +115,6 @@ public class MinejagoItems
     
     private static RegistryObject<SpawnEggItem> registerSpawnEgg(String name, Supplier<EntityType<? extends Mob>> entityType, int primaryColor, int secondaryColor)
     {
-        return register(name, TommyLibServices.ITEM.makeSpawnEgg(entityType, primaryColor, secondaryColor, new Item.Properties()), List.of(CreativeModeTabs.SPAWN_EGGS));
+        return ItemUtils.registerSpawnEgg(ITEMS, name, entityType, primaryColor, secondaryColor);
     }
 }

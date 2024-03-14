@@ -48,6 +48,26 @@ runs {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 jarJar.enable()
+def jarJarRangeAttribute = Attribute.of("jarJarRange", String.class);
+configurations {
+    include
+    jarJar {
+        dependencies.addAllLater(project.provider {
+            project.configurations.include.allDependencies.collect {
+                def newDep = it.copy()
+                if (newDep instanceof ModuleDependency) {
+                    newDep.attributes {
+                        it.attribute(jarJarRangeAttribute, "[$newDep.version,)" as String)
+                    }
+                    newDep.setTransitive(false)
+                } else {
+                    throw new RuntimeException("Attempted to 'include' non-module dependency")
+                }
+                newDep
+            }
+        })
+    }
+}
 
 dependencies {
     implementation "net.neoforged:neoforge:${neoforge_version}"
@@ -66,12 +86,14 @@ dependencies {
     implementation "maven.modrinth:moonlight:forge_${moonlight_version}"
     implementation "net.tslat.effectslib:TslatEffectsLib-neoforge-${minecraft_version}:${tslateffectslib_version}"
     implementation "maven.modrinth:midnightlib:${midnightlib_version}-neoforge"
-    implementation "dev.thomasglasser.tommylib:tommylib-neoforge-${minecraft_version}:${tommylib_version}"
+
+    include implementation("dev.thomasglasser.tommylib:tommylib-neoforge-${minecraft_version}:${tommylib_version}")
+
 
     // Forge Only
-    implementation "maven.modrinth:sherdsapi:${sherdsapi_version}-neoforge"
+    include implementation("maven.modrinth:sherdsapi:${sherdsapi_version}-neoforge")
     compileOnly "maven.modrinth:trimmed:${trimmed_version}+forge"
-//    implementation "maven.modrinth:trimmed:${trimmed_version}+forge"
+//    include implementation("maven.modrinth:trimmed:${trimmed_version}+forge")
     implementation "maven.modrinth:ryoamiclights:${ryoamiclights_version}-neoforge"
 
     // Runtime
@@ -79,14 +101,6 @@ dependencies {
     runtimeOnly "maven.modrinth:worldedit:${worldedit_id}"
     runtimeOnly "maven.modrinth:obsidianui:${obsidianui_version}-neoforge"
     runtimeOnly "dev.architectury:architectury-neoforge:$architectury_version"
-
-    // Jar-in-Jar
-    // TODO: Fix
-//    jarJar(group: "maven.modrinth", name: "trimmed", version: "[${trimmed_version},${trimmed_next_major_version})")
-    jarJar(group: "dev.thomasglasser.tommylib", name: "tommylib-neoforge-${minecraft_version}", version: "[${tommylib_version},${tommylib_next_major_version})") {
-        transitive = false
-    }
-    jarJar(group: "dev.thomasglasser.sherdsapi", name: "sherdsapi-neoforge-${minecraft_version}", version: "[${sherdsapi_version},${sherdsapi_next_major_version})")
 }
 
 // NeoGradle compiles the game, but we don't want to add our common code to the game's code

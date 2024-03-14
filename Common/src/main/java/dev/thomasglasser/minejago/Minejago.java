@@ -131,25 +131,25 @@ public class Minejago {
 		TRIMMED("trimmed"),
 		SHERDSAPI("sherdsapi"),
 		PLAYER_ANIMATOR("playeranimator", "player-animator"),
-		REACH_ENTITY_ATTRIBUTES("forge", "reach-entity-attributes"),
+		REACH_ENTITY_ATTRIBUTES("neoforge", "reach-entity-attributes"),
 		MODONOMICON("modonomicon"),
 		TSLAT_ENTITY_STATUS("tslatentitystatus");
 
-		private final String forge;
+		private final String neo;
 		private final String fabric;
 
 		Dependencies(String modId)
 		{
 			this(modId, modId);
 		}
-		Dependencies(String forge, String fabric)
+		Dependencies(String neo, String fabric)
 		{
-			this.forge = forge;
+			this.neo = neo;
 			this.fabric = fabric;
 		}
 
 		public String getModId() {
-			return TommyLibServices.PLATFORM.getPlatformName().equals("Forge") ? forge : fabric;
+			return TommyLibServices.PLATFORM.getPlatformName().equals("NeoForge") ? neo : fabric;
 		}
 
 		public boolean isInstalled()

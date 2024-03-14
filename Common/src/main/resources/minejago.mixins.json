@@ -21,7 +21,6 @@
     "minecraft.world.level.block.entity.LecternBlockEntityMixin"
   ],
   "client": [
-    "minecraft.client.OptionsMixin",
     "minecraft.client.player.LocalPlayerMixin",
     "minecraft.client.renderer.blockentity.LecternRendererMixin",
   ],

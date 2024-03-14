@@ -50,13 +50,6 @@ subprojects {
             }
         }
         maven {
-            name = "Forge Config API Port"
-            url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
-            content {
-                includeGroupAndSubgroups 'fuzs.forgeconfigapiport'
-            }
-        }
-        maven {
             name = "SmartBrainLib"
             url = "https://dl.cloudsmith.io/public/tslat/sbl/maven/"
             content {
