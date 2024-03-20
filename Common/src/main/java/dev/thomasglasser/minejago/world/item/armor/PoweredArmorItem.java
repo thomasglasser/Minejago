@@ -1,14 +1,14 @@
 package dev.thomasglasser.minejago.world.item.armor;
 
-import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
+import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.tommylib.api.world.item.ModeledItem;
+import dev.thomasglasser.tommylib.api.world.item.armor.BaseGeoArmorItem;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -17,10 +17,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public abstract class PoweredArmorItem extends ArmorItem implements GiGeoArmorItem, ModeledItem
+public abstract class PoweredArmorItem extends BaseGeoArmorItem implements GiGeoArmorItem, ModeledItem
 {
-    BlockEntityWithoutLevelRenderer bewlr;
-
     public PoweredArmorItem(ArmorMaterial pMaterial, Type type, Properties pProperties) {
         super(pMaterial, type, pProperties);
     }
@@ -43,7 +41,6 @@ public abstract class PoweredArmorItem extends ArmorItem implements GiGeoArmorIt
 
     @Override
     public BlockEntityWithoutLevelRenderer getBEWLR() {
-        if (bewlr == null) bewlr = new MinejagoBlockEntityWithoutLevelRenderer();
-        return bewlr;
+        return Minejago.getBewlr();
     }
 }

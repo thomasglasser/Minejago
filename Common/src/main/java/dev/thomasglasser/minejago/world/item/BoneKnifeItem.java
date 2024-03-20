@@ -2,7 +2,7 @@ package dev.thomasglasser.minejago.world.item;
 
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownBoneKnife;
-import net.minecraft.sounds.SoundEvents;
+import dev.thomasglasser.tommylib.api.world.item.ThrowableSwordItem;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.LivingEntity;

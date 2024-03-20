@@ -3,8 +3,8 @@ package dev.thomasglasser.minejago.world.item;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import dev.thomasglasser.minejago.client.renderer.item.WoodenNunchucksRenderer;
+import dev.thomasglasser.tommylib.api.world.item.BaseModeledItem;
 import dev.thomasglasser.tommylib.api.world.item.FabricGeoItem;
-import dev.thomasglasser.tommylib.api.world.item.ModeledItem;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -17,7 +17,6 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -29,11 +28,10 @@ import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class NunchucksItem extends Item implements ModeledItem, FabricGeoItem
+public class NunchucksItem extends BaseModeledItem implements FabricGeoItem
 {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    private Multimap<Attribute, AttributeModifier> defaultModifiers;
     private BlockEntityWithoutLevelRenderer bewlr;
 
     public NunchucksItem(Properties pProperties) {

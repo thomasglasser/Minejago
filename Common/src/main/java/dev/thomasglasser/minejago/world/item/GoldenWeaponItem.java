@@ -9,6 +9,7 @@ import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
 import dev.thomasglasser.minejago.world.focus.FocusData;
+import dev.thomasglasser.tommylib.api.world.item.BaseModeledItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
@@ -25,7 +26,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SimpleFoiledItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.context.UseOnContext;
@@ -36,7 +36,7 @@ import java.util.List;
 
 import static dev.thomasglasser.minejago.world.item.MinejagoItems.MOD_NEEDED;
 
-public abstract class GoldenWeaponItem extends SimpleFoiledItem
+public abstract class GoldenWeaponItem extends BaseModeledItem
 {
     public GoldenWeaponItem(Properties pProperties)
     {
@@ -46,6 +46,11 @@ public abstract class GoldenWeaponItem extends SimpleFoiledItem
     @Override
     public boolean canBeDepleted() {
         return false;
+    }
+
+    @Override
+    public boolean isFoil(ItemStack stack) {
+        return true;
     }
 
     @Override

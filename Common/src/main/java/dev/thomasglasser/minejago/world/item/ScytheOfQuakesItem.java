@@ -3,7 +3,6 @@ package dev.thomasglasser.minejago.world.item;
 import com.google.common.collect.ImmutableMultimap;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.animation.definitions.ItemAnimations;
-import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import dev.thomasglasser.minejago.network.ClientboundStartScytheAnimationPacket;
 import dev.thomasglasser.minejago.network.ClientboundStopAnimationPacket;
@@ -12,7 +11,6 @@ import dev.thomasglasser.minejago.tags.MinejagoPowerTags;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import dev.thomasglasser.tommylib.api.tags.TommyLibBlockTags;
-import dev.thomasglasser.tommylib.api.world.item.ModeledItem;
 import dev.thomasglasser.tommylib.api.world.level.LevelUtils;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
@@ -36,10 +34,8 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Math;
 
-public class ScytheOfQuakesItem extends GoldenWeaponItem implements ModeledItem
+public class ScytheOfQuakesItem extends GoldenWeaponItem
 {
-    private BlockEntityWithoutLevelRenderer bewlr;
-
     public ScytheOfQuakesItem(Properties pProperties) {
         super(pProperties);
     }
@@ -309,8 +305,7 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem implements ModeledItem
 
     @Override
     public BlockEntityWithoutLevelRenderer getBEWLR() {
-        if (bewlr == null) bewlr = new MinejagoBlockEntityWithoutLevelRenderer();
-        return bewlr;
+        return Minejago.getBewlr();
     }
 
     @Override

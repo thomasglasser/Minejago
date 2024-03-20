@@ -16,13 +16,11 @@
     "minecraft.world.item.MinejagoBucketItemMixin",
     "minecraft.world.item.MinejagoMilkBucketItemMixin",
     "minecraft.world.item.MinejagoPotionItemMixin",
-    "minecraft.world.item.alchemy.PotionUtilsMixin",
-    "minecraft.world.item.enchantment.EnchantmentMixin",
     "minecraft.world.level.block.entity.LecternBlockEntityMixin"
   ],
   "client": [
     "minecraft.client.player.LocalPlayerMixin",
-    "minecraft.client.renderer.blockentity.LecternRendererMixin",
+    "minecraft.client.renderer.blockentity.LecternRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

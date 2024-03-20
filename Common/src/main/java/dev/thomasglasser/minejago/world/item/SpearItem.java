@@ -3,11 +3,10 @@ package dev.thomasglasser.minejago.world.item;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownIronSpear;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
-import dev.thomasglasser.tommylib.api.world.item.ModeledItem;
+import dev.thomasglasser.tommylib.api.world.item.BaseModeledThrowableSwordItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.network.chat.Component;
@@ -30,12 +29,10 @@ import java.util.List;
 
 import static dev.thomasglasser.minejago.world.item.MinejagoItems.MOD_NEEDED;
 
-public class SpearItem extends ThrowableSwordItem implements ModeledItem
+public class SpearItem extends BaseModeledThrowableSwordItem
 {
     /** Modifiers applied when the item is in the mainhand of a user. */
     private final ImmutableMultimap<Attribute, AttributeModifier> defaultModifiers;
-
-    private BlockEntityWithoutLevelRenderer bewlr;
 
     public SpearItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, float knockback, Properties pProperties) {
         super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
@@ -78,8 +75,7 @@ public class SpearItem extends ThrowableSwordItem implements ModeledItem
 
     @Override
     public BlockEntityWithoutLevelRenderer getBEWLR() {
-        if (bewlr == null) bewlr = new MinejagoBlockEntityWithoutLevelRenderer();
-        return bewlr;
+        return Minejago.getBewlr();
     }
 
     @Override

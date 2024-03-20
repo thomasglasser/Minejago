@@ -1,9 +1,9 @@
 package dev.thomasglasser.minejago.world.item;
 
-import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
+import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownBambooStaff;
-import dev.thomasglasser.tommylib.api.world.item.ModeledItem;
+import dev.thomasglasser.tommylib.api.world.item.BaseModeledThrowableSwordItem;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -14,10 +14,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.Level;
 
-public class BambooStaffItem extends ThrowableSwordItem implements ModeledItem
+public class BambooStaffItem extends BaseModeledThrowableSwordItem
 {
-    private BlockEntityWithoutLevelRenderer bewlr;
-
     public BambooStaffItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
         super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
     }
@@ -50,7 +48,6 @@ public class BambooStaffItem extends ThrowableSwordItem implements ModeledItem
 
     @Override
     public BlockEntityWithoutLevelRenderer getBEWLR() {
-        if (bewlr == null) bewlr = new MinejagoBlockEntityWithoutLevelRenderer();
-        return bewlr;
+        return Minejago.getBewlr();
     }
 }

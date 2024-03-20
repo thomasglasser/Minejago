@@ -41,15 +41,12 @@ import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterLa
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
-import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
 import dev.thomasglasser.minejago.world.level.block.entity.TeapotBlockEntity;
 import dev.thomasglasser.tommylib.api.client.ClientUtils;
 import dev.thomasglasser.tommylib.api.client.animation.AnimationUtils;
-import dev.thomasglasser.tommylib.api.world.item.ModeledItem;
-import dev.thomasglasser.tommylib.api.world.item.armor.GeoArmorItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.EntityModelSet;
@@ -73,11 +70,9 @@ import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
-import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterGuiOverlaysEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 
 import java.util.Map;
@@ -146,20 +141,6 @@ public class MinejagoForgeClientEvents {
             ResourceLocation stripped = new ResourceLocation(rl.getNamespace(), rl.getPath().substring("models/".length(), rl.getPath().indexOf(".json")));
             event.register(stripped);
         }
-    }
-
-    public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event)
-    {
-        MinejagoArmors.ARMORS.getEntries().forEach(armor ->
-        {
-            if (armor.get() instanceof GeoArmorItem || armor.get() instanceof ModeledItem)
-                event.registerReloadListener(IClientItemExtensions.of(armor.get()).getCustomRenderer());
-        });
-        MinejagoItems.ITEMS.getEntries().forEach(item ->
-        {
-            if (item.get() instanceof ModeledItem)
-                event.registerReloadListener(IClientItemExtensions.of(item.get()).getCustomRenderer());
-        });
     }
 
     public static void onRegisterParticleProviders(RegisterParticleProvidersEvent event)
