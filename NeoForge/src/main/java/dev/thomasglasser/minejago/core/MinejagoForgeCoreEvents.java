@@ -14,9 +14,8 @@ import dev.thomasglasser.minejago.world.focus.modifier.entity.EntityTypeFocusMod
 import dev.thomasglasser.minejago.world.focus.modifier.itemstack.ItemStackFocusModifiers;
 import dev.thomasglasser.minejago.world.focus.modifier.resourcekey.ResourceKeyFocusModifiers;
 import dev.thomasglasser.minejago.world.focus.modifier.world.WorldFocusModifiers;
-import dev.thomasglasser.tommylib.api.network.CustomPacket;
+import dev.thomasglasser.tommylib.api.network.NeoForgePacketUtils;
 import dev.thomasglasser.tommylib.api.packs.PackInfo;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PathPackResources;
@@ -86,41 +85,6 @@ public class MinejagoForgeCoreEvents {
     public static void onRegisterPackets(RegisterPayloadHandlerEvent event)
     {
         IPayloadRegistrar registrar = event.registrar(Minejago.MOD_ID);
-        MinejagoPackets.PACKETS.forEach((packet, pair) -> registrar.play(pair.getFirst(), (FriendlyByteBuf buf) ->
-        {
-            try
-            {
-                return packet.getConstructor(FriendlyByteBuf.class).newInstance(buf);
-            }
-            catch (NoSuchMethodException e)
-            {
-	            try
-	            {
-		            return packet.getConstructor().newInstance();
-	            }
-                catch (NoSuchMethodException nsm)
-	            {
-                    throw new RuntimeException("Custom packets must have FriendlyByteBuf or empty constructor!");
-	            }
-                catch (Exception ex)
-                {
-                    throw new RuntimeException(e);
-                }
-            }
-            catch (Exception e)
-            {
-                throw new RuntimeException(e);
-            }
-        }, handler -> handler
-            .client((payload, context) ->
-            {
-                if (payload.direction() == CustomPacket.Direction.SERVER_TO_CLIENT) payload.handle(context.player().orElse(null));
-                else throw new RuntimeException("Serverbound packet sent to client!");
-            })
-            .server((payload, context) ->
-            {
-                if (payload.direction() == CustomPacket.Direction.CLIENT_TO_SERVER) payload.handle(context.player().orElse(null));
-                else throw new RuntimeException("Clientbound packet sent to server!");
-            })));
+        MinejagoPackets.PACKETS.forEach((packet, pair) -> NeoForgePacketUtils.register(registrar, packet, pair));
     }
 }

@@ -16,29 +16,24 @@ import dev.thomasglasser.minejago.world.focus.modifier.entity.EntityTypeFocusMod
 import dev.thomasglasser.minejago.world.focus.modifier.itemstack.ItemStackFocusModifiers;
 import dev.thomasglasser.minejago.world.focus.modifier.resourcekey.ResourceKeyFocusModifiers;
 import dev.thomasglasser.minejago.world.focus.modifier.world.WorldFocusModifiers;
-import dev.thomasglasser.tommylib.api.network.CustomPacket;
+import dev.thomasglasser.tommylib.api.network.FabricPacketUtils;
 import dev.thomasglasser.tommylib.api.packs.PackInfo;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.fabricmc.fabric.impl.resource.loader.ResourceManagerHelperImpl;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.tags.BiomeTags;
-import net.minecraft.util.thread.BlockableEventLoop;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -108,54 +103,7 @@ public class MinejagoFabric implements ModInitializer {
     }
 
     private void registerPackets() {
-        MinejagoPackets.PACKETS.forEach((packet, pair) ->
-        {
-            if (pair.getSecond() == CustomPacket.Direction.CLIENT_TO_SERVER)
-            {
-                ServerPlayNetworking.registerGlobalReceiver(pair.getFirst(), (server, player, handler, buf, responseSender) ->
-                        handlePacket(server, packet, buf, player));
-            }
-            else
-            {
-                ClientPlayNetworking.registerGlobalReceiver(pair.getFirst(), (client, handler, buf, responseSender) ->
-                        handlePacket(client, packet, buf, null));
-            }
-        });
-    }
-
-    private void handlePacket(BlockableEventLoop<?> handler, Class<? extends CustomPacket> packet, FriendlyByteBuf buf, ServerPlayer player)
-    {
-        buf.retain();
-        handler.execute(() ->
-        {
-            try
-            {
-                packet.getConstructor(FriendlyByteBuf.class).newInstance(buf).handle(player);
-            }
-            catch (NoSuchMethodException e)
-            {
-                try
-                {
-                    packet.getConstructor().newInstance().handle(player);
-                }
-                catch (NoSuchMethodException nsm)
-                {
-                    throw new RuntimeException("Custom packets must have FriendlyByteBuf or empty constructor!");
-                }
-                catch (Exception ex)
-                {
-                    throw new RuntimeException(e);
-                }
-            }
-            catch (Exception e)
-            {
-                throw new RuntimeException(e);
-            }
-            finally
-            {
-                buf.release();
-            }
-        });
+        MinejagoPackets.PACKETS.forEach(FabricPacketUtils::register);
     }
 
     private void addBiomeModifications()

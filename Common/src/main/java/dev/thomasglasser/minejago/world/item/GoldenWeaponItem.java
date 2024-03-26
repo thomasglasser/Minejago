@@ -11,6 +11,7 @@ import dev.thomasglasser.minejago.world.focus.FocusConstants;
 import dev.thomasglasser.minejago.world.focus.FocusData;
 import dev.thomasglasser.tommylib.api.world.item.BaseModeledItem;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -199,5 +200,11 @@ public abstract class GoldenWeaponItem extends BaseModeledItem
             if (!Minejago.Dependencies.DYNAMIC_LIGHTS.isInstalled())
                 tooltipComponents.add(Component.translatable(MOD_NEEDED, Minejago.Dependencies.DYNAMIC_LIGHTS.getModId()).withStyle(ChatFormatting.RED));
         }
+    }
+
+    @Override
+    public BlockEntityWithoutLevelRenderer getBEWLR()
+    {
+        return Minejago.getBewlr();
     }
 }

@@ -12,7 +12,6 @@ import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import dev.thomasglasser.tommylib.api.tags.TommyLibBlockTags;
 import dev.thomasglasser.tommylib.api.world.level.LevelUtils;
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
@@ -302,12 +301,6 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem
     public float getDestroySpeed(ItemStack pStack, BlockState pState) {
         return 25.0f;
     }
-
-    @Override
-    public BlockEntityWithoutLevelRenderer getBEWLR() {
-        return Minejago.getBewlr();
-    }
-
     @Override
     public @Nullable SoundEvent getFailSound() {
         return MinejagoSoundEvents.SCYTHE_OF_QUAKES_FAIL.get();

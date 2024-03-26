@@ -70,6 +70,7 @@ import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
+import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterGuiOverlaysEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
@@ -214,5 +215,10 @@ public class MinejagoForgeClientEvents {
     public static void onRegisterGuiOverlays(RegisterGuiOverlaysEvent event)
     {
         event.registerAbove(new ResourceLocation("food_level"), Minejago.modLoc("focus"), (gui, guiGraphics, partialTick, screenWidth, screenHeight) -> MinejagoGuis.renderFocusBar(guiGraphics, partialTick));
+    }
+
+    public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event)
+    {
+        event.registerReloadListener(Minejago.getBewlr());
     }
 }

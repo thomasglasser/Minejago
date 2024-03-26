@@ -61,10 +61,10 @@ public class MinejagoNeoForge
         bus.addListener(MinejagoForgeClientEvents::onRegisterRenderer);
         bus.addListener(MinejagoForgeClientEvents::onRegisterLayers);
         bus.addListener(MinejagoForgeClientEvents::registerModels);
-        bus.addListener(MinejagoForgeClientEvents::registerClientReloadListeners);
         bus.addListener(MinejagoForgeClientEvents::onAddLayers);
         bus.addListener(MinejagoForgeClientEvents::onBuildCreativeTabContent);
         bus.addListener(MinejagoForgeClientEvents::onRegisterGuiOverlays);
+        bus.addListener(MinejagoForgeClientEvents::registerClientReloadListeners);
     }
 
     private void addForgeListeners()

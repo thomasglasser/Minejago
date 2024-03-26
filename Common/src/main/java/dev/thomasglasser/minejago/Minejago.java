@@ -3,6 +3,7 @@ package dev.thomasglasser.minejago;
 import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
 import dev.thomasglasser.minejago.client.MinejagoClientConfig;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
+import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.network.MinejagoPackets;
@@ -46,6 +47,8 @@ public class Minejago {
 	public static final String MOD_ID = "minejago";
 	public static final String MOD_NAME = "Minejago";
 	public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
+
+	private static final MinejagoBlockEntityWithoutLevelRenderer bewlr = new MinejagoBlockEntityWithoutLevelRenderer();
 
 	public static ResourceLocation modLoc(String path)
 	{
@@ -122,6 +125,11 @@ public class Minejago {
 	{
 		MidnightConfig.init(Minejago.MOD_ID, MinejagoServerConfig.class);
 		if (TommyLibServices.PLATFORM.isClientSide()) MidnightConfig.init(Minejago.MOD_ID, MinejagoClientConfig.class);
+	}
+
+	public static MinejagoBlockEntityWithoutLevelRenderer getBewlr()
+	{
+		return bewlr;
 	}
 
 	public enum Dependencies

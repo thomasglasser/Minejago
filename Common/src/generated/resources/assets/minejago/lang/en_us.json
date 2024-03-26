@@ -436,5 +436,9 @@
   "subtitles.item.spear.throw": "Spear tosses",
   "subtitles.spinjitzu.active": "Spinjitzu whooshes",
   "subtitles.spinjitzu.start": "Spinjitzu activates",
-  "subtitles.spinjitzu.stop": "Spinjitzu fades*"
+  "subtitles.spinjitzu.stop": "Spinjitzu fades*",
+  "config.jade.plugin_minejago.living_entity": "Minejago Living Entity Config",
+  "config.jade.plugin_minejago.painting": "Minejago Painting Config",
+  "config.jade.plugin_minejago.teapot_block": "Minejago Teapot Config",
+  "config.jade.plugin_minejago.dragon": "Minejago Dragon Config"
 }
