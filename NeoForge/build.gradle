@@ -91,14 +91,14 @@ dependencies {
 
 
     // Forge Only
-    include implementation("maven.modrinth:sherdsapi:${sherdsapi_version}-neoforge")
+    include implementation("dev.thomasglasser.sherdsapi:sherdsapi-neoforge-${minecraft_version}:${sherdsapi_version}")
     compileOnly "maven.modrinth:trimmed:${trimmed_version}+forge"
 //    include implementation("maven.modrinth:trimmed:${trimmed_version}+forge")
     implementation "maven.modrinth:ryoamiclights:${ryoamiclights_version}-neoforge"
 
     // Runtime
-//    runtimeOnly "maven.modrinth:worldedit:${worldedit_version}"
-    runtimeOnly "maven.modrinth:worldedit:${worldedit_id}"
+    // Waiting on neo update
+//    runtimeOnly "com.sk89q.worldedit:worldedit-neoforge-mc${minecraft_version}:${worldedit_version}"
     runtimeOnly "maven.modrinth:obsidianui:${obsidianui_version}-neoforge"
     runtimeOnly "dev.architectury:architectury-neoforge:$architectury_version"
 }

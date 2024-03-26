@@ -157,17 +157,18 @@ subprojects {
             }
         }
         maven {
-            name = "Mixin Extras"
-            url = "https://jitpack.io/"
-            content {
-                includeGroupAndSubgroups 'com.github.llamalad7.mixinextras'
-            }
-        }
-        maven {
             name = "TslatEffectsLib"
             url = "https://dl.cloudsmith.io/public/tslat/tel/maven/"
             content {
                 includeGroupAndSubgroups "net.tslat.effectslib"
+            }
+        }
+        maven {
+            name = "WorldEdit"
+            url = "https://maven.enginehub.org/repo/"
+            content {
+                includeGroupAndSubgroups "com.sk89q"
+                includeGroupAndSubgroups "org.enginehub"
             }
         }
 

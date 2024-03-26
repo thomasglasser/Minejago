@@ -42,10 +42,9 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 
     // Runtime Only Deps
-    modRuntimeOnly "maven.modrinth:sherdsapi:${sherdsapi_version}-fabric"
+    modRuntimeOnly "dev.thomasglasser.sherdsapi:sherdsapi-fabric-${minecraft_version}:${sherdsapi_version}"
     modRuntimeOnly "dev.architectury:architectury-fabric:$architectury_version"
-//    modRuntimeOnly "maven.modrinth:worldedit:${worldedit_version}"
-    modRuntimeOnly "maven.modrinth:worldedit:${worldedit_id}"
+    modRuntimeOnly "com.sk89q.worldedit:worldedit-fabric-mc${minecraft_version}:${worldedit_version}"
     modRuntimeOnly "com.terraformersmc:modmenu:${modmenu_version}"
     modRuntimeOnly "maven.modrinth:obsidianui:${obsidianui_version}-fabric"
 }
