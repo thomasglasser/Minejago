@@ -33,26 +33,8 @@ public class MinejagoItemTagsProvider extends ExtendedItemTagsProvider
                 MinejagoItems.IRON_KATANA);
         tag(MinejagoItemTags.GOLDEN_WEAPONS)
                 .add(MinejagoItems.SCYTHE_OF_QUAKES.get());
-        MinejagoArmors.ARMOR_SETS.forEach(set ->
-                set.getAll().forEach(item ->
-                {
-                    switch (set.getForItem(item.get())) {
-                        case HEAD -> helmets(item);
-                        case CHEST -> chestplates(item);
-                        case LEGS -> leggings(item);
-                        case FEET -> boots(item);
-                    }
-                }));
-        MinejagoArmors.POWER_SETS.forEach(set ->
-                set.getAll().forEach(item ->
-                {
-                    switch (set.getForItem(item.get())) {
-                        case HEAD -> helmets(item);
-                        case CHEST -> chestplates(item);
-                        case LEGS -> leggings(item);
-                        case FEET -> boots(item);
-                    }
-                }));
+        MinejagoArmors.ARMOR_SETS.forEach(this::armorSet);
+        MinejagoArmors.POWER_SETS.forEach(this::armorSet);
         MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(this::chestplates);
         chestplates(MinejagoArmors.SAMUKAIS_CHESTPLATE);
 
