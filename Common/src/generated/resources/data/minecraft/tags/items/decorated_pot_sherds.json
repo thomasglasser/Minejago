@@ -1,11 +1,11 @@
 {
   "values": [
-    "minejago:pottery_sherd_ice_cube",
-    "minejago:pottery_sherd_thunder",
-    "minejago:pottery_sherd_peaks",
-    "minejago:pottery_sherd_master",
-    "minejago:pottery_sherd_yin_yang",
-    "minejago:pottery_sherd_dragons_head",
-    "minejago:pottery_sherd_dragons_tail"
+    "minejago:ice_cube_pottery_sherd",
+    "minejago:thunder_pottery_sherd",
+    "minejago:peaks_pottery_sherd",
+    "minejago:master_pottery_sherd",
+    "minejago:yin_yang_pottery_sherd",
+    "minejago:dragons_head_pottery_sherd",
+    "minejago:dragons_tail_pottery_sherd"
   ]
 }

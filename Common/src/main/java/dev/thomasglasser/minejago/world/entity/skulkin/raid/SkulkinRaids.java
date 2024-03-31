@@ -1,19 +1,16 @@
 package dev.thomasglasser.minejago.world.entity.skulkin.raid;
 
 import com.google.common.collect.Maps;
-import dev.thomasglasser.minejago.tags.MinejagoDimensionTypeTags;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
-import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
+import dev.thomasglasser.minejago.tags.MinejagoDimensionTypeTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.network.protocol.game.ClientboundEntityEventPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.datafix.DataFixTypes;
-import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.saveddata.SavedData;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,17 +21,16 @@ public class SkulkinRaids extends SavedData
 {
 	private static final String FILE_ID = "skulkin_raids";
 	private final Map<Integer, SkulkinRaid> raidMap = Maps.newHashMap();
-	private final ServerLevel level;
 	private int nextAvailableID;
 	private int tick;
 	private boolean mapTaken;
 
 	public static SavedData.Factory<SkulkinRaids> factory(ServerLevel level) {
-		return new SavedData.Factory<>(() -> new SkulkinRaids(level), compoundTag -> SkulkinRaids.load(level, compoundTag), DataFixTypes.SAVED_DATA_RAIDS);
+		return new SavedData.Factory<>(SkulkinRaids::new, compoundTag -> SkulkinRaids.load(level, compoundTag), DataFixTypes.SAVED_DATA_RAIDS);
 	}
 
-	public SkulkinRaids(ServerLevel serverLevel) {
-		this.level = serverLevel;
+	public SkulkinRaids()
+	{
 		this.nextAvailableID = 1;
 		this.setDirty();
 	}
@@ -85,25 +81,12 @@ public class SkulkinRaids extends SavedData
 				return null;
 			} else {
 				SkulkinRaid raid = this.getOrCreateSkulkinRaid(serverPlayer.serverLevel(), serverPlayer.blockPosition());
-				boolean bl = false;
 				if (!raid.isStarted()) {
 					if (!this.raidMap.containsKey(raid.getId())) {
 						this.raidMap.put(raid.getId(), raid);
+						raid.setDifficultyLevel(raid.random.nextInt(raid.getMaxSkulkinsCurseLevel() + 1));
 					}
-
-					bl = true;
-				} else if (raid.getSkulkinsCurseLevel() < raid.getMaxSkulkinsCurseLevel()) {
-					bl = true;
-				} else {
-					serverPlayer.removeEffect(MinejagoMobEffects.SKULKINS_CURSE.get());
-					serverPlayer.connection.send(new ClientboundEntityEventPacket(serverPlayer, (byte)43));
 				}
-
-				if (bl) {
-					raid.absorbSkulkinsCurse(serverPlayer);
-					serverPlayer.connection.send(new ClientboundEntityEventPacket(serverPlayer, (byte)43));
-				}
-
 				this.setDirty();
 				return raid;
 			}
@@ -116,7 +99,7 @@ public class SkulkinRaids extends SavedData
 	}
 
 	public static SkulkinRaids load(ServerLevel level, CompoundTag tag) {
-		SkulkinRaids raids = new SkulkinRaids(level);
+		SkulkinRaids raids = new SkulkinRaids();
 		raids.nextAvailableID = tag.getInt("NextAvailableID");
 		raids.tick = tag.getInt("Tick");
 		raids.mapTaken = tag.getBoolean("MapTaken");
@@ -148,7 +131,7 @@ public class SkulkinRaids extends SavedData
 		return compoundTag;
 	}
 
-	public static String getFileId(Holder<DimensionType> dimensionTypeHolder) {
+	public static String getFileId() {
 		return FILE_ID;
 	}
 
@@ -170,11 +153,6 @@ public class SkulkinRaids extends SavedData
 		}
 
 		return raid;
-	}
-
-	public void setMapTaken(boolean mapTaken)
-	{
-		this.mapTaken = mapTaken;
 	}
 
 	public void setMapTaken()

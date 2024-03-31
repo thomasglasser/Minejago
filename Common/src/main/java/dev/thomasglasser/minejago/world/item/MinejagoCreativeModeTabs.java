@@ -14,7 +14,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.CreativeModeTabs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +33,7 @@ public class MinejagoCreativeModeTabs
                 }));
 
         output.acceptAll(MinejagoPowers.getArmorForAll(parameters.holders()));
-    }, CreativeModeTabs.COMBAT));
+    }));
 
     public static final RegistryObject<CreativeModeTab> MINEJAGO = register("minejago", () -> TommyLibServices.ITEM.newTab(Component.translatable(Minejago.modLoc(Minejago.MOD_ID).toLanguageKey("item_group")), () -> MinejagoItems.SCYTHE_OF_QUAKES.get().getDefaultInstance(), true, (parameters, output) ->
     {
@@ -55,7 +54,7 @@ public class MinejagoCreativeModeTabs
         output.accept(MinejagoArmors.SAMUKAIS_CHESTPLATE.get());
 
         output.accept(SkulkinRaid.getLeaderBannerInstance());
-    }, CreativeModeTabs.SPAWN_EGGS));
+    }));
     
     private static RegistryObject<CreativeModeTab> register(String name, Supplier<CreativeModeTab> tab)
     {

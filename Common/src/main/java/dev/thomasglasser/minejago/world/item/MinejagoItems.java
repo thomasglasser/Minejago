@@ -5,14 +5,12 @@ import dev.thomasglasser.minejago.tags.MinejagoBannerPatternTags;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.item.armortrim.MinejagoTrimPatterns;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
-import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
-import dev.thomasglasser.tommylib.api.world.item.CustomEmptyMapItem;
-import dev.thomasglasser.tommylib.api.world.item.ItemUtils;
 import dev.thomasglasser.tommylib.api.registration.RegistrationProvider;
 import dev.thomasglasser.tommylib.api.registration.RegistryObject;
+import dev.thomasglasser.tommylib.api.world.item.CustomEmptyMapItem;
+import dev.thomasglasser.tommylib.api.world.item.ItemUtils;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -38,7 +36,7 @@ import java.util.function.Supplier;
 public class MinejagoItems
 {
     public static final RegistrationProvider<Item> ITEMS = RegistrationProvider.get(Registries.ITEM, Minejago.MOD_ID);
-    public static final List<ResourceLocation> SHERDS = new ArrayList<>();
+    public static final List<String> SHERDS = new ArrayList<>();
     public static final String MOD_NEEDED = "error.mod_needed";
 
     public static final RegistryObject<BambooStaffItem> BAMBOO_STAFF = register("bamboo_staff", () -> new BambooStaffItem(Tiers.WOOD, 2, -1, new Item.Properties()), List.of(CreativeModeTabs.COMBAT));
@@ -58,13 +56,13 @@ public class MinejagoItems
     public static final RegistryObject<CustomEmptyMapItem> EMPTY_GOLDEN_WEAPONS_MAP = register("empty_golden_weapons_map", () -> new CustomEmptyMapItem(MinejagoItemUtils::getFourWeaponsMap, new Item.Properties()), List.of(MinejagoCreativeModeTabs.MINEJAGO.getResourceKey()));
 
     // POTTERY SHERDS
-    public static final RegistryObject<Item> POTTERY_SHERD_ICE_CUBE = registerSherd("pottery_sherd_ice_cube");
-    public static final RegistryObject<Item> POTTERY_SHERD_THUNDER = registerSherd("pottery_sherd_thunder");
-    public static final RegistryObject<Item> POTTERY_SHERD_PEAKS = registerSherd("pottery_sherd_peaks");
-    public static final RegistryObject<Item> POTTERY_SHERD_MASTER = registerSherd("pottery_sherd_master");
-    public static final RegistryObject<Item> POTTERY_SHERD_YIN_YANG = registerSherd("pottery_sherd_yin_yang");
-    public static final RegistryObject<Item> POTTERY_SHERD_DRAGONS_HEAD = registerSherd("pottery_sherd_dragons_head");
-    public static final RegistryObject<Item> POTTERY_SHERD_DRAGONS_TAIL = registerSherd("pottery_sherd_dragons_tail");
+    public static final RegistryObject<Item> POTTERY_SHERD_ICE_CUBE = registerSherd("ice_cube");
+    public static final RegistryObject<Item> POTTERY_SHERD_THUNDER = registerSherd("thunder");
+    public static final RegistryObject<Item> POTTERY_SHERD_PEAKS = registerSherd("peaks");
+    public static final RegistryObject<Item> POTTERY_SHERD_MASTER = registerSherd("master");
+    public static final RegistryObject<Item> POTTERY_SHERD_YIN_YANG = registerSherd("yin_yang");
+    public static final RegistryObject<Item> POTTERY_SHERD_DRAGONS_HEAD = registerSherd("dragons_head");
+    public static final RegistryObject<Item> POTTERY_SHERD_DRAGONS_TAIL = registerSherd("dragons_tail");
 
     // SMITHING TEMPLATES
     public static final RegistryObject<SmithingTemplateItem> FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE = registerSmithingTemplate(MinejagoTrimPatterns.FOUR_WEAPONS);
@@ -92,7 +90,7 @@ public class MinejagoItems
 
     private static RegistryObject<Item> registerSherd(String name)
     {
-        SHERDS.add(Minejago.modLoc(name));
+        SHERDS.add(name);
         return ItemUtils.registerSherd(ITEMS, name);
     }
 

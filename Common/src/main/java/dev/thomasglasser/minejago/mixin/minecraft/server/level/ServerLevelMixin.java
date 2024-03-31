@@ -5,7 +5,6 @@ import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaids;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaidsHolder;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
 import dev.thomasglasser.minejago.world.level.levelgen.SkulkinArmySpawner;
-import dev.thomasglasser.minejago.world.level.levelgen.SkulkinPatrolSpawner;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceKey;
@@ -62,11 +61,10 @@ public abstract class ServerLevelMixin extends Level implements SkulkinRaidsHold
 	@Inject(method = "<init>", at = @At("RETURN"))
 	private void minejago_init(MinecraftServer minecraftServer, Executor executor, LevelStorageSource.LevelStorageAccess levelStorageAccess, ServerLevelData serverLevelData, ResourceKey resourceKey, LevelStem levelStem, ChunkProgressListener chunkProgressListener, boolean bl, long l, List list, boolean bl2, RandomSequences randomSequences, CallbackInfo ci)
 	{
-		skulkinRaids = this.getDataStorage().computeIfAbsent(SkulkinRaids.factory(INSTANCE), SkulkinRaids.getFileId(this.dimensionTypeRegistration()));
+		skulkinRaids = this.getDataStorage().computeIfAbsent(SkulkinRaids.factory(INSTANCE), SkulkinRaids.getFileId());
 		List<CustomSpawner> spawners = customSpawners;
 		customSpawners = new ArrayList<>();
 		customSpawners.addAll(spawners);
-		customSpawners.add(new SkulkinPatrolSpawner());
 		customSpawners.add(new SkulkinArmySpawner());
 	}
 

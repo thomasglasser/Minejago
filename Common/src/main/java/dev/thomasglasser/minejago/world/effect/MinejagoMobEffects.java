@@ -2,16 +2,11 @@ package dev.thomasglasser.minejago.world.effect;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.platform.Services;
-import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaidsHolder;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
-import dev.thomasglasser.minejago.world.level.MinejagoLevelUtils;
-import dev.thomasglasser.tommylib.api.world.effect.EmptyMobEffect;
 import dev.thomasglasser.tommylib.api.registration.RegistrationProvider;
 import dev.thomasglasser.tommylib.api.registration.RegistryObject;
+import dev.thomasglasser.tommylib.api.world.effect.EmptyMobEffect;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -88,31 +83,6 @@ public class MinejagoMobEffects
         public boolean shouldTickEffect(@Nullable MobEffectInstance effectInstance, @Nullable LivingEntity entity, int ticksRemaining, int amplifier)
         {
             return effectInstance != null && effectInstance.getDuration() > 1;
-        }
-    });
-
-    // Neutral
-    public static final RegistryObject<MobEffect> SKULKINS_CURSE = register("skulkins_curse", () -> new ExtendedMobEffect(MobEffectCategory.NEUTRAL, 0xAD282D) {
-        @Override
-        public void tick(LivingEntity entity, @Nullable MobEffectInstance effectInstance, int amplifier)
-        {
-            super.tick(entity, effectInstance, amplifier);
-            if (entity instanceof ServerPlayer serverPlayer && !serverPlayer.isSpectator()) {
-                ServerLevel serverLevel = serverPlayer.serverLevel();
-                if (serverLevel.getDifficulty() == Difficulty.PEACEFUL) {
-                    return;
-                }
-
-                if (MinejagoLevelUtils.isGoldenWeaponsMapHolderNearby(serverPlayer, 16)) {
-                    ((SkulkinRaidsHolder)serverLevel).getSkulkinRaids().createOrExtendSkulkinRaid(serverPlayer);
-                }
-            }
-        }
-
-        @Override
-        public boolean shouldTickEffect(@Nullable MobEffectInstance effectInstance, @Nullable LivingEntity entity, int ticksRemaining, int amplifier)
-        {
-            return true;
         }
     });
 

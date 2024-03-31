@@ -1,7 +1,5 @@
 package dev.thomasglasser.minejago.world.entity.skulkin.raid;
 
-import dev.thomasglasser.minejago.server.MinejagoServerConfig;
-import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.ai.behavior.FleeSkulkinRaidAndDespawn;
 import dev.thomasglasser.minejago.world.entity.ai.behavior.LongDistanceRaiderPatrol;
 import dev.thomasglasser.minejago.world.entity.ai.behavior.ObtainNearbyRaidBanner;
@@ -17,11 +15,9 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -30,7 +26,6 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.behavior.Swim;
-import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -258,36 +253,6 @@ public abstract class MeleeCompatibleSkeletonRaider extends MeleeCompatibleSkele
 				}
 
 				raid.removeFromSkulkinRaid(this, false);
-			}
-
-			if (this.isPatrolLeader() && raid == null && ((SkulkinRaidsHolder)this.level()).getSkulkinRaidAt(this.blockPosition()) == null) {
-				ItemStack itemStack = this.getItemBySlot(EquipmentSlot.HEAD);
-				Player player = null;
-				if (entity instanceof Player) {
-					player = (Player)entity;
-				} else if (entity instanceof Wolf wolf) {
-					LivingEntity livingEntity = wolf.getOwner();
-					if (wolf.isTame() && livingEntity instanceof Player) {
-						player = (Player)livingEntity;
-					}
-				}
-
-				if (!itemStack.isEmpty() && ItemStack.matches(itemStack, SkulkinRaid.getLeaderBannerInstance()) && player != null) {
-					MobEffectInstance mobEffectInstance = player.getEffect(MinejagoMobEffects.SKULKINS_CURSE.get());
-					int i = 1;
-					if (mobEffectInstance != null) {
-						i += mobEffectInstance.getAmplifier();
-						player.removeEffectNoUpdate(MinejagoMobEffects.SKULKINS_CURSE.get());
-					} else {
-						--i;
-					}
-
-					i = Mth.clamp(i, 0, 4);
-					MobEffectInstance mobEffectInstance2 = new MobEffectInstance(MinejagoMobEffects.SKULKINS_CURSE.get(), 120000, i, false, false, true);
-					if (MinejagoServerConfig.enableSkulkinRaids) {
-						player.addEffect(mobEffectInstance2);
-					}
-				}
 			}
 		}
 

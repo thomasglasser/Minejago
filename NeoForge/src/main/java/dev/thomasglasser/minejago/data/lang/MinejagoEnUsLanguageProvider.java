@@ -206,7 +206,6 @@ public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider
         add(MinejagoMobEffects.AZALEA_TEA.get(), "Azalea Tea");
         add(MinejagoMobEffects.FLOWERING_AZALEA_TEA.get(), "Flowering Azalea Tea");
         add(MinejagoMobEffects.CURE.get(), "Instant Cure");
-        add(MinejagoMobEffects.SKULKINS_CURSE.get(), "Skulkin's Curse");
         add(MinejagoMobEffects.HYPERFOCUS.get(), "Hyperfocus");
 
         add("effect.minecraft.swiftness", "Swiftness");

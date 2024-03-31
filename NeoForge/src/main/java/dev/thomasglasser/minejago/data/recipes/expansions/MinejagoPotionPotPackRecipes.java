@@ -3,7 +3,6 @@ package dev.thomasglasser.minejago.data.recipes.expansions;
 import dev.thomasglasser.minejago.data.recipes.SimpleBrewingRecipeBuilder;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.critereon.BrewedPotionTrigger;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
@@ -20,12 +19,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 
 public class MinejagoPotionPotPackRecipes extends RecipeProvider
 {
-    public MinejagoPotionPotPackRecipes(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
-        super(output, lookupProvider);
+    public MinejagoPotionPotPackRecipes(PackOutput output) {
+        super(output);
     }
 
     @Override

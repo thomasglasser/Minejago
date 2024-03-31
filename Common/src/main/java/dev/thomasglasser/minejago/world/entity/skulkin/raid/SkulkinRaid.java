@@ -6,7 +6,6 @@ import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
 import dev.thomasglasser.minejago.advancements.criterion.SkulkinRaidTrigger;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
-import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.skulkin.Kruncha;
 import dev.thomasglasser.minejago.world.entity.skulkin.Nuckal;
@@ -36,7 +35,6 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.decoration.Painting;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
@@ -71,8 +69,7 @@ public class SkulkinRaid {
 	private static final int RAID_TIMEOUT_TICKS = 48000;
 	private static final int NUM_SPAWN_ATTEMPTS = 3;
 	public static final String SKULKINS_BANNER_PATTERN_NAME = "block.minejago.skulkins_banner";
-	private static final String RAIDERS_REMAINING = "event.minecraft.raid.raiders_remaining";
-	public static final int VILLAGE_RADIUS_BUFFER = 16;
+	public static final int RADIUS_BUFFER = 16;
 	private static final int POST_RAID_TICK_LIMIT = 40;
 	private static final int DEFAULT_PRE_RAID_TICKS = 300;
 	public static final int MAX_NO_ACTION_TIME = 2400;
@@ -97,13 +94,13 @@ public class SkulkinRaid {
 	private boolean started;
 	private final int id;
 	private float totalHealth;
-	private int skulkinsCurseLevel;
+	private int difficultyLevel;
 	private boolean active;
 	private int groupsSpawned;
 	private final ServerBossEvent raidEvent = new ServerBossEvent(RAID_NAME_COMPONENT, BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.NOTCHED_10);
 	private int postSkulkinRaidTicks;
 	private int raidCooldownTicks;
-	private final RandomSource random = RandomSource.create();
+	protected final RandomSource random = RandomSource.create();
 	private final int numGroups;
 	private SkulkinRaid.SkulkinRaidStatus status;
 	private int celebrationTicks;
@@ -128,7 +125,7 @@ public class SkulkinRaid {
 		this.started = compoundTag.getBoolean("Started");
 		this.active = compoundTag.getBoolean("Active");
 		this.ticksActive = compoundTag.getLong("TicksActive");
-		this.skulkinsCurseLevel = compoundTag.getInt("BadOmenLevel");
+		this.difficultyLevel = compoundTag.getInt("DifficultyLevel");
 		this.groupsSpawned = compoundTag.getInt("GroupsSpawned");
 		this.raidCooldownTicks = compoundTag.getInt("PreSkulkinRaidTicks");
 		this.postSkulkinRaidTicks = compoundTag.getInt("PostSkulkinRaidTicks");
@@ -162,20 +159,6 @@ public class SkulkinRaid {
 		return this.status == SkulkinRaid.SkulkinRaidStatus.LOSS;
 	}
 
-	public float getTotalHealth() {
-		return this.totalHealth;
-	}
-
-	public Set<MeleeCompatibleSkeletonRaider> getAllMeleeCompatibleSkeletonRaiders() {
-		Set<MeleeCompatibleSkeletonRaider> set = Sets.<MeleeCompatibleSkeletonRaider>newHashSet();
-
-		for(Set<MeleeCompatibleSkeletonRaider> set2 : this.groupRaiderMap.values()) {
-			set.addAll(set2);
-		}
-
-		return set;
-	}
-
 	public Level getLevel() {
 		return this.level;
 	}
@@ -196,7 +179,7 @@ public class SkulkinRaid {
 	}
 
 	private void updatePlayers() {
-		Set<ServerPlayer> set = Sets.<ServerPlayer>newHashSet(this.raidEvent.getPlayers());
+		Set<ServerPlayer> set = Sets.newHashSet(this.raidEvent.getPlayers());
 		List<ServerPlayer> list = this.level.getPlayers(this.validPlayer());
 
 		for(ServerPlayer serverPlayer : list) {
@@ -216,21 +199,12 @@ public class SkulkinRaid {
 		return DEFAULT_MAX_SKULKINS_CURSE_LEVEL;
 	}
 
-	public int getSkulkinsCurseLevel() {
-		return this.skulkinsCurseLevel;
+	public int getDifficultyLevel() {
+		return this.difficultyLevel;
 	}
 
-	public void setSkulkinsCurseLevel(int skulkinsCurseLevel) {
-		this.skulkinsCurseLevel = skulkinsCurseLevel;
-	}
-
-	public void absorbSkulkinsCurse(Player player) {
-		if (player.hasEffect(MinejagoMobEffects.SKULKINS_CURSE.get())) {
-			this.skulkinsCurseLevel += player.getEffect(MinejagoMobEffects.SKULKINS_CURSE.get()).getAmplifier() + 1;
-			this.skulkinsCurseLevel = Mth.clamp(this.skulkinsCurseLevel, 0, this.getMaxSkulkinsCurseLevel());
-		}
-
-		player.removeEffect(MinejagoMobEffects.SKULKINS_CURSE.get());
+	public void setDifficultyLevel(int difficultyLevel) {
+		this.difficultyLevel = difficultyLevel;
 	}
 
 	public void stop() {
@@ -414,7 +388,7 @@ public class SkulkinRaid {
 	}
 
 	private boolean hasBonusWave() {
-		return this.skulkinsCurseLevel > 1;
+		return this.difficultyLevel > 1;
 	}
 
 	private boolean hasSpawnedBonusWave() {
@@ -713,7 +687,7 @@ public class SkulkinRaid {
 		compound.putBoolean("Started", this.started);
 		compound.putBoolean("Active", this.active);
 		compound.putLong("TicksActive", this.ticksActive);
-		compound.putInt("BadOmenLevel", this.skulkinsCurseLevel);
+		compound.putInt("DifficultyLevel", this.difficultyLevel);
 		compound.putInt("GroupsSpawned", this.groupsSpawned);
 		compound.putInt("PreSkulkinRaidTicks", this.raidCooldownTicks);
 		compound.putInt("PostSkulkinRaidTicks", this.postSkulkinRaidTicks);
@@ -740,7 +714,7 @@ public class SkulkinRaid {
 	}
 
 	public float getEnchantOdds() {
-		int i = this.getSkulkinsCurseLevel();
+		int i = this.getDifficultyLevel();
 		if (i == 2) {
 			return 0.1F;
 		} else if (i == 3) {

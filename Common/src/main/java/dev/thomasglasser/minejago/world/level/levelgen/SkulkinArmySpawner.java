@@ -43,7 +43,7 @@ public class SkulkinArmySpawner implements CustomSpawner
 				return 0;
 			} else {
 				Player player = level.players().get(randomSource.nextInt(i));
-				BlockPos structurePos = level.findNearestMapStructure(MinejagoStructureTags.GOLDEN_WEAPONS_HOLDER, player.blockPosition(), 32, false);
+				BlockPos structurePos = level.findNearestMapStructure(MinejagoStructureTags.HAS_GOLDEN_WEAPON, player.blockPosition(), 32, false);
 				if (player.isSpectator()) {
 					return 0;
 				} else if (structurePos == null) {

@@ -15,7 +15,7 @@ import dev.thomasglasser.minejago.data.particles.MinejagoParticleDescriptionProv
 import dev.thomasglasser.minejago.data.powers.MinejagoForgePowerDatagenSuite;
 import dev.thomasglasser.minejago.data.recipes.MinejagoRecipes;
 import dev.thomasglasser.minejago.data.recipes.expansions.MinejagoPotionPotPackRecipes;
-import dev.thomasglasser.minejago.data.sherds.MinejagoForgeSherdDatagenSuite;
+import dev.thomasglasser.minejago.data.sherds.MinejagoNeoForgeSherdDatagenSuite;
 import dev.thomasglasser.minejago.data.sounds.MinejagoSoundDefinitions;
 import dev.thomasglasser.minejago.data.tags.MinejagoBannerPatternTagsProvider;
 import dev.thomasglasser.minejago.data.tags.MinejagoBiomeTagsProvider;
@@ -122,7 +122,7 @@ public class MinejagoDataGenerators
         generator.addProvider(includeServer, new PowerTagsProvider(packOutput, Minejago.MOD_ID,  powerLookupProvider, existingFileHelper));
 
         // Sherds
-        new MinejagoForgeSherdDatagenSuite(event);
+        new MinejagoNeoForgeSherdDatagenSuite(event);
 
         // Lang gen (on client)
         generator.addProvider(includeClient, enUs);
@@ -159,6 +159,6 @@ public class MinejagoDataGenerators
 
     private static void genPotionPotPack(GatherDataEvent event, DataGenerator generator, PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper, boolean includeServer, boolean includeClient)
     {
-        generator.addProvider(includeServer, new MinejagoPotionPotPackRecipes(packOutput, lookupProvider));
+        generator.addProvider(includeServer, new MinejagoPotionPotPackRecipes(packOutput));
     }
 }

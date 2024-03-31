@@ -18,15 +18,14 @@ public class SpinjitzuParticle<T extends SpinjitzuParticleOptions> extends Textu
         this.friction = 0.96F;
         this.speedUpWhenYMotionIsBlocked = true;
         this.sprites = pSprites;
-        this.xd *= (double) 0.1F;
-        this.yd *= (double) 0.1F;
-        this.zd *= (double) 0.1F;
+        this.xd *= 0.1F;
+        this.yd *= 0.1F;
+        this.zd *= 0.1F;
         this.rCol = pOptions.getColor().x();
         this.gCol = pOptions.getColor().y();
         this.bCol = pOptions.getColor().z();
         this.quadSize *= 0.75F * pOptions.getScale();
-        int i = (int) (8.0D / (this.random.nextDouble() * 0.8D + 0.2D));
-        this.lifetime = 5;
+	    this.lifetime = 5;
         this.setSpriteFromAge(pSprites);
     }
 
@@ -46,9 +45,9 @@ public class SpinjitzuParticle<T extends SpinjitzuParticleOptions> extends Textu
     @Override
     public void render(VertexConsumer pBuffer, Camera pRenderInfo, float pPartialTicks) {
         Vec3 vec3 = pRenderInfo.getPosition();
-        float f = (float)(Mth.lerp((double)pPartialTicks, this.xo, this.x) - vec3.x());
-        float f1 = (float)(Mth.lerp((double)pPartialTicks, this.yo, this.y) - vec3.y());
-        float f2 = (float)(Mth.lerp((double)pPartialTicks, this.zo, this.z) - vec3.z());
+        float f = (float)(Mth.lerp(pPartialTicks, this.xo, this.x) - vec3.x());
+        float f1 = (float)(Mth.lerp(pPartialTicks, this.yo, this.y) - vec3.y());
+        float f2 = (float)(Mth.lerp(pPartialTicks, this.zo, this.z) - vec3.z());
 
         Quaternionf quaternion = new Quaternionf((float) 0.23429132, (float) -0.66716385, (float) -0.66716385, (float) -0.23429132);
 
@@ -68,10 +67,10 @@ public class SpinjitzuParticle<T extends SpinjitzuParticleOptions> extends Textu
         float f5 = this.getV0();
         float f6 = this.getV1();
         int j = this.getLightColor(pPartialTicks);
-        pBuffer.vertex((double)avector3f[0].x(), (double)avector3f[0].y(), (double)avector3f[0].z()).uv(f8, f6).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
-        pBuffer.vertex((double)avector3f[1].x(), (double)avector3f[1].y(), (double)avector3f[1].z()).uv(f8, f5).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
-        pBuffer.vertex((double)avector3f[2].x(), (double)avector3f[2].y(), (double)avector3f[2].z()).uv(f7, f5).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
-        pBuffer.vertex((double)avector3f[3].x(), (double)avector3f[3].y(), (double)avector3f[3].z()).uv(f7, f6).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
+        pBuffer.vertex(avector3f[0].x(), avector3f[0].y(), avector3f[0].z()).uv(f8, f6).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
+        pBuffer.vertex(avector3f[1].x(), avector3f[1].y(), avector3f[1].z()).uv(f8, f5).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
+        pBuffer.vertex(avector3f[2].x(), avector3f[2].y(), avector3f[2].z()).uv(f7, f5).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
+        pBuffer.vertex(avector3f[3].x(), avector3f[3].y(), avector3f[3].z()).uv(f7, f6).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
 
         renderUnder(pBuffer, pRenderInfo, pPartialTicks);
     }
@@ -79,9 +78,9 @@ public class SpinjitzuParticle<T extends SpinjitzuParticleOptions> extends Textu
         public void renderUnder(VertexConsumer pBuffer, Camera pRenderInfo, float pPartialTicks)
         {
             Vec3 vec3 = pRenderInfo.getPosition();
-            float f = (float)(Mth.lerp((double)pPartialTicks, this.xo, this.x) - vec3.x());
-            float f1 = (float)(Mth.lerp((double)pPartialTicks, this.yo, this.y) - vec3.y());
-            float f2 = (float)(Mth.lerp((double)pPartialTicks, this.zo, this.z) - vec3.z());
+            float f = (float)(Mth.lerp(pPartialTicks, this.xo, this.x) - vec3.x());
+            float f1 = (float)(Mth.lerp(pPartialTicks, this.yo, this.y) - vec3.y());
+            float f2 = (float)(Mth.lerp(pPartialTicks, this.zo, this.z) - vec3.z());
 
             Quaternionf quaternion = new Quaternionf((float) 0.243873, (float) -0.66372126, (float) 0.66372126, (float) 0.243873);
 
@@ -102,10 +101,10 @@ public class SpinjitzuParticle<T extends SpinjitzuParticleOptions> extends Textu
             float f5 = this.getV0();
             float f6 = this.getV1();
             int j = this.getLightColor(pPartialTicks);
-            pBuffer.vertex((double)avector3f[0].x(), (double)avector3f[0].y(), (double)avector3f[0].z()).uv(f8, f6).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
-            pBuffer.vertex((double)avector3f[1].x(), (double)avector3f[1].y(), (double)avector3f[1].z()).uv(f8, f5).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
-            pBuffer.vertex((double)avector3f[2].x(), (double)avector3f[2].y(), (double)avector3f[2].z()).uv(f7, f5).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
-            pBuffer.vertex((double)avector3f[3].x(), (double)avector3f[3].y(), (double)avector3f[3].z()).uv(f7, f6).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
+            pBuffer.vertex(avector3f[0].x(), avector3f[0].y(), avector3f[0].z()).uv(f8, f6).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
+            pBuffer.vertex(avector3f[1].x(), avector3f[1].y(), avector3f[1].z()).uv(f8, f5).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
+            pBuffer.vertex(avector3f[2].x(), avector3f[2].y(), avector3f[2].z()).uv(f7, f5).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
+            pBuffer.vertex(avector3f[3].x(), avector3f[3].y(), avector3f[3].z()).uv(f7, f6).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
         }
 
     public static class Provider implements ParticleProvider<SpinjitzuParticleOptions> {
