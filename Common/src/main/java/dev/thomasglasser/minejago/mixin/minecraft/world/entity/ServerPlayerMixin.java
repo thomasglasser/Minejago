@@ -73,7 +73,7 @@ public abstract class ServerPlayerMixin
                 INSTANCE.containerMenu.broadcastChanges();
             }
 
-            TommyLibServices.NETWORK.sendToClient(ClientboundOpenScrollPacket.class, ClientboundOpenScrollPacket.write(hand), INSTANCE);
+            TommyLibServices.NETWORK.sendToClient(ClientboundOpenScrollPacket.ID, ClientboundOpenScrollPacket::new, ClientboundOpenScrollPacket.write(hand), INSTANCE);
         }
     }
 
@@ -91,7 +91,7 @@ public abstract class ServerPlayerMixin
         if (focusData == null)
             focusData = Services.DATA.getFocusData(INSTANCE);
         if (this.lastSentFocus != focusData.getFocusLevel() || this.focusData.getSaturationLevel() == 0.0F != this.lastFoodSaturationZero) {
-            TommyLibServices.NETWORK.sendToClient(ClientboundSetFocusPacket.class, ClientboundSetFocusPacket.write(focusData), INSTANCE);
+            TommyLibServices.NETWORK.sendToClient(ClientboundSetFocusPacket.ID, ClientboundSetFocusPacket::new, ClientboundSetFocusPacket.write(focusData), INSTANCE);
             this.lastSentFocus = this.focusData.getFocusLevel();
             this.lastFoodSaturationZero = this.focusData.getSaturationLevel() == 0.0F;
         }

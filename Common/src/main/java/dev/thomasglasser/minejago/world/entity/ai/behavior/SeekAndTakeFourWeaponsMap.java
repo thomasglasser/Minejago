@@ -6,8 +6,9 @@ import dev.thomasglasser.minejago.world.level.MinejagoLevelUtils;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.MeleeCompatibleSkeletonRaider;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaidsHolder;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
-import dev.thomasglasser.tommylib.api.world.entity.DataHolder;
+import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
@@ -71,7 +72,9 @@ public class SeekAndTakeFourWeaponsMap<T extends MeleeCompatibleSkeletonRaider> 
 			else if (MinejagoLevelUtils.isGoldenWeaponsMapHolderNearby(entity, 1))
 			{
 				Painting fw = MinejagoLevelUtils.getGoldenWeaponsMapHolderNearby(entity, 1);
-				((DataHolder)fw).getPersistentData().putBoolean("MapTaken", true);
+				CompoundTag persistentData = TommyLibServices.ENTITY.getPersistentData(fw);
+				persistentData.putBoolean("MapTaken", true);
+				TommyLibServices.ENTITY.setPersistentData(fw, persistentData, true);
 				((SkulkinRaidsHolder)level).getSkulkinRaids().setMapTaken();
 				entity.setItemSlot(EquipmentSlot.OFFHAND, MinejagoItems.EMPTY_GOLDEN_WEAPONS_MAP.get().getDefaultInstance());
 				entity.setDropChance(EquipmentSlot.OFFHAND, 2.0F);

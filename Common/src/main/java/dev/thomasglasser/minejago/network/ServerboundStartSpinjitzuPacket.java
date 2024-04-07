@@ -24,7 +24,7 @@ public class ServerboundStartSpinjitzuPacket implements CustomPacket
         if (player instanceof ServerPlayer serverPlayer)
         {
             Services.DATA.setSpinjitzuData(new SpinjitzuData(true, true), serverPlayer);
-            TommyLibServices.NETWORK.sendToAllClients(ClientboundStartSpinjitzuPacket.class, ClientboundStartSpinjitzuPacket.write(serverPlayer.getUUID()), serverPlayer.getServer());
+            TommyLibServices.NETWORK.sendToAllClients(ClientboundStartSpinjitzuPacket.ID, ClientboundStartSpinjitzuPacket::new, ClientboundStartSpinjitzuPacket.write(serverPlayer.getUUID()), serverPlayer.getServer());
             AttributeInstance speed = serverPlayer.getAttribute(Attributes.MOVEMENT_SPEED);
             if (speed != null && !speed.hasModifier(SpinjitzuData.SPEED_MODIFIER))
             {

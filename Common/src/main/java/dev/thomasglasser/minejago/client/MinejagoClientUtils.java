@@ -56,7 +56,7 @@ public class MinejagoClientUtils {
 //            displayDev = MinejagoClientConfig.displayDevTeamCosmetic && MinejagoClientUtils.checkDevTeam(uuid);
             displayOgDev = MinejagoClientConfig.displayOgDevTeamCosmetic && MinejagoClientUtils.checkOgDevTeam(uuid);
 
-            TommyLibServices.NETWORK.sendToServer(ServerboundChangeVipDataPacket.class, ServerboundChangeVipDataPacket.write(uuid, new VipData(MinejagoClientConfig.snapshotTesterCosmeticChoice, displaySnapshot, /*displayDev*/false, displayOgDev)));
+            TommyLibServices.NETWORK.sendToServer(ServerboundChangeVipDataPacket.ID, ServerboundChangeVipDataPacket::new, ServerboundChangeVipDataPacket.write(uuid, new VipData(MinejagoClientConfig.snapshotTesterCosmeticChoice, displaySnapshot, /*displayDev*/false, displayOgDev)));
         }
     }
 

@@ -93,7 +93,7 @@ public class Wu extends Character
                 givingPower = !Services.DATA.getPowerData(serverPlayer).given() || MinejagoServerConfig.allowChange;
                 if (givingPower) {
                     if (MinejagoServerConfig.allowChoose) {
-                        TommyLibServices.NETWORK.sendToClient(ClientboundOpenPowerSelectionScreenPacket.class, ClientboundOpenPowerSelectionScreenPacket.write(powersToGive, this.getId()), serverPlayer);
+                        TommyLibServices.NETWORK.sendToClient(ClientboundOpenPowerSelectionScreenPacket.ID, ClientboundOpenPowerSelectionScreenPacket::new, ClientboundOpenPowerSelectionScreenPacket.write(powersToGive, this.getId()), serverPlayer);
                     } else if (this.distanceTo(serverPlayer) > 1.0f) {
                         ResourceKey<Power> oldPower = Services.DATA.getPowerData(serverPlayer).power();
                         if (Services.DATA.getPowerData(serverPlayer).given() && oldPower != MinejagoPowers.NONE && MinejagoServerConfig.drainPool)

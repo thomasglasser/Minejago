@@ -91,7 +91,7 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem
         }
         else if (player.isShiftKeyDown())
         {
-            if (!level.isClientSide) TommyLibServices.NETWORK.sendToAllClients(ClientboundStartScytheAnimationPacket.class, ClientboundStartScytheAnimationPacket.write(player.getUUID(), ItemAnimations.ScytheOfQuakes.SLAM_START, ItemAnimations.ScytheOfQuakes.SLAM_RUMBLE), player.getServer());
+            if (!level.isClientSide) TommyLibServices.NETWORK.sendToAllClients(ClientboundStartScytheAnimationPacket.ID, ClientboundStartScytheAnimationPacket::new, ClientboundStartScytheAnimationPacket.write(player.getUUID(), ItemAnimations.ScytheOfQuakes.SLAM_START, ItemAnimations.ScytheOfQuakes.SLAM_RUMBLE), player.getServer());
             BlockPos[] places = new BlockPos[] {pos.north(6), pos.north(4).east(4), pos.east(6), pos.east(4).south(4), pos.south(6), pos.south(4).west(4), pos.west(6), pos.west(4).north(4)};
             for (BlockPos place: places)
             {
@@ -104,7 +104,7 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem
         else
         {
             player.startUsingItem(pContext.getHand());
-            if (!level.isClientSide) TommyLibServices.NETWORK.sendToAllClients(ClientboundStartScytheAnimationPacket.class, ClientboundStartScytheAnimationPacket.write(player.getUUID(), ItemAnimations.ScytheOfQuakes.BEAM_START, ItemAnimations.ScytheOfQuakes.BEAM_ACTIVE), player.getServer());
+            if (!level.isClientSide) TommyLibServices.NETWORK.sendToAllClients(ClientboundStartScytheAnimationPacket.ID, ClientboundStartScytheAnimationPacket::new, ClientboundStartScytheAnimationPacket.write(player.getUUID(), ItemAnimations.ScytheOfQuakes.BEAM_START, ItemAnimations.ScytheOfQuakes.BEAM_ACTIVE), player.getServer());
         }
         return InteractionResult.SUCCESS;
     }
@@ -116,7 +116,7 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem
         if (pLivingEntity instanceof Player player1)
         {
             if (!player1.getAbilities().instabuild) player1.getCooldowns().addCooldown(pStack.getItem(), 20 * (pTimeCharged > 10? (pStack.getUseDuration() - pTimeCharged) : 1));
-            if (!pLevel.isClientSide) TommyLibServices.NETWORK.sendToAllClients(ClientboundStopAnimationPacket.class, ClientboundStopAnimationPacket.write(pLivingEntity.getUUID()), pLevel.getServer());
+            if (!pLevel.isClientSide) TommyLibServices.NETWORK.sendToAllClients(ClientboundStopAnimationPacket.ID, ClientboundStopAnimationPacket::new, ClientboundStopAnimationPacket.write(pLivingEntity.getUUID()), pLevel.getServer());
             player1.getAttributes().removeAttributeModifiers(builder.build());
         }
     }
@@ -283,7 +283,7 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem
         if (!player.level().isClientSide && !player.getAbilities().instabuild)
         {
             player.level().explode(null, player.getX(), player.getY() + 1, player.getZ(), 8.0F, Level.ExplosionInteraction.TNT);
-            TommyLibServices.NETWORK.sendToAllClients(ClientboundStartScytheAnimationPacket.class, ClientboundStartScytheAnimationPacket.write(player.getUUID(), ItemAnimations.ScytheOfQuakes.SLAM_START, ItemAnimations.ScytheOfQuakes.EMPTY), player.getServer());
+            TommyLibServices.NETWORK.sendToAllClients(ClientboundStartScytheAnimationPacket.ID, ClientboundStartScytheAnimationPacket::new, ClientboundStartScytheAnimationPacket.write(player.getUUID(), ItemAnimations.ScytheOfQuakes.SLAM_START, ItemAnimations.ScytheOfQuakes.EMPTY), player.getServer());
         }
     }
 

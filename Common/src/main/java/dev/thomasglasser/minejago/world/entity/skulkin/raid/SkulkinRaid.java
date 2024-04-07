@@ -12,7 +12,7 @@ import dev.thomasglasser.minejago.world.entity.skulkin.Nuckal;
 import dev.thomasglasser.minejago.world.entity.skulkin.Samukai;
 import dev.thomasglasser.minejago.world.entity.skulkin.SkullTruck;
 import dev.thomasglasser.minejago.world.level.MinejagoLevelUtils;
-import dev.thomasglasser.tommylib.api.world.entity.DataHolder;
+import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -245,7 +245,7 @@ public class SkulkinRaid {
 
 				if (!MinejagoLevelUtils.isGoldenWeaponsMapHolderNearby(level, center, 64)) {
 					if (this.groupsSpawned > 0) {
-						if (level.getEntitiesOfClass(Painting.class, AABB.ofSize(center.getCenter(), 32, 32, 32), painting -> painting.getVariant().is(Minejago.modLoc( "four_weapons")) && ((DataHolder)painting).getPersistentData().getBoolean("MapTakenByPlayer")).isEmpty())
+						if (level.getEntitiesOfClass(Painting.class, AABB.ofSize(center.getCenter(), 32, 32, 32), painting -> painting.getVariant().is(Minejago.modLoc( "four_weapons")) && TommyLibServices.ENTITY.getPersistentData(painting).getBoolean("MapTakenByPlayer")).isEmpty())
 							this.status = SkulkinRaid.SkulkinRaidStatus.LOSS;
 						else
 							this.status = SkulkinRaidStatus.VICTORY;

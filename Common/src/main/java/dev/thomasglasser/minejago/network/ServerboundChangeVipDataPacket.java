@@ -51,7 +51,7 @@ public class ServerboundChangeVipDataPacket implements CustomPacket
     }
 
     public void handle(@Nullable Player player) {
-        TommyLibServices.NETWORK.sendToAllClients(ClientboundChangeVipDataPacket.class, ClientboundChangeVipDataPacket.write(uuid, vipData), player.getServer());
+        TommyLibServices.NETWORK.sendToAllClients(ClientboundChangeVipDataPacket.ID, ClientboundChangeVipDataPacket::new, ClientboundChangeVipDataPacket.write(uuid, vipData), player.getServer());
     }
 
     @Override

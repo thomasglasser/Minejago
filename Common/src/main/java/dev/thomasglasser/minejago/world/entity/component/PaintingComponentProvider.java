@@ -2,7 +2,7 @@ package dev.thomasglasser.minejago.world.entity.component;
 
 import dev.thomasglasser.minejago.client.MinejagoWailaPlugin;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
-import dev.thomasglasser.tommylib.api.world.entity.DataHolder;
+import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -40,7 +40,7 @@ public enum PaintingComponentProvider implements IEntityComponentProvider, IServ
     public void appendServerData(CompoundTag compoundTag, EntityAccessor accessor) {
         if (accessor.getEntity() instanceof Painting painting)
         {
-            CompoundTag tag = ((DataHolder) painting).getPersistentData();
+            CompoundTag tag = TommyLibServices.ENTITY.getPersistentData(painting);
             compoundTag.putBoolean("MapTaken", tag.getBoolean("MapTaken"));
         }
     }

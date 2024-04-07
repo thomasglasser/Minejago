@@ -11,12 +11,12 @@ import dev.thomasglasser.minejago.world.item.MinejagoItemUtils;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.tommylib.api.client.ClientUtils;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
-import dev.thomasglasser.tommylib.api.world.entity.DataHolder;
 import dev.thomasglasser.tommylib.api.world.entity.PlayerRideableFlying;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
@@ -51,17 +51,17 @@ public class MinejagoClientEvents
             if (MinejagoKeyMappings.ASCEND.isDown())
             {
                 ((PlayerRideableFlying)player.getVehicle()).ascend();
-                TommyLibServices.NETWORK.sendToServer(ServerboundFlyVehiclePacket.class, ServerboundFlyVehiclePacket.write(ServerboundFlyVehiclePacket.Type.START_ASCEND));
+                TommyLibServices.NETWORK.sendToServer(ServerboundFlyVehiclePacket.ID, ServerboundFlyVehiclePacket::new, ServerboundFlyVehiclePacket.write(ServerboundFlyVehiclePacket.Type.START_ASCEND));
             }
             else if (MinejagoKeyMappings.DESCEND.isDown())
             {
                 ((PlayerRideableFlying)player.getVehicle()).descend();
-                TommyLibServices.NETWORK.sendToServer(ServerboundFlyVehiclePacket.class, ServerboundFlyVehiclePacket.write(ServerboundFlyVehiclePacket.Type.START_DESCEND));
+                TommyLibServices.NETWORK.sendToServer(ServerboundFlyVehiclePacket.ID, ServerboundFlyVehiclePacket::new, ServerboundFlyVehiclePacket.write(ServerboundFlyVehiclePacket.Type.START_DESCEND));
             }
             else
             {
                 ((PlayerRideableFlying)player.getVehicle()).stop();
-                TommyLibServices.NETWORK.sendToServer(ServerboundFlyVehiclePacket.class, ServerboundFlyVehiclePacket.write(ServerboundFlyVehiclePacket.Type.STOP));
+                TommyLibServices.NETWORK.sendToServer(ServerboundFlyVehiclePacket.ID, ServerboundFlyVehiclePacket::new, ServerboundFlyVehiclePacket.write(ServerboundFlyVehiclePacket.Type.STOP));
             }
         }
     }
@@ -99,11 +99,13 @@ public class MinejagoClientEvents
         if (mainClientPlayer != null && !(key >= GLFW.GLFW_KEY_F1 && key <= GLFW.GLFW_KEY_F25) && !MinejagoKeyMappings.MEDITATE.isDown() && key != GLFW.GLFW_KEY_LEFT_SHIFT && key != GLFW.GLFW_KEY_ESCAPE)
         {
             FocusData focusData = Services.DATA.getFocusData(mainClientPlayer);
-            if (focusData.isMeditating() && ((DataHolder)mainClientPlayer).getPersistentData().getInt("WaitTicks") <= 0)
+            CompoundTag persistentData = TommyLibServices.ENTITY.getPersistentData(mainClientPlayer);
+            if (focusData.isMeditating() && persistentData.getInt("WaitTicks") <= 0)
             {
-                TommyLibServices.NETWORK.sendToServer(ServerboundStopMeditationPacket.class, ServerboundStopMeditationPacket.write(true));
+                TommyLibServices.NETWORK.sendToServer(ServerboundStopMeditationPacket.ID, ServerboundStopMeditationPacket::new, ServerboundStopMeditationPacket.write(true));
                 focusData.stopMeditating();
-                ((DataHolder) mainClientPlayer).getPersistentData().putInt("WaitTicks", 5);
+                persistentData.putInt("WaitTicks", 5);
+                TommyLibServices.ENTITY.setPersistentData(mainClientPlayer, persistentData, false);
             }
         }
     }

@@ -37,7 +37,7 @@ public class ServerboundStopMeditationPacket implements CustomPacket
         if (player instanceof ServerPlayer serverPlayer)
         {
             Services.DATA.getFocusData(player).stopMeditating();
-            TommyLibServices.NETWORK.sendToAllClients(ClientboundStopMeditationPacket.class, ClientboundStopMeditationPacket.write(serverPlayer.getUUID(), fail), serverPlayer.getServer());
+            TommyLibServices.NETWORK.sendToAllClients(ClientboundStopMeditationPacket.ID, ClientboundStopMeditationPacket::new, ClientboundStopMeditationPacket.write(serverPlayer.getUUID(), fail), serverPlayer.getServer());
         }
     }
 

@@ -94,11 +94,11 @@ public class PowerSelectionScreen extends Screen
                     if (wuForList != null)
                     {
                         if (wuForList.distanceTo(minecraft.player) > 1.0f)
-                            TommyLibServices.NETWORK.sendToServer(ServerboundSetPowerDataPacket.class, ServerboundSetPowerDataPacket.write(registry.getResourceKey(selectedPower).orElseThrow(), true, wuForList == null ? null : wuForList.getId()));
+                            TommyLibServices.NETWORK.sendToServer(ServerboundSetPowerDataPacket.ID, ServerboundSetPowerDataPacket::new, ServerboundSetPowerDataPacket.write(registry.getResourceKey(selectedPower).orElseThrow(), true, wuForList.getId()));
                     }
                     else
                     {
-                        TommyLibServices.NETWORK.sendToServer(ServerboundSetPowerDataPacket.class, ServerboundSetPowerDataPacket.write(registry.getResourceKey(selectedPower).orElseThrow(), true, wuForList == null ? null : wuForList.getId()));
+                        TommyLibServices.NETWORK.sendToServer(ServerboundSetPowerDataPacket.ID, ServerboundSetPowerDataPacket::new, ServerboundSetPowerDataPacket.write(registry.getResourceKey(selectedPower).orElseThrow(), true, null));
                     }
                 }
                 onClose();

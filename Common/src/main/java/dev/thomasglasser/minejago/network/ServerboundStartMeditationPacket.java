@@ -4,7 +4,7 @@ import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.tommylib.api.network.CustomPacket;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
-import dev.thomasglasser.tommylib.api.world.entity.DataHolder;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,8 +20,10 @@ public class ServerboundStartMeditationPacket implements CustomPacket
         if (player instanceof ServerPlayer serverPlayer)
         {
             Services.DATA.getFocusData(player).startMeditating();
-            ((DataHolder) serverPlayer).getPersistentData().putString("StartPos", serverPlayer.blockPosition().toString());
-            TommyLibServices.NETWORK.sendToAllClients(ClientboundStartMeditationPacket.class, ClientboundStartMeditationPacket.write(serverPlayer.getUUID()), serverPlayer.getServer());
+            CompoundTag persistentData = TommyLibServices.ENTITY.getPersistentData(serverPlayer);
+            persistentData.putString("StartPos", serverPlayer.blockPosition().toString());
+            TommyLibServices.ENTITY.setPersistentData(serverPlayer, persistentData, true);
+            TommyLibServices.NETWORK.sendToAllClients(ClientboundStartMeditationPacket.ID, ClientboundStartMeditationPacket::new, ClientboundStartMeditationPacket.write(serverPlayer.getUUID()), serverPlayer.getServer());
         }
     }
 

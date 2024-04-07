@@ -58,6 +58,8 @@ public class MinejagoItemModels extends ExtendedItemModelProvider
         basicItem(MinejagoItems.WRITABLE_SCROLL.get());
         basicItem(MinejagoItems.WRITTEN_SCROLL.get());
 
+        basicInventoryItem(MinejagoItems.WOODEN_NUNCHUCKS);
+
         MinejagoBlocks.TEAPOTS.forEach((dyeColor, itemRegistryObject) ->
         {
             if (existingFileHelper.exists(Minejago.modLoc("textures/item/" + dyeColor.getName() + "_teapot.png"), PackType.CLIENT_RESOURCES))
