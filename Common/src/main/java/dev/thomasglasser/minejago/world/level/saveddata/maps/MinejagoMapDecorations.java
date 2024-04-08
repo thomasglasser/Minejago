@@ -5,7 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class MinejagoMapDecorations
 {
-    // JSONed
+    // TODO: Stop using moonlight lib
     public static final ResourceLocation NUNCHUCKS = new ResourceLocation(Minejago.MOD_ID, "nunchucks");
     public static final ResourceLocation SWORD = new ResourceLocation(Minejago.MOD_ID, "sword");
     public static final ResourceLocation SCYTHE = new ResourceLocation(Minejago.MOD_ID, "scythe");
