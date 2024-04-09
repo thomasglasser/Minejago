@@ -21,6 +21,8 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.effect.MobEffectUtil;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -63,12 +65,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.constant.DefaultAnimations;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
@@ -115,6 +114,13 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
         tickBrain(this);
     }
 
+    @Override
+    public void aiStep()
+    {
+        super.aiStep();
+        this.updateSwingTime();
+    }
+
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(DATA_MEDITATION_STATUS, MeditationStatus.NONE);
@@ -157,7 +163,7 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
         return BrainActivityGroup.fightTasks(
                 new InvalidateAttackTarget<>(), 	 // Invalidate the attack target if it's no longer applicable
                 new FirstApplicableBehaviour<>( 																							  	 // Run only one of the below behaviours, trying each one in order
-                        new AnimatableMeleeAttack<>(0).whenStarting(entity -> setAggressive(true)).whenStopping(entity -> setAggressive(false)))// Melee attack
+                        new AnimatableMeleeAttack<>(8).whenStarting(entity -> setAggressive(true)).whenStopping(entity -> setAggressive(false)))// Melee attack
         );
     }
 
@@ -217,29 +223,7 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
         controllerRegistrar.add(DefaultAnimations.genericWalkController(this));
-        controllerRegistrar.add(DefaultAnimations.genericAttackAnimation(this, DefaultAnimations.ATTACK_STRIKE));
-        controllerRegistrar.add(new AnimationController<GeoAnimatable>(this, "spinjitzu", animationState ->
-        {
-            if (isDoingSpinjitzu())
-                return animationState.setAndContinue(SPINJITZU);
-
-            animationState.getController().forceAnimationReset();
-
-            return PlayState.STOP;
-        }));
-        controllerRegistrar.add(new AnimationController<GeoAnimatable>(this, "meditation", animationState ->
-            switch (getMeditationStatus())
-            {
-                case STARTING:
-                    yield animationState.setAndContinue(MEDITATION_START);
-                case FLOATING:
-                    yield animationState.setAndContinue(MEDITATION_FLOAT);
-                case FINISHING:
-                    yield animationState.setAndContinue(MEDITATION_FINISH);
-                default:
-                    yield PlayState.STOP;
-            }
-        ));
+        controllerRegistrar.add(DefaultAnimations.genericAttackAnimation(this, DefaultAnimations.ATTACK_SWING));
     }
 
     @Override
@@ -315,5 +299,14 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
         FLOATING,
         FINISHING,
         NONE
+    }
+
+    protected int getCurrentSwingDuration() {
+        int baseSwingDuration = 18;
+        if (MobEffectUtil.hasDigSpeed(this)) {
+            return baseSwingDuration - (1 + MobEffectUtil.getDigSpeedAmplification(this));
+        } else {
+            return this.hasEffect(MobEffects.DIG_SLOWDOWN) ? baseSwingDuration + (1 + this.getEffect(MobEffects.DIG_SLOWDOWN).getAmplifier()) * 2 : baseSwingDuration;
+        }
     }
 }

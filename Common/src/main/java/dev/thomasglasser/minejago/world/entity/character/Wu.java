@@ -38,6 +38,12 @@ import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
 import net.tslat.smartbrainlib.api.core.behaviour.FirstApplicableBehaviour;
 import net.tslat.smartbrainlib.util.BrainUtils;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.constant.DefaultAnimations;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,6 +54,10 @@ public class Wu extends Character
 {
     public static final String POWER_GIVEN_KEY = "gui.power_selection.power_given";
     public static final String NO_POWER_GIVEN_KEY = "gui.power_selection.no_power_given";
+
+    public static final RawAnimation ATTACK_SWING_WITH_STICK = RawAnimation.begin().thenPlay("attack.swing_with_stick");
+    public static final RawAnimation MOVE_WALK_WITH_STICK = RawAnimation.begin().thenPlay("move.walk_with_stick");
+
     protected List<ResourceKey<Power>> powersToGive = new ArrayList<>();
     protected boolean givingPower;
 
@@ -152,5 +162,33 @@ public class Wu extends Character
                                 .whenStarting(character -> character.setDoingSpinjitzu(true))
                                 .whenStopping(character -> character.setDoingSpinjitzu(false)), 0)
         ));
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar)
+    {
+        controllerRegistrar.add(new AnimationController<>(this, "StickAttack", 5, state -> {
+            if (this.swinging)
+                return /*getMainHandItem().getItem() == MinejagoItems.BAMBOO_STAFF.get() ? state.setAndContinue(ATTACK_SWING_WITH_STICK) :*/ state.setAndContinue(DefaultAnimations.ATTACK_SWING);
+
+            state.getController().forceAnimationReset();
+
+            return PlayState.STOP;
+        }));
+        controllerRegistrar.add(new AnimationController<>(this, "StickWalk", 5, state -> {
+            if (state.isMoving())
+                return getMainHandItem().getItem() == MinejagoItems.BAMBOO_STAFF.get() ? state.setAndContinue(MOVE_WALK_WITH_STICK) : state.setAndContinue(DefaultAnimations.WALK);
+
+            return PlayState.STOP;
+        }));
+        controllerRegistrar.add(new AnimationController<GeoAnimatable>(this, "spinjitzu", animationState ->
+        {
+            if (isDoingSpinjitzu())
+                return animationState.setAndContinue(SPINJITZU);
+
+            animationState.getController().forceAnimationReset();
+
+            return PlayState.STOP;
+        }));
     }
 }

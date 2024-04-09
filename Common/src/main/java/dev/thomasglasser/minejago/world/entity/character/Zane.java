@@ -19,6 +19,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.tslat.smartbrainlib.util.BrainUtils;
 import org.jetbrains.annotations.NotNull;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.object.PlayState;
 
 public class Zane extends Character
 {
@@ -89,5 +93,24 @@ public class Zane extends Character
     @Override
     public @NotNull MobType getMobType() {
         return MobType.WATER;
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar)
+    {
+        super.registerControllers(controllerRegistrar);
+        controllerRegistrar.add(new AnimationController<GeoAnimatable>(this, "meditation", animationState ->
+                switch (getMeditationStatus())
+                {
+                    case STARTING:
+                        yield animationState.setAndContinue(MEDITATION_START);
+                    case FLOATING:
+                        yield animationState.setAndContinue(MEDITATION_FLOAT);
+                    case FINISHING:
+                        yield animationState.setAndContinue(MEDITATION_FINISH);
+                    default:
+                        yield PlayState.STOP;
+                }
+        ));
     }
 }

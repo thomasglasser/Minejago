@@ -122,7 +122,7 @@
 			}
 		},
 		"attack.throw": {
-			"loop": true,
+			"loop": "hold_on_last_frame",
 			"animation_length": 1,
 			"bones": {
 				"arms": {
@@ -171,6 +171,76 @@
 					},
 					"position": {
 						"vector": [0, 0, 0]
+					}
+				}
+			}
+		},
+		"attack.swing": {
+			"animation_length": 0.5,
+			"bones": {
+				"arms": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.25": {
+							"vector": [-132.5, 0, 0]
+						},
+						"0.5": {
+							"vector": [0, 0, 0]
+						}
+					}
+				},
+				"RightArm": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.25": {
+							"vector": [-78.86433, -27.24052, 33.01748]
+						},
+						"0.5": {
+							"vector": [0, 0, 0]
+						}
+					},
+					"position": {
+						"vector": [0, 0, 0]
+					}
+				},
+				"LeftArm": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.25": {
+							"vector": [-78.86433, 27.2405, -33.0175]
+						},
+						"0.5": {
+							"vector": [0, 0, 0]
+						}
+					},
+					"position": {
+						"vector": [0, 0, 0]
+					}
+				}
+			}
+		},
+		"misc.sit": {
+			"loop": "hold_on_last_frame",
+			"bones": {
+				"RightLeg": {
+					"rotation": {
+						"vector": [-73.52973, 24.09293, 6.8817]
+					}
+				},
+				"LeftLeg": {
+					"rotation": {
+						"vector": [-73.52973, -24.09293, -6.8817]
+					}
+				},
+				"samukai": {
+					"position": {
+						"vector": [0, -10, 0]
 					}
 				}
 			}
