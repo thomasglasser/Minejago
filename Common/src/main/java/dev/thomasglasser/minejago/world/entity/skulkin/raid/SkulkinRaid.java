@@ -112,7 +112,7 @@ public class SkulkinRaid {
 		this.id = i;
 		this.level = serverLevel;
 		this.active = true;
-		this.raidCooldownTicks = 300;
+		this.raidCooldownTicks = DEFAULT_PRE_RAID_TICKS;
 		this.raidEvent.setProgress(0.0F);
 		this.center = blockPos;
 		this.numGroups = this.getNumGroups(serverLevel.getDifficulty());
@@ -748,7 +748,7 @@ public class SkulkinRaid {
 		if (kruncha != null)
 			this.joinSkulkinRaid(i, kruncha, pos, false);
 
-		if (MinejagoServerConfig.enableSkulkinRaids)
+		if (MinejagoServerConfig.enableTech)
 		{
 			List<MeleeCompatibleSkeletonRaider> raiders = new ArrayList<>();
 			if (nuckal != null) raiders.add(nuckal);
@@ -767,7 +767,7 @@ public class SkulkinRaid {
 
 			for (MeleeCompatibleSkeletonRaider raider : raiders)
 			{
-				raider.startRiding(truck);
+				raider.startRiding(truck, true);
 			}
 		}
 		else
