@@ -4,7 +4,9 @@ import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.tags.MinejagoBlockTags;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -21,6 +23,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
@@ -28,8 +31,9 @@ public class ThrownIronShuriken extends AbstractArrow
 {
     private static final EntityDataAccessor<Boolean> ID_FOIL = SynchedEntityData.defineId(ThrownIronShuriken.class, EntityDataSerializers.BOOLEAN);
 
+    private static final byte FLAG_DEALT_DAMAGE = 100;
+
     private boolean dealtDamage;
-    private boolean returned = false;
 
     private Vec3 pos;
 
@@ -57,10 +61,10 @@ public class ThrownIronShuriken extends AbstractArrow
 
 	    if (this.inGroundTime > 4) {
             this.dealtDamage = true;
-            level().broadcastEntityEvent(this, (byte) 100);
+            level().broadcastEntityEvent(this, FLAG_DEALT_DAMAGE);
         }
 
-        if (!this.dealtDamage && this.tickCount > 40 && !returned)
+        if (!this.dealtDamage && this.tickCount > 40)
         {
             Vec3 vec3 = pos.subtract(this.position());
             this.setPos(this.getX(), this.getY() + vec3.y * 0.015D, this.getZ());
@@ -73,11 +77,7 @@ public class ThrownIronShuriken extends AbstractArrow
 
             if (this.position().closerThan(pos, 2))
             {
-//                this.setNoGravity(false);
-//                do {
-//                    pos = pos.subtract(0, 1, 0);
-//                } while (level().getBlockState(BlockPos.containing(pos)).isAir());
-                returned = true;
+                this.dealtDamage = true;
             }
         }
         else {
@@ -140,8 +140,8 @@ public class ThrownIronShuriken extends AbstractArrow
         }
     }
 
-    protected boolean tryPickup(Player p_150196_) {
-        return super.tryPickup(p_150196_) || this.isNoPhysics() && this.ownedBy(p_150196_) && p_150196_.getInventory().add(this.getPickupItem());
+    protected boolean tryPickup(@NotNull Player player) {
+        return super.tryPickup(player) || this.isNoPhysics() && this.ownedBy(player) && player.getInventory().add(this.getPickupItem());
     }
 
     /**
@@ -151,7 +151,7 @@ public class ThrownIronShuriken extends AbstractArrow
         if (this.tickCount > 3)
         {
             if (!(pEntity.swinging || inGround))
-                onHitEntity(new EntityHitResult(this.getOwner() == null ? this : this.getOwner()));
+                onHitEntity(new EntityHitResult(pEntity));
             if (!this.level().isClientSide()) {
                 if (tickCount > 40)
                 {
@@ -172,13 +172,13 @@ public class ThrownIronShuriken extends AbstractArrow
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         this.dealtDamage = pCompound.getBoolean("DealtDamage");
-//        this.pos = NbtUtils.readBlockPos(pCompound.getCompound("Pos")).getCenter();
+        this.pos = NbtUtils.readBlockPos(pCompound.getCompound("TargetPos")).getCenter();
     }
 
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
         pCompound.putBoolean("DealtDamage", this.dealtDamage);
-//        pCompound.put("Pos", NbtUtils.writeBlockPos(BlockPos.containing(pos)));
+        pCompound.put("TargetPos", NbtUtils.writeBlockPos(BlockPos.containing(pos)));
     }
 
     public void tickDespawn() {
@@ -197,7 +197,7 @@ public class ThrownIronShuriken extends AbstractArrow
 
     @Override
     public void handleEntityEvent(byte id) {
-        if (id == 100)
+        if (id == FLAG_DEALT_DAMAGE)
         {
             this.dealtDamage = true;
         }
@@ -218,6 +218,5 @@ public class ThrownIronShuriken extends AbstractArrow
             level().destroyBlock(blockPosition().above(), true, this.getOwner());
         if (level().getBlockState(blockPosition().below()).is(MinejagoBlockTags.SHURIKEN_BREAKS))
             level().destroyBlock(blockPosition().below(), true, this.getOwner());
-        super.onInsideBlock(state);
     }
 }

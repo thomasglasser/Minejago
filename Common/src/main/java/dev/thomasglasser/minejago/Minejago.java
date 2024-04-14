@@ -15,7 +15,6 @@ import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.ai.memory.MinejagoMemoryModuleTypes;
 import dev.thomasglasser.minejago.world.entity.character.Character;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
-import dev.thomasglasser.minejago.world.entity.dragon.Dragon;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.focus.modifier.resourcekey.ResourceKeyFocusModifiers;
@@ -88,8 +87,7 @@ public class Minejago {
 		MinejagoPackets.init();
 
 		TommyLibServices.ENTITY.registerDataSerializers(Minejago.MOD_ID, Map.of(
-				"meditation_status", Character.MEDITATION_STATUS,
-				"shooting", Dragon.SHOOTING
+				"meditation_status", Character.MEDITATION_STATUS
 		));
 	}
 

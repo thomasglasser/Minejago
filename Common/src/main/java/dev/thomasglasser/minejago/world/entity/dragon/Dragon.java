@@ -15,7 +15,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
@@ -88,8 +87,7 @@ import java.util.Map;
 
 public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBrainOwner<Dragon>, PlayerRideableFlying, RangedAttackMob {
     public static final RawAnimation LIFT = RawAnimation.begin().thenPlay("move.lift");
-    public static final EntityDataSerializer<Boolean> SHOOTING = EntityDataSerializers.BOOLEAN;
-    private static final EntityDataAccessor<Boolean> DATA_SHOOTING = SynchedEntityData.defineId(Dragon.class, SHOOTING);
+    private static final EntityDataAccessor<Boolean> DATA_SHOOTING = SynchedEntityData.defineId(Dragon.class, EntityDataSerializers.BOOLEAN);
     public static final int TICKS_PER_FLAP = 39;
     public static final double HEAL_BOND = 0.05;
     public static final double FOOD_BOND = 0.1;
