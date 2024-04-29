@@ -1,21 +1,21 @@
 package dev.thomasglasser.minejago.client.renderer.armor;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.core.component.MinejagoDataComponents;
+import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.item.armor.TrainingGiItem;
-import dev.thomasglasser.tommylib.api.client.model.NbtArmorGeoModel;
 import net.minecraft.resources.ResourceLocation;
+import software.bernie.geckolib.model.DefaultedItemGeoModel;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 
 public class TrainingGiRenderer extends GeoArmorRenderer<TrainingGiItem> {
-    private final NbtArmorGeoModel<?> model;
-
     public TrainingGiRenderer() {
-        super(new NbtArmorGeoModel<>(Minejago.modLoc("armor/training_gi"), "Power"));
-        model = (NbtArmorGeoModel<?>) this.getGeoModel();
+        super(new DefaultedItemGeoModel<>(Minejago.modLoc("armor/training_gi")));
     }
 
     @Override
     public ResourceLocation getTextureLocation(TrainingGiItem animatable) {
-        return new ResourceLocation(model.getLocation().getNamespace(), "textures/models/armor/training_gi_" + model.getLocation().getPath() + ".png");
+        ResourceLocation location = currentStack.getOrDefault(MinejagoDataComponents.POWER.get(), MinejagoPowers.NONE.location());
+        return new ResourceLocation(location.getNamespace(), "textures/models/armor/training_gi_" + location.getPath() + ".png");
     }
 }

@@ -9,7 +9,8 @@ subsystems {
         // The Minecraft version for which the Parchment mappings were created.
         // This does not necessarily need to match the Minecraft version your mod targets
         // Defaults to the value of Gradle property neogradle.subsystems.parchment.minecraftVersion
-        minecraftVersion = minecraft_version
+        minecraftVersion = previous_minecraft_version
+//        minecraftVersion = minecraft_version
 
         // The version of Parchment mappings to apply.
         // See https://parchmentmc.org/docs/getting-started for a list.
@@ -48,26 +49,6 @@ runs {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 jarJar.enable()
-def jarJarRangeAttribute = Attribute.of("jarJarRange", String.class);
-configurations {
-    include
-    jarJar {
-        dependencies.addAllLater(project.provider {
-            project.configurations.include.allDependencies.collect {
-                def newDep = it.copy()
-                if (newDep instanceof ModuleDependency) {
-                    newDep.attributes {
-                        it.attribute(jarJarRangeAttribute, "[$newDep.version,)" as String)
-                    }
-                    newDep.setTransitive(false)
-                } else {
-                    throw new RuntimeException("Attempted to 'include' non-module dependency")
-                }
-                newDep
-            }
-        })
-    }
-}
 
 dependencies {
     implementation "net.neoforged:neoforge:${neoforge_version}"
@@ -77,23 +58,20 @@ dependencies {
     implementation "dev.kosmx.player-anim:player-animation-lib-forge:${playeranimator_version}"
     implementation "net.tslat.smartbrainlib:SmartBrainLib-neoforge-${minecraft_version}:${sbl_version}"
     implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
-    compileOnly "maven.modrinth:jade:13.2.2-neoforge"
-//    implementation "maven.modrinth:jade:${jade_version}-neoforge"
+    implementation "maven.modrinth:jade:${jade_version}+neoforge"
     implementation "me.shedaniel:RoughlyEnoughItems-neoforge:$rei_version"
     implementation "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
-    implementation "com.klikli_dev:modonomicon-${minecraft_version}-neoforge:${modonomicon_version}"
     implementation "net.tslat.tes:TES-neoforge-${minecraft_version}:${tes_version}"
-    implementation "maven.modrinth:moonlight:forge_${moonlight_version}"
     implementation "net.tslat.effectslib:TslatEffectsLib-neoforge-${minecraft_version}:${tslateffectslib_version}"
     implementation "maven.modrinth:midnightlib:${midnightlib_version}-neoforge"
 
-    include implementation("dev.thomasglasser.tommylib:tommylib-neoforge-${minecraft_version}:${tommylib_version}")
+    jarJar implementation("dev.thomasglasser.tommylib:tommylib-neoforge-${minecraft_version}:${tommylib_version}")
 
 
     // Forge Only
-    include implementation("dev.thomasglasser.sherdsapi:sherdsapi-neoforge-${minecraft_version}:${sherdsapi_version}")
+    jarJar implementation("dev.thomasglasser.sherdsapi:sherdsapi-neoforge-${minecraft_version}:${sherdsapi_version}")
     compileOnly "maven.modrinth:trimmed:${trimmed_version}+forge"
-//    include implementation("maven.modrinth:trimmed:${trimmed_version}+forge")
+//    jarJar implementation("maven.modrinth:trimmed:${trimmed_version}+forge")
     implementation "maven.modrinth:ryoamiclights:${ryoamiclights_version}-neoforge"
 
     // Runtime

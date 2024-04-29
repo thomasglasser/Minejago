@@ -8,16 +8,14 @@
             "condition": "minecraft:location_check",
             "predicate": {
               "block": {
-                "tag": "minecraft:crops"
+                "blocks": "#minecraft:crops"
               }
             }
           },
           {
             "condition": "minecraft:match_tool",
             "predicate": {
-              "items": [
-                "minejago:iron_scythe"
-              ]
+              "items": "minejago:iron_scythe"
             }
           }
         ]
@@ -30,8 +28,8 @@
       "translate": "advancement.minejago.husbandry.harvest_with_scythe.desc"
     },
     "icon": {
-      "item": "minejago:iron_scythe",
-      "nbt": "{Damage:0}"
+      "count": 1,
+      "id": "minejago:iron_scythe"
     },
     "title": {
       "translate": "advancement.minejago.husbandry.harvest_with_scythe.title"

@@ -6,6 +6,8 @@ import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.model.BambooStaffModel;
 import dev.thomasglasser.minejago.client.model.ScytheModel;
 import dev.thomasglasser.minejago.client.model.SpearModel;
+import dev.thomasglasser.minejago.core.component.MinejagoDataComponents;
+import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.armor.PoweredArmorItem;
@@ -93,7 +95,7 @@ public class MinejagoBlockEntityWithoutLevelRenderer extends BlockEntityWithoutL
         else if (stack.getItem() instanceof PoweredArmorItem)
         {
             poseStack.translate(0.5D, 0.5D, 0.5D);
-            ResourceLocation location = ResourceLocation.of(stack.getOrCreateTag().getString("Power"), ':');
+            ResourceLocation location = stack.getOrDefault(MinejagoDataComponents.POWER.get(), MinejagoPowers.NONE.location());
             final String[] path = new String[1];
             MinejagoArmors.POWER_SETS.forEach(armorSet ->
                     armorSet.getAll().forEach(item ->

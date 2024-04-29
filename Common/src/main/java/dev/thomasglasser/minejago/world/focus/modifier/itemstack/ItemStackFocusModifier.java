@@ -79,7 +79,7 @@ public class ItemStackFocusModifier extends FocusModifier
 	public JsonObject toJson()
 	{
 		JsonObject jsonObject = new JsonObject();
-		if (stack.getCount() > 1 || stack.hasTag())
+		if (stack.getCount() > 1 || !stack.getComponents().isEmpty())
 			jsonObject.add("stack", ItemStack.CODEC.encodeStart(JsonOps.INSTANCE, stack).result().orElseThrow());
 		else
 			jsonObject.addProperty("item", BuiltInRegistries.ITEM.getKey(stack.getItem()).toString());

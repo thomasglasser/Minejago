@@ -3,9 +3,9 @@ package dev.thomasglasser.minejago.data.advancements.packs;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.advancements.criterion.DidSpinjitzuTrigger;
 import dev.thomasglasser.minejago.advancements.criterion.GotPowerTrigger;
+import dev.thomasglasser.minejago.core.component.MinejagoDataComponents;
 import dev.thomasglasser.minejago.tags.MinejagoEntityTypeTags;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
-import dev.thomasglasser.minejago.world.entity.power.PowerUtils;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
@@ -21,10 +21,13 @@ import net.minecraft.advancements.critereon.LocationPredicate;
 import net.minecraft.advancements.critereon.PlayerTrigger;
 import net.minecraft.advancements.critereon.TameAnimalTrigger;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.component.DataComponentPredicate;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Unit;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.data.AdvancementProvider;
@@ -67,23 +70,22 @@ public class MinejagoStoryAdvancements implements AdvancementProvider.Advancemen
                 "get_black_gi_set", InventoryChangeTrigger.TriggerInstance.hasItems(MinejagoArmors.BLACK_GI_SET.getAllAsItems().toArray(new ItemLike[] {}))
         ), "Ninja in Training", "Receive the Black Gi");
 
-        AdvancementHolder doSpinjitzu = helper.make(getBlackGi, PotionUtils.setPotion(MinejagoItems.FILLED_TEACUP.get().getDefaultInstance(), MinejagoPotions.OAK_TEA.get()), DO_SPINJITZU, AdvancementType.TASK, true, true, false, null, Map.of(
+        AdvancementHolder doSpinjitzu = helper.make(getBlackGi, PotionContents.createItemStack(MinejagoItems.FILLED_TEACUP.get(), MinejagoPotions.OAK_TEA.asHolder()), DO_SPINJITZU, AdvancementType.TASK, true, true, false, null, Map.of(
                 "do_spinjitzu", DidSpinjitzuTrigger.TriggerInstance.didSpinjitzu()
         ), "Twistitzu? Tornadzu?", "Do spinjitzu for the first time");
 
-        CompoundTag fwTag = new CompoundTag();
-        fwTag.putBoolean("IsFourWeaponsMap", true);
-
         AdvancementHolder getFourWeaponsMap = helper.make(getBlackGi, Items.FILLED_MAP, GET_FOUR_WEAPONS_MAP, AdvancementType.TASK, true, true, false, null, Map.of(
-                "get_four_weapons_map", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(Items.FILLED_MAP).hasNbt(fwTag).build())
+                "get_four_weapons_map", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(Items.FILLED_MAP).hasComponents(DataComponentPredicate.builder().expect(MinejagoDataComponents.GOLDEN_WEAPONS_MAP.get(), Unit.INSTANCE).build()).build())
         ), "The Journey Begins", "Obtain a Four Weapons Map");
 
-        AdvancementHolder getPower = helper.make(getFourWeaponsMap, PowerUtils.setPower(MinejagoArmors.TRAINING_GI_SET.HEAD.get().getDefaultInstance(), MinejagoPowers.FIRE), GET_POWER, AdvancementType.TASK, true, true, false, null, Map.of(
+        ItemStack fireHead = MinejagoArmors.TRAINING_GI_SET.HEAD.get().getDefaultInstance();
+        fireHead.set(MinejagoDataComponents.POWER.get(), MinejagoPowers.FIRE.location());
+        AdvancementHolder getPower = helper.make(getFourWeaponsMap, fireHead, GET_POWER, AdvancementType.TASK, true, true, false, null, Map.of(
                 "get_power", GotPowerTrigger.TriggerInstance.gotPower()
         ), "I've Got the Power!", "Discover your elemental power");
 
         AdvancementHolder enterGoldenWeaponsStructure = helper.make(getPower, MinejagoItems.SCYTHE_OF_QUAKES.get(), ENTER_GOLDEN_WEAPONS_STRUCTURE, AdvancementType.TASK, true, true, false, null, Map.of(
-                "enter_cave_of_despair", PlayerTrigger.TriggerInstance.located(LocationPredicate.Builder.inStructure(MinejagoStructures.CAVE_OF_DESPAIR))
+                "enter_cave_of_despair", PlayerTrigger.TriggerInstance.located(LocationPredicate.Builder.inStructure(registries.lookupOrThrow(Registries.STRUCTURE).getOrThrow(MinejagoStructures.CAVE_OF_DESPAIR)))
                 // TODO: Add other structures
         ), "The Weapon is Near", "Enter a structure containing a Golden Weapon");
 

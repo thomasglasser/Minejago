@@ -11,7 +11,7 @@ subprojects {
         archivesName = "${mod_id}-${project.name}-${minecraft_version}"
     }
 
-    java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+    java.toolchain.languageVersion = JavaLanguageVersion.of(21)
     java.withSourcesJar()
     java.withJavadocJar()
 
@@ -205,7 +205,6 @@ subprojects {
                 next_minecraft_version: next_minecraft_version,
                 playeranimator_version: playeranimator_version,
                 ryoamiclights_version: ryoamiclights_version,
-                moonlight_version: moonlight_version,
                 sbl_version: sbl_version,
                 geckolib_version: geckolib_version,
                 sherdsapi_version: sherdsapi_version,
@@ -216,23 +215,9 @@ subprojects {
         ]
         inputs.properties replaceProperties
 
-        filesMatching(['META-INF/mods.toml','fabric.mod.json','**/pack.mcmeta','*.mixins.json']) {
+        filesMatching(['META-INF/neoforge.mods.toml','fabric.mod.json','**/pack.mcmeta','*.mixins.json']) {
             expand replaceProperties + [project: project]
         }
-    }
-
-    tasks.withType(JavaCompile).configureEach {
-
-        it.options.encoding = 'UTF-8'
-        it.options.release = 17
-    }
-
-    // Disables Gradle's custom module metadata from being published to maven. The
-    // metadata includes mapped dependencies which are not reasonably consumable by
-    // other mod developers.
-    tasks.withType(GenerateModuleMetadata) {
-
-        enabled = false
     }
 
     publishing {

@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "tommylib:orange_dyes"
+            "items": "#tommylib:orange_dyes"
           }
         ]
       },
@@ -15,9 +15,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minejago:flame_teapot"
-            ]
+            "items": "minejago:flame_teapot"
           }
         ]
       },
@@ -27,7 +25,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "minejago:teapots"
+            "items": "#minejago:teapots"
           }
         ]
       },

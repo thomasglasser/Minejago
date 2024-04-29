@@ -11,13 +11,13 @@ import dev.thomasglasser.tommylib.api.world.item.CustomEmptyMapItem;
 import dev.thomasglasser.tommylib.api.world.item.ItemUtils;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.BannerPatternItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -39,21 +39,21 @@ public class MinejagoItems
     public static final List<String> SHERDS = new ArrayList<>();
     public static final String MOD_NEEDED = "error.mod_needed";
 
-    public static final RegistryObject<BambooStaffItem> BAMBOO_STAFF = register("bamboo_staff", () -> new BambooStaffItem(Tiers.WOOD, 2, -1, new Item.Properties()), List.of(CreativeModeTabs.COMBAT));
-    public static final RegistryObject<BoneKnifeItem> BONE_KNIFE = register("bone_knife", () -> new BoneKnifeItem(MinejagoTiers.BONE, 3, -2, new Item.Properties()), List.of(CreativeModeTabs.COMBAT));
-    public static final RegistryObject<SpearItem> IRON_SPEAR = register("iron_spear", () -> new SpearItem(Tiers.IRON, 4, -2.8F, 1f, (new Item.Properties())), List.of(CreativeModeTabs.COMBAT));
-    public static final RegistryObject<ScytheOfQuakesItem> SCYTHE_OF_QUAKES = register("scythe_of_quakes", () -> new ScytheOfQuakesItem(new Item.Properties().defaultDurability(0).rarity(Rarity.EPIC).fireResistant().stacksTo(1)), List.of(CreativeModeTabs.COMBAT, CreativeModeTabs.TOOLS_AND_UTILITIES));
-    public static final RegistryObject<ShurikenItem> IRON_SHURIKEN = register("iron_shuriken", () -> new ShurikenItem(Tiers.IRON, 1, 1F, (new Item.Properties())), List.of(CreativeModeTabs.COMBAT));
-    public static final RegistryObject<SwordItem> IRON_KATANA = register("iron_katana", () -> new SwordItem(Tiers.IRON, 1, -1.4F, (new Item.Properties())), List.of(CreativeModeTabs.COMBAT));
+    public static final RegistryObject<BambooStaffItem> BAMBOO_STAFF = register("bamboo_staff", () -> new BambooStaffItem(Tiers.WOOD, new Item.Properties().attributes(SwordItem.createAttributes(Tiers.WOOD, 2, -1))), List.of(CreativeModeTabs.COMBAT));
+    public static final RegistryObject<BoneKnifeItem> BONE_KNIFE = register("bone_knife", () -> new BoneKnifeItem(MinejagoTiers.BONE, new Item.Properties().attributes(SwordItem.createAttributes(MinejagoTiers.BONE, 3, -2))), List.of(CreativeModeTabs.COMBAT));
+    public static final RegistryObject<SpearItem> IRON_SPEAR = register("iron_spear", () -> new SpearItem(Tiers.IRON, (new Item.Properties().attributes(SpearItem.createAttributes(Tiers.IRON, 4, -2.8F, 1f)))), List.of(CreativeModeTabs.COMBAT));
+    public static final RegistryObject<ScytheOfQuakesItem> SCYTHE_OF_QUAKES = register("scythe_of_quakes", () -> new ScytheOfQuakesItem(new Item.Properties()), List.of(CreativeModeTabs.COMBAT, CreativeModeTabs.TOOLS_AND_UTILITIES));
+    public static final RegistryObject<ShurikenItem> IRON_SHURIKEN = register("iron_shuriken", () -> new ShurikenItem(Tiers.IRON, (new Item.Properties().attributes(SwordItem.createAttributes(Tiers.IRON, 1, 1F)))), List.of(CreativeModeTabs.COMBAT));
+    public static final RegistryObject<SwordItem> IRON_KATANA = register("iron_katana", () -> new SwordItem(Tiers.IRON, new Item.Properties().attributes(SwordItem.createAttributes(Tiers.IRON, 1, -1.4F))), List.of(CreativeModeTabs.COMBAT));
     public static final RegistryObject<TeacupItem> TEACUP = register("teacup", () -> new TeacupItem(new Item.Properties()), List.of(CreativeModeTabs.INGREDIENTS));
     public static final RegistryObject<FilledTeacupItem> FILLED_TEACUP = register("filled_teacup", () -> new FilledTeacupItem(new Item.Properties().stacksTo(1)), List.of());
     public static final RegistryObject<BannerPatternItem> FOUR_WEAPONS_BANNER_PATTERN = register("four_weapons_banner_pattern", () -> new BannerPatternItem(MinejagoBannerPatternTags.PATTERN_ITEM_FOUR_WEAPONS, (new Item.Properties()).stacksTo(1).rarity(Rarity.EPIC)), List.of(CreativeModeTabs.INGREDIENTS));
-    public static final RegistryObject<IronScytheItem> IRON_SCYTHE = register("iron_scythe", () -> new IronScytheItem(Tiers.IRON, 8, -3.5F, BlockTags.MINEABLE_WITH_HOE, new Item.Properties()), List.of(CreativeModeTabs.TOOLS_AND_UTILITIES, CreativeModeTabs.COMBAT));
+    public static final RegistryObject<ScytheItem> IRON_SCYTHE = register("iron_scythe", () -> new ScytheItem(Tiers.IRON, new Item.Properties().attributes(DiggerItem.createAttributes(Tiers.IRON, 8, -3.5F))), List.of(CreativeModeTabs.TOOLS_AND_UTILITIES, CreativeModeTabs.COMBAT));
     public static final RegistryObject<NunchucksItem> WOODEN_NUNCHUCKS = register("wooden_nunchucks", () -> new NunchucksItem(new Item.Properties().stacksTo(1)), List.of(CreativeModeTabs.COMBAT));
     public static final RegistryObject<ScrollItem> SCROLL = register("scroll", () -> new ScrollItem(new Item.Properties()), List.of(CreativeModeTabs.INGREDIENTS));
     public static final RegistryObject<WritableScrollItem> WRITABLE_SCROLL = register("writable_scroll", () -> new WritableScrollItem(new Item.Properties().stacksTo(1)), List.of(CreativeModeTabs.TOOLS_AND_UTILITIES));
     public static final RegistryObject<WrittenScrollItem> WRITTEN_SCROLL = register("written_scroll", () -> new WrittenScrollItem(new Item.Properties().stacksTo(1)), List.of());
-    public static final RegistryObject<CustomEmptyMapItem> EMPTY_GOLDEN_WEAPONS_MAP = register("empty_golden_weapons_map", () -> new CustomEmptyMapItem(MinejagoItemUtils::getFourWeaponsMap, new Item.Properties()), List.of(MinejagoCreativeModeTabs.MINEJAGO.getResourceKey()));
+    public static final RegistryObject<CustomEmptyMapItem> EMPTY_GOLDEN_WEAPONS_MAP = register("empty_golden_weapons_map", () -> new CustomEmptyMapItem(MinejagoItemUtils::createGoldenWeaponsMap, new Item.Properties()), List.of(MinejagoCreativeModeTabs.MINEJAGO.getResourceKey()));
 
     // POTTERY SHERDS
     public static final RegistryObject<Item> POTTERY_SHERD_ICE_CUBE = registerSherd("ice_cube");

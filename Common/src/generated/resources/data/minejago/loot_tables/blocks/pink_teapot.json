@@ -12,53 +12,11 @@
               "source": "block_entity"
             },
             {
-              "function": "minecraft:copy_nbt",
-              "ops": [
-                {
-                  "op": "replace",
-                  "source": "Boiling",
-                  "target": "BlockEntityTag.Boiling"
-                },
-                {
-                  "op": "replace",
-                  "source": "Done",
-                  "target": "BlockEntityTag.Done"
-                },
-                {
-                  "op": "replace",
-                  "source": "Cups",
-                  "target": "BlockEntityTag.Cups"
-                },
-                {
-                  "op": "replace",
-                  "source": "LootTable",
-                  "target": "BlockEntityTag.LootTable"
-                },
-                {
-                  "op": "replace",
-                  "source": "LootTableSeed",
-                  "target": "BlockEntityTag.LootTableSeed"
-                },
-                {
-                  "op": "replace",
-                  "source": "HasLeaves",
-                  "target": "BlockEntityTag.HasLeaves"
-                },
-                {
-                  "op": "replace",
-                  "source": "Temperature",
-                  "target": "BlockEntityTag.Temperature"
-                },
-                {
-                  "op": "replace",
-                  "source": "Potion",
-                  "target": "BlockEntityTag.Potion"
-                }
-              ],
+              "function": "minecraft:copy_components",
               "source": "block_entity"
             },
             {
-              "type": "minejago:teapot",
+              "component": "minecraft:container",
               "entries": [
                 {
                   "type": "minecraft:dynamic",

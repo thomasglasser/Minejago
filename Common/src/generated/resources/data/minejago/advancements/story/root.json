@@ -4,9 +4,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:crafting_table"
-            ]
+            "items": "minecraft:crafting_table"
           }
         ]
       },
@@ -20,7 +18,8 @@
       "translate": "advancement.minejago.story.root.desc"
     },
     "icon": {
-      "item": "minejago:scythe_of_quakes"
+      "count": 1,
+      "id": "minejago:scythe_of_quakes"
     },
     "show_toast": false,
     "title": {

@@ -4,6 +4,7 @@ import dev.thomasglasser.minejago.world.entity.skulkin.raid.MeleeCompatibleSkele
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.Holder;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntityType;
@@ -13,7 +14,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 
 public class Skulkin extends MeleeCompatibleSkeletonRaider
 {
@@ -24,14 +24,14 @@ public class Skulkin extends MeleeCompatibleSkeletonRaider
         variant = Variant.values()[(int) (Math.random() * (Variant.values().length - 1))];
     }
 
-    @Nullable
     @Override
-    public double getAttributeValue(Attribute pAttribute) {
-        double base = super.getAttributeValue(pAttribute);
-        if (pAttribute == Attributes.ATTACK_DAMAGE && this.variant == Variant.STRENGTH)
+    public double getAttributeBaseValue(Holder<Attribute> attribute)
+    {
+        double base = super.getAttributeValue(attribute);
+        if (attribute == Attributes.ATTACK_DAMAGE && this.variant == Variant.STRENGTH)
         {
             base *= 2.0;
-        } else if (pAttribute == Attributes.MOVEMENT_SPEED && this.variant == Variant.SPEED) {
+        } else if (attribute == Attributes.MOVEMENT_SPEED && this.variant == Variant.SPEED) {
             base *= 2.0;
         }
         return base;

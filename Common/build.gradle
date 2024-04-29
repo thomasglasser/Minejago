@@ -17,7 +17,8 @@ dependencies {
 
     mappings loom.layered() {
         officialMojangMappings()
-        parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip")
+        parchment("org.parchmentmc.data:parchment-${previous_minecraft_version}:${parchment_version}@zip")
+//        parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip")
     }
 
     compileOnly group:'net.fabricmc', name:'sponge-mixin', version:mixin_version
@@ -25,7 +26,6 @@ dependencies {
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
 
     modImplementation "net.tslat.smartbrainlib:SmartBrainLib-common-${minecraft_version}:${sbl_version}"
-    modImplementation "com.klikli_dev:modonomicon-${minecraft_version}-common:${modonomicon_version}"
     modImplementation "net.tslat.tes:TES-common-${minecraft_version}:${tes_version}"
     modImplementation "net.tslat.effectslib:TslatEffectsLib-common-${minecraft_version}:${tslateffectslib_version}"
     modImplementation "dev.thomasglasser.tommylib:tommylib-common-${minecraft_version}:${tommylib_version}"
@@ -33,9 +33,8 @@ dependencies {
     modCompileOnly "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}"
     modCompileOnly "dev.kosmx.player-anim:player-animation-lib:${playeranimator_version}"
     modCompileOnly "dev.kosmx.player-anim:anim-core:${playeranimator_version}"
-    modCompileOnly "maven.modrinth:jade:${jade_version}"
+    modCompileOnly "maven.modrinth:jade:${jade_version}+fabric"
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-forge:$rei_version"
-    modCompileOnly "maven.modrinth:moonlight:fabric_${moonlight_version}"
     modCompileOnly "maven.modrinth:ryoamiclights:${ryoamiclights_version}-fabric"
     modCompileOnly "maven.modrinth:midnightlib:${midnightlib_version}-fabric"
 }

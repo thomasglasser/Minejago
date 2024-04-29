@@ -76,7 +76,7 @@ public class BlockStateFocusModifier extends FocusModifier
 		if (state == state.getBlock().defaultBlockState())
 			jsonObject.addProperty("block", BuiltInRegistries.BLOCK.getKey(state.getBlock()).toString());
 		else
-			jsonObject.add("state", BlockState.CODEC.encodeStart(JsonOps.INSTANCE, state).get().orThrow());
+			jsonObject.add("state", BlockState.CODEC.encodeStart(JsonOps.INSTANCE, state).getOrThrow());
 		JsonObject info = super.toJson();
 		for (String s : info.keySet())
 		{

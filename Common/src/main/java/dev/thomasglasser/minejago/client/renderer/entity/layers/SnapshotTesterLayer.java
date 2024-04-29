@@ -3,9 +3,8 @@ package dev.thomasglasser.minejago.client.renderer.entity.layers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.client.MinejagoClientConfig;
-import dev.thomasglasser.minejago.client.model.PilotsSnapshotTesterHatModel;
 import dev.thomasglasser.minejago.client.MinejagoClientUtils;
+import dev.thomasglasser.minejago.client.model.PilotsSnapshotTesterHatModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -37,17 +36,19 @@ public class SnapshotTesterLayer<T extends LivingEntity> extends RenderLayer<T, 
 
     @Override
     protected ResourceLocation getTextureLocation(T entity) {
-        return switch (MinejagoClientConfig.snapshotTesterCosmeticChoice)
-        {
-
-            case BAMBOO_HAT ->
-            {
-                if (xmasTextures)
-                    yield HOLIDAY_HAT_TEXTURE;
-                else
-                    yield BAMBOO_HAT_TEXTURE;
-            }
-        };
+        // TODO: Update MidnightLib
+//        return switch (MinejagoClientConfig.snapshotTesterCosmeticChoice)
+//        {
+//
+//            case BAMBOO_HAT ->
+//            {
+//                if (xmasTextures)
+//                    yield HOLIDAY_HAT_TEXTURE;
+//                else
+//                    yield BAMBOO_HAT_TEXTURE;
+//            }
+//        };
+        return BAMBOO_HAT_TEXTURE;
     }
 
     @Override

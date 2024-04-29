@@ -1,10 +1,10 @@
 package dev.thomasglasser.minejago.world.entity.character;
 
 import com.mojang.datafixers.util.Pair;
+import dev.thomasglasser.minejago.core.component.MinejagoDataComponents;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
-import dev.thomasglasser.minejago.network.ClientboundOpenPowerSelectionScreenPacket;
+import dev.thomasglasser.minejago.network.ClientboundOpenPowerSelectionScreenPayload;
 import dev.thomasglasser.minejago.platform.Services;
-import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.world.entity.ai.behavior.GivePowerAndGi;
 import dev.thomasglasser.minejago.world.entity.ai.memory.MinejagoMemoryModuleTypes;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
@@ -14,7 +14,6 @@ import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.level.storage.PowerData;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import net.minecraft.core.Registry;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
@@ -38,16 +37,17 @@ import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
 import net.tslat.smartbrainlib.api.core.behaviour.FirstApplicableBehaviour;
 import net.tslat.smartbrainlib.util.BrainUtils;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.animatable.GeoAnimatable;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.constant.DefaultAnimations;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public class Wu extends Character
@@ -68,8 +68,8 @@ public class Wu extends Character
 
     public static AttributeSupplier.Builder createAttributes() {
         return Character.createAttributes()
-                .add(Attributes.MAX_HEALTH, ((RangedAttribute)Attributes.MAX_HEALTH).getMaxValue())
-                .add(Attributes.ATTACK_KNOCKBACK, ((RangedAttribute)Attributes.ATTACK_KNOCKBACK).getMaxValue())
+                .add(Attributes.MAX_HEALTH, ((RangedAttribute)Attributes.MAX_HEALTH.value()).getMaxValue())
+                .add(Attributes.ATTACK_KNOCKBACK, ((RangedAttribute)Attributes.ATTACK_KNOCKBACK.value()).getMaxValue())
                 .add(Attributes.ATTACK_DAMAGE, 20);
     }
 
@@ -79,34 +79,39 @@ public class Wu extends Character
     }
 
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
-        SpawnGroupData data = super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
-        populateDefaultEquipmentSlots(random, pDifficulty);
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData)
+    {
+        populateDefaultEquipmentSlots(random, difficultyInstance);
         setCanPickUpLoot(false);
-        return data;
+        return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData);
     }
 
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if (player.getInventory().hasAnyMatching(itemStack -> itemStack.is(Items.FILLED_MAP) && itemStack.getOrCreateTag().getBoolean("IsFourWeaponsMap")))
+        if (player.getInventory().hasAnyMatching(itemStack -> itemStack.is(Items.FILLED_MAP) && itemStack.has(MinejagoDataComponents.GOLDEN_WEAPONS_MAP.get())))
         {
             Registry<Power> registry = level().registryAccess().registryOrThrow(MinejagoRegistries.POWER);
 
-            if (!MinejagoServerConfig.drainPool || (powersToGive.size() <= 1)) {
+            // TODO: Update MidnightLib
+            if (!/*MinejagoServerConfig.drainPool*/true || (powersToGive.size() <= 1)) {
                 powersToGive = new ArrayList<>(registry.registryKeySet());
-                if (!MinejagoServerConfig.enableNoPower)
+                // TODO: Update MidnightLib
+                if (!/*MinejagoServerConfig.enableNoPower*/true)
                     removePowersToGive(MinejagoPowers.NONE);
                 powersToGive.removeIf(key -> registry.get(key) != null && registry.get(key).isSpecial());
             }
 
             if (player instanceof ServerPlayer serverPlayer && hand == InteractionHand.MAIN_HAND) {
-                givingPower = !Services.DATA.getPowerData(serverPlayer).given() || MinejagoServerConfig.allowChange;
+                // TODO: Update MidnightLib
+                givingPower = !Services.DATA.getPowerData(serverPlayer).given() || /*MinejagoServerConfig.allowChange*/true;
                 if (givingPower) {
-                    if (MinejagoServerConfig.allowChoose) {
-                        TommyLibServices.NETWORK.sendToClient(ClientboundOpenPowerSelectionScreenPacket.ID, ClientboundOpenPowerSelectionScreenPacket::new, ClientboundOpenPowerSelectionScreenPacket.write(powersToGive, this.getId()), serverPlayer);
+                    // TODO: Update MidnightLib
+                    if (/*MinejagoServerConfig.allowChoose*/true) {
+                        TommyLibServices.NETWORK.sendToClient(new ClientboundOpenPowerSelectionScreenPayload(powersToGive, Optional.of(this.getId())), serverPlayer);
                     } else if (this.distanceTo(serverPlayer) > 1.0f) {
                         ResourceKey<Power> oldPower = Services.DATA.getPowerData(serverPlayer).power();
-                        if (Services.DATA.getPowerData(serverPlayer).given() && oldPower != MinejagoPowers.NONE && MinejagoServerConfig.drainPool)
+                        // TODO: Update MidnightLib
+                        if (Services.DATA.getPowerData(serverPlayer).given() && oldPower != MinejagoPowers.NONE && /*MinejagoServerConfig.drainPool*/true)
                             addPowersToGive(oldPower);
                         ResourceKey<Power> newPower = powersToGive.get(random.nextInt(powersToGive.size()));
                         if (newPower != MinejagoPowers.NONE) removePowersToGive(newPower);

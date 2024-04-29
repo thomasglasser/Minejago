@@ -6,6 +6,7 @@ import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.display.basic.BasicDisplay;
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -20,7 +21,7 @@ import java.util.Optional;
 
 public class TeapotBrewingDisplay extends BasicDisplay
 {
-	private Potion base;
+	private Holder<Potion> base;
 	private IntProvider cookingTime;
 	private float experience;
 
@@ -31,10 +32,10 @@ public class TeapotBrewingDisplay extends BasicDisplay
 
 	public TeapotBrewingDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs, Optional<ResourceLocation> location, CompoundTag tag)
 	{
-		this(BuiltInRegistries.POTION.get(ResourceLocation.of(tag.getString("base"), ':')), inputs, outputs, location, IntProvider.CODEC.decode(NbtOps.INSTANCE, tag).get().orThrow().getFirst(), tag.getFloat("xp"));
+		this(BuiltInRegistries.POTION.getHolder(ResourceLocation.of(tag.getString("base"), ':')).orElseThrow(), inputs, outputs, location, IntProvider.CODEC.decode(NbtOps.INSTANCE, tag).getOrThrow().getFirst(), tag.getFloat("xp"));
 	}
 
-	public TeapotBrewingDisplay(Potion base, List<EntryIngredient> inputs, List<EntryIngredient> outputs, Optional<ResourceLocation> location, IntProvider cookTime, float xp)
+	public TeapotBrewingDisplay(Holder<Potion> base, List<EntryIngredient> inputs, List<EntryIngredient> outputs, Optional<ResourceLocation> location, IntProvider cookTime, float xp)
 	{
 		super(inputs, outputs, location);
 		this.cookingTime = cookTime;
@@ -52,7 +53,7 @@ public class TeapotBrewingDisplay extends BasicDisplay
 		return experience;
 	}
 
-	public Potion getBase()
+	public Holder<Potion> getBase()
 	{
 		return base;
 	}
@@ -67,7 +68,7 @@ public class TeapotBrewingDisplay extends BasicDisplay
 	{
 		return BasicDisplay.Serializer.of(TeapotBrewingDisplay::new, (display, tag) ->
 		{
-			tag.putString("base", BuiltInRegistries.POTION.getKey(display.getBase()).toString());
+			tag.putString("base", display.base.getRegisteredName());
 			IntProvider.CODEC.encodeStart(NbtOps.INSTANCE, display.cookingTime);
 			tag.putFloat("xp", display.getExperience());
 		});

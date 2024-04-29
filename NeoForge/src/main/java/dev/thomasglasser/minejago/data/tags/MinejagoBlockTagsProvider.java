@@ -24,6 +24,7 @@ public class MinejagoBlockTagsProvider extends ExtendedBlockTagsProvider
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     protected void addTags(HolderLookup.Provider p_256380_) {
         tag(BlockTags.ENDERMAN_HOLDABLE)
                 .addTag(MinejagoBlockTags.TEAPOTS);
@@ -52,5 +53,10 @@ public class MinejagoBlockTagsProvider extends ExtendedBlockTagsProvider
 
         woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET);
         leavesSet(MinejagoBlocks.FOCUS_LEAVES_SET);
+
+        tag(MinejagoBlockTags.MINEABLE_WITH_SCYTHE)
+                .addTags(BlockTags.CROPS)
+                .addTags(BlockTags.FLOWERS)
+                .addTags(BlockTags.SAPLINGS);
     }
 }

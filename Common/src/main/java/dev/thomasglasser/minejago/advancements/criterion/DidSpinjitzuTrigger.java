@@ -8,7 +8,6 @@ import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.ExtraCodecs;
 
 import java.util.Optional;
 
@@ -26,7 +25,7 @@ public class DidSpinjitzuTrigger extends SimpleCriterionTrigger<DidSpinjitzuTrig
 
     public record TriggerInstance(Optional<ContextAwarePredicate> player) implements SimpleCriterionTrigger.SimpleInstance {
         public static final Codec<DidSpinjitzuTrigger.TriggerInstance> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
-                        ExtraCodecs.strictOptionalField(EntityPredicate.ADVANCEMENT_CODEC, "player").forGetter(DidSpinjitzuTrigger.TriggerInstance::player))
+                        EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(DidSpinjitzuTrigger.TriggerInstance::player))
                 .apply(instance, DidSpinjitzuTrigger.TriggerInstance::new));
 
         public static Criterion<DidSpinjitzuTrigger.TriggerInstance> didSpinjitzu() {

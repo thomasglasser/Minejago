@@ -22,8 +22,8 @@
     },
     "frame": "challenge",
     "icon": {
-      "item": "minejago:samukais_chestplate",
-      "nbt": "{Damage:0}"
+      "count": 1,
+      "id": "minejago:samukais_chestplate"
     },
     "title": {
       "translate": "advancement.minejago.adventure.kill_samukai.title"

@@ -1,23 +1,33 @@
 package dev.thomasglasser.minejago.mixin.minecraft.server.network;
 
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.StringTag;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.Filterable;
 import net.minecraft.server.network.FilteredText;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.WritableBookContent;
+import net.minecraft.world.item.component.WrittenBookContent;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
-import java.util.function.UnaryOperator;
 
 @Mixin(ServerGamePacketListenerImpl.class)
-public class ServerGamePacketListenerImplMixin
+public abstract class ServerGamePacketListenerImplMixin
 {
+    @Shadow
+    public ServerPlayer player;
+
+    @Shadow
+    protected abstract Filterable<String> filterableFromOutgoing(FilteredText p_332041_);
+
     private final ServerGamePacketListenerImpl INSTANCE = ((ServerGamePacketListenerImpl)(Object)this);
 
     @Inject(method = "signBook",  at = @At("HEAD"))
@@ -25,22 +35,11 @@ public class ServerGamePacketListenerImplMixin
     {
         ItemStack itemStack = INSTANCE.player.getInventory().getItem(index);
         if (itemStack.is(MinejagoItems.WRITABLE_SCROLL.get())) {
-            ItemStack itemStack2 = MinejagoItems.WRITTEN_SCROLL.get().getDefaultInstance();
-            CompoundTag compoundTag = itemStack.getTag();
-            if (compoundTag != null) {
-                itemStack2.setTag(compoundTag.copy());
-            }
-
-            itemStack2.addTagElement("author", StringTag.valueOf(INSTANCE.player.getName().getString()));
-            if (INSTANCE.player.isTextFilteringEnabled()) {
-                itemStack2.addTagElement("title", StringTag.valueOf(title.filteredOrEmpty()));
-            } else {
-                itemStack2.addTagElement("filtered_title", StringTag.valueOf(title.filteredOrEmpty()));
-                itemStack2.addTagElement("title", StringTag.valueOf(title.raw()));
-            }
-
-            INSTANCE.updateBookPages(pages, string -> Component.Serializer.toJson(Component.literal(string)), itemStack2);
-            INSTANCE.player.getInventory().setItem(index, itemStack2);
+            ItemStack itemStack2 = itemStack.transmuteCopy(Items.WRITTEN_BOOK, 1);
+            itemStack2.remove(DataComponents.WRITABLE_BOOK_CONTENT);
+            List<Filterable<Component>> list = pages.stream().map((filteredText) -> filterableFromOutgoing(filteredText).<Component>map(Component::literal)).toList();
+            itemStack2.set(DataComponents.WRITTEN_BOOK_CONTENT, new WrittenBookContent(this.filterableFromOutgoing(title), this.player.getName().getString(), 0, list, true));
+            player.getInventory().setItem(index, itemStack2);
         }
     }
 
@@ -49,7 +48,8 @@ public class ServerGamePacketListenerImplMixin
     {
         ItemStack itemStack = INSTANCE.player.getInventory().getItem(index);
         if (itemStack.is(MinejagoItems.WRITABLE_SCROLL.get())) {
-            INSTANCE.updateBookPages(pages, UnaryOperator.identity(), itemStack);
+            List<Filterable<String>> list = pages.stream().map(this::filterableFromOutgoing).toList();
+            itemStack.set(DataComponents.WRITABLE_BOOK_CONTENT, new WritableBookContent(list));
         }
     }
 }

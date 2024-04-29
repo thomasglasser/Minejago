@@ -1,12 +1,12 @@
 package dev.thomasglasser.minejago.world.entity.ai.behavior;
 
 import com.mojang.datafixers.util.Pair;
+import dev.thomasglasser.minejago.core.component.MinejagoDataComponents;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.world.entity.ai.memory.MinejagoMemoryModuleTypes;
 import dev.thomasglasser.minejago.world.entity.character.Wu;
 import dev.thomasglasser.minejago.world.entity.power.Power;
-import dev.thomasglasser.minejago.world.entity.power.PowerUtils;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.level.storage.PowerData;
 import dev.thomasglasser.tommylib.api.world.item.armor.ArmorSet;
@@ -79,17 +79,19 @@ public class GivePowerAndGi<E extends PathfinderMob> extends MoveToWalkTarget<E>
         ArmorSet set = MinejagoArmors.TRAINING_GI_SET;
         for (ArmorItem.Type value : ArmorItem.Type.values()) {
             ArmorItem armor = set.getForSlot(value.getSlot()).get();
+            ItemStack armorStack = armor.getDefaultInstance();
+            armorStack.set(MinejagoDataComponents.POWER.get(), power.location());
             if (target instanceof Player player)
             {
                 ItemStack oldStack = player.getItemBySlot(value.getSlot());
                 if (!player.addItem(oldStack)) player.drop(oldStack, true);
-                player.setItemSlot(value.getSlot(), PowerUtils.setPower(armor.getDefaultInstance(), power));
+                player.setItemSlot(value.getSlot(), armorStack);
             }
             else
             {
                 ItemStack oldStack = target.getItemBySlot(value.getSlot());
                 target.spawnAtLocation(oldStack);
-                target.setItemSlot(value.getSlot(), PowerUtils.setPower(armor.getDefaultInstance(), power));
+                target.setItemSlot(value.getSlot(), armorStack);
             }
         }
     }

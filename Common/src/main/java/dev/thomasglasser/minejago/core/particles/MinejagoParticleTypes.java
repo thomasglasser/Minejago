@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.core.particles;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.particle.BoltsParticle;
 import dev.thomasglasser.minejago.client.particle.RocksParticle;
@@ -15,6 +15,8 @@ import dev.thomasglasser.tommylib.api.registration.RegistryObject;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 
 import java.util.function.Supplier;
 
@@ -24,11 +26,18 @@ public class MinejagoParticleTypes
 
     public static final RegistryObject<ParticleType<SpinjitzuParticleOptions>> SPINJITZU = register("spinjitzu", () ->
     {
-        ParticleType<SpinjitzuParticleOptions> particle = new ParticleType<>(true, SpinjitzuParticleOptions.DESERIALIZER)
+        ParticleType<SpinjitzuParticleOptions> particle = new ParticleType<>(true)
         {
             @Override
-            public Codec<SpinjitzuParticleOptions> codec() {
+            public MapCodec<SpinjitzuParticleOptions> codec()
+            {
                 return SpinjitzuParticleOptions.CODEC;
+            }
+
+            @Override
+            public StreamCodec<? super RegistryFriendlyByteBuf, SpinjitzuParticleOptions> streamCodec()
+            {
+                return SpinjitzuParticleOptions.STREAM_CODEC;
             }
         };
         TommyLibServices.PARTICLE.fabricRegister(particle, SpinjitzuParticle.Provider::new);

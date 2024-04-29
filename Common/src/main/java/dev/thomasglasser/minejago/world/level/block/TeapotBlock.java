@@ -10,7 +10,6 @@ import dev.thomasglasser.minejago.world.level.block.entity.TeapotBlockEntity;
 import dev.thomasglasser.tommylib.api.world.item.ItemUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -124,7 +123,7 @@ public class TeapotBlock extends BaseEntityBlock {
                             ItemUtils.safeShrink(1, inHand, pPlayer);
                             pPlayer.addItem(potionCupHolder.getFilled(be.getPotion()));
                             be.take(potionCupHolder.getCups());
-                            MinejagoCriteriaTriggers.BREWED_TEA.get().trigger((ServerPlayer) pPlayer, be.getPotion().builtInRegistryHolder());
+                            MinejagoCriteriaTriggers.BREWED_TEA.get().trigger((ServerPlayer) pPlayer, be.getPotion());
                             pLevel.playSound(null, pPos, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
                             be.giveExperienceForCup((ServerLevel) pLevel, pPos.getCenter());
                         } else if (be.hasRecipe(inHand, pLevel)) {
@@ -141,15 +140,7 @@ public class TeapotBlock extends BaseEntityBlock {
 
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, LivingEntity pPlacer, ItemStack pStack) {
         if (pLevel.getBlockEntity(pPos) instanceof TeapotBlockEntity teapot) teapot.setTemperature(TeapotBlock.getBiomeTemperature(pLevel, pPos) / 2);
-
-        if (pStack.hasTag()) {
-            CompoundTag tag = pStack.getTag();
-
-            if (tag.contains("BlockEntityTag")) {
-                CompoundTag dataTag = tag.getCompound("BlockEntityTag");
-                pLevel.getBlockEntity(pPos).load(dataTag);
-            }
-            }
+        // TODO: Copy block entity component here?
     }
 
     public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom) {
@@ -192,9 +183,7 @@ public class TeapotBlock extends BaseEntityBlock {
     {
         ItemStack stack = new ItemStack(asItem());
         TeapotBlockEntity be = (TeapotBlockEntity) levelReader.getBlockEntity(blockPos);
-
-        be.saveToItem(stack);
-
+        be.saveToItem(stack, levelReader.registryAccess());
         return stack;
     }
 

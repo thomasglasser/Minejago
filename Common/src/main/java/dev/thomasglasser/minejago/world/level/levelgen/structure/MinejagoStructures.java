@@ -7,7 +7,7 @@ import dev.thomasglasser.minejago.world.level.levelgen.structure.pools.FourWeapo
 import dev.thomasglasser.minejago.world.level.levelgen.structure.pools.NinjagoCityPools;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.MobCategory;
@@ -36,7 +36,7 @@ public class MinejagoStructures
         return ResourceKey.create(Registries.STRUCTURE, Minejago.modLoc(name));
     }
 
-    public static void bootstrap(BootstapContext<Structure> context)
+    public static void bootstrap(BootstrapContext<Structure> context)
     {
         HolderGetter<Biome> holderGetter = context.lookup(Registries.BIOME);
         HolderGetter<StructureTemplatePool> holderGetter2 = context.lookup(Registries.TEMPLATE_POOL);

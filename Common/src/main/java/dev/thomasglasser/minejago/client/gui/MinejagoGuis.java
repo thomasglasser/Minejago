@@ -1,7 +1,6 @@
 package dev.thomasglasser.minejago.client.gui;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.client.MinejagoClientConfig;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.focus.FocusData;
@@ -55,8 +54,9 @@ public class MinejagoGuis
 					
 					int x = startX - i * 8 - 9;
 
-					int xOff = MinejagoClientConfig.xOffset;
-					int yOff = MinejagoClientConfig.yOffset;
+					// TODO: Update MidnightLib
+					int xOff = /*MinejagoClientConfig.xOffset*/0;
+					int yOff = /*MinejagoClientConfig.yOffset*/0;
 
 					x += xOff;
 					y -= yOff;

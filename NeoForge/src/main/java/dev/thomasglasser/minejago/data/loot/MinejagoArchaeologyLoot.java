@@ -3,8 +3,9 @@ package dev.thomasglasser.minejago.data.loot;
 import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.LootTableSubProvider;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -12,7 +13,7 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 
 import java.util.function.BiConsumer;
 
-import static dev.thomasglasser.minejago.data.loot.MinejagoArchaeologyLootKeys.*;
+import static dev.thomasglasser.minejago.data.loot.MinejagoArchaeologyLootKeys.CAVE_OF_DESPAIR;
 
 public class MinejagoArchaeologyLoot implements LootTableSubProvider {
     public static final LootTable.Builder CAVE_OF_DESPAIR_TABLE = LootTable.lootTable().withPool(
@@ -30,7 +31,8 @@ public class MinejagoArchaeologyLoot implements LootTableSubProvider {
     );
 
     @Override
-    public void generate(BiConsumer<ResourceLocation, LootTable.Builder> p_249643_) {
+    public void generate(HolderLookup.Provider p_331050_, BiConsumer<ResourceKey<LootTable>, LootTable.Builder> p_249643_)
+    {
         p_249643_.accept(CAVE_OF_DESPAIR, CAVE_OF_DESPAIR_TABLE);
     }
 }

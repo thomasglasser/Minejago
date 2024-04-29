@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.world.entity.power;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.core.component.MinejagoDataComponents;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import net.minecraft.core.HolderLookup;
@@ -37,8 +38,11 @@ public class MinejagoPowers
             {
                 MinejagoArmors.POWER_SETS.forEach(armorSet ->
                         armorSet.getAll().forEach(item ->
-                            list.add(PowerUtils.setPower(new ItemStack(item.get()), powerReference.key()))
-                        ));
+                        {
+                            ItemStack stack = item.get().getDefaultInstance();
+                            stack.set(MinejagoDataComponents.POWER.get(), powerReference.key().location());
+                            list.add(stack);
+                        }));
             }
         });
         return list;

@@ -39,18 +39,21 @@ public class EntityMixin
     @ModifyReturnValue(method = "dampensVibrations", at = @At("TAIL"))
     private boolean minejago_dampensVibrations(boolean original)
     {
-        AtomicBoolean flag = new AtomicBoolean(true);
+        if (INSTANCE instanceof LivingEntity livingEntity)
+        {
+            AtomicBoolean flag = new AtomicBoolean(true);
 
-        INSTANCE.getArmorSlots().forEach(stack ->
+            livingEntity.getArmorSlots().forEach(stack ->
+            {
+                if (!(stack.getItem() instanceof GiGeoArmorItem))
                 {
-                    if (!(stack.getItem() instanceof GiGeoArmorItem))
-                    {
-                        flag.set(false);
-                    }
+                    flag.set(false);
                 }
-        );
+            });
 
-        return flag.get() || original;
+            return flag.get() || original;
+        }
+        return original;
     }
 
     @Inject(method = "makeStuckInBlock", at = @At("TAIL"))

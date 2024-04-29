@@ -14,7 +14,8 @@
     },
     "frame": "challenge",
     "icon": {
-      "item": "minecraft:filled_map"
+      "count": 1,
+      "id": "minecraft:filled_map"
     },
     "title": {
       "translate": "advancement.minejago.adventure.win_skulkin_raid.title"

@@ -16,8 +16,8 @@ import net.minecraft.world.level.Level;
 
 public class BambooStaffItem extends BaseModeledThrowableSwordItem
 {
-    public BambooStaffItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
-        super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
+    public BambooStaffItem(Tier pTier, Properties pProperties) {
+        super(pTier, pProperties);
     }
 
     public void releaseUsing(ItemStack pStack, Level pLevel, LivingEntity pEntityLiving, int pTimeLeft) {
@@ -25,9 +25,7 @@ public class BambooStaffItem extends BaseModeledThrowableSwordItem
             int i = this.getUseDuration(pStack) - pTimeLeft;
             if (i >= 10) {
                 if (!pLevel.isClientSide) {
-                    pStack.hurtAndBreak(1, player, (p_43388_) -> {
-                        p_43388_.broadcastBreakEvent(pEntityLiving.getUsedItemHand());
-                    });
+                    pStack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(pEntityLiving.getUsedItemHand()));
                     ThrownBambooStaff thrownBambooStaff = new ThrownBambooStaff(pLevel, player, pStack);
                     thrownBambooStaff.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2.5F, 1.0F);
                     if (player.getAbilities().instabuild) {

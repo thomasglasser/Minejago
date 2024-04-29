@@ -8,9 +8,9 @@ import dev.thomasglasser.minejago.world.entity.SpinjitzuDoer;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
+import dev.thomasglasser.tommylib.api.network.NetworkUtils;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -64,10 +64,10 @@ import net.tslat.smartbrainlib.util.BrainUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.constant.DefaultAnimations;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
@@ -79,7 +79,7 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
     public static final RawAnimation MEDITATION_FLOAT = RawAnimation.begin().thenPlay("move.meditation.float");
     public static final RawAnimation MEDITATION_FINISH = RawAnimation.begin().thenPlay("move.meditation.finish");
 
-    public static final EntityDataSerializer<MeditationStatus> MEDITATION_STATUS = EntityDataSerializer.simpleEnum(MeditationStatus.class);
+    public static final EntityDataSerializer<MeditationStatus> MEDITATION_STATUS = EntityDataSerializer.forValueType(NetworkUtils.enumCodec(MeditationStatus.class));
     private static final EntityDataAccessor<MeditationStatus> DATA_MEDITATION_STATUS = SynchedEntityData.defineId(Character.class, MEDITATION_STATUS);
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
@@ -121,9 +121,11 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
         this.updateSwingTime();
     }
 
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DATA_MEDITATION_STATUS, MeditationStatus.NONE);
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder)
+    {
+        super.defineSynchedData(builder);
+        builder.define(DATA_MEDITATION_STATUS, MeditationStatus.NONE);
     }
 
     @Override
@@ -179,16 +181,17 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
     public void onStopFloatingToSurfaceOfFluid(Character character) {}
 
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData)
+    {
         this.setCanPickUpLoot(true);
-        if (pReason == MobSpawnType.NATURAL || pReason == MobSpawnType.CHUNK_GENERATION)
+        if (mobSpawnType == MobSpawnType.NATURAL || mobSpawnType == MobSpawnType.CHUNK_GENERATION)
         {
             List<? extends Character> list = level().getEntitiesOfClass(this.getClass(), getBoundingBox().inflate(1024));
             list.remove(this);
             if (!list.isEmpty())
                 discard();
         }
-        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
+        return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData);
     }
 
     @Override
@@ -238,7 +241,7 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
         if (!level().isClientSide && isDoingSpinjitzu() && power1 != null) {
             if (tickCount % 20 == 0) {
                 level().playSound(null, blockPosition(), MinejagoSoundEvents.SPINJITZU_ACTIVE.get(), SoundSource.NEUTRAL);
-                level().gameEvent(this, MinejagoGameEvents.SPINJITZU.get(), blockPosition());
+                level().gameEvent(this, MinejagoGameEvents.SPINJITZU.asHolder(), blockPosition());
             }
             MinejagoParticleUtils.renderNormalSpinjitzu(this, power1.getMainSpinjitzuColor(), power1.getAltSpinjitzuColor(), 10.5, false);
             MinejagoParticleUtils.renderNormalSpinjitzuBorder(power1.getBorderParticle(), this, 4, false);

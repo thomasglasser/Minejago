@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minejago:enchanted_log"
-            ]
+            "items": "minejago:enchanted_log"
           }
         ]
       },

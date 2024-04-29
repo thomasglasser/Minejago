@@ -21,8 +21,8 @@
       "translate": "advancement.minejago.adventure.kill_a_skulkin.desc"
     },
     "icon": {
-      "item": "minejago:skeletal_chestplate_blue",
-      "nbt": "{Damage:0}"
+      "count": 1,
+      "id": "minejago:skeletal_chestplate_blue"
     },
     "title": {
       "translate": "advancement.minejago.adventure.kill_a_skulkin.title"

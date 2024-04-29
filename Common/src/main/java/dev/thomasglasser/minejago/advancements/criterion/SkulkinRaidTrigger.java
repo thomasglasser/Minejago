@@ -9,7 +9,6 @@ import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.ExtraCodecs;
 
 import java.util.Optional;
 
@@ -28,8 +27,8 @@ public class SkulkinRaidTrigger extends SimpleCriterionTrigger<SkulkinRaidTrigge
 
 	public record TriggerInstance(Optional<Status> status, Optional<ContextAwarePredicate> player) implements SimpleCriterionTrigger.SimpleInstance {
 		public static final Codec<SkulkinRaidTrigger.TriggerInstance> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
-						ExtraCodecs.strictOptionalField(Codec.STRING.comapFlatMap(s -> DataResult.success(Status.of(s)), Status::toString), "status").forGetter(TriggerInstance::status),
-						ExtraCodecs.strictOptionalField(EntityPredicate.ADVANCEMENT_CODEC, "player").forGetter(SkulkinRaidTrigger.TriggerInstance::player))
+						Codec.STRING.comapFlatMap(s -> DataResult.success(Status.of(s)), Status::toString).optionalFieldOf("status").forGetter(TriggerInstance::status),
+						EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(SkulkinRaidTrigger.TriggerInstance::player))
 				.apply(instance, SkulkinRaidTrigger.TriggerInstance::new));
 
 		public static Criterion<SkulkinRaidTrigger.TriggerInstance> raidStarted() {

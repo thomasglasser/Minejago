@@ -76,7 +76,7 @@ accessible  method  net/minecraft/world/level/block/entity/LecternBlockEntity   
 accessible  class   net/minecraft/world/inventory/MenuType$MenuSupplier
 accessible  method  net/minecraft/world/inventory/MenuType                                      <init>                                  (Lnet/minecraft/world/inventory/MenuType$MenuSupplier;Lnet/minecraft/world/flag/FeatureFlagSet;)V
 accessible  method  net/minecraft/world/level/block/ChiseledBookShelfBlock                      getRelativeHitCoordinatesForBlockFace   (Lnet/minecraft/world/phys/BlockHitResult;Lnet/minecraft/core/Direction;)Ljava/util/Optional;
-accessible  method  net/minecraft/world/level/block/ChiseledBookShelfBlock                      getHitSlot                              (Lnet/minecraft/world/phys/Vec2;)I
+accessible method net/minecraft/world/level/block/ChiseledBookShelfBlock getHitSlot (Lnet/minecraft/world/phys/BlockHitResult;Lnet/minecraft/world/level/block/state/BlockState;)Ljava/util/OptionalInt;
 accessible  method  net/minecraft/world/level/block/ChiseledBookShelfBlock                      addBook                                 (Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/level/block/entity/ChiseledBookShelfBlockEntity;Lnet/minecraft/world/item/ItemStack;I)V
 accessible  method  net/minecraft/world/level/block/ChiseledBookShelfBlock                      removeBook                              (Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/level/block/entity/ChiseledBookShelfBlockEntity;I)V
 accessible  method  net/minecraft/world/level/block/entity/ChiseledBookShelfBlockEntity         updateState                             (I)V
@@ -92,3 +92,4 @@ accessible  method  net/minecraft/world/entity/SpawnPlacements                  
 accessible  method  net/minecraft/client/renderer/blockentity/BlockEntityRenderers              register (Lnet/minecraft/world/level/block/entity/BlockEntityType;Lnet/minecraft/client/renderer/blockentity/BlockEntityRendererProvider;)V
 accessible  field   net/minecraft/client/model/geom/ModelPart                       cubes               Ljava/util/List;
 extendable method net/minecraft/world/entity/LivingEntity getCurrentSwingDuration ()I
+accessible field net/minecraft/world/item/alchemy/PotionBrewing potionMixes Ljava/util/List;

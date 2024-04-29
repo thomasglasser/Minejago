@@ -1,8 +1,8 @@
 package dev.thomasglasser.minejago.mixin.minecraft.world.entity;
 
 import com.mojang.datafixers.util.Either;
-import dev.thomasglasser.minejago.network.ClientboundOpenScrollPacket;
-import dev.thomasglasser.minejago.network.ClientboundSetFocusPacket;
+import dev.thomasglasser.minejago.network.ClientboundOpenScrollPayload;
+import dev.thomasglasser.minejago.network.ClientboundSetFocusPayload;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityEvents;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
@@ -73,7 +73,7 @@ public abstract class ServerPlayerMixin
                 INSTANCE.containerMenu.broadcastChanges();
             }
 
-            TommyLibServices.NETWORK.sendToClient(ClientboundOpenScrollPacket.ID, ClientboundOpenScrollPacket::new, ClientboundOpenScrollPacket.write(hand), INSTANCE);
+            TommyLibServices.NETWORK.sendToClient(new ClientboundOpenScrollPayload(hand), INSTANCE);
         }
     }
 
@@ -91,7 +91,7 @@ public abstract class ServerPlayerMixin
         if (focusData == null)
             focusData = Services.DATA.getFocusData(INSTANCE);
         if (this.lastSentFocus != focusData.getFocusLevel() || this.focusData.getSaturationLevel() == 0.0F != this.lastFoodSaturationZero) {
-            TommyLibServices.NETWORK.sendToClient(ClientboundSetFocusPacket.ID, ClientboundSetFocusPacket::new, ClientboundSetFocusPacket.write(focusData), INSTANCE);
+            TommyLibServices.NETWORK.sendToClient(new ClientboundSetFocusPayload(focusData.getFocusLevel(), focusData.getSaturationLevel()), INSTANCE);
             this.lastSentFocus = this.focusData.getFocusLevel();
             this.lastFoodSaturationZero = this.focusData.getSaturationLevel() == 0.0F;
         }

@@ -16,7 +16,7 @@ import net.minecraft.world.entity.ai.navigation.WallClimberNavigation;
 import net.minecraft.world.level.Level;
 
 public class Cole extends Character {
-    private static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(Cole.class, EntityDataSerializers.BYTE);
+    private static final EntityDataAccessor<Boolean> DATA_CLIMBING = SynchedEntityData.defineId(Cole.class, EntityDataSerializers.BOOLEAN);
 
     public Cole(EntityType<? extends Cole> entityType, Level level) {
         super(entityType, level);
@@ -46,9 +46,11 @@ public class Cole extends Character {
                 .add(Attributes.ARMOR, 1.0F);
     }
 
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DATA_FLAGS_ID, (byte)0);
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder)
+    {
+        super.defineSynchedData(builder);
+        builder.define(DATA_CLIMBING, false);
     }
 
     public void tick() {
@@ -63,17 +65,10 @@ public class Cole extends Character {
     }
 
     public boolean isClimbing() {
-        return (this.entityData.get(DATA_FLAGS_ID) & 1) != 0;
+        return this.entityData.get(DATA_CLIMBING);
     }
 
     public void setClimbing(boolean pClimbing) {
-        byte b0 = this.entityData.get(DATA_FLAGS_ID);
-        if (pClimbing) {
-            b0 = (byte)(b0 | 1);
-        } else {
-            b0 = (byte)(b0 & -2);
-        }
-
-        this.entityData.set(DATA_FLAGS_ID, b0);
+        this.entityData.set(DATA_CLIMBING, pClimbing);
     }
 }

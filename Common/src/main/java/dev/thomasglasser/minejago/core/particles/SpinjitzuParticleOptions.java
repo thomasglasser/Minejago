@@ -1,23 +1,19 @@
 package dev.thomasglasser.minejago.core.particles;
 
-import com.mojang.brigadier.StringReader;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.particles.ScalableParticleOptionsBase;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ExtraCodecs;
-import net.minecraft.util.Mth;
 import org.joml.Vector3f;
 
-import java.util.Locale;
-
-public class SpinjitzuParticleOptions implements ParticleOptions {
-    public static final float MIN_SCALE = 0.01F;
-
-    // DEFAULT COLORS
+public class SpinjitzuParticleOptions extends ScalableParticleOptionsBase
+{
+    // DEFAULT COLOR
     public static final Vector3f DEFAULT = new Vector3f(58, 58, 58);
 
     // ELEMENTAL COLORS
@@ -49,62 +45,26 @@ public class SpinjitzuParticleOptions implements ParticleOptions {
     public static final Vector3f TEAM_YELLOW = new Vector3f(85, 85, 255);
     public static final Vector3f TEAM_WHITE = new Vector3f(1, 1, 1);
 
+    public static final MapCodec<SpinjitzuParticleOptions> CODEC = RecordCodecBuilder.mapCodec((p_175793_) -> p_175793_.group(
+            ExtraCodecs.VECTOR3F.fieldOf("color").forGetter(SpinjitzuParticleOptions::getColor),
+            Codec.FLOAT.fieldOf("scale").forGetter(SpinjitzuParticleOptions::getScale)
+    ).apply(p_175793_, SpinjitzuParticleOptions::new));
+    public static final StreamCodec<FriendlyByteBuf, SpinjitzuParticleOptions> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.VECTOR3F, SpinjitzuParticleOptions::getColor,
+            ByteBufCodecs.FLOAT, SpinjitzuParticleOptions::getScale,
+            SpinjitzuParticleOptions::new
+    );
+
     protected final Vector3f color;
-    protected final float scale;
 
     public SpinjitzuParticleOptions(Vector3f pColor, float pScale) {
+        super(pScale);
         this.color = pColor;
-        this.scale = Mth.clamp(pScale, MIN_SCALE, Float.MAX_VALUE);
-    }
-
-    public static Vector3f readVector3f(StringReader pStringInput) throws CommandSyntaxException {
-        pStringInput.expect(' ');
-        float f = pStringInput.readFloat();
-        pStringInput.expect(' ');
-        float f1 = pStringInput.readFloat();
-        pStringInput.expect(' ');
-        float f2 = pStringInput.readFloat();
-        return new Vector3f(f, f1, f2);
-    }
-
-    public static Vector3f readVector3f(FriendlyByteBuf pBuffer) {
-        return new Vector3f(pBuffer.readFloat(), pBuffer.readFloat(), pBuffer.readFloat());
-    }
-
-    public void writeToNetwork(FriendlyByteBuf pBuffer) {
-        pBuffer.writeFloat(this.color.x());
-        pBuffer.writeFloat(this.color.y());
-        pBuffer.writeFloat(this.color.z());
-        pBuffer.writeFloat(this.scale);
-    }
-
-    public String writeToString() {
-        return String.format(Locale.ROOT, "%s %.2f %.2f %.2f %.2f", BuiltInRegistries.PARTICLE_TYPE.getKey(this.getType()), this.color.x(), this.color.y(), this.color.z(), this.scale);
     }
 
     public Vector3f getColor() {
         return this.color;
     }
-
-    public float getScale() {
-        return this.scale;
-    }
-
-    public static final Codec<SpinjitzuParticleOptions> CODEC = RecordCodecBuilder.create((p_175793_) -> {
-        return p_175793_.group(ExtraCodecs.VECTOR3F.fieldOf("color").forGetter(SpinjitzuParticleOptions::getColor), Codec.FLOAT.fieldOf("scale").forGetter(SpinjitzuParticleOptions::getScale)).apply(p_175793_, SpinjitzuParticleOptions::new);
-    });
-    public static final Deserializer<SpinjitzuParticleOptions> DESERIALIZER = new Deserializer<SpinjitzuParticleOptions>() {
-        public SpinjitzuParticleOptions fromCommand(ParticleType<SpinjitzuParticleOptions> p_123689_, StringReader p_123690_) throws CommandSyntaxException {
-            Vector3f vector3f = readVector3f(p_123690_);
-            p_123690_.expect(' ');
-            float f = p_123690_.readFloat();
-            return new SpinjitzuParticleOptions(vector3f, f);
-        }
-
-        public SpinjitzuParticleOptions fromNetwork(ParticleType<SpinjitzuParticleOptions> p_123692_, FriendlyByteBuf p_123693_) {
-            return new SpinjitzuParticleOptions(readVector3f(p_123693_), p_123693_.readFloat());
-        }
-    };
 
     public ParticleType<SpinjitzuParticleOptions> getType() {
         return MinejagoParticleTypes.SPINJITZU.get();

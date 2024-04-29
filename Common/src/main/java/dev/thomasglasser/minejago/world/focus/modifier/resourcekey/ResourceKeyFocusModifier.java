@@ -33,7 +33,7 @@ public class ResourceKeyFocusModifier<T> extends FocusModifier
 
 	public static @NotNull <T> Optional<ResourceKeyFocusModifier<T>> fromJson(@NotNull ResourceLocation id, @NotNull JsonObject json, @NotNull ResourceKey<? extends Registry<T>> registry) {
 		if (json.has("key") && json.has("modifier")) {
-			ResourceKey<T> key = ResourceKey.codec(registry).parse(JsonOps.INSTANCE, json.get("key")).get().orThrow();
+			ResourceKey<T> key = ResourceKey.codec(registry).parse(JsonOps.INSTANCE, json.get("key")).getOrThrow();
 			if (key == null) {
 				return Optional.empty();
 			} else {
@@ -60,7 +60,7 @@ public class ResourceKeyFocusModifier<T> extends FocusModifier
 	public JsonObject toJson()
 	{
 		JsonObject jsonObject = new JsonObject();
-		jsonObject.add("key", ResourceKey.codec(ResourceKey.createRegistryKey(key.registry())).encodeStart(JsonOps.INSTANCE, (ResourceKey<Object>) key).get().orThrow());
+		jsonObject.add("key", ResourceKey.codec(ResourceKey.createRegistryKey(key.registry())).encodeStart(JsonOps.INSTANCE, (ResourceKey<Object>) key).getOrThrow());
 		JsonObject info = super.toJson();
 		for (String s : info.keySet())
 		{

@@ -3,9 +3,12 @@ package dev.thomasglasser.minejago.world.item;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -21,13 +24,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.PotionItem;
 import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+
+import java.util.Optional;
 
 public class FilledTeacupItem extends PotionItem implements PotionCupHolder
 {
@@ -45,13 +50,9 @@ public class FilledTeacupItem extends PotionItem implements PotionCupHolder
             CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer)player, pStack);
         }
 
-        if (!pLevel.isClientSide) {
-            for(MobEffectInstance mobEffectInstance : PotionUtils.getMobEffects(pStack)) {
-                if (mobEffectInstance.getEffect().isInstantenous() && mobEffectInstance.getDuration() <= 1) {
-                    mobEffectInstance.getEffect().applyInstantenousEffect(player, player, pEntityLiving, mobEffectInstance.getAmplifier(), 1.0);
-                } else {
-                    pEntityLiving.addEffect(new MobEffectInstance(mobEffectInstance));
-                }
+        if (!pLevel.isClientSide && pStack.has(DataComponents.POTION_CONTENTS)) {
+            for(MobEffectInstance mobEffectInstance : pStack.get(DataComponents.POTION_CONTENTS).getAllEffects()) {
+                pEntityLiving.addEffect(new MobEffectInstance(mobEffectInstance));
             }
         }
 
@@ -85,8 +86,9 @@ public class FilledTeacupItem extends PotionItem implements PotionCupHolder
         Player player = pContext.getPlayer();
         ItemStack itemstack = pContext.getItemInHand();
         BlockState blockstate = level.getBlockState(blockpos);
-        if (pContext.getClickedFace() != Direction.DOWN && blockstate.is(BlockTags.CONVERTABLE_TO_MUD) && PotionUtils.getPotion(itemstack) == Potions.WATER) {
-            level.playSound((Player)null, blockpos, SoundEvents.GENERIC_SPLASH, SoundSource.PLAYERS, 1.0F, 1.0F);
+        if (pContext.getClickedFace() != Direction.DOWN && blockstate.is(BlockTags.CONVERTABLE_TO_MUD) && itemstack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).is(Potions.WATER))
+        {
+            level.playSound(null, blockpos, SoundEvents.GENERIC_SPLASH, SoundSource.PLAYERS, 1.0F, 1.0F);
             player.setItemInHand(pContext.getHand(), ItemUtils.createFilledResult(itemstack, player, new ItemStack(MinejagoItems.TEACUP.get())));
             player.awardStat(Stats.ITEM_USED.get(itemstack.getItem()));
             if (!level.isClientSide) {
@@ -109,13 +111,13 @@ public class FilledTeacupItem extends PotionItem implements PotionCupHolder
     @Override
     public Component getName(ItemStack pStack) {
         String id = MinejagoItems.FILLED_TEACUP.get().getDescriptionId();
-        Potion potion = PotionUtils.getPotion(pStack);
+        Optional<Holder<Potion>> potion = pStack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).potion();
         String label = "";
 
-        if (potion.getName("").contains("tea") || potion.getName("").contains("milk"))
-            return Component.translatable(id + potion.getName("."));
+        if (Potion.getName(potion, "").contains("tea") || Potion.getName(potion, "").contains("milk"))
+            return Component.translatable(id + Potion.getName(potion, "."));
 
-        switch (potion.getName(""))
+        switch (Potion.getName(potion, ""))
         {
             case "turtle_master", "thick", "awkward", "mundane", "water", "empty" ->
             {
@@ -123,7 +125,15 @@ public class FilledTeacupItem extends PotionItem implements PotionCupHolder
             }
             default -> {
                 id += ".potion";
-                label = (potion.getName("effect." + BuiltInRegistries.POTION.getKey(potion).getNamespace() + "."));
+                if (potion.isPresent())
+                {
+                    ResourceLocation key = BuiltInRegistries.POTION.getKey(potion.get().value());
+                    label = (Potion.getName(potion, "effect." + (key != null ? key.getNamespace() : "empty") + "."));
+                }
+                else
+                {
+                    return super.getName(pStack);
+                }
             }
         }
         return Component.translatable(id, Component.translatable(label));
@@ -145,12 +155,12 @@ public class FilledTeacupItem extends PotionItem implements PotionCupHolder
     }
 
     @Override
-    public ItemStack getFilled(Potion potion) {
+    public ItemStack getFilled(Holder<Potion> potion) {
         return null;
     }
 
     @Override
-    public boolean canBeFilled(ItemStack stack, Potion potion, int cups) {
+    public boolean canBeFilled(ItemStack stack, Holder<Potion> potion, int cups) {
         return false;
     }
 }

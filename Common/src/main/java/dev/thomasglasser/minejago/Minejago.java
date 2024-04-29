@@ -1,14 +1,13 @@
 package dev.thomasglasser.minejago;
 
 import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
-import dev.thomasglasser.minejago.client.MinejagoClientConfig;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
+import dev.thomasglasser.minejago.core.component.MinejagoDataComponents;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
-import dev.thomasglasser.minejago.network.MinejagoPackets;
+import dev.thomasglasser.minejago.network.MinejagoPayloads;
 import dev.thomasglasser.minejago.platform.Services;
-import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
@@ -18,20 +17,19 @@ import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVarian
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.focus.modifier.resourcekey.ResourceKeyFocusModifiers;
-import dev.thomasglasser.minejago.world.inventory.MinejagoMenuTypes;
 import dev.thomasglasser.minejago.world.item.MinejagoCreativeModeTabs;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.MinejagoTiers;
+import dev.thomasglasser.minejago.world.item.armor.MinejagoArmorMaterials;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
 import dev.thomasglasser.minejago.world.item.crafting.MinejagoRecipeSerializers;
 import dev.thomasglasser.minejago.world.item.crafting.MinejagoRecipeTypes;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
-import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPatterns;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
 import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
+import dev.thomasglasser.minejago.world.level.saveddata.maps.MinejagoMapDecorations;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
-import eu.midnightdust.lib.config.MidnightConfig;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.tslat.tes.api.TESAPI;
@@ -84,7 +82,7 @@ public class Minejago {
 			});
 		}
 
-		MinejagoPackets.init();
+		MinejagoPayloads.init();
 
 		TommyLibServices.ENTITY.registerDataSerializers(Minejago.MOD_ID, Map.of(
 				"meditation_status", Character.MEDITATION_STATUS
@@ -95,18 +93,20 @@ public class Minejago {
 	{
 		MinejagoRegistries.init();
 
+		MinejagoArmorMaterials.init();
+		MinejagoMapDecorations.init();
+		MinejagoDataComponents.init();
 		MinejagoRecipeTypes.init();
 		MinejagoRecipeSerializers.init();
 		MinejagoArmors.init();
 		MinejagoTiers.init();
 		MinejagoPowers.init();
 		MinejagoEntityTypes.init();
-		MinejagoItems.init();
 		MinejagoParticleTypes.init();
 		MinejagoPaintingVariants.init();
-		MinejagoBannerPatterns.init();
 		MinejagoBlocks.init();
 		MinejagoBlockEntityTypes.init();
+		MinejagoItems.init();
 		MinejagoPotions.init();
 		MinejagoSoundEvents.init();
 		MinejagoMobEffects.init();
@@ -114,15 +114,14 @@ public class Minejago {
 		MinejagoCreativeModeTabs.init();
 		MinejagoGameEvents.init();
 		MinejagoMemoryModuleTypes.init();
-		MinejagoMenuTypes.init();
 		MinejagoCriteriaTriggers.init();
 		ResourceKeyFocusModifiers.init();
 	}
 
 	private static void registerConfigs()
 	{
-		MidnightConfig.init(Minejago.MOD_ID, MinejagoServerConfig.class);
-		if (TommyLibServices.PLATFORM.isClientSide()) MidnightConfig.init(Minejago.MOD_ID, MinejagoClientConfig.class);
+//		MidnightConfig.init(Minejago.MOD_ID, MinejagoServerConfig.class);
+//		if (TommyLibServices.PLATFORM.isClientSide()) MidnightConfig.init(Minejago.MOD_ID, MinejagoClientConfig.class);
 	}
 
 	public static MinejagoBlockEntityWithoutLevelRenderer getBewlr()

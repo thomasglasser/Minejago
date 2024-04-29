@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.world.item;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
@@ -10,7 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BottleItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -38,7 +39,7 @@ public class TeacupItem extends BottleItem implements PotionCupHolder
                 if (pLevel.getFluidState(blockpos).is(FluidTags.WATER)) {
                     pLevel.playSound(pPlayer, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), SoundEvents.BOTTLE_FILL, SoundSource.NEUTRAL, 1.0F, 1.0F);
                     pLevel.gameEvent(pPlayer, GameEvent.FLUID_PICKUP, blockpos);
-                    return InteractionResultHolder.sidedSuccess(this.turnBottleIntoItem(itemstack, pPlayer, PotionUtils.setPotion(new ItemStack(MinejagoItems.FILLED_TEACUP.get()), Potions.WATER)), pLevel.isClientSide());
+                    return InteractionResultHolder.sidedSuccess(this.turnBottleIntoItem(itemstack, pPlayer, PotionContents.createItemStack(MinejagoItems.FILLED_TEACUP.get(), Potions.WATER)), pLevel.isClientSide());
                 }
             }
 
@@ -57,7 +58,7 @@ public class TeacupItem extends BottleItem implements PotionCupHolder
     }
 
     @Override
-    public boolean canBeFilled(ItemStack stack, Potion potion, int cups) {
+    public boolean canBeFilled(ItemStack stack, Holder<Potion> potion, int cups) {
         return PotionCupHolder.super.canBeFilled(stack, potion, cups);
     }
 
@@ -67,7 +68,7 @@ public class TeacupItem extends BottleItem implements PotionCupHolder
     }
 
     @Override
-    public ItemStack getFilled(Potion potion) {
+    public ItemStack getFilled(Holder<Potion> potion) {
         return MinejagoItemUtils.fillTeacup(potion);
     }
 }

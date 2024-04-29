@@ -1,5 +1,6 @@
 package dev.thomasglasser.minejago.world.item;
 
+import net.minecraft.core.Holder;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.Potions;
@@ -10,12 +11,12 @@ public interface PotionCupHolder
 
     ItemStack getDrained(ItemStack stack);
 
-    default Potion getPotion(ItemStack stack)
+    default Holder<Potion> getPotion(ItemStack stack)
     {
         return Potions.WATER;
     }
 
-    default boolean canBeFilled(ItemStack stack, Potion potion, int cups)
+    default boolean canBeFilled(ItemStack stack, Holder<Potion> potion, int cups)
     {
         return cups >= getCups();
     }
@@ -25,5 +26,5 @@ public interface PotionCupHolder
         return false;
     }
 
-    ItemStack getFilled(Potion potion);
+    ItemStack getFilled(Holder<Potion> potion);
 }

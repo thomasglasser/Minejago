@@ -73,7 +73,7 @@ public class EntityTypeFocusModifier extends FocusModifier
 	{
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.addProperty("entity_type", BuiltInRegistries.ENTITY_TYPE.getKey(entityType).toString());
-		jsonObject.add("nbt", CompoundTag.CODEC.encodeStart(JsonOps.INSTANCE, nbt).get().orThrow());
+		jsonObject.add("nbt", CompoundTag.CODEC.encodeStart(JsonOps.INSTANCE, nbt).getOrThrow());
 		JsonObject info = super.toJson();
 		for (String s : info.keySet())
 		{

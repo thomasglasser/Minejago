@@ -3,6 +3,7 @@ package dev.thomasglasser.minejago.world.level.block.entity;
 import dev.thomasglasser.minejago.tags.MinejagoItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChiseledBookShelfBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -22,5 +23,11 @@ public class ChiseledScrollShelfBlockEntity extends ChiseledBookShelfBlockEntity
     @Override
     public boolean canPlaceItem(int index, ItemStack stack) {
         return stack.is(MinejagoItemTags.SCROLL_SHELF_SCROLLS) && this.getItem(index).isEmpty();
+    }
+
+    @Override
+    public BlockEntityType<?> getType()
+    {
+        return MinejagoBlockEntityTypes.CHISELED_SCROLL_SHELF.get();
     }
 }

@@ -2,6 +2,7 @@ package dev.thomasglasser.minejago.mixin.minecraft.world.item;
 
 import dev.thomasglasser.minejago.world.item.PotionCupHolder;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
+import net.minecraft.core.Holder;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -22,7 +23,7 @@ public class MinejagoBucketItemMixin implements PotionCupHolder {
     }
 
     @Override
-    public Potion getPotion(ItemStack stack) {
+    public Holder<Potion> getPotion(ItemStack stack) {
         if (stack.is(Items.WATER_BUCKET))
         {
             return Potions.WATER;
@@ -31,12 +32,12 @@ public class MinejagoBucketItemMixin implements PotionCupHolder {
     }
 
     @Override
-    public boolean canBeFilled(ItemStack stack, Potion potion, int cups) {
+    public boolean canBeFilled(ItemStack stack, Holder<Potion> potion, int cups) {
         return (stack.is(Items.BUCKET) && (potion == Potions.WATER || potion == MinejagoPotions.MILK.get())) && cups >= getCups();
     }
 
     @Override
-    public ItemStack getFilled(Potion potion) {
+    public ItemStack getFilled(Holder<Potion> potion) {
         return potion == Potions.WATER ? Items.WATER_BUCKET.getDefaultInstance() : potion == MinejagoPotions.MILK.get() ? Items.MILK_BUCKET.getDefaultInstance() : null;
     }
 

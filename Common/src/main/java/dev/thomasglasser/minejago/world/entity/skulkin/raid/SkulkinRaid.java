@@ -5,7 +5,6 @@ import com.google.common.collect.Sets;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
 import dev.thomasglasser.minejago.advancements.criterion.SkulkinRaidTrigger;
-import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.skulkin.Kruncha;
 import dev.thomasglasser.minejago.world.entity.skulkin.Nuckal;
@@ -15,8 +14,10 @@ import dev.thomasglasser.minejago.world.level.MinejagoLevelUtils;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundSoundPacket;
 import net.minecraft.server.level.ServerBossEvent;
@@ -26,6 +27,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.Unit;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
@@ -33,18 +35,17 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnPlacementType;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.decoration.Painting;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.NaturalSpawner;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BannerPattern;
+import net.minecraft.world.level.block.entity.BannerPatternLayers;
 import net.minecraft.world.level.block.entity.BannerPatterns;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -68,7 +69,7 @@ public class SkulkinRaid {
 	private static final int VILLAGE_SEARCH_RADIUS = 32;
 	private static final int RAID_TIMEOUT_TICKS = 48000;
 	private static final int NUM_SPAWN_ATTEMPTS = 3;
-	public static final String SKULKINS_BANNER_PATTERN_NAME = "block.minejago.skulkins_banner";
+	public static final Component SKULKINS_BANNER_PATTERN_NAME = Component.translatable("block.minejago.skulkins_banner").withStyle(ChatFormatting.GOLD);
 	public static final int RADIUS_BUFFER = 16;
 	private static final int POST_RAID_TICK_LIMIT = 40;
 	private static final int DEFAULT_PRE_RAID_TICKS = 300;
@@ -477,14 +478,15 @@ public class SkulkinRaid {
 			this.joinSkulkinRaid(i, raider, pos, false);
 			if (random.nextInt(10) + difficultyInstance.getDifficulty().getId() > 5) {
 				Mob raider2;
-				if (MinejagoServerConfig.enableTech)
+				// TODO: Update MidnightLib
+				if (/*MinejagoServerConfig.enableTech*/true)
 					raider2 = MinejagoEntityTypes.SKULL_MOTORBIKE.get().create(level);
 				else
 					raider2 = MinejagoEntityTypes.SKULKIN_HORSE.get().create(level);
 				if (raider2 == null)
 					break;
 				raider2.setPos((double)pos.getX() + 0.5, (double)pos.getY() + 1.0, (double)pos.getZ() + 0.5);
-				raider2.finalizeSpawn(this.level, this.level.getCurrentDifficultyAt(pos), MobSpawnType.EVENT, null, null);
+				raider2.finalizeSpawn(this.level, this.level.getCurrentDifficultyAt(pos), MobSpawnType.EVENT, null);
 				raider2.setOnGround(true);
 				this.level.addFreshEntityWithPassengers(raider2);
 				raider2.moveTo(pos, 0.0F, 0.0F);
@@ -507,7 +509,7 @@ public class SkulkinRaid {
 			raider.setTicksOutsideSkulkinRaid(0);
 			if (!isRecruited && pos != null) {
 				raider.setPos((double)pos.getX() + 0.5, (double)pos.getY() + 1.0, (double)pos.getZ() + 0.5);
-				raider.finalizeSpawn(this.level, this.level.getCurrentDifficultyAt(pos), MobSpawnType.EVENT, null, null);
+				raider.finalizeSpawn(this.level, this.level.getCurrentDifficultyAt(pos), MobSpawnType.EVENT, null);
 				raider.setOnGround(true);
 				this.level.addFreshEntityWithPassengers(raider);
 			}
@@ -558,18 +560,16 @@ public class SkulkinRaid {
 		((SkulkinRaidsHolder)this.level).getSkulkinRaids().setDirty();
 	}
 
-	public static ItemStack getLeaderBannerInstance() {
+	public static ItemStack getLeaderBannerInstance(HolderGetter<BannerPattern> holderGetter) {
 		ItemStack itemStack = new ItemStack(Items.BLACK_BANNER);
-		CompoundTag compoundTag = new CompoundTag();
-		ListTag listTag = new BannerPattern.Builder()
-				.addPattern(BannerPatterns.CROSS, DyeColor.RED)
-				.addPattern(BannerPatterns.RHOMBUS_MIDDLE, DyeColor.BROWN)
-				.addPattern(BannerPatterns.SKULL, DyeColor.WHITE)
-				.toListTag();
-		compoundTag.put("Patterns", listTag);
-		BlockItem.setBlockEntityData(itemStack, BlockEntityType.BANNER, compoundTag);
-		itemStack.hideTooltipPart(ItemStack.TooltipPart.ADDITIONAL);
-		itemStack.setHoverName(Component.translatable(SKULKINS_BANNER_PATTERN_NAME).withStyle(ChatFormatting.GOLD));
+		BannerPatternLayers layers = new BannerPatternLayers.Builder()
+				.add(holderGetter.getOrThrow(BannerPatterns.CROSS), DyeColor.RED)
+				.add(holderGetter.getOrThrow(BannerPatterns.RHOMBUS_MIDDLE), DyeColor.BROWN)
+				.add(holderGetter.getOrThrow(BannerPatterns.SKULL), DyeColor.WHITE)
+				.build();
+		itemStack.set(DataComponents.BANNER_PATTERNS, layers);
+		itemStack.set(DataComponents.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE);
+		itemStack.set(DataComponents.ITEM_NAME, SKULKINS_BANNER_PATTERN_NAME);
 		return itemStack;
 	}
 
@@ -582,21 +582,16 @@ public class SkulkinRaid {
 	private BlockPos findRandomSpawnPos(int offsetMultiplier, int maxTry) {
 		int i = offsetMultiplier == 0 ? 2 : 2 - offsetMultiplier;
 		BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();
+		SpawnPlacementType spawnPlacementType = SpawnPlacements.getPlacementType(MinejagoEntityTypes.SKULL_TRUCK.get());
 
 		for(int j = 0; j < maxTry; ++j) {
-			float f = this.level.random.nextFloat() * (float) (Math.PI * 2);
+			float f = this.level.random.nextFloat() * 6.2831855F;
 			int k = this.center.getX() + Mth.floor(Mth.cos(f) * 32.0F * (float)i) + this.level.random.nextInt(5);
 			int l = this.center.getZ() + Mth.floor(Mth.sin(f) * 32.0F * (float)i) + this.level.random.nextInt(5);
 			int m = this.level.getHeight(Heightmap.Types.WORLD_SURFACE, k, l);
 			mutableBlockPos.set(k, m, l);
-			if (!MinejagoLevelUtils.isGoldenWeaponsMapHolderNearby(level, mutableBlockPos, 32) || offsetMultiplier >= 2) {
-				int n = 10;
-				if (this.level.hasChunksAt(mutableBlockPos.getX() - 10, mutableBlockPos.getZ() - 10, mutableBlockPos.getX() + 10, mutableBlockPos.getZ() + 10)
-						&& this.level.isPositionEntityTicking(mutableBlockPos)
-						&& (
-						NaturalSpawner.isSpawnPositionOk(SpawnPlacements.Type.ON_GROUND, this.level, mutableBlockPos, EntityType.RAVAGER)
-								|| this.level.getBlockState(mutableBlockPos.below()).is(Blocks.SNOW) && this.level.getBlockState(mutableBlockPos).isAir()
-				)) {
+			if (!this.level.isVillage(mutableBlockPos) || offsetMultiplier >= 2) {
+				if (this.level.hasChunksAt(mutableBlockPos.getX() - 10, mutableBlockPos.getZ() - 10, mutableBlockPos.getX() + 10, mutableBlockPos.getZ() + 10) && this.level.isPositionEntityTicking(mutableBlockPos) && (spawnPlacementType.isSpawnPositionOk(this.level, mutableBlockPos, EntityType.RAVAGER) || this.level.getBlockState(mutableBlockPos.below()).is(Blocks.SNOW) && this.level.getBlockState(mutableBlockPos).isAir())) {
 					return mutableBlockPos;
 				}
 			}
@@ -638,7 +633,7 @@ public class SkulkinRaid {
 
 	public void setLeader(int wave, MeleeCompatibleSkeletonRaider raider) {
 		this.groupToLeaderMap.put(wave, raider);
-		raider.setItemSlot(EquipmentSlot.HEAD, getLeaderBannerInstance());
+		raider.setItemSlot(EquipmentSlot.HEAD, getLeaderBannerInstance(raider.registryAccess().lookupOrThrow(Registries.BANNER_PATTERN)));
 		raider.setDropChance(EquipmentSlot.HEAD, 2.0F);
 	}
 
@@ -748,7 +743,8 @@ public class SkulkinRaid {
 		if (kruncha != null)
 			this.joinSkulkinRaid(i, kruncha, pos, false);
 
-		if (MinejagoServerConfig.enableTech)
+		// TODO: Update MidnightLib
+		if (/*MinejagoServerConfig.enableTech*/true)
 		{
 			List<MeleeCompatibleSkeletonRaider> raiders = new ArrayList<>();
 			if (nuckal != null) raiders.add(nuckal);
@@ -758,7 +754,7 @@ public class SkulkinRaid {
 			if (truck == null)
 				return false;
 			truck.setPos((double)pos.getX() + 0.5, (double)pos.getY() + 1.0, (double)pos.getZ() + 0.5);
-			truck.finalizeSpawn(this.level, this.level.getCurrentDifficultyAt(pos), MobSpawnType.EVENT, null, null);
+			truck.finalizeSpawn(this.level, this.level.getCurrentDifficultyAt(pos), MobSpawnType.EVENT, null);
 			truck.setOnGround(true);
 			this.level.addFreshEntityWithPassengers(truck);
 			truck.moveTo(pos, 0.0F, 0.0F);
@@ -783,7 +779,7 @@ public class SkulkinRaid {
 				if (horse == null)
 					break;
 				horse.setPos((double)pos.getX() + 0.5, (double)pos.getY() + 1.0, (double)pos.getZ() + 0.5);
-				horse.finalizeSpawn(this.level, this.level.getCurrentDifficultyAt(pos), MobSpawnType.EVENT, null, null);
+				horse.finalizeSpawn(this.level, this.level.getCurrentDifficultyAt(pos), MobSpawnType.EVENT, null);
 				horse.setOnGround(true);
 				this.level.addFreshEntityWithPassengers(horse);
 				horse.moveTo(pos, 0.0F, 0.0F);

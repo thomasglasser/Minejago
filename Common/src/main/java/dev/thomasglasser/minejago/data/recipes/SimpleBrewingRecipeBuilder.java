@@ -7,6 +7,7 @@ import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeCategory;
@@ -26,8 +27,8 @@ import java.util.Objects;
 public class SimpleBrewingRecipeBuilder implements RecipeBuilder
 {
     private final RecipeCategory category;
-    private final Potion result;
-    private final Potion base;
+    private final Holder<Potion> result;
+    private final Holder<Potion> base;
     private final Ingredient ingredient;
     private final float experience;
     private final IntProvider brewingTime;
@@ -36,7 +37,7 @@ public class SimpleBrewingRecipeBuilder implements RecipeBuilder
     private String group;
     private TeapotBrewingRecipe.Factory<?> factory;
 
-    private SimpleBrewingRecipeBuilder(RecipeCategory recipeCategory, Potion base, Ingredient ingredient, Potion result, float xp, IntProvider i, TeapotBrewingRecipe.Factory<?> factory) {
+    private SimpleBrewingRecipeBuilder(RecipeCategory recipeCategory, Holder<Potion> base, Ingredient ingredient, Holder<Potion> result, float xp, IntProvider i, TeapotBrewingRecipe.Factory<?> factory) {
         this.category = recipeCategory;
         this.base = base;
         this.ingredient = ingredient;
@@ -47,9 +48,9 @@ public class SimpleBrewingRecipeBuilder implements RecipeBuilder
     }
 
     public static <T extends TeapotBrewingRecipe> SimpleBrewingRecipeBuilder generic(RecipeCategory recipeCategory,
-                                                                                     Potion base,
+                                                                                     Holder<Potion> base,
                                                                                      Ingredient ingredient,
-                                                                                     Potion result,
+                                                                                     Holder<Potion> result,
                                                                                      float xp,
                                                                                      IntProvider i) {
         return new SimpleBrewingRecipeBuilder(recipeCategory, base, ingredient, result, xp, i, TeapotBrewingRecipe::new);
@@ -88,9 +89,9 @@ public class SimpleBrewingRecipeBuilder implements RecipeBuilder
         this.save(recipeOutput, getDefaultRecipeId(base, result));
     }
 
-    static ResourceLocation getDefaultRecipeId(Potion from, Potion to) {
-        ResourceLocation toLoc = BuiltInRegistries.POTION.getKey(to);
-        return new ResourceLocation(toLoc.getNamespace(), BuiltInRegistries.POTION.getKey(from).getPath() + "_to_" + toLoc.getPath());
+    static ResourceLocation getDefaultRecipeId(Holder<Potion> from, Holder<Potion> to) {
+        ResourceLocation toLoc = BuiltInRegistries.POTION.getKey(to.value());
+        return new ResourceLocation(toLoc.getNamespace(), BuiltInRegistries.POTION.getKey(from.value()).getPath() + "_to_" + toLoc.getPath());
     }
 
     /**

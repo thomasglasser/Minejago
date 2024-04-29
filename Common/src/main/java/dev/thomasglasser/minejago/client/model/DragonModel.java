@@ -6,6 +6,6 @@ import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 
 public class DragonModel<T extends Dragon> extends DefaultedEntityGeoModel<T> {
     public DragonModel(ResourceLocation assetSubpath) {
-        super(assetSubpath, true);
+        super(new ResourceLocation(assetSubpath.getNamespace(), "dragon/" + assetSubpath.getPath()), true);
     }
 }

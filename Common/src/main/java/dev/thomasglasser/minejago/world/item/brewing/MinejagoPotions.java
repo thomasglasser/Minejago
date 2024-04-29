@@ -9,8 +9,6 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.alchemy.Potion;
 
-import java.util.function.Supplier;
-
 public class MinejagoPotions
 {
     public static final RegistrationProvider<Potion> POTIONS = RegistrationProvider.get(BuiltInRegistries.POTION, Minejago.MOD_ID);
@@ -28,14 +26,14 @@ public class MinejagoPotions
     public static final RegistryObject<Potion> MILK = register("milk", MinejagoMobEffects.CURE);
     public static final RegistryObject<Potion> FOCUS_TEA = register("focus_tea", 4, MinejagoMobEffects.HYPERFOCUS);
 
-    private static RegistryObject<Potion> register(String name, Supplier<MobEffect> effect)
+    private static RegistryObject<Potion> register(String name, RegistryObject<MobEffect> effect)
     {
-        return POTIONS.register(name, () -> new Potion(new MobEffectInstance(effect.get())));
+        return POTIONS.register(name, () -> new Potion(new MobEffectInstance(effect.asHolder())));
     }
 
-    private static RegistryObject<Potion> register(String name, int duration, Supplier<MobEffect> effect)
+    private static RegistryObject<Potion> register(String name, int duration, RegistryObject<MobEffect> effect)
     {
-        return POTIONS.register(name, () -> new Potion(new MobEffectInstance(effect.get(), duration)));
+        return POTIONS.register(name, () -> new Potion(new MobEffectInstance(effect.asHolder(), duration)));
     }
 
     public static void init() {}

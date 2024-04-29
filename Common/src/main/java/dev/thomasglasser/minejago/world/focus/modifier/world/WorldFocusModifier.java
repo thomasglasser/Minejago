@@ -96,10 +96,10 @@ public class WorldFocusModifier extends FocusModifier
 	public JsonObject toJson()
 	{
 		JsonObject jsonObject = new JsonObject();
-		if (dayTime != null) jsonObject.add("day_time", IntProvider.CODEC.encodeStart(JsonOps.INSTANCE, dayTime).get().orThrow());
+		if (dayTime != null) jsonObject.add("day_time", IntProvider.CODEC.encodeStart(JsonOps.INSTANCE, dayTime).getOrThrow());
 		if (weather != null) jsonObject.addProperty("weather", weather.toString().toLowerCase());
-		if (y != null) jsonObject.add("y", IntProvider.CODEC.encodeStart(JsonOps.INSTANCE, y).get().orThrow());
-		if (temperature != null) jsonObject.add("temperature", IntProvider.CODEC.encodeStart(JsonOps.INSTANCE, temperature).get().orThrow());
+		if (y != null) jsonObject.add("y", IntProvider.CODEC.encodeStart(JsonOps.INSTANCE, y).getOrThrow());
+		if (temperature != null) jsonObject.add("temperature", IntProvider.CODEC.encodeStart(JsonOps.INSTANCE, temperature).getOrThrow());
 		JsonObject info = super.toJson();
 		for (String s : info.keySet())
 		{

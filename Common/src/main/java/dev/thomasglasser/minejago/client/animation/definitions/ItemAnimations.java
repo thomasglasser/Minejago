@@ -13,7 +13,6 @@ public class ItemAnimations
 
     public enum ScytheOfQuakes
     {
-        EMPTY(null),
         SLAM_START(SCYTHE_OF_QUAKES.get(0)),
         SLAM_RUMBLE(SCYTHE_OF_QUAKES.get(1)),
         BEAM_START(SCYTHE_OF_QUAKES.get(2)),

@@ -1,28 +1,31 @@
 package dev.thomasglasser.minejago.world.item;
 
-import net.minecraft.util.LazyLoadedValue;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.block.Block;
 
 import java.util.function.Supplier;
 
 public enum MinejagoTiers implements Tier {
-    BONE(2, 150, 10.0F, 1.5F, 10, () -> Ingredient.EMPTY);
+    BONE(BlockTags.INCORRECT_FOR_IRON_TOOL, 150, 10.0F, 1.5F, 10, () -> Ingredient.of(Items.BONE));
 
-    private final int level;
+    private final TagKey<Block> incorrectBlocksForDrops;
     private final int uses;
     private final float speed;
     private final float damage;
     private final int enchantmentValue;
-    private final LazyLoadedValue<Ingredient> repairIngredient;
+    private final Supplier<Ingredient> repairIngredient;
 
-    private MinejagoTiers(int j, int k, float f, float g, int l, Supplier supplier) {
-        this.level = j;
-        this.uses = k;
+    MinejagoTiers(final TagKey<Block> tagKey, final int j, final float f, final float g, final int k, final Supplier<Ingredient> supplier) {
+        this.incorrectBlocksForDrops = tagKey;
+        this.uses = j;
         this.speed = f;
         this.damage = g;
-        this.enchantmentValue = l;
-        this.repairIngredient = new LazyLoadedValue(supplier);
+        this.enchantmentValue = k;
+        this.repairIngredient = supplier;
     }
 
     public int getUses() {
@@ -37,8 +40,8 @@ public enum MinejagoTiers implements Tier {
         return this.damage;
     }
 
-    public int getLevel() {
-        return this.level;
+    public TagKey<Block> getIncorrectBlocksForDrops() {
+        return this.incorrectBlocksForDrops;
     }
 
     public int getEnchantmentValue() {

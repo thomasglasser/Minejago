@@ -15,7 +15,7 @@ import snownee.jade.api.IServerDataProvider;
 import snownee.jade.api.ITooltip;
 import snownee.jade.api.config.IPluginConfig;
 import snownee.jade.api.ui.IElement;
-import snownee.jade.api.ui.IElementHelper;
+import snownee.jade.impl.ui.ElementHelper;
 
 public enum PaintingComponentProvider implements IEntityComponentProvider, IServerDataProvider<EntityAccessor> {
     INSTANCE;
@@ -24,8 +24,7 @@ public enum PaintingComponentProvider implements IEntityComponentProvider, IServ
     public void appendTooltip(ITooltip iTooltip, EntityAccessor entityAccessor, IPluginConfig iPluginConfig) {
         if (((Painting)entityAccessor.getEntity()).getVariant().is(MinejagoPaintingVariants.FOUR_WEAPONS.getResourceKey()) && !entityAccessor.getServerData().getBoolean("MapTaken"))
         {
-            IElementHelper elementHelper = iTooltip.getElementHelper();
-            IElement icon = elementHelper.item(Items.MAP.getDefaultInstance(), 0.5f).translate(new Vec2(0, -2));
+            IElement icon = ElementHelper.INSTANCE.item(Items.MAP.getDefaultInstance(), 0.5f).translate(new Vec2(0, -2));
             iTooltip.add(icon);
             iTooltip.append(Component.translatable("entity.minejago.painting.waila.map"));
         }

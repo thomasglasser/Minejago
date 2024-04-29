@@ -11,6 +11,7 @@ import dev.thomasglasser.tommylib.api.registration.RegistrationProvider;
 import dev.thomasglasser.tommylib.api.registration.RegistryObject;
 import dev.thomasglasser.tommylib.api.world.item.ItemUtils;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
@@ -53,7 +54,7 @@ public class MinejagoCreativeModeTabs
         MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(chestplate -> output.accept(chestplate.get()));
         output.accept(MinejagoArmors.SAMUKAIS_CHESTPLATE.get());
 
-        output.accept(SkulkinRaid.getLeaderBannerInstance());
+        output.accept(SkulkinRaid.getLeaderBannerInstance(parameters.holders().lookupOrThrow(Registries.BANNER_PATTERN)));
     }));
     
     private static RegistryObject<CreativeModeTab> register(String name, Supplier<CreativeModeTab> tab)

@@ -22,9 +22,10 @@ import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.KilledTrigger;
 import net.minecraft.advancements.critereon.PlayerInteractTrigger;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.neoforged.neoforge.common.data.AdvancementProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.data.LanguageProvider;
@@ -70,7 +71,7 @@ public class MinejagoAdventureAdvancements implements AdvancementProvider.Advanc
                 "kill_skulkin", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(MinejagoEntityTypeTags.SKULKINS))
         ), "Redead", "Kill a Skulkin Warrior");
 
-        AdvancementHolder startSkulkinRaid = helper.make(killASkulkin, SkulkinRaid.getLeaderBannerInstance(), START_SKULKIN_RAID, AdvancementType.GOAL, true, true, false, null, Map.of(
+        AdvancementHolder startSkulkinRaid = helper.make(killASkulkin, SkulkinRaid.getLeaderBannerInstance(provider.lookupOrThrow(Registries.BANNER_PATTERN)), START_SKULKIN_RAID, AdvancementType.GOAL, true, true, false, null, Map.of(
                 "start_skulkin_raid", SkulkinRaidTrigger.TriggerInstance.raidStarted()
         ), "Ninja, GO!", "The Skulkin are coming!");
 
@@ -93,7 +94,7 @@ public class MinejagoAdventureAdvancements implements AdvancementProvider.Advanc
                 "get_teapot", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(MinejagoItemTags.TEAPOTS).build())
         ), "Something is brewing...", "Acquire a teapot");
 
-        AdvancementHolder brewTea = helper.make(getTeapot, PotionUtils.setPotion(MinejagoItems.FILLED_TEACUP.get().getDefaultInstance(), MinejagoPotions.OAK_TEA.get()), BREW_TEA, AdvancementType.TASK, true, true, false, null, Map.of(
+        AdvancementHolder brewTea = helper.make(getTeapot, PotionContents.createItemStack(MinejagoItems.FILLED_TEACUP.get(), MinejagoPotions.OAK_TEA.asHolder()), BREW_TEA, AdvancementType.TASK, true, true, false, null, Map.of(
                 "brewed_tea", BrewedTeaTrigger.TriggerInstance.brewedTea()
         ), "Hot Leaf Juice", "Brew tea in a teapot");
 

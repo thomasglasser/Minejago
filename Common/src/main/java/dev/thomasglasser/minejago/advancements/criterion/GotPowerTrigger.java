@@ -11,7 +11,6 @@ import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.ExtraCodecs;
 
 import java.util.Optional;
 
@@ -29,8 +28,8 @@ public class GotPowerTrigger extends SimpleCriterionTrigger<GotPowerTrigger.Trig
 
     public record TriggerInstance(Optional<ContextAwarePredicate> player, Optional<ResourceKey<Power>> power) implements SimpleCriterionTrigger.SimpleInstance {
         public static final Codec<GotPowerTrigger.TriggerInstance> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
-                        ExtraCodecs.strictOptionalField(EntityPredicate.ADVANCEMENT_CODEC, "player").forGetter(GotPowerTrigger.TriggerInstance::player),
-                        ExtraCodecs.strictOptionalField(ResourceKey.codec(MinejagoRegistries.POWER), "power").forGetter(GotPowerTrigger.TriggerInstance::power))
+                        EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(GotPowerTrigger.TriggerInstance::player),
+                        ResourceKey.codec(MinejagoRegistries.POWER).optionalFieldOf("power").forGetter(GotPowerTrigger.TriggerInstance::power))
                 .apply(instance, GotPowerTrigger.TriggerInstance::new));
 
         public static Criterion<GotPowerTrigger.TriggerInstance> gotPower() {

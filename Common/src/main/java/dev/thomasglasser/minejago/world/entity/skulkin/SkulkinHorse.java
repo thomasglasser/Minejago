@@ -19,7 +19,7 @@ import net.minecraft.world.entity.animal.horse.SkeletonTrapGoal;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.HorseArmorItem;
+import net.minecraft.world.item.AnimalArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -76,7 +76,7 @@ public class SkulkinHorse extends SkeletonHorse implements Enemy
                 }
 
                 if (bl) {
-                    this.setSecondsOnFire(8);
+                    this.igniteForSeconds(8);
                 }
             }
         }
@@ -85,8 +85,8 @@ public class SkulkinHorse extends SkeletonHorse implements Enemy
     }
 
     public void equipArmor(ItemStack itemStack) {
-        if (itemStack.getItem() instanceof HorseArmorItem) {
-            setItemSlot(EquipmentSlot.CHEST, itemStack);
+        if (itemStack.getItem() instanceof AnimalArmorItem) {
+            setItemSlot(EquipmentSlot.BODY, itemStack);
         }
     }
 
@@ -101,7 +101,7 @@ public class SkulkinHorse extends SkeletonHorse implements Enemy
 
         @Override
         public void tick() {
-            if (!horse.isWearingArmor() && equipArmor(horse))
+            if (!horse.isWearingBodyArmor() && equipArmor(horse))
                 horse.equipArmor(Items.IRON_HORSE_ARMOR.getDefaultInstance());
             super.tick();
         }
@@ -110,7 +110,7 @@ public class SkulkinHorse extends SkeletonHorse implements Enemy
         public AbstractHorse createHorse(DifficultyInstance difficulty) {
             SkulkinHorse skeletonHorse = MinejagoEntityTypes.SKULKIN_HORSE.get().create(this.horse.level());
             if (skeletonHorse != null) {
-                skeletonHorse.finalizeSpawn((ServerLevel)this.horse.level(), difficulty, MobSpawnType.TRIGGERED, null, null);
+                skeletonHorse.finalizeSpawn((ServerLevel)this.horse.level(), difficulty, MobSpawnType.TRIGGERED, null);
                 skeletonHorse.setPos(this.horse.getX(), this.horse.getY(), this.horse.getZ());
                 skeletonHorse.invulnerableTime = 60;
                 skeletonHorse.setPersistenceRequired();
@@ -129,7 +129,7 @@ public class SkulkinHorse extends SkeletonHorse implements Enemy
             Skulkin skeleton = MinejagoEntityTypes.SKULKIN.get().create(horse.level());
             if (skeleton != null) {
                 skeleton.setVariant(Skulkin.Variant.BOW);
-                skeleton.finalizeSpawn((ServerLevel)horse.level(), difficulty, MobSpawnType.TRIGGERED, null, null);
+                skeleton.finalizeSpawn((ServerLevel)horse.level(), difficulty, MobSpawnType.TRIGGERED, null);
                 skeleton.setPos(horse.getX(), horse.getY(), horse.getZ());
                 skeleton.invulnerableTime = 60;
                 skeleton.setPersistenceRequired();
@@ -140,6 +140,7 @@ public class SkulkinHorse extends SkeletonHorse implements Enemy
                 skeleton.setItemSlot(
                         EquipmentSlot.MAINHAND,
                         EnchantmentHelper.enchantItem(
+                                skeleton.level().enabledFeatures(),
                                 skeleton.getRandom(),
                                 disenchant(skeleton.getMainHandItem()),
                                 (int)(5.0F + difficulty.getSpecialMultiplier() * (float)skeleton.getRandom().nextInt(18)),
@@ -149,6 +150,7 @@ public class SkulkinHorse extends SkeletonHorse implements Enemy
                 skeleton.setItemSlot(
                         EquipmentSlot.HEAD,
                         EnchantmentHelper.enchantItem(
+                                skeleton.level().enabledFeatures(),
                                 skeleton.getRandom(),
                                 disenchant(skeleton.getItemBySlot(EquipmentSlot.HEAD)),
                                 (int)(5.0F + difficulty.getSpecialMultiplier() * (float)skeleton.getRandom().nextInt(18)),

@@ -4,7 +4,7 @@ import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.MinejagoStructures;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
@@ -17,7 +17,7 @@ public class MinejagoStructureSets
     public static final ResourceKey<StructureSet> CAVE_OF_DESPAIR = register("cave_of_despair");
     public static final ResourceKey<StructureSet> NINJAGO_CITY = register("ninjago_city");
 
-    public static void bootstrap(BootstapContext<StructureSet> context) {
+    public static void bootstrap(BootstrapContext<StructureSet> context) {
         HolderGetter<Structure> holderGetter = context.lookup(Registries.STRUCTURE);
 
         // Fun Easter egg: the number used for four weapons and the starting number is the word "ninja" numerically

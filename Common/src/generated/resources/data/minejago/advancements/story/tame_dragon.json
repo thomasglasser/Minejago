@@ -22,7 +22,8 @@
     },
     "frame": "challenge",
     "icon": {
-      "item": "minecraft:saddle"
+      "count": 1,
+      "id": "minecraft:saddle"
     },
     "title": {
       "translate": "advancement.minejago.story.tame_dragon.title"

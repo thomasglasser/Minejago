@@ -5,46 +5,56 @@ import dev.thomasglasser.minejago.world.level.block.entity.ChiseledScrollShelfBl
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.ChiseledBookShelfBlock;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChiseledBookShelfBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.Vec2;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
+import java.util.OptionalInt;
 
 public class ChiseledScrollShelfBlock extends ChiseledBookShelfBlock {
     public ChiseledScrollShelfBlock(Properties properties) {
         super(properties);
     }
 
-    @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        BlockEntity optional = level.getBlockEntity(pos);
-        if (optional instanceof ChiseledBookShelfBlockEntity chiseledBookShelfBlockEntity) {
-            Optional<Vec2> optionalx = getRelativeHitCoordinatesForBlockFace(hit, state.getValue(HorizontalDirectionalBlock.FACING));
-            if (optionalx.isEmpty()) {
-                return InteractionResult.PASS;
+    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+        BlockEntity var9 = level.getBlockEntity(blockPos);
+        if (var9 instanceof ChiseledBookShelfBlockEntity chiseledBookShelfBlockEntity) {
+            if (!itemStack.is(MinejagoItemTags.SCROLL_SHELF_SCROLLS)) {
+                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
             } else {
-                int i = getHitSlot((Vec2)optionalx.get());
-                if (state.getValue(SLOT_OCCUPIED_PROPERTIES.get(i))) {
-                    removeBook(level, pos, player, chiseledBookShelfBlockEntity, i);
-                    return InteractionResult.sidedSuccess(level.isClientSide);
+                OptionalInt optionalInt = this.getHitSlot(blockHitResult, blockState);
+                if (optionalInt.isEmpty()) {
+                    return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+                } else if (blockState.getValue(SLOT_OCCUPIED_PROPERTIES.get(optionalInt.getAsInt()))) {
+                    return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
                 } else {
-                    ItemStack itemStack = player.getItemInHand(hand);
-                    if (itemStack.is(MinejagoItemTags.SCROLL_SHELF_SCROLLS)) {
-                        addBook(level, pos, player, chiseledBookShelfBlockEntity, itemStack, i);
-                        return InteractionResult.sidedSuccess(level.isClientSide);
-                    } else {
-                        return InteractionResult.CONSUME;
-                    }
+                    addBook(level, blockPos, player, chiseledBookShelfBlockEntity, itemStack, optionalInt.getAsInt());
+                    return ItemInteractionResult.sidedSuccess(level.isClientSide);
                 }
+            }
+        } else {
+            return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+        }
+    }
+
+    protected InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
+        BlockEntity var7 = level.getBlockEntity(blockPos);
+        if (var7 instanceof ChiseledBookShelfBlockEntity chiseledBookShelfBlockEntity) {
+            OptionalInt optionalInt = this.getHitSlot(blockHitResult, blockState);
+            if (optionalInt.isEmpty()) {
+                return InteractionResult.PASS;
+            } else if (!blockState.getValue(SLOT_OCCUPIED_PROPERTIES.get(optionalInt.getAsInt()))) {
+                return InteractionResult.CONSUME;
+            } else {
+                removeBook(level, blockPos, player, chiseledBookShelfBlockEntity, optionalInt.getAsInt());
+                return InteractionResult.sidedSuccess(level.isClientSide);
             }
         } else {
             return InteractionResult.PASS;

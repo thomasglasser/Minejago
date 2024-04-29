@@ -46,9 +46,11 @@ public class ThrownIronShuriken extends AbstractArrow
         this.entityData.set(ID_FOIL, pStack.hasFoil());
     }
 
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(ID_FOIL, false);
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder)
+    {
+        super.defineSynchedData(builder);
+        builder.define(ID_FOIL, false);
     }
 
     /**
@@ -109,7 +111,7 @@ public class ThrownIronShuriken extends AbstractArrow
             float f = 8.0F;
             if (entity instanceof LivingEntity livingentity)
             {
-                f += EnchantmentHelper.getDamageBonus(getPickupItem(), livingentity.getMobType());
+                f += EnchantmentHelper.getDamageBonus(getPickupItem(), livingentity.getType());
             }
 
             Entity entity1 = this.getOwner();
@@ -144,6 +146,12 @@ public class ThrownIronShuriken extends AbstractArrow
         return super.tryPickup(player) || this.isNoPhysics() && this.ownedBy(player) && player.getInventory().add(this.getPickupItem());
     }
 
+    @Override
+    protected ItemStack getDefaultPickupItem()
+    {
+        return MinejagoItems.IRON_SHURIKEN.get().getDefaultInstance();
+    }
+
     /**
      * Called by a player entity when they collide with an entity
      */
@@ -172,7 +180,7 @@ public class ThrownIronShuriken extends AbstractArrow
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         this.dealtDamage = pCompound.getBoolean("DealtDamage");
-        this.pos = NbtUtils.readBlockPos(pCompound.getCompound("TargetPos")).getCenter();
+        this.pos = NbtUtils.readBlockPos(pCompound, "TargetPos").orElse(new BlockPos(0, 0, 0)).getCenter();
     }
 
     public void addAdditionalSaveData(CompoundTag pCompound) {

@@ -2,14 +2,13 @@ package dev.thomasglasser.minejago.world.entity.ai.behavior;
 
 import com.mojang.datafixers.util.Pair;
 import dev.thomasglasser.minejago.tags.MinejagoEntityTypeTags;
-import dev.thomasglasser.minejago.server.MinejagoServerConfig;
-import dev.thomasglasser.minejago.world.level.MinejagoLevelUtils;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.skulkin.AbstractSkulkinVehicle;
 import dev.thomasglasser.minejago.world.entity.skulkin.SkulkinHorse;
 import dev.thomasglasser.minejago.world.entity.skulkin.SkullTruck;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.MeleeCompatibleSkeletonRaider;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
+import dev.thomasglasser.minejago.world.level.MinejagoLevelUtils;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
@@ -54,7 +53,8 @@ public class FleeSkulkinRaidAndDespawn<T extends MeleeCompatibleSkeletonRaider> 
 				raid.updateBossbar();
 				return;
 			}
-			else if (MinejagoServerConfig.enableTech)
+			// TODO: Update MidnightLib
+			else if (/*MinejagoServerConfig.enableTech*/true)
 			{
 				if (entity.getType().is(MinejagoEntityTypeTags.SKULL_TRUCK_RIDERS))
 				{

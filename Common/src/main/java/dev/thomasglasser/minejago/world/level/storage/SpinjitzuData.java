@@ -12,8 +12,8 @@ public record SpinjitzuData(boolean unlocked, boolean active) {
                     Codec.BOOL.fieldOf("active").forGetter(SpinjitzuData::active))
             .apply(instance, SpinjitzuData::new));
 
-    public static final AttributeModifier SPEED_MODIFIER = new AttributeModifier(UUID.randomUUID(), "Spinjitzu speed", 1.5, AttributeModifier.Operation.MULTIPLY_BASE);
-    public static final AttributeModifier KNOCKBACK_MODIFIER = new AttributeModifier(UUID.randomUUID(), "Spinjitzu knockback", 1.5, AttributeModifier.Operation.ADDITION);
+    public static final AttributeModifier SPEED_MODIFIER = new AttributeModifier(UUID.randomUUID(), "Spinjitzu speed", 1.5, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
+    public static final AttributeModifier KNOCKBACK_MODIFIER = new AttributeModifier(UUID.randomUUID(), "Spinjitzu knockback", 1.5, AttributeModifier.Operation.ADD_VALUE);
 
     public SpinjitzuData()
     {

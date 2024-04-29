@@ -7,6 +7,7 @@ import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.tommylib.api.data.recipes.ExtendedRecipeProvider;
 import dev.thomasglasser.tommylib.api.registration.RegistryObject;
 import dev.thomasglasser.tommylib.api.tags.TommyLibItemTags;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
@@ -170,7 +171,7 @@ public class MinejagoRecipes extends ExtendedRecipeProvider
         normalTea(writer, MinejagoBlocks.FOCUS_LEAVES_SET.leaves().get().asItem(), MinejagoPotions.FOCUS_TEA);
     }
 
-    private void normalTea(RecipeOutput writer, Item ingredient, Potion result)
+    private void normalTea(RecipeOutput writer, Item ingredient, Holder<Potion> result)
     {
         SimpleBrewingRecipeBuilder.generic(
                 RecipeCategory.BREWING,
@@ -179,13 +180,13 @@ public class MinejagoRecipes extends ExtendedRecipeProvider
                 result,
                 0.5f,
                 UniformInt.of(1200, 2400))
-                .group(BuiltInRegistries.POTION.getKey(result).getPath())
+                .group(BuiltInRegistries.POTION.getKey(result.value()).getPath())
                 .unlockedBy("has_ingredient", has(ingredient))
                 .save(writer);
     }
 
     private void normalTea(RecipeOutput writer, Item ingredient, RegistryObject<Potion> result)
     {
-        normalTea(writer, ingredient, result.get());
+        normalTea(writer, ingredient, result.asHolder());
     }
 }

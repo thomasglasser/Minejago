@@ -14,7 +14,6 @@ import dev.thomasglasser.minejago.client.model.ThrownBoneKnifeModel;
 import dev.thomasglasser.minejago.client.model.ThrownIronShurikenModel;
 import dev.thomasglasser.minejago.client.renderer.block.DragonHeadRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.CharacterRenderer;
-import dev.thomasglasser.minejago.client.renderer.entity.DragonRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.EarthBlastRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.KrunchaRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.NuckalRenderer;
@@ -58,6 +57,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.blockentity.BrushableBlockRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
@@ -67,12 +67,12 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,8 +112,6 @@ public class MinejagoFabricClient implements ClientModInitializer
         BlockRenderLayerMap.INSTANCE.putBlocks(RenderType.cutout(), MinejagoBlocks.FOCUS_LEAVES_SET.sapling().get(), MinejagoBlocks.FOCUS_LEAVES_SET.pottedSapling().get());
 
         registerEvents();
-
-        MinejagoClientEvents.registerMenuScreens();
     }
 
     private void registerRenderers()
@@ -134,7 +132,7 @@ public class MinejagoFabricClient implements ClientModInitializer
         EntityRendererRegistry.register(MinejagoEntityTypes.KRUNCHA.get(), KrunchaRenderer::new);
         EntityRendererRegistry.register(MinejagoEntityTypes.NUCKAL.get(), NuckalRenderer::new);
         EntityRendererRegistry.register(MinejagoEntityTypes.SKULKIN_HORSE.get(), SkulkinHorseRenderer::new);
-        EntityRendererRegistry.register(MinejagoEntityTypes.EARTH_DRAGON.get(), context -> new DragonRenderer<>(context, new DragonModel<>(Minejago.modLoc("dragon/earth_dragon"))));
+        EntityRendererRegistry.register(MinejagoEntityTypes.EARTH_DRAGON.get(), context -> new GeoEntityRenderer<>(context, new DragonModel<>(MinejagoEntityTypes.EARTH_DRAGON.getId())));
         EntityRendererRegistry.register(MinejagoEntityTypes.SAMUKAI.get(), SamukaiRenderer::new);
         EntityRendererRegistry.register(MinejagoEntityTypes.SKULL_TRUCK.get(), SkullTruckRenderer::new);
         EntityRendererRegistry.register(MinejagoEntityTypes.SKULL_MOTORBIKE.get(), SkullMotorbikeRenderer::new);
@@ -181,7 +179,7 @@ public class MinejagoFabricClient implements ClientModInitializer
     {
         ColorProviderRegistry.ITEM.register((pStack, pTintIndex) -> {
             if (pTintIndex == 0)
-                return PotionUtils.getColor(pStack);
+                return pStack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).getColor();
             return -1;
         }, MinejagoItems.FILLED_TEACUP.get());
         ColorProviderRegistry.ITEM.register((itemStack, i) ->
@@ -196,7 +194,7 @@ public class MinejagoFabricClient implements ClientModInitializer
                 return -1;
             if (i == 1 && blockAndTintGetter.getBlockEntity(blockPos) instanceof TeapotBlockEntity teapotBlockEntity && blockState.getValue(TeapotBlock.FILLED))
             {
-                return PotionUtils.getColor(PotionUtils.setPotion(new ItemStack(Items.POTION), teapotBlockEntity.getPotion()));
+                return PotionContents.createItemStack(Items.POTION, teapotBlockEntity.getPotion()).get(DataComponents.POTION_CONTENTS).getColor();
             }
             return -1;
         }), MinejagoBlocks.allPots().toArray(new Block[0]));
@@ -222,7 +220,7 @@ public class MinejagoFabricClient implements ClientModInitializer
         });
         if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled()) PlayerAnimationAccess.REGISTER_ANIMATION_EVENT.register(AnimationUtils::registerPlayerAnimation);
         ItemGroupEvents.MODIFY_ENTRIES_ALL.register((group, entries) ->
-                entries.acceptAll(MinejagoClientEvents.getItemsForTab(BuiltInRegistries.CREATIVE_MODE_TAB.getResourceKey(group).orElseThrow())));
+                entries.acceptAll(MinejagoClientEvents.getItemsForTab(BuiltInRegistries.CREATIVE_MODE_TAB.getResourceKey(group).orElseThrow(), entries.getContext().holders())));
         ClientTickEvents.END_CLIENT_TICK.register(client ->
                 MinejagoClientEvents.onClientTick());
     }

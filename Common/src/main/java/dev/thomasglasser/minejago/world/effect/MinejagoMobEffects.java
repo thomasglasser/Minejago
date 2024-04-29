@@ -65,10 +65,10 @@ public class MinejagoMobEffects
         }
 
         @Override
-        public void tick(LivingEntity entity, @Nullable MobEffectInstance effectInstance, int amplifier)
+        public boolean tick(LivingEntity entity, @Nullable MobEffectInstance effectInstance, int amplifier)
         {
-            super.tick(entity, effectInstance, amplifier);
             onApplication(effectInstance, null, entity, amplifier);
+            return super.tick(entity, effectInstance, amplifier);
         }
 
         @Override
@@ -76,7 +76,7 @@ public class MinejagoMobEffects
         {
             super.onApplication(effectInstance, source, entity, amplifier);
             if (!entity.level().isClientSide && entity instanceof Player player)
-                Services.DATA.getFocusData(player).increase(false, amplifier + 1, FocusConstants.FOCUS_SATURATION_MAX);
+                Services.DATA.getFocusData(player).meditate(false, amplifier + 1, FocusConstants.FOCUS_SATURATION_MAX);
         }
 
         @Override

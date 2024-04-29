@@ -4,8 +4,8 @@ import com.google.common.collect.ImmutableMultimap;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.animation.definitions.ItemAnimations;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
-import dev.thomasglasser.minejago.network.ClientboundStartScytheAnimationPacket;
-import dev.thomasglasser.minejago.network.ClientboundStopAnimationPacket;
+import dev.thomasglasser.minejago.network.ClientboundStartScytheAnimationPayload;
+import dev.thomasglasser.minejago.network.ClientboundStopAnimationPayload;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.tags.MinejagoPowerTags;
 import dev.thomasglasser.minejago.world.entity.power.Power;
@@ -15,16 +15,19 @@ import dev.thomasglasser.tommylib.api.world.level.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -32,6 +35,8 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Math;
+
+import java.util.Optional;
 
 public class ScytheOfQuakesItem extends GoldenWeaponItem
 {
@@ -91,7 +96,7 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem
         }
         else if (player.isShiftKeyDown())
         {
-            if (!level.isClientSide) TommyLibServices.NETWORK.sendToAllClients(ClientboundStartScytheAnimationPacket.ID, ClientboundStartScytheAnimationPacket::new, ClientboundStartScytheAnimationPacket.write(player.getUUID(), ItemAnimations.ScytheOfQuakes.SLAM_START, ItemAnimations.ScytheOfQuakes.SLAM_RUMBLE), player.getServer());
+            if (!level.isClientSide) TommyLibServices.NETWORK.sendToAllClients(new ClientboundStartScytheAnimationPayload(player.getUUID(), ItemAnimations.ScytheOfQuakes.SLAM_START, Optional.of(ItemAnimations.ScytheOfQuakes.SLAM_RUMBLE)), player.getServer());
             BlockPos[] places = new BlockPos[] {pos.north(6), pos.north(4).east(4), pos.east(6), pos.east(4).south(4), pos.south(6), pos.south(4).west(4), pos.west(6), pos.west(4).north(4)};
             for (BlockPos place: places)
             {
@@ -104,7 +109,7 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem
         else
         {
             player.startUsingItem(pContext.getHand());
-            if (!level.isClientSide) TommyLibServices.NETWORK.sendToAllClients(ClientboundStartScytheAnimationPacket.ID, ClientboundStartScytheAnimationPacket::new, ClientboundStartScytheAnimationPacket.write(player.getUUID(), ItemAnimations.ScytheOfQuakes.BEAM_START, ItemAnimations.ScytheOfQuakes.BEAM_ACTIVE), player.getServer());
+            if (!level.isClientSide) TommyLibServices.NETWORK.sendToAllClients(new ClientboundStartScytheAnimationPayload(player.getUUID(), ItemAnimations.ScytheOfQuakes.BEAM_START, Optional.of(ItemAnimations.ScytheOfQuakes.BEAM_ACTIVE)), player.getServer());
         }
         return InteractionResult.SUCCESS;
     }
@@ -116,8 +121,17 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem
         if (pLivingEntity instanceof Player player1)
         {
             if (!player1.getAbilities().instabuild) player1.getCooldowns().addCooldown(pStack.getItem(), 20 * (pTimeCharged > 10? (pStack.getUseDuration() - pTimeCharged) : 1));
-            if (!pLevel.isClientSide) TommyLibServices.NETWORK.sendToAllClients(ClientboundStopAnimationPacket.ID, ClientboundStopAnimationPacket::new, ClientboundStopAnimationPacket.write(pLivingEntity.getUUID()), pLevel.getServer());
-            player1.getAttributes().removeAttributeModifiers(builder.build());
+            if (!pLevel.isClientSide) TommyLibServices.NETWORK.sendToAllClients(new ClientboundStopAnimationPayload(pLivingEntity.getUUID()), pLevel.getServer());
+            ItemAttributeModifiers original = pStack.get(DataComponents.ATTRIBUTE_MODIFIERS);
+            ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder();
+            if (original != null)
+            {
+                original.modifiers().forEach(entry -> {
+                    if (!entry.modifier().name().equals("Staircase movement modifier"))
+                        builder.add(entry.attribute(), entry.modifier(), entry.slot());
+                });
+            }
+            pStack.set(DataComponents.ATTRIBUTE_MODIFIERS, builder.build());
         }
     }
 
@@ -272,8 +286,14 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem
             {
                 Minejago.LOGGER.error("Unknown/unsupported direction for scythe staircase");
             }
-            builder.put(Attributes.MOVEMENT_SPEED, new AttributeModifier("Movement modifier", -1, AttributeModifier.Operation.MULTIPLY_TOTAL));
-            player.getAttributes().addTransientAttributeModifiers(builder.build());
+            ItemAttributeModifiers original = stack.get(DataComponents.ATTRIBUTE_MODIFIERS);
+            ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder();
+            if (original != null)
+            {
+                original.modifiers().forEach(entry -> builder.add(entry.attribute(), entry.modifier(), entry.slot()));
+            }
+            builder.add(Attributes.MOVEMENT_SPEED, new AttributeModifier("Staircase movement modifier", -1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.HAND);
+            stack.set(DataComponents.ATTRIBUTE_MODIFIERS, builder.build());
             level.playSound(null, player.blockPosition(), MinejagoSoundEvents.SCYTHE_OF_QUAKES_PATH.get(), SoundSource.PLAYERS);
         }
     }
@@ -283,7 +303,7 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem
         if (!player.level().isClientSide && !player.getAbilities().instabuild)
         {
             player.level().explode(null, player.getX(), player.getY() + 1, player.getZ(), 8.0F, Level.ExplosionInteraction.TNT);
-            TommyLibServices.NETWORK.sendToAllClients(ClientboundStartScytheAnimationPacket.ID, ClientboundStartScytheAnimationPacket::new, ClientboundStartScytheAnimationPacket.write(player.getUUID(), ItemAnimations.ScytheOfQuakes.SLAM_START, ItemAnimations.ScytheOfQuakes.EMPTY), player.getServer());
+            TommyLibServices.NETWORK.sendToAllClients(new ClientboundStartScytheAnimationPayload(player.getUUID(), ItemAnimations.ScytheOfQuakes.SLAM_START, Optional.empty()), player.getServer());
         }
     }
 
@@ -293,8 +313,9 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem
     }
 
     @Override
-    public boolean isCorrectToolForDrops(BlockState pBlock) {
-        return !pBlock.is(TommyLibBlockTags.UNBREAKABLE);
+    public boolean isCorrectToolForDrops(ItemStack itemStack, BlockState blockState)
+    {
+        return !blockState.is(TommyLibBlockTags.UNBREAKABLE);
     }
 
     @Override

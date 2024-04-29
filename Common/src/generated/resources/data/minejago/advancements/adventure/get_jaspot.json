@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minejago:jaspot"
-            ]
+            "items": "minejago:jaspot"
           }
         ]
       },
@@ -21,7 +19,8 @@
     "frame": "challenge",
     "hidden": true,
     "icon": {
-      "item": "minejago:jaspot"
+      "count": 1,
+      "id": "minejago:jaspot"
     },
     "title": {
       "translate": "advancement.minejago.adventure.get_jaspot.title"

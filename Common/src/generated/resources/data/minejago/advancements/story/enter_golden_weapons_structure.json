@@ -9,7 +9,7 @@
             "entity": "this",
             "predicate": {
               "location": {
-                "structure": "minejago:cave_of_despair"
+                "structures": "minejago:cave_of_despair"
               }
             }
           }
@@ -23,7 +23,8 @@
       "translate": "advancement.minejago.story.enter_golden_weapons_structure.desc"
     },
     "icon": {
-      "item": "minejago:scythe_of_quakes"
+      "count": 1,
+      "id": "minejago:scythe_of_quakes"
     },
     "title": {
       "translate": "advancement.minejago.story.enter_golden_weapons_structure.title"

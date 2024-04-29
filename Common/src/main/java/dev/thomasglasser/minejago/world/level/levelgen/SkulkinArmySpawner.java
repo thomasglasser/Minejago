@@ -1,7 +1,6 @@
 package dev.thomasglasser.minejago.world.level.levelgen;
 
 import dev.thomasglasser.minejago.tags.MinejagoStructureTags;
-import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.MeleeCompatibleSkeletonRaider;
@@ -30,7 +29,9 @@ public class SkulkinArmySpawner implements CustomSpawner
 			return 0;
 		} else if (!((SkulkinRaidsHolder)level).getSkulkinRaids().isMapTaken()) {
 			return 0;
-		} else if (!MinejagoServerConfig.enableSkulkinRaids) {
+		}
+		// TODO: Update MidnightLib
+		else if (!/*MinejagoServerConfig.enableSkulkinRaids*/true) {
 			return 0;
 		} else {
 			RandomSource randomSource = level.random;
@@ -103,7 +104,7 @@ public class SkulkinArmySpawner implements CustomSpawner
 			MeleeCompatibleSkeletonRaider raider = MinejagoEntityTypes.SKULKIN.get().create(level);
 			if (raider != null) {
 				raider.setPos(pos.getX(), pos.getY(), pos.getZ());
-				raider.finalizeSpawn(level, level.getCurrentDifficultyAt(pos), MobSpawnType.PATROL, null, null);
+				raider.finalizeSpawn(level, level.getCurrentDifficultyAt(pos), MobSpawnType.PATROL, null);
 				level.addFreshEntityWithPassengers(raider);
 				return true;
 			} else {

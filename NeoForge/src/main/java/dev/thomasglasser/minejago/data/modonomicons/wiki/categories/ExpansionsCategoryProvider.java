@@ -1,21 +1,9 @@
 package dev.thomasglasser.minejago.data.modonomicons.wiki.categories;
 
-import com.klikli_dev.modonomicon.api.datagen.BookProvider;
-import com.klikli_dev.modonomicon.api.datagen.CategoryProvider;
-import com.klikli_dev.modonomicon.api.datagen.book.BookCategoryModel;
-import com.klikli_dev.modonomicon.api.datagen.book.BookEntryModel;
-import com.klikli_dev.modonomicon.api.datagen.book.page.BookImagePageModel;
-import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
-import dev.thomasglasser.minejago.packs.MinejagoPacks;
-import dev.thomasglasser.minejago.world.item.MinejagoItems;
-import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
-import net.minecraft.world.item.Items;
-
-import static dev.thomasglasser.minejago.data.modonomicons.wiki.MinejagoWikiBookProvider.SIMPLE_ENTRY_MAP;
-
-public class ExpansionsCategoryProvider extends CategoryProvider
+// TODO: Convert to Tslatouli
+public class ExpansionsCategoryProvider /*extends CategoryProvider*/
 {
-	public static final String ID = "expansions";
+	/*public static final String ID = "expansions";
 
 	public ExpansionsCategoryProvider(BookProvider parent) {
 		super(parent, ID);
@@ -93,5 +81,5 @@ public class ExpansionsCategoryProvider extends CategoryProvider
 						summaryText,
 						summaryImage
 				);
-	}
+	}*/
 }

@@ -1,10 +1,10 @@
 package dev.thomasglasser.minejago.world.entity.skulkin.raid;
 
 import com.google.common.collect.Maps;
-import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.tags.MinejagoDimensionTypeTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -26,7 +26,7 @@ public class SkulkinRaids extends SavedData
 	private boolean mapTaken;
 
 	public static SavedData.Factory<SkulkinRaids> factory(ServerLevel level) {
-		return new SavedData.Factory<>(SkulkinRaids::new, compoundTag -> SkulkinRaids.load(level, compoundTag), DataFixTypes.SAVED_DATA_RAIDS);
+		return new SavedData.Factory<>(SkulkinRaids::new, (compoundTag, provider) -> SkulkinRaids.load(level, compoundTag), DataFixTypes.SAVED_DATA_RAIDS);
 	}
 
 	public SkulkinRaids()
@@ -45,7 +45,7 @@ public class SkulkinRaids extends SavedData
 
 		while(iterator.hasNext()) {
 			SkulkinRaid raid = iterator.next();
-			if (!MinejagoServerConfig.enableSkulkinRaids) {
+			if (!/*MinejagoServerConfig.enableSkulkinRaids*/true) { // TODO: Update MidnightLib
 				raid.stop();
 			}
 
@@ -74,7 +74,7 @@ public class SkulkinRaids extends SavedData
 	public SkulkinRaid createOrExtendSkulkinRaid(ServerPlayer serverPlayer) {
 		if (serverPlayer.isSpectator()) {
 			return null;
-		} else if (!MinejagoServerConfig.enableSkulkinRaids) {
+		} else if (!/*MinejagoServerConfig.enableSkulkinRaids*/true) { // TODO: Update MidnightLib
 			return null;
 		} else {
 			if (Holder.Reference.createIntrusive(serverPlayer.level().registryAccess().registryOrThrow(Registries.DIMENSION_TYPE).holderOwner(), serverPlayer.level().dimensionType()).is(MinejagoDimensionTypeTags.HAS_SKULKIN_RAIDS)) {
@@ -115,7 +115,8 @@ public class SkulkinRaids extends SavedData
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag compoundTag) {
+	public CompoundTag save(CompoundTag compoundTag, HolderLookup.Provider provider)
+	{
 		compoundTag.putInt("NextAvailableID", this.nextAvailableID);
 		compoundTag.putInt("Tick", this.tick);
 		compoundTag.putBoolean("MapTaken", mapTaken);

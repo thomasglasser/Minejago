@@ -3,10 +3,8 @@
   "base": "minecraft:water",
   "brewing_time": {
     "type": "minecraft:uniform",
-    "value": {
-      "max_inclusive": 2400,
-      "min_inclusive": 1200
-    }
+    "max_inclusive": 2400,
+    "min_inclusive": 1200
   },
   "experience": 0.5,
   "group": "dark_oak_tea",

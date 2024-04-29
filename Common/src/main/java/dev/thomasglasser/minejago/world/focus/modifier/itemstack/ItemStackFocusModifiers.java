@@ -3,7 +3,6 @@ package dev.thomasglasser.minejago.world.focus.modifier.itemstack;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import dev.thomasglasser.minejago.Minejago;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -13,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ItemStackFocusModifiers
 {
@@ -55,7 +55,17 @@ public class ItemStackFocusModifiers
 	}
 
 	public static double applyModifier(ItemStack stack, double oldValue) {
-		List<ItemStackFocusModifier> data = ITEM_STACK_FOCUS_MODIFIERS.stream().filter(modifier -> modifier.getStack().getItem() == stack.getItem() && NbtUtils.compareNbt(modifier.getStack().getTag(), stack.getTag(), true)).toList();
+		List<ItemStackFocusModifier> data = ITEM_STACK_FOCUS_MODIFIERS.stream().filter(modifier -> {
+			AtomicBoolean sameComponents = new AtomicBoolean(true);
+			modifier.getStack().getComponents().forEach(component ->
+			{
+				if (!component.equals(stack.get(component.type())))
+				{
+					sameComponents.set(false);
+				}
+			});
+			return modifier.getStack().getItem() == stack.getItem() && sameComponents.get();
+		}).toList();
 		if (!data.isEmpty())
 		{
 			double newValue = oldValue;

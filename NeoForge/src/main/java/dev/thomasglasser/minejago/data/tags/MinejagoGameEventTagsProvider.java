@@ -19,8 +19,8 @@ public class MinejagoGameEventTagsProvider extends GameEventTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider pProvider) {
         tag(GameEventTags.VIBRATIONS)
-                .add(MinejagoGameEvents.SPINJITZU.get());
+                .add(MinejagoGameEvents.SPINJITZU.getResourceKey());
         tag(GameEventTags.WARDEN_CAN_LISTEN)
-                .add(MinejagoGameEvents.SPINJITZU.get());
+                .add(MinejagoGameEvents.SPINJITZU.getResourceKey());
     }
 }

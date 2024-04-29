@@ -15,7 +15,6 @@ import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.TickEvent;
-import software.bernie.geckolib.GeckoLib;
 
 @Mod(Minejago.MOD_ID)
 public class MinejagoNeoForge
@@ -26,9 +25,6 @@ public class MinejagoNeoForge
 
         Minejago.init();
 
-        GeckoLib.initialize(bus);
-
-        bus.addListener(MinejagoForgeCoreEvents::onCommonSetup);
         if (FMLEnvironment.dist.isClient()) bus.addListener(MinejagoForgeClientEvents::onClientSetup);
 
         addModListeners(bus);

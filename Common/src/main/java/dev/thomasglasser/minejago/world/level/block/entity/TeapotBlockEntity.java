@@ -9,7 +9,10 @@ import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import dev.thomasglasser.tommylib.api.world.level.block.entity.ItemHolder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -28,8 +31,6 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.alchemy.PotionUtils;
-import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
@@ -57,8 +58,7 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
     protected boolean done;
     protected boolean brewing;
     protected boolean heating;
-    @NotNull
-    protected Potion potion = Potions.EMPTY;
+    protected Holder<Potion> potion = null;
 
     private float experiencePerCup = 0;
     private int experienceCups = MAX_CUPS;
@@ -101,7 +101,7 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
 
                     if (recipe.isPresent())
                     {
-                        pBlockEntity.potion = PotionUtils.getPotion(recipe.get().value().getResultItem(pLevel.registryAccess()));
+                        pBlockEntity.potion = recipe.get().value().getResultItem(pLevel.registryAccess()).get(DataComponents.POTION_CONTENTS).potion().orElse(null);
                         pBlockEntity.experiencePerCup = recipe.get().value().getExperience() / pBlockEntity.cups;
                         pBlockEntity.experienceCups = pBlockEntity.cups;
                     }
@@ -165,7 +165,7 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
         }
         else
         {
-            pBlockEntity.potion = Potions.EMPTY;
+            pBlockEntity.potion = null;
             pBlockEntity.boiling = false;
             pBlockEntity.done = false;
             pBlockEntity.item = ItemStack.EMPTY;
@@ -177,44 +177,48 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
         }
     }
 
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
+    @Override
+    protected void loadAdditional(CompoundTag compoundTag, HolderLookup.Provider provider)
+    {
+        super.loadAdditional(compoundTag, provider);
         NonNullList<ItemStack> itemList = NonNullList.withSize(1, ItemStack.EMPTY);
-        ContainerHelper.loadAllItems(pTag, itemList);
-        item = itemList.get(0);
-        Potion newPotion = BuiltInRegistries.POTION.get(ResourceLocation.of(pTag.getString("Potion"), ':'));
+        ContainerHelper.loadAllItems(compoundTag, itemList, provider);
+        item = itemList.getFirst();
+        Holder<Potion> newPotion = BuiltInRegistries.POTION.getHolder(new ResourceLocation(compoundTag.getString("Potion"))).orElse(null);
         if (newPotion != potion)
         {
             potion = newPotion;
             if (this.level != null && this.level.isClientSide)
                 level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_ALL);
         }
-        this.temp = pTag.getShort("Temperature");
-        this.boiling = pTag.getBoolean("Boiling");
-        this.done = pTag.getBoolean("Done");
-        this.cups = pTag.getShort("Cups");
-        this.brewTime = pTag.getShort("BrewTime");
+        this.temp = compoundTag.getShort("Temperature");
+        this.boiling = compoundTag.getBoolean("Boiling");
+        this.done = compoundTag.getBoolean("Done");
+        this.cups = compoundTag.getShort("Cups");
+        this.brewTime = compoundTag.getShort("BrewTime");
     }
 
     @Override
-    public void saveAdditional(CompoundTag pTag) {
-        super.saveAdditional(pTag);
-        ContainerHelper.saveAllItems(pTag, NonNullList.withSize(1, item));
-        if (this.potion != Potions.EMPTY) {
-            pTag.putString("Potion", BuiltInRegistries.POTION.getKey(this.potion).toString());
+    protected void saveAdditional(CompoundTag compoundTag, HolderLookup.Provider provider)
+    {
+        super.saveAdditional(compoundTag, provider);
+        ContainerHelper.saveAllItems(compoundTag, NonNullList.withSize(1, item), provider);
+        if (this.potion != null) {
+            compoundTag.putString("Potion", potion.getRegisteredName());
         }
-        pTag.putFloat("Temperature", temp);
-        pTag.putBoolean("Boiling", boiling);
-        pTag.putBoolean("Done", done);
-        pTag.putInt("Cups", cups);
-        pTag.putInt("BrewTime", brewTime);
+        compoundTag.putFloat("Temperature", temp);
+        compoundTag.putBoolean("Boiling", boiling);
+        compoundTag.putBoolean("Done", done);
+        compoundTag.putInt("Cups", cups);
+        compoundTag.putInt("BrewTime", brewTime);
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        CompoundTag compoundtag = new CompoundTag();
-        this.saveAdditional(compoundtag);
-        return compoundtag;
+    public CompoundTag getUpdateTag(HolderLookup.Provider provider)
+    {
+        CompoundTag updateTag = super.getUpdateTag(provider);
+        saveAdditional(updateTag, provider);
+        return updateTag;
     }
 
     public void take(int count)
@@ -244,8 +248,7 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
         return done || boiling;
     }
 
-    @NotNull
-    public Potion getPotion() {
+    public Holder<Potion> getPotion() {
         return potion;
     }
 
@@ -253,7 +256,7 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
         return cups;
     }
 
-    public boolean tryFill(int cups, Potion potion)
+    public boolean tryFill(int cups, Holder<Potion> potion)
     {
         if (cups > MAX_CUPS - getCups() || potion == null)
         {
@@ -264,7 +267,7 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
             this.cups += cups;
             setChanged(level, getBlockPos(), getBlockState());
             return true;
-        } else if (this.potion == Potions.EMPTY) {
+        } else if (this.potion == null) {
             this.cups = cups;
             this.potion = potion;
             setChanged(level, getBlockPos(), getBlockState());
@@ -280,8 +283,8 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
 
     @Override
     public void handleTag(CompoundTag tag) {
-        TommyLibServices.BLOCK_ENTITY.handleUpdateTag(this, tag);
-        load(tag);
+        TommyLibServices.BLOCK_ENTITY.handleUpdateTag(this, tag, level.registryAccess());
+        loadAdditional(tag, level.registryAccess());
     }
 
     protected static void setChanged(Level pLevel, BlockPos pPos, BlockState pState) {
@@ -290,7 +293,7 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
     }
 
 
-    public void setPotion(@NotNull Potion potion) {
+    public void setPotion(Holder<Potion> potion) {
         this.potion = potion;
     }
 

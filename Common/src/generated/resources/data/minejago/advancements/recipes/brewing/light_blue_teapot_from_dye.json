@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "tommylib:light_blue_dyes"
+            "items": "#tommylib:light_blue_dyes"
           }
         ]
       },
@@ -15,7 +15,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "minejago:teapots"
+            "items": "#minejago:teapots"
           }
         ]
       },

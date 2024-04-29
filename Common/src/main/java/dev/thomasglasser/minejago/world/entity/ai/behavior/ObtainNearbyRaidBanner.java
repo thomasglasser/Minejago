@@ -3,6 +3,8 @@ package dev.thomasglasser.minejago.world.entity.ai.behavior;
 import com.mojang.datafixers.util.Pair;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.MeleeCompatibleSkeletonRaider;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
@@ -10,10 +12,12 @@ import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.ai.memory.WalkTarget;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BannerPattern;
 import net.tslat.smartbrainlib.api.core.behaviour.ExtendedBehaviour;
 import net.tslat.smartbrainlib.util.BrainUtils;
 
 import java.util.List;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 public class ObtainNearbyRaidBanner<T extends MeleeCompatibleSkeletonRaider> extends ExtendedBehaviour<T>
@@ -21,9 +25,9 @@ public class ObtainNearbyRaidBanner<T extends MeleeCompatibleSkeletonRaider> ext
 	private static final List<Pair<MemoryModuleType<?>, MemoryStatus>> MEMORY_REQUIREMENTS = List.of(Pair.of(MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT));
 
 	private final Predicate<ItemEntity> entityPredicate;
-	private final Predicate<ItemStack> stackPredicate;
+	private final BiPredicate<ItemStack, HolderLookup<BannerPattern>> stackPredicate;
 
-	public ObtainNearbyRaidBanner(Predicate<ItemEntity> entityPredicate, Predicate<ItemStack> stackPredicate)
+	public ObtainNearbyRaidBanner(Predicate<ItemEntity> entityPredicate, BiPredicate<ItemStack, HolderLookup<BannerPattern>> stackPredicate)
 	{
 		this.entityPredicate = entityPredicate;
 		this.stackPredicate = stackPredicate;
@@ -36,7 +40,7 @@ public class ObtainNearbyRaidBanner<T extends MeleeCompatibleSkeletonRaider> ext
 		if (entity.hasActiveSkulkinRaid()
 				&& !raid.isOver()
 				&& entity.canBeLeader()
-				&& !stackPredicate.test(entity.getItemBySlot(EquipmentSlot.HEAD))) {
+				&& !stackPredicate.test(entity.getItemBySlot(EquipmentSlot.HEAD), entity.registryAccess().lookupOrThrow(Registries.BANNER_PATTERN))) {
 			MeleeCompatibleSkeletonRaider raider = raid.getLeader(entity.getWave());
 			if (raider == null || !raider.isAlive()) {
 				List<ItemEntity> list = entity.level().getEntitiesOfClass(ItemEntity.class, entity.getBoundingBox().inflate(16.0, 8.0, 16.0), entityPredicate);

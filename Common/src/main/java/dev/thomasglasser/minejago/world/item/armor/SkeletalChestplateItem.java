@@ -4,17 +4,22 @@ import dev.thomasglasser.minejago.client.renderer.armor.SkeletalArmorRenderer;
 import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;
 import dev.thomasglasser.tommylib.api.world.item.armor.BaseGeoArmorItem;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.renderer.GeoArmorRenderer;
+import software.bernie.geckolib.animatable.client.GeoRenderProvider;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class SkeletalChestplateItem extends BaseGeoArmorItem
@@ -22,7 +27,7 @@ public class SkeletalChestplateItem extends BaseGeoArmorItem
     private final Skulkin.Variant variant;
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public SkeletalChestplateItem(Skulkin.Variant variant, ArmorMaterial pMaterial, Properties pProperties) {
+    public SkeletalChestplateItem(Skulkin.Variant variant, Holder<ArmorMaterial> pMaterial, Properties pProperties) {
         super(pMaterial, Type.CHESTPLATE, pProperties);
         this.variant = variant;
     }
@@ -36,8 +41,19 @@ public class SkeletalChestplateItem extends BaseGeoArmorItem
     }
 
     @Override
-    public GeoArmorRenderer newRenderer() {
-        return new SkeletalArmorRenderer();
+    public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
+        consumer.accept(new GeoRenderProvider() {
+            private SkeletalArmorRenderer renderer;
+
+            @Override
+            public <T extends LivingEntity> HumanoidModel<?> getGeoArmorRenderer(@Nullable T livingEntity, ItemStack itemStack, @Nullable EquipmentSlot equipmentSlot, @Nullable HumanoidModel<T> original) {
+                if (this.renderer == null)
+                    this.renderer = new SkeletalArmorRenderer();
+                // Defer creation of our renderer then cache it so that it doesn't get instantiated too early
+
+                return this.renderer;
+            }
+        });
     }
 
     @Override

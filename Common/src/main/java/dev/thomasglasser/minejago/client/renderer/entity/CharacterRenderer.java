@@ -17,13 +17,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShieldItem;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
-import software.bernie.geckolib.renderer.DynamicGeoEntityRenderer;
 import software.bernie.geckolib.renderer.layer.BlockAndItemGeoLayer;
+import software.bernie.geckolib.renderer.specialty.DynamicGeoEntityRenderer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class CharacterRenderer<T extends Character> extends DynamicGeoEntityRenderer<T> {
+public class CharacterRenderer<T extends Character> extends DynamicGeoEntityRenderer<T>
+{
     private static final String LEFT_HAND = "left_hand";
     private static final String RIGHT_HAND = "right_hand";
     private static final String LEFT_BOOT = "left_foot";

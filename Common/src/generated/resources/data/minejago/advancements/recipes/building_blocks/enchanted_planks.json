@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "minejago:enchanted_logs"
+            "items": "#minejago:enchanted_logs"
           }
         ]
       },

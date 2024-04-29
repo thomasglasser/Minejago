@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "minejago:teapots"
+            "items": "#minejago:teapots"
           }
         ]
       },
@@ -17,7 +17,8 @@
       "translate": "advancement.minejago.adventure.get_teapot.desc"
     },
     "icon": {
-      "item": "minejago:teapot"
+      "count": 1,
+      "id": "minejago:teapot"
     },
     "title": {
       "translate": "advancement.minejago.adventure.get_teapot.title"

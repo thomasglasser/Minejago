@@ -27,10 +27,8 @@
       },
       "limit": {
         "type": "minecraft:uniform",
-        "value": {
-          "max_inclusive": 15,
-          "min_inclusive": 5
-        }
+        "max_inclusive": 15,
+        "min_inclusive": 5
       },
       "processor_type": "minecraft:capped"
     }

@@ -40,10 +40,12 @@ public class ThrownBoneKnife extends AbstractArrow
         this.entityData.set(ID_FOIL, pStack.hasFoil());
     }
 
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(ID_LOYALTY, (byte)0);
-        this.entityData.define(ID_FOIL, false);
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder)
+    {
+        super.defineSynchedData(builder);
+        builder.define(ID_LOYALTY, (byte)0);
+        builder.define(ID_FOIL, false);
     }
 
     /**
@@ -108,7 +110,7 @@ public class ThrownBoneKnife extends AbstractArrow
         Entity entity = pResult.getEntity();
         float f = 8.0F;
         if (entity instanceof LivingEntity livingentity) {
-            f += EnchantmentHelper.getDamageBonus(getPickupItem(), livingentity.getMobType());
+            f += EnchantmentHelper.getDamageBonus(getPickupItem(), livingentity.getType());
         }
 
         Entity entity1 = this.getOwner();
@@ -135,6 +137,12 @@ public class ThrownBoneKnife extends AbstractArrow
 
     protected boolean tryPickup(Player p_150196_) {
         return super.tryPickup(p_150196_) || this.isNoPhysics() && this.ownedBy(p_150196_) && p_150196_.getInventory().add(this.getPickupItem());
+    }
+
+    @Override
+    protected ItemStack getDefaultPickupItem()
+    {
+        return MinejagoItems.BONE_KNIFE.get().getDefaultInstance();
     }
 
     /**

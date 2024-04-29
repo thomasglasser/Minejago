@@ -3,6 +3,7 @@ package dev.thomasglasser.minejago.data.lang;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.MinejagoClientConfig;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
+import dev.thomasglasser.minejago.client.MinejagoWailaPlugin;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.PowerSelectionScreen;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.ScrollEditScreen;
 import dev.thomasglasser.minejago.client.rei.display.category.TeapotBrewingCategory;
@@ -23,11 +24,18 @@ import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPatterns;
 import dev.thomasglasser.tommylib.api.data.lang.ExtendedLanguageProvider;
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import org.apache.commons.lang3.text.WordUtils;
+
+import java.util.Optional;
 
 public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider
 {
@@ -120,7 +128,9 @@ public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider
 
         add(MinejagoItems.FILLED_TEACUP.get().getDescriptionId() + ".potion", "Tea of %s");
 
-        add(MinejagoItems.FILLED_TEACUP.get(), Potions.EMPTY, "Uncraftable Tea");
+        ItemStack uncraftableTea = new ItemStack(MinejagoItems.FILLED_TEACUP.get());
+        uncraftableTea.set(DataComponents.POTION_CONTENTS, PotionContents.EMPTY);
+        add(uncraftableTea, "Uncraftable Tea");
         add(MinejagoItems.FILLED_TEACUP.get(), Potions.MUNDANE, "Mundane Tea");
         add(MinejagoItems.FILLED_TEACUP.get(), Potions.THICK, "Thick Tea");
         add(MinejagoItems.FILLED_TEACUP.get(), Potions.AWKWARD, "Awkward Tea");
@@ -147,34 +157,34 @@ public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider
         add(MinejagoEntityTypes.SKULL_TRUCK.get(), "Skull Truck", MinejagoItems.SKULL_TRUCK_SPAWN_EGG.get());
         add(MinejagoEntityTypes.SKULL_MOTORBIKE.get(), "Skull Motorbike", MinejagoItems.SKULL_MOTORBIKE_SPAWN_EGG.get());
 
-        add(MinejagoBannerPatterns.FOUR_WEAPONS_LEFT.get(), "Four Weapons Left");
-        add(MinejagoBannerPatterns.FOUR_WEAPONS_RIGHT.get(), "Four Weapons Right");
-        add(MinejagoBannerPatterns.EDGE_LINES.get(), "Edge Lines");
+        add(MinejagoBannerPatterns.FOUR_WEAPONS_LEFT, "Four Weapons Left");
+        add(MinejagoBannerPatterns.FOUR_WEAPONS_RIGHT, "Four Weapons Right");
+        add(MinejagoBannerPatterns.EDGE_LINES, "Edge Lines");
 
         add(Items.FILLED_MAP.getDescriptionId() + ".golden_weapons", "Golden Weapons Map");
 
         add("container.teapot", "Teapot");
 
-        addTea(MinejagoPotions.ACACIA_TEA.get(), "Acacia Tea");
-        addTea(MinejagoPotions.OAK_TEA.get(), "Oak Tea");
-        addTea(MinejagoPotions.CHERRY_TEA.get(), "Cherry Tea");
-        addTea(MinejagoPotions.SPRUCE_TEA.get(), "Spruce Tea");
-        addTea(MinejagoPotions.MANGROVE_TEA.get(), "Mangrove Tea");
-        addTea(MinejagoPotions.JUNGLE_TEA.get(), "Jungle Tea");
-        addTea(MinejagoPotions.DARK_OAK_TEA.get(), "Dark Oak Tea");
-        addTea(MinejagoPotions.BIRCH_TEA.get(), "Birch Tea");
-        addTea(MinejagoPotions.AZALEA_TEA.get(), "Azalea Tea");
-        addTea(MinejagoPotions.FLOWERING_AZALEA_TEA.get(), "Flowering Azalea Tea");
+        addTea(MinejagoPotions.ACACIA_TEA.asHolder(), "Acacia Tea");
+        addTea(MinejagoPotions.OAK_TEA.asHolder(), "Oak Tea");
+        addTea(MinejagoPotions.CHERRY_TEA.asHolder(), "Cherry Tea");
+        addTea(MinejagoPotions.SPRUCE_TEA.asHolder(), "Spruce Tea");
+        addTea(MinejagoPotions.MANGROVE_TEA.asHolder(), "Mangrove Tea");
+        addTea(MinejagoPotions.JUNGLE_TEA.asHolder(), "Jungle Tea");
+        addTea(MinejagoPotions.DARK_OAK_TEA.asHolder(), "Dark Oak Tea");
+        addTea(MinejagoPotions.BIRCH_TEA.asHolder(), "Birch Tea");
+        addTea(MinejagoPotions.AZALEA_TEA.asHolder(), "Azalea Tea");
+        addTea(MinejagoPotions.FLOWERING_AZALEA_TEA.asHolder(), "Flowering Azalea Tea");
 
-        addTea(MinejagoPotions.FOCUS_TEA.get(), "Focus Tea");
+        addTea(MinejagoPotions.FOCUS_TEA.asHolder(), "Focus Tea");
 
         add(MinejagoItems.FILLED_TEACUP.get().getDescriptionId() + ".milk", "Cup of Milk");
-        addPotions(MinejagoPotions.MILK.get(), "Milk");
+        addPotions(MinejagoPotions.MILK.asHolder(), "Milk");
 
         add(MinejagoSoundEvents.TEAPOT_WHISTLE, "Teapot whistles");
         add(MinejagoSoundEvents.SPINJITZU_START, "Spinjitzu activates");
         add(MinejagoSoundEvents.SPINJITZU_ACTIVE, "Spinjitzu whooshes");
-        add(MinejagoSoundEvents.SPINJITZU_STOP, "Spinjitzu fades*");
+        add(MinejagoSoundEvents.SPINJITZU_STOP, "Spinjitzu fades");
         add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_FAIL, "Scythe flickers");
         add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_EXPLOSION, "Ground quakes");
         add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_CASCADE, "Scythe drags");
@@ -277,11 +287,10 @@ public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider
         add("entity.minejago.dragon.waila.bond", "Bond: %s");
         add("entity.minejago.painting.waila.map", "Has Golden Weapons Map");
 
-        // TODO: Update Jade
-//        addPluginConfig(MinejagoWailaPlugin.LIVING_ENTITY, "Living Entity");
-//        addPluginConfig(MinejagoWailaPlugin.DRAGON, "Dragon");
-//        addPluginConfig(MinejagoWailaPlugin.PAINTING, "Painting");
-//        addPluginConfig(MinejagoWailaPlugin.TEAPOT_BLOCK, "Teapot");
+        addPluginConfig(MinejagoWailaPlugin.LIVING_ENTITY, "Living Entity");
+        addPluginConfig(MinejagoWailaPlugin.DRAGON, "Dragon");
+        addPluginConfig(MinejagoWailaPlugin.PAINTING, "Painting");
+        addPluginConfig(MinejagoWailaPlugin.TEAPOT_BLOCK, "Teapot");
 
         add(ScrollEditScreen.EDIT_TITLE_LABEL, "Enter Scroll Title:");
         add(ScrollEditScreen.FINALIZE_WARNING_LABEL, "Note! When you sign the scroll, it will no longer be editable.");
@@ -295,9 +304,9 @@ public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider
 	    addConfigs();
     }
 
-    public void addTea(Potion tea, String name)
+    public void addTea(Holder<Potion> tea, String name)
     {
-        add(MinejagoItems.FILLED_TEACUP.get().getDescriptionId() + tea.getName("."), name);
+        add(MinejagoItems.FILLED_TEACUP.get().getDescriptionId() + Potion.getName(Optional.of(tea), "."), name);
         addPotions(tea, name);
     }
 
@@ -349,5 +358,10 @@ public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider
         addConfig("xOffset", "X Offset");
         addConfig("y_offset_comment", MinejagoClientConfig.y_offset_comment);
         addConfig("yOffset", "Y Offset");
+    }
+
+    public void addPluginConfig(ResourceLocation location, String name)
+    {
+        super.addPluginConfig(location, Minejago.MOD_NAME, name);
     }
 }

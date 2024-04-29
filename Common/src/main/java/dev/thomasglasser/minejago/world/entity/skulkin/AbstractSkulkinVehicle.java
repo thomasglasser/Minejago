@@ -13,9 +13,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.constant.DefaultAnimations;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class AbstractSkulkinVehicle extends Mob implements GeoEntity, Enemy
@@ -72,7 +72,7 @@ public class AbstractSkulkinVehicle extends Mob implements GeoEntity, Enemy
 	 */
 	public void aiStep() {
 		if (this.isSunBurnTick()) {
-			this.setSecondsOnFire(8);
+			this.igniteForSeconds(8);
 		}
 
 		super.aiStep();

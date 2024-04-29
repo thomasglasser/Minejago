@@ -1,25 +1,29 @@
 package dev.thomasglasser.minejago.world.level.block.entity;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.tommylib.api.registration.RegistrationProvider;
-import dev.thomasglasser.tommylib.api.registration.RegistryObject;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.entity.BannerPattern;
-
-import java.util.function.Supplier;
 
 public class MinejagoBannerPatterns
 {
-    public static final RegistrationProvider<BannerPattern> BANNER_PATTERNS = RegistrationProvider.get(BuiltInRegistries.BANNER_PATTERN, Minejago.MOD_ID);
+    public static final ResourceKey<BannerPattern> FOUR_WEAPONS_LEFT = create("four_weapons_left");
+    public static final ResourceKey<BannerPattern> FOUR_WEAPONS_RIGHT = create("four_weapons_right");
+    public static final ResourceKey<BannerPattern> EDGE_LINES = create("edge_lines");
 
-    public static final RegistryObject<BannerPattern> FOUR_WEAPONS_LEFT = register("four_weapons_left", () -> new BannerPattern("four_weapons_left"));
-    public static final RegistryObject<BannerPattern> FOUR_WEAPONS_RIGHT = register("four_weapons_right", () -> new BannerPattern("four_weapons_right"));
-    public static final RegistryObject<BannerPattern> EDGE_LINES = register("edge_lines", () -> new BannerPattern("edge_lines"));
-
-    private static RegistryObject<BannerPattern> register(String name, Supplier<BannerPattern> bannerPattern)
-    {
-        return BANNER_PATTERNS.register(name, bannerPattern);
+    private static ResourceKey<BannerPattern> create(String name) {
+        return ResourceKey.create(Registries.BANNER_PATTERN, Minejago.modLoc(name));
     }
 
-    public static void init() {}
+    public static void bootstrap(BootstrapContext<BannerPattern> context)
+    {
+        register(context, FOUR_WEAPONS_LEFT);
+        register(context, FOUR_WEAPONS_RIGHT);
+        register(context, EDGE_LINES);
+    }
+
+    public static void register(BootstrapContext<BannerPattern> bootstrapContext, ResourceKey<BannerPattern> resourceKey) {
+        bootstrapContext.register(resourceKey, new BannerPattern(resourceKey.location(), "block.minecraft.banner." + resourceKey.location().toShortLanguageKey()));
+    }
 }

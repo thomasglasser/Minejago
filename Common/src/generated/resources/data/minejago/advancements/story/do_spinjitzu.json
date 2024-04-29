@@ -10,8 +10,13 @@
       "translate": "advancement.minejago.story.do_spinjitzu.desc"
     },
     "icon": {
-      "item": "minejago:filled_teacup",
-      "nbt": "{Potion:\"minejago:oak_tea\"}"
+      "components": {
+        "minecraft:potion_contents": {
+          "potion": "minejago:oak_tea"
+        }
+      },
+      "count": 1,
+      "id": "minejago:filled_teacup"
     },
     "title": {
       "translate": "advancement.minejago.story.do_spinjitzu.title"

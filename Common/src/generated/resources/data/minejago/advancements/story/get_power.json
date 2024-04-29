@@ -10,8 +10,11 @@
       "translate": "advancement.minejago.story.get_power.desc"
     },
     "icon": {
-      "item": "minejago:training_gi_hood",
-      "nbt": "{Damage:0,Power:\"minejago:fire\"}"
+      "components": {
+        "minejago:power": "minejago:fire"
+      },
+      "count": 1,
+      "id": "minejago:training_gi_hood"
     },
     "title": {
       "translate": "advancement.minejago.story.get_power.title"

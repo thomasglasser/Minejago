@@ -2,7 +2,7 @@ package dev.thomasglasser.minejago;
 
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.data.worldgen.placement.MinejagoVegetationPlacements;
-import dev.thomasglasser.minejago.network.MinejagoPackets;
+import dev.thomasglasser.minejago.network.MinejagoPayloads;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import dev.thomasglasser.minejago.tags.MinejagoBiomeTags;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityEvents;
@@ -16,7 +16,7 @@ import dev.thomasglasser.minejago.world.focus.modifier.entity.EntityTypeFocusMod
 import dev.thomasglasser.minejago.world.focus.modifier.itemstack.ItemStackFocusModifiers;
 import dev.thomasglasser.minejago.world.focus.modifier.resourcekey.ResourceKeyFocusModifiers;
 import dev.thomasglasser.minejago.world.focus.modifier.world.WorldFocusModifiers;
-import dev.thomasglasser.tommylib.api.network.FabricPacketUtils;
+import dev.thomasglasser.tommylib.api.network.FabricNetworkUtils;
 import dev.thomasglasser.tommylib.api.packs.PackInfo;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import net.fabricmc.api.ModInitializer;
@@ -38,19 +38,17 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
 import org.jetbrains.annotations.NotNull;
-import software.bernie.geckolib.GeckoLib;
 
 public class MinejagoFabric implements ModInitializer {
     @Override
     public void onInitialize() {
         Minejago.init();
-
-        GeckoLib.initialize();
 
         registerEvents();
 
@@ -62,10 +60,10 @@ public class MinejagoFabric implements ModInitializer {
 
         registerEntitySpawnPlacements();
 
-        for (PackInfo holder : MinejagoPacks.getPacks())
+        for (PackInfo info : MinejagoPacks.getPacks())
         {
-            if ((holder.type() == PackType.CLIENT_RESOURCES && TommyLibServices.PLATFORM.isClientSide()) || holder.type() == PackType.SERVER_DATA)
-                ResourceManagerHelperImpl.registerBuiltinResourcePack(holder.id(), "packs/" + holder.id().getNamespace() + "/" + holder.id().getPath(), FabricLoader.getInstance().getModContainer(Minejago.MOD_ID).orElseThrow(), Component.translatable(holder.titleKey()), ResourcePackActivationType.NORMAL);
+            if ((info.type() == PackType.CLIENT_RESOURCES && TommyLibServices.PLATFORM.isClientSide()) || info.type() == PackType.SERVER_DATA)
+                ResourceManagerHelperImpl.registerBuiltinResourcePack(new ResourceLocation(info.knownPack().namespace(), info.knownPack().id()), "packs/" + info.knownPack().namespace() + "/" + info.knownPack().id(), FabricLoader.getInstance().getModContainer(Minejago.MOD_ID).orElseThrow(), Component.translatable(info.titleKey()), ResourcePackActivationType.NORMAL);
         }
 
         ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
@@ -103,7 +101,7 @@ public class MinejagoFabric implements ModInitializer {
     }
 
     private void registerPackets() {
-        MinejagoPackets.PACKETS.forEach(FabricPacketUtils::register);
+        MinejagoPayloads.PAYLOADS.forEach(FabricNetworkUtils::register);
     }
 
     private void addBiomeModifications()
@@ -116,8 +114,8 @@ public class MinejagoFabric implements ModInitializer {
 
     private void registerEntitySpawnPlacements()
     {
-        SpawnPlacements.register(MinejagoEntityTypes.ZANE.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.OCEAN_FLOOR_WG, Zane::checkZaneSpawnRules);
-        SpawnPlacements.register(MinejagoEntityTypes.COLE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ((entityType, serverLevelAccessor, mobSpawnType, blockPos, randomSource) -> Character.checkCharacterSpawnRules(Cole.class, entityType, serverLevelAccessor, mobSpawnType, blockPos, randomSource)));
+        SpawnPlacements.register(MinejagoEntityTypes.ZANE.get(), SpawnPlacementTypes.IN_WATER, Heightmap.Types.OCEAN_FLOOR_WG, Zane::checkZaneSpawnRules);
+        SpawnPlacements.register(MinejagoEntityTypes.COLE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ((entityType, serverLevelAccessor, mobSpawnType, blockPos, randomSource) -> Character.checkCharacterSpawnRules(Cole.class, entityType, serverLevelAccessor, mobSpawnType, blockPos, randomSource)));
     }
 
     private void registerDynamicRegistries()

@@ -54,8 +54,7 @@
     "sherdsapi": ">=${sherdsapi_version}"
   },
   "recommends": {
-    "trimmed": ">=${trimmed_version}",
-    "moonlight": ">=${moonlight_version}"
+    "trimmed": ">=${trimmed_version}"
   },
   "suggests": {
     "player-animator": ">=${playeranimator_version}",

@@ -6,10 +6,9 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.player.Player;
 
 import static dev.thomasglasser.minejago.world.focus.FocusConstants.EXHAUSTION_DROP;
-import static dev.thomasglasser.minejago.world.focus.FocusConstants.FOCUS_SATURATION_MAX;
 import static dev.thomasglasser.minejago.world.focus.FocusConstants.MAX_FOCUS;
 import static dev.thomasglasser.minejago.world.focus.FocusConstants.MAX_MEGA_FOCUS;
-import static dev.thomasglasser.minejago.world.focus.FocusConstants.START_FOCUS;
+import static dev.thomasglasser.minejago.world.focus.FocusConstants.MIN_MEGA_FOCUS;
 import static dev.thomasglasser.minejago.world.focus.FocusConstants.START_SATURATION;
 
 public class FocusData
@@ -20,15 +19,13 @@ public class FocusData
 			Codec.FLOAT.fieldOf("exhaustion_level").forGetter(FocusData::getExhaustionLevel)
 	).apply(instance, FocusData::new));
 
-	private int focusLevel = START_FOCUS;
+	private int focusLevel = MAX_FOCUS;
 	private float saturationLevel = START_SATURATION;
 	private float exhaustionLevel;
-	private int lastFocusLevel = START_FOCUS;
+	private int lastFocusLevel = MAX_FOCUS;
 	private MeditationType meditationType = MeditationType.NONE;
 
-	public FocusData()
-	{
-	}
+	public FocusData() {}
 
 	public FocusData(int focusLevel, float saturationLevel, float exhaustionLevel)
 	{
@@ -37,29 +34,24 @@ public class FocusData
 		this.exhaustionLevel = exhaustionLevel;
 	}
 
-	/**
-	 * Add stats.
-	 */
-	public void increase(boolean mega, int focusLevelModifier, float saturationLevelModifier) {
-		this.focusLevel = Math.min(focusLevelModifier + this.focusLevel, mega ? MAX_MEGA_FOCUS : MAX_FOCUS);
-		this.saturationLevel = Math.min(this.saturationLevel + (float) focusLevelModifier * saturationLevelModifier * (mega ? 4.0F : 2.0F), (float) this.focusLevel);
+	private void add(boolean mega, int newFocus, float newSaturation) {
+		this.focusLevel = Math.min(newFocus + this.focusLevel, mega ? MAX_MEGA_FOCUS : MAX_FOCUS);
+		this.saturationLevel = Math.min((mega ? (newSaturation * 2.0F) : newSaturation) + this.saturationLevel, (float)this.focusLevel);
 	}
 
-	/**
-	 * Handles the focus game logic.
-	 */
+	public void meditate(boolean mega, int focusLevelModifier, float saturationLevelModifier) {
+		float saturation = FocusConstants.saturationByModifier(mega, focusLevelModifier, saturationLevelModifier);
+		this.add(mega, focusLevelModifier, saturation);
+	}
+
 	public void tick(Player player) {
 		Difficulty difficulty = player.level().getDifficulty();
 		this.lastFocusLevel = this.focusLevel;
-		if (this.exhaustionLevel > EXHAUSTION_DROP)
-		{
+		if (this.exhaustionLevel > EXHAUSTION_DROP) {
 			this.exhaustionLevel -= EXHAUSTION_DROP;
-			if (this.saturationLevel > 0)
-			{
-				this.saturationLevel = Math.max(this.saturationLevel - FOCUS_SATURATION_MAX, 0);
-			}
-			else if (difficulty != Difficulty.PEACEFUL)
-			{
+			if (this.saturationLevel > 0) {
+				this.saturationLevel = Math.max(this.saturationLevel - 1.0F, 0.0F);
+			} else if (difficulty != Difficulty.PEACEFUL) {
 				this.focusLevel = Math.max(this.focusLevel - 1, 0);
 			}
 		}
@@ -67,12 +59,9 @@ public class FocusData
 
 	public boolean canMegaMeditate(Player player)
 	{
-		return focusLevel >= 20 && player.getHealth() >= player.getMaxHealth() && !player.getFoodData().needsFood() && isMeditating();
+		return focusLevel >= MIN_MEGA_FOCUS && player.getHealth() >= player.getMaxHealth() && !player.getFoodData().needsFood() && isMeditating();
 	}
 
-	/**
-	 * Get the player's focus level.
-	 */
 	public int getFocusLevel() {
 		return this.focusLevel;
 	}
@@ -81,16 +70,10 @@ public class FocusData
 		return this.lastFocusLevel;
 	}
 
-	/**
-	 * Get whether the player must eat focus.
-	 */
 	public boolean needsFocus() {
 		return this.focusLevel < MAX_FOCUS;
 	}
 
-	/**
-	 * Adds input to {@code focusExhaustionLevel} to a max of 40.
-	 */
 	public void addExhaustion(float exhaustion) {
 		this.exhaustionLevel = Math.min(this.exhaustionLevel + exhaustion, 40.0F);
 	}
@@ -99,9 +82,6 @@ public class FocusData
 		return this.exhaustionLevel;
 	}
 
-	/**
-	 * Get the player's focus saturation level.
-	 */
 	public float getSaturationLevel() {
 		return this.saturationLevel;
 	}
@@ -116,11 +96,6 @@ public class FocusData
 
 	public void setExhaustion(float exhaustionLevel) {
 		this.exhaustionLevel = exhaustionLevel;
-	}
-
-	public MeditationType getMeditationType()
-	{
-		return meditationType;
 	}
 
 	public void setMeditationType(MeditationType meditationType)

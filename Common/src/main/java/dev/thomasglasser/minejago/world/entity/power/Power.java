@@ -234,7 +234,7 @@ public class Power {
 
         public Builder color(String colorCode)
         {
-            this.color = TextColor.parseColor(colorCode).get().left().orElse(TextColor.fromLegacyFormat(ChatFormatting.GRAY));
+            this.color = TextColor.parseColor(colorCode).result().orElse(TextColor.fromLegacyFormat(ChatFormatting.GRAY));
             return this;
         }
 

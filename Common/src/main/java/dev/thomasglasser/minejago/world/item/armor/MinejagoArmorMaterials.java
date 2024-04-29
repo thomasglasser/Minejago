@@ -1,75 +1,62 @@
 package dev.thomasglasser.minejago.world.item.armor;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.tommylib.api.registration.RegistrationProvider;
+import dev.thomasglasser.tommylib.api.registration.RegistryObject;
+import net.minecraft.Util;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 
+import java.util.EnumMap;
+import java.util.List;
 import java.util.function.Supplier;
 
-public enum MinejagoArmorMaterials implements ArmorMaterial {
-    SKELETAL("skeletal", 10, new int[]{0, 0, 4, 0}, 6, SoundEvents.ARMOR_EQUIP_GENERIC, 0.0F, 0.0F, () -> Ingredient.EMPTY),
-    BLACK_GI("black_gi", 10, new int[]{1, 2, 3, 1}, 0, SoundEvents.ARMOR_EQUIP_LEATHER, 0.1F, 0.1F, () -> Ingredient.EMPTY),
-    TRAINING_GI("training_gi", 20, new int[]{2, 4, 6, 2}, 0, SoundEvents.ARMOR_EQUIP_LEATHER, 0.2F, 0.2F, () -> Ingredient.EMPTY);
+public class MinejagoArmorMaterials {
+    public static final RegistrationProvider<ArmorMaterial> ARMOR_MATERIALS = RegistrationProvider.get(Registries.ARMOR_MATERIAL, Minejago.MOD_ID);
 
-    private static final int[] HEALTH_PER_SLOT = new int[]{13, 15, 16, 11};
-    private final String name;
-    private final int durabilityMultiplier;
-    private final int[] slotProtections;
-    private final int enchantmentValue;
-    private final SoundEvent sound;
-    private final float toughness;
-    private final float knockbackResistance;
-    private final Supplier<Ingredient> repairIngredient;
+    public static final RegistryObject<ArmorMaterial> SKELETAL = register("skeletal", Util.make(new EnumMap<>(ArmorItem.Type.class), defense -> {
+        defense.put(ArmorItem.Type.BOOTS, 2);
+        defense.put(ArmorItem.Type.LEGGINGS, 3);
+        defense.put(ArmorItem.Type.CHESTPLATE, 4);
+        defense.put(ArmorItem.Type.HELMET, 2);
+        defense.put(ArmorItem.Type.BODY, 6);
+    }), 6, SoundEvents.ARMOR_EQUIP_GENERIC, 0.0F, 0.0F, () -> Ingredient.of(Items.BONE));
+    
+    public static final RegistryObject<ArmorMaterial> BLACK_GI = register("black_gi", Util.make(new EnumMap<>(ArmorItem.Type.class), defense -> {
+        defense.put(ArmorItem.Type.BOOTS, 1);
+        defense.put(ArmorItem.Type.LEGGINGS, 2);
+        defense.put(ArmorItem.Type.CHESTPLATE, 3);
+        defense.put(ArmorItem.Type.HELMET, 1);
+        defense.put(ArmorItem.Type.BODY, 4);
+    }), 0, SoundEvents.ARMOR_EQUIP_LEATHER, 0.1F, 0.1F, () -> Ingredient.EMPTY);
+    
+    public static final RegistryObject<ArmorMaterial> TRAINING_GI = register("training_gi", Util.make(new EnumMap<>(ArmorItem.Type.class), defense -> {
+        defense.put(ArmorItem.Type.BOOTS, 2);
+        defense.put(ArmorItem.Type.LEGGINGS, 4);
+        defense.put(ArmorItem.Type.CHESTPLATE, 6);
+        defense.put(ArmorItem.Type.HELMET, 2);
+        defense.put(ArmorItem.Type.BODY, 8);
+    }), 0, SoundEvents.ARMOR_EQUIP_LEATHER, 0.2F, 0.2F, () -> Ingredient.EMPTY);
 
-    MinejagoArmorMaterials(String pName, int pDurabilityMultiplier, int[] pSlotProtections, int pEnchantmentValue, SoundEvent pSound, float pToughness, float pKnockbackResistance, Supplier<Ingredient> pRepairIngredient) {
-        this.name = pName;
-        this.durabilityMultiplier = pDurabilityMultiplier;
-        this.slotProtections = pSlotProtections;
-        this.enchantmentValue = pEnchantmentValue;
-        this.sound = pSound;
-        this.toughness = pToughness;
-        this.knockbackResistance = pKnockbackResistance;
-        this.repairIngredient = pRepairIngredient;
+    private static RegistryObject<ArmorMaterial> register(
+            String name,
+            EnumMap<ArmorItem.Type, Integer> defense,
+            int enchantmentValue,
+            Holder<SoundEvent> equipSound,
+            float toughness,
+            float knockbackResistance,
+            Supplier<Ingredient> repairIngredient
+    ) {
+        List<ArmorMaterial.Layer> list = List.of(new ArmorMaterial.Layer(Minejago.modLoc(name)));
+
+        return ARMOR_MATERIALS.register(name, () -> new ArmorMaterial(defense, enchantmentValue, equipSound, repairIngredient, list, toughness, knockbackResistance));
     }
 
-    @Override
-    public int getDurabilityForType(ArmorItem.Type type) {
-        return HEALTH_PER_SLOT[type.getSlot().getIndex()] * this.durabilityMultiplier;
-    }
-
-    @Override
-    public int getDefenseForType(ArmorItem.Type type) {
-        return this.slotProtections[type.getSlot().getIndex()];
-    }
-
-    public int getEnchantmentValue() {
-        return this.enchantmentValue;
-    }
-
-    public SoundEvent getEquipSound() {
-        return this.sound;
-    }
-
-    public Ingredient getRepairIngredient() {
-        return this.repairIngredient.get();
-    }
-
-    public String getName() {
-        return Minejago.MOD_ID + ":" + this.name;
-    }
-
-    public float getToughness() {
-        return this.toughness;
-    }
-
-    /**
-     * Gets the percentage of knockback resistance provided by armor of the material.
-     */
-    public float getKnockbackResistance() {
-        return this.knockbackResistance;
-    }
+    public static void init() {}
 }

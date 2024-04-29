@@ -98,8 +98,8 @@
     },
     "frame": "goal",
     "icon": {
-      "item": "minejago:iron_katana",
-      "nbt": "{Damage:0}"
+      "count": 1,
+      "id": "minejago:iron_katana"
     },
     "title": {
       "translate": "advancement.minejago.adventure.interact_with_main_six.title"

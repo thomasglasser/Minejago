@@ -10,7 +10,6 @@ import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.alchemy.Potion;
 
 import java.util.Optional;
@@ -30,8 +29,8 @@ public class BrewedTeaTrigger extends SimpleCriterionTrigger<BrewedTeaTrigger.Tr
 
     public record TriggerInstance(Optional<ContextAwarePredicate> player, Optional<Holder<Potion>> potion) implements SimpleCriterionTrigger.SimpleInstance {
         public static final Codec<TriggerInstance> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
-                ExtraCodecs.strictOptionalField(EntityPredicate.ADVANCEMENT_CODEC, "player").forGetter(TriggerInstance::player),
-                ExtraCodecs.strictOptionalField(BuiltInRegistries.POTION.holderByNameCodec(), "potion").forGetter(TriggerInstance::potion))
+                EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(TriggerInstance::player),
+                BuiltInRegistries.POTION.holderByNameCodec().optionalFieldOf("potion").forGetter(TriggerInstance::potion))
                 .apply(instance, TriggerInstance::new));
 
         public static Criterion<TriggerInstance> brewedTea() {

@@ -2,7 +2,7 @@ package dev.thomasglasser.minejago.client.gui.screens.inventory;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
-import dev.thomasglasser.minejago.network.ServerboundSetPowerDataPacket;
+import dev.thomasglasser.minejago.network.ServerboundSetPowerDataPayload;
 import dev.thomasglasser.minejago.world.entity.character.Wu;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
@@ -94,11 +94,11 @@ public class PowerSelectionScreen extends Screen
                     if (wuForList != null)
                     {
                         if (wuForList.distanceTo(minecraft.player) > 1.0f)
-                            TommyLibServices.NETWORK.sendToServer(ServerboundSetPowerDataPacket.ID, ServerboundSetPowerDataPacket::new, ServerboundSetPowerDataPacket.write(registry.getResourceKey(selectedPower).orElseThrow(), true, wuForList.getId()));
+                            TommyLibServices.NETWORK.sendToServer(new ServerboundSetPowerDataPayload(registry.getResourceKey(selectedPower).orElseThrow(), true, Optional.of(wuForList.getId())));
                     }
                     else
                     {
-                        TommyLibServices.NETWORK.sendToServer(ServerboundSetPowerDataPacket.ID, ServerboundSetPowerDataPacket::new, ServerboundSetPowerDataPacket.write(registry.getResourceKey(selectedPower).orElseThrow(), true, null));
+                        TommyLibServices.NETWORK.sendToServer(new ServerboundSetPowerDataPayload(registry.getResourceKey(selectedPower).orElseThrow(), true, Optional.empty()));
                     }
                 }
                 onClose();

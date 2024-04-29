@@ -13,6 +13,7 @@ import dev.thomasglasser.tommylib.api.world.entity.PlayerRideableFlying;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -29,7 +30,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -71,14 +71,13 @@ import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyPlayersSensor;
 import net.tslat.smartbrainlib.util.BrainUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
 import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.constant.DefaultAnimations;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.HashMap;
@@ -113,8 +112,8 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
                 return super.canUpdatePath() || !isNoGravity();
             }
         };
-        this.setMaxUpStep(1.0f);
         this.acceptablePowers = powers;
+        setTame(false, false);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -125,7 +124,8 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
                 .add(Attributes.ATTACK_DAMAGE, 5.0)
                 .add(Attributes.ARMOR, 4.0f)
                 .add(Attributes.ATTACK_KNOCKBACK, 1.0)
-                .add(Attributes.FLYING_SPEED, 2.0);
+                .add(Attributes.FLYING_SPEED, 2.0)
+                .add(Attributes.STEP_HEIGHT, 1.0);
     }
 
     @Override
@@ -158,9 +158,10 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DATA_SHOOTING, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder)
+    {
+        super.defineSynchedData(builder);
+        builder.define(DATA_SHOOTING, false);
     }
 
     @Override
@@ -231,9 +232,9 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
     public BrainActivityGroup<Dragon> getIdleTasks() {
         return BrainActivityGroup.idleTasks(
                 new FirstApplicableBehaviour<>(                // Run only one of the below behaviours, trying each one in order. Include explicit generic typing because javac is silly
-                        new TargetOrRetaliate<>().attackablePredicate(entity -> entity.isAlive() && (!(entity instanceof Player player) || !player.isCreative() && !(this.getOwner() == player)))),                        // Set the attack target
+                        new TargetOrRetaliate<>().attackablePredicate(entity -> entity.isAlive() && (!(entity instanceof Player player) || !player.isCreative() && !(this.getOwner() == player))),                        // Set the attack target
                         new SetPlayerLookTarget<>(),                    // Set the look target to a nearby player if available
-                        new SetRandomLookTarget<>(),
+                        new SetRandomLookTarget<>()),
                 new OneRandomBehaviour<>( 								// Run only one of the below behaviours, picked at random
                         new SetRandomWalkTarget<>().speedModifier(1), 				// Set the walk target to a nearby random pathable location
                         new Idle<>().runFor(entity -> entity.getRandom().nextInt(30, 60)))); // Don't walk anywhere
@@ -361,7 +362,7 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
             boolean ownedBy = isOwnedBy(player);
             double bond = getBond(player);
             FocusData focusData = Services.DATA.getFocusData(player);
-            if (stack.is(MinejagoItemTags.DRAGON_FOODS) || stack.is(MinejagoItemTags.DRAGON_TREATS))
+            if (isFood(stack))
             {
                 if (!player.getAbilities().instabuild)
                 {
@@ -370,9 +371,9 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
 
                 if (ownedBy)
                 {
-                    if (this.getHealth() < this.getMaxHealth() && stack.getItem().getFoodProperties() != null)
+                    if (this.getHealth() < this.getMaxHealth() && stack.get(DataComponents.FOOD) != null)
                     {
-                        this.heal((float) stack.getItem().getFoodProperties().getNutrition());
+                        this.heal(stack.get(DataComponents.FOOD).nutrition());
                         increaseBond(player, HEAL_BOND);
                         return InteractionResult.SUCCESS;
                     }
@@ -381,19 +382,20 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
                 increaseBond(player, stack.is(MinejagoItemTags.DRAGON_TREATS) ? TREAT_BOND : FOOD_BOND);
                 return InteractionResult.SUCCESS;
             }
-            else if (bond <= 50 && focusData.getFocusLevel() >= FocusConstants.TALK_LEVEL && random.nextInt(10) < 2){
+            else if (bond <= 50 && focusData.getFocusLevel() >= FocusConstants.DRAGON_TALK_LEVEL && random.nextInt(10) < 2){
                 double i = TALK_BOND;
                 if (powerRegistry.getOrThrow(Services.DATA.getPowerData(player).power()).is(acceptablePowers, powerRegistry)) i += 1.5;
                 increaseBond(player, i);
+                Services.DATA.getFocusData(player).addExhaustion(FocusConstants.EXHAUSTION_DRAGON_TALK);
                 return InteractionResult.SUCCESS;
             }
-            else if ((bond >= 10 && focusData.getFocusLevel() >= FocusConstants.TAME_LEVEL) || player.getAbilities().instabuild)
+            else if ((bond >= 10 && focusData.getFocusLevel() >= FocusConstants.DRAGON_TAME_LEVEL) || player.getAbilities().instabuild)
             {
                 if (ownedBy || hasControllingPassenger())
                     player.startRiding(this);
                 else if (powerRegistry.getOrThrow(Services.DATA.getPowerData(player).power()).is(acceptablePowers, powerRegistry) && focusData.getFocusLevel() >= 14) {
                     // TODO: give DX suit
-                    Services.DATA.getFocusData(player).addExhaustion(FocusConstants.EXHAUSTION_TAME);
+                    Services.DATA.getFocusData(player).addExhaustion(FocusConstants.EXHAUSTION_DRAGON_TAME);
                     tame(player);
                     if (player.level() instanceof ServerLevel serverLevel)
                     {
@@ -414,33 +416,9 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
     }
 
     @Override
-    protected Vector3f getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float scale)
-    {
-        int i = this.getPassengers().indexOf(entity);
-        if (i >= 0) {
-            boolean bl = i == 0;
-            float f = 1.0F;
-            if (this.getPassengers().size() > 1) {
-                if (!bl) {
-                    f = -0.7F;
-                }
-            }
-
-            return new Vec3(0.0, dimensions.height - 0.2, f).toVector3f();
-        }
-        return Vec3.ZERO.toVector3f();
-    }
-
-    @Override
     protected void positionRider(Entity passenger, MoveFunction callback) {
         super.positionRider(passenger, callback);
         clampRotation(this);
-    }
-
-    @Override
-    public float ridingOffset(Entity entity)
-    {
-        return -1.1f;
     }
 
     protected void clampRotation(Entity entityToUpdate) {
@@ -460,7 +438,7 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
             isLiftingOff = false;
         if (getOwner() instanceof Player player && getBond(player) <= -10)
         {
-            setTame(false);
+            setTame(false, true);
             this.setOwnerUUID(null);
         }
     }
@@ -612,5 +590,11 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
     public void setShooting(boolean shooting)
     {
         this.entityData.set(DATA_SHOOTING, shooting);
+    }
+
+    @Override
+    public boolean isFood(ItemStack stack)
+    {
+        return stack.is(MinejagoItemTags.DRAGON_FOODS) || stack.is(MinejagoItemTags.DRAGON_TREATS);
     }
 }

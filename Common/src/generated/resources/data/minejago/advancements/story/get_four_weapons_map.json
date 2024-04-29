@@ -5,10 +5,10 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:filled_map"
-            ],
-            "nbt": "{IsFourWeaponsMap:1b}"
+            "components": {
+              "minejago:golden_weapons_map_data": {}
+            },
+            "items": "minecraft:filled_map"
           }
         ]
       },
@@ -20,7 +20,8 @@
       "translate": "advancement.minejago.story.get_four_weapons_map.desc"
     },
     "icon": {
-      "item": "minecraft:filled_map"
+      "count": 1,
+      "id": "minecraft:filled_map"
     },
     "title": {
       "translate": "advancement.minejago.story.get_four_weapons_map.title"

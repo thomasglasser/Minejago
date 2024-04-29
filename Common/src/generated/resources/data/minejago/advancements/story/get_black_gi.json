@@ -5,24 +5,16 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minejago:black_gi_hood"
-            ]
+            "items": "minejago:black_gi_hood"
           },
           {
-            "items": [
-              "minejago:black_gi_jacket"
-            ]
+            "items": "minejago:black_gi_jacket"
           },
           {
-            "items": [
-              "minejago:black_gi_pants"
-            ]
+            "items": "minejago:black_gi_pants"
           },
           {
-            "items": [
-              "minejago:black_gi_boots"
-            ]
+            "items": "minejago:black_gi_boots"
           }
         ]
       },
@@ -34,8 +26,8 @@
       "translate": "advancement.minejago.story.get_black_gi.desc"
     },
     "icon": {
-      "item": "minejago:black_gi_hood",
-      "nbt": "{Damage:0}"
+      "count": 1,
+      "id": "minejago:black_gi_hood"
     },
     "title": {
       "translate": "advancement.minejago.story.get_black_gi.title"

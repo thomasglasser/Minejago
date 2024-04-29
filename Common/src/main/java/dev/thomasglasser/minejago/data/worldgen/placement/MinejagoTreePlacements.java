@@ -6,7 +6,7 @@ import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.Block;
@@ -25,14 +25,14 @@ public class MinejagoTreePlacements
 	public static final ResourceKey<PlacedFeature> FANCY_FOCUS_BEES_002 = create("fancy_focus_bees_002");
 	public static final ResourceKey<PlacedFeature> FANCY_FOCUS_BEES = create("fancy_focus_bees");
 
-	public static void bootstrap(BootstapContext<PlacedFeature> pContext) {
+	public static void bootstrap(BootstrapContext<PlacedFeature> pContext) {
 		HolderGetter<ConfiguredFeature<?, ?>> features = pContext.lookup(Registries.CONFIGURED_FEATURE);
 		registerTreeSet(pContext, features, MinejagoBlocks.FOCUS_LEAVES_SET.sapling(),
 				MinejagoTreeFeatures.FOCUS, MinejagoTreeFeatures.FANCY_FOCUS, MinejagoTreeFeatures.FOCUS_BEES_0002, MinejagoTreeFeatures.FOCUS_BEES_002, MinejagoTreeFeatures.FANCY_FOCUS_BEES_0002, MinejagoTreeFeatures.FANCY_FOCUS_BEES_002, MinejagoTreeFeatures.FANCY_FOCUS_BEES,
 				FOCUS_CHECKED, FANCY_FOCUS_CHECKED, FOCUS_BEES_0002, FOCUS_BEES_002, FANCY_FOCUS_BEES_0002, FANCY_FOCUS_BEES_002, FANCY_FOCUS_BEES);
 	}
 
-	public static void registerTreeSet(BootstapContext<PlacedFeature> pContext, HolderGetter<ConfiguredFeature<?, ?>> features, Supplier<Block> sapling, ResourceKey<ConfiguredFeature<?, ?>> normalConfigured, ResourceKey<ConfiguredFeature<?, ?>> fancyConfigured, ResourceKey<ConfiguredFeature<?, ?>> normalBees0002Configured, ResourceKey<ConfiguredFeature<?, ?>> normalBees002Configured, ResourceKey<ConfiguredFeature<?, ?>> fancyBees0002Configured, ResourceKey<ConfiguredFeature<?, ?>> fancyBees002Configured, ResourceKey<ConfiguredFeature<?, ?>> fancyBeesConfigured, ResourceKey<PlacedFeature> normal, ResourceKey<PlacedFeature> fancy, ResourceKey<PlacedFeature> normalBees0002, ResourceKey<PlacedFeature> normalBees002, ResourceKey<PlacedFeature> fancyBees0002, ResourceKey<PlacedFeature> fancyBees002, ResourceKey<PlacedFeature> fancyBees)
+	public static void registerTreeSet(BootstrapContext<PlacedFeature> pContext, HolderGetter<ConfiguredFeature<?, ?>> features, Supplier<Block> sapling, ResourceKey<ConfiguredFeature<?, ?>> normalConfigured, ResourceKey<ConfiguredFeature<?, ?>> fancyConfigured, ResourceKey<ConfiguredFeature<?, ?>> normalBees0002Configured, ResourceKey<ConfiguredFeature<?, ?>> normalBees002Configured, ResourceKey<ConfiguredFeature<?, ?>> fancyBees0002Configured, ResourceKey<ConfiguredFeature<?, ?>> fancyBees002Configured, ResourceKey<ConfiguredFeature<?, ?>> fancyBeesConfigured, ResourceKey<PlacedFeature> normal, ResourceKey<PlacedFeature> fancy, ResourceKey<PlacedFeature> normalBees0002, ResourceKey<PlacedFeature> normalBees002, ResourceKey<PlacedFeature> fancyBees0002, ResourceKey<PlacedFeature> fancyBees002, ResourceKey<PlacedFeature> fancyBees)
 	{
 		Holder<ConfiguredFeature<?, ?>> holder2 = features.getOrThrow(normalConfigured);
 		Holder<ConfiguredFeature<?, ?>> holder11 = features.getOrThrow(fancyConfigured);

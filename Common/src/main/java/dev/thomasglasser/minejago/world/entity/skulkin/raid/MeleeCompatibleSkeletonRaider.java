@@ -9,6 +9,8 @@ import dev.thomasglasser.minejago.world.entity.character.Character;
 import dev.thomasglasser.tommylib.api.world.entity.MeleeCompatibleSkeleton;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -33,6 +35,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.entity.BannerPattern;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
 import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
@@ -40,15 +43,16 @@ import net.tslat.smartbrainlib.example.SBLSkeleton;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 public abstract class MeleeCompatibleSkeletonRaider extends MeleeCompatibleSkeleton
 {
 	protected static final EntityDataAccessor<Boolean> IS_CELEBRATING = SynchedEntityData.defineId(MeleeCompatibleSkeletonRaider.class, EntityDataSerializers.BOOLEAN);
-	private static final Predicate<ItemStack> ALLOWED_STACKS = stack -> ItemStack.matches(stack, SkulkinRaid.getLeaderBannerInstance());
+	private static final BiPredicate<ItemStack, HolderLookup<BannerPattern>> ALLOWED_STACKS = (stack, lookup) -> ItemStack.matches(stack, SkulkinRaid.getLeaderBannerInstance(lookup));
 	private static final Predicate<ItemEntity> ALLOWED_ITEMS = itemEntity -> !itemEntity.hasPickUpDelay()
 			&& itemEntity.isAlive()
-			&& ALLOWED_STACKS.test(itemEntity.getItem());
+			&& ALLOWED_STACKS.test(itemEntity.getItem(), itemEntity.registryAccess().lookupOrThrow(Registries.BANNER_PATTERN));
 	@Nullable
 	private BlockPos patrolTarget;
 	private boolean patrolLeader;
@@ -110,7 +114,7 @@ public abstract class MeleeCompatibleSkeletonRaider extends MeleeCompatibleSkele
 	public void readAdditionalSaveData(CompoundTag pCompound) {
 		super.readAdditionalSaveData(pCompound);
 		if (pCompound.contains("PatrolTarget")) {
-			this.patrolTarget = NbtUtils.readBlockPos(pCompound.getCompound("PatrolTarget"));
+			this.patrolTarget = NbtUtils.readBlockPos(pCompound, "PatrolTarget").orElse(null);
 		}
 
 		this.patrolLeader = pCompound.getBoolean("PatrolLeader");
@@ -135,25 +139,24 @@ public abstract class MeleeCompatibleSkeletonRaider extends MeleeCompatibleSkele
 		return true;
 	}
 
-	@Nullable
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag)
+	@Override
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData)
 	{
-		this.setCanJoinSkulkinRaid(pReason != MobSpawnType.NATURAL);
+		this.setCanJoinSkulkinRaid(mobSpawnType != MobSpawnType.NATURAL);
 
-		if (pReason != MobSpawnType.PATROL && pReason != MobSpawnType.EVENT && pReason != MobSpawnType.STRUCTURE && pLevel.getRandom().nextFloat() < 0.06F && this.canBeLeader()) {
+		if (mobSpawnType != MobSpawnType.PATROL && mobSpawnType != MobSpawnType.EVENT && mobSpawnType != MobSpawnType.STRUCTURE && level().getRandom().nextFloat() < 0.06F && this.canBeLeader()) {
 			this.patrolLeader = true;
 		}
 
 		if (this.isPatrolLeader()) {
-			this.setItemSlot(EquipmentSlot.HEAD, SkulkinRaid.getLeaderBannerInstance());
+			this.setItemSlot(EquipmentSlot.HEAD, SkulkinRaid.getLeaderBannerInstance(serverLevelAccessor.holderLookup(Registries.BANNER_PATTERN)));
 			this.setDropChance(EquipmentSlot.HEAD, 2.0F);
 		}
 
-		if (pReason == MobSpawnType.PATROL) {
+		if (mobSpawnType == MobSpawnType.PATROL) {
 			this.patrolling = true;
 		}
-
-		return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
+		return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData);
 	}
 
 	public static boolean checkSpawnRules(EntityType<? extends MeleeCompatibleSkeletonRaider> pPatrollingMonster, LevelAccessor pLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) {
@@ -200,9 +203,10 @@ public abstract class MeleeCompatibleSkeletonRaider extends MeleeCompatibleSkele
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.entityData.define(IS_CELEBRATING, false);
+	protected void defineSynchedData(SynchedEntityData.Builder builder)
+	{
+		super.defineSynchedData(builder);
+		builder.define(IS_CELEBRATING, false);
 	}
 
 	public boolean canJoinSkulkinRaid() {
@@ -296,7 +300,7 @@ public abstract class MeleeCompatibleSkeletonRaider extends MeleeCompatibleSkele
 	public void pickUpItem(ItemEntity itemEntity) {
 		ItemStack itemStack = itemEntity.getItem();
 		boolean bl = this.hasActiveSkulkinRaid() && this.getCurrentSkulkinRaid().getLeader(this.getWave()) != null;
-		if (this.hasActiveSkulkinRaid() && !bl && ItemStack.matches(itemStack, SkulkinRaid.getLeaderBannerInstance())) {
+		if (this.hasActiveSkulkinRaid() && !bl && ItemStack.matches(itemStack, SkulkinRaid.getLeaderBannerInstance(itemEntity.registryAccess().lookupOrThrow(Registries.BANNER_PATTERN)))) {
 			EquipmentSlot equipmentSlot = EquipmentSlot.HEAD;
 			ItemStack itemStack2 = this.getItemBySlot(equipmentSlot);
 			double d = (double)this.getEquipmentDropChance(equipmentSlot);
