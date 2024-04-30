@@ -13,7 +13,7 @@ dependencies {
     }
 
     // Required for the rei forge annotation
-    modCompileOnly "me.shedaniel:RoughlyEnoughItems-forge:$rei_version"
+    modCompileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:$rei_version"
 
     implementation project(":common")
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
@@ -25,7 +25,8 @@ dependencies {
     include modImplementation("maven.modrinth:midnightlib:${midnightlib_version}-fabric")
     include modImplementation("dev.thomasglasser.tommylib:tommylib-fabric-${minecraft_version}:${tommylib_version}")
 
-    modImplementation "net.tslat.smartbrainlib:SmartBrainLib-fabric-${minecraft_version}:${sbl_version}"
+    modImplementation "net.tslat.smartbrainlib:SmartBrainLib-fabric-1.20.5:${sbl_version}"
+//    modImplementation "net.tslat.smartbrainlib:SmartBrainLib-fabric-${minecraft_version}:${sbl_version}"
     modImplementation "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}"
     modImplementation "maven.modrinth:jade:${jade_version}+fabric"
     modImplementation "me.shedaniel:RoughlyEnoughItems-fabric:$rei_version"

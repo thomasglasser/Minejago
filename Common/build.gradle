@@ -25,7 +25,8 @@ dependencies {
     implementation "io.github.llamalad7:mixinextras-common:${mixinextras_version}"
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
 
-    modImplementation "net.tslat.smartbrainlib:SmartBrainLib-common-${minecraft_version}:${sbl_version}"
+    modImplementation "net.tslat.smartbrainlib:SmartBrainLib-common-1.20.5:${sbl_version}"
+//    modImplementation "net.tslat.smartbrainlib:SmartBrainLib-common-${minecraft_version}:${sbl_version}"
     modImplementation "net.tslat.tes:TES-common-${minecraft_version}:${tes_version}"
     modImplementation "net.tslat.effectslib:TslatEffectsLib-common-${minecraft_version}:${tslateffectslib_version}"
     modImplementation "dev.thomasglasser.tommylib:tommylib-common-${minecraft_version}:${tommylib_version}"
@@ -34,7 +35,7 @@ dependencies {
     modCompileOnly "dev.kosmx.player-anim:player-animation-lib:${playeranimator_version}"
     modCompileOnly "dev.kosmx.player-anim:anim-core:${playeranimator_version}"
     modCompileOnly "maven.modrinth:jade:${jade_version}+fabric"
-    modCompileOnly "me.shedaniel:RoughlyEnoughItems-forge:$rei_version"
+    modCompileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:$rei_version"
     modCompileOnly "maven.modrinth:ryoamiclights:${ryoamiclights_version}-fabric"
     modCompileOnly "maven.modrinth:midnightlib:${midnightlib_version}-fabric"
 }

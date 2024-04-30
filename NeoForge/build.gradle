@@ -56,7 +56,8 @@ dependencies {
 
     // Common
     implementation "dev.kosmx.player-anim:player-animation-lib-forge:${playeranimator_version}"
-    implementation "net.tslat.smartbrainlib:SmartBrainLib-neoforge-${minecraft_version}:${sbl_version}"
+    implementation "net.tslat.smartbrainlib:SmartBrainLib-neoforge-1.20.5:${sbl_version}"
+//    implementation "net.tslat.smartbrainlib:SmartBrainLib-neoforge-${minecraft_version}:${sbl_version}"
     implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
     implementation "maven.modrinth:jade:${jade_version}+neoforge"
     implementation "me.shedaniel:RoughlyEnoughItems-neoforge:$rei_version"
