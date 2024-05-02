@@ -16,7 +16,7 @@ public class MinejagoBlockTags
     public static final TagKey<Block> SHURIKEN_BREAKS = create("shuriken_breaks");
 
     // Wood sets
-    public static final TagKey<Block> ENCHANTED_LOGS = logs(MinejagoBlocks.ENCHANTED_WOOD_SET);
+    public static final TagKey<Block> ENCHANTED_LOGS = logs(MinejagoBlocks.ENCHANTED_WOOD_SET.get());
 
     public static TagKey<Block> logs(WoodSet set)
     {

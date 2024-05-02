@@ -51,8 +51,8 @@ public class MinejagoBlockTagsProvider extends ExtendedBlockTagsProvider
         tag(BlockTags.SAND)
                 .add(MinejagoBlocks.SUSPICIOUS_RED_SAND.get());
 
-        woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET);
-        leavesSet(MinejagoBlocks.FOCUS_LEAVES_SET);
+        woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET.get());
+        leavesSet(MinejagoBlocks.FOCUS_LEAVES_SET.get());
 
         tag(MinejagoBlockTags.MINEABLE_WITH_SCYTHE)
                 .addTags(BlockTags.CROPS)

@@ -28,10 +28,10 @@
       "dev.thomasglasser.minejago.client.MinejagoFabricClient"
     ],
     "jade": [
-      "dev.thomasglasser.minejago.client.MinejagoWailaPlugin"
+      "dev.thomasglasser.minejago.plugins.MinejagoWailaPlugin"
     ],
-    "rei_client": [
-      "dev.thomasglasser.minejago.client.rei.MinejagoREIClientPlugin"
+    "jei_plugin": [
+      "dev.thomasglasser.minejago.plugins.jei.MinejagoJeiPlugin"
     ],
     "dynamiclights": [
       "dev.thomasglasser.minejago.client.MinejagoDynamicLightsInitializer"

@@ -1,4 +1,4 @@
-package dev.thomasglasser.minejago.client;
+package dev.thomasglasser.minejago.plugins;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.entity.component.DragonComponentProvider;

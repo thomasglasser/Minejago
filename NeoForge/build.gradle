@@ -9,8 +9,7 @@ subsystems {
         // The Minecraft version for which the Parchment mappings were created.
         // This does not necessarily need to match the Minecraft version your mod targets
         // Defaults to the value of Gradle property neogradle.subsystems.parchment.minecraftVersion
-        minecraftVersion = previous_minecraft_version
-//        minecraftVersion = minecraft_version
+        minecraftVersion = minecraft_version
 
         // The version of Parchment mappings to apply.
         // See https://parchmentmc.org/docs/getting-started for a list.
@@ -55,13 +54,13 @@ dependencies {
     implementation project(":common")
 
     // Common
+    implementation "mezz.jei:jei-${previous_minecraft_version}-neoforge:${jei_version}"
     implementation "dev.kosmx.player-anim:player-animation-lib-forge:${playeranimator_version}"
     implementation "net.tslat.smartbrainlib:SmartBrainLib-neoforge-1.20.5:${sbl_version}"
 //    implementation "net.tslat.smartbrainlib:SmartBrainLib-neoforge-${minecraft_version}:${sbl_version}"
     implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
-    implementation "maven.modrinth:jade:${jade_version}+neoforge"
-    implementation "me.shedaniel:RoughlyEnoughItems-neoforge:$rei_version"
-    implementation "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
+    compileOnly "maven.modrinth:jade:${jade_version}+neoforge"
+//    implementation "maven.modrinth:jade:${jade_version}+neoforge"
     implementation "net.tslat.tes:TES-neoforge-${minecraft_version}:${tes_version}"
     implementation "net.tslat.effectslib:TslatEffectsLib-neoforge-${minecraft_version}:${tslateffectslib_version}"
     implementation "maven.modrinth:midnightlib:${midnightlib_version}-neoforge"
@@ -78,8 +77,8 @@ dependencies {
     // Runtime
     // Waiting on neo update
 //    runtimeOnly "com.sk89q.worldedit:worldedit-neoforge-mc${minecraft_version}:${worldedit_version}"
-    runtimeOnly "maven.modrinth:obsidianui:${obsidianui_version}-neoforge"
-    runtimeOnly "dev.architectury:architectury-neoforge:$architectury_version"
+//    runtimeOnly "maven.modrinth:obsidianui:${obsidianui_version}-neoforge"
+//    runtimeOnly "dev.architectury:architectury-neoforge:$architectury_version"
 }
 
 // NeoGradle compiles the game, but we don't want to add our common code to the game's code
