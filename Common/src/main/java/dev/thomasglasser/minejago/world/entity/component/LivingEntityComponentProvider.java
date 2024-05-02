@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.world.entity.component;
 
-import dev.thomasglasser.minejago.client.MinejagoWailaPlugin;
+import dev.thomasglasser.minejago.plugins.MinejagoWailaPlugin;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.world.entity.power.Power;

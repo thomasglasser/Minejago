@@ -3,28 +3,26 @@ package dev.thomasglasser.minejago.world.entity;
 import dev.thomasglasser.minejago.world.entity.character.Character;
 import dev.thomasglasser.minejago.world.entity.character.Cole;
 import dev.thomasglasser.minejago.world.entity.character.Zane;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.SpawnPlacementRegisterEvent;
-import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 public class MinejagoForgeEntityEvents
 {
-    public static void onPlayerTick(TickEvent.PlayerTickEvent event)
+    public static void onPlayerTick(PlayerTickEvent.Post event)
     {
-        Player player = event.player;
+        Player player = event.getEntity();
 
-        if (event.phase == TickEvent.Phase.END)
-        {
-            MinejagoEntityEvents.onPlayerTick(player);
-        }
+        MinejagoEntityEvents.onPlayerTick(player);
     }
 
     public static void onServerPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event)
@@ -39,11 +37,11 @@ public class MinejagoForgeEntityEvents
         }
     }
 
-    public static void onLivingTick(LivingEvent.LivingTickEvent event)
+    public static void onLivingTick(EntityTickEvent.Post event)
     {
-        LivingEntity entity = event.getEntity();
-
-        MinejagoEntityEvents.onLivingTick(entity);
+        Entity entity = event.getEntity();
+        if (entity instanceof LivingEntity livingEntity)
+            MinejagoEntityEvents.onLivingTick(livingEntity);
     }
 
     public static void onPlayerEntityInteract(PlayerInteractEvent.EntityInteract event)

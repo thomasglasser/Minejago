@@ -100,28 +100,6 @@ subprojects {
             }
         }
         maven {
-            name = "Cloth Config"
-            url "https://maven.shedaniel.me/"
-            content {
-                includeGroupAndSubgroups 'me.shedaniel'
-                includeGroupAndSubgroups 'dev.architectury'
-            }
-        }
-        maven {
-            name = "Cardinal Components API"
-            url = 'https://maven.ladysnake.org/releases'
-            content {
-                includeGroupAndSubgroups 'dev.onyxstudios.cardinal-components-api'
-            }
-        }
-        maven {
-            name = "Reach Entity Attributes"
-            url "https://maven.jamieswhiteshirt.com/libs-release"
-            content {
-                includeGroupAndSubgroups "com.jamieswhiteshirt"
-            }
-        }
-        maven {
             name = 'Fabric'
             url = 'https://maven.fabricmc.net/'
             content {
@@ -136,24 +114,10 @@ subprojects {
             }
         }
         maven {
-            name = "Spruce UI"
-            url 'https://maven.gegy.dev'
-            content {
-                includeGroupAndSubgroups 'dev.lambdaurora'
-            }
-        }
-        maven {
             name = "Mod Menu"
             url 'https://maven.terraformersmc.com/releases'
             content {
                 includeGroupAndSubgroups 'com.terraformersmc'
-            }
-        }
-        maven {
-            name = "Common Networking"
-            url = "https://jm.gserv.me/repository/maven-public/"
-            content {
-                includeGroupAndSubgroups "mysticdrew"
             }
         }
         maven {

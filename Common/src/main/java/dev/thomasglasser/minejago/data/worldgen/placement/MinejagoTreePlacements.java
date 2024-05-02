@@ -27,7 +27,7 @@ public class MinejagoTreePlacements
 
 	public static void bootstrap(BootstrapContext<PlacedFeature> pContext) {
 		HolderGetter<ConfiguredFeature<?, ?>> features = pContext.lookup(Registries.CONFIGURED_FEATURE);
-		registerTreeSet(pContext, features, MinejagoBlocks.FOCUS_LEAVES_SET.sapling(),
+		registerTreeSet(pContext, features, MinejagoBlocks.FOCUS_LEAVES_SET.get().sapling(),
 				MinejagoTreeFeatures.FOCUS, MinejagoTreeFeatures.FANCY_FOCUS, MinejagoTreeFeatures.FOCUS_BEES_0002, MinejagoTreeFeatures.FOCUS_BEES_002, MinejagoTreeFeatures.FANCY_FOCUS_BEES_0002, MinejagoTreeFeatures.FANCY_FOCUS_BEES_002, MinejagoTreeFeatures.FANCY_FOCUS_BEES,
 				FOCUS_CHECKED, FANCY_FOCUS_CHECKED, FOCUS_BEES_0002, FOCUS_BEES_002, FANCY_FOCUS_BEES_0002, FANCY_FOCUS_BEES_002, FANCY_FOCUS_BEES);
 	}

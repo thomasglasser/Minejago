@@ -17,14 +17,14 @@ dependencies {
 
     mappings loom.layered() {
         officialMojangMappings()
-        parchment("org.parchmentmc.data:parchment-${previous_minecraft_version}:${parchment_version}@zip")
-//        parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip")
+        parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip")
     }
 
     compileOnly group:'net.fabricmc', name:'sponge-mixin', version:mixin_version
     implementation "io.github.llamalad7:mixinextras-common:${mixinextras_version}"
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
 
+    modImplementation "mezz.jei:jei-${previous_minecraft_version}-common:${jei_version}"
     modImplementation "net.tslat.smartbrainlib:SmartBrainLib-common-1.20.5:${sbl_version}"
 //    modImplementation "net.tslat.smartbrainlib:SmartBrainLib-common-${minecraft_version}:${sbl_version}"
     modImplementation "net.tslat.tes:TES-common-${minecraft_version}:${tes_version}"
@@ -35,7 +35,6 @@ dependencies {
     modCompileOnly "dev.kosmx.player-anim:player-animation-lib:${playeranimator_version}"
     modCompileOnly "dev.kosmx.player-anim:anim-core:${playeranimator_version}"
     modCompileOnly "maven.modrinth:jade:${jade_version}+fabric"
-    modCompileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:$rei_version"
     modCompileOnly "maven.modrinth:ryoamiclights:${ryoamiclights_version}-fabric"
     modCompileOnly "maven.modrinth:midnightlib:${midnightlib_version}-fabric"
 }

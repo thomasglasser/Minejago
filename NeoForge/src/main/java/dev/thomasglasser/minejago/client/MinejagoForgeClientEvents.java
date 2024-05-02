@@ -38,6 +38,7 @@ import dev.thomasglasser.minejago.client.renderer.entity.WuRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.OgDevTeamLayer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterLayer;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
+import dev.thomasglasser.minejago.plugins.MinejagoDynamicLights;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
@@ -165,7 +166,7 @@ public class MinejagoForgeClientEvents {
         {
             BlockState blockstate = ((BlockItem)itemStack.getItem()).getBlock().defaultBlockState();
             return ClientUtils.getMinecraft().getBlockColors().getColor(blockstate, ClientUtils.getLevel(), null, i);
-        }, MinejagoBlocks.FOCUS_LEAVES_SET.leaves().get());
+        }, MinejagoBlocks.FOCUS_LEAVES_SET.get().leaves().get());
     }
 
     public static void onRegisterBlockColorHandlers(RegisterColorHandlersEvent.Block event)
@@ -180,7 +181,7 @@ public class MinejagoForgeClientEvents {
             }
             return -1;
         }), MinejagoBlocks.allPots().toArray(new Block[0]));
-        event.register(((blockState, blockAndTintGetter, blockPos, i) -> blockAndTintGetter != null && blockPos != null ? BiomeColors.getAverageFoliageColor(blockAndTintGetter, blockPos) : FoliageColor.getDefaultColor()), MinejagoBlocks.FOCUS_LEAVES_SET.leaves().get());
+        event.register(((blockState, blockAndTintGetter, blockPos, i) -> blockAndTintGetter != null && blockPos != null ? BiomeColors.getAverageFoliageColor(blockAndTintGetter, blockPos) : FoliageColor.getDefaultColor()), MinejagoBlocks.FOCUS_LEAVES_SET.get().leaves().get());
     }
 
     public static void onAddLayers(EntityRenderersEvent.AddLayers event)

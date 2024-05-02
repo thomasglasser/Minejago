@@ -94,7 +94,7 @@ public class MinejagoFocusModifierProvider extends FocusModifierProvider
 			}
 		}
 		add(0.05, Operation.ADDITION, Blocks.WATER);
-		add(0.25, Operation.ADDITION, MinejagoBlocks.ENCHANTED_WOOD_SET.getAll().toArray(new Block[0]));
+		add(0.25, Operation.ADDITION, MinejagoBlocks.ENCHANTED_WOOD_SET.get().getAll().toArray(new Block[0]));
 	}
 
 	private void addDimensions()

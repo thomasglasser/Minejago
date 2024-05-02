@@ -3,12 +3,11 @@ package dev.thomasglasser.minejago.data.lang;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.MinejagoClientConfig;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
-import dev.thomasglasser.minejago.client.MinejagoWailaPlugin;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.PowerSelectionScreen;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.ScrollEditScreen;
-import dev.thomasglasser.minejago.client.rei.display.category.TeapotBrewingCategory;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterCosmeticOptions;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
+import dev.thomasglasser.minejago.plugins.jei.TeapotBrewingRecipeCategory;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.server.commands.PowerCommand;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
@@ -104,9 +103,9 @@ public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider
         add(MinejagoBlocks.EARTH_DRAGON_HEAD.get(), "Earth Dragon Head");
         add(MinejagoBlocks.SUSPICIOUS_RED_SAND.get(), "Suspicious Red Sand");
 
-        add(MinejagoBlocks.ENCHANTED_WOOD_SET, "Enchanted");
+        add(MinejagoBlocks.ENCHANTED_WOOD_SET.get(), "Enchanted");
 
-        add(MinejagoBlocks.FOCUS_LEAVES_SET, "Focus");
+        add(MinejagoBlocks.FOCUS_LEAVES_SET.get(), "Focus");
 
         add(SkulkinRaid.SKULKINS_BANNER_PATTERN_NAME, "Cursed Banner");
 
@@ -287,19 +286,19 @@ public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider
         add("entity.minejago.dragon.waila.bond", "Bond: %s");
         add("entity.minejago.painting.waila.map", "Has Golden Weapons Map");
 
-        addPluginConfig(MinejagoWailaPlugin.LIVING_ENTITY, "Living Entity");
-        addPluginConfig(MinejagoWailaPlugin.DRAGON, "Dragon");
-        addPluginConfig(MinejagoWailaPlugin.PAINTING, "Painting");
-        addPluginConfig(MinejagoWailaPlugin.TEAPOT_BLOCK, "Teapot");
+//        addPluginConfig(MinejagoWailaPlugin.LIVING_ENTITY, "Living Entity");
+//        addPluginConfig(MinejagoWailaPlugin.DRAGON, "Dragon");
+//        addPluginConfig(MinejagoWailaPlugin.PAINTING, "Painting");
+//        addPluginConfig(MinejagoWailaPlugin.TEAPOT_BLOCK, "Teapot");
 
         add(ScrollEditScreen.EDIT_TITLE_LABEL, "Enter Scroll Title:");
         add(ScrollEditScreen.FINALIZE_WARNING_LABEL, "Note! When you sign the scroll, it will no longer be editable.");
 
         add("lectern.take_scroll", "Take Scroll");
 
-        add(TeapotBrewingCategory.CATEGORY_KEY, "Teapot Brewing");
-
         add(SkulkinRaid.RAID_NAME_COMPONENT, "Skulkin Raid");
+
+        add(TeapotBrewingRecipeCategory.TITLE, "Teapot Brewing");
 
 	    addConfigs();
     }

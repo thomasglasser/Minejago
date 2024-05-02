@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.world.entity.component;
 
-import dev.thomasglasser.minejago.client.MinejagoWailaPlugin;
+import dev.thomasglasser.minejago.plugins.MinejagoWailaPlugin;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import net.minecraft.nbt.CompoundTag;
