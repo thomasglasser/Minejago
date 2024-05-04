@@ -109,7 +109,7 @@ public class MinejagoFabricClient implements ClientModInitializer
 
         BlockRenderLayerMap.INSTANCE.putBlock(MinejagoBlocks.TOP_POST.get(), RenderType.cutout());
 
-        BlockRenderLayerMap.INSTANCE.putBlocks(RenderType.cutout(), MinejagoBlocks.FOCUS_LEAVES_SET.get().sapling().get(), MinejagoBlocks.FOCUS_LEAVES_SET.get().pottedSapling().get());
+        BlockRenderLayerMap.INSTANCE.putBlocks(RenderType.cutout(), MinejagoBlocks.FOCUS_LEAVES_SET.sapling().get(), MinejagoBlocks.FOCUS_LEAVES_SET.pottedSapling().get());
 
         registerEvents();
     }
@@ -186,7 +186,7 @@ public class MinejagoFabricClient implements ClientModInitializer
         {
             BlockState blockstate = ((BlockItem)itemStack.getItem()).getBlock().defaultBlockState();
             return ClientUtils.getMinecraft().getBlockColors().getColor(blockstate, null, null, i);
-        }, MinejagoBlocks.FOCUS_LEAVES_SET.get().leaves().get());
+        }, MinejagoBlocks.FOCUS_LEAVES_SET.leaves().get());
 
         ColorProviderRegistry.BLOCK.register(((blockState, blockAndTintGetter, blockPos, i) ->
         {
@@ -198,7 +198,7 @@ public class MinejagoFabricClient implements ClientModInitializer
             }
             return -1;
         }), MinejagoBlocks.allPots().toArray(new Block[0]));
-        ColorProviderRegistry.BLOCK.register(((blockState, blockAndTintGetter, blockPos, i) -> blockAndTintGetter != null && blockPos != null ? BiomeColors.getAverageFoliageColor(blockAndTintGetter, blockPos) : FoliageColor.getDefaultColor()), MinejagoBlocks.FOCUS_LEAVES_SET.get().leaves().get());
+        ColorProviderRegistry.BLOCK.register(((blockState, blockAndTintGetter, blockPos, i) -> blockAndTintGetter != null && blockPos != null ? BiomeColors.getAverageFoliageColor(blockAndTintGetter, blockPos) : FoliageColor.getDefaultColor()), MinejagoBlocks.FOCUS_LEAVES_SET.leaves().get());
     }
 
     private void registerEvents()

@@ -8,9 +8,11 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.tslat.smartbrainlib.api.core.navigation.SmoothGroundNavigation;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -25,6 +27,12 @@ public class AbstractSkulkinVehicle extends Mob implements GeoEntity, Enemy
 	public AbstractSkulkinVehicle(EntityType<? extends AbstractSkulkinVehicle> entityType, Level level)
 	{
 		super(entityType, level);
+	}
+
+	@Override
+	protected PathNavigation createNavigation(Level level)
+	{
+		return new SmoothGroundNavigation(this, level);
 	}
 
 	public static AttributeSupplier.Builder createAttributes() {

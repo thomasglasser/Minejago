@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.client.gui.screens.inventory;
 
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.inventory.BookEditScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -8,6 +9,8 @@ import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+
+import java.util.Iterator;
 
 public class ScrollEditScreen extends BookEditScreen
 {
@@ -28,7 +31,13 @@ public class ScrollEditScreen extends BookEditScreen
 
     @Override
     public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
-        super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
+        this.renderBackground(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
+        Iterator var5 = this.renderables.iterator();
+
+        while(var5.hasNext()) {
+            Renderable renderable = (Renderable)var5.next();
+            renderable.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
+        }
         this.setFocused(null);
         int i = (this.width - 192) / 2;
         int j = 2;

@@ -1,11 +1,13 @@
 package dev.thomasglasser.minejago.platform;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
 import dev.thomasglasser.minejago.platform.services.DataHelper;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.focus.FocusData;
 import dev.thomasglasser.minejago.world.level.storage.PowerData;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -28,7 +30,8 @@ public class NeoForgeDataHelper implements DataHelper
     @Override
     public void setPowerData(PowerData data, LivingEntity entity) {
         entity.setData(POWER, data);
-        DataHelper.super.setPowerData(data, entity);
+        if (entity instanceof ServerPlayer serverPlayer)
+            MinejagoCriteriaTriggers.GOT_POWER.get().trigger(serverPlayer, data.power());
     }
 
     @Override

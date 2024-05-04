@@ -13,6 +13,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
 
+// TODO: Switch to TEL particle system
 public record ClientboundSpawnParticlePayload(ParticleOptions particleOptions, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) implements ExtendedPacketPayload
 {
     public static final Type<ClientboundSpawnParticlePayload> TYPE = new Type<>(Minejago.modLoc("clientbound_spawn_particle"));

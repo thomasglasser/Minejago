@@ -39,7 +39,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.behavior.LookAtTargetSink;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
-import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
@@ -64,6 +64,7 @@ import net.tslat.smartbrainlib.api.core.behaviour.custom.target.InvalidateAttack
 import net.tslat.smartbrainlib.api.core.behaviour.custom.target.SetPlayerLookTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.target.SetRandomLookTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.target.TargetOrRetaliate;
+import net.tslat.smartbrainlib.api.core.navigation.SmoothGroundNavigation;
 import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.HurtBySensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
@@ -105,15 +106,20 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
     public Dragon(EntityType<? extends Dragon> entityType, Level level, ResourceKey<Power> power, TagKey<Power> powers) {
         super(entityType, level);
         Services.DATA.setPowerData(new PowerData(power, false), this);
-        navigation = new GroundPathNavigation(this, level)
+        this.acceptablePowers = powers;
+        setTame(false, false);
+    }
+
+    @Override
+    protected PathNavigation createNavigation(Level level)
+    {
+        return new SmoothGroundNavigation(this, level)
         {
             @Override
             protected boolean canUpdatePath() {
                 return super.canUpdatePath() || !isNoGravity();
             }
         };
-        this.acceptablePowers = powers;
-        setTame(false, false);
     }
 
     public static AttributeSupplier.Builder createAttributes() {

@@ -112,8 +112,8 @@ public class MinejagoBlockStates extends ExtendedBlockStateProvider
                     .build();
         });
 
-        woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET.get());
-        leavesSet(MinejagoBlocks.FOCUS_LEAVES_SET.get());
+        woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET);
+        leavesSet(MinejagoBlocks.FOCUS_LEAVES_SET);
     }
 
     @Override

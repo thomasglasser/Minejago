@@ -83,7 +83,7 @@ public class MinejagoItemModels extends ExtendedItemModelProvider
 
         withExistingParent(MinejagoItems.EMPTY_GOLDEN_WEAPONS_MAP.getId().getPath(), "item/map");
 
-        woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET.get());
-        leavesSet(MinejagoBlocks.FOCUS_LEAVES_SET.get());
+        woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET);
+        leavesSet(MinejagoBlocks.FOCUS_LEAVES_SET);
     }
 }

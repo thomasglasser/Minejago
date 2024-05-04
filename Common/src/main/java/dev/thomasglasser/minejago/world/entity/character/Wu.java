@@ -30,7 +30,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
@@ -88,7 +87,7 @@ public class Wu extends Character
 
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if (player.getInventory().hasAnyMatching(itemStack -> itemStack.is(Items.FILLED_MAP) && itemStack.has(MinejagoDataComponents.GOLDEN_WEAPONS_MAP.get())))
+        if (player.getInventory().hasAnyMatching(itemStack -> itemStack.has(MinejagoDataComponents.GOLDEN_WEAPONS_MAP.get())))
         {
             Registry<Power> registry = level().registryAccess().registryOrThrow(MinejagoRegistries.POWER);
 

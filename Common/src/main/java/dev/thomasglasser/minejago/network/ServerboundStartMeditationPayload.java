@@ -26,7 +26,7 @@ public record ServerboundStartMeditationPayload() implements ExtendedPacketPaylo
             Services.DATA.getFocusData(player).startMeditating();
             CompoundTag persistentData = TommyLibServices.ENTITY.getPersistentData(serverPlayer);
             persistentData.putString("StartPos", serverPlayer.blockPosition().toString());
-            TommyLibServices.ENTITY.setPersistentData(serverPlayer, persistentData, true);
+            TommyLibServices.ENTITY.setPersistentData(serverPlayer, persistentData, false);
             TommyLibServices.NETWORK.sendToAllClients(new ClientboundStartMeditationPayload(serverPlayer.getUUID()), serverPlayer.getServer());
         }
     }

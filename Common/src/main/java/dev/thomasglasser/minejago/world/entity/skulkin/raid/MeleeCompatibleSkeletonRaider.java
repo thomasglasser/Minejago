@@ -28,6 +28,7 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.behavior.Swim;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -37,6 +38,7 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.entity.BannerPattern;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
+import net.tslat.smartbrainlib.api.core.navigation.SmoothGroundNavigation;
 import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
 import net.tslat.smartbrainlib.example.SBLSkeleton;
@@ -67,6 +69,12 @@ public abstract class MeleeCompatibleSkeletonRaider extends MeleeCompatibleSkele
 	{
 		super(entityType, level);
 		navigation.setCanFloat(true);
+	}
+
+	@Override
+	protected PathNavigation createNavigation(Level level)
+	{
+		return new SmoothGroundNavigation(this, level);
 	}
 
 	@Override

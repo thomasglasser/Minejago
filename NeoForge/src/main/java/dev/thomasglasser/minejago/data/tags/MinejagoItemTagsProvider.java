@@ -63,7 +63,7 @@ public class MinejagoItemTagsProvider extends ExtendedItemTagsProvider
                 .add(Items.COOKED_SALMON);
 
         // Wood sets
-        woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET.get());
-        leavesSet(MinejagoBlocks.FOCUS_LEAVES_SET.get());
+        woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET);
+        leavesSet(MinejagoBlocks.FOCUS_LEAVES_SET);
     }
 }

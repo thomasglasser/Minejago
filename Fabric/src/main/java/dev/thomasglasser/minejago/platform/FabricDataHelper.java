@@ -1,12 +1,14 @@
 package dev.thomasglasser.minejago.platform;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
 import dev.thomasglasser.minejago.platform.services.DataHelper;
 import dev.thomasglasser.minejago.world.focus.FocusData;
 import dev.thomasglasser.minejago.world.level.storage.PowerData;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 
 @SuppressWarnings({"UnstableApiUsage"})
@@ -23,7 +25,8 @@ public class FabricDataHelper implements DataHelper {
     @Override
     public void setPowerData(PowerData data, LivingEntity entity) {
         entity.setAttached(POWER, data);
-        DataHelper.super.setPowerData(data, entity);
+        if (entity instanceof ServerPlayer serverPlayer)
+            MinejagoCriteriaTriggers.GOT_POWER.get().trigger(serverPlayer, data.power());
     }
 
     @Override

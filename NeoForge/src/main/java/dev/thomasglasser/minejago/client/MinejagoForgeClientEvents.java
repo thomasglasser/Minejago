@@ -166,7 +166,7 @@ public class MinejagoForgeClientEvents {
         {
             BlockState blockstate = ((BlockItem)itemStack.getItem()).getBlock().defaultBlockState();
             return ClientUtils.getMinecraft().getBlockColors().getColor(blockstate, ClientUtils.getLevel(), null, i);
-        }, MinejagoBlocks.FOCUS_LEAVES_SET.get().leaves().get());
+        }, MinejagoBlocks.FOCUS_LEAVES_SET.leaves().get());
     }
 
     public static void onRegisterBlockColorHandlers(RegisterColorHandlersEvent.Block event)
@@ -181,7 +181,7 @@ public class MinejagoForgeClientEvents {
             }
             return -1;
         }), MinejagoBlocks.allPots().toArray(new Block[0]));
-        event.register(((blockState, blockAndTintGetter, blockPos, i) -> blockAndTintGetter != null && blockPos != null ? BiomeColors.getAverageFoliageColor(blockAndTintGetter, blockPos) : FoliageColor.getDefaultColor()), MinejagoBlocks.FOCUS_LEAVES_SET.get().leaves().get());
+        event.register(((blockState, blockAndTintGetter, blockPos, i) -> blockAndTintGetter != null && blockPos != null ? BiomeColors.getAverageFoliageColor(blockAndTintGetter, blockPos) : FoliageColor.getDefaultColor()), MinejagoBlocks.FOCUS_LEAVES_SET.leaves().get());
     }
 
     public static void onAddLayers(EntityRenderersEvent.AddLayers event)

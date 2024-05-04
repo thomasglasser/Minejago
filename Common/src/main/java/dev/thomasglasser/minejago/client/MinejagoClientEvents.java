@@ -1,5 +1,6 @@
 package dev.thomasglasser.minejago.client;
 
+import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.network.ServerboundFlyVehiclePayload;
 import dev.thomasglasser.minejago.network.ServerboundStopMeditationPayload;
 import dev.thomasglasser.minejago.platform.Services;
@@ -18,6 +19,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -66,8 +68,8 @@ public class MinejagoClientEvents
 
         if (tab == CreativeModeTabs.FOOD_AND_DRINKS)
         {
-            for (Potion potion : BuiltInRegistries.POTION) {
-                items.add(MinejagoItemUtils.fillTeacup(Holder.direct(potion)));
+            for (Holder<Potion> potion : BuiltInRegistries.POTION.holders().filter(ref -> ref.key().location().getNamespace().equals(ResourceLocation.DEFAULT_NAMESPACE) || ref.key().location().getNamespace().equals(Minejago.MOD_ID)).toList()) {
+                items.add(MinejagoItemUtils.fillTeacup(potion));
             }
         }
 

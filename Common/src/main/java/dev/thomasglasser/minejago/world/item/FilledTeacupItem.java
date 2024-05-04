@@ -6,9 +6,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -17,7 +14,6 @@ import net.minecraft.stats.Stats;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -31,8 +27,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-
-import java.util.Optional;
 
 public class FilledTeacupItem extends PotionItem implements PotionCupHolder
 {
@@ -99,44 +93,13 @@ public class FilledTeacupItem extends PotionItem implements PotionCupHolder
                 }
             }
 
-            level.playSound((Player)null, blockpos, SoundEvents.BOTTLE_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
-            level.gameEvent((Entity)null, GameEvent.FLUID_PLACE, blockpos);
+            level.playSound(null, blockpos, SoundEvents.BOTTLE_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
+            level.gameEvent(null, GameEvent.FLUID_PLACE, blockpos);
             level.setBlockAndUpdate(blockpos, Blocks.MUD.defaultBlockState());
             return InteractionResult.sidedSuccess(level.isClientSide);
         } else {
             return InteractionResult.PASS;
         }
-    }
-
-    @Override
-    public Component getName(ItemStack pStack) {
-        String id = MinejagoItems.FILLED_TEACUP.get().getDescriptionId();
-        Optional<Holder<Potion>> potion = pStack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).potion();
-        String label = "";
-
-        if (Potion.getName(potion, "").contains("tea") || Potion.getName(potion, "").contains("milk"))
-            return Component.translatable(id + Potion.getName(potion, "."));
-
-        switch (Potion.getName(potion, ""))
-        {
-            case "turtle_master", "thick", "awkward", "mundane", "water", "empty" ->
-            {
-                return super.getName(pStack);
-            }
-            default -> {
-                id += ".potion";
-                if (potion.isPresent())
-                {
-                    ResourceLocation key = BuiltInRegistries.POTION.getKey(potion.get().value());
-                    label = (Potion.getName(potion, "effect." + (key != null ? key.getNamespace() : "empty") + "."));
-                }
-                else
-                {
-                    return super.getName(pStack);
-                }
-            }
-        }
-        return Component.translatable(id, Component.translatable(label));
     }
 
     @Override

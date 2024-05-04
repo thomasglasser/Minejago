@@ -125,10 +125,12 @@ public class MinejagoEntityEvents
                 if (!player.onGround())
                 {
                     persistentData.putInt("OffGroundTicks", persistentData.getInt("OffGroundTicks") + 1);
+                    TommyLibServices.ENTITY.setPersistentData(player, persistentData, false);
                 }
-                else
+                else if (persistentData.getInt("OffGroundTicks") > 0)
                 {
                     persistentData.putInt("OffGroundTicks", 0);
+                    TommyLibServices.ENTITY.setPersistentData(player, persistentData, false);
                 }
 
                 if (spinjitzu.unlocked())
@@ -288,7 +290,6 @@ public class MinejagoEntityEvents
                 if (MinejagoLevelUtils.isGoldenWeaponsMapHolderNearby(serverPlayer, SkulkinRaid.RADIUS_BUFFER)) {
                     ((SkulkinRaidsHolder)level).getSkulkinRaids().createOrExtendSkulkinRaid(serverPlayer);
                 }
-                TommyLibServices.ENTITY.setPersistentData(player, persistentData, true);
             }
             else
             {
@@ -300,13 +301,13 @@ public class MinejagoEntityEvents
                 {
                     if (spinjitzu.active())
                     {
-                        TommyLibServices.NETWORK.sendToServer(ServerboundStartSpinjitzuPayload.INSTANCE);
+                        TommyLibServices.NETWORK.sendToServer(ServerboundStopSpinjitzuPayload.INSTANCE);
                     }
                     else
                     {
                         TommyLibServices.NETWORK.sendToServer(ServerboundStartSpinjitzuPayload.INSTANCE);
                     }
-                    persistentData.putInt("WaitTicks", 5);
+                    persistentData.putInt("WaitTicks", 10);
                 }
                 else if (MinejagoKeyMappings.MEDITATE.isDown() && !spinjitzu.active())
                 {
@@ -320,7 +321,7 @@ public class MinejagoEntityEvents
                         focusData.startMeditating();
                         TommyLibServices.NETWORK.sendToServer(ServerboundStartMeditationPayload.INSTANCE);
                     }
-                    persistentData.putInt("WaitTicks", 5);
+                    persistentData.putInt("WaitTicks", 10);
                 }
                 else if (player.isShiftKeyDown())
                 {
@@ -333,7 +334,7 @@ public class MinejagoEntityEvents
                         focusData.stopMeditating();
                         TommyLibServices.NETWORK.sendToServer(new ServerboundStopMeditationPayload(false));
                     }
-                    persistentData.putInt("WaitTicks", 5);
+                    persistentData.putInt("WaitTicks", 10);
                 }
                 TommyLibServices.ENTITY.setPersistentData(player, persistentData, false);
             }
@@ -417,7 +418,7 @@ public class MinejagoEntityEvents
     public static void onPlayerEntityInteract(Player player, Level world, InteractionHand hand, Entity entity)
     {
         CompoundTag persistentData = TommyLibServices.ENTITY.getPersistentData(entity);
-        if (world instanceof ServerLevel && hand == InteractionHand.MAIN_HAND && entity instanceof Painting painting && painting.getVariant().is(Minejago.modLoc( "four_weapons")) && persistentData.getBoolean("MapTaken"))
+        if (world instanceof ServerLevel && hand == InteractionHand.MAIN_HAND && entity instanceof Painting painting && painting.getVariant().is(Minejago.modLoc( "four_weapons")) && !persistentData.getBoolean("MapTaken"))
         {
             player.addItem(MinejagoItems.EMPTY_GOLDEN_WEAPONS_MAP.get().getDefaultInstance());
             if (!player.isCreative())

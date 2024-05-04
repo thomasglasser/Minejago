@@ -5,9 +5,9 @@ import dev.thomasglasser.minejago.client.MinejagoClientConfig;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.PowerSelectionScreen;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.ScrollEditScreen;
+import dev.thomasglasser.minejago.client.gui.screens.inventory.ScrollViewScreen;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterCosmeticOptions;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
-import dev.thomasglasser.minejago.plugins.jei.TeapotBrewingRecipeCategory;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.server.commands.PowerCommand;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
@@ -25,6 +25,7 @@ import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPattern
 import dev.thomasglasser.tommylib.api.data.lang.ExtendedLanguageProvider;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -33,8 +34,6 @@ import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import org.apache.commons.lang3.text.WordUtils;
-
-import java.util.Optional;
 
 public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider
 {
@@ -103,9 +102,9 @@ public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider
         add(MinejagoBlocks.EARTH_DRAGON_HEAD.get(), "Earth Dragon Head");
         add(MinejagoBlocks.SUSPICIOUS_RED_SAND.get(), "Suspicious Red Sand");
 
-        add(MinejagoBlocks.ENCHANTED_WOOD_SET.get(), "Enchanted");
+        add(MinejagoBlocks.ENCHANTED_WOOD_SET, "Enchanted");
 
-        add(MinejagoBlocks.FOCUS_LEAVES_SET.get(), "Focus");
+        add(MinejagoBlocks.FOCUS_LEAVES_SET, "Focus");
 
         add(SkulkinRaid.SKULKINS_BANNER_PATTERN_NAME, "Cursed Banner");
 
@@ -125,16 +124,18 @@ public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider
             addDesc(item.get(), nameForVariant);
         });
 
-        add(MinejagoItems.FILLED_TEACUP.get().getDescriptionId() + ".potion", "Tea of %s");
-
         ItemStack uncraftableTea = new ItemStack(MinejagoItems.FILLED_TEACUP.get());
         uncraftableTea.set(DataComponents.POTION_CONTENTS, PotionContents.EMPTY);
         add(uncraftableTea, "Uncraftable Tea");
-        add(MinejagoItems.FILLED_TEACUP.get(), Potions.MUNDANE, "Mundane Tea");
-        add(MinejagoItems.FILLED_TEACUP.get(), Potions.THICK, "Thick Tea");
-        add(MinejagoItems.FILLED_TEACUP.get(), Potions.AWKWARD, "Awkward Tea");
-        add(MinejagoItems.FILLED_TEACUP.get(), Potions.TURTLE_MASTER, "Tea of the Turtle Master");
         add(MinejagoItems.FILLED_TEACUP.get(), Potions.WATER, "Cup of Water");
+        add(MinejagoItems.FILLED_TEACUP.get(), MinejagoPotions.MILK.asHolder(), "Cup of Milk");
+
+        for (Holder<Potion> potion : BuiltInRegistries.POTION.holders().filter(ref -> ref.key().location().getNamespace().equals(ResourceLocation.DEFAULT_NAMESPACE)).toList())
+        {
+            ResourceLocation location = potion.unwrapKey().orElseThrow().location();
+            if (!(potion == Potions.WATER) && !(location.getPath().contains("long") || location.getPath().contains("strong")))
+                add(MinejagoItems.FILLED_TEACUP.get(), potion, Items.POTION.getName(PotionContents.createItemStack(Items.POTION, potion)).getString().replace("Potion", "Tea"));
+        }
 
         add(MinejagoEntityTypes.THROWN_BONE_KNIFE.get(), "Bone Knife");
         add(MinejagoEntityTypes.THROWN_BAMBOO_STAFF.get(), "Bamboo Staff");
@@ -177,7 +178,6 @@ public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider
 
         addTea(MinejagoPotions.FOCUS_TEA.asHolder(), "Focus Tea");
 
-        add(MinejagoItems.FILLED_TEACUP.get().getDescriptionId() + ".milk", "Cup of Milk");
         addPotions(MinejagoPotions.MILK.asHolder(), "Milk");
 
         add(MinejagoSoundEvents.TEAPOT_WHISTLE, "Teapot whistles");
@@ -216,11 +216,6 @@ public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider
         add(MinejagoMobEffects.FLOWERING_AZALEA_TEA.get(), "Flowering Azalea Tea");
         add(MinejagoMobEffects.CURE.get(), "Instant Cure");
         add(MinejagoMobEffects.HYPERFOCUS.get(), "Hyperfocus");
-
-        add("effect.minecraft.swiftness", "Swiftness");
-        add("effect.minecraft.healing", "Healing");
-        add("effect.minecraft.harming", "Harming");
-        add("effect.minecraft.leaping", "Leaping");
 
         add(MinejagoKeyMappings.ACTIVATE_SPINJITZU, "Activate Spinjitzu");
         add(MinejagoKeyMappings.MEDITATE, "Meditate");
@@ -294,19 +289,19 @@ public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider
         add(ScrollEditScreen.EDIT_TITLE_LABEL, "Enter Scroll Title:");
         add(ScrollEditScreen.FINALIZE_WARNING_LABEL, "Note! When you sign the scroll, it will no longer be editable.");
 
-        add("lectern.take_scroll", "Take Scroll");
+        add(ScrollViewScreen.TAKE_SCROLL, "Take Scroll");
 
         add(SkulkinRaid.RAID_NAME_COMPONENT, "Skulkin Raid");
 
-        add(TeapotBrewingRecipeCategory.TITLE, "Teapot Brewing");
+//        add(TeapotBrewingRecipeCategory.TITLE, "Teapot Brewing");
 
 	    addConfigs();
     }
 
     public void addTea(Holder<Potion> tea, String name)
     {
-        add(MinejagoItems.FILLED_TEACUP.get().getDescriptionId() + Potion.getName(Optional.of(tea), "."), name);
         addPotions(tea, name);
+        add(MinejagoItems.FILLED_TEACUP.get(), tea, name);
     }
 
     public void addConfigs()

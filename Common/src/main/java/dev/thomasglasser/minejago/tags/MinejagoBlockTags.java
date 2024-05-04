@@ -1,8 +1,6 @@
 package dev.thomasglasser.minejago.tags;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
-import dev.thomasglasser.tommylib.api.world.level.block.WoodSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -15,13 +13,8 @@ public class MinejagoBlockTags
     public static final TagKey<Block> TEAPOTS = create("teapots");
     public static final TagKey<Block> SHURIKEN_BREAKS = create("shuriken_breaks");
 
-    // Wood sets
-    public static final TagKey<Block> ENCHANTED_LOGS = logs(MinejagoBlocks.ENCHANTED_WOOD_SET.get());
-
-    public static TagKey<Block> logs(WoodSet set)
-    {
-        return create(new ResourceLocation(set.id().getNamespace(), set.id().getPath() + "_logs"));
-    }
+    // Logs
+    public static final TagKey<Block> ENCHANTED_LOGS = create("enchanted_logs");
 
     private static TagKey<Block> create(String name)
     {

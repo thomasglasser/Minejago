@@ -3,16 +3,18 @@ package dev.thomasglasser.minejago.core.particles;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.core.particles.ScalableParticleOptionsBase;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ExtraCodecs;
 import org.joml.Vector3f;
 
-public class SpinjitzuParticleOptions extends ScalableParticleOptionsBase
+public class SpinjitzuParticleOptions implements ParticleOptions
 {
+    public static final float MIN_SCALE = 0.01F;
+
     // DEFAULT COLOR
     public static final Vector3f DEFAULT = new Vector3f(58, 58, 58);
 
@@ -56,14 +58,20 @@ public class SpinjitzuParticleOptions extends ScalableParticleOptionsBase
     );
 
     protected final Vector3f color;
+    protected final float scale;
 
     public SpinjitzuParticleOptions(Vector3f pColor, float pScale) {
-        super(pScale);
         this.color = pColor;
+        this.scale = Math.clamp(pScale, MIN_SCALE, Float.MAX_VALUE);
     }
 
     public Vector3f getColor() {
         return this.color;
+    }
+
+    public float getScale()
+    {
+        return scale;
     }
 
     public ParticleType<SpinjitzuParticleOptions> getType() {

@@ -12,6 +12,7 @@ import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RestrictSunGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.animal.horse.SkeletonHorse;
@@ -24,6 +25,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
+import net.tslat.smartbrainlib.api.core.navigation.SmoothGroundNavigation;
 import org.jetbrains.annotations.Nullable;
 
 public class SkulkinHorse extends SkeletonHorse implements Enemy
@@ -36,6 +38,12 @@ public class SkulkinHorse extends SkeletonHorse implements Enemy
 
     public static AttributeSupplier.Builder createAttributes() {
         return SkeletonHorse.createAttributes().add(Attributes.ATTACK_DAMAGE, 2.0f).add(Attributes.MOVEMENT_SPEED, 0.25F);
+    }
+
+    @Override
+    protected PathNavigation createNavigation(Level level)
+    {
+        return new SmoothGroundNavigation(this, level);
     }
 
     @Nullable

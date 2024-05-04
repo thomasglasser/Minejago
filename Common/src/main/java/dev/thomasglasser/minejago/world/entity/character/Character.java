@@ -34,6 +34,7 @@ import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.behavior.LookAtTargetSink;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
@@ -56,6 +57,7 @@ import net.tslat.smartbrainlib.api.core.behaviour.custom.target.InvalidateAttack
 import net.tslat.smartbrainlib.api.core.behaviour.custom.target.SetPlayerLookTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.target.SetRandomLookTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.target.TargetOrRetaliate;
+import net.tslat.smartbrainlib.api.core.navigation.SmoothGroundNavigation;
 import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.HurtBySensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
@@ -87,8 +89,14 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
 
     public Character(EntityType<? extends Character> entityType, Level level) {
         super(entityType, level);
-        this.getNavigation().setCanFloat(true);
+        navigation.setCanFloat(true);
         setPersistenceRequired();
+    }
+
+    @Override
+    protected PathNavigation createNavigation(Level level)
+    {
+	    return new SmoothGroundNavigation(this, level);
     }
 
     public static AttributeSupplier.Builder createAttributes() {

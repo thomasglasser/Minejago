@@ -47,7 +47,7 @@ public class MinejagoTreeFeatures
 	}
 
 	public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> pContext) {
-		registerTreeSet(pContext, MinejagoBlocks.ENCHANTED_WOOD_SET.get().log(), MinejagoBlocks.FOCUS_LEAVES_SET.get().leaves(), FOCUS, FANCY_FOCUS, FOCUS_BEES_0002, FOCUS_BEES_002, FOCUS_BEES_005, FANCY_FOCUS_BEES_0002, FANCY_FOCUS_BEES_002, FANCY_FOCUS_BEES_005, FANCY_FOCUS_BEES);
+		registerTreeSet(pContext, MinejagoBlocks.ENCHANTED_WOOD_SET.log(), MinejagoBlocks.FOCUS_LEAVES_SET.leaves(), FOCUS, FANCY_FOCUS, FOCUS_BEES_0002, FOCUS_BEES_002, FOCUS_BEES_005, FANCY_FOCUS_BEES_0002, FANCY_FOCUS_BEES_002, FANCY_FOCUS_BEES_005, FANCY_FOCUS_BEES);
 	}
 
 	public static void registerTreeSet(BootstrapContext<ConfiguredFeature<?, ?>> pContext, Supplier<Block> log, Supplier<Block> leaves, ResourceKey<ConfiguredFeature<?, ?>> normal, ResourceKey<ConfiguredFeature<?, ?>> fancy, ResourceKey<ConfiguredFeature<?, ?>> normalBees0002, ResourceKey<ConfiguredFeature<?, ?>> normalBees002, ResourceKey<ConfiguredFeature<?, ?>> normalBees005, ResourceKey<ConfiguredFeature<?, ?>> fancyBees0002, ResourceKey<ConfiguredFeature<?, ?>> fancyBees002, ResourceKey<ConfiguredFeature<?, ?>> fancyBees005, ResourceKey<ConfiguredFeature<?, ?>> fancyBees)

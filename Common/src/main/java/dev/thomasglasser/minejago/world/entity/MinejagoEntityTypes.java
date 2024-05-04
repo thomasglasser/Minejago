@@ -110,7 +110,7 @@ public class MinejagoEntityTypes
 
     public static final RegistryObject<EntityType<SkullMotorbike>> SKULL_MOTORBIKE = register("skull_motorbike", () -> EntityType.Builder.of(SkullMotorbike::new, MobCategory.MISC)
             .sized(1.375f, 1.5f)
-            .passengerAttachments(-0.4F)
+            .passengerAttachments(0)
             .build("skull_motorbike"));
 
     private static <T extends EntityType<?>> RegistryObject<T> register(String name, Supplier<T> type)

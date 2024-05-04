@@ -20,7 +20,6 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class SkeletalChestplateItem extends BaseGeoArmorItem
 {
@@ -49,7 +48,6 @@ public class SkeletalChestplateItem extends BaseGeoArmorItem
             public <T extends LivingEntity> HumanoidModel<?> getGeoArmorRenderer(@Nullable T livingEntity, ItemStack itemStack, @Nullable EquipmentSlot equipmentSlot, @Nullable HumanoidModel<T> original) {
                 if (this.renderer == null)
                     this.renderer = new SkeletalArmorRenderer();
-                // Defer creation of our renderer then cache it so that it doesn't get instantiated too early
 
                 return this.renderer;
             }
@@ -64,9 +62,5 @@ public class SkeletalChestplateItem extends BaseGeoArmorItem
     @Override
     public boolean isSkintight() {
         return false;
-    }
-
-    public Supplier<Object> getRenderProvider() {
-        return null;
     }
 }

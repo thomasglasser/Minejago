@@ -8,7 +8,6 @@ import net.minecraft.server.network.Filterable;
 import net.minecraft.server.network.FilteredText;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.WritableBookContent;
 import net.minecraft.world.item.component.WrittenBookContent;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,7 +34,7 @@ public abstract class ServerGamePacketListenerImplMixin
     {
         ItemStack itemStack = INSTANCE.player.getInventory().getItem(index);
         if (itemStack.is(MinejagoItems.WRITABLE_SCROLL.get())) {
-            ItemStack itemStack2 = itemStack.transmuteCopy(Items.WRITTEN_BOOK, 1);
+            ItemStack itemStack2 = itemStack.transmuteCopy(MinejagoItems.WRITTEN_SCROLL.get(), 1);
             itemStack2.remove(DataComponents.WRITABLE_BOOK_CONTENT);
             List<Filterable<Component>> list = pages.stream().map((filteredText) -> filterableFromOutgoing(filteredText).<Component>map(Component::literal)).toList();
             itemStack2.set(DataComponents.WRITTEN_BOOK_CONTENT, new WrittenBookContent(this.filterableFromOutgoing(title), this.player.getName().getString(), 0, list, true));

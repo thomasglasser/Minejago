@@ -39,8 +39,8 @@ public class MinejagoBlockLoot extends ExtendedBlockLootSubProvider
 
         add(MinejagoBlocks.CHISELED_SCROLL_SHELF.get(), createSilkTouchOnlyTable(MinejagoBlocks.CHISELED_SCROLL_SHELF.get()));
 
-        woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET.get());
-        leavesSet(MinejagoBlocks.FOCUS_LEAVES_SET.get());
+        woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET);
+        leavesSet(MinejagoBlocks.FOCUS_LEAVES_SET);
     }
 
     protected LootTable.Builder createTeapotBlock(Block block)
