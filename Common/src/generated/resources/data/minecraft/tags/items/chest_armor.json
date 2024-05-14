@@ -2,11 +2,11 @@
   "values": [
     "minejago:black_gi_jacket",
     "minejago:training_gi_jacket",
+    "minejago:skeletal_chestplate_bone",
     "minejago:skeletal_chestplate_red",
     "minejago:skeletal_chestplate_blue",
     "minejago:skeletal_chestplate_white",
     "minejago:skeletal_chestplate_black",
-    "minejago:skeletal_chestplate_bone",
     "minejago:samukais_chestplate"
   ]
 }

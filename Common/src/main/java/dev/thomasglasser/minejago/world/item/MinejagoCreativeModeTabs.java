@@ -7,8 +7,8 @@ import dev.thomasglasser.minejago.world.item.armor.GiGeoArmorItem;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.armor.PoweredArmorItem;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
-import dev.thomasglasser.tommylib.api.registration.RegistrationProvider;
-import dev.thomasglasser.tommylib.api.registration.RegistryObject;
+import dev.thomasglasser.tommylib.api.registration.DeferredHolder;
+import dev.thomasglasser.tommylib.api.registration.DeferredRegister;
 import dev.thomasglasser.tommylib.api.world.item.ItemUtils;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -22,9 +22,9 @@ import java.util.function.Supplier;
 
 public class MinejagoCreativeModeTabs
 {
-    public static final RegistrationProvider<CreativeModeTab> CREATIVE_MODE_TABS = RegistrationProvider.get(BuiltInRegistries.CREATIVE_MODE_TAB, Minejago.MOD_ID);
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(BuiltInRegistries.CREATIVE_MODE_TAB, Minejago.MOD_ID);
 
-    public static final RegistryObject<CreativeModeTab> GI = register("gi", () -> TommyLibServices.ITEM.newTab(Component.translatable(Minejago.modLoc("gi").toLanguageKey("item_group")), () -> MinejagoArmors.BLACK_GI_SET.HEAD.get().getDefaultInstance(), true, (parameters, output) ->
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GI = register("gi", () -> TommyLibServices.ITEM.newTab(Component.translatable(Minejago.modLoc("gi").toLanguageKey("item_group")), () -> MinejagoArmors.BLACK_GI_SET.HEAD.get().getDefaultInstance(), true, (parameters, output) ->
     {
         MinejagoArmors.ARMOR_SETS.forEach(armorSet ->
                 armorSet.getAll().forEach(armor ->
@@ -36,14 +36,14 @@ public class MinejagoCreativeModeTabs
         output.acceptAll(MinejagoPowers.getArmorForAll(parameters.holders()));
     }));
 
-    public static final RegistryObject<CreativeModeTab> MINEJAGO = register("minejago", () -> TommyLibServices.ITEM.newTab(Component.translatable(Minejago.modLoc(Minejago.MOD_ID).toLanguageKey("item_group")), () -> MinejagoItems.SCYTHE_OF_QUAKES.get().getDefaultInstance(), true, (parameters, output) ->
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MINEJAGO = register("minejago", () -> TommyLibServices.ITEM.newTab(Component.translatable(Minejago.modLoc(Minejago.MOD_ID).toLanguageKey("item_group")), () -> MinejagoItems.SCYTHE_OF_QUAKES.get().getDefaultInstance(), true, (parameters, output) ->
     {
         List<ResourceLocation> itemsToAdd = new ArrayList<>();
 
-        ItemUtils.getItemTabs().values().forEach(rls ->
+        ItemUtils.getItemTabs().forEach((tab, rls) ->
                 rls.forEach(rl ->
                 {
-                    if (rl.getNamespace().equals(Minejago.MOD_ID) && !itemsToAdd.contains(rl))
+                    if (rl.getNamespace().equals(Minejago.MOD_ID) && !(tab == MinejagoCreativeModeTabs.MINEJAGO.getKey()) && !itemsToAdd.contains(rl))
                         itemsToAdd.add(rl);
                 }));
 
@@ -57,7 +57,7 @@ public class MinejagoCreativeModeTabs
         output.accept(SkulkinRaid.getLeaderBannerInstance(parameters.holders().lookupOrThrow(Registries.BANNER_PATTERN)));
     }));
     
-    private static RegistryObject<CreativeModeTab> register(String name, Supplier<CreativeModeTab> tab)
+    private static DeferredHolder<CreativeModeTab, CreativeModeTab> register(String name, Supplier<CreativeModeTab> tab)
     {
         return CREATIVE_MODE_TABS.register(name, tab);
     }

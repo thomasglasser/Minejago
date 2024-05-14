@@ -9,7 +9,7 @@ import dev.thomasglasser.minejago.world.entity.character.Wu;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.level.storage.PowerData;
-import dev.thomasglasser.tommylib.api.registration.RegistryObject;
+import dev.thomasglasser.tommylib.api.registration.DeferredItem;
 import dev.thomasglasser.tommylib.api.world.item.armor.ArmorSet;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
@@ -79,7 +79,7 @@ public class GivePowerAndGi<E extends PathfinderMob> extends MoveToWalkTarget<E>
     {
         ArmorSet set = MinejagoArmors.TRAINING_GI_SET;
         for (ArmorItem.Type value : ArmorItem.Type.values()) {
-            RegistryObject<ArmorItem> ro = set.getForSlot(value.getSlot());
+            DeferredItem<ArmorItem> ro = set.getForSlot(value.getSlot());
             if (ro != null)
             {
                 ArmorItem armor = ro.get();

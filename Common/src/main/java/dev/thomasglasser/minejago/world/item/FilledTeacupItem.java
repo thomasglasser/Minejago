@@ -19,6 +19,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.PotionItem;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
@@ -125,5 +126,11 @@ public class FilledTeacupItem extends PotionItem implements PotionCupHolder
     @Override
     public boolean canBeFilled(ItemStack stack, Holder<Potion> potion, int cups) {
         return false;
+    }
+
+    @Override
+    public UseAnim getUseAnimation(ItemStack stack)
+    {
+        return UseAnim.DRINK;
     }
 }

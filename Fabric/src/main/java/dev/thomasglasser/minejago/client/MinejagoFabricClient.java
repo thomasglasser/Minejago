@@ -1,6 +1,5 @@
 package dev.thomasglasser.minejago.client;
 
-import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.model.BambooStaffModel;
 import dev.thomasglasser.minejago.client.model.DragonModel;
@@ -36,7 +35,6 @@ import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
 import dev.thomasglasser.minejago.world.level.block.entity.TeapotBlockEntity;
 import dev.thomasglasser.tommylib.api.client.ClientUtils;
-import dev.thomasglasser.tommylib.api.client.animation.AnimationUtils;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -218,7 +216,6 @@ public class MinejagoFabricClient implements ClientModInitializer
                 }
             }
         });
-        if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled()) PlayerAnimationAccess.REGISTER_ANIMATION_EVENT.register(AnimationUtils::registerPlayerAnimation);
         ItemGroupEvents.MODIFY_ENTRIES_ALL.register((group, entries) ->
                 entries.acceptAll(MinejagoClientEvents.getItemsForTab(BuiltInRegistries.CREATIVE_MODE_TAB.getResourceKey(group).orElseThrow(), entries.getContext().holders())));
         ClientTickEvents.END_CLIENT_TICK.register(client ->

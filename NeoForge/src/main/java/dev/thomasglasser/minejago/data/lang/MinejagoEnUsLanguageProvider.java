@@ -128,7 +128,7 @@ public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider
         uncraftableTea.set(DataComponents.POTION_CONTENTS, PotionContents.EMPTY);
         add(uncraftableTea, "Uncraftable Tea");
         add(MinejagoItems.FILLED_TEACUP.get(), Potions.WATER, "Cup of Water");
-        add(MinejagoItems.FILLED_TEACUP.get(), MinejagoPotions.MILK.asHolder(), "Cup of Milk");
+        add(MinejagoItems.FILLED_TEACUP.get(), MinejagoPotions.MILK, "Cup of Milk");
 
         for (Holder<Potion> potion : BuiltInRegistries.POTION.holders().filter(ref -> ref.key().location().getNamespace().equals(ResourceLocation.DEFAULT_NAMESPACE)).toList())
         {
@@ -165,20 +165,20 @@ public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider
 
         add("container.teapot", "Teapot");
 
-        addTea(MinejagoPotions.ACACIA_TEA.asHolder(), "Acacia Tea");
-        addTea(MinejagoPotions.OAK_TEA.asHolder(), "Oak Tea");
-        addTea(MinejagoPotions.CHERRY_TEA.asHolder(), "Cherry Tea");
-        addTea(MinejagoPotions.SPRUCE_TEA.asHolder(), "Spruce Tea");
-        addTea(MinejagoPotions.MANGROVE_TEA.asHolder(), "Mangrove Tea");
-        addTea(MinejagoPotions.JUNGLE_TEA.asHolder(), "Jungle Tea");
-        addTea(MinejagoPotions.DARK_OAK_TEA.asHolder(), "Dark Oak Tea");
-        addTea(MinejagoPotions.BIRCH_TEA.asHolder(), "Birch Tea");
-        addTea(MinejagoPotions.AZALEA_TEA.asHolder(), "Azalea Tea");
-        addTea(MinejagoPotions.FLOWERING_AZALEA_TEA.asHolder(), "Flowering Azalea Tea");
+        addTea(MinejagoPotions.ACACIA_TEA, "Acacia Tea");
+        addTea(MinejagoPotions.OAK_TEA, "Oak Tea");
+        addTea(MinejagoPotions.CHERRY_TEA, "Cherry Tea");
+        addTea(MinejagoPotions.SPRUCE_TEA, "Spruce Tea");
+        addTea(MinejagoPotions.MANGROVE_TEA, "Mangrove Tea");
+        addTea(MinejagoPotions.JUNGLE_TEA, "Jungle Tea");
+        addTea(MinejagoPotions.DARK_OAK_TEA, "Dark Oak Tea");
+        addTea(MinejagoPotions.BIRCH_TEA, "Birch Tea");
+        addTea(MinejagoPotions.AZALEA_TEA, "Azalea Tea");
+        addTea(MinejagoPotions.FLOWERING_AZALEA_TEA, "Flowering Azalea Tea");
 
-        addTea(MinejagoPotions.FOCUS_TEA.asHolder(), "Focus Tea");
+        addTea(MinejagoPotions.FOCUS_TEA, "Focus Tea");
 
-        addPotions(MinejagoPotions.MILK.asHolder(), "Milk");
+        addPotions(MinejagoPotions.MILK, "Milk");
 
         add(MinejagoSoundEvents.TEAPOT_WHISTLE, "Teapot whistles");
         add(MinejagoSoundEvents.SPINJITZU_START, "Spinjitzu activates");

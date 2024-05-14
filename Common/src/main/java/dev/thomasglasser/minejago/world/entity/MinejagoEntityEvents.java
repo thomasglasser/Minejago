@@ -153,7 +153,7 @@ public class MinejagoEntityEvents
                         if (player.tickCount % 20 == 0)
                         {
                             level.playSound(null, serverPlayer.blockPosition(), MinejagoSoundEvents.SPINJITZU_ACTIVE.get(), SoundSource.PLAYERS);
-                            level.gameEvent(serverPlayer, MinejagoGameEvents.SPINJITZU.asHolder(), serverPlayer.blockPosition());
+                            level.gameEvent(serverPlayer, MinejagoGameEvents.SPINJITZU, serverPlayer.blockPosition());
                         }
                         Power power = player.level().registryAccess().registryOrThrow(MinejagoRegistries.POWER).getHolderOrThrow(Services.DATA.getPowerData(player).power()).value();
                         if (!power.is(MinejagoPowers.NONE))

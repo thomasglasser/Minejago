@@ -32,8 +32,7 @@ dependencies {
     modImplementation "net.tslat.tes:TES-fabric-${minecraft_version}:${tes_version}"
     modCompileOnly "maven.modrinth:ryoamiclights:${ryoamiclights_version}-fabric"
 //    modImplementation "maven.modrinth:ryoamiclights:${ryoamiclights_version}-fabric"
-    modCompileOnly "net.tslat.effectslib:TslatEffectsLib-fabric-${minecraft_version}:${tslateffectslib_version}"
-//    modImplementation "net.tslat.effectslib:TslatEffectsLib-fabric-${minecraft_version}:${tslateffectslib_version}"
+    modImplementation "net.tslat.effectslib:TslatEffectsLib-fabric-${minecraft_version}:${tslateffectslib_version}"
 
     // Fabric Only
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"

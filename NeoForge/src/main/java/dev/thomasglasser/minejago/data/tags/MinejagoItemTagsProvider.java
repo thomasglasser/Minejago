@@ -3,6 +3,7 @@ package dev.thomasglasser.minejago.data.tags;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.tags.MinejagoBlockTags;
 import dev.thomasglasser.minejago.tags.MinejagoItemTags;
+import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
@@ -28,15 +29,20 @@ public class MinejagoItemTagsProvider extends ExtendedItemTagsProvider
     {
         tag(ItemTags.PIGLIN_LOVED)
                 .addTag(MinejagoItemTags.GOLDEN_WEAPONS);
-        swords(
-                MinejagoItems.BONE_KNIFE,
-                MinejagoItems.IRON_KATANA);
+        tag(ItemTags.SWORDS)
+                .add(MinejagoItems.BONE_KNIFE.get())
+                .add(MinejagoItems.IRON_KATANA.get());
         tag(MinejagoItemTags.GOLDEN_WEAPONS)
                 .add(MinejagoItems.SCYTHE_OF_QUAKES.get());
         MinejagoArmors.ARMOR_SETS.forEach(this::armorSet);
         MinejagoArmors.POWER_SETS.forEach(this::armorSet);
-        MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(this::chestplates);
-        chestplates(MinejagoArmors.SAMUKAIS_CHESTPLATE);
+        tag(ItemTags.CHEST_ARMOR)
+                .add(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.BONE).value())
+                .add(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.STRENGTH).value())
+                .add(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.SPEED).value())
+                .add(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.BOW).value())
+                .add(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.KNIFE).value())
+                .add(MinejagoArmors.SAMUKAIS_CHESTPLATE.get());
 
 
         copy(MinejagoBlockTags.TEAPOTS, MinejagoItemTags.TEAPOTS);
@@ -57,7 +63,7 @@ public class MinejagoItemTagsProvider extends ExtendedItemTagsProvider
                 .add(Items.TROPICAL_FISH)
                 .add(Items.COOKED_COD)
                 .add(Items.COD)
-                .addOptionalTag(cLoc("meats"));
+                .addTag(ItemTags.MEAT);
 
         tag(MinejagoItemTags.DRAGON_TREATS)
                 .add(Items.COOKED_SALMON);

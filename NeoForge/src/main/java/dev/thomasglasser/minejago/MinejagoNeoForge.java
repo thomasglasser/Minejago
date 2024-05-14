@@ -21,9 +21,9 @@ public class MinejagoNeoForge
 {
     public MinejagoNeoForge(IEventBus bus)
     {
-        NeoForgeDataHelper.ATTACHMENT_TYPES.register(bus);
-
         Minejago.init();
+
+        NeoForgeDataHelper.ATTACHMENT_TYPES.register(bus);
 
         if (FMLEnvironment.dist.isClient()) bus.addListener(MinejagoForgeClientEvents::onClientSetup);
 

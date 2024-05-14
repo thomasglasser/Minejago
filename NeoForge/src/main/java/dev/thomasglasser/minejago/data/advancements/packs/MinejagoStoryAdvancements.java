@@ -70,7 +70,7 @@ public class MinejagoStoryAdvancements implements AdvancementProvider.Advancemen
                 "get_black_gi_set", InventoryChangeTrigger.TriggerInstance.hasItems(MinejagoArmors.BLACK_GI_SET.getAllAsItems().toArray(new ItemLike[] {}))
         ), "Ninja in Training", "Receive the Black Gi");
 
-        AdvancementHolder doSpinjitzu = helper.make(getBlackGi, PotionContents.createItemStack(MinejagoItems.FILLED_TEACUP.get(), MinejagoPotions.OAK_TEA.asHolder()), DO_SPINJITZU, AdvancementType.TASK, true, true, false, null, Map.of(
+        AdvancementHolder doSpinjitzu = helper.make(getBlackGi, PotionContents.createItemStack(MinejagoItems.FILLED_TEACUP.get(), MinejagoPotions.OAK_TEA.asReferenceFrom(registries)), DO_SPINJITZU, AdvancementType.TASK, true, true, false, null, Map.of(
                 "do_spinjitzu", DidSpinjitzuTrigger.TriggerInstance.didSpinjitzu()
         ), "Twistitzu? Tornadzu?", "Do spinjitzu for the first time");
 

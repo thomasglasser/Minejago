@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.Mixin;
 public abstract class MinejagoMilkBucketItemMixin implements PotionCupHolder {
     @Override
     public Holder<Potion> getPotion(ItemStack stack) {
-        return MinejagoPotions.MILK.asHolder();
+        return MinejagoPotions.MILK;
     }
 
     @Override

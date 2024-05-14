@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#tommylib:white_dyes"
+            "items": "#c:dyes/white"
           }
         ]
       },

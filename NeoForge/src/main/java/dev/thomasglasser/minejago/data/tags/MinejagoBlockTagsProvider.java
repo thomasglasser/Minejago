@@ -5,7 +5,7 @@ import dev.thomasglasser.minejago.tags.MinejagoBlockTags;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.tommylib.api.data.tags.ExtendedBlockTagsProvider;
-import dev.thomasglasser.tommylib.api.registration.RegistryObject;
+import dev.thomasglasser.tommylib.api.registration.DeferredBlock;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
@@ -33,7 +33,7 @@ public class MinejagoBlockTagsProvider extends ExtendedBlockTagsProvider
         pots.add(MinejagoBlocks.TEAPOT.get(),
                 MinejagoBlocks.JASPOT.get(),
                 MinejagoBlocks.FLAME_TEAPOT.get());
-        for (RegistryObject<TeapotBlock> pot : MinejagoBlocks.TEAPOTS.values())
+        for (DeferredBlock<TeapotBlock> pot : MinejagoBlocks.TEAPOTS.values())
         {
             pots.add(pot.get());
         }

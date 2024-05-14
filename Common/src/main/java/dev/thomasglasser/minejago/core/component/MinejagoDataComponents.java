@@ -2,8 +2,8 @@ package dev.thomasglasser.minejago.core.component;
 
 import com.mojang.serialization.Codec;
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.tommylib.api.registration.RegistrationProvider;
-import dev.thomasglasser.tommylib.api.registration.RegistryObject;
+import dev.thomasglasser.tommylib.api.registration.DeferredHolder;
+import dev.thomasglasser.tommylib.api.registration.DeferredRegister;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -16,12 +16,12 @@ import java.util.function.Supplier;
 
 public class MinejagoDataComponents
 {
-	public static final RegistrationProvider<DataComponentType<?>> DATA_COMPONENTS = RegistrationProvider.get(Registries.DATA_COMPONENT_TYPE, Minejago.MOD_ID);
+	public static final DeferredRegister<DataComponentType<?>> DATA_COMPONENTS = DeferredRegister.create(Registries.DATA_COMPONENT_TYPE, Minejago.MOD_ID);
 
-	public static final RegistryObject<DataComponentType<ResourceLocation>> POWER = register("power", ResourceLocation.CODEC, ResourceLocation.STREAM_CODEC, false);
-	public static final RegistryObject<DataComponentType<Unit>> GOLDEN_WEAPONS_MAP = register("golden_weapons_map_data", Codec.unit(Unit.INSTANCE), StreamCodec.unit(Unit.INSTANCE), false);
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<ResourceLocation>> POWER = register("power", ResourceLocation.CODEC, ResourceLocation.STREAM_CODEC, false);
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Unit>> GOLDEN_WEAPONS_MAP = register("golden_weapons_map_data", Codec.unit(Unit.INSTANCE), StreamCodec.unit(Unit.INSTANCE), false);
 
-	private static <T> RegistryObject<DataComponentType<T>> register(String name, @Nullable Codec<T> diskCodec, @Nullable StreamCodec<? super RegistryFriendlyByteBuf, T> networkCodec, boolean cache)
+	private static <T> DeferredHolder<DataComponentType<?>, DataComponentType<T>> register(String name, @Nullable Codec<T> diskCodec, @Nullable StreamCodec<? super RegistryFriendlyByteBuf, T> networkCodec, boolean cache)
 	{
 		Supplier<DataComponentType<T>> component = () ->
 		{

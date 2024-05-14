@@ -17,7 +17,7 @@ public class TrainingGiItem extends PoweredArmorItem
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public TrainingGiItem(Type type, Properties pProperties) {
-        super(MinejagoArmorMaterials.TRAINING_GI.asHolder(), type, pProperties);
+        super(MinejagoArmorMaterials.TRAINING_GI, type, pProperties);
     }
 
     @Override

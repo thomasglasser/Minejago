@@ -20,17 +20,17 @@ public class MinejagoPaintingVariantTagsProvider extends PaintingVariantTagsProv
     @Override
     protected void addTags(HolderLookup.Provider pProvider) {
         tag(PaintingVariantTags.PLACEABLE)
-                .add(MinejagoPaintingVariants.A_MORNING_BREW.getResourceKey())
-                .add(MinejagoPaintingVariants.AMBUSHED.getResourceKey())
-                .add(MinejagoPaintingVariants.BEFORE_THE_STORM.getResourceKey())
-                .add(MinejagoPaintingVariants.CREATION.getResourceKey())
-                .add(MinejagoPaintingVariants.EARTH.getResourceKey())
-                .add(MinejagoPaintingVariants.FIRE.getResourceKey())
-                .add(MinejagoPaintingVariants.FRUIT_COLORED_NINJA.getResourceKey())
-                .add(MinejagoPaintingVariants.ICE.getResourceKey())
-                .add(MinejagoPaintingVariants.LIGHTNING.getResourceKey())
-                .add(MinejagoPaintingVariants.NEEDS_HAIR_GEL.getResourceKey())
-                .add(MinejagoPaintingVariants.NOT_FOR_FURNITURE.getResourceKey())
-                .add(MinejagoPaintingVariants.IT_TAKES_A_VILLAGE.getResourceKey());
+                .add(MinejagoPaintingVariants.A_MORNING_BREW.getKey())
+                .add(MinejagoPaintingVariants.AMBUSHED.getKey())
+                .add(MinejagoPaintingVariants.BEFORE_THE_STORM.getKey())
+                .add(MinejagoPaintingVariants.CREATION.getKey())
+                .add(MinejagoPaintingVariants.EARTH.getKey())
+                .add(MinejagoPaintingVariants.FIRE.getKey())
+                .add(MinejagoPaintingVariants.FRUIT_COLORED_NINJA.getKey())
+                .add(MinejagoPaintingVariants.ICE.getKey())
+                .add(MinejagoPaintingVariants.LIGHTNING.getKey())
+                .add(MinejagoPaintingVariants.NEEDS_HAIR_GEL.getKey())
+                .add(MinejagoPaintingVariants.NOT_FOR_FURNITURE.getKey())
+                .add(MinejagoPaintingVariants.IT_TAKES_A_VILLAGE.getKey());
     }
 }

@@ -3,7 +3,8 @@ package dev.thomasglasser.minejago.data.loot;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.tommylib.api.data.loot.ExtendedBlockLootSubProvider;
-import dev.thomasglasser.tommylib.api.registration.RegistryObject;
+import dev.thomasglasser.tommylib.api.registration.DeferredBlock;
+import dev.thomasglasser.tommylib.api.registration.DeferredHolder;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.ContainerComponentManipulators;
@@ -17,6 +18,7 @@ import net.minecraft.world.level.storage.loot.functions.SetContainerContents;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class MinejagoBlockLoot extends ExtendedBlockLootSubProvider
 {
@@ -27,7 +29,7 @@ public class MinejagoBlockLoot extends ExtendedBlockLootSubProvider
     @Override
     public void generate() {
         add(MinejagoBlocks.TEAPOT.get(), createTeapotBlock(MinejagoBlocks.TEAPOT.get()));
-        for (RegistryObject<TeapotBlock> pot : MinejagoBlocks.TEAPOTS.values())
+        for (DeferredBlock<TeapotBlock> pot : MinejagoBlocks.TEAPOTS.values())
             add(pot.get(), createTeapotBlock(pot.get()));
         add(MinejagoBlocks.JASPOT.get(), createTeapotBlock(MinejagoBlocks.JASPOT.get()));
         add(MinejagoBlocks.FLAME_TEAPOT.get(), createTeapotBlock(MinejagoBlocks.FLAME_TEAPOT.get()));
@@ -58,6 +60,6 @@ public class MinejagoBlockLoot extends ExtendedBlockLootSubProvider
 
     @Override
     protected Iterable<Block> getKnownBlocks() {
-	    return MinejagoBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).toList();
+	    return MinejagoBlocks.BLOCKS.getEntries().stream().map(DeferredHolder::get).collect(Collectors.toSet());
     }
 }

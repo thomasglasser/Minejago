@@ -110,9 +110,7 @@ public class MinejagoDataGenerators
         generator.addProvider(includeServer, datapackEntries);
         lookupProvider = datapackEntries.getRegistryProvider();
         generator.addProvider(includeServer, blockTags);
-        generator.addProvider(includeServer, new MinejagoAdvancementProvider(packOutput, lookupProvider, existingFileHelper, enUs));
         generator.addProvider(includeServer, new MinejagoItemTagsProvider(packOutput, lookupProvider, blockTags.contentsGetter(), existingFileHelper));
-        generator.addProvider(includeServer, new MinejagoRecipes(packOutput, lookupProvider));
         generator.addProvider(includeServer, new MinejagoBannerPatternTagsProvider(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(includeServer, new MinejagoLootTables(packOutput, lookupProvider));
         generator.addProvider(includeServer, new MinejagoEntityTypeTagsProvider(packOutput, lookupProvider, existingFileHelper));
@@ -123,6 +121,8 @@ public class MinejagoDataGenerators
         generator.addProvider(includeServer, new MinejagoDimensionTypeTagsProvider(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(includeServer, new MinejagoFocusModifierProvider(packOutput, lookupProvider));
         generator.addProvider(includeServer, new MinejagoDataMaps(packOutput, lookupProvider));
+        generator.addProvider(includeServer, new MinejagoAdvancementProvider(packOutput, lookupProvider, existingFileHelper, enUs));
+        generator.addProvider(includeServer, new MinejagoRecipes(packOutput, lookupProvider));
 
         //Client
         generator.addProvider(includeClient, new MinejagoBlockStates(packOutput, existingFileHelper));

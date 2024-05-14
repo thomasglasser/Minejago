@@ -4,9 +4,6 @@
     "minecraft:tropical_fish",
     "minecraft:cooked_cod",
     "minecraft:cod",
-    {
-      "id": "#c:meats",
-      "required": false
-    }
+    "#minecraft:meat"
   ]
 }

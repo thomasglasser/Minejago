@@ -18,7 +18,7 @@ public class BlackGiItem extends BaseGeoArmorItem implements GiGeoArmorItem
     private AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public BlackGiItem(Type type, Properties pProperties) {
-        super(MinejagoArmorMaterials.BLACK_GI.asHolder(), type, pProperties);
+        super(MinejagoArmorMaterials.BLACK_GI, type, pProperties);
     }
 
     @Override

@@ -3,10 +3,10 @@
   "category": "equipment",
   "ingredients": [
     {
-      "tag": "tommylib:wooden_rods"
+      "tag": "c:rods/wooden"
     },
     {
-      "tag": "tommylib:wooden_rods"
+      "tag": "c:rods/wooden"
     },
     {
       "item": "minecraft:chain"

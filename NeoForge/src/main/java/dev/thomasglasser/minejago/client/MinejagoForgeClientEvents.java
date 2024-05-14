@@ -83,7 +83,6 @@ public class MinejagoForgeClientEvents {
 
     public static void onClientSetup(FMLClientSetupEvent event)
     {
-        if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled()) PlayerAnimationAccess.REGISTER_ANIMATION_EVENT.register(AnimationUtils::registerPlayerAnimation);
         if (Minejago.Dependencies.DYNAMIC_LIGHTS.isInstalled()) MinejagoDynamicLights.register();
     }
 

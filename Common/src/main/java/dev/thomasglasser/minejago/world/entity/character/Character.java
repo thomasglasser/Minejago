@@ -249,7 +249,7 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
         if (!level().isClientSide && isDoingSpinjitzu() && power1 != null) {
             if (tickCount % 20 == 0) {
                 level().playSound(null, blockPosition(), MinejagoSoundEvents.SPINJITZU_ACTIVE.get(), SoundSource.NEUTRAL);
-                level().gameEvent(this, MinejagoGameEvents.SPINJITZU.asHolder(), blockPosition());
+                level().gameEvent(this, MinejagoGameEvents.SPINJITZU, blockPosition());
             }
             MinejagoParticleUtils.renderNormalSpinjitzu(this, power1.getMainSpinjitzuColor(), power1.getAltSpinjitzuColor(), 10.5, false);
             MinejagoParticleUtils.renderNormalSpinjitzuBorder(power1.getBorderParticle(), this, 4, false);

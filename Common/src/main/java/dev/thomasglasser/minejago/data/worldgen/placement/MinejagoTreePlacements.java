@@ -3,17 +3,15 @@ package dev.thomasglasser.minejago.data.worldgen.placement;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.data.worldgen.features.MinejagoTreeFeatures;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
+import dev.thomasglasser.tommylib.api.registration.DeferredBlock;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-
-import java.util.function.Supplier;
 
 public class MinejagoTreePlacements
 {
@@ -32,7 +30,7 @@ public class MinejagoTreePlacements
 				FOCUS_CHECKED, FANCY_FOCUS_CHECKED, FOCUS_BEES_0002, FOCUS_BEES_002, FANCY_FOCUS_BEES_0002, FANCY_FOCUS_BEES_002, FANCY_FOCUS_BEES);
 	}
 
-	public static void registerTreeSet(BootstrapContext<PlacedFeature> pContext, HolderGetter<ConfiguredFeature<?, ?>> features, Supplier<Block> sapling, ResourceKey<ConfiguredFeature<?, ?>> normalConfigured, ResourceKey<ConfiguredFeature<?, ?>> fancyConfigured, ResourceKey<ConfiguredFeature<?, ?>> normalBees0002Configured, ResourceKey<ConfiguredFeature<?, ?>> normalBees002Configured, ResourceKey<ConfiguredFeature<?, ?>> fancyBees0002Configured, ResourceKey<ConfiguredFeature<?, ?>> fancyBees002Configured, ResourceKey<ConfiguredFeature<?, ?>> fancyBeesConfigured, ResourceKey<PlacedFeature> normal, ResourceKey<PlacedFeature> fancy, ResourceKey<PlacedFeature> normalBees0002, ResourceKey<PlacedFeature> normalBees002, ResourceKey<PlacedFeature> fancyBees0002, ResourceKey<PlacedFeature> fancyBees002, ResourceKey<PlacedFeature> fancyBees)
+	public static void registerTreeSet(BootstrapContext<PlacedFeature> pContext, HolderGetter<ConfiguredFeature<?, ?>> features, DeferredBlock<?> sapling, ResourceKey<ConfiguredFeature<?, ?>> normalConfigured, ResourceKey<ConfiguredFeature<?, ?>> fancyConfigured, ResourceKey<ConfiguredFeature<?, ?>> normalBees0002Configured, ResourceKey<ConfiguredFeature<?, ?>> normalBees002Configured, ResourceKey<ConfiguredFeature<?, ?>> fancyBees0002Configured, ResourceKey<ConfiguredFeature<?, ?>> fancyBees002Configured, ResourceKey<ConfiguredFeature<?, ?>> fancyBeesConfigured, ResourceKey<PlacedFeature> normal, ResourceKey<PlacedFeature> fancy, ResourceKey<PlacedFeature> normalBees0002, ResourceKey<PlacedFeature> normalBees002, ResourceKey<PlacedFeature> fancyBees0002, ResourceKey<PlacedFeature> fancyBees002, ResourceKey<PlacedFeature> fancyBees)
 	{
 		Holder<ConfiguredFeature<?, ?>> holder2 = features.getOrThrow(normalConfigured);
 		Holder<ConfiguredFeature<?, ?>> holder11 = features.getOrThrow(fancyConfigured);

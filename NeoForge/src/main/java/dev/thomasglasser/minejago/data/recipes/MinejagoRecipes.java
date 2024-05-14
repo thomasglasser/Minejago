@@ -5,8 +5,8 @@ import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.tommylib.api.data.recipes.ExtendedRecipeProvider;
-import dev.thomasglasser.tommylib.api.registration.RegistryObject;
-import dev.thomasglasser.tommylib.api.tags.TommyLibItemTags;
+import dev.thomasglasser.tommylib.api.registration.DeferredHolder;
+import dev.thomasglasser.tommylib.api.tags.ConventionalItemTags;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -33,6 +33,8 @@ import java.util.concurrent.CompletableFuture;
 
 public class MinejagoRecipes extends ExtendedRecipeProvider
 {
+    public static HolderLookup.Provider lookupProvider = null;
+
     public MinejagoRecipes(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
         super(output, lookupProvider);
     }
@@ -55,28 +57,28 @@ public class MinejagoRecipes extends ExtendedRecipeProvider
                 .pattern("o  ")
                 .pattern(" x ")
                 .pattern("  x")
-                .define('x', TommyLibItemTags.WOODEN_RODS)
-                .define('o', TommyLibItemTags.IRON_INGOTS)
-                .unlockedBy("has_iron", has(TommyLibItemTags.IRON_INGOTS))
+                .define('x', ConventionalItemTags.WOODEN_RODS)
+                .define('o', ConventionalItemTags.IRON_INGOTS)
+                .unlockedBy("has_iron", has(ConventionalItemTags.IRON_INGOTS))
                 .save(writer);
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, MinejagoItems.IRON_KATANA.get(), 1)
                 .pattern("  x")
                 .pattern(" x ")
                 .pattern("o  ")
-                .define('x', TommyLibItemTags.IRON_INGOTS)
-                .define('o', TommyLibItemTags.WOODEN_RODS)
-                .unlockedBy("has_iron", has(TommyLibItemTags.IRON_INGOTS))
+                .define('x', ConventionalItemTags.IRON_INGOTS)
+                .define('o', ConventionalItemTags.WOODEN_RODS)
+                .unlockedBy("has_iron", has(ConventionalItemTags.IRON_INGOTS))
                 .save(writer);
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, MinejagoItems.IRON_SCYTHE.get(), 1)
                 .pattern(" x ")
                 .pattern("xo ")
                 .pattern(" o ")
-                .define('x', TommyLibItemTags.IRON_INGOTS)
-                .define('o', TommyLibItemTags.WOODEN_RODS)
-                .unlockedBy("has_iron", has(TommyLibItemTags.IRON_INGOTS))
+                .define('x', ConventionalItemTags.IRON_INGOTS)
+                .define('o', ConventionalItemTags.WOODEN_RODS)
+                .unlockedBy("has_iron", has(ConventionalItemTags.IRON_INGOTS))
                 .save(writer);
         ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, MinejagoItems.WOODEN_NUNCHUCKS.get(), 1)
-                .requires(Ingredient.of(TommyLibItemTags.WOODEN_RODS), 2)
+                .requires(Ingredient.of(ConventionalItemTags.WOODEN_RODS), 2)
                 .requires(Items.CHAIN)
                 .unlockedBy("has_chain", has(Items.CHAIN))
                 .save(writer);
@@ -97,17 +99,17 @@ public class MinejagoRecipes extends ExtendedRecipeProvider
                 .save(writer);
         ShapelessRecipeBuilder.shapeless(RecipeCategory.BREWING, MinejagoBlocks.FLAME_TEAPOT.get(), 1)
                 .requires(MinejagoBlocks.TEAPOTS.get(DyeColor.GRAY).get())
-                .requires(TommyLibItemTags.DYES_MAP.get(DyeColor.ORANGE))
+                .requires(ConventionalItemTags.ORANGE_DYES)
                 .group("teapot")
                 .unlockedBy("has_self", has(MinejagoBlocks.FLAME_TEAPOT.get()))
-                .unlockedBy("has_orange_dye", has(TommyLibItemTags.DYES_MAP.get(DyeColor.ORANGE)))
+                .unlockedBy("has_orange_dye", has(ConventionalItemTags.ORANGE_DYES))
                 .unlockedBy("has_teapot", has(MinejagoItemTags.TEAPOTS))
                 .save(writer);
 
         MinejagoBlocks.TEAPOTS.forEach((color, pot) ->
         {
             coloredTeapotFromColoredTerracotta(writer, pot.get(), BuiltInRegistries.BLOCK.get(new ResourceLocation(color.getName() + "_terracotta")));
-            coloredTeapotFromTeapotAndDye(writer, pot.get(), TommyLibItemTags.DYES_MAP.get(color));
+            coloredTeapotFromTeapotAndDye(writer, pot.get(), ConventionalItemTags.forDyeColor(color));
         });
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, MinejagoItems.SCROLL.get(), 1)
@@ -138,7 +140,7 @@ public class MinejagoRecipes extends ExtendedRecipeProvider
         ShapedRecipeBuilder.shaped(RecipeCategory.BREWING, pot, 1)
                 .pattern("x")
                 .pattern("o")
-                .define('x', TommyLibItemTags.WOODEN_RODS)
+                .define('x', ConventionalItemTags.WOODEN_RODS)
                 .define('o', color)
                 .group("teapot")
                 .unlockedBy("has_terracotta", has(ItemTags.TERRACOTTA))
@@ -168,7 +170,12 @@ public class MinejagoRecipes extends ExtendedRecipeProvider
         normalTea(writer, Items.BIRCH_LEAVES, MinejagoPotions.BIRCH_TEA);
         normalTea(writer, Items.AZALEA_LEAVES, MinejagoPotions.AZALEA_TEA);
         normalTea(writer, Items.FLOWERING_AZALEA_LEAVES, MinejagoPotions.FLOWERING_AZALEA_TEA);
-        normalTea(writer, MinejagoBlocks.FOCUS_LEAVES_SET.leaves().get().asItem(), MinejagoPotions.FOCUS_TEA);
+        normalTea(writer, MinejagoBlocks.FOCUS_LEAVES_SET.leaves().asItem(), MinejagoPotions.FOCUS_TEA);
+    }
+
+    private void normalTea(RecipeOutput writer, Item ingredient, DeferredHolder<Potion, Potion> result)
+    {
+        normalTea(writer, ingredient, result.asReferenceFrom(lookupProvider));
     }
 
     private void normalTea(RecipeOutput writer, Item ingredient, Holder<Potion> result)
@@ -180,13 +187,8 @@ public class MinejagoRecipes extends ExtendedRecipeProvider
                 result,
                 0.5f,
                 UniformInt.of(1200, 2400))
-                .group(BuiltInRegistries.POTION.getKey(result.value()).getPath())
+                .group(result.unwrapKey().orElseThrow().location().getPath())
                 .unlockedBy("has_ingredient", has(ingredient))
                 .save(writer);
-    }
-
-    private void normalTea(RecipeOutput writer, Item ingredient, RegistryObject<Potion> result)
-    {
-        normalTea(writer, ingredient, result.asHolder());
     }
 }

@@ -3,8 +3,8 @@ package dev.thomasglasser.minejago.world.effect;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.platform.Services;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
-import dev.thomasglasser.tommylib.api.registration.RegistrationProvider;
-import dev.thomasglasser.tommylib.api.registration.RegistryObject;
+import dev.thomasglasser.tommylib.api.registration.DeferredHolder;
+import dev.thomasglasser.tommylib.api.registration.DeferredRegister;
 import dev.thomasglasser.tommylib.api.world.effect.EmptyMobEffect;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.effect.MobEffect;
@@ -21,22 +21,22 @@ import java.util.function.Supplier;
 
 public class MinejagoMobEffects
 {
-    public static final RegistrationProvider<MobEffect> MOB_EFFECTS = RegistrationProvider.get(BuiltInRegistries.MOB_EFFECT, Minejago.MOD_ID);
+    public static final DeferredRegister<MobEffect> MOB_EFFECTS = DeferredRegister.create(BuiltInRegistries.MOB_EFFECT, Minejago.MOD_ID);
 
     // Teas - Color is darkened light part of planks
-    public static final RegistryObject<MobEffect> ACACIA_TEA = instantNoEffects("acacia_tea", 0x4d3c21);
-    public static final RegistryObject<MobEffect> OAK_TEA = instantNoEffects("oak_tea", 0x4d3b21);
-    public static final RegistryObject<MobEffect> CHERRY_TEA = instantNoEffects("cherry_tea", 0x4d3230);
-    public static final RegistryObject<MobEffect> SPRUCE_TEA = instantNoEffects("spruce_tea", 0x4d341c);
-    public static final RegistryObject<MobEffect> MANGROVE_TEA = instantNoEffects("mangrove_tea", 0x4d1719);
-    public static final RegistryObject<MobEffect> JUNGLE_TEA = instantNoEffects("jungle_tea", 0x4d3323);
-    public static final RegistryObject<MobEffect> DARK_OAK_TEA = instantNoEffects("dark_oak_tea", 0x33200f);
-    public static final RegistryObject<MobEffect> BIRCH_TEA = instantNoEffects("birch_tea", 0x4d432f);
-    public static final RegistryObject<MobEffect> AZALEA_TEA = instantNoEffects("azalea_tea", 0x3f4a2b);
-    public static final RegistryObject<MobEffect> FLOWERING_AZALEA_TEA = instantNoEffects("flowering_azalea_tea", 0x592f62);
+    public static final DeferredHolder<MobEffect, MobEffect> ACACIA_TEA = instantNoEffects("acacia_tea", 0x4d3c21);
+    public static final DeferredHolder<MobEffect, MobEffect> OAK_TEA = instantNoEffects("oak_tea", 0x4d3b21);
+    public static final DeferredHolder<MobEffect, MobEffect> CHERRY_TEA = instantNoEffects("cherry_tea", 0x4d3230);
+    public static final DeferredHolder<MobEffect, MobEffect> SPRUCE_TEA = instantNoEffects("spruce_tea", 0x4d341c);
+    public static final DeferredHolder<MobEffect, MobEffect> MANGROVE_TEA = instantNoEffects("mangrove_tea", 0x4d1719);
+    public static final DeferredHolder<MobEffect, MobEffect> JUNGLE_TEA = instantNoEffects("jungle_tea", 0x4d3323);
+    public static final DeferredHolder<MobEffect, MobEffect> DARK_OAK_TEA = instantNoEffects("dark_oak_tea", 0x33200f);
+    public static final DeferredHolder<MobEffect, MobEffect> BIRCH_TEA = instantNoEffects("birch_tea", 0x4d432f);
+    public static final DeferredHolder<MobEffect, MobEffect> AZALEA_TEA = instantNoEffects("azalea_tea", 0x3f4a2b);
+    public static final DeferredHolder<MobEffect, MobEffect> FLOWERING_AZALEA_TEA = instantNoEffects("flowering_azalea_tea", 0x592f62);
 
     // Beneficial
-    public static final RegistryObject<MobEffect> CURE = register("instant_cure", () -> new ExtendedMobEffect(MobEffectCategory.BENEFICIAL, 16777215)
+    public static final DeferredHolder<MobEffect, MobEffect> CURE = register("instant_cure", () -> new ExtendedMobEffect(MobEffectCategory.BENEFICIAL, 16777215)
     {
         @Override
         public boolean isInstantenous()
@@ -56,7 +56,7 @@ public class MinejagoMobEffects
             }
         }
     });
-    public static final RegistryObject<MobEffect> HYPERFOCUS = register("hyperfocus", () -> new ExtendedMobEffect(MobEffectCategory.BENEFICIAL, 0x207100)
+    public static final DeferredHolder<MobEffect, MobEffect> HYPERFOCUS = register("hyperfocus", () -> new ExtendedMobEffect(MobEffectCategory.BENEFICIAL, 0x207100)
     {
         @Override
         public boolean isInstantenous()
@@ -86,17 +86,17 @@ public class MinejagoMobEffects
         }
     });
 
-    private static RegistryObject<MobEffect> register(String name, Supplier<MobEffect> effect)
+    private static DeferredHolder<MobEffect, MobEffect> register(String name, Supplier<MobEffect> effect)
     {
         return MOB_EFFECTS.register(name, effect);
     }
 
-    private static RegistryObject<MobEffect> noEffects(String name, int color)
+    private static DeferredHolder<MobEffect, MobEffect> noEffects(String name, int color)
     {
         return register(name, () -> new EmptyMobEffect(color));
     }
 
-    private static RegistryObject<MobEffect> instantNoEffects(String name, int color)
+    private static DeferredHolder<MobEffect, MobEffect> instantNoEffects(String name, int color)
     {
         return register(name, () -> new EmptyMobEffect.Instantaneous(color));
     }

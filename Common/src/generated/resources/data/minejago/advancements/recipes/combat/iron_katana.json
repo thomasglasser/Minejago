@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#tommylib:iron_ingots"
+            "items": "#c:ingots/iron"
           }
         ]
       },

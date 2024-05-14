@@ -94,7 +94,7 @@ public class MinejagoAdventureAdvancements implements AdvancementProvider.Advanc
                 "get_teapot", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(MinejagoItemTags.TEAPOTS).build())
         ), "Something is brewing...", "Acquire a teapot");
 
-        AdvancementHolder brewTea = helper.make(getTeapot, PotionContents.createItemStack(MinejagoItems.FILLED_TEACUP.get(), MinejagoPotions.OAK_TEA.asHolder()), BREW_TEA, AdvancementType.TASK, true, true, false, null, Map.of(
+        AdvancementHolder brewTea = helper.make(getTeapot, PotionContents.createItemStack(MinejagoItems.FILLED_TEACUP.get(), MinejagoPotions.OAK_TEA.asReferenceFrom(provider)), BREW_TEA, AdvancementType.TASK, true, true, false, null, Map.of(
                 "brewed_tea", BrewedTeaTrigger.TriggerInstance.brewedTea()
         ), "Hot Leaf Juice", "Brew tea in a teapot");
 

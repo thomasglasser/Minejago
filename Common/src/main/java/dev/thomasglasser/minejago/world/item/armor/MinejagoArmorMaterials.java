@@ -1,8 +1,8 @@
 package dev.thomasglasser.minejago.world.item.armor;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.tommylib.api.registration.RegistrationProvider;
-import dev.thomasglasser.tommylib.api.registration.RegistryObject;
+import dev.thomasglasser.tommylib.api.registration.DeferredHolder;
+import dev.thomasglasser.tommylib.api.registration.DeferredRegister;
 import net.minecraft.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -18,9 +18,9 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class MinejagoArmorMaterials {
-    public static final RegistrationProvider<ArmorMaterial> ARMOR_MATERIALS = RegistrationProvider.get(Registries.ARMOR_MATERIAL, Minejago.MOD_ID);
+    public static final DeferredRegister<ArmorMaterial> ARMOR_MATERIALS = DeferredRegister.create(Registries.ARMOR_MATERIAL, Minejago.MOD_ID);
 
-    public static final RegistryObject<ArmorMaterial> SKELETAL = register("skeletal", Util.make(new EnumMap<>(ArmorItem.Type.class), defense -> {
+    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> SKELETAL = register("skeletal", Util.make(new EnumMap<>(ArmorItem.Type.class), defense -> {
         defense.put(ArmorItem.Type.BOOTS, 2);
         defense.put(ArmorItem.Type.LEGGINGS, 3);
         defense.put(ArmorItem.Type.CHESTPLATE, 4);
@@ -28,7 +28,7 @@ public class MinejagoArmorMaterials {
         defense.put(ArmorItem.Type.BODY, 6);
     }), 6, SoundEvents.ARMOR_EQUIP_GENERIC, 0.0F, 0.0F, () -> Ingredient.of(Items.BONE));
     
-    public static final RegistryObject<ArmorMaterial> BLACK_GI = register("black_gi", Util.make(new EnumMap<>(ArmorItem.Type.class), defense -> {
+    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> BLACK_GI = register("black_gi", Util.make(new EnumMap<>(ArmorItem.Type.class), defense -> {
         defense.put(ArmorItem.Type.BOOTS, 1);
         defense.put(ArmorItem.Type.LEGGINGS, 2);
         defense.put(ArmorItem.Type.CHESTPLATE, 3);
@@ -36,7 +36,7 @@ public class MinejagoArmorMaterials {
         defense.put(ArmorItem.Type.BODY, 4);
     }), 0, SoundEvents.ARMOR_EQUIP_LEATHER, 0.1F, 0.1F, () -> Ingredient.EMPTY);
     
-    public static final RegistryObject<ArmorMaterial> TRAINING_GI = register("training_gi", Util.make(new EnumMap<>(ArmorItem.Type.class), defense -> {
+    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> TRAINING_GI = register("training_gi", Util.make(new EnumMap<>(ArmorItem.Type.class), defense -> {
         defense.put(ArmorItem.Type.BOOTS, 2);
         defense.put(ArmorItem.Type.LEGGINGS, 4);
         defense.put(ArmorItem.Type.CHESTPLATE, 6);
@@ -44,7 +44,7 @@ public class MinejagoArmorMaterials {
         defense.put(ArmorItem.Type.BODY, 8);
     }), 0, SoundEvents.ARMOR_EQUIP_LEATHER, 0.2F, 0.2F, () -> Ingredient.EMPTY);
 
-    private static RegistryObject<ArmorMaterial> register(
+    private static DeferredHolder<ArmorMaterial, ArmorMaterial> register(
             String name,
             EnumMap<ArmorItem.Type, Integer> defense,
             int enchantmentValue,

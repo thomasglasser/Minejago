@@ -32,10 +32,10 @@ public final class MinejagoItemUtils
         /* TODO: Find fire */ BlockPos pos2 = serverLevel.findNearestMapStructure(StructureTags.RUINED_PORTAL, entity.getOnPos(), Integer.MAX_VALUE, false);
         BlockPos earth = serverLevel.findNearestMapStructure(MinejagoStructureTags.CAVE_OF_DESPAIR, entity.getOnPos(), Integer.MAX_VALUE, false);
         /* TODO: Find ice */ BlockPos pos4 = serverLevel.findNearestMapStructure(StructureTags.MINESHAFT, entity.getOnPos(), Integer.MAX_VALUE, false);
-        if (pos1 != null) MapItemSavedData.addTargetDecoration(itemstack, pos1, "lightning", MinejagoMapDecorations.NUNCHUCKS_OF_LIGHTNING.asHolder());
-        if (pos2 != null) MapItemSavedData.addTargetDecoration(itemstack, pos2, "fire", MinejagoMapDecorations.SWORD_OF_FIRE.asHolder());
-        if (earth != null) MapItemSavedData.addTargetDecoration(itemstack, earth, "earth", MinejagoMapDecorations.SCYTHE_OF_QUAKES.asHolder());
-        if (pos4 != null) MapItemSavedData.addTargetDecoration(itemstack, pos4, "ice", MinejagoMapDecorations.SHURIKENS_OF_ICE.asHolder());
+        if (pos1 != null) MapItemSavedData.addTargetDecoration(itemstack, pos1, "lightning", MinejagoMapDecorations.NUNCHUCKS_OF_LIGHTNING);
+        if (pos2 != null) MapItemSavedData.addTargetDecoration(itemstack, pos2, "fire", MinejagoMapDecorations.SWORD_OF_FIRE);
+        if (earth != null) MapItemSavedData.addTargetDecoration(itemstack, earth, "earth", MinejagoMapDecorations.SCYTHE_OF_QUAKES);
+        if (pos4 != null) MapItemSavedData.addTargetDecoration(itemstack, pos4, "ice", MinejagoMapDecorations.SHURIKENS_OF_ICE);
         itemstack.set(MinejagoDataComponents.GOLDEN_WEAPONS_MAP.get(), Unit.INSTANCE);
         return itemstack;
     }

@@ -7,7 +7,7 @@
       "item": "minecraft:terracotta"
     },
     "x": {
-      "tag": "tommylib:wooden_rods"
+      "tag": "c:rods/wooden"
     }
   },
   "pattern": [

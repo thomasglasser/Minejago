@@ -10,7 +10,7 @@ import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.tags.MinejagoPowerTags;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
-import dev.thomasglasser.tommylib.api.tags.TommyLibBlockTags;
+import dev.thomasglasser.tommylib.api.tags.ConventionalBlockTags;
 import dev.thomasglasser.tommylib.api.world.level.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -66,28 +66,28 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem
             {
                 for (int h = 0; h < 3; h++)
                 {
-                    LevelUtils.safeFallSelf(level, pos.above(h));
+                    LevelUtils.safeFall(level, pos.above(h));
                     for (int i = 1; i <= r; i++) {
-                        LevelUtils.safeFallSelf(level, pos.east(i).above(h));
-                        LevelUtils.safeFallSelf(level, pos.west(i).above(h));
-                        LevelUtils.safeFallSelf(level, pos.north(i).above(h));
-                        LevelUtils.safeFallSelf(level, pos.south(i).above(h));
+                        LevelUtils.safeFall(level, pos.east(i).above(h));
+                        LevelUtils.safeFall(level, pos.west(i).above(h));
+                        LevelUtils.safeFall(level, pos.north(i).above(h));
+                        LevelUtils.safeFall(level, pos.south(i).above(h));
                         for (int j = 1; j <= r; j++) {
-                            LevelUtils.safeFallSelf(level, pos.east(i).north(j).above(h));
-                            LevelUtils.safeFallSelf(level, pos.east(i).south(j).above(h));
-                            LevelUtils.safeFallSelf(level, pos.west(i).north(j).above(h));
-                            LevelUtils.safeFallSelf(level, pos.west(i).south(j).above(h));
+                            LevelUtils.safeFall(level, pos.east(i).north(j).above(h));
+                            LevelUtils.safeFall(level, pos.east(i).south(j).above(h));
+                            LevelUtils.safeFall(level, pos.west(i).north(j).above(h));
+                            LevelUtils.safeFall(level, pos.west(i).south(j).above(h));
                         }
                     }
                     for (int i = 0; i < r; i++) {
-                        LevelUtils.safeFallSelf(level, pos.east(r+1).south(i).above(h));
-                        LevelUtils.safeFallSelf(level, pos.east(r+1).north(i).above(h));
-                        LevelUtils.safeFallSelf(level, pos.west(r+1).south(i).above(h));
-                        LevelUtils.safeFallSelf(level, pos.west(r+1).north(i).above(h));
-                        LevelUtils.safeFallSelf(level, pos.north(r+1).east(i).above(h));
-                        LevelUtils.safeFallSelf(level, pos.north(r+1).west(i).above(h));
-                        LevelUtils.safeFallSelf(level, pos.south(r+1).east(i).above(h));
-                        LevelUtils.safeFallSelf(level, pos.south(r+1).west(i).above(h));
+                        LevelUtils.safeFall(level, pos.east(r+1).south(i).above(h));
+                        LevelUtils.safeFall(level, pos.east(r+1).north(i).above(h));
+                        LevelUtils.safeFall(level, pos.west(r+1).south(i).above(h));
+                        LevelUtils.safeFall(level, pos.west(r+1).north(i).above(h));
+                        LevelUtils.safeFall(level, pos.north(r+1).east(i).above(h));
+                        LevelUtils.safeFall(level, pos.north(r+1).west(i).above(h));
+                        LevelUtils.safeFall(level, pos.south(r+1).east(i).above(h));
+                        LevelUtils.safeFall(level, pos.south(r+1).west(i).above(h));
                     }
                 }
             }
@@ -309,13 +309,13 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem
 
     @Override
     public boolean mineBlock(ItemStack pStack, Level pLevel, BlockState pState, BlockPos pPos, LivingEntity pMiningEntity) {
-        return !pState.is(TommyLibBlockTags.UNBREAKABLE);
+        return !pState.is(ConventionalBlockTags.UNBREAKABLE_BLOCKS);
     }
 
     @Override
     public boolean isCorrectToolForDrops(ItemStack itemStack, BlockState blockState)
     {
-        return !blockState.is(TommyLibBlockTags.UNBREAKABLE);
+        return !blockState.is(ConventionalBlockTags.UNBREAKABLE_BLOCKS);
     }
 
     @Override
