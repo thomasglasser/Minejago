@@ -6,9 +6,13 @@ import dev.thomasglasser.minejago.world.level.block.entity.DragonHeadBlockEntity
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -24,6 +28,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -34,18 +39,16 @@ public class DragonHeadBlock extends HorizontalDirectionalBlock implements Entit
     private final Supplier<EntityType<?>> entityType;
 
     public static final BooleanProperty ACTIVATED = BooleanProperty.create("activated");
-    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public static MapCodec<DragonHeadBlock> CODEC;
 
     public DragonHeadBlock(Supplier<EntityType<?>> entity) {
-        super(BlockBehaviour.Properties.ofFullCopy(Blocks.BARRIER).noLootTable().lightLevel(state -> state.getValue(ACTIVATED) ? 0 : 10));
+        super(BlockBehaviour.Properties.ofFullCopy(Blocks.BARRIER).mapColor(MapColor.NONE).noLootTable().lightLevel(state -> state.getValue(ACTIVATED) ? 0 : 10));
         this.registerDefaultState(
                 this.stateDefinition
                         .any()
                         .setValue(FACING, Direction.NORTH)
                         .setValue(ACTIVATED, false)
-                        .setValue(WATERLOGGED, false)
         );
         this.entityType = entity;
     }
@@ -73,13 +76,12 @@ public class DragonHeadBlock extends HorizontalDirectionalBlock implements Entit
 
         return this.defaultBlockState()
                 .setValue(FACING, horizontalDirection.getClockWise())
-                .setValue(ACTIVATED, false)
-                .setValue(WATERLOGGED, context.getLevel().getFluidState(context.getClickedPos()).getType().isSame(net.minecraft.world.level.material.Fluids.WATER));
+                .setValue(ACTIVATED, false);
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING, ACTIVATED, WATERLOGGED);
+        builder.add(FACING, ACTIVATED);
     }
 
     @Nullable

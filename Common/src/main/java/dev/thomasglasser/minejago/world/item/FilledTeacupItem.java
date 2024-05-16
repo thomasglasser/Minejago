@@ -127,10 +127,4 @@ public class FilledTeacupItem extends PotionItem implements PotionCupHolder
     public boolean canBeFilled(ItemStack stack, Holder<Potion> potion, int cups) {
         return false;
     }
-
-    @Override
-    public UseAnim getUseAnimation(ItemStack stack)
-    {
-        return UseAnim.DRINK;
-    }
 }
