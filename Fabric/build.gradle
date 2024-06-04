@@ -8,7 +8,7 @@ dependencies {
 
     mappings loom.layered() {
         officialMojangMappings()
-        parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip")
+        parchment("org.parchmentmc.data:parchment-${parchment_minecraft_version}:${parchment_version}@zip")
     }
 
     implementation project(":common")
@@ -30,8 +30,7 @@ dependencies {
     modCompileOnly "maven.modrinth:jade:${jade_version}+fabric"
 //    modImplementation "maven.modrinth:jade:${jade_version}+fabric"
     modImplementation "net.tslat.tes:TES-fabric-${minecraft_version}:${tes_version}"
-    modCompileOnly "maven.modrinth:ryoamiclights:${ryoamiclights_version}-fabric"
-//    modImplementation "maven.modrinth:ryoamiclights:${ryoamiclights_version}-fabric"
+    modImplementation "maven.modrinth:ryoamiclights:${ryoamiclights_version}-fabric"
     modImplementation "net.tslat.effectslib:TslatEffectsLib-fabric-${minecraft_version}:${tslateffectslib_version}"
 
     // Fabric Only
@@ -43,7 +42,7 @@ dependencies {
 //    modRuntimeOnly "com.sk89q.worldedit:worldedit-fabric-mc${minecraft_version}:${worldedit_version}"
 //    modRuntimeOnly "com.terraformersmc:modmenu:${modmenu_version}"
     modRuntimeOnly "maven.modrinth:obsidianui:5hRIKAmh"
-//    modRuntimeOnly "maven.modrinth:obsidianui:${obsidianui_version}-fabric"
+    modRuntimeOnly "maven.modrinth:obsidianui:${obsidianui_version}-fabric"
 }
 
 loom {
