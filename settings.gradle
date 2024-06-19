@@ -42,6 +42,3 @@ pluginManagement {
         }
     }
 }
-
-rootProject.name = 'Minejago'
-include("common", "fabric", "neoforge")

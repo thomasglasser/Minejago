@@ -1,241 +1,312 @@
 plugins {
-    id 'fabric-loom' version "${loom_version}" apply(false)
+    id 'idea'
+    id 'net.neoforged.gradle.userdev' version '7.0.139'
+    id 'java-library'
 }
 
-subprojects {
-    apply plugin: 'java'
-    apply plugin: 'maven-publish'
-    apply plugin: 'signing'
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
 
-    base {
-        archivesName = "${mod_id}-${project.name}-${minecraft_version}"
+base {
+    archivesName = "${mod_id}-${project.name}-${minecraft_version}"
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+java.withSourcesJar()
+java.withJavadocJar()
+
+if (file('src/main/resources/META-INF/accesstransformer.cfg').exists()) {
+    minecraft.accessTransformers.file file('src/main/resources/META-INF/accesstransformer.cfg')
+}
+
+subsystems {
+    parchment {
+        minecraftVersion = parchment_minecraft_version
+        mappingsVersion = parchment_version
+    }
+}
+
+runs {
+    configureEach {
+        modSource project.sourceSets.main
+    }
+    client {
+        systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+    }
+    server {
+        systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        programArgument '--nogui'
     }
 
-    java.toolchain.languageVersion = JavaLanguageVersion.of(21)
-    java.withSourcesJar()
-    java.withJavadocJar()
+    gameTestServer {
+        systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+    }
 
-    jar {
-        from(rootProject.file("LICENSE")) {
-            rename { "${it}_${mod_name}" }
+    data {
+        programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+    }
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+jarJar.enable()
+
+dependencies {
+    implementation "net.neoforged:neoforge:${neoforge_version}"
+
+    // Common
+    implementation "mezz.jei:jei-${previous_minecraft_version}-neoforge:${jei_version}"
+    implementation "dev.kosmx.player-anim:player-animation-lib-forge:${playeranimator_version}"
+    implementation "net.tslat.smartbrainlib:SmartBrainLib-neoforge-1.20.5:${sbl_version}"
+//    implementation "net.tslat.smartbrainlib:SmartBrainLib-neoforge-${minecraft_version}:${sbl_version}"
+    implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
+    compileOnly "maven.modrinth:jade:${jade_version}+neoforge"
+//    implementation "maven.modrinth:jade:${jade_version}+neoforge"
+    implementation "net.tslat.tes:TES-neoforge-${minecraft_version}:${tes_version}"
+    implementation "net.tslat.effectslib:TslatEffectsLib-neoforge-${minecraft_version}:${tslateffectslib_version}"
+    implementation "maven.modrinth:midnightlib:${midnightlib_version}-neoforge"
+
+    jarJar implementation("dev.thomasglasser.tommylib:tommylib-neoforge-${minecraft_version}:${tommylib_version}")
+
+
+    // Forge Only
+    jarJar implementation("dev.thomasglasser.sherdsapi:sherdsapi-neoforge-${minecraft_version}:${sherdsapi_version}")
+    compileOnly "maven.modrinth:trimmed:${trimmed_version}+forge"
+//    jarJar implementation("maven.modrinth:trimmed:${trimmed_version}+forge")
+    implementation "maven.modrinth:ryoamiclights:${ryoamiclights_version}-neoforge"
+
+    // Runtime
+    // Waiting on neo update
+//    runtimeOnly "com.sk89q.worldedit:worldedit-neoforge-mc${minecraft_version}:${worldedit_version}"
+    runtimeOnly "maven.modrinth:obsidianui:${obsidianui_version}-neoforge"
+//    runtimeOnly "dev.architectury:architectury-neoforge:$architectury_version"
+}
+
+tasks.named('jarJar') {
+    archiveClassifier = ''
+}
+
+jar {
+    from(rootProject.file("LICENSE")) {
+        rename { "${it}_${mod_name}" }
+    }
+    manifest {
+        attributes([
+                'Specification-Title'     : mod_name,
+                'Specification-Vendor'    : mod_author,
+                'Specification-Version'   : project.jar.archiveVersion,
+                'Implementation-Title'    : project.name,
+                'Implementation-Version'  : project.jar.archiveVersion,
+                'Implementation-Vendor'   : mod_author,
+                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                'Timestamp'               : System.currentTimeMillis(),
+                'Built-On-Java'           : "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
+                'Built-On-Minecraft'      : minecraft_version
+        ])
+    }
+}
+
+sourcesJar {
+    from(rootProject.file("LICENSE")) {
+        rename { "${it}_${mod_name}" }
+    }
+}
+
+repositories {
+    maven {
+        name = 'Parchment'
+        url = 'https://maven.parchmentmc.org'
+        content {
+            includeGroupAndSubgroups 'org.parchmentmc.data'
         }
-        manifest {
-            attributes([
-                    'Specification-Title'     : mod_name,
-                    'Specification-Vendor'    : mod_author,
-                    'Specification-Version'   : project.jar.archiveVersion,
-                    'Implementation-Title'    : project.name,
-                    'Implementation-Version'  : project.jar.archiveVersion,
-                    'Implementation-Vendor'   : mod_author,
-                    'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                    'Timestamp'               : System.currentTimeMillis(),
-                    'Built-On-Java'           : "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
-                    'Built-On-Minecraft'      : minecraft_version
-            ])
+    }
+    maven {
+        name = "SmartBrainLib"
+        url = "https://dl.cloudsmith.io/public/tslat/sbl/maven/"
+        content {
+            includeGroupAndSubgroups 'net.tslat.smartbrainlib'
+        }
+    }
+    maven {
+        name = "TslatEntityStatus"
+        url = "https://dl.cloudsmith.io/public/tslat/tes/maven/"
+        content {
+            includeGroupAndSubgroups 'net.tslat.tes'
+        }
+    }
+    maven {
+        name = 'Modonomicon'
+        url "https://dl.cloudsmith.io/public/klikli-dev/mods/maven/"
+        content {
+            includeGroupAndSubgroups "com.klikli_dev"
+        }
+    }
+    maven {
+        name "playerAnimator"
+        url 'https://maven.kosmx.dev/'
+        content {
+            includeGroupAndSubgroups 'dev.kosmx.player-anim'
+        }
+    }
+    maven {
+        name = 'GeckoLib'
+        url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+        content {
+            includeGroupAndSubgroups 'software.bernie.geckolib'
+            includeGroupAndSubgroups 'com.eliotlash.mclib'
+        }
+    }
+    maven {
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
+        content {
+            includeGroupAndSubgroups 'maven.modrinth'
+        }
+    }
+    maven {
+        name = "CurseMaven"
+        url "https://cursemaven.com"
+        content {
+            includeGroupAndSubgroups 'curse.maven'
+        }
+    }
+    maven {
+        name = 'Fabric'
+        url = 'https://maven.fabricmc.net/'
+        content {
+            includeGroupAndSubgroups 'net.fabricmc.fabric-api'
+        }
+    }
+    maven {
+        name = "JEI"
+        url = "https://maven.blamejared.com/"
+        content {
+            includeGroupAndSubgroups 'mezz.jei'
+        }
+    }
+    maven {
+        name = "Mod Menu"
+        url 'https://maven.terraformersmc.com/releases'
+        content {
+            includeGroupAndSubgroups 'com.terraformersmc'
+        }
+    }
+    maven {
+        name = "TslatEffectsLib"
+        url = "https://dl.cloudsmith.io/public/tslat/tel/maven/"
+        content {
+            includeGroupAndSubgroups "net.tslat.effectslib"
+        }
+    }
+    maven {
+        name = "WorldEdit"
+        url = "https://maven.enginehub.org/repo/"
+        content {
+            includeGroupAndSubgroups "com.sk89q"
+            includeGroupAndSubgroups "org.enginehub"
         }
     }
 
-    sourcesJar {
-        from(rootProject.file("LICENSE")) {
-            rename { "${it}_${mod_name}" }
+    // Non-specific
+    maven {
+        name = 'NeoForged'
+        url = 'https://maven.neoforged.net/releases'
+    }
+    maven {
+        name = 'Mojang and Mixins'
+        url = 'https://repo.spongepowered.org/repository/maven-public/'
+    }
+    mavenLocal()
+}
+
+processResources {
+    var replaceProperties = [
+            mod_name: mod_name,
+            resource_pack_format_number: resource_pack_format_number,
+            data_pack_format_number: data_pack_format_number,
+            mod_id: mod_id,
+            major_fml_version: major_fml_version,
+            version: project.version,
+            description: project.description,
+            mod_author: mod_author,
+            contributors: contributors,
+            license: license,
+            icon: icon,
+            github_name: github_name,
+            neoforge_version: neoforge_version,
+            fabric_loader_version: fabric_loader_version,
+            fabric_version: fabric_version,
+            minecraft_version: minecraft_version,
+            next_minecraft_version: next_minecraft_version,
+            playeranimator_version: playeranimator_version,
+            ryoamiclights_version: ryoamiclights_version,
+            sbl_version: sbl_version,
+            geckolib_version: geckolib_version,
+            sherdsapi_version: sherdsapi_version,
+            trimmed_version: trimmed_version,
+            tes_version: tes_version,
+            jade_version: jade_version,
+            tommylib_version: tommylib_version
+    ]
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/neoforge.mods.toml','fabric.mod.json','**/pack.mcmeta','*.mixins.json']) {
+        expand replaceProperties + [project: project]
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = project.group
+            artifactId = base.archivesName.get()
+            version project.version
+            from components.java
+
+            pom {
+                name = project.mod_name
+                description = project.description
+                url = "https://github.com/thomasglasser/${github_name}/wiki"
+                licenses {
+                    license {
+                        name = project.license
+                        url = project.license_url
+                    }
+                }
+                developers {
+                    developer {
+                        id = project.mod_author
+                        name = project.mod_author
+                    }
+                }
+                issueManagement {
+                    system = 'GitHub'
+                    url = "https://github.com/thomasglasser/${github_name}/issues"
+                }
+                scm
+                        {
+                            connection = "scm:git:git://github.com/thomasglasser/${github_name}.git"
+                            developerConnection = "scm:git:ssh://github.com:thomasglasser/${github_name}.git"
+                            url = "https://github.com/thomasglasser/${github_name}/tree/${minecraft_version}"
+                        }
+            }
         }
     }
 
     repositories {
         maven {
-            name = 'Parchment'
-            url = 'https://maven.parchmentmc.org'
-            content {
-                includeGroupAndSubgroups 'org.parchmentmc.data'
+            credentials {
+                username = project.findProperty("MAVEN_USER") ?: System.getenv("MAVEN_USER")
+                password = project.findProperty("MAVEN_PASSWORD") ?: System.getenv("MAVEN_PASSWORD")
             }
-        }
-        maven {
-            name = "SmartBrainLib"
-            url = "https://dl.cloudsmith.io/public/tslat/sbl/maven/"
-            content {
-                includeGroupAndSubgroups 'net.tslat.smartbrainlib'
-            }
-        }
-        maven {
-            name = "TslatEntityStatus"
-            url = "https://dl.cloudsmith.io/public/tslat/tes/maven/"
-            content {
-                includeGroupAndSubgroups 'net.tslat.tes'
-            }
-        }
-        maven {
-            name = 'Modonomicon'
-            url "https://dl.cloudsmith.io/public/klikli-dev/mods/maven/"
-            content {
-                includeGroupAndSubgroups "com.klikli_dev"
-            }
-        }
-        maven {
-            name "playerAnimator"
-            url 'https://maven.kosmx.dev/'
-            content {
-                includeGroupAndSubgroups 'dev.kosmx.player-anim'
-            }
-        }
-        maven {
-            name = 'GeckoLib'
-            url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
-            content {
-                includeGroupAndSubgroups 'software.bernie.geckolib'
-                includeGroupAndSubgroups 'com.eliotlash.mclib'
-            }
-        }
-        maven {
-            name = "Modrinth"
-            url = "https://api.modrinth.com/maven"
-            content {
-                includeGroupAndSubgroups 'maven.modrinth'
-            }
-        }
-        maven {
-            name = "CurseMaven"
-            url "https://cursemaven.com"
-            content {
-                includeGroupAndSubgroups 'curse.maven'
-            }
-        }
-        maven {
-            name = 'Fabric'
-            url = 'https://maven.fabricmc.net/'
-            content {
-                includeGroupAndSubgroups 'net.fabricmc.fabric-api'
-            }
-        }
-        maven {
-            name = "JEI"
-            url = "https://maven.blamejared.com/"
-            content {
-                includeGroupAndSubgroups 'mezz.jei'
-            }
-        }
-        maven {
-            name = "Mod Menu"
-            url 'https://maven.terraformersmc.com/releases'
-            content {
-                includeGroupAndSubgroups 'com.terraformersmc'
-            }
-        }
-        maven {
-            name = "TslatEffectsLib"
-            url = "https://dl.cloudsmith.io/public/tslat/tel/maven/"
-            content {
-                includeGroupAndSubgroups "net.tslat.effectslib"
-            }
-        }
-        maven {
-            name = "WorldEdit"
-            url = "https://maven.enginehub.org/repo/"
-            content {
-                includeGroupAndSubgroups "com.sk89q"
-                includeGroupAndSubgroups "org.enginehub"
-            }
-        }
 
-        // Non-specific
-        maven {
-            name = 'NeoForged'
-            url = 'https://maven.neoforged.net/releases'
-        }
-        maven {
-            name = 'Mojang and Mixins'
-            url = 'https://repo.spongepowered.org/repository/maven-public/'
-        }
-        mavenLocal()
-    }
-
-    processResources {
-        var replaceProperties = [
-                mod_name: mod_name,
-                resource_pack_format_number: resource_pack_format_number,
-                data_pack_format_number: data_pack_format_number,
-                mod_id: mod_id,
-                major_fml_version: major_fml_version,
-                version: project.version,
-                description: project.description,
-                mod_author: mod_author,
-                contributors: contributors,
-                license: license,
-                icon: icon,
-                github_name: github_name,
-                neoforge_version: neoforge_version,
-                fabric_loader_version: fabric_loader_version,
-                fabric_version: fabric_version,
-                minecraft_version: minecraft_version,
-                next_minecraft_version: next_minecraft_version,
-                playeranimator_version: playeranimator_version,
-                ryoamiclights_version: ryoamiclights_version,
-                sbl_version: sbl_version,
-                geckolib_version: geckolib_version,
-                sherdsapi_version: sherdsapi_version,
-                trimmed_version: trimmed_version,
-                tes_version: tes_version,
-                jade_version: jade_version,
-                tommylib_version: tommylib_version
-        ]
-        inputs.properties replaceProperties
-
-        filesMatching(['META-INF/neoforge.mods.toml','fabric.mod.json','**/pack.mcmeta','*.mixins.json']) {
-            expand replaceProperties + [project: project]
+            url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
         }
     }
+}
 
-    publishing {
-        publications {
-            mavenJava(MavenPublication) {
-                groupId = project.group
-                artifactId = base.archivesName.get()
-                version project.version
-                from components.java
-
-                pom {
-                    name = project.mod_name
-                    description = project.description
-                    url = "https://github.com/thomasglasser/${github_name}/wiki"
-                    licenses {
-                        license {
-                            name = project.license
-                            url = project.license_url
-                        }
-                    }
-                    developers {
-                        developer {
-                            id = project.mod_author
-                            name = project.mod_author
-                        }
-                    }
-                    issueManagement {
-                        system = 'GitHub'
-                        url = "https://github.com/thomasglasser/${github_name}/issues"
-                    }
-                    scm
-                            {
-                                connection = "scm:git:git://github.com/thomasglasser/${github_name}.git"
-                                developerConnection = "scm:git:ssh://github.com:thomasglasser/${github_name}.git"
-                                url = "https://github.com/thomasglasser/${github_name}/tree/${minecraft_version}"
-                            }
-                }
-            }
-        }
-
-        repositories {
-            maven {
-                credentials {
-                    username = project.findProperty("MAVEN_USER") ?: System.getenv("MAVEN_USER")
-                    password = project.findProperty("MAVEN_PASSWORD") ?: System.getenv("MAVEN_PASSWORD")
-                }
-
-                url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-            }
-        }
-    }
-
-    signing {
-        useGpgCmd()
-        sign publishing.publications
-    }
+signing {
+    useGpgCmd()
+    sign publishing.publications
 }
