@@ -78,12 +78,12 @@ public class MinejagoBlocks
 
     private static WoodSet registerWoodSet(String name, MapColor logColor, MapColor strippedLogColor, Supplier<TagKey<Block>> logTag, Supplier<TagKey<Item>> logItemTag)
     {
-        return BlockUtils.registerWoodSet(BLOCKS, Minejago.modLoc(name), logColor, strippedLogColor, logTag, logItemTag, MinejagoItems::register);
+        return BlockUtils.registerWoodSet(BLOCKS, name, logColor, strippedLogColor, MinejagoItems::register);
     }
 
     private static LeavesSet registerLeavesSet(String name, TreeGrower treeGrower)
     {
-        return BlockUtils.registerLeavesSet(BLOCKS, Minejago.modLoc(name), treeGrower, MinejagoItems::register);
+        return BlockUtils.registerLeavesSet(BLOCKS, name, treeGrower, MinejagoItems::register);
     }
 
     private static SortedMap<DyeColor, DeferredBlock<TeapotBlock>> teapots()

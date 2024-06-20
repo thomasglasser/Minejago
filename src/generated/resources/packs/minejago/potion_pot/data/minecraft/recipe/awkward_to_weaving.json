@@ -1,0 +1,11 @@
+{
+  "type": "minejago:teapot_brewing",
+  "base": "minecraft:awkward",
+  "brewing_time": 800,
+  "experience": 0.35,
+  "group": "potion",
+  "ingredient": {
+    "item": "minecraft:cobweb"
+  },
+  "result": "minecraft:weaving"
+}

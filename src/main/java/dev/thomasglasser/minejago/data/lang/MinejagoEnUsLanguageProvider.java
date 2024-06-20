@@ -8,6 +8,8 @@ import dev.thomasglasser.minejago.client.gui.screens.inventory.ScrollEditScreen;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.ScrollViewScreen;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterCosmeticOptions;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
+import dev.thomasglasser.minejago.plugins.MinejagoWailaPlugin;
+import dev.thomasglasser.minejago.plugins.jei.TeapotBrewingRecipeCategory;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.server.commands.PowerCommand;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
@@ -157,9 +159,9 @@ public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider
         add(MinejagoEntityTypes.SKULL_TRUCK.get(), "Skull Truck", MinejagoItems.SKULL_TRUCK_SPAWN_EGG.get());
         add(MinejagoEntityTypes.SKULL_MOTORBIKE.get(), "Skull Motorbike", MinejagoItems.SKULL_MOTORBIKE_SPAWN_EGG.get());
 
-        add(MinejagoBannerPatterns.FOUR_WEAPONS_LEFT, "Four Weapons Left");
-        add(MinejagoBannerPatterns.FOUR_WEAPONS_RIGHT, "Four Weapons Right");
-        add(MinejagoBannerPatterns.EDGE_LINES, "Edge Lines");
+        addPattern(MinejagoBannerPatterns.FOUR_WEAPONS_LEFT, "Four Weapons Left");
+        addPattern(MinejagoBannerPatterns.FOUR_WEAPONS_RIGHT, "Four Weapons Right");
+        addPattern(MinejagoBannerPatterns.EDGE_LINES, "Edge Lines");
 
         add(Items.FILLED_MAP.getDescriptionId() + ".golden_weapons", "Golden Weapons Map");
 
@@ -235,21 +237,21 @@ public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider
         addCreativeTab(MinejagoCreativeModeTabs.GI, "Gi");
         addCreativeTab(MinejagoCreativeModeTabs.MINEJAGO, "Minejago");
 
-        add(MinejagoPaintingVariants.A_MORNING_BREW, "A Morning Brew", "waifu_png_pl");
-        add(MinejagoPaintingVariants.NEEDS_HAIR_GEL, "Needs Hair Gel", "waifu_png_pl");
-        add(MinejagoPaintingVariants.AMBUSHED, "Ambushed", "waifu_png_pl");
-        add(MinejagoPaintingVariants.BEFORE_THE_STORM, "Before the Storm", "waifu_png_pl");
-        add(MinejagoPaintingVariants.CREATION, "Creation", "waifu_png_pl");
-        add(MinejagoPaintingVariants.EARTH, "Earth", "waifu_png_pl");
-        add(MinejagoPaintingVariants.FIRE, "Fire", "waifu_png_pl");
-        add(MinejagoPaintingVariants.FRUIT_COLORED_NINJA, "Fruit Colored Ninja", "waifu_png_pl");
-        add(MinejagoPaintingVariants.ICE, "Ice", "waifu_png_pl");
-        add(MinejagoPaintingVariants.LIGHTNING, "Lightning", "waifu_png_pl");
-        add(MinejagoPaintingVariants.NOT_FOR_FURNITURE, "Not for Furniture", "waifu_png_pl");
-        add(MinejagoPaintingVariants.FOUR_WEAPONS, "Four Weapons", "waifu_png_pl");
-        add(MinejagoPaintingVariants.THE_FOURTH_MOUNTAIN, "The Fourth Mountain", "waifu_png_pl");
-        add(MinejagoPaintingVariants.IT_TAKES_A_VILLAGE, "It Takes A Village", "waifu_png_pl");
-        add(MinejagoPaintingVariants.IT_TAKES_A_VILLAGE_WRECKED, "It Takes A Village (Wrecked)", "waifu_png_pl");
+        addPaintingVariant(MinejagoPaintingVariants.A_MORNING_BREW, "A Morning Brew", "waifu_png_pl");
+        addPaintingVariant(MinejagoPaintingVariants.NEEDS_HAIR_GEL, "Needs Hair Gel", "waifu_png_pl");
+        addPaintingVariant(MinejagoPaintingVariants.AMBUSHED, "Ambushed", "waifu_png_pl");
+        addPaintingVariant(MinejagoPaintingVariants.BEFORE_THE_STORM, "Before the Storm", "waifu_png_pl");
+        addPaintingVariant(MinejagoPaintingVariants.CREATION, "Creation", "waifu_png_pl");
+        addPaintingVariant(MinejagoPaintingVariants.EARTH, "Earth", "waifu_png_pl");
+        addPaintingVariant(MinejagoPaintingVariants.FIRE, "Fire", "waifu_png_pl");
+        addPaintingVariant(MinejagoPaintingVariants.FRUIT_COLORED_NINJA, "Fruit Colored Ninja", "waifu_png_pl");
+        addPaintingVariant(MinejagoPaintingVariants.ICE, "Ice", "waifu_png_pl");
+        addPaintingVariant(MinejagoPaintingVariants.LIGHTNING, "Lightning", "waifu_png_pl");
+        addPaintingVariant(MinejagoPaintingVariants.NOT_FOR_FURNITURE, "Not for Furniture", "waifu_png_pl");
+        addPaintingVariant(MinejagoPaintingVariants.FOUR_WEAPONS, "Four Weapons", "waifu_png_pl");
+        addPaintingVariant(MinejagoPaintingVariants.THE_FOURTH_MOUNTAIN, "The Fourth Mountain", "waifu_png_pl");
+        addPaintingVariant(MinejagoPaintingVariants.IT_TAKES_A_VILLAGE, "It Takes A Village", "waifu_png_pl");
+        addPaintingVariant(MinejagoPaintingVariants.IT_TAKES_A_VILLAGE_WRECKED, "It Takes A Village (Wrecked)", "waifu_png_pl");
 
         addSherd(MinejagoItems.POTTERY_SHERD_ICE_CUBE.get(), "Ice Cube");
         addSherd(MinejagoItems.POTTERY_SHERD_THUNDER.get(), "Thunder");
@@ -281,10 +283,10 @@ public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider
         add("entity.minejago.dragon.waila.bond", "Bond: %s");
         add("entity.minejago.painting.waila.map", "Has Golden Weapons Map");
 
-//        addPluginConfig(MinejagoWailaPlugin.LIVING_ENTITY, "Living Entity");
-//        addPluginConfig(MinejagoWailaPlugin.DRAGON, "Dragon");
-//        addPluginConfig(MinejagoWailaPlugin.PAINTING, "Painting");
-//        addPluginConfig(MinejagoWailaPlugin.TEAPOT_BLOCK, "Teapot");
+        addPluginConfig(MinejagoWailaPlugin.LIVING_ENTITY, "Living Entity");
+        addPluginConfig(MinejagoWailaPlugin.DRAGON, "Dragon");
+        addPluginConfig(MinejagoWailaPlugin.PAINTING, "Painting");
+        addPluginConfig(MinejagoWailaPlugin.TEAPOT_BLOCK, "Teapot");
 
         add(ScrollEditScreen.EDIT_TITLE_LABEL, "Enter Scroll Title:");
         add(ScrollEditScreen.FINALIZE_WARNING_LABEL, "Note! When you sign the scroll, it will no longer be editable.");
@@ -293,7 +295,7 @@ public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider
 
         add(SkulkinRaid.RAID_NAME_COMPONENT, "Skulkin Raid");
 
-//        add(TeapotBrewingRecipeCategory.TITLE, "Teapot Brewing");
+        add(TeapotBrewingRecipeCategory.TITLE, "Teapot Brewing");
 
 	    addConfigs();
     }

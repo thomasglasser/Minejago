@@ -91,7 +91,7 @@ public class SimpleBrewingRecipeBuilder implements RecipeBuilder
 
     static ResourceLocation getDefaultRecipeId(Holder<Potion> from, Holder<Potion> to) {
         ResourceLocation toLoc = BuiltInRegistries.POTION.getKey(to.value());
-        return new ResourceLocation(toLoc.getNamespace(), BuiltInRegistries.POTION.getKey(from.value()).getPath() + "_to_" + toLoc.getPath());
+        return ResourceLocation.fromNamespaceAndPath(toLoc.getNamespace(), BuiltInRegistries.POTION.getKey(from.value()).getPath() + "_to_" + toLoc.getPath());
     }
 
     /**

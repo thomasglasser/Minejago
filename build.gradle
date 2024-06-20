@@ -1,269 +1,235 @@
 plugins {
-    id 'idea'
-    id 'net.neoforged.gradle.userdev' version '7.0.139'
     id 'java-library'
+    id 'maven-publish'
+    id 'signing'
+    id 'net.neoforged.moddev' version "${mdg_version}"
 }
 
-apply plugin: 'java'
-apply plugin: 'maven-publish'
-apply plugin: 'signing'
+tasks.named('wrapper', Wrapper).configure {
+    distributionType = Wrapper.DistributionType.BIN
+}
 
 base {
-    archivesName = "${mod_id}-${project.name}-${minecraft_version}"
+    archivesName = "${mod_id}-${minecraft_version}"
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
-java.withSourcesJar()
-java.withJavadocJar()
-
-if (file('src/main/resources/META-INF/accesstransformer.cfg').exists()) {
-    minecraft.accessTransformers.file file('src/main/resources/META-INF/accesstransformer.cfg')
-}
-
-subsystems {
-    parchment {
-        minecraftVersion = parchment_minecraft_version
-        mappingsVersion = parchment_version
-    }
-}
-
-runs {
-    configureEach {
-        modSource project.sourceSets.main
-    }
-    client {
-        systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-    }
-    server {
-        systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-        programArgument '--nogui'
-    }
-
-    gameTestServer {
-        systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-    }
-
-    data {
-        programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
-    }
-}
-
-sourceSets.main.resources { srcDir 'src/generated/resources' }
-
-jarJar.enable()
-
-dependencies {
-    implementation "net.neoforged:neoforge:${neoforge_version}"
-
-    // Common
-    implementation "mezz.jei:jei-${previous_minecraft_version}-neoforge:${jei_version}"
-    implementation "dev.kosmx.player-anim:player-animation-lib-forge:${playeranimator_version}"
-    implementation "net.tslat.smartbrainlib:SmartBrainLib-neoforge-1.20.5:${sbl_version}"
-//    implementation "net.tslat.smartbrainlib:SmartBrainLib-neoforge-${minecraft_version}:${sbl_version}"
-    implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
-    compileOnly "maven.modrinth:jade:${jade_version}+neoforge"
-//    implementation "maven.modrinth:jade:${jade_version}+neoforge"
-    implementation "net.tslat.tes:TES-neoforge-${minecraft_version}:${tes_version}"
-    implementation "net.tslat.effectslib:TslatEffectsLib-neoforge-${minecraft_version}:${tslateffectslib_version}"
-    implementation "maven.modrinth:midnightlib:${midnightlib_version}-neoforge"
-
-    jarJar implementation("dev.thomasglasser.tommylib:tommylib-neoforge-${minecraft_version}:${tommylib_version}")
-
-
-    // Forge Only
-    jarJar implementation("dev.thomasglasser.sherdsapi:sherdsapi-neoforge-${minecraft_version}:${sherdsapi_version}")
-    compileOnly "maven.modrinth:trimmed:${trimmed_version}+forge"
-//    jarJar implementation("maven.modrinth:trimmed:${trimmed_version}+forge")
-    implementation "maven.modrinth:ryoamiclights:${ryoamiclights_version}-neoforge"
-
-    // Runtime
-    // Waiting on neo update
-//    runtimeOnly "com.sk89q.worldedit:worldedit-neoforge-mc${minecraft_version}:${worldedit_version}"
-    runtimeOnly "maven.modrinth:obsidianui:${obsidianui_version}-neoforge"
-//    runtimeOnly "dev.architectury:architectury-neoforge:$architectury_version"
-}
-
-tasks.named('jarJar') {
-    archiveClassifier = ''
-}
-
-jar {
-    from(rootProject.file("LICENSE")) {
-        rename { "${it}_${mod_name}" }
-    }
-    manifest {
-        attributes([
-                'Specification-Title'     : mod_name,
-                'Specification-Vendor'    : mod_author,
-                'Specification-Version'   : project.jar.archiveVersion,
-                'Implementation-Title'    : project.name,
-                'Implementation-Version'  : project.jar.archiveVersion,
-                'Implementation-Vendor'   : mod_author,
-                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                'Timestamp'               : System.currentTimeMillis(),
-                'Built-On-Java'           : "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
-                'Built-On-Minecraft'      : minecraft_version
-        ])
-    }
-}
-
-sourcesJar {
-    from(rootProject.file("LICENSE")) {
-        rename { "${it}_${mod_name}" }
-    }
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(java_version)
+    withSourcesJar()
+    withJavadocJar()
 }
 
 repositories {
-    maven {
-        name = 'Parchment'
-        url = 'https://maven.parchmentmc.org'
-        content {
-            includeGroupAndSubgroups 'org.parchmentmc.data'
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = 'Modrinth'
+                url = 'https://api.modrinth.com/maven'
+            }
         }
+        filter { includeGroupAndSubgroups "maven.modrinth" }
     }
-    maven {
-        name = "SmartBrainLib"
-        url = "https://dl.cloudsmith.io/public/tslat/sbl/maven/"
-        content {
-            includeGroupAndSubgroups 'net.tslat.smartbrainlib'
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = 'JEI'
+                url = 'https://maven.blamejared.com/'
+            }
         }
+        filter { includeGroupAndSubgroups "mezz.jei" }
     }
-    maven {
-        name = "TslatEntityStatus"
-        url = "https://dl.cloudsmith.io/public/tslat/tes/maven/"
-        content {
-            includeGroupAndSubgroups 'net.tslat.tes'
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = 'playerAnimator'
+                url = 'https://maven.kosmx.dev/'
+            }
         }
+        filter { includeGroupAndSubgroups "dev.kosmx.player-anim" }
     }
-    maven {
-        name = 'Modonomicon'
-        url "https://dl.cloudsmith.io/public/klikli-dev/mods/maven/"
-        content {
-            includeGroupAndSubgroups "com.klikli_dev"
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = 'SmartBrainLib'
+                url = "https://dl.cloudsmith.io/public/tslat/sbl/maven/"
+            }
         }
+        filter { includeGroupAndSubgroups "net.tslat.smartbrainlib" }
     }
-    maven {
-        name "playerAnimator"
-        url 'https://maven.kosmx.dev/'
-        content {
-            includeGroupAndSubgroups 'dev.kosmx.player-anim'
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = 'GeckoLib'
+                url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+            }
         }
-    }
-    maven {
-        name = 'GeckoLib'
-        url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
-        content {
+        filter {
             includeGroupAndSubgroups 'software.bernie.geckolib'
             includeGroupAndSubgroups 'com.eliotlash.mclib'
         }
     }
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = 'TslatEntityStatus'
+                url = "https://dl.cloudsmith.io/public/tslat/tes/maven/"
+            }
+        }
+        filter { includeGroupAndSubgroups "net.tslat.tes" }
+    }
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = 'TslatEffectsLib'
+                url = "https://dl.cloudsmith.io/public/tslat/tel/maven/"
+            }
+        }
+        filter { includeGroupAndSubgroups "net.tslat.effectslib" }
+    }
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = 'Modonomicon'
+                url = "https://dl.cloudsmith.io/public/klikli-dev/mods/maven/"
+            }
+        }
+        filter { includeGroupAndSubgroups "com.klikli_dev" }
+    }
     maven {
-        name = "Modrinth"
-        url = "https://api.modrinth.com/maven"
+        name = 'TommyLib'
+        url = 'https://dl.cloudsmith.io/public/thomasglasser/tommylib/maven/'
         content {
-            includeGroupAndSubgroups 'maven.modrinth'
+            includeGroupAndSubgroups("dev.thomasglasser.tommylib")
         }
     }
     maven {
-        name = "CurseMaven"
-        url "https://cursemaven.com"
+        name = 'Sherds API'
+        url = 'https://dl.cloudsmith.io/public/thomasglasser/sherdsapi/maven/'
         content {
-            includeGroupAndSubgroups 'curse.maven'
+            includeGroupAndSubgroups("dev.thomasglasser.sherdsapi")
         }
     }
     maven {
-        name = 'Fabric'
-        url = 'https://maven.fabricmc.net/'
-        content {
-            includeGroupAndSubgroups 'net.fabricmc.fabric-api'
-        }
-    }
-    maven {
-        name = "JEI"
-        url = "https://maven.blamejared.com/"
-        content {
-            includeGroupAndSubgroups 'mezz.jei'
-        }
-    }
-    maven {
-        name = "Mod Menu"
-        url 'https://maven.terraformersmc.com/releases'
-        content {
-            includeGroupAndSubgroups 'com.terraformersmc'
-        }
-    }
-    maven {
-        name = "TslatEffectsLib"
-        url = "https://dl.cloudsmith.io/public/tslat/tel/maven/"
-        content {
-            includeGroupAndSubgroups "net.tslat.effectslib"
-        }
-    }
-    maven {
-        name = "WorldEdit"
-        url = "https://maven.enginehub.org/repo/"
-        content {
-            includeGroupAndSubgroups "com.sk89q"
-            includeGroupAndSubgroups "org.enginehub"
-        }
-    }
-
-    // Non-specific
-    maven {
-        name = 'NeoForged'
+        name = 'NeoForge'
         url = 'https://maven.neoforged.net/releases'
     }
     maven {
-        name = 'Mojang and Mixins'
-        url = 'https://repo.spongepowered.org/repository/maven-public/'
+        name = 'Mojang Meta'
+        url = 'https://maven.neoforged.net/mojang-meta'
     }
     mavenLocal()
+    mavenCentral()
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+neoForge {
+    version = "${neoforge_version}"
+
+    parchment {
+        minecraftVersion = parchment_minecraft_version
+        mappingsVersion = parchment_version
+    }
+
+    def at = 'src/main/resources/META-INF/accesstransformer.cfg'
+    if (file(at).exists()) {
+        accessTransformers = [at]
+    }
+
+    runs {
+        client {
+            client()
+            ideName = "Client"
+            gameDirectory = project.layout.projectDirectory.dir('runs/client')
+        }
+        client_alt {
+            client()
+            ideName = "Client 2"
+            gameDirectory = project.layout.projectDirectory.dir('runs/client_alt')
+            programArguments = ["--username", "DevAlt"]
+        }
+        server {
+            server()
+            ideName = "Server"
+            gameDirectory = project.layout.projectDirectory.dir('runs/server')
+        }
+        data {
+            data()
+            ideName = "Data Generation"
+            gameDirectory = project.layout.projectDirectory.dir('runs/data')
+            programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+        }
+    }
+
+    mods {
+        minejago {
+            sourceSet sourceSets.main
+        }
+    }
+}
+
+configurations {
+    runtimeClasspath.extendsFrom localRuntime
+}
+
+dependencies {
+    jarJar implementation("dev.thomasglasser.tommylib:tommylib-neoforge-${minecraft_version}:${tommylib_version}")
+
+    jarJar implementation("maven.modrinth:trimmed:${trimmed_version}+neoforge")
+
+    implementation "dev.thomasglasser.sherdsapi:sherdsapi-neoforge-${minecraft_version}:${sherdsapi_version}"
+    implementation "dev.kosmx.player-anim:player-animation-lib-forge:${playeranimator_version}"
+    implementation "net.tslat.smartbrainlib:SmartBrainLib-neoforge-${minecraft_version}:${sbl_version}"
+    implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
+    implementation "net.tslat.tes:TES-neoforge-${minecraft_version}:${tes_version}"
+    implementation "net.tslat.effectslib:TslatEffectsLib-neoforge-${minecraft_version}:${tslateffectslib_version}"
+    implementation "maven.modrinth:midnightlib:${midnightlib_version}-neoforge"
+//    implementation "maven.modrinth:ryoamiclights:${ryoamiclights_version}-neoforge"
+    implementation "com.klikli_dev:modonomicon-${minecraft_version}-neoforge:${modonomicon_version}"
+    implementation "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
+    implementation "maven.modrinth:jade:${jade_version}+neoforge"
+
+    // Runtime
+    // For ryoamiclights
+    runtimeOnly "maven.modrinth:obsidianui:${obsidianui_version}-neoforge"
 }
 
 processResources {
-    var replaceProperties = [
-            mod_name: mod_name,
-            resource_pack_format_number: resource_pack_format_number,
-            data_pack_format_number: data_pack_format_number,
-            mod_id: mod_id,
-            major_fml_version: major_fml_version,
-            version: project.version,
-            description: project.description,
-            mod_author: mod_author,
-            contributors: contributors,
-            license: license,
-            icon: icon,
-            github_name: github_name,
-            neoforge_version: neoforge_version,
-            fabric_loader_version: fabric_loader_version,
-            fabric_version: fabric_version,
-            minecraft_version: minecraft_version,
-            next_minecraft_version: next_minecraft_version,
-            playeranimator_version: playeranimator_version,
-            ryoamiclights_version: ryoamiclights_version,
-            sbl_version: sbl_version,
-            geckolib_version: geckolib_version,
-            sherdsapi_version: sherdsapi_version,
-            trimmed_version: trimmed_version,
-            tes_version: tes_version,
-            jade_version: jade_version,
-            tommylib_version: tommylib_version
+    def expandProps = [
+            "version": version,
+            "group": project.group,
+            "minecraft_version": minecraft_version,
+            "next_minecraft_version": next_minecraft_version,
+            "mod_name": mod_name,
+            "mod_author": mod_author,
+            "mod_id": mod_id,
+            "license": license,
+            "description": project.description,
+            "neoforge_version": neoforge_version,
+            "major_fml_version": major_fml_version,
+            "contributors": contributors,
+            "java_version": java_version,
+            "icon": icon,
+            "github_name": github_name,
+            "tommylib_version": tommylib_version,
+            "resource_pack_version": resource_pack_version,
+            "data_pack_version": data_pack_version,
     ]
-    inputs.properties replaceProperties
 
-    filesMatching(['META-INF/neoforge.mods.toml','fabric.mod.json','**/pack.mcmeta','*.mixins.json']) {
-        expand replaceProperties + [project: project]
+    filesMatching(['META-INF/neoforge.mods.toml', '*.mixins.json', '**/pack.mcmeta']) {
+        expand expandProps
     }
+    inputs.properties(expandProps)
 }
 
 publishing {
     publications {
-        mavenJava(MavenPublication) {
-            groupId = project.group
-            artifactId = base.archivesName.get()
-            version project.version
+        register('mavenJava', MavenPublication) {
+            artifactId base.archivesName.get()
             from components.java
+        }
 
+        maven(MavenPublication) {
             pom {
                 name = project.mod_name
                 description = project.description
@@ -284,24 +250,23 @@ publishing {
                     system = 'GitHub'
                     url = "https://github.com/thomasglasser/${github_name}/issues"
                 }
-                scm
-                        {
-                            connection = "scm:git:git://github.com/thomasglasser/${github_name}.git"
-                            developerConnection = "scm:git:ssh://github.com:thomasglasser/${github_name}.git"
-                            url = "https://github.com/thomasglasser/${github_name}/tree/${minecraft_version}"
-                        }
+                scm {
+                    connection = "scm:git:git://github.com/thomasglasser/${github_name}.git"
+                    developerConnection = "scm:git:ssh://github.com:thomasglasser/${github_name}.git"
+                    url = "https://github.com/thomasglasser/${github_name}/tree/${minecraft_version}"
+                }
             }
         }
     }
 
     repositories {
         maven {
+            name = "Cloudsmith"
+            url = "https://maven.cloudsmith.io/thomasglasser/${mod_id}/"
             credentials {
-                username = project.findProperty("MAVEN_USER") ?: System.getenv("MAVEN_USER")
-                password = project.findProperty("MAVEN_PASSWORD") ?: System.getenv("MAVEN_PASSWORD")
+                username = project.findProperty("CLOUDSMITH_USERNAME") ?: System.getenv("CLOUDSMITH_USERNAME")
+                password = project.findProperty("CLOUDSMITH_API_KEY") ?: System.getenv("CLOUDSMITH_API_KEY")
             }
-
-            url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
         }
     }
 }
@@ -309,4 +274,38 @@ publishing {
 signing {
     useGpgCmd()
     sign publishing.publications
+}
+
+// Declare capabilities on the outgoing configurations.
+// Read more about capabilities here: https://docs.gradle.org/current/userguide/component_capabilities.html#sec:declaring-additional-capabilities-for-a-local-component
+['apiElements', 'runtimeElements', 'sourcesElements', 'javadocElements'].each { variant ->
+    configurations."$variant".outgoing {
+        capability("$group:${base.archivesName.get()}:$version")
+        capability("$group:$mod_id-${project.name}-${minecraft_version}:$version")
+        capability("$group:$mod_id:$version")
+    }
+    publishing.publications.configureEach {
+        suppressPomMetadataWarningsFor(variant)
+    }
+}
+
+jar {
+    manifest {
+        attributes([
+                'Specification-Title'   : mod_name,
+                'Specification-Vendor'  : mod_author,
+                'Specification-Version' : project.jar.archiveVersion,
+                'Implementation-Title'  : project.name,
+                'Implementation-Version': project.jar.archiveVersion,
+                'Implementation-Vendor' : mod_author,
+                'Built-On-Minecraft'    : minecraft_version
+        ])
+    }
+}
+
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
 }

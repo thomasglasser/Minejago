@@ -12,9 +12,11 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 public record ServerboundStartSpinjitzuPayload() implements ExtendedPacketPayload
 {
@@ -32,12 +34,12 @@ public record ServerboundStartSpinjitzuPayload() implements ExtendedPacketPayloa
             AttributeInstance speed = serverPlayer.getAttribute(Attributes.MOVEMENT_SPEED);
             if (speed != null && !speed.hasModifier(SpinjitzuData.SPEED_MODIFIER))
             {
-                speed.addTransientModifier(SpinjitzuData.SPEED_MODIFIER);
+                speed.addTransientModifier(new AttributeModifier(SpinjitzuData.SPEED_MODIFIER, 1.5, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
             }
             AttributeInstance kb = serverPlayer.getAttribute(Attributes.ATTACK_KNOCKBACK);
             if (kb != null && !kb.hasModifier(SpinjitzuData.KNOCKBACK_MODIFIER))
             {
-                kb.addTransientModifier(SpinjitzuData.KNOCKBACK_MODIFIER);
+                kb.addTransientModifier(new AttributeModifier(SpinjitzuData.KNOCKBACK_MODIFIER, 1.5, AttributeModifier.Operation.ADD_VALUE));
             }
             serverPlayer.level().playSound(null, serverPlayer.blockPosition(), MinejagoSoundEvents.SPINJITZU_START.get(), SoundSource.PLAYERS);
         }

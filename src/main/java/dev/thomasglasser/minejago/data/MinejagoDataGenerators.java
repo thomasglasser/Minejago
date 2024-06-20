@@ -13,7 +13,7 @@ import dev.thomasglasser.minejago.data.particles.MinejagoParticleDescriptionProv
 import dev.thomasglasser.minejago.data.powers.MinejagoPowerDatagenSuite;
 import dev.thomasglasser.minejago.data.recipes.MinejagoRecipes;
 import dev.thomasglasser.minejago.data.recipes.expansions.MinejagoPotionPotPackRecipes;
-import dev.thomasglasser.minejago.data.sherds.MinejagoNeoForgeSherdDatagenSuite;
+import dev.thomasglasser.minejago.data.sherds.MinejagoSherdDatagenSuite;
 import dev.thomasglasser.minejago.data.sounds.MinejagoSoundDefinitions;
 import dev.thomasglasser.minejago.data.tags.MinejagoBannerPatternTagsProvider;
 import dev.thomasglasser.minejago.data.tags.MinejagoBiomeTagsProvider;
@@ -25,6 +25,7 @@ import dev.thomasglasser.minejago.data.tags.MinejagoItemTagsProvider;
 import dev.thomasglasser.minejago.data.tags.MinejagoPaintingVariantTagsProvider;
 import dev.thomasglasser.minejago.data.tags.MinejagoStructureTagsProvider;
 import dev.thomasglasser.minejago.data.tags.PowerTagsProvider;
+import dev.thomasglasser.minejago.data.trimmed.MinejagoTrimDatagenSuite;
 import dev.thomasglasser.minejago.data.worldgen.MinejagoProcessorLists;
 import dev.thomasglasser.minejago.data.worldgen.biome.MinejagoBiomeModifiers;
 import dev.thomasglasser.minejago.data.worldgen.features.MinejagoTreeFeatures;
@@ -32,6 +33,7 @@ import dev.thomasglasser.minejago.data.worldgen.features.MinejagoVegetationFeatu
 import dev.thomasglasser.minejago.data.worldgen.placement.MinejagoTreePlacements;
 import dev.thomasglasser.minejago.data.worldgen.placement.MinejagoVegetationPlacements;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
+import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPatterns;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.MinejagoStructures;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.placement.MinejagoStructureSets;
@@ -68,7 +70,8 @@ public class MinejagoDataGenerators
                 MinejagoTreePlacements.bootstrap(pContext);
                 MinejagoVegetationPlacements.bootstrap(pContext);
             }))
-            .add(Registries.BANNER_PATTERN, MinejagoBannerPatterns::bootstrap);
+            .add(Registries.BANNER_PATTERN, MinejagoBannerPatterns::bootstrap)
+            .add(Registries.PAINTING_VARIANT, MinejagoPaintingVariants::boostrap);
 
     public static void gatherData(GatherDataEvent event)
     {
@@ -94,8 +97,7 @@ public class MinejagoDataGenerators
         LanguageProvider enUs = new MinejagoEnUsLanguageProvider(packOutput);
 
         // Trims
-        // TODO: Update when neo'd
-//        new MinejagoTrimDatagenSuite(event, enUs);
+        new MinejagoTrimDatagenSuite(event, enUs);
 
         // Powers
         MinejagoPowerDatagenSuite powerDatagenSuite = new MinejagoPowerDatagenSuite(event, enUs);
@@ -103,7 +105,7 @@ public class MinejagoDataGenerators
         generator.addProvider(includeServer, new PowerTagsProvider(packOutput, Minejago.MOD_ID,  powerLookupProvider, existingFileHelper));
 
         // Sherds
-        new MinejagoNeoForgeSherdDatagenSuite(event);
+        new MinejagoSherdDatagenSuite(event);
 
         //Server
         DatapackBuiltinEntriesProvider datapackEntries = new DatapackBuiltinEntriesProvider(packOutput, lookupProvider, BUILDER, Set.of(Minejago.MOD_ID));

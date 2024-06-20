@@ -10,7 +10,7 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 
 import java.util.function.BiConsumer;
 
-public class MinejagoChestLoot implements LootTableSubProvider
+public record MinejagoChestLoot(HolderLookup.Provider provider) implements LootTableSubProvider
 {
     public static final LootTable.Builder FOUR_WEAPONS = LootTable.lootTable().withPool(
             LootPool.lootPool()
@@ -19,7 +19,7 @@ public class MinejagoChestLoot implements LootTableSubProvider
     );
 
     @Override
-    public void generate(HolderLookup.Provider p_331050_, BiConsumer<ResourceKey<LootTable>, LootTable.Builder> p_249643_)
+    public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> p_249643_)
     {
         p_249643_.accept(MinejagoChestLootKeys.FOUR_WEAPONS, FOUR_WEAPONS);
     }

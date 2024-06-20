@@ -10,6 +10,7 @@ import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
 
 public class EarthBlast extends AbstractHurtingProjectile
 {
@@ -20,8 +21,8 @@ public class EarthBlast extends AbstractHurtingProjectile
 		super(entityType, level);
 	}
 
-	public EarthBlast(Level level, LivingEntity livingEntity, double d, double e, double f) {
-		super(MinejagoEntityTypes.EARTH_BLAST.get(), livingEntity, d, e, f, level);
+	public EarthBlast(Level level, LivingEntity livingEntity, double x, double y, double z) {
+		super(MinejagoEntityTypes.EARTH_BLAST.get(), livingEntity, new Vec3(x, y, z), level);
 	}
 
 	@Override

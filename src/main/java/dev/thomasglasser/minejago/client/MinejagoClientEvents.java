@@ -17,7 +17,6 @@ import dev.thomasglasser.minejago.client.particle.RocksParticle;
 import dev.thomasglasser.minejago.client.particle.SnowsParticle;
 import dev.thomasglasser.minejago.client.particle.SparklesParticle;
 import dev.thomasglasser.minejago.client.particle.SparksParticle;
-import dev.thomasglasser.minejago.client.particle.SpinjitzuParticle;
 import dev.thomasglasser.minejago.client.particle.VaporsParticle;
 import dev.thomasglasser.minejago.client.renderer.block.DragonHeadRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.CharacterRenderer;
@@ -56,6 +55,7 @@ import dev.thomasglasser.minejago.world.level.block.entity.TeapotBlockEntity;
 import dev.thomasglasser.tommylib.api.client.ClientUtils;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import dev.thomasglasser.tommylib.api.world.entity.PlayerRideableFlying;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.model.PlayerModel;
@@ -66,6 +66,7 @@ import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.blockentity.BrushableBlockRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.resources.PlayerSkin;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
@@ -181,7 +182,7 @@ public class MinejagoClientEvents
         }
     }
 
-    public static int renderPowerSymbol(GuiGraphics guiGraphics, Minecraft mc, float partialTick, LivingEntity entity, float opacity, boolean inWorldHud)
+    public static int renderPowerSymbol(GuiGraphics guiGraphics, Minecraft mc, DeltaTracker deltaTracker, LivingEntity entity, float opacity, boolean inWorldHud)
     {
         if (mc.level != null && !inWorldHud) {
             Registry<Power> powers = mc.level.registryAccess().registry(MinejagoRegistries.POWER).get();
@@ -247,24 +248,23 @@ public class MinejagoClientEvents
 
     public static void registerModels(ModelEvent.RegisterAdditional event)
     {
-        event.register(Minejago.modLoc("item/iron_scythe_inventory"));
-        event.register(Minejago.modLoc("item/scythe_of_quakes_inventory"));
-        event.register(Minejago.modLoc("item/iron_spear_inventory"));
-        event.register(Minejago.modLoc("item/wooden_nunchucks_inventory"));
-        event.register(Minejago.modLoc("item/bamboo_staff_inventory"));
+        event.register(ModelResourceLocation.standalone(Minejago.modLoc("item/iron_scythe_inventory")));
+        event.register(ModelResourceLocation.standalone(Minejago.modLoc("item/scythe_of_quakes_inventory")));
+        event.register(ModelResourceLocation.standalone(Minejago.modLoc("item/iron_spear_inventory")));
+        event.register(ModelResourceLocation.standalone(Minejago.modLoc("item/wooden_nunchucks_inventory")));
+        event.register(ModelResourceLocation.standalone(Minejago.modLoc("item/bamboo_staff_inventory")));
 
         ResourceManager manager = Minecraft.getInstance().getResourceManager();
         Map<ResourceLocation, Resource> map = manager.listResources("models/item/minejago_armor", (location -> location.getPath().endsWith(".json")));
         for (ResourceLocation rl : map.keySet())
         {
-            ResourceLocation stripped = new ResourceLocation(rl.getNamespace(), rl.getPath().substring("models/".length(), rl.getPath().indexOf(".json")));
-            event.register(stripped);
+            ResourceLocation stripped = ResourceLocation.fromNamespaceAndPath(rl.getNamespace(), rl.getPath().substring("models/".length(), rl.getPath().indexOf(".json")));
+            event.register(ModelResourceLocation.standalone(stripped));
         }
     }
 
     public static void onRegisterParticleProviders(RegisterParticleProvidersEvent event)
     {
-        event.registerSpriteSet(MinejagoParticleTypes.SPINJITZU.get(), SpinjitzuParticle.Provider::new);
         event.registerSpriteSet(MinejagoParticleTypes.SPARKS.get(), SparksParticle.Provider::new);
         event.registerSpriteSet(MinejagoParticleTypes.SPARKLES.get(), SparklesParticle.Provider::new);
         event.registerSpriteSet(MinejagoParticleTypes.SNOWS.get(), SnowsParticle.Provider::new);
@@ -332,7 +332,7 @@ public class MinejagoClientEvents
 
     public static void onRegisterGuiOverlays(RegisterGuiLayersEvent event)
     {
-        event.registerAbove(new ResourceLocation("food_level"), Minejago.modLoc("focus"), MinejagoGuis::renderFocusBar);
+        event.registerAbove(ResourceLocation.withDefaultNamespace("food_level"), Minejago.modLoc("focus"), MinejagoGuis::renderFocusBar);
     }
 
     public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event)

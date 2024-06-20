@@ -1,10 +1,12 @@
 package dev.thomasglasser.minejago.client.gui;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.client.MinejagoClientConfig;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.focus.FocusData;
 import dev.thomasglasser.tommylib.api.client.ClientUtils;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
@@ -27,7 +29,7 @@ public class MinejagoGuis
 	private static final ResourceLocation OUTER_FULL_MEGA_FOCUS_LOCATION = Minejago.modLoc("textures/gui/mega_focus_full_outer.png");
 	private static final ResourceLocation INNER_FULL_MEGA_FOCUS_LOCATION = Minejago.modLoc("textures/gui/mega_focus_full_inner.png");
 
-	public static void renderFocusBar(GuiGraphics guiGraphics, float partialTick)
+	public static void renderFocusBar(GuiGraphics guiGraphics, DeltaTracker deltaTracker)
 	{
 		Minecraft minecraft = Minecraft.getInstance();
 		if (minecraft.gameMode != null && minecraft.gameMode.canHurtPlayer()) {
@@ -46,7 +48,7 @@ public class MinejagoGuis
 				for(int i = 0; i < 10; ++i) {
 					int y = startY;
 
-					if (focusData.getSaturationLevel() <= 0.0F && partialTick % (focusLevel * 3 + 1) == 0) {
+					if (focusData.getSaturationLevel() <= 0.0F && gui.getGuiTicks() % (focusLevel * 3 + 1) == 0) {
 						y = startY + (minecraft.level.random.nextInt(3) - 1);
 					}
 
@@ -54,9 +56,8 @@ public class MinejagoGuis
 					
 					int x = startX - i * 8 - 9;
 
-					// TODO: Update MidnightLib
-					int xOff = /*MinejagoClientConfig.xOffset*/0;
-					int yOff = /*MinejagoClientConfig.yOffset*/0;
+					int xOff = MinejagoClientConfig.xOffset;
+					int yOff = MinejagoClientConfig.yOffset;
 
 					x += xOff;
 					y -= yOff;

@@ -4,7 +4,7 @@ import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.tommylib.api.data.loot.ExtendedBlockLootSubProvider;
 import dev.thomasglasser.tommylib.api.registration.DeferredBlock;
-import dev.thomasglasser.tommylib.api.registration.DeferredHolder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.ContainerComponentManipulators;
@@ -18,12 +18,11 @@ import net.minecraft.world.level.storage.loot.functions.SetContainerContents;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class MinejagoBlockLoot extends ExtendedBlockLootSubProvider
 {
-    public MinejagoBlockLoot() {
-        super(Set.of(), FeatureFlags.REGISTRY.allFlags());
+    public MinejagoBlockLoot(HolderLookup.Provider lookupProvider) {
+        super(Set.of(), FeatureFlags.REGISTRY.allFlags(), lookupProvider, MinejagoBlocks.BLOCKS);
     }
 
     @Override
@@ -56,10 +55,5 @@ public class MinejagoBlockLoot extends ExtendedBlockLootSubProvider
                                         .apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY))
                                         .apply(SetContainerContents.setContents(ContainerComponentManipulators.CONTAINER).withEntry(DynamicLoot.dynamicEntry(TeapotBlock.CONTENTS))))
                 );
-    }
-
-    @Override
-    protected Iterable<Block> getKnownBlocks() {
-	    return MinejagoBlocks.BLOCKS.getEntries().stream().map(DeferredHolder::get).collect(Collectors.toSet());
     }
 }

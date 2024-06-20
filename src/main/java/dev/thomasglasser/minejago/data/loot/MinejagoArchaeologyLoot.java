@@ -15,7 +15,7 @@ import java.util.function.BiConsumer;
 
 import static dev.thomasglasser.minejago.data.loot.MinejagoArchaeologyLootKeys.CAVE_OF_DESPAIR;
 
-public class MinejagoArchaeologyLoot implements LootTableSubProvider {
+public record MinejagoArchaeologyLoot(HolderLookup.Provider provider) implements LootTableSubProvider {
     public static final LootTable.Builder CAVE_OF_DESPAIR_TABLE = LootTable.lootTable().withPool(
             LootPool.lootPool()
                     .add(LootItem.lootTableItem(MinejagoItems.POTTERY_SHERD_PEAKS.get()))
@@ -31,8 +31,8 @@ public class MinejagoArchaeologyLoot implements LootTableSubProvider {
     );
 
     @Override
-    public void generate(HolderLookup.Provider p_331050_, BiConsumer<ResourceKey<LootTable>, LootTable.Builder> p_249643_)
+    public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> biConsumer)
     {
-        p_249643_.accept(CAVE_OF_DESPAIR, CAVE_OF_DESPAIR_TABLE);
+        biConsumer.accept(CAVE_OF_DESPAIR, CAVE_OF_DESPAIR_TABLE);
     }
 }

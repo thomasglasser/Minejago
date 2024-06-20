@@ -1,9 +1,4 @@
 {
-  "alt_spinjitzu_color": [
-    1.0,
-    21.0,
-    134.0
-  ],
   "border_particle": "minejago:sparks",
   "display": {
     "description": {
@@ -15,11 +10,6 @@
   },
   "has_sets": true,
   "id": "minejago:fire",
-  "main_spinjitzu_color": [
-    37.0,
-    144.0,
-    211.0
-  ],
   "power_color": "#B90E04",
   "tagline": {
     "translate": "power.minejago.fire.tagline"

@@ -5,6 +5,7 @@ import com.google.common.collect.Sets;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
 import dev.thomasglasser.minejago.advancements.criterion.SkulkinRaidTrigger;
+import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.skulkin.Kruncha;
 import dev.thomasglasser.minejago.world.entity.skulkin.Nuckal;
@@ -478,8 +479,7 @@ public class SkulkinRaid {
 			this.joinSkulkinRaid(i, raider, pos, false);
 			if (random.nextInt(10) + difficultyInstance.getDifficulty().getId() > 5) {
 				Mob raider2;
-				// TODO: Update MidnightLib
-				if (/*MinejagoServerConfig.enableTech*/true)
+				if (MinejagoServerConfig.enableTech)
 					raider2 = MinejagoEntityTypes.SKULL_MOTORBIKE.get().create(level);
 				else
 					raider2 = MinejagoEntityTypes.SKULKIN_HORSE.get().create(level);
@@ -743,8 +743,7 @@ public class SkulkinRaid {
 		if (kruncha != null)
 			this.joinSkulkinRaid(i, kruncha, pos, false);
 
-		// TODO: Update MidnightLib
-		if (/*MinejagoServerConfig.enableTech*/true)
+		if (MinejagoServerConfig.enableTech)
 		{
 			List<MeleeCompatibleSkeletonRaider> raiders = new ArrayList<>();
 			if (nuckal != null) raiders.add(nuckal);

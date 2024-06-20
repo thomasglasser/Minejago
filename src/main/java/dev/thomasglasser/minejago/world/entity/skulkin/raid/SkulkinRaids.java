@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.world.entity.skulkin.raid;
 
 import com.google.common.collect.Maps;
+import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.tags.MinejagoDimensionTypeTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -12,8 +13,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.level.saveddata.SavedData;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -45,7 +46,7 @@ public class SkulkinRaids extends SavedData
 
 		while(iterator.hasNext()) {
 			SkulkinRaid raid = iterator.next();
-			if (!/*MinejagoServerConfig.enableSkulkinRaids*/true) { // TODO: Update MidnightLib
+			if (!MinejagoServerConfig.enableSkulkinRaids) {
 				raid.stop();
 			}
 
@@ -74,7 +75,7 @@ public class SkulkinRaids extends SavedData
 	public SkulkinRaid createOrExtendSkulkinRaid(ServerPlayer serverPlayer) {
 		if (serverPlayer.isSpectator()) {
 			return null;
-		} else if (!/*MinejagoServerConfig.enableSkulkinRaids*/true) { // TODO: Update MidnightLib
+		} else if (!MinejagoServerConfig.enableSkulkinRaids) {
 			return null;
 		} else {
 			if (Holder.Reference.createIntrusive(serverPlayer.level().registryAccess().registryOrThrow(Registries.DIMENSION_TYPE).holderOwner(), serverPlayer.level().dimensionType()).is(MinejagoDimensionTypeTags.HAS_SKULKIN_RAIDS)) {

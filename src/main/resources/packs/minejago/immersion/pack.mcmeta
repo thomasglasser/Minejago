@@ -3,6 +3,6 @@
         "description": {
             "translate": "pack.minejago.immersion.description"
         },
-        "pack_format": ${resource_pack_format_number}
+        "pack_format": ${resource_pack_version}
     }
 }

@@ -2,11 +2,13 @@ package dev.thomasglasser.minejago.world.entity.projectile;
 
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
+import dev.thomasglasser.minejago.world.item.MinejagoItemUtils;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -20,7 +22,6 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
 
 public class ThrownBambooStaff extends AbstractArrow
 {
@@ -30,12 +31,12 @@ public class ThrownBambooStaff extends AbstractArrow
     private boolean dealtDamage;
 
     public ThrownBambooStaff(EntityType<? extends ThrownBambooStaff> entity, Level level) {
-        super(entity, level, new ItemStack(MinejagoItems.BAMBOO_STAFF.get()));
+        super(entity, level);
     }
 
     public ThrownBambooStaff(Level pLevel, LivingEntity pShooter, ItemStack pStack) {
-        super(MinejagoEntityTypes.THROWN_BAMBOO_STAFF.get(), pShooter, pLevel, pStack);
-        this.entityData.set(ID_LOYALTY, (byte) EnchantmentHelper.getLoyalty(pStack));
+        super(MinejagoEntityTypes.THROWN_BAMBOO_STAFF.get(), pShooter, pLevel, pStack, null);
+        this.entityData.set(ID_LOYALTY, MinejagoItemUtils.getLoyaltyFromItem(pStack, level(), this));
         this.entityData.set(ID_FOIL, pStack.hasFoil());
     }
 
@@ -96,7 +97,6 @@ public class ThrownBambooStaff extends AbstractArrow
     /**
      * Gets the EntityHitResult representing the entity hit
      */
-    @Nullable
     protected EntityHitResult findHitEntity(Vec3 pStartVec, Vec3 pEndVec) {
         return this.dealtDamage ? null : super.findHitEntity(pStartVec, pEndVec);
     }
@@ -107,29 +107,29 @@ public class ThrownBambooStaff extends AbstractArrow
     protected void onHitEntity(EntityHitResult pResult) {
         Entity entity = pResult.getEntity();
         float f = 8.0F;
-        if (entity instanceof LivingEntity livingentity) {
-            f += EnchantmentHelper.getDamageBonus(getPickupItem(), livingentity.getType());
+        Entity entity1 = this.getOwner();
+        DamageSource damagesource = this.damageSources().trident(this, entity1 == null ? this : entity1);
+        if (this.level() instanceof ServerLevel serverlevel) {
+            f = EnchantmentHelper.modifyDamage(serverlevel, this.getWeaponItem(), entity, damagesource, f);
         }
 
-        Entity entity1 = this.getOwner();
-        DamageSource damagesource = damageSources().trident(this, (entity1 == null ? this : entity1));
         this.dealtDamage = true;
         if (entity.hurt(damagesource, f)) {
             if (entity.getType() == EntityType.ENDERMAN) {
                 return;
             }
 
-            if (entity instanceof LivingEntity livingentity1) {
-                if (entity1 instanceof LivingEntity) {
-                    EnchantmentHelper.doPostHurtEffects(livingentity1, entity1);
-                    EnchantmentHelper.doPostDamageEffects((LivingEntity)entity1, livingentity1);
-                }
+            if (this.level() instanceof ServerLevel serverlevel1) {
+                EnchantmentHelper.doPostAttackEffectsWithItemSource(serverlevel1, entity, damagesource, this.getWeaponItem());
+            }
 
-                this.doPostHurtEffects(livingentity1);
+            if (entity instanceof LivingEntity livingentity) {
+                this.doKnockback(livingentity, damagesource);
+                this.doPostHurtEffects(livingentity);
             }
         }
 
-        this.setDeltaMovement(this.getDeltaMovement().multiply(-0.01D, -0.1D, -0.01D));
+        this.setDeltaMovement(this.getDeltaMovement().multiply(-0.01, -0.1, -0.01));
         this.playSound(getDefaultHitGroundSoundEvent());
     }
 
@@ -153,7 +153,7 @@ public class ThrownBambooStaff extends AbstractArrow
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         this.dealtDamage = pCompound.getBoolean("DealtDamage");
-        this.entityData.set(ID_LOYALTY, (byte)EnchantmentHelper.getLoyalty(this.getPickupItemStackOrigin()));
+        this.entityData.set(ID_LOYALTY, MinejagoItemUtils.getLoyaltyFromItem(getDefaultPickupItem(), level(), this));
     }
 
     public void addAdditionalSaveData(CompoundTag pCompound) {

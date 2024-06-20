@@ -7,8 +7,8 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.PaintingVariantTagsProvider;
 import net.minecraft.tags.PaintingVariantTags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import java.util.concurrent.CompletableFuture;
 
 public class MinejagoPaintingVariantTagsProvider extends PaintingVariantTagsProvider
@@ -20,17 +20,17 @@ public class MinejagoPaintingVariantTagsProvider extends PaintingVariantTagsProv
     @Override
     protected void addTags(HolderLookup.Provider pProvider) {
         tag(PaintingVariantTags.PLACEABLE)
-                .add(MinejagoPaintingVariants.A_MORNING_BREW.getKey())
-                .add(MinejagoPaintingVariants.AMBUSHED.getKey())
-                .add(MinejagoPaintingVariants.BEFORE_THE_STORM.getKey())
-                .add(MinejagoPaintingVariants.CREATION.getKey())
-                .add(MinejagoPaintingVariants.EARTH.getKey())
-                .add(MinejagoPaintingVariants.FIRE.getKey())
-                .add(MinejagoPaintingVariants.FRUIT_COLORED_NINJA.getKey())
-                .add(MinejagoPaintingVariants.ICE.getKey())
-                .add(MinejagoPaintingVariants.LIGHTNING.getKey())
-                .add(MinejagoPaintingVariants.NEEDS_HAIR_GEL.getKey())
-                .add(MinejagoPaintingVariants.NOT_FOR_FURNITURE.getKey())
-                .add(MinejagoPaintingVariants.IT_TAKES_A_VILLAGE.getKey());
+                .add(MinejagoPaintingVariants.A_MORNING_BREW)
+                .add(MinejagoPaintingVariants.AMBUSHED)
+                .add(MinejagoPaintingVariants.BEFORE_THE_STORM)
+                .add(MinejagoPaintingVariants.CREATION)
+                .add(MinejagoPaintingVariants.EARTH)
+                .add(MinejagoPaintingVariants.FIRE)
+                .add(MinejagoPaintingVariants.FRUIT_COLORED_NINJA)
+                .add(MinejagoPaintingVariants.ICE)
+                .add(MinejagoPaintingVariants.LIGHTNING)
+                .add(MinejagoPaintingVariants.NEEDS_HAIR_GEL)
+                .add(MinejagoPaintingVariants.NOT_FOR_FURNITURE)
+                .add(MinejagoPaintingVariants.IT_TAKES_A_VILLAGE);
     }
 }

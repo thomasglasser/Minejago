@@ -2,9 +2,8 @@ package dev.thomasglasser.minejago.world.level.storage;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-
-import java.util.UUID;
+import dev.thomasglasser.minejago.Minejago;
+import net.minecraft.resources.ResourceLocation;
 
 public record SpinjitzuData(boolean unlocked, boolean active) {
     public static final Codec<SpinjitzuData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -12,8 +11,8 @@ public record SpinjitzuData(boolean unlocked, boolean active) {
                     Codec.BOOL.fieldOf("active").forGetter(SpinjitzuData::active))
             .apply(instance, SpinjitzuData::new));
 
-    public static final AttributeModifier SPEED_MODIFIER = new AttributeModifier(UUID.randomUUID(), "Spinjitzu speed", 1.5, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
-    public static final AttributeModifier KNOCKBACK_MODIFIER = new AttributeModifier(UUID.randomUUID(), "Spinjitzu knockback", 1.5, AttributeModifier.Operation.ADD_VALUE);
+    public static final ResourceLocation SPEED_MODIFIER = Minejago.modLoc("spinjitzu_speed");
+    public static final ResourceLocation KNOCKBACK_MODIFIER = Minejago.modLoc("spinjitzu_knockback");
 
     public SpinjitzuData()
     {

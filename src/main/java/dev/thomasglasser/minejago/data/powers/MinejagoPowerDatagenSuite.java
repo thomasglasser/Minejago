@@ -2,7 +2,6 @@ package dev.thomasglasser.minejago.data.powers;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
-import dev.thomasglasser.minejago.core.particles.SpinjitzuParticleOptions;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
@@ -19,16 +18,18 @@ public class MinejagoPowerDatagenSuite extends PowerDatagenSuite
         makePowerSuite(MinejagoPowers.ICE, builder -> builder
                         .color("#EDECE4")
                         .defaultTagline()
-                        .mainSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_LIGHT_BLUE)
-                        .altSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_WHITE)
+                // TODO: Implement colors
+//                        .mainSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_LIGHT_BLUE)
+//                        .altSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_WHITE)
                         .hasSets()
                         .defaultDisplay(),
                 MinejagoParticleTypes.SNOWS, "snow", 4, true, config -> {});
         makePowerSuite(MinejagoPowers.EARTH, builder -> builder
                         .color("#5A4441")
                         .defaultTagline()
-                        .mainSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_BROWN)
-                        .altSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_TAN)
+                        // TODO: Implement colors
+//                        .mainSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_BROWN)
+//                        .altSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_TAN)
                         .hasSets()
                         .defaultDisplay(),
                 MinejagoParticleTypes.ROCKS, "rock", 4, true, config ->
@@ -36,8 +37,9 @@ public class MinejagoPowerDatagenSuite extends PowerDatagenSuite
         makePowerSuite(MinejagoPowers.FIRE, builder -> builder
                         .color("#B90E04")
                         .defaultTagline()
-                        .mainSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_ORANGE)
-                        .altSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_YELLOW)
+                        // TODO: Implement colors
+//                        .mainSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_ORANGE)
+//                        .altSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_YELLOW)
                         .hasSets()
                         .defaultDisplay(),
                 MinejagoParticleTypes.SPARKS, "spark", 4, true, config ->
@@ -45,15 +47,17 @@ public class MinejagoPowerDatagenSuite extends PowerDatagenSuite
         makePowerSuite(MinejagoPowers.LIGHTNING, builder -> builder
                         .color("#4668D5")
                         .defaultTagline()
-                        .mainSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_BLUE)
-                        .altSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_LIGHT_BLUE)
+                        // TODO: Implement colors
+//                        .mainSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_BLUE)
+//                        .altSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_LIGHT_BLUE)
                         .hasSets()
                         .defaultDisplay(),
                 MinejagoParticleTypes.BOLTS, "bolt", 4, true, config -> {});
         makePowerSuite(MinejagoPowers.CREATION, builder -> builder
                         .color("#F8D66F")
-                        .mainSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_DARK_GOLD)
-                        .altSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_GOLD)
+                        // TODO: Implement colors
+//                        .mainSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_DARK_GOLD)
+//                        .altSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_GOLD)
                         .defaultDisplay()
                         .isSpecial(),
                 MinejagoParticleTypes.SPARKLES, "sparkle", 4, false, config -> {});

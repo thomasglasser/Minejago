@@ -11,7 +11,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -39,9 +38,9 @@ public class EntityTypeFocusModifier extends FocusModifier
 		return "EntityTypeFocusModifier{id=" + getId() + "entityType=" + entityType + "nbt=" + nbt + "}";
 	}
 
-	public static @NotNull Optional<EntityTypeFocusModifier> fromJson(@NotNull ResourceLocation id, @NotNull JsonObject json) {
+	public static Optional<EntityTypeFocusModifier> fromJson(ResourceLocation id, JsonObject json) {
 		if (json.has("entity_type") && json.has("modifier")) {
-			ResourceLocation entityTypeLoc = ResourceLocation.CODEC.parse(JsonOps.INSTANCE, json.get("entity_type")).result().orElse(new ResourceLocation(""));
+			ResourceLocation entityTypeLoc = ResourceLocation.CODEC.parse(JsonOps.INSTANCE, json.get("entity_type")).result().orElse(ResourceLocation.withDefaultNamespace(""));
 			if (!BuiltInRegistries.ENTITY_TYPE.containsKey(entityTypeLoc)) {
 				return Optional.empty();
 			} else {

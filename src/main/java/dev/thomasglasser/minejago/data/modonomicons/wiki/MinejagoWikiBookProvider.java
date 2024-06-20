@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.data.modonomicons.wiki;
 
-// TODO: Convert to Tslatouli
+// TODO: Convert to index style
 public class MinejagoWikiBookProvider /*extends BookProvider*/ {
 //    public static final String ID = "wiki";
 //    public static final String[] SIMPLE_ENTRY_MAP = new String[]

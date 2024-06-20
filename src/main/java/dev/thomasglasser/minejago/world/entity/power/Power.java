@@ -3,7 +3,6 @@ package dev.thomasglasser.minejago.world.entity.power;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.core.particles.SpinjitzuParticleOptions;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
@@ -19,10 +18,9 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.ExtraCodecs;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -31,29 +29,23 @@ public class Power {
             ResourceLocation.CODEC.fieldOf("id").forGetter(Power::getId),
             TextColor.CODEC.optionalFieldOf("power_color", TextColor.fromLegacyFormat(ChatFormatting.GRAY)).forGetter(Power::getColor),
             ComponentSerialization.CODEC.optionalFieldOf("tagline", Component.empty()).forGetter(Power::getTagline),
-            ExtraCodecs.VECTOR3F.optionalFieldOf("main_spinjitzu_color", SpinjitzuParticleOptions.DEFAULT).forGetter(Power::getMainSpinjitzuColor),
-            ExtraCodecs.VECTOR3F.optionalFieldOf("alt_spinjitzu_color", SpinjitzuParticleOptions.DEFAULT).forGetter(Power::getAltSpinjitzuColor),
+            ExtraCodecs.VECTOR3F.optionalFieldOf("main_spinjitzu_color", new Vector3f()/*TODO: Replace with default spinjitzu color*/).forGetter(Power::getMainSpinjitzuColor),
+            ExtraCodecs.VECTOR3F.optionalFieldOf("alt_spinjitzu_color", new Vector3f()/*TODO: Replace with default spinjitzu color*/).forGetter(Power::getAltSpinjitzuColor),
             BuiltInRegistries.PARTICLE_TYPE.byNameCodec().optionalFieldOf("border_particle").forGetter(Power::getBorderParticleType),
             Codec.BOOL.optionalFieldOf("has_sets", false).forGetter(Power::hasSets),
             Display.CODEC.optionalFieldOf("display", Display.EMPTY).forGetter(Power::getDisplay),
             Codec.BOOL.optionalFieldOf("is_special", false).forGetter(Power::isSpecial)
     ).apply(instance, Power::new));
 
-    @NotNull
     private final ResourceLocation id;
-    @NotNull
     private final TextColor color;
-    @NotNull
     protected Vector3f mainSpinjitzuColor;
-    @NotNull
     protected Vector3f altSpinjitzuColor;
     @Nullable
     protected Supplier<? extends ParticleOptions> borderParticle;
     protected boolean hasSets;
-    @NotNull
     protected Display display;
     protected boolean isSpecial;
-    @NotNull
     protected Component tagline;
 
     private String descId;
@@ -69,7 +61,7 @@ public class Power {
         return new Builder(Minejago.modLoc(id));
     }
 
-    protected Power(@NotNull ResourceLocation id, @NotNull TextColor color, @Nullable Component tagline, @NotNull Vector3f mainSpinjitzuColor, @NotNull Vector3f altSpinjitzuColor, @Nullable Supplier<? extends ParticleOptions> borderParticle, boolean hasSets, @Nullable Display display, boolean isSpecial)
+    protected Power(ResourceLocation id, TextColor color, @Nullable Component tagline, Vector3f mainSpinjitzuColor, Vector3f altSpinjitzuColor, @Nullable Supplier<? extends ParticleOptions> borderParticle, boolean hasSets, @Nullable Display display, boolean isSpecial)
     {
         this.id = id;
         this.color = color;
@@ -80,24 +72,24 @@ public class Power {
         this.hasSets = hasSets;
         this.display = display == null ? Display.EMPTY : display;
         this.isSpecial = isSpecial;
-        this.icon = new ResourceLocation(id.getNamespace(), "textures/power/" + id.getPath() + ".png");
+        this.icon = ResourceLocation.fromNamespaceAndPath(id.getNamespace(), "textures/power/" + id.getPath() + ".png");
     }
 
-    protected Power(@NotNull ResourceLocation id, TextColor color, @Nullable Component tagline, @NotNull Vector3f mainSpinjitzuColor, @NotNull Vector3f altSpinjitzuColor, @NotNull Optional<ParticleType<?>> borderParticle, boolean hasSets, Display display, boolean isSpecial)
+    protected Power(ResourceLocation id, TextColor color, @Nullable Component tagline, Vector3f mainSpinjitzuColor, Vector3f altSpinjitzuColor, Optional<ParticleType<?>> borderParticle, boolean hasSets, Display display, boolean isSpecial)
     {
         this(id, color, tagline, mainSpinjitzuColor, altSpinjitzuColor, borderParticle.orElse(null) instanceof ParticleOptions ? () -> (ParticleOptions) borderParticle.orElse(null) : null, hasSets, display, isSpecial);
     }
 
-    @NotNull
     public Vector3f getMainSpinjitzuColor()
     {
         return mainSpinjitzuColor;
     }
-    @NotNull
+
     public Vector3f getAltSpinjitzuColor()
     {
         return altSpinjitzuColor;
     }
+
     @Nullable
     public ParticleOptions getBorderParticle()
     {
@@ -110,7 +102,7 @@ public class Power {
         return borderParticle != null ? Optional.of(borderParticle.get().getType()) : Optional.empty();
     }
 
-    public @NotNull TextColor getColor() {
+    public TextColor getColor() {
         return color;
     }
 
@@ -212,8 +204,8 @@ public class Power {
             this.id = id;
             this.color = TextColor.fromLegacyFormat(ChatFormatting.GRAY);
             this.tagline = Component.empty();
-            this.mainSpinjitzuColor = SpinjitzuParticleOptions.DEFAULT;
-            this.altSpinjitzuColor = SpinjitzuParticleOptions.DEFAULT;
+            this.mainSpinjitzuColor = new Vector3f(); // TODO: Replace with default spinjitzu color
+            this.altSpinjitzuColor = new Vector3f(); // TODO: Replace with default spinjitzu color
             this.borderParticle = null;
             this.hasSets = false;
             this.display = Display.EMPTY;

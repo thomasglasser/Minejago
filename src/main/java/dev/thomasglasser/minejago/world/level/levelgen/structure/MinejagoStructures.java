@@ -24,8 +24,6 @@ import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
 
 import java.util.Map;
 
-import static net.minecraft.data.worldgen.Structures.structure;
-
 public class MinejagoStructures
 {
     public static final ResourceKey<Structure> FOUR_WEAPONS = createKey("four_weapons");
@@ -44,11 +42,10 @@ public class MinejagoStructures
         context.register(
                 FOUR_WEAPONS,
                 new JigsawStructure(
-                        structure(
-                                holderGetter.getOrThrow(MinejagoBiomeTags.HAS_FOUR_WEAPONS),
-                                GenerationStep.Decoration.SURFACE_STRUCTURES,
-                                TerrainAdjustment.BEARD_THIN
-                        ),
+                        new Structure.StructureSettings.Builder(holderGetter.getOrThrow(MinejagoBiomeTags.HAS_FOUR_WEAPONS))
+                                .generationStep(GenerationStep.Decoration.SURFACE_STRUCTURES)
+                                .terrainAdapation(TerrainAdjustment.BEARD_THIN)
+                                .build(),
                         holderGetter2.getOrThrow(FourWeaponsPools.START),
                         7,
                         ConstantHeight.of(VerticalAnchor.absolute(0)),
@@ -60,15 +57,16 @@ public class MinejagoStructures
         context.register(
                 CAVE_OF_DESPAIR,
                 new JigsawStructure(
-                        structure(
-                                holderGetter.getOrThrow(MinejagoBiomeTags.HAS_CAVE_OF_DESPAIR),
-                                Map.of(
-                                        MobCategory.MONSTER, new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()),
-                                        MobCategory.AMBIENT, new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create())
-                                ),
-                                GenerationStep.Decoration.UNDERGROUND_STRUCTURES,
-                                TerrainAdjustment.BURY
-                        ),
+                        new Structure.StructureSettings.Builder(holderGetter.getOrThrow(MinejagoBiomeTags.HAS_CAVE_OF_DESPAIR))
+                                .generationStep(GenerationStep.Decoration.UNDERGROUND_STRUCTURES)
+                                .terrainAdapation(TerrainAdjustment.BURY)
+                                .spawnOverrides(
+                                        Map.of(
+                                                MobCategory.MONSTER, new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()),
+                                                MobCategory.AMBIENT, new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create())
+                                        )
+                                )
+                                .build(),
                         holderGetter2.getOrThrow(CaveOfDespairPools.START),
                         7,
                         ConstantHeight.of(VerticalAnchor.absolute(40)),
@@ -78,11 +76,10 @@ public class MinejagoStructures
 
         context.register(NINJAGO_CITY,
                 new JigsawStructure(
-                        structure(
-                                holderGetter.getOrThrow(MinejagoBiomeTags.HAS_NINJAGO_CITY),
-                                GenerationStep.Decoration.SURFACE_STRUCTURES,
-                                TerrainAdjustment.BEARD_THIN
-                        ),
+                        new Structure.StructureSettings.Builder(holderGetter.getOrThrow(MinejagoBiomeTags.HAS_NINJAGO_CITY))
+                                .generationStep(GenerationStep.Decoration.SURFACE_STRUCTURES)
+                                .terrainAdapation(TerrainAdjustment.BEARD_THIN)
+                                .build(),
                         holderGetter2.getOrThrow(NinjagoCityPools.BUILDINGS),
                         7,
                         ConstantHeight.of(VerticalAnchor.absolute(0)),

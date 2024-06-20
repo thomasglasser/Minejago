@@ -12,10 +12,9 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.resources.ResourceLocation;
 
 public class SpearModel extends Model {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(Minejago.MOD_ID, "spear"), "in_hand");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Minejago.modLoc("spear"), "in_hand");
 	private final ModelPart body;
 
 	public SpearModel(ModelPart root) {
@@ -37,7 +36,8 @@ public class SpearModel extends Model {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+	public void renderToBuffer(PoseStack p_103111_, VertexConsumer p_103112_, int p_103113_, int p_103114_, int p_350308_)
+	{
+		body.render(p_103111_, p_103112_, p_103113_, p_103114_, p_350308_);
 	}
 }

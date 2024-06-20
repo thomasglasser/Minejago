@@ -5,21 +5,18 @@ import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.util.valueproviders.IntProvider;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.crafting.CookingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 
-public class TeapotBrewingRecipe implements Recipe<Container> {
+public class TeapotBrewingRecipe implements Recipe<TeapotBrewingRecipe.TeapotBrewingRecipeInput> {
     protected final String group;
     protected final Holder<Potion> base;
     protected final Ingredient ingredient;
@@ -44,13 +41,13 @@ public class TeapotBrewingRecipe implements Recipe<Container> {
     }
 
     @Override
-    public boolean matches(Container container, Level level) {
-        if (container.getContainerSize() == 2) return ingredient.test(container.getItem(0)) && base == container.getItem(1).getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).potion().orElse(null);
-        throw new IndexOutOfBoundsException("Container must contain ingredient and potion");
+    public boolean matches(TeapotBrewingRecipeInput input, Level p_345375_)
+    {
+        return ingredient.test(input.ingredient()) && base == input.base();
     }
 
     @Override
-    public ItemStack assemble(Container container, HolderLookup.Provider provider)
+    public ItemStack assemble(TeapotBrewingRecipeInput input, HolderLookup.Provider provider)
     {
         return getResultItem(provider);
     }
@@ -107,7 +104,7 @@ public class TeapotBrewingRecipe implements Recipe<Container> {
     }
 
     @Override
-    public @NotNull ItemStack getToastSymbol() {
+    public ItemStack getToastSymbol() {
         return MinejagoBlocks.TEAPOT.get().asItem().getDefaultInstance();
     }
 
@@ -123,5 +120,25 @@ public class TeapotBrewingRecipe implements Recipe<Container> {
                  Holder<Potion> result,
                  float xp,
                  IntProvider i);
+    }
+
+    public record TeapotBrewingRecipeInput(Holder<Potion> base, ItemStack ingredient) implements RecipeInput
+    {
+        @Override
+        public ItemStack getItem(int p_346128_)
+        {
+            return switch (p_346128_)
+                    {
+                        case 0 -> MinejagoItemUtils.fillTeacup(base);
+                        case 1 -> ingredient;
+                        default -> ItemStack.EMPTY;
+                    };
+        }
+
+        @Override
+        public int size()
+        {
+            return 2;
+        }
     }
 }

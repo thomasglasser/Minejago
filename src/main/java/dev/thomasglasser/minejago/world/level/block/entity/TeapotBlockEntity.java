@@ -2,7 +2,6 @@ package dev.thomasglasser.minejago.world.level.block.entity;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
-import dev.thomasglasser.minejago.world.item.MinejagoItemUtils;
 import dev.thomasglasser.minejago.world.item.crafting.MinejagoRecipeTypes;
 import dev.thomasglasser.minejago.world.item.crafting.TeapotBrewingRecipe;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
@@ -24,10 +23,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Nameable;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.Potion;
@@ -38,7 +35,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -46,7 +42,6 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
 {
     private static final int MAX_CUPS = 6;
 
-    @NotNull
     private ItemStack item = ItemStack.EMPTY;
 
     private int brewTime;
@@ -63,7 +58,7 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
     private float experiencePerCup = 0;
     private int experienceCups = MAX_CUPS;
 
-    private final RecipeManager.CachedCheck<Container, TeapotBrewingRecipe> quickCheck = RecipeManager.createCheck(MinejagoRecipeTypes.TEAPOT_BREWING.get());
+    private final RecipeManager.CachedCheck<TeapotBrewingRecipe.TeapotBrewingRecipeInput, TeapotBrewingRecipe> quickCheck = RecipeManager.createCheck(MinejagoRecipeTypes.TEAPOT_BREWING.get());
 
     public TeapotBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(MinejagoBlockEntityTypes.TEAPOT.get(), pPos, pBlockState);
@@ -86,7 +81,7 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
 
         if (pBlockEntity.cups > 0)
         {
-            Optional<RecipeHolder<TeapotBrewingRecipe>> recipe = pBlockEntity.quickCheck.getRecipeFor(new SimpleContainer(pBlockEntity.item, MinejagoItemUtils.fillTeacup(pBlockEntity.getPotion())), pLevel);
+            Optional<RecipeHolder<TeapotBrewingRecipe>> recipe = pBlockEntity.quickCheck.getRecipeFor(new TeapotBrewingRecipe.TeapotBrewingRecipeInput(pBlockEntity.potion, pBlockEntity.item), pLevel);
 
             pBlockEntity.cups = Math.min(pBlockEntity.cups, MAX_CUPS);
 
@@ -184,7 +179,7 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
         NonNullList<ItemStack> itemList = NonNullList.withSize(1, ItemStack.EMPTY);
         ContainerHelper.loadAllItems(compoundTag, itemList, provider);
         item = itemList.getFirst();
-        Holder<Potion> newPotion = BuiltInRegistries.POTION.getHolder(new ResourceLocation(compoundTag.getString("Potion"))).orElse(null);
+        Holder<Potion> newPotion = BuiltInRegistries.POTION.getHolder(ResourceLocation.parse(compoundTag.getString("Potion"))).orElse(null);
         if (newPotion != potion)
         {
             potion = newPotion;
@@ -308,12 +303,12 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
     }
 
     @Override
-    public @NotNull ItemStack getInSlot(int slot) {
+    public ItemStack getInSlot(int slot) {
         return slot == 0 ? item : ItemStack.EMPTY;
     }
 
     @Override
-    public @NotNull ItemStack insert(int slot, @NotNull ItemStack stack) {
+    public ItemStack insert(int slot, ItemStack stack) {
         if (slot == 0)
         {
             ItemStack newStack = stack.copy();
@@ -329,7 +324,7 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
     }
 
     @Override
-    public @NotNull ItemStack extract(int slot, int amount) {
+    public ItemStack extract(int slot, int amount) {
         return slot == 0 && !item.isEmpty() && amount > 0 ? item.split(amount) : ItemStack.EMPTY;
     }
 
@@ -339,13 +334,13 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
     }
 
     @Override
-    public boolean isValid(int slot, @NotNull ItemStack stack) {
+    public boolean isValid(int slot, ItemStack stack) {
         return false;
     }
 
     public boolean hasRecipe(ItemStack item, Level level)
     {
-        return quickCheck.getRecipeFor(new SimpleContainer(item, MinejagoItemUtils.fillTeacup(potion)), level).isPresent();
+        return quickCheck.getRecipeFor(new TeapotBrewingRecipe.TeapotBrewingRecipeInput(potion, item), level).isPresent();
     }
 
     public void giveExperienceForCup(ServerLevel serverLevel, Vec3 pos)

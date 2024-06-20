@@ -16,6 +16,6 @@ public class TrainingGiRenderer extends GeoArmorRenderer<TrainingGiItem> {
     @Override
     public ResourceLocation getTextureLocation(TrainingGiItem animatable) {
         ResourceLocation location = currentStack.getOrDefault(MinejagoDataComponents.POWER.get(), MinejagoPowers.NONE.location());
-        return new ResourceLocation(location.getNamespace(), "textures/models/armor/training_gi_" + location.getPath() + ".png");
+        return ResourceLocation.fromNamespaceAndPath(location.getNamespace(), "textures/models/armor/training_gi_" + location.getPath() + ".png");
     }
 }

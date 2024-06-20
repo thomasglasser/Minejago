@@ -4,7 +4,11 @@ import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.character.Character;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FleeSunGoal;
@@ -21,12 +25,13 @@ import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.AnimalArmorItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.tslat.smartbrainlib.api.core.navigation.SmoothGroundNavigation;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 public class SkulkinHorse extends SkeletonHorse implements Enemy
 {
@@ -67,25 +72,24 @@ public class SkulkinHorse extends SkeletonHorse implements Enemy
 
     @Override
     public void aiStep() {
-        if (this.isAlive()) {
-            boolean bl = this.isSunBurnTick();
-            if (bl) {
-                ItemStack itemStack = this.getItemBySlot(EquipmentSlot.CHEST);
-                if (!itemStack.isEmpty()) {
-                    if (itemStack.isDamageableItem()) {
-                        itemStack.setDamageValue(itemStack.getDamageValue() + this.random.nextInt(2));
-                        if (itemStack.getDamageValue() >= itemStack.getMaxDamage()) {
-                            this.broadcastBreakEvent(EquipmentSlot.HEAD);
-                            this.setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
-                        }
+        boolean flag = this.isSunBurnTick();
+        if (flag) {
+            ItemStack itemstack = this.getItemBySlot(EquipmentSlot.BODY);
+            if (!itemstack.isEmpty()) {
+                if (itemstack.isDamageableItem()) {
+                    Item item = itemstack.getItem();
+                    itemstack.setDamageValue(itemstack.getDamageValue() + this.random.nextInt(2));
+                    if (itemstack.getDamageValue() >= itemstack.getMaxDamage()) {
+                        this.onEquippedItemBroken(item, EquipmentSlot.BODY);
+                        this.setItemSlot(EquipmentSlot.BODY, ItemStack.EMPTY);
                     }
-
-                    bl = false;
                 }
 
-                if (bl) {
-                    this.igniteForSeconds(8);
-                }
+                flag = false;
+            }
+
+            if (flag) {
+                this.igniteForSeconds(8.0F);
             }
         }
 
@@ -108,13 +112,6 @@ public class SkulkinHorse extends SkeletonHorse implements Enemy
         }
 
         @Override
-        public void tick() {
-            if (!horse.isWearingBodyArmor() && equipArmor(horse))
-                horse.equipArmor(Items.IRON_HORSE_ARMOR.getDefaultInstance());
-            super.tick();
-        }
-
-        @Override
         public AbstractHorse createHorse(DifficultyInstance difficulty) {
             SkulkinHorse skeletonHorse = MinejagoEntityTypes.SKULKIN_HORSE.get().create(this.horse.level());
             if (skeletonHorse != null) {
@@ -123,7 +120,7 @@ public class SkulkinHorse extends SkeletonHorse implements Enemy
                 skeletonHorse.invulnerableTime = 60;
                 skeletonHorse.setPersistenceRequired();
                 skeletonHorse.setTamed(true);
-                skeletonHorse.equipSaddle(null);
+                skeletonHorse.equipSaddle(Items.SADDLE.getDefaultInstance(), null);
                 skeletonHorse.setAge(0);
                 if (equipArmor(skeletonHorse))
                     skeletonHorse.equipArmor(Items.IRON_HORSE_ARMOR.getDefaultInstance());
@@ -136,7 +133,6 @@ public class SkulkinHorse extends SkeletonHorse implements Enemy
         public Skeleton createSkeleton(DifficultyInstance difficulty, AbstractHorse horse) {
             Skulkin skeleton = MinejagoEntityTypes.SKULKIN.get().create(horse.level());
             if (skeleton != null) {
-                skeleton.setVariant(Skulkin.Variant.BOW);
                 skeleton.finalizeSpawn((ServerLevel)horse.level(), difficulty, MobSpawnType.TRIGGERED, null);
                 skeleton.setPos(horse.getX(), horse.getY(), horse.getZ());
                 skeleton.invulnerableTime = 60;
@@ -145,26 +141,8 @@ public class SkulkinHorse extends SkeletonHorse implements Enemy
                     skeleton.setItemSlot(EquipmentSlot.HEAD, Items.IRON_HELMET.getDefaultInstance());
                 }
 
-                skeleton.setItemSlot(
-                        EquipmentSlot.MAINHAND,
-                        EnchantmentHelper.enchantItem(
-                                skeleton.level().enabledFeatures(),
-                                skeleton.getRandom(),
-                                disenchant(skeleton.getMainHandItem()),
-                                (int)(5.0F + difficulty.getSpecialMultiplier() * (float)skeleton.getRandom().nextInt(18)),
-                                false
-                        )
-                );
-                skeleton.setItemSlot(
-                        EquipmentSlot.HEAD,
-                        EnchantmentHelper.enchantItem(
-                                skeleton.level().enabledFeatures(),
-                                skeleton.getRandom(),
-                                disenchant(skeleton.getItemBySlot(EquipmentSlot.HEAD)),
-                                (int)(5.0F + difficulty.getSpecialMultiplier() * (float)skeleton.getRandom().nextInt(18)),
-                                false
-                        )
-                );
+                this.enchant(skeleton, EquipmentSlot.MAINHAND, difficulty);
+                this.enchant(skeleton, EquipmentSlot.HEAD, difficulty);
             }
 
             return skeleton;

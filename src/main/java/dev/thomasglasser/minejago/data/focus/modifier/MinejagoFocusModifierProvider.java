@@ -89,7 +89,7 @@ public class MinejagoFocusModifierProvider extends FocusModifierProvider
 		{
 			for (Block candle : candles)
 			{
-				add(new ResourceLocation(BuiltInRegistries.BLOCK.getKey(candle) + "_" + i), candle.defaultBlockState().setValue(CandleBlock.CANDLES, i).setValue(CandleBlock.LIT, true), 0.25 * i, Operation.ADDITION);
+				add(ResourceLocation.parse(BuiltInRegistries.BLOCK.getKey(candle) + "_" + i), candle.defaultBlockState().setValue(CandleBlock.CANDLES, i).setValue(CandleBlock.LIT, true), 0.25 * i, Operation.ADDITION);
 			}
 		}
 		add(0.05, Operation.ADDITION, Blocks.WATER);

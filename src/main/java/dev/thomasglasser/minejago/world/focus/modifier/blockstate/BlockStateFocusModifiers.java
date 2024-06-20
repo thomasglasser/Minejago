@@ -30,7 +30,7 @@ public class BlockStateFocusModifiers
 	}
 
 	private static void load(ResourceLocation resourceId, Resource resource) {
-		ResourceLocation id = new ResourceLocation(resourceId.getNamespace(), resourceId.getPath().replace(".json", ""));
+		ResourceLocation id = ResourceLocation.fromNamespaceAndPath(resourceId.getNamespace(), resourceId.getPath().replace(".json", ""));
 
 		try {
 			InputStreamReader reader = new InputStreamReader(resource.open());

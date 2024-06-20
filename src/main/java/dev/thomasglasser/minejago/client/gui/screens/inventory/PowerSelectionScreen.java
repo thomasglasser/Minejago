@@ -19,7 +19,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
-import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.Nullable;
@@ -31,8 +30,8 @@ public class PowerSelectionScreen extends Screen
 {
     public static final String TITLE = "gui.power_selection.title";
 
-    public static final ResourceLocation SCROLLER_SPRITE = new ResourceLocation("container/creative_inventory/scroller");
-    public static final ResourceLocation SCROLLER_DISABLED_SPRITE = new ResourceLocation("container/creative_inventory/scroller_disabled");
+    public static final ResourceLocation SCROLLER_SPRITE = ResourceLocation.withDefaultNamespace("container/creative_inventory/scroller");
+    public static final ResourceLocation SCROLLER_DISABLED_SPRITE = ResourceLocation.withDefaultNamespace("container/creative_inventory/scroller_disabled");
 
     private static final ResourceLocation BACKGROUND = Minejago.modLoc("textures/gui/power_selection_screen.png");
     private final List<ResourceKey<Power>> powers;
@@ -116,7 +115,7 @@ public class PowerSelectionScreen extends Screen
     }
 
     @Override
-    public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         this.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
         this.renderBase(guiGraphics);
         this.renderArrows(guiGraphics, mouseX, mouseY);
@@ -221,7 +220,7 @@ public class PowerSelectionScreen extends Screen
         }
 
         @Override
-        public void renderWidget(@NotNull GuiGraphics guiGraphics, int i, int j, float f) {
+        public void renderWidget(GuiGraphics guiGraphics, int i, int j, float f) {
             this.renderButton(guiGraphics, isSelected(), isHovered());
             this.renderIcon(guiGraphics);
         }
@@ -253,7 +252,7 @@ public class PowerSelectionScreen extends Screen
         }
 
         @Override
-        public void updateWidgetNarration(@NotNull NarrationElementOutput narrationElementOutput) {
+        public void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
             this.defaultButtonNarrationText(narrationElementOutput);
         }
     }

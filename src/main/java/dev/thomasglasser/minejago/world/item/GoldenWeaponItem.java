@@ -3,6 +3,7 @@ package dev.thomasglasser.minejago.world.item;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.MinejagoClientUtils;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
+import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
@@ -24,13 +25,13 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.component.Unbreakable;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -44,7 +45,7 @@ public abstract class GoldenWeaponItem extends BaseModeledItem
                 .component(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true)
                 .component(DataComponents.MAX_DAMAGE, 0)
                 .component(DataComponents.UNBREAKABLE, new Unbreakable(true))
-                .component(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder().add(Attributes.ATTACK_DAMAGE, new AttributeModifier("Weapon Modifier", 30, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND).build()));
+                .component(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder().add(Attributes.ATTACK_DAMAGE, new AttributeModifier(SwordItem.BASE_ATTACK_DAMAGE_ID, 30, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND).build()));
     }
 
     @Override
@@ -61,13 +62,11 @@ public abstract class GoldenWeaponItem extends BaseModeledItem
 
     @Override
     public final InteractionResult useOn(UseOnContext pContext) {
-        // TODO: Update MidnightLib
-        if (/*MinejagoServerConfig.requireCompatiblePower*/true)
+        if (MinejagoServerConfig.requireCompatiblePower)
         {
             if (!canPowerHandle(pContext.getPlayer().getData(MinejagoAttachmentTypes.POWER).power(), pContext.getLevel().registryAccess().registryOrThrow(MinejagoRegistries.POWER)))
             {
-                // TODO: Update MidnightLib
-                if (/*MinejagoServerConfig.enableMalfunction*/true) {
+                if (MinejagoServerConfig.enableMalfunction) {
                     goCrazy(pContext.getPlayer());
                 }
                 if (this.getFailSound() != null)
@@ -98,13 +97,11 @@ public abstract class GoldenWeaponItem extends BaseModeledItem
 
     @Override
     public final void releaseUsing(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity, int pTimeCharged) {
-        // TODO: Update MidnightLib
-        if (pLivingEntity instanceof Player &&  /*MinejagoServerConfig.requireCompatiblePower*/true)
+        if (pLivingEntity instanceof Player &&  MinejagoServerConfig.requireCompatiblePower)
         {
             if (!canPowerHandle(pLivingEntity.getData(MinejagoAttachmentTypes.POWER).power(), pLevel.registryAccess().registryOrThrow(MinejagoRegistries.POWER)))
             {
-                // TODO: Update MidnightLib
-                if (/*MinejagoServerConfig.enableMalfunction*/true) {
+                if (MinejagoServerConfig.enableMalfunction) {
                     goCrazy((Player) pLivingEntity);
                 }
                 if (this.getFailSound() != null)
@@ -128,13 +125,11 @@ public abstract class GoldenWeaponItem extends BaseModeledItem
 
     @Override
     public final void onUseTick(Level level, LivingEntity livingEntity, ItemStack stack, int remainingUseDuration) {
-        // TODO: Update MidnightLib
-        if (livingEntity instanceof Player &&  /*MinejagoServerConfig.requireCompatiblePower*/true)
+        if (livingEntity instanceof Player && MinejagoServerConfig.requireCompatiblePower)
         {
             if (!canPowerHandle(livingEntity.getData(MinejagoAttachmentTypes.POWER).power(), level.registryAccess().registryOrThrow(MinejagoRegistries.POWER)))
             {
-                // TODO: Update MidnightLib
-                if (/*MinejagoServerConfig.enableMalfunction*/true) {
+                if (MinejagoServerConfig.enableMalfunction) {
                     goCrazy((Player) livingEntity);
                 }
                 if (this.getFailSound() != null)
@@ -171,7 +166,6 @@ public abstract class GoldenWeaponItem extends BaseModeledItem
         // TODO: Weapons portal event
     }
 
-    @Nullable
     public SoundEvent getFailSound()
     {
         return null;

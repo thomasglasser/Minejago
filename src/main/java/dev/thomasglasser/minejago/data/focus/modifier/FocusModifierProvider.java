@@ -23,7 +23,6 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -46,15 +45,15 @@ public abstract class FocusModifierProvider implements DataProvider
 	}
 
 	@Override
-	public @NotNull CompletableFuture<?> run(@NotNull CachedOutput output) {
+	public CompletableFuture<?> run(CachedOutput output) {
 		return this.registries.thenCompose(provider -> {
 			Set<ResourceLocation> set = new HashSet<>();
 			List<CompletableFuture<?>> list = new ArrayList<>();
 			Consumer<FocusModifier> consumer = modifier -> {
-				if (!set.add(new ResourceLocation(modifier.getId().getNamespace(), modifier.getType() + "/" + modifier.getId().getPath()))) {
+				if (!set.add(ResourceLocation.fromNamespaceAndPath(modifier.getId().getNamespace(), modifier.getType() + "/" + modifier.getId().getPath()))) {
 					throw new IllegalStateException("Duplicate focus modifier " + modifier.getId());
 				} else {
-					Path path = this.pathProvider.json(new ResourceLocation(modifier.getId().getNamespace(), modifier.getType() + "/" + modifier.getId().getPath()));
+					Path path = this.pathProvider.json(ResourceLocation.fromNamespaceAndPath(modifier.getId().getNamespace(), modifier.getType() + "/" + modifier.getId().getPath()));
 					list.add(DataProvider.saveStable(output, modifier.toJson(), path));
 				}
 			};

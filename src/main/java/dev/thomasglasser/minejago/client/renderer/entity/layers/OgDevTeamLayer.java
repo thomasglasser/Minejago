@@ -38,6 +38,6 @@ public class OgDevTeamLayer<T extends LivingEntity> extends RenderLayer<T, Playe
 
         poseStack.translate(0, -0.055, 0);
         if (!(entity instanceof AbstractClientPlayer) || MinejagoClientUtils.renderOgDevLayer((AbstractClientPlayer) entity))
-            model.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+            model.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
     }
 }

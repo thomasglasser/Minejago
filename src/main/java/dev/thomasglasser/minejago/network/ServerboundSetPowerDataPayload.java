@@ -2,6 +2,7 @@ package dev.thomasglasser.minejago.network;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
+import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.ai.memory.MinejagoMemoryModuleTypes;
 import dev.thomasglasser.minejago.world.entity.character.Wu;
@@ -44,8 +45,7 @@ public record ServerboundSetPowerDataPayload(ResourceKey<Power> power, boolean m
                 wu = (Wu) serverPlayer.level().getEntity(wuId.get());
             }
             ResourceKey<Power> oldPower = serverPlayer.getData(MinejagoAttachmentTypes.POWER).power();
-            // TODO: Update MidnightLib
-            if (serverPlayer.getData(MinejagoAttachmentTypes.POWER).given() && oldPower != MinejagoPowers.NONE && /*MinejagoServerConfig.drainPool*/true && wu != null)
+            if (serverPlayer.getData(MinejagoAttachmentTypes.POWER).given() && oldPower != MinejagoPowers.NONE && MinejagoServerConfig.drainPool && wu != null)
             {
                 wu.addPowersToGive(oldPower);
             }

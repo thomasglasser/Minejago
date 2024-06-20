@@ -1,0 +1,115 @@
+name: publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      title:
+        description: "title"
+        required: true
+        type: string
+      last_version:
+        description: "previous mod version"
+        required: true
+        type: string
+      version:
+        description: "new mod version"
+        required: true
+        type: string
+      game_versions:
+        description: "the minecraft versions it supports"
+        required: true
+        type: string
+
+jobs:
+  call-build-workflow:
+    permissions:
+      contents: read
+    uses: "./.github/workflows/build.yml"
+
+  publish:
+    needs: call-build-workflow
+    runs-on: ubuntu-latest
+    env:
+      changelog: '**Full Changelog**: https://github.com/thomasglasser/Minejago/compare/'
+    permissions:
+      contents: write
+    strategy:
+      matrix:
+        website: [ modrinth, curseforge, github_release ]
+    name: ${{ matrix.website }}
+
+    steps:
+      - name: Download mod artifact
+        uses: actions/download-artifact@v3
+        continue-on-error: true
+        with:
+          name: Minejago
+
+      - name: Checking and setting the environment
+        id: mod_env
+        continue-on-error: true
+        run: |
+          export name=$(ls build/libs/ | grep shadow -v | grep sources -v | grep javadoc -v | awk -F.jar '{print $1}')
+          export mod_name=$(echo $name | awk -F- '{print $1}')
+          export mc_version=$(echo $name | awk -F- '{print $3}')
+          export mod_version=$(echo $name | awk -F- '{print $4}')
+          echo "name=$name" >> $GITHUB_OUTPUT
+          echo "mod_name=$mod_name" >> $GITHUB_OUTPUT
+          echo "mc_version=$mc_version" >> $GITHUB_OUTPUT
+          echo "mod_version=$mod_version" >> $GITHUB_OUTPUT
+          rm /build/libs/*shadow.jar
+
+      - name: Publish Github Release
+        uses: Kir-Antipov/mc-publish@v3.3
+        continue-on-error: true
+        if : (matrix.website == 'github_release')
+        with:
+          files: |
+            build/libs/!(*-@(dev|sources|javadoc)).jar
+            build/libs/*-@(dev|sources|javadocs).jar
+          name : ${{ inputs.title }}
+          version: ${{ steps.mod_env.outputs.mod_version }}
+          changelog: ${{ env.changelog }}${{ inputs.last_version }}...${{ inputs.version }}
+          github-tag: ${{ steps.mod_env.outputs.mod_version }}
+          github-generate-changelog: true
+          java : Java 21
+          game-versions: |
+            ${{ inputs.game_versions }}
+
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish Modrinth Release
+        uses: Kir-Antipov/mc-publish@v3.3
+        continue-on-error: true
+        if : (matrix.website == 'modrinth')
+        with:
+          files: |
+            build/libs/!(*-@(dev|sources|javadoc|slim)).jar
+            build/libs/*-@(dev|sources|javadocs).jar
+          name: ${{ inputs.title }}
+          version: ${{ steps.mod_env.outputs.mod_version }}
+          changelog: ${{ env.changelog }}${{ inputs.last_version }}...${{ inputs.version }}
+          java: Java 21
+          game-versions: |
+            ${{ inputs.game_versions }}
+
+          modrinth-id: minejago
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+
+      - name: Publish Curseforge Release
+        uses: Kir-Antipov/mc-publish@v3.3
+        continue-on-error: true
+        if: (matrix.website == 'curseforge')
+        with:
+          files: |
+            build/libs/!(*-@(dev|sources|javadoc|slim)).jar
+            build/libs/*-@(dev|sources|javadocs).jar
+          name: ${{ inputs.title }}
+          version: ${{ steps.mod_env.outputs.mod_version }}
+          changelog: ${{ env.changelog }}${{ inputs.last_version }}...${{ inputs.version }}
+          java: Java 21
+          game-versions: |
+            ${{ inputs.game_versions }}
+
+          curseforge-id: 496253
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}

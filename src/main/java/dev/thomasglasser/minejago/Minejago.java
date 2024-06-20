@@ -17,7 +17,6 @@ import dev.thomasglasser.minejago.world.entity.MinejagoEntityEvents;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntitySerializers;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.ai.memory.MinejagoMemoryModuleTypes;
-import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.focus.modifier.resourcekey.ResourceKeyFocusModifiers;
 import dev.thomasglasser.minejago.world.item.MinejagoCreativeModeTabs;
@@ -31,7 +30,7 @@ import dev.thomasglasser.minejago.world.item.crafting.MinejagoRecipeTypes;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
 import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
-import dev.thomasglasser.minejago.world.level.saveddata.maps.MinejagoMapDecorations;
+import dev.thomasglasser.minejago.world.level.saveddata.maps.MinejagoMapDecorationTypes;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
@@ -51,11 +50,6 @@ public class Minejago {
 	public static final String MOD_ID = "minejago";
 	public static final String MOD_NAME = "Minejago";
 	public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
-
-	public static ResourceLocation modLoc(String path)
-	{
-		return new ResourceLocation(MOD_ID, path);
-	}
 
 	public Minejago(IEventBus bus)
 	{
@@ -83,12 +77,16 @@ public class Minejago {
 		bus.addListener(MinejagoDataGenerators::gatherData);
 	}
 
+	public static ResourceLocation modLoc(String path)
+	{
+		return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
+	}
+
 	private static void initRegistries()
 	{
 		MinejagoRegistries.init();
 
 		MinejagoArmorMaterials.init();
-		MinejagoMapDecorations.init();
 		MinejagoDataComponents.init();
 		MinejagoRecipeTypes.init();
 		MinejagoRecipeSerializers.init();
@@ -97,7 +95,6 @@ public class Minejago {
 		MinejagoPowers.init();
 		MinejagoEntityTypes.init();
 		MinejagoParticleTypes.init();
-		MinejagoPaintingVariants.init();
 		MinejagoBlocks.init();
 		MinejagoBlockEntityTypes.init();
 		MinejagoItems.init();
@@ -112,6 +109,7 @@ public class Minejago {
 		ResourceKeyFocusModifiers.init();
 		MinejagoAttachmentTypes.init();
 		MinejagoEntitySerializers.init();
+		MinejagoMapDecorationTypes.init();
 	}
 
 	private static void registerConfigs()
@@ -152,6 +150,7 @@ public class Minejago {
 		NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onServerPlayerLoggedIn);
 		NeoForge.EVENT_BUS.addListener(MinejagoCommandEvents::onCommandsRegister);
 		NeoForge.EVENT_BUS.addListener(MinejagoCoreEvents::onAddReloadListeners);
+		NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onLivingKnockBack);
 	}
 
 	private void addForgeClientListeners()
@@ -164,29 +163,21 @@ public class Minejago {
 	public enum Dependencies
 	{
 		MOONLIGHT_LIB("moonlight"),
-		DYNAMIC_LIGHTS("ryoamiclights", "lambdynlights"),
+		DYNAMIC_LIGHTS("ryoamiclights"),
 		TRIMMED("trimmed"),
-		SHERDSAPI("sherdsapi"),
-		PLAYER_ANIMATOR("playeranimator", "player-animator"),
-		REACH_ENTITY_ATTRIBUTES("neoforge", "reach-entity-attributes"),
+		PLAYER_ANIMATOR("playeranimator"),
 		MODONOMICON("modonomicon"),
 		TSLAT_ENTITY_STATUS("tslatentitystatus");
 
-		private final String neo;
-		private final String fabric;
+		private final String modId;
 
 		Dependencies(String modId)
 		{
-			this(modId, modId);
-		}
-		Dependencies(String neo, String fabric)
-		{
-			this.neo = neo;
-			this.fabric = fabric;
+			this.modId = modId;
 		}
 
 		public String getModId() {
-			return TommyLibServices.PLATFORM.getPlatformName().equals("NeoForge") ? neo : fabric;
+			return modId;
 		}
 
 		public boolean isInstalled()
@@ -196,7 +187,7 @@ public class Minejago {
 
 		public ResourceLocation modLoc(String path)
 		{
-			return new ResourceLocation(getModId(), path);
+			return ResourceLocation.fromNamespaceAndPath(modId, path);
 		}
 	}
 

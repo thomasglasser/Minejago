@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.data.modonomicons.wiki.categories;
 
-// TODO: Convert to Tslatouli
+// TODO: Convert to index style
 public class CompatCategoryProvider /*extends CategoryProvider*/ {
 //    public CompatCategoryProvider(BookProvider parent) {
 //        super(parent, "compat");

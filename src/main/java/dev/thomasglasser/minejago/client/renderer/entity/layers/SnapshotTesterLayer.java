@@ -3,6 +3,7 @@ package dev.thomasglasser.minejago.client.renderer.entity.layers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.client.MinejagoClientConfig;
 import dev.thomasglasser.minejago.client.MinejagoClientUtils;
 import dev.thomasglasser.minejago.client.model.PilotsSnapshotTesterHatModel;
 import net.minecraft.client.model.PlayerModel;
@@ -36,19 +37,17 @@ public class SnapshotTesterLayer<T extends LivingEntity> extends RenderLayer<T, 
 
     @Override
     protected ResourceLocation getTextureLocation(T entity) {
-        // TODO: Update MidnightLib
-//        return switch (MinejagoClientConfig.snapshotTesterCosmeticChoice)
-//        {
-//
-//            case BAMBOO_HAT ->
-//            {
-//                if (xmasTextures)
-//                    yield HOLIDAY_HAT_TEXTURE;
-//                else
-//                    yield BAMBOO_HAT_TEXTURE;
-//            }
-//        };
-        return BAMBOO_HAT_TEXTURE;
+        return switch (MinejagoClientConfig.snapshotTesterCosmeticChoice)
+        {
+
+            case BAMBOO_HAT ->
+            {
+                if (xmasTextures)
+                    yield HOLIDAY_HAT_TEXTURE;
+                else
+                    yield BAMBOO_HAT_TEXTURE;
+            }
+        };
     }
 
     @Override
@@ -62,11 +61,11 @@ public class SnapshotTesterLayer<T extends LivingEntity> extends RenderLayer<T, 
             {
                 switch (MinejagoClientUtils.snapshotChoice(player))
                 {
-                    case BAMBOO_HAT -> pilotsSnapshotTesterHatModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+                    case BAMBOO_HAT -> pilotsSnapshotTesterHatModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
                 }
             }
         }
         else
-            pilotsSnapshotTesterHatModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+            pilotsSnapshotTesterHatModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
     }
 }

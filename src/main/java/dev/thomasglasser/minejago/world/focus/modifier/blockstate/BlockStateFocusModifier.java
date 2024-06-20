@@ -10,7 +10,6 @@ import dev.thomasglasser.minejago.world.focus.modifier.Operation;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -31,14 +30,14 @@ public class BlockStateFocusModifier extends FocusModifier
 		return "BlockStateFocusModifier{id=" + getId() + "state=" + state + "}";
 	}
 
-	public static @NotNull Optional<BlockStateFocusModifier> fromJson(@NotNull ResourceLocation id, @NotNull JsonObject json) {
+	public static Optional<BlockStateFocusModifier> fromJson(ResourceLocation id, JsonObject json) {
 		if (json.has("modifier")) {
 			BlockState state = null;
 			if (json.has("state"))
 				state = BlockState.CODEC.parse(JsonOps.INSTANCE, json.get("state")).result().orElse(null);
 			else if (json.has("block"))
 			{
-				ResourceLocation loc = ResourceLocation.CODEC.parse(JsonOps.INSTANCE, json.get("block")).result().orElse(new ResourceLocation(""));
+				ResourceLocation loc = ResourceLocation.CODEC.parse(JsonOps.INSTANCE, json.get("block")).result().orElse(ResourceLocation.withDefaultNamespace(""));
 				if (BuiltInRegistries.BLOCK.containsKey(loc))
 					state = BuiltInRegistries.BLOCK.get(loc).defaultBlockState();
 				else

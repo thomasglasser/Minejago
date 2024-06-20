@@ -108,7 +108,7 @@ public class MinejagoRecipes extends ExtendedRecipeProvider
 
         MinejagoBlocks.TEAPOTS.forEach((color, pot) ->
         {
-            coloredTeapotFromColoredTerracotta(writer, pot.get(), BuiltInRegistries.BLOCK.get(new ResourceLocation(color.getName() + "_terracotta")));
+            coloredTeapotFromColoredTerracotta(writer, pot.get(), BuiltInRegistries.BLOCK.get(ResourceLocation.withDefaultNamespace(color.getName() + "_terracotta")));
             coloredTeapotFromTeapotAndDye(writer, pot.get(), ConventionalItemTags.forDyeColor(color));
         });
 

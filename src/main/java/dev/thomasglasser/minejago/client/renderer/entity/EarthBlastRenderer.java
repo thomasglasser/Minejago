@@ -43,7 +43,7 @@ public class EarthBlastRenderer extends EntityRenderer<EarthBlast>
 	}
 
 	private static void vertex(VertexConsumer vertexConsumer, PoseStack.Pose pose, int i, float f, int j, int k, int l) {
-		vertexConsumer.vertex(pose, f - 0.5F, (float)j - 0.25F, 0.0F).color(255, 255, 255, 255).uv((float)k, (float)l).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(i).normal(pose, 0.0F, 1.0F, 0.0F).endVertex();
+		vertexConsumer.addVertex(pose, f - 0.5F, (float)j - 0.25F, 0.0F).setColor(255, 255, 255, 255).setUv((float)k, (float)l).setOverlay(OverlayTexture.NO_OVERLAY).setLight(i).setNormal(pose, 0.0F, 1.0F, 0.0F);
 	}
 
 	/**

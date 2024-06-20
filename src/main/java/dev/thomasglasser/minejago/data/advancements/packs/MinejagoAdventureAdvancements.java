@@ -58,7 +58,7 @@ public class MinejagoAdventureAdvancements implements AdvancementProvider.Advanc
     {
         AdvancementHelper helper = new AdvancementHelper(consumer, Minejago.MOD_ID, existingFileHelper, enUs, CATEGORY);
 
-        AdvancementHolder interactWithMainSix = helper.make(new ResourceLocation("adventure/root"), MinejagoItems.IRON_KATANA.get(), INTERACT_WITH_MAIN_SIX, AdvancementType.GOAL, true, true, false, null, Map.of(
+        AdvancementHolder interactWithMainSix = helper.make(ResourceLocation.withDefaultNamespace("adventure/root"), MinejagoItems.IRON_KATANA.get(), INTERACT_WITH_MAIN_SIX, AdvancementType.GOAL, true, true, false, null, Map.of(
                 "interact_wu", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), Optional.of(EntityPredicate.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.WU.get()).build()))),
                 "interact_nya", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), Optional.of(EntityPredicate.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.NYA.get()).build()))),
                 "interact_jay", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), Optional.of(EntityPredicate.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.JAY.get()).build()))),
@@ -67,7 +67,7 @@ public class MinejagoAdventureAdvancements implements AdvancementProvider.Advanc
                 "interact_zane", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), Optional.of(EntityPredicate.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.ZANE.get()).build())))
         ), "Meet N' Greet", "Interact with Wu, Nya, and the Four Ninja");
 
-        AdvancementHolder killASkulkin = helper.make(new ResourceLocation("adventure/kill_a_mob"), MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.SPEED).get(), KILL_A_SKULKIN, AdvancementType.TASK, true, true, false, null, Map.of(
+        AdvancementHolder killASkulkin = helper.make(ResourceLocation.withDefaultNamespace("adventure/kill_a_mob"), MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.SPEED).get(), KILL_A_SKULKIN, AdvancementType.TASK, true, true, false, null, Map.of(
                 "kill_skulkin", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(MinejagoEntityTypeTags.SKULKINS))
         ), "Redead", "Kill a Skulkin Warrior");
 
@@ -90,7 +90,7 @@ public class MinejagoAdventureAdvancements implements AdvancementProvider.Advanc
                 "collect_knife", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.KNIFE).get()).build())
         ), "It's Always You Four Colors", "Collect all of the Skeletal Chestplate variants");
 
-        AdvancementHolder getTeapot = helper.make(new ResourceLocation("adventure/root"), MinejagoBlocks.TEAPOT.get(), GET_TEAPOT, AdvancementType.TASK, true, true, false, null, Map.of(
+        AdvancementHolder getTeapot = helper.make(ResourceLocation.withDefaultNamespace("adventure/root"), MinejagoBlocks.TEAPOT.get(), GET_TEAPOT, AdvancementType.TASK, true, true, false, null, Map.of(
                 "get_teapot", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(MinejagoItemTags.TEAPOTS).build())
         ), "Something is brewing...", "Acquire a teapot");
 

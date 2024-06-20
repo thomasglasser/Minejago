@@ -1,9 +1,11 @@
 package dev.thomasglasser.minejago.world.item;
 
+import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.renderer.item.WoodenNunchucksRenderer;
 import dev.thomasglasser.tommylib.api.world.item.BaseModeledItem;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -27,6 +29,8 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class NunchucksItem extends BaseModeledItem implements GeoItem
 {
+    public static final ResourceLocation DAMAGE_MODIFIER = Minejago.modLoc("nunchuck_swinging");
+
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     private BlockEntityWithoutLevelRenderer bewlr;
@@ -59,8 +63,10 @@ public class NunchucksItem extends BaseModeledItem implements GeoItem
         return InteractionResultHolder.consume(player.getItemInHand(hand));
     }
 
+    // TODO: Able to be enchanted with quick charge to charge 2x faster?
     @Override
-    public int getUseDuration(ItemStack pStack) {
+    public int getUseDuration(ItemStack pStack, LivingEntity p_344979_)
+    {
         return 100;
     }
 
@@ -80,10 +86,10 @@ public class NunchucksItem extends BaseModeledItem implements GeoItem
         ItemAttributeModifiers original = pStack.get(DataComponents.ATTRIBUTE_MODIFIERS);
         ItemAttributeModifiers.Builder itemAttributeModifiers = ItemAttributeModifiers.builder();
         if (original != null) original.modifiers().forEach(entry -> {
-            if (!entry.modifier().name().equals("Nunchuck swinging bonus"))
+            if (!entry.modifier().id().equals(DAMAGE_MODIFIER))
                 itemAttributeModifiers.add(entry.attribute(), entry.modifier(), entry.slot());
         });
-        itemAttributeModifiers.add(Attributes.ATTACK_DAMAGE, new AttributeModifier("Nunchuck swinging bonus", ((getUseDuration(pStack) - pTimeCharged) / 10.0), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
+        itemAttributeModifiers.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(DAMAGE_MODIFIER, ((getUseDuration(pStack, pLivingEntity) - pTimeCharged) / 10.0), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
         pStack.set(DataComponents.ATTRIBUTE_MODIFIERS, itemAttributeModifiers.build());
 
         ((Player)pLivingEntity).getCooldowns().addCooldown(this, 100);
@@ -106,7 +112,7 @@ public class NunchucksItem extends BaseModeledItem implements GeoItem
         ItemAttributeModifiers original = stack.get(DataComponents.ATTRIBUTE_MODIFIERS);
         if (original != null)
         {
-            original.modifiers().removeIf(entry -> entry.modifier().name().equals("Nunchuck swinging bonus"));
+            original.modifiers().removeIf(entry -> entry.modifier().id().equals(DAMAGE_MODIFIER));
             stack.set(DataComponents.ATTRIBUTE_MODIFIERS, original);
         }
     }

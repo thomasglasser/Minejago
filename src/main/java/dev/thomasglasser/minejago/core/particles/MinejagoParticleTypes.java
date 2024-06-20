@@ -1,13 +1,11 @@
 package dev.thomasglasser.minejago.core.particles;
 
-import com.mojang.serialization.MapCodec;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.particle.BoltsParticle;
 import dev.thomasglasser.minejago.client.particle.RocksParticle;
 import dev.thomasglasser.minejago.client.particle.SnowsParticle;
 import dev.thomasglasser.minejago.client.particle.SparklesParticle;
 import dev.thomasglasser.minejago.client.particle.SparksParticle;
-import dev.thomasglasser.minejago.client.particle.SpinjitzuParticle;
 import dev.thomasglasser.minejago.client.particle.VaporsParticle;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import dev.thomasglasser.tommylib.api.registration.DeferredHolder;
@@ -15,34 +13,12 @@ import dev.thomasglasser.tommylib.api.registration.DeferredRegister;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
 
 import java.util.function.Supplier;
 
 public class MinejagoParticleTypes
 {
     public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES = DeferredRegister.create(BuiltInRegistries.PARTICLE_TYPE, Minejago.MOD_ID);
-
-    public static final DeferredHolder<ParticleType<?>, ParticleType<SpinjitzuParticleOptions>> SPINJITZU = register("spinjitzu", () ->
-    {
-        ParticleType<SpinjitzuParticleOptions> particle = new ParticleType<>(true)
-        {
-            @Override
-            public MapCodec<SpinjitzuParticleOptions> codec()
-            {
-                return SpinjitzuParticleOptions.CODEC;
-            }
-
-            @Override
-            public StreamCodec<? super RegistryFriendlyByteBuf, SpinjitzuParticleOptions> streamCodec()
-            {
-                return SpinjitzuParticleOptions.STREAM_CODEC;
-            }
-        };
-        TommyLibServices.PARTICLE.fabricRegister(particle, SpinjitzuParticle.Provider::new);
-        return particle;
-    });
 
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> SPARKS = register("sparks", () -> TommyLibServices.PARTICLE.simple("sparks", SparksParticle.Provider::new, false));
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> SNOWS = register("snows", () -> TommyLibServices.PARTICLE.simple("snows", SnowsParticle.Provider::new,  false));

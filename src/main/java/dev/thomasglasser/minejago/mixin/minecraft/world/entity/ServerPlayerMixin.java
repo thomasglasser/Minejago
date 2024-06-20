@@ -16,11 +16,9 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Unit;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.WrittenBookItem;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -43,13 +41,6 @@ public abstract class ServerPlayerMixin
     private int lastSentFocus;
     @Unique
     private boolean lastFoodSaturationZero;
-
-    @Inject(method = "attack", at = @At("HEAD"))
-    private void minejago_attack(Entity target, CallbackInfo ci)
-    {
-        if (target instanceof ServerPlayer sp && (INSTANCE.getAttributeValue(Attributes.ATTACK_KNOCKBACK) + EnchantmentHelper.getKnockbackBonus(INSTANCE)) > 2)
-            MinejagoEntityEvents.stopSpinjitzu(sp.getData(MinejagoAttachmentTypes.SPINJITZU), sp, true);
-    }
 
     @Inject(method = "crit", at = @At("HEAD"))
     private void minejago_crit(Entity entityHit, CallbackInfo ci)

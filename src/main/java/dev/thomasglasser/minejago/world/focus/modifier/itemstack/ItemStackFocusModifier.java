@@ -11,7 +11,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -37,14 +36,14 @@ public class ItemStackFocusModifier extends FocusModifier
 		return "ItemStackFocusModifier{id=" + getId() + "stack=" + stack + "}";
 	}
 
-	public static @NotNull Optional<ItemStackFocusModifier> fromJson(@NotNull ResourceLocation id, @NotNull JsonObject json) {
+	public static Optional<ItemStackFocusModifier> fromJson(ResourceLocation id, JsonObject json) {
 		if (json.has("modifier")) {
 			ItemStack stack = ItemStack.EMPTY;
 			if (json.has("stack"))
 				stack = ItemStack.CODEC.parse(JsonOps.INSTANCE, json.get("stack")).result().orElse(ItemStack.EMPTY);
 			else if (json.has("item"))
 			{
-				ResourceLocation loc = ResourceLocation.CODEC.parse(JsonOps.INSTANCE, json.get("item")).result().orElse(new ResourceLocation(""));
+				ResourceLocation loc = ResourceLocation.CODEC.parse(JsonOps.INSTANCE, json.get("item")).result().orElse(ResourceLocation.withDefaultNamespace(""));
 				if (BuiltInRegistries.ITEM.containsKey(loc))
 					stack = BuiltInRegistries.ITEM.get(loc).getDefaultInstance();
 				else

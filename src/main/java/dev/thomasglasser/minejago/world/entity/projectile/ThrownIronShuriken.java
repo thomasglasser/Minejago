@@ -10,6 +10,7 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -23,7 +24,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
@@ -38,11 +38,11 @@ public class ThrownIronShuriken extends AbstractArrow
     private Vec3 pos;
 
     public ThrownIronShuriken(EntityType<? extends ThrownIronShuriken> entity, Level level) {
-        super(entity, level, new ItemStack(MinejagoItems.IRON_SHURIKEN.get()));
+        super(entity, level);
     }
 
     public ThrownIronShuriken(Level pLevel, LivingEntity pShooter, ItemStack pStack) {
-        super(MinejagoEntityTypes.THROWN_IRON_SHURIKEN.get(), pShooter, pLevel, pStack);
+        super(MinejagoEntityTypes.THROWN_IRON_SHURIKEN.get(), pShooter, pLevel, pStack, null);
         this.entityData.set(ID_FOIL, pStack.hasFoil());
     }
 
@@ -106,43 +106,34 @@ public class ThrownIronShuriken extends AbstractArrow
      */
     protected void onHitEntity(EntityHitResult pResult) {
         Entity entity = pResult.getEntity();
-        if (!(entity instanceof AbstractArrow))
-        {
-            float f = 8.0F;
-            if (entity instanceof LivingEntity livingentity)
-            {
-                f += EnchantmentHelper.getDamageBonus(getPickupItem(), livingentity.getType());
-            }
-
-            Entity entity1 = this.getOwner();
-            DamageSource damagesource = damageSources().trident(this, (entity1 == null ? this : entity1));
-            this.dealtDamage = true;
-            this.setNoGravity(false);
-            if (entity.hurt(damagesource, f))
-            {
-                if (entity.getType() == EntityType.ENDERMAN)
-                {
-                    return;
-                }
-
-                if (entity instanceof LivingEntity livingentity1)
-                {
-                    if (entity1 instanceof LivingEntity)
-                    {
-                        EnchantmentHelper.doPostHurtEffects(livingentity1, entity1);
-                        EnchantmentHelper.doPostDamageEffects((LivingEntity) entity1, livingentity1);
-                    }
-
-                    this.doPostHurtEffects(livingentity1);
-                }
-            }
-
-            this.setDeltaMovement(this.getDeltaMovement().multiply(-0.01D, -0.1D, -0.01D));
-            this.playSound(getDefaultHitGroundSoundEvent());
+        float f = 8.0F;
+        Entity entity1 = this.getOwner();
+        DamageSource damagesource = this.damageSources().trident(this, entity1 == null ? this : entity1);
+        if (this.level() instanceof ServerLevel serverlevel) {
+            f = EnchantmentHelper.modifyDamage(serverlevel, this.getWeaponItem(), entity, damagesource, f);
         }
+
+        this.dealtDamage = true;
+        if (entity.hurt(damagesource, f)) {
+            if (entity.getType() == EntityType.ENDERMAN) {
+                return;
+            }
+
+            if (this.level() instanceof ServerLevel serverlevel1) {
+                EnchantmentHelper.doPostAttackEffectsWithItemSource(serverlevel1, entity, damagesource, this.getWeaponItem());
+            }
+
+            if (entity instanceof LivingEntity livingentity) {
+                this.doKnockback(livingentity, damagesource);
+                this.doPostHurtEffects(livingentity);
+            }
+        }
+
+        this.setDeltaMovement(this.getDeltaMovement().multiply(-0.01, -0.1, -0.01));
+        this.playSound(getDefaultHitGroundSoundEvent(), 1.0F, 1.0F);
     }
 
-    protected boolean tryPickup(@NotNull Player player) {
+    protected boolean tryPickup(Player player) {
         return super.tryPickup(player) || this.isNoPhysics() && this.ownedBy(player) && player.getInventory().add(this.getPickupItem());
     }
 

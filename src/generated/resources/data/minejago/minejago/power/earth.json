@@ -1,9 +1,4 @@
 {
-  "alt_spinjitzu_color": [
-    25.0,
-    76.0,
-    138.0
-  ],
   "border_particle": "minejago:rocks",
   "display": {
     "description": {
@@ -15,11 +10,6 @@
   },
   "has_sets": true,
   "id": "minejago:earth",
-  "main_spinjitzu_color": [
-    157.0,
-    193.0,
-    240.0
-  ],
   "power_color": "#5A4441",
   "tagline": {
     "translate": "power.minejago.earth.tagline"

@@ -31,7 +31,7 @@ public class ThrownIronShurikenRenderer extends EntityRenderer<ThrownIronShurike
         if (!pEntity.hasDealtDamage())
             pMatrixStack.mulPose(Axis.XP.rotationDegrees(pEntity.getXRot() + (float)(90.0F * (Math.random() * 4))));
         VertexConsumer vertexconsumer = ItemRenderer.getFoilBufferDirect(pBuffer, this.model.renderType(this.getTextureLocation(pEntity)), false, pEntity.isFoil());
-        this.model.renderToBuffer(pMatrixStack, vertexconsumer, pPackedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        this.model.renderToBuffer(pMatrixStack, vertexconsumer, pPackedLight, OverlayTexture.NO_OVERLAY);
         pMatrixStack.popPose();
         super.render(pEntity, pEntityYaw, pPartialTicks, pMatrixStack, pBuffer, pPackedLight);
     }

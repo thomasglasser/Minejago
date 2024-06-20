@@ -37,7 +37,7 @@ public class MinejagoHusbandryAdvancements implements AdvancementProvider.Advanc
 	{
 		AdvancementHelper helper = new AdvancementHelper(saver, Minejago.MOD_ID, existingFileHelper, enUs, CATEGORY);
 
-		AdvancementHolder harvestWithScythe = helper.make(new ResourceLocation("husbandry/plant_seed"), MinejagoItems.IRON_SCYTHE.get(), HARVEST_WITH_SCYTHE, AdvancementType.TASK, true, true, false, null, Map.of(
+		AdvancementHolder harvestWithScythe = helper.make(ResourceLocation.withDefaultNamespace("husbandry/plant_seed"), MinejagoItems.IRON_SCYTHE.get(), HARVEST_WITH_SCYTHE, AdvancementType.TASK, true, true, false, null, Map.of(
 				"harvest_with_scythe", ItemUsedOnLocationTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location().setBlock(BlockPredicate.Builder.block().of(BlockTags.CROPS)), ItemPredicate.Builder.item().of(MinejagoItems.IRON_SCYTHE.get()))
 		), "The Ninja Reaper", "Use a Scythe to instantly replant a crop");
 	}

@@ -127,6 +127,10 @@
   "commands.power.success.self": "Set own power to %s",
   "commands.power.success_cleared.other": "Reset %s's power to %s and enabled power discovery",
   "commands.power.success_cleared.self": "Reset own power to %s and enabled power discovery",
+  "config.jade.plugin_minejago.dragon": "Minejago Dragon Config",
+  "config.jade.plugin_minejago.living_entity": "Minejago Living Entity Config",
+  "config.jade.plugin_minejago.painting": "Minejago Painting Config",
+  "config.jade.plugin_minejago.teapot_block": "Minejago Teapot Config",
   "container.teapot": "Teapot",
   "effect.minejago.acacia_tea": "Acacia Tea",
   "effect.minejago.azalea_tea": "Azalea Tea",
@@ -412,6 +416,7 @@
   "power.minejago.lightning.lore": "",
   "power.minejago.lightning.tagline": "",
   "power.minejago.none": "None",
+  "recipe_type.minejago.teapot_brewing": "Teapot Brewing",
   "scroll.edit_title": "Enter Scroll Title:",
   "scroll.finalize_warning": "Note! When you sign the scroll, it will no longer be editable.",
   "subtitles.block.teapot.whistle": "Teapot whistles",
@@ -436,5 +441,6 @@
   "subtitles.item.spear.throw": "Spear tosses",
   "subtitles.spinjitzu.active": "Spinjitzu whooshes",
   "subtitles.spinjitzu.start": "Spinjitzu activates",
-  "subtitles.spinjitzu.stop": "Spinjitzu fades"
+  "subtitles.spinjitzu.stop": "Spinjitzu fades",
+  "trim_pattern.minejago.four_weapons": "Four Weapons Armor Trim"
 }

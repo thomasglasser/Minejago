@@ -2,11 +2,13 @@ package dev.thomasglasser.minejago.world.entity.projectile;
 
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
+import dev.thomasglasser.minejago.world.item.MinejagoItemUtils;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -31,12 +33,12 @@ public class ThrownBoneKnife extends AbstractArrow
     private boolean dealtDamage;
 
     public ThrownBoneKnife(EntityType<? extends ThrownBoneKnife> entity, Level level) {
-        super(entity, level, new ItemStack(MinejagoItems.BONE_KNIFE.get()));
+        super(entity, level);
     }
 
     public ThrownBoneKnife(Level pLevel, LivingEntity pShooter, ItemStack pStack) {
-        super(MinejagoEntityTypes.THROWN_BONE_KNIFE.get(), pShooter, pLevel, pStack);
-        this.entityData.set(ID_LOYALTY, (byte) EnchantmentHelper.getLoyalty(pStack));
+        super(MinejagoEntityTypes.THROWN_BONE_KNIFE.get(), pShooter, pLevel, pStack, null);
+        this.entityData.set(ID_LOYALTY, (byte) MinejagoItemUtils.getLoyaltyFromItem(pStack, level(), this));
         this.entityData.set(ID_FOIL, pStack.hasFoil());
     }
 
@@ -109,29 +111,29 @@ public class ThrownBoneKnife extends AbstractArrow
     protected void onHitEntity(EntityHitResult pResult) {
         Entity entity = pResult.getEntity();
         float f = 8.0F;
-        if (entity instanceof LivingEntity livingentity) {
-            f += EnchantmentHelper.getDamageBonus(getPickupItem(), livingentity.getType());
+        Entity entity1 = this.getOwner();
+        DamageSource damagesource = this.damageSources().trident(this, entity1 == null ? this : entity1);
+        if (this.level() instanceof ServerLevel serverlevel) {
+            f = EnchantmentHelper.modifyDamage(serverlevel, this.getWeaponItem(), entity, damagesource, f);
         }
 
-        Entity entity1 = this.getOwner();
-        DamageSource damagesource = damageSources().trident(this, (entity1 == null ? this : entity1));
         this.dealtDamage = true;
         if (entity.hurt(damagesource, f)) {
             if (entity.getType() == EntityType.ENDERMAN) {
                 return;
             }
 
-            if (entity instanceof LivingEntity livingentity1) {
-                if (entity1 instanceof LivingEntity) {
-                    EnchantmentHelper.doPostHurtEffects(livingentity1, entity1);
-                    EnchantmentHelper.doPostDamageEffects((LivingEntity)entity1, livingentity1);
-                }
+            if (this.level() instanceof ServerLevel serverlevel1) {
+                EnchantmentHelper.doPostAttackEffectsWithItemSource(serverlevel1, entity, damagesource, this.getWeaponItem());
+            }
 
-                this.doPostHurtEffects(livingentity1);
+            if (entity instanceof LivingEntity livingentity) {
+                this.doKnockback(livingentity, damagesource);
+                this.doPostHurtEffects(livingentity);
             }
         }
 
-        this.setDeltaMovement(this.getDeltaMovement().multiply(-0.01D, -0.1D, -0.01D));
+        this.setDeltaMovement(this.getDeltaMovement().multiply(-0.01, -0.1, -0.01));
         this.playSound(getDefaultHitGroundSoundEvent());
     }
 
@@ -161,7 +163,7 @@ public class ThrownBoneKnife extends AbstractArrow
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         this.dealtDamage = pCompound.getBoolean("DealtDamage");
-        this.entityData.set(ID_LOYALTY, (byte)EnchantmentHelper.getLoyalty(getPickupItemStackOrigin()));
+        this.entityData.set(ID_LOYALTY, MinejagoItemUtils.getLoyaltyFromItem(getDefaultPickupItem(), level(), this));
     }
 
     public void addAdditionalSaveData(CompoundTag pCompound) {

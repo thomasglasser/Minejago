@@ -1,0 +1,28 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_brewed_infested_in_stand": {
+      "conditions": {
+        "potion": "minecraft:infested"
+      },
+      "trigger": "minecraft:brewed_potion"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:awkward_to_infested"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_brewed_infested_in_stand"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:awkward_to_infested"
+    ]
+  }
+}

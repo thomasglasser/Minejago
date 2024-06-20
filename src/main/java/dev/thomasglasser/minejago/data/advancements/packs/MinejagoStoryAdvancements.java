@@ -62,7 +62,7 @@ public class MinejagoStoryAdvancements implements AdvancementProvider.Advancemen
     public void generate(HolderLookup.Provider registries, Consumer<AdvancementHolder> saver, ExistingFileHelper existingFileHelper) {
         AdvancementHelper helper = new AdvancementHelper(saver, Minejago.MOD_ID, existingFileHelper, enUs, CATEGORY);
 
-        AdvancementHolder root = helper.root(MinejagoItems.SCYTHE_OF_QUAKES.get(), ROOT, new ResourceLocation("textures/gui/advancements/backgrounds/stone.png"), AdvancementType.TASK, false, false, false, null, Map.of(
+        AdvancementHolder root = helper.root(MinejagoItems.SCYTHE_OF_QUAKES.get(), ROOT, ResourceLocation.withDefaultNamespace("textures/gui/advancements/backgrounds/stone.png"), AdvancementType.TASK, false, false, false, null, Map.of(
                 "get_crafting_table", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.CRAFTING_TABLE)
         ), "Minejago", "Long before time had a name...");
 

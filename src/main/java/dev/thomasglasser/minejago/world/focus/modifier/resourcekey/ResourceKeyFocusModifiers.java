@@ -47,7 +47,7 @@ public class ResourceKeyFocusModifiers
 	}
 
 	private static <T> void load(ResourceLocation resourceId, Resource resource, ResourceKey<? extends Registry<?>> registry) {
-		ResourceLocation id = new ResourceLocation(resourceId.getNamespace(), resourceId.getPath().replace(".json", ""));
+		ResourceLocation id = ResourceLocation.fromNamespaceAndPath(resourceId.getNamespace(), resourceId.getPath().replace(".json", ""));
 
 		try {
 			InputStreamReader reader = new InputStreamReader(resource.open());

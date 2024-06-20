@@ -17,6 +17,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
@@ -33,13 +34,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Math;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
 
 public class ScytheOfQuakesItem extends GoldenWeaponItem
 {
+    public static final ResourceLocation STAIRCASE_SPEED_MODIFIER = Minejago.modLoc("staircase_speed");
+
     public ScytheOfQuakesItem(Properties pProperties) {
         super(pProperties);
     }
@@ -50,7 +53,7 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem
     }
 
     @Override
-    public int getUseDuration(ItemStack pStack) {
+    public int getUseDuration(ItemStack pStack, LivingEntity livingEntity) {
         return 200;
     }
 
@@ -120,14 +123,14 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem
     public void doReleaseUsing(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity, int pTimeCharged) {
         if (pLivingEntity instanceof Player player1)
         {
-            if (!player1.getAbilities().instabuild) player1.getCooldowns().addCooldown(pStack.getItem(), 20 * (pTimeCharged > 10? (pStack.getUseDuration() - pTimeCharged) : 1));
+            if (!player1.getAbilities().instabuild) player1.getCooldowns().addCooldown(pStack.getItem(), 20 * (pTimeCharged > 10? (pStack.getUseDuration(pLivingEntity) - pTimeCharged) : 1));
             if (!pLevel.isClientSide) TommyLibServices.NETWORK.sendToAllClients(new ClientboundStopAnimationPayload(pLivingEntity.getUUID()), pLevel.getServer());
             ItemAttributeModifiers original = pStack.get(DataComponents.ATTRIBUTE_MODIFIERS);
             ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder();
             if (original != null)
             {
                 original.modifiers().forEach(entry -> {
-                    if (!entry.modifier().name().equals("Staircase movement modifier"))
+                    if (!entry.modifier().id().equals(STAIRCASE_SPEED_MODIFIER))
                         builder.add(entry.attribute(), entry.modifier(), entry.slot());
                 });
             }
@@ -138,7 +141,7 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem
     @Override
     public void doOnUsingTick(ItemStack stack, LivingEntity player, int count) {
         Level level = player.level();
-        if (stack.getUseDuration() - count + 1 == stack.getUseDuration())
+        if (stack.getUseDuration(player) - count + 1 == stack.getUseDuration(player))
         {
             player.stopUsingItem();
             stack.releaseUsing(level, player, count);
@@ -292,7 +295,7 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem
             {
                 original.modifiers().forEach(entry -> builder.add(entry.attribute(), entry.modifier(), entry.slot()));
             }
-            builder.add(Attributes.MOVEMENT_SPEED, new AttributeModifier("Staircase movement modifier", -1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.HAND);
+            builder.add(Attributes.MOVEMENT_SPEED, new AttributeModifier(STAIRCASE_SPEED_MODIFIER, -1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.HAND);
             stack.set(DataComponents.ATTRIBUTE_MODIFIERS, builder.build());
             level.playSound(null, player.blockPosition(), MinejagoSoundEvents.SCYTHE_OF_QUAKES_PATH.get(), SoundSource.PLAYERS);
         }

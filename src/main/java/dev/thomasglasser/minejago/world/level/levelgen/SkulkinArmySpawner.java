@@ -1,5 +1,6 @@
 package dev.thomasglasser.minejago.world.level.levelgen;
 
+import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.tags.MinejagoStructureTags;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;
@@ -30,8 +31,7 @@ public class SkulkinArmySpawner implements CustomSpawner
 		} else if (!((SkulkinRaidsHolder)level).getSkulkinRaids().isMapTaken()) {
 			return 0;
 		}
-		// TODO: Update MidnightLib
-		else if (!/*MinejagoServerConfig.enableSkulkinRaids*/true) {
+		else if (!MinejagoServerConfig.enableSkulkinRaids) {
 			return 0;
 		} else {
 			RandomSource randomSource = level.random;

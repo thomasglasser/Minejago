@@ -4,6 +4,8 @@ import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterCosmeticOptions;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.VipData;
+import dev.thomasglasser.minejago.network.ServerboundChangeVipDataPayload;
+import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -52,12 +54,11 @@ public class MinejagoClientUtils {
 //            boolean displayDev;
             boolean displayOgDev;
 
-            // TODO: Update MidnightLib
-//            displaySnapshot = MinejagoClientConfig.displaySnapshotTesterCosmetic && MinejagoClientUtils.checkSnapshotTester(uuid);
+            displaySnapshot = MinejagoClientConfig.displaySnapshotTesterCosmetic && MinejagoClientUtils.checkSnapshotTester(uuid);
 //            displayDev = MinejagoClientConfig.displayDevTeamCosmetic && MinejagoClientUtils.checkDevTeam(uuid);
-//            displayOgDev = MinejagoClientConfig.displayOgDevTeamCosmetic && MinejagoClientUtils.checkOgDevTeam(uuid);
+            displayOgDev = MinejagoClientConfig.displayOgDevTeamCosmetic && MinejagoClientUtils.checkOgDevTeam(uuid);
 
-//            TommyLibServices.NETWORK.sendToServer(new ServerboundChangeVipDataPayload(uuid, new VipData(MinejagoClientConfig.snapshotTesterCosmeticChoice, displaySnapshot, /*displayDev*/false, displayOgDev)));
+            TommyLibServices.NETWORK.sendToServer(new ServerboundChangeVipDataPayload(uuid, new VipData(MinejagoClientConfig.snapshotTesterCosmeticChoice, displaySnapshot, /*displayDev*/false, displayOgDev)));
         }
     }
 

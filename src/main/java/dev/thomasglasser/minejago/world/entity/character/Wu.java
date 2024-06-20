@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Pair;
 import dev.thomasglasser.minejago.core.component.MinejagoDataComponents;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.network.ClientboundOpenPowerSelectionScreenPayload;
+import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.ai.behavior.GivePowerAndGi;
 import dev.thomasglasser.minejago.world.entity.ai.memory.MinejagoMemoryModuleTypes;
@@ -35,7 +36,6 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
 import net.tslat.smartbrainlib.api.core.behaviour.FirstApplicableBehaviour;
 import net.tslat.smartbrainlib.util.BrainUtils;
-import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
@@ -43,6 +43,7 @@ import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.constant.DefaultAnimations;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -91,26 +92,21 @@ public class Wu extends Character
         {
             Registry<Power> registry = level().registryAccess().registryOrThrow(MinejagoRegistries.POWER);
 
-            // TODO: Update MidnightLib
-            if (!/*MinejagoServerConfig.drainPool*/true || (powersToGive.size() <= 1)) {
+            if (!MinejagoServerConfig.drainPool || (powersToGive.size() <= 1)) {
                 powersToGive = new ArrayList<>(registry.registryKeySet());
-                // TODO: Update MidnightLib
-                if (!/*MinejagoServerConfig.enableNoPower*/true)
+                if (!MinejagoServerConfig.enableNoPower)
                     removePowersToGive(MinejagoPowers.NONE);
                 powersToGive.removeIf(key -> registry.get(key) != null && registry.get(key).isSpecial());
             }
 
             if (player instanceof ServerPlayer serverPlayer && hand == InteractionHand.MAIN_HAND) {
-                // TODO: Update MidnightLib
-                givingPower = !serverPlayer.getData(MinejagoAttachmentTypes.POWER).given() || /*MinejagoServerConfig.allowChange*/true;
+                givingPower = !serverPlayer.getData(MinejagoAttachmentTypes.POWER).given() || MinejagoServerConfig.allowChange;
                 if (givingPower) {
-                    // TODO: Update MidnightLib
-                    if (/*MinejagoServerConfig.allowChoose*/true) {
+                    if (MinejagoServerConfig.allowChoose) {
                         TommyLibServices.NETWORK.sendToClient(new ClientboundOpenPowerSelectionScreenPayload(powersToGive, Optional.of(this.getId())), serverPlayer);
                     } else if (this.distanceTo(serverPlayer) > 1.0f) {
                         ResourceKey<Power> oldPower = serverPlayer.getData(MinejagoAttachmentTypes.POWER).power();
-                        // TODO: Update MidnightLib
-                        if (serverPlayer.getData(MinejagoAttachmentTypes.POWER).given() && oldPower != MinejagoPowers.NONE && /*MinejagoServerConfig.drainPool*/true)
+                        if (serverPlayer.getData(MinejagoAttachmentTypes.POWER).given() && oldPower != MinejagoPowers.NONE && MinejagoServerConfig.drainPool)
                             addPowersToGive(oldPower);
                         ResourceKey<Power> newPower = powersToGive.get(random.nextInt(powersToGive.size()));
                         if (newPower != MinejagoPowers.NONE) removePowersToGive(newPower);

@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.data.modonomicons.wiki.categories;
 
-// TODO: Convert to Tslatouli
+// TODO: Convert to index style
 public class ExpansionsCategoryProvider /*extends CategoryProvider*/
 {
 	/*public static final String ID = "expansions";

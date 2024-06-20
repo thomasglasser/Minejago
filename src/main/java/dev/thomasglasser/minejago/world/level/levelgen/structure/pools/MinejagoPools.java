@@ -12,9 +12,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.structure.pools.LegacySinglePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.SinglePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
+import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 import static net.minecraft.data.worldgen.Pools.EMPTY;
@@ -36,17 +38,16 @@ public class MinejagoPools
     }
 
     public static Function<StructureTemplatePool.Projection, SinglePoolElement> singleElement(ResourceLocation rl) {
-        return projection -> new SinglePoolElement(Either.left(rl),
-                Holder.direct(new StructureProcessorList(List.of())), projection);
+        return projection -> new SinglePoolElement(Either.left(rl), Holder.direct(new StructureProcessorList(List.of())), projection, Optional.empty());
     }
 
     public static Function<StructureTemplatePool.Projection, SinglePoolElement> singleElement(ResourceLocation rl, Holder<StructureProcessorList> structureProcessorList) {
         return projection -> new SinglePoolElement(Either.left(rl),
-                structureProcessorList, projection);
+                structureProcessorList, projection, Optional.empty());
     }
 
     public static Function<StructureTemplatePool.Projection, LegacySinglePoolElement> legacyElement(ResourceLocation rl) {
         return projection -> new LegacySinglePoolElement(Either.left(rl),
-                Holder.direct(new StructureProcessorList(List.of())), projection);
+                Holder.direct(new StructureProcessorList(List.of())), projection, Optional.empty());
     }
 }

@@ -4,8 +4,6 @@ import com.google.common.util.concurrent.AtomicDouble;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
-import dev.thomasglasser.minejago.core.particles.MinejagoParticleUtils;
-import dev.thomasglasser.minejago.core.particles.SpinjitzuParticleOptions;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.network.ClientboundRefreshVipDataPayload;
 import dev.thomasglasser.minejago.network.ClientboundStartMeditationPayload;
@@ -22,7 +20,6 @@ import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.character.Character;
 import dev.thomasglasser.minejago.world.entity.character.Cole;
 import dev.thomasglasser.minejago.world.entity.character.Zane;
-import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaidsHolder;
@@ -72,6 +69,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.SpawnPlacementRegisterEvent;
+import net.neoforged.neoforge.event.entity.living.LivingKnockBackEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
@@ -169,7 +167,8 @@ public class MinejagoEntityEvents
                             level.gameEvent(serverPlayer, MinejagoGameEvents.SPINJITZU, serverPlayer.blockPosition());
                         }
                         Power power = player.level().registryAccess().registryOrThrow(MinejagoRegistries.POWER).getHolderOrThrow(player.getData(MinejagoAttachmentTypes.POWER).power()).value();
-                        if (!power.is(MinejagoPowers.NONE))
+                        // TODO: Spinjitzu colors
+                        /*if (!power.is(MinejagoPowers.NONE))
                         {
                             MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, power.getMainSpinjitzuColor(), power.getAltSpinjitzuColor(), 10.5, false);
                             if (power.getBorderParticle() != null)
@@ -220,7 +219,7 @@ public class MinejagoEntityEvents
                         else
                         {
                             MinejagoParticleUtils.renderNormalSpinjitzu(serverPlayer, SpinjitzuParticleOptions.DEFAULT, SpinjitzuParticleOptions.DEFAULT, 10.5, false);
-                        }
+                        }*/
                     }
                 }
                 else if (spinjitzu.active())
@@ -316,7 +315,7 @@ public class MinejagoEntityEvents
                     {
                         TommyLibServices.NETWORK.sendToServer(ServerboundStopSpinjitzuPayload.INSTANCE);
                     }
-                    else
+                    else if (!NO_SPINJITZU.test(player))
                     {
                         TommyLibServices.NETWORK.sendToServer(ServerboundStartSpinjitzuPayload.INSTANCE);
                     }
@@ -329,7 +328,7 @@ public class MinejagoEntityEvents
                         focusData.stopMeditating();
                         TommyLibServices.NETWORK.sendToServer(new ServerboundStopMeditationPayload(false));
                     }
-                    else
+                    else if (!NO_MEDITATION.test(player))
                     {
                         focusData.startMeditating();
                         TommyLibServices.NETWORK.sendToServer(ServerboundStartMeditationPayload.INSTANCE);
@@ -483,5 +482,13 @@ public class MinejagoEntityEvents
     {
         event.register(MinejagoEntityTypes.ZANE.get(), SpawnPlacementTypes.IN_WATER, Heightmap.Types.OCEAN_FLOOR_WG, Zane::checkZaneSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         event.register(MinejagoEntityTypes.COLE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ((entityType, serverLevelAccessor, mobSpawnType, blockPos, randomSource) -> Character.checkCharacterSpawnRules(Cole.class, entityType, serverLevelAccessor, mobSpawnType, blockPos, randomSource)), SpawnPlacementRegisterEvent.Operation.AND);
+    }
+
+    public static void onLivingKnockBack(LivingKnockBackEvent event)
+    {
+        if (event.getEntity() instanceof ServerPlayer sp && event.getStrength() > 2)
+        {
+            MinejagoEntityEvents.stopSpinjitzu(sp.getData(MinejagoAttachmentTypes.SPINJITZU), sp, true);
+        }
     }
 }

@@ -37,7 +37,7 @@ public class LecternRendererMixin
             poseStack.translate(0.0F, -0.125F, 0.0F);
             this.bookModel.setupAnim(0.0F, 0.1F, 0.9F, 1.2F);
             VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.entityCutout(Minejago.modLoc("textures/block/entity/lectern_scroll.png")));
-            this.bookModel.render(poseStack, vertexConsumer, packedLight, packedOverlay, 1.0F, 1.0F, 1.0F, 1.0F);
+            this.bookModel.render(poseStack, vertexConsumer, packedLight, packedOverlay, -1);
             poseStack.popPose();
             ci.cancel();
         }
