@@ -50,7 +50,7 @@
   "search_button_x_offset": 0,
   "search_button_y_offset": 0,
   "single_page_texture": "modonomicon:textures/gui/single_page_entry.png",
-  "tooltip": "",
+  "tooltip": "book.minejago.wiki.tooltip",
   "top_frame_overlay": {
     "frame_height": 7,
     "frame_width": 72,
