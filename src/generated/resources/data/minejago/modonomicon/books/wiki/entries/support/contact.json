@@ -20,7 +20,8 @@
         "minejago:textures/modonomicon/wiki/support/contact/discord.png"
       ],
       "text": "book.minejago.wiki.support.contact.discord.text",
-      "title": "book.minejago.wiki.support.contact.discord.title"
+      "title": "book.minejago.wiki.support.contact.discord.title",
+      "use_legacy_rendering": false
     },
     {
       "type": "modonomicon:text",
@@ -44,7 +45,8 @@
         "minejago:textures/modonomicon/wiki/support/contact/github.png"
       ],
       "text": "book.minejago.wiki.support.contact.github.text",
-      "title": "book.minejago.wiki.support.contact.github.title"
+      "title": "book.minejago.wiki.support.contact.github.title",
+      "use_legacy_rendering": false
     },
     {
       "type": "modonomicon:image",
@@ -58,7 +60,8 @@
         "minejago:textures/modonomicon/wiki/support/contact/curseforge.png"
       ],
       "text": "book.minejago.wiki.support.contact.mod_pages.text",
-      "title": "book.minejago.wiki.support.contact.mod_pages.title"
+      "title": "book.minejago.wiki.support.contact.mod_pages.title",
+      "use_legacy_rendering": false
     }
   ],
   "show_when_any_parent_unlocked": false,

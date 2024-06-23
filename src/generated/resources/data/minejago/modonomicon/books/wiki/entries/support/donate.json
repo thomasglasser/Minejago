@@ -20,7 +20,8 @@
         "minejago:textures/modonomicon/wiki/support/donate/buy_me_a_coffee.png"
       ],
       "text": "",
-      "title": ""
+      "title": "",
+      "use_legacy_rendering": false
     },
     {
       "type": "modonomicon:text",

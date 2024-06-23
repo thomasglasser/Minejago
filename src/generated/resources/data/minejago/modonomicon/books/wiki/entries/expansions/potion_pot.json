@@ -31,7 +31,8 @@
         "minejago:textures/modonomicon/wiki/expansions/potion_pot_pack/regeneration_pot.png"
       ],
       "text": "",
-      "title": ""
+      "title": "",
+      "use_legacy_rendering": false
     }
   ],
   "show_when_any_parent_unlocked": false,

@@ -29,6 +29,7 @@ public class VisualEntry extends IndexModeEntryProvider
 
 		// Image Page
 		this.page("image", () -> BookImagePageModel.create()
+				// TODO: Recreate pic once playerAnimator is reinstalled
 				.withImages(modLoc("textures/modonomicon/wiki/compat/visual/playeranimator.png"))
 				.withText(context().pageText()));
 

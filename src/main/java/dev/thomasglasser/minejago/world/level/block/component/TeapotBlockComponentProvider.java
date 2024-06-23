@@ -32,7 +32,7 @@ public enum TeapotBlockComponentProvider implements IBlockComponentProvider {
                 ItemStack potionStack = PotionContents.createItemStack(MinejagoItems.FILLED_TEACUP.get(), potion);
                 IElement icon = ElementHelper.INSTANCE.item(potionStack, 0.5f).translate(new Vec2(0, -2));
                 iTooltip.add(icon);
-                iTooltip.append(Component.translatable("block.minejago.teapot.waila.potion", potionStack.getItem().getName(potionStack)));
+                iTooltip.append(Component.translatable("block.minejago.teapot.waila.potion", Component.translatable(PotionContents.createItemStack(Items.POTION, be.getPotion()).getDescriptionId())));
             }
 
             ItemStack item = be.getInSlot(0);

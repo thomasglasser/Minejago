@@ -31,7 +31,8 @@
         "minejago:textures/modonomicon/wiki/expansions/immersion_pack/drum_scene.png"
       ],
       "text": "book.minejago.wiki.expansions.immersion_pack.summary_image.text",
-      "title": ""
+      "title": "",
+      "use_legacy_rendering": false
     }
   ],
   "show_when_any_parent_unlocked": false,
