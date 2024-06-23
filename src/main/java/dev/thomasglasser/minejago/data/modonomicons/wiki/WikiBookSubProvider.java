@@ -6,6 +6,7 @@ import com.klikli_dev.modonomicon.book.BookDisplayMode;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.data.modonomicons.wiki.categories.compat.CompatCategoryProvider;
 import dev.thomasglasser.minejago.data.modonomicons.wiki.categories.expansions.ExpansionsCategoryProvider;
+import dev.thomasglasser.minejago.data.modonomicons.wiki.categories.support.SupportCategoryProvider;
 import dev.thomasglasser.minejago.world.item.MinejagoCreativeModeTabs;
 
 import java.util.function.BiConsumer;
@@ -26,6 +27,7 @@ public class WikiBookSubProvider extends SingleBookSubProvider
 	{
 		add(new CompatCategoryProvider(this).generate());
 		add(new ExpansionsCategoryProvider(this).generate());
+		add(new SupportCategoryProvider(this).generate());
 	}
 
 	@Override
