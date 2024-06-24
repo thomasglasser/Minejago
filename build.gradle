@@ -181,8 +181,7 @@ dependencies {
     implementation "maven.modrinth:midnightlib:${midnightlib_version}-neoforge"
     implementation "maven.modrinth:ryoamiclights:${ryoamiclights_version}-neoforge"
     implementation "com.klikli_dev:modonomicon-${minecraft_version}-neoforge:${modonomicon_version}"
-    compileOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
-//    implementation "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
+    implementation "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
     implementation "maven.modrinth:jade:${jade_version}+neoforge"
 
     // Runtime
