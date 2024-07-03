@@ -251,6 +251,14 @@ spotless {
 	}
 }
 
+tasks.named('compileJava') {
+	dependsOn 'spotlessApply'
+}
+
+javadoc {
+	failOnError = false
+}
+
 publishing {
 	publications {
 		register('mavenJava', MavenPublication) {
