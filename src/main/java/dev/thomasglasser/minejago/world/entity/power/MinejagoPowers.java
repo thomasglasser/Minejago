@@ -7,7 +7,6 @@ import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.ItemStack;
 
@@ -38,9 +37,5 @@ public class MinejagoPowers {
             }
         });
         return list;
-    }
-
-    public static Power getPowerOrThrow(RegistryAccess registryAccess, ResourceKey<Power> key) {
-        return registryAccess.registryOrThrow(MinejagoRegistries.POWER).getOrThrow(key);
     }
 }

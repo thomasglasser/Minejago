@@ -36,7 +36,6 @@ import dev.thomasglasser.minejago.client.renderer.entity.WuRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.OgDevTeamLayer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterLayer;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
-import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.network.ServerboundFlyVehiclePayload;
 import dev.thomasglasser.minejago.network.ServerboundStopMeditationPayload;
 import dev.thomasglasser.minejago.plugins.MinejagoDynamicLights;
@@ -58,6 +57,7 @@ import dev.thomasglasser.tommylib.api.world.entity.PlayerRideableFlying;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -72,7 +72,6 @@ import net.minecraft.client.resources.PlayerSkin;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -167,10 +166,9 @@ public class MinejagoClientEvents {
 
     public static int renderPowerSymbol(GuiGraphics guiGraphics, Minecraft mc, DeltaTracker deltaTracker, LivingEntity entity, float opacity, boolean inWorldHud) {
         if (mc.level != null && !inWorldHud) {
-            Registry<Power> powers = mc.level.registryAccess().registry(MinejagoRegistries.POWER).get();
-            Power power = powers.get(entity.getData(MinejagoAttachmentTypes.POWER).power());
-            if (power != null) {
-                TESClientUtil.prepRenderForTexture(power.getIcon());
+            Optional<Holder.Reference<Power>> power = mc.level.holder(entity.getData(MinejagoAttachmentTypes.POWER).power());
+            if (power.isPresent()) {
+                TESClientUtil.prepRenderForTexture(power.orElseThrow().value().getIcon());
                 guiGraphics.pose().pushPose();
                 guiGraphics.pose().scale(0.5f, 0.5f, 1.0f);
                 TESClientUtil.drawSimpleTexture(guiGraphics, 0, 0, 32, 32, 0, 0, 32);

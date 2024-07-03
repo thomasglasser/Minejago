@@ -4,7 +4,6 @@ import com.google.common.util.concurrent.AtomicDouble;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
-import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.network.ClientboundRefreshVipDataPayload;
 import dev.thomasglasser.minejago.network.ClientboundStartMeditationPayload;
 import dev.thomasglasser.minejago.network.ClientboundStartMegaMeditationPayload;
@@ -149,7 +148,7 @@ public class MinejagoEntityEvents {
                             level.playSound(null, serverPlayer.blockPosition(), MinejagoSoundEvents.SPINJITZU_ACTIVE.get(), SoundSource.PLAYERS);
                             level.gameEvent(serverPlayer, MinejagoGameEvents.SPINJITZU, serverPlayer.blockPosition());
                         }
-                        Power power = player.level().registryAccess().registryOrThrow(MinejagoRegistries.POWER).getHolderOrThrow(player.getData(MinejagoAttachmentTypes.POWER).power()).value();
+                        Power power = player.level().holderOrThrow(player.getData(MinejagoAttachmentTypes.POWER).power()).value();
                         // TODO: Spinjitzu colors
                         /*if (!power.is(MinejagoPowers.NONE))
                         {

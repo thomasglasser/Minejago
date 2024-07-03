@@ -1,6 +1,5 @@
 package dev.thomasglasser.minejago.world.entity.component;
 
-import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.plugins.MinejagoWailaPlugin;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.power.Power;
@@ -22,7 +21,7 @@ public enum LivingEntityComponentProvider implements IEntityComponentProvider {
     @Override
     public void appendTooltip(ITooltip iTooltip, EntityAccessor entityAccessor, IPluginConfig iPluginConfig) {
         if (entityAccessor.getEntity() instanceof LivingEntity livingEntity && entityAccessor.getLevel() != null) {
-            Power power = entityAccessor.getLevel().registryAccess().registryOrThrow(MinejagoRegistries.POWER).get(livingEntity.getData(MinejagoAttachmentTypes.POWER).power());
+            Power power = entityAccessor.getLevel().holderOrThrow(livingEntity.getData(MinejagoAttachmentTypes.POWER).power()).value();
             IElement icon = new Element() {
                 private Vec2 size;
 

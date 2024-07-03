@@ -40,7 +40,7 @@ public class PowerCommand {
                 .requires((p_137736_) -> p_137736_.hasPermission(2))
                 .executes(context -> {
                     PowerData powerData = context.getSource().getPlayer().getData(MinejagoAttachmentTypes.POWER);
-                    context.getSource().sendSuccess(() -> Component.translatable(QUERY, MinejagoPowers.getPowerOrThrow(context.getSource().registryAccess(), powerData.power()).getFormattedName()), false);
+                    context.getSource().sendSuccess(() -> Component.translatable(QUERY, context.getSource().registryAccess().holderOrThrow(powerData.power()).value().getFormattedName()), false);
                     return 1;
                 })
                 .then(Commands.literal("clear")
@@ -56,13 +56,13 @@ public class PowerCommand {
     private static void logPowerChange(CommandSourceStack pSource, Entity entity, ResourceKey<Power> power, boolean clear) {
         if (entity instanceof LivingEntity livingEntity) {
             if (pSource.getEntity() == entity) {
-                pSource.sendSuccess(() -> Component.translatable(clear ? SUCCESS_CLEARED_SELF : SUCCESS_SELF, MinejagoPowers.getPowerOrThrow(pSource.registryAccess(), power).getFormattedName()), true);
+                pSource.sendSuccess(() -> Component.translatable(clear ? SUCCESS_CLEARED_SELF : SUCCESS_SELF, pSource.registryAccess().holderOrThrow(power).value().getFormattedName()), true);
             } else {
                 if (pSource.getLevel().getGameRules().getBoolean(GameRules.RULE_SENDCOMMANDFEEDBACK)) {
-                    livingEntity.sendSystemMessage(Component.translatable(clear ? CLEARED : CHANGED, MinejagoPowers.getPowerOrThrow(pSource.registryAccess(), power).getFormattedName()));
+                    livingEntity.sendSystemMessage(Component.translatable(clear ? CLEARED : CHANGED, pSource.registryAccess().holderOrThrow(power).value().getFormattedName()));
                 }
 
-                pSource.sendSuccess(() -> Component.translatable(clear ? SUCCESS_CLEARED_OTHER : SUCCESS_OTHER, livingEntity.getDisplayName(), MinejagoPowers.getPowerOrThrow(pSource.registryAccess(), power).getFormattedName()), true);
+                pSource.sendSuccess(() -> Component.translatable(clear ? SUCCESS_CLEARED_OTHER : SUCCESS_OTHER, livingEntity.getDisplayName(), pSource.registryAccess().holderOrThrow(power).value().getFormattedName()), true);
             }
         } else {
             pSource.sendFailure(Component.translatable(NOT_LIVING_ENTITY, entity.getDisplayName(), entity.getStringUUID()));

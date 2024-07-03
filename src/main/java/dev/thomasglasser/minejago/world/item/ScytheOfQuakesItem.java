@@ -15,7 +15,6 @@ import dev.thomasglasser.tommylib.api.world.level.LevelUtils;
 import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -46,8 +45,8 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem {
     }
 
     @Override
-    public boolean canPowerHandle(ResourceKey<Power> power, Registry<Power> registry) {
-        return registry.get(power).is(MinejagoPowerTags.EARTH, registry);
+    public boolean canPowerHandle(ResourceKey<Power> power, Level level) {
+        return level.holder(power).orElseThrow().is(MinejagoPowerTags.EARTH);
     }
 
     @Override

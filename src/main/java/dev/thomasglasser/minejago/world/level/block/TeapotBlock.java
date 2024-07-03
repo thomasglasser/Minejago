@@ -90,7 +90,6 @@ public class TeapotBlock extends BaseEntityBlock {
         return pLevel.isClientSide ? null : createTickerHelper(pBlockEntityType, MinejagoBlockEntityTypes.TEAPOT.get(), TeapotBlockEntity::serverTick);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public VoxelShape getShape(BlockState p_60555_, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_) {
         return SHAPE;
@@ -144,18 +143,15 @@ public class TeapotBlock extends BaseEntityBlock {
         }
     }
 
-    @SuppressWarnings("deprecation")
     public boolean hasAnalogOutputSignal(BlockState pState) {
         return true;
     }
 
-    @SuppressWarnings("deprecation")
     public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
         return false;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public List<ItemStack> getDrops(BlockState pState, LootParams.Builder pBuilder) {
         BlockEntity blockentity = pBuilder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
         if (blockentity instanceof TeapotBlockEntity be) {

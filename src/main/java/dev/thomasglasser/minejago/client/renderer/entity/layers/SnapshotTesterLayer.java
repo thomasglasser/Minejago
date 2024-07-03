@@ -36,7 +36,7 @@ public class SnapshotTesterLayer<T extends LivingEntity> extends RenderLayer<T, 
 
     @Override
     protected ResourceLocation getTextureLocation(T entity) {
-        return switch (MinejagoClientConfig.snapshotTesterCosmeticChoice) {
+        return switch (MinejagoClientConfig.INSTANCE.snapshotTesterCosmeticChoice.get()) {
 
             case BAMBOO_HAT -> {
                 if (xmasTextures)

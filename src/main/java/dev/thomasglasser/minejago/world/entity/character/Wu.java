@@ -88,21 +88,21 @@ public class Wu extends Character {
         if (player.getInventory().hasAnyMatching(itemStack -> itemStack.has(MinejagoDataComponents.GOLDEN_WEAPONS_MAP.get()))) {
             Registry<Power> registry = level().registryAccess().registryOrThrow(MinejagoRegistries.POWER);
 
-            if (!MinejagoServerConfig.drainPool || (powersToGive.size() <= 1)) {
+            if (!MinejagoServerConfig.INSTANCE.drainPool.get() || (powersToGive.size() <= 1)) {
                 powersToGive = new ArrayList<>(registry.registryKeySet());
-                if (!MinejagoServerConfig.enableNoPower)
+                if (!MinejagoServerConfig.INSTANCE.enableNoPower.get())
                     removePowersToGive(MinejagoPowers.NONE);
                 powersToGive.removeIf(key -> registry.get(key) != null && registry.get(key).isSpecial());
             }
 
             if (player instanceof ServerPlayer serverPlayer && hand == InteractionHand.MAIN_HAND) {
-                givingPower = !serverPlayer.getData(MinejagoAttachmentTypes.POWER).given() || MinejagoServerConfig.allowChange;
+                givingPower = !serverPlayer.getData(MinejagoAttachmentTypes.POWER).given() || MinejagoServerConfig.INSTANCE.allowChange.get();
                 if (givingPower) {
-                    if (MinejagoServerConfig.allowChoose) {
+                    if (MinejagoServerConfig.INSTANCE.allowChoose.get()) {
                         TommyLibServices.NETWORK.sendToClient(new ClientboundOpenPowerSelectionScreenPayload(powersToGive, Optional.of(this.getId())), serverPlayer);
                     } else if (this.distanceTo(serverPlayer) > 1.0f) {
                         ResourceKey<Power> oldPower = serverPlayer.getData(MinejagoAttachmentTypes.POWER).power();
-                        if (serverPlayer.getData(MinejagoAttachmentTypes.POWER).given() && oldPower != MinejagoPowers.NONE && MinejagoServerConfig.drainPool)
+                        if (serverPlayer.getData(MinejagoAttachmentTypes.POWER).given() && oldPower != MinejagoPowers.NONE && MinejagoServerConfig.INSTANCE.drainPool.get())
                             addPowersToGive(oldPower);
                         ResourceKey<Power> newPower = powersToGive.get(random.nextInt(powersToGive.size()));
                         if (newPower != MinejagoPowers.NONE) removePowersToGive(newPower);
@@ -156,7 +156,7 @@ public class Wu extends Character {
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
         controllerRegistrar.add(new AnimationController<>(this, "StickAttack", 5, state -> {
             if (this.swinging)
-                return /*getMainHandItem().getItem() == MinejagoItems.BAMBOO_STAFF.get() ? state.setAndContinue(ATTACK_SWING_WITH_STICK) :*/ state.setAndContinue(DefaultAnimations.ATTACK_SWING);
+                return getMainHandItem().getItem() == MinejagoItems.BAMBOO_STAFF.get() ? state.setAndContinue(ATTACK_SWING_WITH_STICK) : state.setAndContinue(DefaultAnimations.ATTACK_SWING);
 
             state.getController().forceAnimationReset();
 

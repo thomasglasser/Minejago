@@ -4,7 +4,6 @@ import static dev.thomasglasser.minejago.world.item.MinejagoItems.MOD_NEEDED;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.MinejagoClientUtils;
-import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.power.Power;
@@ -14,7 +13,6 @@ import dev.thomasglasser.tommylib.api.world.item.BaseModeledItem;
 import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
-import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -55,13 +53,13 @@ public abstract class GoldenWeaponItem extends BaseModeledItem {
         return UseAnim.NONE;
     }
 
-    public abstract boolean canPowerHandle(ResourceKey<Power> power, Registry<Power> registry);
+    public abstract boolean canPowerHandle(ResourceKey<Power> power, Level level);
 
     @Override
     public final InteractionResult useOn(UseOnContext pContext) {
-        if (MinejagoServerConfig.requireCompatiblePower) {
-            if (!canPowerHandle(pContext.getPlayer().getData(MinejagoAttachmentTypes.POWER).power(), pContext.getLevel().registryAccess().registryOrThrow(MinejagoRegistries.POWER))) {
-                if (MinejagoServerConfig.enableMalfunction) {
+        if (MinejagoServerConfig.INSTANCE.requireCompatiblePower.get()) {
+            if (!canPowerHandle(pContext.getPlayer().getData(MinejagoAttachmentTypes.POWER).power(), pContext.getLevel())) {
+                if (MinejagoServerConfig.INSTANCE.enableMalfunction.get()) {
                     goCrazy(pContext.getPlayer());
                 }
                 if (this.getFailSound() != null) {
@@ -88,9 +86,9 @@ public abstract class GoldenWeaponItem extends BaseModeledItem {
 
     @Override
     public final void releaseUsing(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity, int pTimeCharged) {
-        if (pLivingEntity instanceof Player && MinejagoServerConfig.requireCompatiblePower) {
-            if (!canPowerHandle(pLivingEntity.getData(MinejagoAttachmentTypes.POWER).power(), pLevel.registryAccess().registryOrThrow(MinejagoRegistries.POWER))) {
-                if (MinejagoServerConfig.enableMalfunction) {
+        if (pLivingEntity instanceof Player && MinejagoServerConfig.INSTANCE.requireCompatiblePower.get()) {
+            if (!canPowerHandle(pLivingEntity.getData(MinejagoAttachmentTypes.POWER).power(), pLevel)) {
+                if (MinejagoServerConfig.INSTANCE.enableMalfunction.get()) {
                     goCrazy((Player) pLivingEntity);
                 }
                 if (this.getFailSound() != null) {
@@ -112,9 +110,9 @@ public abstract class GoldenWeaponItem extends BaseModeledItem {
 
     @Override
     public final void onUseTick(Level level, LivingEntity livingEntity, ItemStack stack, int remainingUseDuration) {
-        if (livingEntity instanceof Player && MinejagoServerConfig.requireCompatiblePower) {
-            if (!canPowerHandle(livingEntity.getData(MinejagoAttachmentTypes.POWER).power(), level.registryAccess().registryOrThrow(MinejagoRegistries.POWER))) {
-                if (MinejagoServerConfig.enableMalfunction) {
+        if (livingEntity instanceof Player && MinejagoServerConfig.INSTANCE.requireCompatiblePower.get()) {
+            if (!canPowerHandle(livingEntity.getData(MinejagoAttachmentTypes.POWER).power(), level)) {
+                if (MinejagoServerConfig.INSTANCE.enableMalfunction.get()) {
                     goCrazy((Player) livingEntity);
                 }
                 if (this.getFailSound() != null) {

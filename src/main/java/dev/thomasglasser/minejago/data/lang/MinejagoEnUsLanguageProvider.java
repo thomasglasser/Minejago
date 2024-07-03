@@ -1,16 +1,13 @@
 package dev.thomasglasser.minejago.data.lang;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.client.MinejagoClientConfig;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.PowerSelectionScreen;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.ScrollEditScreen;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.ScrollViewScreen;
-import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterCosmeticOptions;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import dev.thomasglasser.minejago.plugins.MinejagoWailaPlugin;
 import dev.thomasglasser.minejago.plugins.jei.TeapotBrewingRecipeCategory;
-import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.server.commands.PowerCommand;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
@@ -294,52 +291,7 @@ public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider {
     }
 
     public void addConfigs() {
-        addConfigTitle(Minejago.MOD_NAME);
-
-        // Server
-        addConfigCategory("features", "Features");
-        addConfig("features_comment", MinejagoServerConfig.features_comment);
-        addConfig("features_comment_continued", MinejagoServerConfig.features_comment_continued);
-        addConfig("enable_tech_comment", MinejagoServerConfig.enable_tech_comment);
-        addConfig("enableTech", "Enable Tech");
-        addConfig("enable_skulkin_raids_comment", MinejagoServerConfig.enable_skulkin_raids_comment);
-        addConfig("enableSkulkinRaids", "Enable Skulkin Raids");
-
-        addConfigCategory("powers", "Powers");
-        addConfig("powers_comment", MinejagoServerConfig.powers_comment);
-        addConfig("allow_choose_comment", MinejagoServerConfig.allow_choose_comment);
-        addConfig("allowChoose", "Allow Power Choosing");
-        addConfig("allow_change_comment", MinejagoServerConfig.allow_change_comment);
-        addConfig("allowChange", "Allow Power Changing");
-        addConfig("drain_pool_comment", MinejagoServerConfig.drain_pool_comment);
-        addConfig("drainPool", "Drain Power Pool");
-        addConfig("enable_no_power_comment", MinejagoServerConfig.enable_no_power_comment);
-        addConfig("enableNoPower", "Enable No Power");
-
-        addConfigCategory("golden_weapons", "Golden Weapons");
-        addConfig("golden_weapons_comment", MinejagoServerConfig.golden_weapons_comment);
-        addConfig("require_compatible_power_comment", MinejagoServerConfig.require_compatible_power_comment);
-        addConfig("requireCompatiblePower", "Require Compatible Power");
-        addConfig("enable_malfunction_comment", MinejagoServerConfig.enable_malfunction_comment);
-        addConfig("enableMalfunction", "Enable Malfunction");
-
-        // Client
-        addConfigCategory("cosmetics", "Cosmetics");
-        addConfig("player_cosmetics_comment", MinejagoClientConfig.player_cosmetics_comment);
-        addConfig("display_snapshot_tester_cosmetic_comment", MinejagoClientConfig.display_snapshot_tester_cosmetic_comment);
-        addConfig("displaySnapshotTesterCosmetic", "Display Snapshot Tester Cosmetic");
-        addConfig(SnapshotTesterCosmeticOptions.BAMBOO_HAT, "Pilots (Bamboo Hat)");
-        addConfig("snapshot_tester_cosmetic_choice_comment", MinejagoClientConfig.snapshot_tester_cosmetic_choice_comment);
-        addConfig("snapshotTesterCosmeticChoice", "Snapshot Tester Cosmetic Choice");
-        addConfig("display_og_dev_team_cosmetic_comment", MinejagoClientConfig.display_og_dev_team_cosmetic_comment);
-        addConfig("displayOgDevTeamCosmetic", "Display OG Dev Team Cosmetic");
-
-        addConfigCategory("focus_bar", "Focus Bar");
-        addConfig("focus_bar_comment", MinejagoClientConfig.focus_bar_comment);
-        addConfig("x_offset_comment", MinejagoClientConfig.x_offset_comment);
-        addConfig("xOffset", "X Offset");
-        addConfig("y_offset_comment", MinejagoClientConfig.y_offset_comment);
-        addConfig("yOffset", "Y Offset");
+        // TODO: Convert config comments to translations
     }
 
     public void addPluginConfig(ResourceLocation location, String name) {

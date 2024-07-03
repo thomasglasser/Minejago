@@ -6,7 +6,6 @@ import dev.thomasglasser.minejago.tags.MinejagoDimensionTypeTags;
 import java.util.Iterator;
 import java.util.Map;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -43,7 +42,7 @@ public class SkulkinRaids extends SavedData {
 
         while (iterator.hasNext()) {
             SkulkinRaid raid = iterator.next();
-            if (!MinejagoServerConfig.enableSkulkinRaids) {
+            if (!MinejagoServerConfig.INSTANCE.enableSkulkinRaids.get()) {
                 raid.stop();
             }
 
@@ -72,10 +71,10 @@ public class SkulkinRaids extends SavedData {
     public SkulkinRaid createOrExtendSkulkinRaid(ServerPlayer serverPlayer) {
         if (serverPlayer.isSpectator()) {
             return null;
-        } else if (!MinejagoServerConfig.enableSkulkinRaids) {
+        } else if (!MinejagoServerConfig.INSTANCE.enableSkulkinRaids.get()) {
             return null;
         } else {
-            if (Holder.Reference.createIntrusive(serverPlayer.level().registryAccess().registryOrThrow(Registries.DIMENSION_TYPE).holderOwner(), serverPlayer.level().dimensionType()).is(MinejagoDimensionTypeTags.HAS_SKULKIN_RAIDS)) {
+            if (serverPlayer.level().registryAccess().registryOrThrow(Registries.DIMENSION_TYPE).createIntrusiveHolder(serverPlayer.level().dimensionType()).is(MinejagoDimensionTypeTags.HAS_SKULKIN_RAIDS)) {
                 return null;
             } else {
                 SkulkinRaid raid = this.getOrCreateSkulkinRaid(serverPlayer.serverLevel(), serverPlayer.blockPosition());

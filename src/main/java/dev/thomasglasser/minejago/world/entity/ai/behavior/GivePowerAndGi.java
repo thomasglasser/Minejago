@@ -2,7 +2,6 @@ package dev.thomasglasser.minejago.world.entity.ai.behavior;
 
 import com.mojang.datafixers.util.Pair;
 import dev.thomasglasser.minejago.core.component.MinejagoDataComponents;
-import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.world.entity.ai.memory.MinejagoMemoryModuleTypes;
 import dev.thomasglasser.minejago.world.entity.character.Wu;
 import dev.thomasglasser.minejago.world.entity.power.Power;
@@ -60,7 +59,7 @@ public class GivePowerAndGi<E extends PathfinderMob> extends MoveToWalkTarget<E>
     protected void stop(E entity) {
         super.stop(entity);
         new PowerData(power, true).save(target);
-        Power power1 = entity.level().registryAccess().registry(MinejagoRegistries.POWER).orElseThrow().get(power);
+        Power power1 = entity.level().holderOrThrow(power).value();
         if (power1 != null && power1.hasSets()) equipGi();
         if (power1 != null) target.sendSystemMessage(Component.translatable(Wu.POWER_GIVEN_KEY, entity.getDisplayName(), target.getDisplayName(), power1.getFormattedName(), power1.getTagline()));
 

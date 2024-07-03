@@ -13,6 +13,10 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WallClimberNavigation;
 import net.minecraft.world.level.Level;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.constant.DefaultAnimations;
 
 public class Cole extends Character {
     private static final EntityDataAccessor<Boolean> DATA_CLIMBING = SynchedEntityData.defineId(Cole.class, EntityDataSerializers.BOOLEAN);
@@ -56,6 +60,19 @@ public class Cole extends Character {
         if (!this.level().isClientSide) {
             this.setClimbing(this.horizontalCollision);
         }
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+        controllerRegistrar.add(new AnimationController<>(this, "Move", 0, state -> {
+            if (isClimbing())
+                return state.setAndContinue(CLIMB);
+            else if (state.isMoving())
+                return state.setAndContinue(DefaultAnimations.WALK);
+
+            return PlayState.STOP;
+        }));
+        controllerRegistrar.add(DefaultAnimations.genericAttackAnimation(this, DefaultAnimations.ATTACK_SWING));
     }
 
     public boolean onClimbable() {

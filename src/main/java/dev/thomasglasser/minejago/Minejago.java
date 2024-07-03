@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago;
 
 import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
+import dev.thomasglasser.minejago.client.MinejagoClientConfig;
 import dev.thomasglasser.minejago.client.MinejagoClientEvents;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.commands.MinejagoCommandEvents;
@@ -10,6 +11,7 @@ import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.data.MinejagoDataGenerators;
 import dev.thomasglasser.minejago.network.MinejagoPayloads;
+import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
@@ -34,7 +36,9 @@ import dev.thomasglasser.minejago.world.level.saveddata.maps.MinejagoMapDecorati
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
@@ -50,12 +54,12 @@ public class Minejago {
     public static final String MOD_NAME = "Minejago";
     public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
 
-    public Minejago(IEventBus bus) {
+    public Minejago(IEventBus bus, ModContainer modContainer) {
         LOGGER.info("Initializing {} for {} in a {} environment...", MOD_NAME, TommyLibServices.PLATFORM.getPlatformName(), TommyLibServices.PLATFORM.getEnvironmentName());
 
         initRegistries();
 
-        registerConfigs();
+        registerConfigs(modContainer);
 
         if (Dependencies.TSLAT_ENTITY_STATUS.isInstalled()) {
             TESAPI.addTESHudElement(Minejago.modLoc("power_symbol"), MinejagoClientEvents::renderPowerSymbol);
@@ -107,9 +111,9 @@ public class Minejago {
         MinejagoMapDecorationTypes.init();
     }
 
-    private static void registerConfigs() {
-//		MidnightConfig.init(Minejago.MOD_ID, MinejagoServerConfig.class);
-//		if (TommyLibServices.PLATFORM.isClientSide()) MidnightConfig.init(Minejago.MOD_ID, MinejagoClientConfig.class);
+    private static void registerConfigs(ModContainer modContainer) {
+        modContainer.registerConfig(ModConfig.Type.SERVER, MinejagoServerConfig.INSTANCE.getConfigSpec());
+        modContainer.registerConfig(ModConfig.Type.CLIENT, MinejagoClientConfig.INSTANCE.getConfigSpec());
     }
 
     private void addModListeners(IEventBus bus) {

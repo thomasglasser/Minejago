@@ -1,51 +1,69 @@
 package dev.thomasglasser.minejago.server;
 
-import eu.midnightdust.lib.config.MidnightConfig;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
-public class MinejagoServerConfig extends MidnightConfig {
-    // Feature Toggles
-    @Comment(category = "features", centered = true)
-    public static final String features_comment = "Optional features that enhance the mod, ";
-    @Comment(category = "features", centered = true)
-    public static final String features_comment_continued = "but may not match the desired experience of some players";
-    @Comment(category = "features")
-    public static final String enable_tech_comment = "Enable the technology of the mod, such as vehicles and computers";
-    @Entry(category = "features")
-    public static boolean enableTech = true;
-    @Comment(category = "features")
-    public static final String enable_skulkin_raids_comment = "Enable Skulkin Raids on Four Weapons structures";
-    @Entry(category = "features")
-    public static boolean enableSkulkinRaids = true;
+public class MinejagoServerConfig {
+    public static final MinejagoServerConfig INSTANCE = new MinejagoServerConfig();
+
+    public final ModConfigSpec configSpec;
+
+    // Features
+    public final ModConfigSpec.BooleanValue enableTech;
+    public final ModConfigSpec.BooleanValue enableSkulkinRaids;
 
     // Powers
-    @Comment(category = "powers", centered = true)
-    public static final String powers_comment = "Settings for powers (elemental or otherwise)";
-    @Comment(category = "powers")
-    public static final String allow_choose_comment = "Allow players to choose the power given to them by interacting with Master Wu";
-    @Entry(category = "powers")
-    public static boolean allowChoose = false;
-    @Comment(category = "powers")
-    public static final String allow_change_comment = "Allow players to get a new power by interacting with Master Wu again";
-    @Entry(category = "powers")
-    public static boolean allowChange = false;
-    @Comment(category = "powers")
-    public static final String drain_pool_comment = "Remove a power from the option list once given and reset when all powers have been given";
-    @Entry(category = "powers")
-    public static boolean drainPool = true;
-    @Comment(category = "powers")
-    public static final String enable_no_power_comment = "Enable players to receive no power from Master Wu";
-    @Entry(category = "powers")
-    public static boolean enableNoPower = true;
+    public final ModConfigSpec.BooleanValue allowChoose;
+    public final ModConfigSpec.BooleanValue allowChange;
+    public final ModConfigSpec.BooleanValue drainPool;
+    public final ModConfigSpec.BooleanValue enableNoPower;
 
     // Golden Weapons
-    @Comment(category = "golden_weapons", centered = true)
-    public static final String golden_weapons_comment = "Settings for the four Golden Weapons";
-    @Comment(category = "golden_weapons")
-    public static final String require_compatible_power_comment = "Require users to have a compatible power";
-    @Entry(category = "golden_weapons")
-    public static boolean requireCompatiblePower = true;
-    @Comment(category = "golden_weapons")
-    public static final String enable_malfunction_comment = "Enable an abnormal reaction when handled by someone without a compatible power";
-    @Entry(category = "golden_weapons")
-    public static boolean enableMalfunction = true;
+    public final ModConfigSpec.BooleanValue requireCompatiblePower;
+    public final ModConfigSpec.BooleanValue enableMalfunction;
+
+    public MinejagoServerConfig() {
+        ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
+
+        builder.comment("Optional features that enhance the mod, but may not match the desired experience of some players");
+        builder.push("features");
+        enableTech = builder
+                .comment("Enable the technology of the mod, such as vehicles and computers")
+                .define("enable_tech", true);
+        enableSkulkinRaids = builder
+                .comment("Enable Skulkin Raids on Four Weapons structures")
+                .define("enable_skulkin_raids", true);
+        builder.pop();
+
+        builder.comment("Settings for powers (elemental or otherwise)");
+        builder.push("powers");
+        allowChoose = builder
+                .comment("Allow players to choose the power given to them by interacting with Master Wu")
+                .define("allow_choose", false);
+        allowChange = builder
+                .comment("Allow players to get a new power by interacting with Master Wu again")
+                .define("allow_change", false);
+        drainPool = builder
+                .comment("Remove a power from the option list once given and reset when all powers have been given")
+                .define("drain_pool", true);
+        enableNoPower = builder
+                .comment("Enable players to receive no power from Master Wu")
+                .define("enable_no_power", true);
+        builder.pop();
+
+        builder.comment("Settings for the four Golden Weapons");
+        builder.push("golden_weapons");
+        requireCompatiblePower = builder
+                .comment("Require users to have a compatible power")
+                .define("require_compatible_power", true);
+        enableMalfunction = builder
+                .comment("Enable an abnormal reaction when handled by someone without a compatible power")
+                .define("enable_malfunction", true);
+        builder.pop();
+
+        configSpec = builder.build();
+    }
+
+    public ModConfigSpec getConfigSpec() {
+        return configSpec;
+    }
 }

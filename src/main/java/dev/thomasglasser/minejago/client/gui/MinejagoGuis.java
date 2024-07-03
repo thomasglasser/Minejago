@@ -3,7 +3,6 @@ package dev.thomasglasser.minejago.client.gui;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.MinejagoClientConfig;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
-import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.focus.FocusData;
 import dev.thomasglasser.tommylib.api.client.ClientUtils;
 import net.minecraft.client.DeltaTracker;
@@ -49,12 +48,12 @@ public class MinejagoGuis {
                         y = startY + (minecraft.level.random.nextInt(3) - 1);
                     }
 
-                    int color = MinejagoPowers.getPowerOrThrow(minecraft.level.registryAccess(), player.getData(MinejagoAttachmentTypes.POWER).power()).getColor().getValue();
+                    int color = minecraft.level.holderOrThrow(player.getData(MinejagoAttachmentTypes.POWER).power()).value().getColor().getValue();
 
                     int x = startX - i * 8 - 9;
 
-                    int xOff = MinejagoClientConfig.xOffset;
-                    int yOff = MinejagoClientConfig.yOffset;
+                    int xOff = MinejagoClientConfig.INSTANCE.xOffset.get();
+                    int yOff = MinejagoClientConfig.INSTANCE.yOffset.get();
 
                     x += xOff;
                     y -= yOff;

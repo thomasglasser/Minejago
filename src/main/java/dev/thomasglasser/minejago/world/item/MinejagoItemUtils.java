@@ -32,10 +32,10 @@ public final class MinejagoItemUtils {
         /* TODO: Find fire */ BlockPos pos2 = serverLevel.findNearestMapStructure(StructureTags.RUINED_PORTAL, entity.getOnPos(), Integer.MAX_VALUE, false);
         BlockPos earth = serverLevel.findNearestMapStructure(MinejagoStructureTags.CAVE_OF_DESPAIR, entity.getOnPos(), Integer.MAX_VALUE, false);
         /* TODO: Find ice */ BlockPos pos4 = serverLevel.findNearestMapStructure(StructureTags.MINESHAFT, entity.getOnPos(), Integer.MAX_VALUE, false);
-        if (pos1 != null) MapItemSavedData.addTargetDecoration(itemstack, pos1, "lightning", MinejagoMapDecorationTypes.NUNCHUCKS_OF_LIGHTNING.asReferenceFrom(serverLevel.registryAccess()));
-        if (pos2 != null) MapItemSavedData.addTargetDecoration(itemstack, pos2, "fire", MinejagoMapDecorationTypes.SWORD_OF_FIRE.asReferenceFrom(serverLevel.registryAccess()));
-        if (earth != null) MapItemSavedData.addTargetDecoration(itemstack, earth, "earth", MinejagoMapDecorationTypes.SCYTHE_OF_QUAKES.asReferenceFrom(serverLevel.registryAccess()));
-        if (pos4 != null) MapItemSavedData.addTargetDecoration(itemstack, pos4, "ice", MinejagoMapDecorationTypes.SHURIKENS_OF_ICE.asReferenceFrom(serverLevel.registryAccess()));
+        if (pos1 != null) MapItemSavedData.addTargetDecoration(itemstack, pos1, "lightning", serverLevel.holderOrThrow(MinejagoMapDecorationTypes.NUNCHUCKS_OF_LIGHTNING.getKey()));
+        if (pos2 != null) MapItemSavedData.addTargetDecoration(itemstack, pos2, "fire", serverLevel.holderOrThrow(MinejagoMapDecorationTypes.SWORD_OF_FIRE.getKey()));
+        if (earth != null) MapItemSavedData.addTargetDecoration(itemstack, earth, "earth", serverLevel.holderOrThrow(MinejagoMapDecorationTypes.SCYTHE_OF_QUAKES.getKey()));
+        if (pos4 != null) MapItemSavedData.addTargetDecoration(itemstack, pos4, "ice", serverLevel.holderOrThrow(MinejagoMapDecorationTypes.SHURIKENS_OF_ICE.getKey()));
         itemstack.set(MinejagoDataComponents.GOLDEN_WEAPONS_MAP.get(), Unit.INSTANCE);
         return itemstack;
     }

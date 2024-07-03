@@ -47,11 +47,11 @@ public class MinejagoClientUtils {
 //            boolean displayDev;
             boolean displayOgDev;
 
-            displaySnapshot = MinejagoClientConfig.displaySnapshotTesterCosmetic && MinejagoClientUtils.checkSnapshotTester(uuid);
+            displaySnapshot = MinejagoClientConfig.INSTANCE.displaySnapshotTesterCosmetic.get() && MinejagoClientUtils.checkSnapshotTester(uuid);
 //            displayDev = MinejagoClientConfig.displayDevTeamCosmetic && MinejagoClientUtils.checkDevTeam(uuid);
-            displayOgDev = MinejagoClientConfig.displayOgDevTeamCosmetic && MinejagoClientUtils.checkOgDevTeam(uuid);
+            displayOgDev = MinejagoClientConfig.INSTANCE.displayOgDevTeamCosmetic.get() && MinejagoClientUtils.checkOgDevTeam(uuid);
 
-            TommyLibServices.NETWORK.sendToServer(new ServerboundChangeVipDataPayload(uuid, new VipData(MinejagoClientConfig.snapshotTesterCosmeticChoice, displaySnapshot, /*displayDev*/false, displayOgDev)));
+            TommyLibServices.NETWORK.sendToServer(new ServerboundChangeVipDataPayload(uuid, new VipData(MinejagoClientConfig.INSTANCE.snapshotTesterCosmeticChoice.get(), displaySnapshot, /*displayDev*/false, displayOgDev)));
         }
     }
 

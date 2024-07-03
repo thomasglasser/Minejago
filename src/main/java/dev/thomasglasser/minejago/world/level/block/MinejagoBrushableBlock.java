@@ -14,6 +14,7 @@ public class MinejagoBrushableBlock extends BrushableBlock {
         super(block, soundEvent, soundEvent2, properties);
     }
 
+    // TODO: Switch to BrushableBlockEntity when Neo updates
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new MinejagoBrushableBlockEntity(pos, state);
