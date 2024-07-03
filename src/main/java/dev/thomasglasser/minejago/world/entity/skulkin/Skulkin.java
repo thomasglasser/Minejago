@@ -15,8 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
-public class Skulkin extends MeleeCompatibleSkeletonRaider
-{
+public class Skulkin extends MeleeCompatibleSkeletonRaider {
     private Variant variant;
 
     public Skulkin(EntityType<? extends Skulkin> entityType, Level level) {
@@ -25,11 +24,9 @@ public class Skulkin extends MeleeCompatibleSkeletonRaider
     }
 
     @Override
-    public double getAttributeBaseValue(Holder<Attribute> attribute)
-    {
+    public double getAttributeBaseValue(Holder<Attribute> attribute) {
         double base = super.getAttributeValue(attribute);
-        if (attribute == Attributes.ATTACK_DAMAGE && this.variant == Variant.STRENGTH)
-        {
+        if (attribute == Attributes.ATTACK_DAMAGE && this.variant == Variant.STRENGTH) {
             base *= 2.0;
         } else if (attribute == Attributes.MOVEMENT_SPEED && this.variant == Variant.SPEED) {
             base *= 2.0;
@@ -42,21 +39,18 @@ public class Skulkin extends MeleeCompatibleSkeletonRaider
         super.populateDefaultEquipmentSlots(pRandom, pDifficulty);
         this.setItemSlot(EquipmentSlot.CHEST, MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(this.variant).get().getDefaultInstance());
         this.setItemSlot(EquipmentSlot.LEGS, ItemStack.EMPTY);
-        switch (variant)
-        {
+        switch (variant) {
             case BOW -> this.setItemSlot(EquipmentSlot.MAINHAND, Items.BOW.getDefaultInstance());
             case KNIFE -> this.setItemSlot(EquipmentSlot.MAINHAND, MinejagoItems.BONE_KNIFE.get().getDefaultInstance());
             default -> this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
         }
     }
 
-    public void setVariant(Variant variant)
-    {
+    public void setVariant(Variant variant) {
         this.variant = variant;
     }
 
-    public enum Variant
-    {
+    public enum Variant {
         STRENGTH(ChatFormatting.RED),
         SPEED(ChatFormatting.BLUE),
         BOW(ChatFormatting.WHITE),
@@ -65,8 +59,7 @@ public class Skulkin extends MeleeCompatibleSkeletonRaider
 
         private final ChatFormatting color;
 
-        Variant(ChatFormatting color)
-        {
+        Variant(ChatFormatting color) {
             if (color.isColor())
                 this.color = color;
             else

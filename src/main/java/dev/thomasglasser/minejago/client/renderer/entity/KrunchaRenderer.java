@@ -9,8 +9,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
-public class KrunchaRenderer extends HumanoidMobRenderer<Kruncha, KrunchaModel<Kruncha>>
-{
+public class KrunchaRenderer extends HumanoidMobRenderer<Kruncha, KrunchaModel<Kruncha>> {
     public static final ResourceLocation TEXTURE_LOCATION = Minejago.modLoc("textures/entity/skulkin/kruncha.png");
 
     public KrunchaRenderer(EntityRendererProvider.Context context) {

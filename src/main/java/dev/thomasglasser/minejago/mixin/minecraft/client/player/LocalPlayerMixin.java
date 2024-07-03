@@ -13,14 +13,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LocalPlayer.class)
-public class LocalPlayerMixin
-{
+public class LocalPlayerMixin {
     @Unique
     private final LocalPlayer INSTANCE = ((LocalPlayer) (Object) this);
 
     @Inject(method = "openItemGui", at = @At("HEAD"))
-    private void minejago_openItemGui(ItemStack stack, InteractionHand hand, CallbackInfo ci)
-    {
+    private void minejago_openItemGui(ItemStack stack, InteractionHand hand, CallbackInfo ci) {
         if (stack.is(MinejagoItems.WRITABLE_SCROLL.get())) {
             ClientUtils.setScreen(new ScrollEditScreen(INSTANCE, stack, hand));
         }

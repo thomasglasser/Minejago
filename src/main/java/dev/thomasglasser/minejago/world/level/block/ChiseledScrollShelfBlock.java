@@ -2,6 +2,7 @@ package dev.thomasglasser.minejago.world.level.block;
 
 import dev.thomasglasser.minejago.tags.MinejagoItemTags;
 import dev.thomasglasser.minejago.world.level.block.entity.ChiseledScrollShelfBlockEntity;
+import java.util.OptionalInt;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -15,8 +16,6 @@ import net.minecraft.world.level.block.entity.ChiseledBookShelfBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.OptionalInt;
 
 public class ChiseledScrollShelfBlock extends ChiseledBookShelfBlock {
     public ChiseledScrollShelfBlock(Properties properties) {

@@ -6,11 +6,10 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 
 public record VipData(SnapshotTesterCosmeticOptions choice, boolean displaySnapshot, boolean displayDev, boolean displayOgDev) {
-	public static final StreamCodec<FriendlyByteBuf, VipData> STREAM_CODEC = StreamCodec.composite(
-			NetworkUtils.enumCodec(SnapshotTesterCosmeticOptions.class), VipData::choice,
-			ByteBufCodecs.BOOL, VipData::displaySnapshot,
-			ByteBufCodecs.BOOL, VipData::displayDev,
-			ByteBufCodecs.BOOL, VipData::displayOgDev,
-			VipData::new
-	);
+    public static final StreamCodec<FriendlyByteBuf, VipData> STREAM_CODEC = StreamCodec.composite(
+            NetworkUtils.enumCodec(SnapshotTesterCosmeticOptions.class), VipData::choice,
+            ByteBufCodecs.BOOL, VipData::displaySnapshot,
+            ByteBufCodecs.BOOL, VipData::displayDev,
+            ByteBufCodecs.BOOL, VipData::displayOgDev,
+            VipData::new);
 }

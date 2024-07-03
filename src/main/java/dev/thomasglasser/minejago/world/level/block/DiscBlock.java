@@ -37,13 +37,11 @@ public class DiscBlock extends HorizontalDirectionalBlock {
                         .any()
                         .setValue(FACING, Direction.NORTH)
                         .setValue(ROW, Row.TOP)
-                        .setValue(COLUMN, Column.LEFT)
-        );
+                        .setValue(COLUMN, Column.LEFT));
     }
 
     @Override
-    protected MapCodec<? extends HorizontalDirectionalBlock> codec()
-    {
+    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
         return simpleCodec(DiscBlock::new);
     }
 
@@ -79,8 +77,7 @@ public class DiscBlock extends HorizontalDirectionalBlock {
                     level.destroyBlock(pos.below().relative(facing.getClockWise()), false);
             }
         } else {
-            if (state.getValue(COLUMN) == Column.LEFT)
-            {
+            if (state.getValue(COLUMN) == Column.LEFT) {
                 if (level.getBlockState(pos.relative(facing.getCounterClockWise())).is(this))
                     level.destroyBlock(pos.relative(facing.getCounterClockWise()), false);
                 if (level.getBlockState(pos.above()).is(this))
@@ -117,9 +114,9 @@ public class DiscBlock extends HorizontalDirectionalBlock {
         if (!level.getBlockState(blockPos.relative(horizontalDirection).below().relative(horizontalDirection.getOpposite()).relative(horizontalDirection.getClockWise())).canBeReplaced(context)) return null;
 
         return this.defaultBlockState()
-                    .setValue(FACING, horizontalDirection.getOpposite())
-                    .setValue(ROW, Row.TOP)
-                    .setValue(COLUMN, Column.LEFT);
+                .setValue(FACING, horizontalDirection.getOpposite())
+                .setValue(ROW, Row.TOP)
+                .setValue(COLUMN, Column.LEFT);
     }
 
     @Override
@@ -131,8 +128,7 @@ public class DiscBlock extends HorizontalDirectionalBlock {
 
     @Override
     public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos currentPos, BlockPos neighborPos) {
-        if (direction.getOpposite() == state.getValue(FACING) && !state.canSurvive(level, currentPos))
-        {
+        if (direction.getOpposite() == state.getValue(FACING) && !state.canSurvive(level, currentPos)) {
             state.getBlock().destroy(level, currentPos, state);
             return Blocks.AIR.defaultBlockState();
         }
@@ -145,15 +141,13 @@ public class DiscBlock extends HorizontalDirectionalBlock {
         builder.add(FACING, ROW, COLUMN);
     }
 
-    public enum Row implements StringRepresentable
-    {
+    public enum Row implements StringRepresentable {
         TOP("top"),
         BOTTOM("bottom");
 
         private final String name;
 
-        Row(String name)
-        {
+        Row(String name) {
             this.name = name;
         }
 
@@ -163,15 +157,13 @@ public class DiscBlock extends HorizontalDirectionalBlock {
         }
     }
 
-    public enum Column implements StringRepresentable
-    {
+    public enum Column implements StringRepresentable {
         LEFT("left"),
         RIGHT("right");
 
         private final String name;
 
-        Column(String name)
-        {
+        Column(String name) {
             this.name = name;
         }
 

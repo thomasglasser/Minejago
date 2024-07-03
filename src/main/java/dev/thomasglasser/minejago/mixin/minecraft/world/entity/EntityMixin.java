@@ -5,6 +5,7 @@ import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityEvents;
 import dev.thomasglasser.minejago.world.item.armor.GiGeoArmorItem;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
+import java.util.concurrent.atomic.AtomicBoolean;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -19,34 +20,27 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 @Mixin(Entity.class)
-public class EntityMixin
-{
-    @Shadow @Final protected RandomSource random;
-    private final Entity INSTANCE = ((Entity)(Object)this);
+public class EntityMixin {
+    @Shadow
+    @Final
+    protected RandomSource random;
+    private final Entity INSTANCE = ((Entity) (Object) this);
 
     @Inject(method = "playerTouch", at = @At("TAIL"))
-    private void minejago_playerTouch(Player player, CallbackInfo ci)
-    {
-        if (player.getData(MinejagoAttachmentTypes.SPINJITZU).active() && INSTANCE instanceof LivingEntity livingEntity)
-        {
+    private void minejago_playerTouch(Player player, CallbackInfo ci) {
+        if (player.getData(MinejagoAttachmentTypes.SPINJITZU).active() && INSTANCE instanceof LivingEntity livingEntity) {
             livingEntity.knockback(random.nextDouble(), player.getX() - INSTANCE.getX(), player.getZ() - INSTANCE.getZ());
         }
     }
 
     @ModifyReturnValue(method = "dampensVibrations", at = @At("TAIL"))
-    private boolean minejago_dampensVibrations(boolean original)
-    {
-        if (INSTANCE instanceof LivingEntity livingEntity)
-        {
+    private boolean minejago_dampensVibrations(boolean original) {
+        if (INSTANCE instanceof LivingEntity livingEntity) {
             AtomicBoolean flag = new AtomicBoolean(true);
 
-            livingEntity.getArmorSlots().forEach(stack ->
-            {
-                if (!(stack.getItem() instanceof GiGeoArmorItem))
-                {
+            livingEntity.getArmorSlots().forEach(stack -> {
+                if (!(stack.getItem() instanceof GiGeoArmorItem)) {
                     flag.set(false);
                 }
             });
@@ -57,19 +51,13 @@ public class EntityMixin
     }
 
     @Inject(method = "makeStuckInBlock", at = @At("TAIL"))
-    private void minejago_makeStuckInBlock(BlockState state, Vec3 motionMultiplier, CallbackInfo ci)
-    {
-        if (INSTANCE instanceof LivingEntity livingEntity)
-        {
+    private void minejago_makeStuckInBlock(BlockState state, Vec3 motionMultiplier, CallbackInfo ci) {
+        if (INSTANCE instanceof LivingEntity livingEntity) {
             SpinjitzuData spinjitzuData = livingEntity.getData(MinejagoAttachmentTypes.SPINJITZU);
-            if (spinjitzuData.active())
-            {
-                if (livingEntity instanceof ServerPlayer player)
-                {
+            if (spinjitzuData.active()) {
+                if (livingEntity instanceof ServerPlayer player) {
                     MinejagoEntityEvents.stopSpinjitzu(spinjitzuData, player, true);
-                }
-                else
-                {
+                } else {
                     livingEntity.setData(MinejagoAttachmentTypes.SPINJITZU, new SpinjitzuData(true, false));
                 }
             }

@@ -14,8 +14,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-public class ThrownIronShurikenRenderer extends EntityRenderer<ThrownIronShuriken>
-{
+public class ThrownIronShurikenRenderer extends EntityRenderer<ThrownIronShuriken> {
     public static final ResourceLocation TEXTURE_LOCATION = Minejago.modLoc("textures/entity/item/iron_shuriken.png");
     private final ThrownIronShurikenModel model;
 
@@ -29,7 +28,7 @@ public class ThrownIronShurikenRenderer extends EntityRenderer<ThrownIronShurike
         pMatrixStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(pPartialTicks, pEntity.yRotO, pEntity.getYRot()) - 90.0F));
         pMatrixStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(pPartialTicks, pEntity.xRotO, pEntity.getXRot()) + 90.0F));
         if (!pEntity.hasDealtDamage())
-            pMatrixStack.mulPose(Axis.XP.rotationDegrees(pEntity.getXRot() + (float)(90.0F * (Math.random() * 4))));
+            pMatrixStack.mulPose(Axis.XP.rotationDegrees(pEntity.getXRot() + (float) (90.0F * (Math.random() * 4))));
         VertexConsumer vertexconsumer = ItemRenderer.getFoilBufferDirect(pBuffer, this.model.renderType(this.getTextureLocation(pEntity)), false, pEntity.isFoil());
         this.model.renderToBuffer(pMatrixStack, vertexconsumer, pPackedLight, OverlayTexture.NO_OVERLAY);
         pMatrixStack.popPose();

@@ -7,6 +7,7 @@ import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.tommylib.api.data.recipes.ExtendedRecipeProvider;
 import dev.thomasglasser.tommylib.api.registration.DeferredHolder;
 import dev.thomasglasser.tommylib.api.tags.ConventionalItemTags;
+import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -29,10 +30,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 
-import java.util.concurrent.CompletableFuture;
-
-public class MinejagoRecipes extends ExtendedRecipeProvider
-{
+public class MinejagoRecipes extends ExtendedRecipeProvider {
     public static HolderLookup.Provider lookupProvider = null;
 
     public MinejagoRecipes(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
@@ -45,8 +43,7 @@ public class MinejagoRecipes extends ExtendedRecipeProvider
         buildBrewing(writer);
     }
 
-    private void buildCrafting(RecipeOutput writer)
-    {
+    private void buildCrafting(RecipeOutput writer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.BREWING, MinejagoItems.TEACUP.get(), 4)
                 .pattern("x x")
                 .pattern(" x ")
@@ -106,8 +103,7 @@ public class MinejagoRecipes extends ExtendedRecipeProvider
                 .unlockedBy("has_teapot", has(MinejagoItemTags.TEAPOTS))
                 .save(writer);
 
-        MinejagoBlocks.TEAPOTS.forEach((color, pot) ->
-        {
+        MinejagoBlocks.TEAPOTS.forEach((color, pot) -> {
             coloredTeapotFromColoredTerracotta(writer, pot.get(), BuiltInRegistries.BLOCK.get(ResourceLocation.withDefaultNamespace(color.getName() + "_terracotta")));
             coloredTeapotFromTeapotAndDye(writer, pot.get(), ConventionalItemTags.forDyeColor(color));
         });
@@ -135,8 +131,7 @@ public class MinejagoRecipes extends ExtendedRecipeProvider
         woodSet(writer, MinejagoBlocks.ENCHANTED_WOOD_SET);
     }
 
-    protected void coloredTeapotFromColoredTerracotta(RecipeOutput writer, ItemLike pot, ItemLike color)
-    {
+    protected void coloredTeapotFromColoredTerracotta(RecipeOutput writer, ItemLike pot, ItemLike color) {
         ShapedRecipeBuilder.shaped(RecipeCategory.BREWING, pot, 1)
                 .pattern("x")
                 .pattern("o")
@@ -148,8 +143,7 @@ public class MinejagoRecipes extends ExtendedRecipeProvider
                 .save(writer);
     }
 
-    protected void coloredTeapotFromTeapotAndDye(RecipeOutput writer, ItemLike pColoredTeapot, TagKey<Item> pDye)
-    {
+    protected void coloredTeapotFromTeapotAndDye(RecipeOutput writer, ItemLike pColoredTeapot, TagKey<Item> pDye) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.BREWING, pColoredTeapot, 1)
                 .requires(MinejagoBlocks.TEAPOT.get())
                 .requires(pDye)
@@ -173,13 +167,11 @@ public class MinejagoRecipes extends ExtendedRecipeProvider
         normalTea(writer, MinejagoBlocks.FOCUS_LEAVES_SET.leaves().asItem(), MinejagoPotions.FOCUS_TEA);
     }
 
-    private void normalTea(RecipeOutput writer, Item ingredient, DeferredHolder<Potion, Potion> result)
-    {
+    private void normalTea(RecipeOutput writer, Item ingredient, DeferredHolder<Potion, Potion> result) {
         normalTea(writer, ingredient, result.asReferenceFrom(lookupProvider));
     }
 
-    private void normalTea(RecipeOutput writer, Item ingredient, Holder<Potion> result)
-    {
+    private void normalTea(RecipeOutput writer, Item ingredient, Holder<Potion> result) {
         SimpleBrewingRecipeBuilder.generic(
                 RecipeCategory.BREWING,
                 Potions.WATER,

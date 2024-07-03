@@ -2,18 +2,16 @@ package dev.thomasglasser.minejago.world.item.armor;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;
-import dev.thomasglasser.tommylib.api.registration.DeferredRegister;
 import dev.thomasglasser.tommylib.api.registration.DeferredItem;
+import dev.thomasglasser.tommylib.api.registration.DeferredRegister;
 import dev.thomasglasser.tommylib.api.world.item.armor.ArmorSet;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.Item;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.Item;
 
-public class MinejagoArmors
-{
+public class MinejagoArmors {
     public static final DeferredRegister.Items ARMORS = DeferredRegister.createItems(Minejago.MOD_ID);
 
     public static final List<ArmorSet> ARMOR_SETS = new ArrayList<>();
@@ -27,16 +25,14 @@ public class MinejagoArmors
     public static final ArmorSet BLACK_GI_SET = create("black_gi", "Black Gi", false, BlackGiItem.class, DEFAULT_PROPERTIES);
     public static final ArmorSet TRAINING_GI_SET = create("training_gi", "Training Gi", true, TrainingGiItem.class, DEFAULT_PROPERTIES);
 
-    public static class SkeletalChestplateSet
-    {
+    public static class SkeletalChestplateSet {
         private final DeferredItem<SkeletalChestplateItem> RED;
         private final DeferredItem<SkeletalChestplateItem> BLUE;
         private final DeferredItem<SkeletalChestplateItem> WHITE;
         private final DeferredItem<SkeletalChestplateItem> BLACK;
         private final DeferredItem<SkeletalChestplateItem> BONE;
 
-        public SkeletalChestplateSet()
-        {
+        public SkeletalChestplateSet() {
             String name = "skeletal_chestplate";
             RED = register(name + "_red", () -> new SkeletalChestplateItem(Skulkin.Variant.STRENGTH, MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
             BLUE = register(name + "_blue", () -> new SkeletalChestplateItem(Skulkin.Variant.SPEED, MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
@@ -46,25 +42,22 @@ public class MinejagoArmors
         }
 
         public DeferredItem<SkeletalChestplateItem> getForVariant(Skulkin.Variant variant) {
-            return switch (variant)
-                    {
+            return switch (variant) {
 
-                        case STRENGTH -> RED;
-                        case SPEED -> BLUE;
-                        case BOW -> WHITE;
-                        case KNIFE -> BLACK;
-                        case BONE -> BONE;
-                    };
+                case STRENGTH -> RED;
+                case SPEED -> BLUE;
+                case BOW -> WHITE;
+                case KNIFE -> BLACK;
+                case BONE -> BONE;
+            };
         }
 
-        public List<DeferredItem<SkeletalChestplateItem>> getAll()
-        {
+        public List<DeferredItem<SkeletalChestplateItem>> getAll() {
             return new ArrayList<>(List.of(RED, BLUE, WHITE, BLACK, BONE));
         }
     }
 
-    private static ArmorSet create(String name, String displayName, boolean powered, Class<? extends ArmorItem> clazz, Item.Properties properties)
-    {
+    private static ArmorSet create(String name, String displayName, boolean powered, Class<? extends ArmorItem> clazz, Item.Properties properties) {
         Supplier<ArmorItem> headItem;
         Supplier<ArmorItem> chestItem;
         Supplier<ArmorItem> legsItem;
@@ -113,9 +106,8 @@ public class MinejagoArmors
 
         return set;
     }
-    
-    private static <T extends ArmorItem> DeferredItem<T> register(String name, Supplier<T> item)
-    {
+
+    private static <T extends ArmorItem> DeferredItem<T> register(String name, Supplier<T> item) {
         return ARMORS.register(name, item);
     }
 

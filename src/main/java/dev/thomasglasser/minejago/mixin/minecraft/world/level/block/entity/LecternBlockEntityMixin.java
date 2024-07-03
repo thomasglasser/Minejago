@@ -26,29 +26,27 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LecternBlockEntity.class)
-public abstract class LecternBlockEntityMixin extends BlockEntity
-{
+public abstract class LecternBlockEntityMixin extends BlockEntity {
     @Shadow
     ItemStack book;
 
     @Shadow
     public abstract CommandSourceStack createCommandSourceStack(@Nullable Player pPlayer);
 
-    @Shadow protected abstract void saveAdditional(CompoundTag pTag, HolderLookup.Provider provider);
+    @Shadow
+    protected abstract void saveAdditional(CompoundTag pTag, HolderLookup.Provider provider);
 
     private LecternBlockEntityMixin(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
 
     @ModifyReturnValue(method = "hasBook", at = @At("TAIL"))
-    private boolean minejago_hasBook(boolean original)
-    {
+    private boolean minejago_hasBook(boolean original) {
         return original || book.is(ItemTags.LECTERN_BOOKS);
     }
 
     @Inject(method = "resolveBook", at = @At("HEAD"), cancellable = true)
-    private void minejago_resolveBook(ItemStack stack, Player player, CallbackInfoReturnable<ItemStack> cir)
-    {
+    private void minejago_resolveBook(ItemStack stack, Player player, CallbackInfoReturnable<ItemStack> cir) {
         if (level instanceof ServerLevel && (stack.is(MinejagoItems.WRITTEN_SCROLL.get()) || stack.is(MinejagoItems.WRITABLE_SCROLL.get()))) {
             WrittenBookItem.resolveBookComponents(stack, createCommandSourceStack(player), player);
 

@@ -21,8 +21,7 @@ import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.PlayState;
 
-public class Zane extends Character
-{
+public class Zane extends Character {
     private int lastAir;
 
     public Zane(EntityType<? extends Zane> entityType, Level level) {
@@ -39,15 +38,13 @@ public class Zane extends Character
     }
 
     @Override
-    public void onStartFloatingToSurfaceOfFluid(Character character)
-    {
+    public void onStartFloatingToSurfaceOfFluid(Character character) {
         setMeditationStatus(MeditationStatus.FINISHING);
         super.onStartFloatingToSurfaceOfFluid(character);
     }
 
     @Override
-    public void onStopFloatingToSurfaceOfFluid(Character character)
-    {
+    public void onStopFloatingToSurfaceOfFluid(Character character) {
         if (character.onGround() || character.getAirSupply() < character.getMaxAirSupply() - 60 || BrainUtils.hasMemory(character, MemoryModuleType.ATTACK_TARGET))
             setMeditationStatus(MeditationStatus.NONE);
         else
@@ -73,8 +70,7 @@ public class Zane extends Character
     public void tick() {
         super.tick();
         BlockPos above = blockPosition().above(2);
-        if (level().getBlockState(above).is(BlockTags.ICE) && this.getAirSupply() == 0)
-        {
+        if (level().getBlockState(above).is(BlockTags.ICE) && this.getAirSupply() == 0) {
             level().destroyBlock(above, false, this);
             level().destroyBlock(above.north(), false, this);
             level().destroyBlock(above.north().east(), false, this);
@@ -88,21 +84,17 @@ public class Zane extends Character
     }
 
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar)
-    {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
         super.registerControllers(controllerRegistrar);
-        controllerRegistrar.add(new AnimationController<GeoAnimatable>(this, "meditation", animationState ->
-                switch (getMeditationStatus())
-                {
-                    case STARTING:
-                        yield animationState.setAndContinue(MEDITATION_START);
-                    case FLOATING:
-                        yield animationState.setAndContinue(MEDITATION_FLOAT);
-                    case FINISHING:
-                        yield animationState.setAndContinue(MEDITATION_FINISH);
-                    default:
-                        yield PlayState.STOP;
-                }
-        ));
+        controllerRegistrar.add(new AnimationController<GeoAnimatable>(this, "meditation", animationState -> switch (getMeditationStatus()) {
+            case STARTING:
+                yield animationState.setAndContinue(MEDITATION_START);
+            case FLOATING:
+                yield animationState.setAndContinue(MEDITATION_FLOAT);
+            case FINISHING:
+                yield animationState.setAndContinue(MEDITATION_FINISH);
+            default:
+                yield PlayState.STOP;
+        }));
     }
 }

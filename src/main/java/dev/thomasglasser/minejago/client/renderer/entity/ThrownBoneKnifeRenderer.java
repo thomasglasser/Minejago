@@ -14,8 +14,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-public class ThrownBoneKnifeRenderer extends EntityRenderer<ThrownBoneKnife>
-{
+public class ThrownBoneKnifeRenderer extends EntityRenderer<ThrownBoneKnife> {
     public static final ResourceLocation TEXTURE_LOCATION = Minejago.modLoc("textures/entity/item/bone_knife.png");
     private final ThrownBoneKnifeModel model;
 

@@ -2,6 +2,9 @@ package dev.thomasglasser.minejago.data.recipes;
 
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.crafting.TeapotBrewingRecipe;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
@@ -20,12 +23,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Objects;
-
-public class SimpleBrewingRecipeBuilder implements RecipeBuilder
-{
+public class SimpleBrewingRecipeBuilder implements RecipeBuilder {
     private final RecipeCategory category;
     private final Holder<Potion> result;
     private final Holder<Potion> base;
@@ -48,11 +46,11 @@ public class SimpleBrewingRecipeBuilder implements RecipeBuilder
     }
 
     public static <T extends TeapotBrewingRecipe> SimpleBrewingRecipeBuilder generic(RecipeCategory recipeCategory,
-                                                                                     Holder<Potion> base,
-                                                                                     Ingredient ingredient,
-                                                                                     Holder<Potion> result,
-                                                                                     float xp,
-                                                                                     IntProvider i) {
+            Holder<Potion> base,
+            Ingredient ingredient,
+            Holder<Potion> result,
+            float xp,
+            IntProvider i) {
         return new SimpleBrewingRecipeBuilder(recipeCategory, base, ingredient, result, xp, i, TeapotBrewingRecipe::new);
     }
 
@@ -74,8 +72,7 @@ public class SimpleBrewingRecipeBuilder implements RecipeBuilder
     }
 
     @Override
-    public void save(RecipeOutput recipeOutput, ResourceLocation id)
-    {
+    public void save(RecipeOutput recipeOutput, ResourceLocation id) {
         this.ensureValid(id);
         Advancement.Builder builder = recipeOutput.advancement().addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id)).rewards(AdvancementRewards.Builder.recipe(id)).requirements(AdvancementRequirements.Strategy.OR);
         this.criteria.forEach(builder::addCriterion);
@@ -84,8 +81,7 @@ public class SimpleBrewingRecipeBuilder implements RecipeBuilder
     }
 
     @Override
-    public void save(RecipeOutput recipeOutput)
-    {
+    public void save(RecipeOutput recipeOutput) {
         this.save(recipeOutput, getDefaultRecipeId(base, result));
     }
 

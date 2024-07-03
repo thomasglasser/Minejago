@@ -9,8 +9,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
 
-public record ClientboundRefreshVipDataPayload() implements ExtendedPacketPayload
-{
+public record ClientboundRefreshVipDataPayload() implements ExtendedPacketPayload {
     public static final ClientboundRefreshVipDataPayload INSTANCE = new ClientboundRefreshVipDataPayload();
 
     public static final Type<ClientboundRefreshVipDataPayload> TYPE = new Type<>(Minejago.modLoc("clientbound_refresh_vip_data"));
@@ -22,8 +21,7 @@ public record ClientboundRefreshVipDataPayload() implements ExtendedPacketPayloa
     }
 
     @Override
-    public Type<? extends CustomPacketPayload> type()
-    {
+    public Type<? extends CustomPacketPayload> type() {
         return TYPE;
     }
 }

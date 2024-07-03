@@ -12,24 +12,21 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
 
-public record ServerboundStopSpinjitzuPayload() implements ExtendedPacketPayload
-{
+public record ServerboundStopSpinjitzuPayload() implements ExtendedPacketPayload {
     public static final ServerboundStopSpinjitzuPayload INSTANCE = new ServerboundStopSpinjitzuPayload();
 
     public static final Type<ServerboundStopSpinjitzuPayload> TYPE = new Type<>(Minejago.modLoc("serverbound_stop_spinjitzu"));
     public static final StreamCodec<ByteBuf, ServerboundStopSpinjitzuPayload> CODEC = StreamCodec.unit(INSTANCE);
 
     // ON SERVER
-    public void handle(@Nullable Player player)
-    {
+    public void handle(@Nullable Player player) {
         ServerPlayer serverPlayer = ((ServerPlayer) player);
         SpinjitzuData spinjitzu = serverPlayer.getData(MinejagoAttachmentTypes.SPINJITZU);
         MinejagoEntityEvents.stopSpinjitzu(spinjitzu, serverPlayer, false);
     }
 
     @Override
-    public Type<? extends CustomPacketPayload> type()
-    {
+    public Type<? extends CustomPacketPayload> type() {
         return TYPE;
     }
 }

@@ -24,11 +24,9 @@ public enum TeapotBlockComponentProvider implements IBlockComponentProvider {
 
     @Override
     public void appendTooltip(ITooltip iTooltip, BlockAccessor blockAccessor, IPluginConfig iPluginConfig) {
-        if (blockAccessor.getBlockEntity() instanceof TeapotBlockEntity be && blockAccessor.getBlock() instanceof TeapotBlock)
-        {
+        if (blockAccessor.getBlockEntity() instanceof TeapotBlockEntity be && blockAccessor.getBlock() instanceof TeapotBlock) {
             Holder<Potion> potion = be.getPotion();
-            if (potion != null)
-            {
+            if (potion != null) {
                 ItemStack potionStack = PotionContents.createItemStack(MinejagoItems.FILLED_TEACUP.get(), potion);
                 IElement icon = ElementHelper.INSTANCE.item(potionStack, 0.5f).translate(new Vec2(0, -2));
                 iTooltip.add(icon);
@@ -36,38 +34,32 @@ public enum TeapotBlockComponentProvider implements IBlockComponentProvider {
             }
 
             ItemStack item = be.getInSlot(0);
-            if (!item.isEmpty())
-            {
+            if (!item.isEmpty()) {
                 IElement icon = ElementHelper.INSTANCE.item(item, 0.5f).translate(new Vec2(0, -2));
                 iTooltip.add(icon);
                 iTooltip.append(Component.translatable("block.minejago.teapot.waila.item", Component.translatable(item.getDescriptionId())));
             }
 
             int cups = be.getCups();
-            if (cups > 0)
-            {
+            if (cups > 0) {
                 IElement icon = ElementHelper.INSTANCE.item(MinejagoItems.TEACUP.get().getDefaultInstance(), 0.5f).translate(new Vec2(0, -2));
                 iTooltip.add(icon);
                 iTooltip.append(Component.translatable("block.minejago.teapot.waila.cups", cups));
             }
 
             int time = be.getBrewTime();
-            if (time > 0)
-            {
+            if (time > 0) {
                 IElement icon = ElementHelper.INSTANCE.item(Items.CLOCK.getDefaultInstance(), 0.5f).translate(new Vec2(0, -2));
                 iTooltip.add(icon);
                 iTooltip.append(Component.translatable("block.minejago.teapot.waila.time", time));
             }
 
-            if (cups > 0)
-            {
+            if (cups > 0) {
                 float temp = be.getTemperature();
                 IElement icon = ElementHelper.INSTANCE.item(Items.CAMPFIRE.getDefaultInstance(), 0.5f).translate(new Vec2(0, -2));
                 iTooltip.add(icon);
                 iTooltip.append(Component.translatable("block.minejago.teapot.waila.temp", temp));
-            }
-            else
-            {
+            } else {
                 iTooltip.add(Component.translatable("block.minejago.teapot.waila.empty"));
             }
         }

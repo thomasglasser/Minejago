@@ -24,6 +24,9 @@ import dev.thomasglasser.minejago.world.entity.skulkin.SkullMotorbike;
 import dev.thomasglasser.minejago.world.entity.skulkin.SkullTruck;
 import dev.thomasglasser.tommylib.api.registration.DeferredHolder;
 import dev.thomasglasser.tommylib.api.registration.DeferredRegister;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -33,12 +36,7 @@ import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Supplier;
-
-public class MinejagoEntityTypes
-{
+public class MinejagoEntityTypes {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, Minejago.MOD_ID);
 
     // PROJECTILES
@@ -93,8 +91,7 @@ public class MinejagoEntityTypes
             .sized(4.8125f, 3.00f)
             .passengerAttachments(
                     new Vec3(0.0, -1.3, 1.0),
-                    new Vec3(0.0, -1.3, -0.7)
-            )
+                    new Vec3(0.0, -1.3, -0.7))
             .build("earth_dragon"));
     public static final DeferredHolder<EntityType<?>, EntityType<Samukai>> SAMUKAI = register("samukai", () -> EntityType.Builder.of(Samukai::new, MobCategory.MONSTER)
             .sized(0.875f, 2.375f)
@@ -104,8 +101,7 @@ public class MinejagoEntityTypes
             .passengerAttachments(
                     new Vec3(0.0, -2.3, 0.0),
                     new Vec3(0.4, -2.3, -0.7),
-                    new Vec3(-0.4, -2.3, -0.7)
-            )
+                    new Vec3(-0.4, -2.3, -0.7))
             .build("skull_truck"));
 
     public static final DeferredHolder<EntityType<?>, EntityType<SkullMotorbike>> SKULL_MOTORBIKE = register("skull_motorbike", () -> EntityType.Builder.of(SkullMotorbike::new, MobCategory.MISC)
@@ -113,8 +109,7 @@ public class MinejagoEntityTypes
             .passengerAttachments(0)
             .build("skull_motorbike"));
 
-    private static <T extends EntityType<?>> DeferredHolder<EntityType<?>, T> register(String name, Supplier<T> type)
-    {
+    private static <T extends EntityType<?>> DeferredHolder<EntityType<?>, T> register(String name, Supplier<T> type) {
         return ENTITY_TYPES.register(name, type);
     }
 

@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.mixin.minecraft.server.network;
 
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import java.util.List;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -16,22 +17,18 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.List;
-
 @Mixin(ServerGamePacketListenerImpl.class)
-public abstract class ServerGamePacketListenerImplMixin
-{
+public abstract class ServerGamePacketListenerImplMixin {
     @Shadow
     public ServerPlayer player;
 
     @Shadow
     protected abstract Filterable<String> filterableFromOutgoing(FilteredText p_332041_);
 
-    private final ServerGamePacketListenerImpl INSTANCE = ((ServerGamePacketListenerImpl)(Object)this);
+    private final ServerGamePacketListenerImpl INSTANCE = ((ServerGamePacketListenerImpl) (Object) this);
 
-    @Inject(method = "signBook",  at = @At("HEAD"))
-    private void minejago_signBook(FilteredText title, List<FilteredText> pages, int index, CallbackInfo ci)
-    {
+    @Inject(method = "signBook", at = @At("HEAD"))
+    private void minejago_signBook(FilteredText title, List<FilteredText> pages, int index, CallbackInfo ci) {
         ItemStack itemStack = INSTANCE.player.getInventory().getItem(index);
         if (itemStack.is(MinejagoItems.WRITABLE_SCROLL.get())) {
             ItemStack itemStack2 = itemStack.transmuteCopy(MinejagoItems.WRITTEN_SCROLL.get(), 1);
@@ -43,8 +40,7 @@ public abstract class ServerGamePacketListenerImplMixin
     }
 
     @Inject(method = "updateBookContents", at = @At("HEAD"))
-    private void minejago_updateBookContents(List<FilteredText> pages, int index, CallbackInfo ci)
-    {
+    private void minejago_updateBookContents(List<FilteredText> pages, int index, CallbackInfo ci) {
         ItemStack itemStack = INSTANCE.player.getInventory().getItem(index);
         if (itemStack.is(MinejagoItems.WRITABLE_SCROLL.get())) {
             List<Filterable<String>> list = pages.stream().map(this::filterableFromOutgoing).toList();

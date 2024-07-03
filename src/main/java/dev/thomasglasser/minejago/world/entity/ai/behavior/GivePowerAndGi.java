@@ -11,6 +11,7 @@ import dev.thomasglasser.minejago.world.level.storage.PowerData;
 import dev.thomasglasser.tommylib.api.registration.DeferredItem;
 import dev.thomasglasser.tommylib.api.world.item.armor.ArmorSet;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -26,8 +27,6 @@ import net.minecraft.world.item.ItemStack;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.move.MoveToWalkTarget;
 import net.tslat.smartbrainlib.util.BrainUtils;
 
-import java.util.List;
-
 public class GivePowerAndGi<E extends PathfinderMob> extends MoveToWalkTarget<E> {
     private static List<Pair<MemoryModuleType<?>, MemoryStatus>> MEMORY_REQUIREMENTS;
 
@@ -37,8 +36,7 @@ public class GivePowerAndGi<E extends PathfinderMob> extends MoveToWalkTarget<E>
 
     @Override
     protected List<Pair<MemoryModuleType<?>, MemoryStatus>> getMemoryRequirements() {
-        if (MEMORY_REQUIREMENTS == null)
-        {
+        if (MEMORY_REQUIREMENTS == null) {
             MEMORY_REQUIREMENTS = ObjectArrayList.of(
                     Pair.of(MemoryModuleType.INTERACTION_TARGET, MemoryStatus.VALUE_PRESENT),
                     Pair.of(MinejagoMemoryModuleTypes.SELECTED_POWER.get(), MemoryStatus.VALUE_PRESENT));
@@ -74,24 +72,19 @@ public class GivePowerAndGi<E extends PathfinderMob> extends MoveToWalkTarget<E>
         BrainUtils.clearMemory(entity, MinejagoMemoryModuleTypes.SELECTED_POWER.get());
     }
 
-    protected void equipGi()
-    {
+    protected void equipGi() {
         ArmorSet set = MinejagoArmors.TRAINING_GI_SET;
         for (ArmorItem.Type value : ArmorItem.Type.values()) {
             DeferredItem<ArmorItem> ro = set.getForSlot(value.getSlot());
-            if (ro != null)
-            {
+            if (ro != null) {
                 ArmorItem armor = ro.get();
                 ItemStack armorStack = armor.getDefaultInstance();
                 armorStack.set(MinejagoDataComponents.POWER.get(), power.location());
-                if (target instanceof Player player)
-                {
+                if (target instanceof Player player) {
                     ItemStack oldStack = player.getItemBySlot(value.getSlot());
                     if (!player.addItem(oldStack)) player.drop(oldStack, true);
                     player.setItemSlot(value.getSlot(), armorStack);
-                }
-                else
-                {
+                } else {
                     ItemStack oldStack = target.getItemBySlot(value.getSlot());
                     target.spawnAtLocation(oldStack);
                     target.setItemSlot(value.getSlot(), armorStack);

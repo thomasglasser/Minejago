@@ -19,8 +19,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 
-public class TeacupItem extends BottleItem implements PotionCupHolder
-{
+public class TeacupItem extends BottleItem implements PotionCupHolder {
     public TeacupItem(Properties pProperties) {
         super(pProperties);
     }

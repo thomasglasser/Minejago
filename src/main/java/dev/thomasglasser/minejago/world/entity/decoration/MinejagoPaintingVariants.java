@@ -6,8 +6,7 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.decoration.PaintingVariant;
 
-public class MinejagoPaintingVariants
-{
+public class MinejagoPaintingVariants {
     public static final ResourceKey<PaintingVariant> A_MORNING_BREW = create("a_morning_brew");
     public static final ResourceKey<PaintingVariant> AMBUSHED = create("ambushed");
     public static final ResourceKey<PaintingVariant> BEFORE_THE_STORM = create("before_the_storm");
@@ -24,8 +23,7 @@ public class MinejagoPaintingVariants
     public static final ResourceKey<PaintingVariant> IT_TAKES_A_VILLAGE = create("it_takes_a_village");
     public static final ResourceKey<PaintingVariant> IT_TAKES_A_VILLAGE_WRECKED = create("it_takes_a_village_wrecked");
 
-    public static void boostrap(BootstrapContext<PaintingVariant> context)
-    {
+    public static void boostrap(BootstrapContext<PaintingVariant> context) {
         register(context, A_MORNING_BREW, 2, 2);
         register(context, AMBUSHED, 2, 1);
         register(context, BEFORE_THE_STORM, 2, 1);

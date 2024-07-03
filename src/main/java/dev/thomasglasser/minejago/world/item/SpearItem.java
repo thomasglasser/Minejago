@@ -20,8 +20,7 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 
-public class SpearItem extends BaseModeledThrowableSwordItem
-{
+public class SpearItem extends BaseModeledThrowableSwordItem {
     public static final ResourceLocation BASE_ENTITY_INTERACTION_RANGE_ID = ResourceLocation.withDefaultNamespace("base_entity_interaction_range");
     public static final ResourceLocation BASE_BLOCK_INTERACTION_RANGE_ID = ResourceLocation.withDefaultNamespace("base_block_interaction_range");
     public static final ResourceLocation BASE_ATTACK_KNOCKBACK_ID = ResourceLocation.withDefaultNamespace("base_attack_knockback");
@@ -30,8 +29,7 @@ public class SpearItem extends BaseModeledThrowableSwordItem
         super(pTier, pProperties);
     }
 
-    public static ItemAttributeModifiers createAttributes(Tier tier, int damage, float speed, float knockback)
-    {
+    public static ItemAttributeModifiers createAttributes(Tier tier, int damage, float speed, float knockback) {
         return ItemAttributeModifiers.builder()
                 .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(SwordItem.BASE_ATTACK_DAMAGE_ID, (float) damage + tier.getAttackDamageBonus(), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
                 .add(Attributes.ATTACK_SPEED, new AttributeModifier(SwordItem.BASE_ATTACK_SPEED_ID, speed, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)

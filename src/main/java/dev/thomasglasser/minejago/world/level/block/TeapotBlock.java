@@ -8,6 +8,7 @@ import dev.thomasglasser.minejago.world.item.PotionCupHolder;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
 import dev.thomasglasser.minejago.world.level.block.entity.TeapotBlockEntity;
 import dev.thomasglasser.tommylib.api.world.item.ItemUtils;
+import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -48,9 +49,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
-import javax.annotation.Nullable;
-import java.util.List;
+import org.jetbrains.annotations.Nullable;
 
 public class TeapotBlock extends BaseEntityBlock {
     public static final VoxelShape SHAPE = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 10.0D, 13.0D);
@@ -64,8 +63,7 @@ public class TeapotBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected MapCodec<? extends BaseEntityBlock> codec()
-    {
+    protected MapCodec<? extends BaseEntityBlock> codec() {
         return simpleCodec(TeapotBlock::new);
     }
 
@@ -99,27 +97,20 @@ public class TeapotBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult)
-    {
+    protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
         if (pLevel.isClientSide) {
             return ItemInteractionResult.SUCCESS;
         } else {
-            if (pLevel.getBlockEntity(pPos) instanceof TeapotBlockEntity be)
-            {
+            if (pLevel.getBlockEntity(pPos) instanceof TeapotBlockEntity be) {
                 ItemStack inHand = pPlayer.getItemInHand(pHand);
-                if (be.getInSlot(0) == ItemStack.EMPTY)
-                {
-                    if (inHand.getItem() instanceof PotionCupHolder holder && holder.canBeDrained(inHand))
-                    {
-                        if (be.tryFill(holder.getCups(), holder.getPotion(inHand)))
-                        {
+                if (be.getInSlot(0) == ItemStack.EMPTY) {
+                    if (inHand.getItem() instanceof PotionCupHolder holder && holder.canBeDrained(inHand)) {
+                        if (be.tryFill(holder.getCups(), holder.getPotion(inHand))) {
                             ItemUtils.safeShrink(1, inHand, pPlayer);
                             pPlayer.addItem(holder.getDrained(pPlayer.getItemInHand(pHand)));
                             pLevel.playSound(null, pPos, SoundEvents.BOTTLE_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
                         }
-                    }
-                    else if (be.getCups() > 0)
-                    {
+                    } else if (be.getCups() > 0) {
                         if (inHand.getItem() instanceof PotionCupHolder potionCupHolder && potionCupHolder.canBeFilled(inHand, be.getPotion(), be.getCups())) {
                             ItemUtils.safeShrink(1, inHand, pPlayer);
                             pPlayer.addItem(potionCupHolder.getFilled(be.getPotion()));
@@ -145,11 +136,10 @@ public class TeapotBlock extends BaseEntityBlock {
     }
 
     public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom) {
-        if (pLevel.getBlockEntity(pPos) instanceof TeapotBlockEntity be && (be.isBoiling() || be.isDone()))
-        {
-            double d0 = (double)pPos.getX() - 0.03D + (double)pRandom.nextFloat() * 0.2D;
-            double d1 = (double)pPos.getY() + 0.53D + (double)pRandom.nextFloat() * 0.3D;
-            double d2 = (double)pPos.getZ() + 0.44D + (double)pRandom.nextFloat() * 0.2D;
+        if (pLevel.getBlockEntity(pPos) instanceof TeapotBlockEntity be && (be.isBoiling() || be.isDone())) {
+            double d0 = (double) pPos.getX() - 0.03D + (double) pRandom.nextFloat() * 0.2D;
+            double d1 = (double) pPos.getY() + 0.53D + (double) pRandom.nextFloat() * 0.3D;
+            double d2 = (double) pPos.getZ() + 0.44D + (double) pRandom.nextFloat() * 0.2D;
             pLevel.addParticle(MinejagoParticleTypes.VAPORS.get(), d0, d1, d2, 0.0D, 0.0D, 0.0D);
         }
     }
@@ -170,7 +160,7 @@ public class TeapotBlock extends BaseEntityBlock {
         BlockEntity blockentity = pBuilder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
         if (blockentity instanceof TeapotBlockEntity be) {
             pBuilder = pBuilder.withDynamicDrop(CONTENTS, (consumer) -> {
-                for(int i = 0; i < be.getContainerSize(); ++i) {
+                for (int i = 0; i < be.getContainerSize(); ++i) {
                     consumer.accept(be.getInSlot(i));
                 }
             });
@@ -180,29 +170,23 @@ public class TeapotBlock extends BaseEntityBlock {
     }
 
     @Override
-    public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState)
-    {
+    public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
         ItemStack stack = new ItemStack(asItem());
         TeapotBlockEntity be = (TeapotBlockEntity) levelReader.getBlockEntity(blockPos);
         be.saveToItem(stack, levelReader.registryAccess());
         return stack;
     }
 
-    public static int getBiomeTemperature(Level level, BlockPos pos)
-    {
+    public static int getBiomeTemperature(Level level, BlockPos pos) {
         int temp;
         float realTemp = level.getBiome(pos).value().getBaseTemperature();
-        if (level.dimension() == Level.NETHER)
-        {
+        if (level.dimension() == Level.NETHER) {
             temp = 100;
         } else if (level.dimension() == Level.END) {
             temp = 0;
-        }
-        else
-        {
+        } else {
             RandomSource random = RandomSource.create();
-            if (realTemp <= 0.05)
-            {
+            if (realTemp <= 0.05) {
                 temp = random.nextIntBetweenInclusive(-56, -28);
             } else if (realTemp <= 0.3) {
                 temp = random.nextIntBetweenInclusive(-5, 5);
@@ -210,9 +194,7 @@ public class TeapotBlock extends BaseEntityBlock {
                 temp = random.nextIntBetweenInclusive(10, 21);
             } else if (realTemp < 2.0) {
                 temp = random.nextIntBetweenInclusive(30, 40);
-            }
-            else
-            {
+            } else {
                 temp = random.nextIntBetweenInclusive(50, 100);
             }
         }
@@ -222,8 +204,7 @@ public class TeapotBlock extends BaseEntityBlock {
 
     @Override
     public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos currentPos, BlockPos neighborPos) {
-        if (!state.canSurvive(level, currentPos))
-        {
+        if (!state.canSurvive(level, currentPos)) {
             return Blocks.AIR.defaultBlockState();
         }
 
@@ -247,10 +228,8 @@ public class TeapotBlock extends BaseEntityBlock {
     }
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
-    {
-        if (level.getBlockState(pos.below()).is(BlockTags.FIRE) || level.getBlockState(pos.below()).is(BlockTags.CAMPFIRES))
-        {
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        if (level.getBlockState(pos.below()).is(BlockTags.FIRE) || level.getBlockState(pos.below()).is(BlockTags.CAMPFIRES)) {
             return level.getBlockState(pos.above()).isFaceSturdy(level, pos.above(), Direction.DOWN, SupportType.CENTER);
         }
         return true;

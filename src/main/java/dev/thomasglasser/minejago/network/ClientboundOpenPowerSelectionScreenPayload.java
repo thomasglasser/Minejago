@@ -7,6 +7,9 @@ import dev.thomasglasser.minejago.world.entity.character.Wu;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.tommylib.api.client.ClientUtils;
 import dev.thomasglasser.tommylib.api.network.ExtendedPacketPayload;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -15,18 +18,12 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.player.Player;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-public record ClientboundOpenPowerSelectionScreenPayload(List<ResourceKey<Power>> powers, Optional<Integer> wuId) implements ExtendedPacketPayload
-{
+public record ClientboundOpenPowerSelectionScreenPayload(List<ResourceKey<Power>> powers, Optional<Integer> wuId) implements ExtendedPacketPayload {
     public static final Type<ClientboundOpenPowerSelectionScreenPayload> TYPE = new Type<>(Minejago.modLoc("clientbound_open_power_selection_screen"));
     public static final StreamCodec<FriendlyByteBuf, ClientboundOpenPowerSelectionScreenPayload> CODEC = StreamCodec.composite(
             ByteBufCodecs.collection(ArrayList::new, ResourceKey.streamCodec(MinejagoRegistries.POWER)), ClientboundOpenPowerSelectionScreenPayload::powers,
             ByteBufCodecs.optional(ByteBufCodecs.INT), ClientboundOpenPowerSelectionScreenPayload::wuId,
-            ClientboundOpenPowerSelectionScreenPayload::new
-    );
+            ClientboundOpenPowerSelectionScreenPayload::new);
 
     // ON CLIENT
     public void handle(Player player) {
@@ -34,8 +31,7 @@ public record ClientboundOpenPowerSelectionScreenPayload(List<ResourceKey<Power>
     }
 
     @Override
-    public Type<? extends CustomPacketPayload> type()
-    {
+    public Type<? extends CustomPacketPayload> type() {
         return TYPE;
     }
 }

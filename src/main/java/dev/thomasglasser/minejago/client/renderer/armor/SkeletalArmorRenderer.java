@@ -3,15 +3,13 @@ package dev.thomasglasser.minejago.client.renderer.armor;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;
 import dev.thomasglasser.minejago.world.item.armor.SkeletalChestplateItem;
+import java.util.HashMap;
+import java.util.Map;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.model.DefaultedItemGeoModel;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class SkeletalArmorRenderer extends GeoArmorRenderer<SkeletalChestplateItem>
-{
+public class SkeletalArmorRenderer extends GeoArmorRenderer<SkeletalChestplateItem> {
     private static final Map<Skulkin.Variant, ResourceLocation> TEXTURE_LOCS = new HashMap<>();
 
     public SkeletalArmorRenderer() {

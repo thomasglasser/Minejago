@@ -6,6 +6,7 @@ import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.tommylib.api.data.tags.ExtendedBlockTagsProvider;
 import dev.thomasglasser.tommylib.api.registration.DeferredBlock;
+import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
@@ -14,12 +15,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.concurrent.CompletableFuture;
-
-public class MinejagoBlockTagsProvider extends ExtendedBlockTagsProvider
-{
-    public MinejagoBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper)
-    {
+public class MinejagoBlockTagsProvider extends ExtendedBlockTagsProvider {
+    public MinejagoBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
         super(output, lookupProvider, Minejago.MOD_ID, existingFileHelper);
     }
 
@@ -33,8 +30,7 @@ public class MinejagoBlockTagsProvider extends ExtendedBlockTagsProvider
         pots.add(MinejagoBlocks.TEAPOT.get(),
                 MinejagoBlocks.JASPOT.get(),
                 MinejagoBlocks.FLAME_TEAPOT.get());
-        for (DeferredBlock<TeapotBlock> pot : MinejagoBlocks.TEAPOTS.values())
-        {
+        for (DeferredBlock<TeapotBlock> pot : MinejagoBlocks.TEAPOTS.values()) {
             pots.add(pot.get());
         }
 

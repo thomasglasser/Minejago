@@ -27,8 +27,7 @@ import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class NunchucksItem extends BaseModeledItem implements GeoItem
-{
+public class NunchucksItem extends BaseModeledItem implements GeoItem {
     public static final ResourceLocation DAMAGE_MODIFIER = Minejago.modLoc("nunchuck_swinging");
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
@@ -40,7 +39,6 @@ public class NunchucksItem extends BaseModeledItem implements GeoItem
 
         SingletonGeoAnimatable.registerSyncedAnimatable(this);
     }
-
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
@@ -65,15 +63,13 @@ public class NunchucksItem extends BaseModeledItem implements GeoItem
 
     // TODO: Able to be enchanted with quick charge to charge 2x faster?
     @Override
-    public int getUseDuration(ItemStack pStack, LivingEntity p_344979_)
-    {
+    public int getUseDuration(ItemStack pStack, LivingEntity p_344979_) {
         return 100;
     }
 
     @Override
     public void onUseTick(Level level, LivingEntity livingEntity, ItemStack stack, int remainingUseDuration) {
-        if (remainingUseDuration <= 1)
-        {
+        if (remainingUseDuration <= 1) {
             livingEntity.releaseUsingItem();
         }
     }
@@ -92,13 +88,12 @@ public class NunchucksItem extends BaseModeledItem implements GeoItem
         itemAttributeModifiers.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(DAMAGE_MODIFIER, ((getUseDuration(pStack, pLivingEntity) - pTimeCharged) / 10.0), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
         pStack.set(DataComponents.ATTRIBUTE_MODIFIERS, itemAttributeModifiers.build());
 
-        ((Player)pLivingEntity).getCooldowns().addCooldown(this, 100);
+        ((Player) pLivingEntity).getCooldowns().addCooldown(this, 100);
     }
 
     @Override
     public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected) {
-        if (pEntity instanceof Player player && !player.isUsingItem() && !player.getCooldowns().isOnCooldown(this))
-        {
+        if (pEntity instanceof Player player && !player.isUsingItem() && !player.getCooldowns().isOnCooldown(this)) {
             if (pLevel instanceof ServerLevel)
                 triggerAnim(pEntity, GeoItem.getOrAssignId(pStack, (ServerLevel) pLevel), "use_controller", "idle");
             resetDamage(pStack);
@@ -107,11 +102,9 @@ public class NunchucksItem extends BaseModeledItem implements GeoItem
         super.inventoryTick(pStack, pLevel, pEntity, pSlotId, pIsSelected);
     }
 
-    public static void resetDamage(ItemStack stack)
-    {
+    public static void resetDamage(ItemStack stack) {
         ItemAttributeModifiers original = stack.get(DataComponents.ATTRIBUTE_MODIFIERS);
-        if (original != null)
-        {
+        if (original != null) {
             original.modifiers().removeIf(entry -> entry.modifier().id().equals(DAMAGE_MODIFIER));
             stack.set(DataComponents.ATTRIBUTE_MODIFIERS, original);
         }

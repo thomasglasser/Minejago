@@ -16,16 +16,14 @@ import snownee.jade.api.IWailaPlugin;
 import snownee.jade.api.WailaPlugin;
 
 @WailaPlugin
-public class MinejagoWailaPlugin implements IWailaPlugin
-{
+public class MinejagoWailaPlugin implements IWailaPlugin {
     public static final ResourceLocation TEAPOT_BLOCK = Minejago.modLoc("teapot_block");
     public static final ResourceLocation LIVING_ENTITY = Minejago.modLoc("living_entity");
     public static final ResourceLocation DRAGON = Minejago.modLoc("dragon");
     public static final ResourceLocation PAINTING = Minejago.modLoc("painting");
 
     @Override
-    public void registerClient(IWailaClientRegistration registration)
-    {
+    public void registerClient(IWailaClientRegistration registration) {
         registration.registerBlockComponent(TeapotBlockComponentProvider.INSTANCE, TeapotBlock.class);
         registration.registerEntityComponent(LivingEntityComponentProvider.INSTANCE, LivingEntity.class);
         registration.registerEntityComponent(DragonComponentProvider.INSTANCE, Dragon.class);

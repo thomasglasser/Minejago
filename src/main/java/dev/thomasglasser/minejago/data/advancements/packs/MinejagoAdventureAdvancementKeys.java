@@ -1,7 +1,6 @@
 package dev.thomasglasser.minejago.data.advancements.packs;
 
-public class MinejagoAdventureAdvancementKeys
-{
+public class MinejagoAdventureAdvancementKeys {
     public static final String CATEGORY = "adventure";
 
     public static final String INTERACT_WITH_MAIN_SIX = "interact_with_main_six";

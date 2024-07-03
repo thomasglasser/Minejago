@@ -12,8 +12,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
 
-public record ServerboundStartMeditationPayload() implements ExtendedPacketPayload
-{
+public record ServerboundStartMeditationPayload() implements ExtendedPacketPayload {
     public static final ServerboundStartMeditationPayload INSTANCE = new ServerboundStartMeditationPayload();
 
     public static final Type<ServerboundStartMeditationPayload> TYPE = new Type<>(Minejago.modLoc("serverbound_start_meditation"));
@@ -21,8 +20,7 @@ public record ServerboundStartMeditationPayload() implements ExtendedPacketPaylo
 
     // ON SERVER
     public void handle(@Nullable Player player) {
-        if (player instanceof ServerPlayer serverPlayer)
-        {
+        if (player instanceof ServerPlayer serverPlayer) {
             player.getData(MinejagoAttachmentTypes.FOCUS).startMeditating();
             CompoundTag persistentData = TommyLibServices.ENTITY.getPersistentData(serverPlayer);
             persistentData.putString("StartPos", serverPlayer.blockPosition().toString());
@@ -32,8 +30,7 @@ public record ServerboundStartMeditationPayload() implements ExtendedPacketPaylo
     }
 
     @Override
-    public Type<? extends CustomPacketPayload> type()
-    {
+    public Type<? extends CustomPacketPayload> type() {
         return TYPE;
     }
 }

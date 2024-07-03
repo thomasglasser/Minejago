@@ -13,8 +13,7 @@ import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.Level;
 
-public class ShurikenItem extends SwordItem
-{
+public class ShurikenItem extends SwordItem {
     public ShurikenItem(Tier pTier, Properties pProperties) {
         super(pTier, pProperties);
     }

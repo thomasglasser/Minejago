@@ -39,6 +39,8 @@ import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPattern
 import dev.thomasglasser.minejago.world.level.levelgen.structure.MinejagoStructures;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.placement.MinejagoStructureSets;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.pools.MinejagoPools;
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
@@ -50,32 +52,25 @@ import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
-import java.util.Set;
-import java.util.concurrent.CompletableFuture;
-
-public class MinejagoDataGenerators
-{
+public class MinejagoDataGenerators {
     private static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
             .add(Registries.TEMPLATE_POOL, MinejagoPools::bootstrap)
             .add(Registries.STRUCTURE, MinejagoStructures::bootstrap)
             .add(Registries.STRUCTURE_SET, MinejagoStructureSets::bootstrap)
             .add(Registries.PROCESSOR_LIST, MinejagoProcessorLists::bootstrap)
             .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, MinejagoBiomeModifiers::bootstrap)
-            .add(Registries.CONFIGURED_FEATURE, (pContext ->
-            {
+            .add(Registries.CONFIGURED_FEATURE, (pContext -> {
                 MinejagoTreeFeatures.bootstrap(pContext);
                 MinejagoVegetationFeatures.bootstrap(pContext);
             }))
-            .add(Registries.PLACED_FEATURE, (pContext ->
-            {
+            .add(Registries.PLACED_FEATURE, (pContext -> {
                 MinejagoTreePlacements.bootstrap(pContext);
                 MinejagoVegetationPlacements.bootstrap(pContext);
             }))
             .add(Registries.BANNER_PATTERN, MinejagoBannerPatterns::bootstrap)
             .add(Registries.PAINTING_VARIANT, MinejagoPaintingVariants::boostrap);
 
-    public static void gatherData(GatherDataEvent event)
-    {
+    public static void gatherData(GatherDataEvent event) {
         DataGenerator generator = event.getGenerator();
         PackOutput packOutput = generator.getPackOutput();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
@@ -90,8 +85,7 @@ public class MinejagoDataGenerators
         genPotionPotPack(event, generator, new PackOutput(packOutput.getOutputFolder().resolve("packs/" + MinejagoPacks.POTION_POT.knownPack().namespace() + "/" + MinejagoPacks.POTION_POT.knownPack().id())), lookupProvider, existingFileHelper, includeServer, includeClient);
     }
 
-    private static void genMain(GatherDataEvent event, DataGenerator generator, PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper, boolean includeServer, boolean includeClient)
-    {
+    private static void genMain(GatherDataEvent event, DataGenerator generator, PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper, boolean includeServer, boolean includeClient) {
         MinejagoBlockTagsProvider blockTags = new MinejagoBlockTagsProvider(packOutput, lookupProvider, existingFileHelper);
 
         // LanguageProviders
@@ -103,7 +97,7 @@ public class MinejagoDataGenerators
         // Powers
         MinejagoPowerDatagenSuite powerDatagenSuite = new MinejagoPowerDatagenSuite(event, enUs);
         CompletableFuture<HolderLookup.Provider> powerLookupProvider = powerDatagenSuite.getRegistryProvider();
-        generator.addProvider(includeServer, new PowerTagsProvider(packOutput, Minejago.MOD_ID,  powerLookupProvider, existingFileHelper));
+        generator.addProvider(includeServer, new PowerTagsProvider(packOutput, Minejago.MOD_ID, powerLookupProvider, existingFileHelper));
 
         // Sherds
         new MinejagoSherdDatagenSuite(event);
@@ -136,13 +130,11 @@ public class MinejagoDataGenerators
         generator.addProvider(includeClient, enUs);
     }
 
-    private static void genImmersionPack(GatherDataEvent event, DataGenerator generator, PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper, boolean includeServer, boolean includeClient)
-    {
+    private static void genImmersionPack(GatherDataEvent event, DataGenerator generator, PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper, boolean includeServer, boolean includeClient) {
         generator.addProvider(includeClient, new MinejagoImmersionPackEnUsLanguageProvider(packOutput));
     }
 
-    private static void genPotionPotPack(GatherDataEvent event, DataGenerator generator, PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper, boolean includeServer, boolean includeClient)
-    {
+    private static void genPotionPotPack(GatherDataEvent event, DataGenerator generator, PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper, boolean includeServer, boolean includeClient) {
         generator.addProvider(includeServer, new MinejagoPotionPotPackRecipes(packOutput, lookupProvider));
     }
 }

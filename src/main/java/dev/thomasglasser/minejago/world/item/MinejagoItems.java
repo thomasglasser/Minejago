@@ -9,6 +9,11 @@ import dev.thomasglasser.tommylib.api.registration.DeferredItem;
 import dev.thomasglasser.tommylib.api.registration.DeferredRegister;
 import dev.thomasglasser.tommylib.api.world.item.CustomEmptyMapItem;
 import dev.thomasglasser.tommylib.api.world.item.ItemUtils;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Supplier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -26,14 +31,7 @@ import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.armortrim.TrimPattern;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Supplier;
-
-public class MinejagoItems
-{
+public class MinejagoItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Minejago.MOD_ID);
     public static final List<String> SHERDS = new ArrayList<>();
     public static final String MOD_NEEDED = "error.mod_needed";
@@ -82,36 +80,30 @@ public class MinejagoItems
     public static final DeferredItem<SpawnEggItem> SKULL_TRUCK_SPAWN_EGG = registerSpawnEgg("skull_truck_spawn_egg", MinejagoEntityTypes.SKULL_TRUCK::get, 0xcbc6a5, 0x832696);
     public static final DeferredItem<SpawnEggItem> SKULL_MOTORBIKE_SPAWN_EGG = registerSpawnEgg("skull_motorbike_spawn_egg", MinejagoEntityTypes.SKULL_MOTORBIKE::get, 0xd4cfae, 0x9143ff);
 
-    public static <T extends Item> DeferredItem<T> register(String name, Supplier<T> itemSupplier, List<ResourceKey<CreativeModeTab>> tabs)
-    {
+    public static <T extends Item> DeferredItem<T> register(String name, Supplier<T> itemSupplier, List<ResourceKey<CreativeModeTab>> tabs) {
         return ItemUtils.register(ITEMS, name, itemSupplier, tabs);
     }
 
-    private static DeferredItem<Item> registerSherd(String name)
-    {
+    private static DeferredItem<Item> registerSherd(String name) {
         SHERDS.add(name);
         return ItemUtils.registerSherd(ITEMS, name);
     }
 
     public static void init() {}
 
-    private static Map<DyeColor, DeferredItem<Item>> teapots()
-    {
+    private static Map<DyeColor, DeferredItem<Item>> teapots() {
         Map<DyeColor, DeferredItem<Item>> map = new HashMap<>();
-        for (DyeColor color : DyeColor.values())
-        {
+        for (DyeColor color : DyeColor.values()) {
             map.put(color, register(color.getName() + "_teapot", () -> new BlockItem(MinejagoBlocks.TEAPOTS.get(color).get(), new Item.Properties().stacksTo(1)), List.of(CreativeModeTabs.FUNCTIONAL_BLOCKS)));
         }
         return map;
     }
-    
-    private static DeferredItem<SmithingTemplateItem> registerSmithingTemplate(ResourceKey<TrimPattern> pattern)
-    {
+
+    private static DeferredItem<SmithingTemplateItem> registerSmithingTemplate(ResourceKey<TrimPattern> pattern) {
         return ItemUtils.registerSmithingTemplate(ITEMS, pattern);
     }
-    
-    private static DeferredItem<SpawnEggItem> registerSpawnEgg(String name, Supplier<EntityType<? extends Mob>> entityType, int primaryColor, int secondaryColor)
-    {
+
+    private static DeferredItem<SpawnEggItem> registerSpawnEgg(String name, Supplier<EntityType<? extends Mob>> entityType, int primaryColor, int secondaryColor) {
         return ItemUtils.registerSpawnEgg(ITEMS, name, entityType, primaryColor, secondaryColor);
     }
 }

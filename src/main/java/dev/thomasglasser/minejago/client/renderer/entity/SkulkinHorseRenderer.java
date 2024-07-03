@@ -9,8 +9,7 @@ import net.minecraft.client.renderer.entity.AbstractHorseRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class SkulkinHorseRenderer extends AbstractHorseRenderer<SkulkinHorse, HorseModel<SkulkinHorse>>
-{
+public class SkulkinHorseRenderer extends AbstractHorseRenderer<SkulkinHorse, HorseModel<SkulkinHorse>> {
     public static final ResourceLocation TEXTURE_LOCATION = Minejago.modLoc("textures/entity/skulkin/skulkin_horse.png");
 
     public SkulkinHorseRenderer(EntityRendererProvider.Context context) {

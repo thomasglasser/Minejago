@@ -1,13 +1,12 @@
 package dev.thomasglasser.minejago.world.item;
 
+import java.util.function.Supplier;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
-
-import java.util.function.Supplier;
 
 public enum MinejagoTiers implements Tier {
     BONE(BlockTags.INCORRECT_FOR_IRON_TOOL, 150, 10.0F, 1.5F, 10, () -> Ingredient.of(Items.BONE));
@@ -49,7 +48,7 @@ public enum MinejagoTiers implements Tier {
     }
 
     public Ingredient getRepairIngredient() {
-        return (Ingredient)this.repairIngredient.get();
+        return (Ingredient) this.repairIngredient.get();
     }
 
     public static void init() {}

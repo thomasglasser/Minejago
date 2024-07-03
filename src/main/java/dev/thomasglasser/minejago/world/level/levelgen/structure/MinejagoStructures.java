@@ -5,6 +5,7 @@ import dev.thomasglasser.minejago.tags.MinejagoBiomeTags;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.pools.CaveOfDespairPools;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.pools.FourWeaponsPools;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.pools.NinjagoCityPools;
+import java.util.Map;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
@@ -22,10 +23,7 @@ import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
 
-import java.util.Map;
-
-public class MinejagoStructures
-{
+public class MinejagoStructures {
     public static final ResourceKey<Structure> FOUR_WEAPONS = createKey("four_weapons");
     public static final ResourceKey<Structure> CAVE_OF_DESPAIR = createKey("cave_of_despair");
     public static final ResourceKey<Structure> NINJAGO_CITY = createKey("ninjago_city");
@@ -34,8 +32,7 @@ public class MinejagoStructures
         return ResourceKey.create(Registries.STRUCTURE, Minejago.modLoc(name));
     }
 
-    public static void bootstrap(BootstrapContext<Structure> context)
-    {
+    public static void bootstrap(BootstrapContext<Structure> context) {
         HolderGetter<Biome> holderGetter = context.lookup(Registries.BIOME);
         HolderGetter<StructureTemplatePool> holderGetter2 = context.lookup(Registries.TEMPLATE_POOL);
 
@@ -50,9 +47,7 @@ public class MinejagoStructures
                         7,
                         ConstantHeight.of(VerticalAnchor.absolute(0)),
                         false,
-                        Heightmap.Types.WORLD_SURFACE_WG
-                )
-        );
+                        Heightmap.Types.WORLD_SURFACE_WG));
 
         context.register(
                 CAVE_OF_DESPAIR,
@@ -63,16 +58,12 @@ public class MinejagoStructures
                                 .spawnOverrides(
                                         Map.of(
                                                 MobCategory.MONSTER, new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()),
-                                                MobCategory.AMBIENT, new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create())
-                                        )
-                                )
+                                                MobCategory.AMBIENT, new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create())))
                                 .build(),
                         holderGetter2.getOrThrow(CaveOfDespairPools.START),
                         7,
                         ConstantHeight.of(VerticalAnchor.absolute(40)),
-                        false
-                )
-        );
+                        false));
 
         context.register(NINJAGO_CITY,
                 new JigsawStructure(
@@ -84,8 +75,6 @@ public class MinejagoStructures
                         7,
                         ConstantHeight.of(VerticalAnchor.absolute(0)),
                         false,
-                        Heightmap.Types.WORLD_SURFACE_WG
-                )
-        );
+                        Heightmap.Types.WORLD_SURFACE_WG));
     }
 }

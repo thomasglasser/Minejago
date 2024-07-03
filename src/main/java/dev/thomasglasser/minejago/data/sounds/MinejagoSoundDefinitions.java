@@ -6,8 +6,7 @@ import dev.thomasglasser.tommylib.api.data.sounds.ExtendedSoundDefinitionsProvid
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
-public class MinejagoSoundDefinitions extends ExtendedSoundDefinitionsProvider
-{
+public class MinejagoSoundDefinitions extends ExtendedSoundDefinitionsProvider {
     public MinejagoSoundDefinitions(PackOutput output, ExistingFileHelper helper) {
         super(output, Minejago.MOD_ID, helper);
     }

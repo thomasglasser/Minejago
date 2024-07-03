@@ -14,22 +14,21 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Player.class)
-public abstract class PlayerMixin extends LivingEntity
-{
-	@Shadow @Final private Abilities abilities;
+public abstract class PlayerMixin extends LivingEntity {
+    @Shadow
+    @Final
+    private Abilities abilities;
 
-	private PlayerMixin(EntityType<? extends LivingEntity> entityType, Level level)
-	{
-		super(entityType, level);
-	}
+    private PlayerMixin(EntityType<? extends LivingEntity> entityType, Level level) {
+        super(entityType, level);
+    }
 
-	@Inject(method = "causeFoodExhaustion", at = @At("TAIL"))
-	private void minejago_causeFoodExhaustion(float exhaustion, CallbackInfo ci)
-	{
-		if (!abilities.invulnerable) {
-			if (!level().isClientSide) {
-				this.getData(MinejagoAttachmentTypes.FOCUS).addExhaustion(exhaustion);
-			}
-		}
-	}
+    @Inject(method = "causeFoodExhaustion", at = @At("TAIL"))
+    private void minejago_causeFoodExhaustion(float exhaustion, CallbackInfo ci) {
+        if (!abilities.invulnerable) {
+            if (!level().isClientSide) {
+                this.getData(MinejagoAttachmentTypes.FOCUS).addExhaustion(exhaustion);
+            }
+        }
+    }
 }

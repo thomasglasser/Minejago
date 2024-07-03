@@ -10,6 +10,7 @@ import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
 import dev.thomasglasser.tommylib.api.network.NetworkUtils;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializer;
@@ -63,6 +64,7 @@ import net.tslat.smartbrainlib.api.core.sensor.vanilla.HurtBySensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyPlayersSensor;
 import net.tslat.smartbrainlib.util.BrainUtils;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
@@ -70,11 +72,7 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import javax.annotation.Nullable;
-import java.util.List;
-
-public class Character extends AgeableMob implements SmartBrainOwner<Character>, GeoEntity, SpinjitzuDoer
-{
+public class Character extends AgeableMob implements SmartBrainOwner<Character>, GeoEntity, SpinjitzuDoer {
     public static final RawAnimation SPINJITZU = RawAnimation.begin().thenPlay("move.spinjitzu");
     public static final RawAnimation MEDITATION_START = RawAnimation.begin().thenPlay("move.meditation.start");
     public static final RawAnimation MEDITATION_FLOAT = RawAnimation.begin().thenPlay("move.meditation.float");
@@ -93,9 +91,8 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
     }
 
     @Override
-    protected PathNavigation createNavigation(Level level)
-    {
-	    return new SmoothGroundNavigation(this, level);
+    protected PathNavigation createNavigation(Level level) {
+        return new SmoothGroundNavigation(this, level);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -122,15 +119,13 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
     }
 
     @Override
-    public void aiStep()
-    {
+    public void aiStep() {
         super.aiStep();
         this.updateSwingTime();
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder)
-    {
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(DATA_MEDITATION_STATUS, MeditationStatus.NONE);
     }
@@ -141,8 +136,7 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
                 new NearbyPlayersSensor<>(),
                 new HurtBySensor<>(),
                 new NearbyLivingEntitySensor<Character>()
-                        .setPredicate((target, entity) ->
-                                !(target instanceof Creeper) &&
+                        .setPredicate((target, entity) -> !(target instanceof Creeper) &&
                                 target instanceof Enemy));
     }
 
@@ -178,8 +172,7 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
 
     public void onTargetOrRetaliate(Character character) {}
 
-    public boolean shouldFloatToSurfaceOfFluid(Character character)
-    {
+    public boolean shouldFloatToSurfaceOfFluid(Character character) {
         return true;
     }
 
@@ -188,11 +181,9 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
     public void onStopFloatingToSurfaceOfFluid(Character character) {}
 
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData)
-    {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData) {
         this.setCanPickUpLoot(true);
-        if (mobSpawnType == MobSpawnType.NATURAL || mobSpawnType == MobSpawnType.CHUNK_GENERATION)
-        {
+        if (mobSpawnType == MobSpawnType.NATURAL || mobSpawnType == MobSpawnType.CHUNK_GENERATION) {
             List<? extends Character> list = level().getEntitiesOfClass(this.getClass(), getBoundingBox().inflate(1024));
             list.remove(this);
             if (!list.isEmpty())
@@ -202,23 +193,18 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
     }
 
     @Override
-    public boolean removeWhenFarAway(double distanceToClosestPlayer)
-    {
+    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
         List<? extends Character> list = level().getEntitiesOfClass(this.getClass(), getBoundingBox().inflate(1024));
         list.remove(this);
         return !list.isEmpty();
     }
 
-    public boolean shouldHelp(Character victim, LivingEntity helper)
-    {
+    public boolean shouldHelp(Character victim, LivingEntity helper) {
         LivingEntity helperTarget = null;
 
-        if (helper instanceof SmartBrainOwner<?>)
-        {
+        if (helper instanceof SmartBrainOwner<?>) {
             helperTarget = BrainUtils.getTargetOfEntity(helper);
-        }
-        else if (helper instanceof Mob mob)
-        {
+        } else if (helper instanceof Mob mob) {
             helperTarget = mob.getTarget();
         }
 
@@ -273,38 +259,30 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
     }
 
     @Override
-    public void setDoingSpinjitzu(boolean doingSpinjitzu)
-    {
+    public void setDoingSpinjitzu(boolean doingSpinjitzu) {
         setData(MinejagoAttachmentTypes.SPINJITZU, new SpinjitzuData(true, doingSpinjitzu));
     }
 
-    public static boolean checkCharacterSpawnRules(Class<? extends Character> clazz, EntityType<? extends Character> character, LevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random)
-    {
+    public static boolean checkCharacterSpawnRules(Class<? extends Character> clazz, EntityType<? extends Character> character, LevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         List<? extends Character> characters;
-        if (level instanceof WorldGenRegion worldGenRegion)
-        {
+        if (level instanceof WorldGenRegion worldGenRegion) {
             characters = worldGenRegion.getLevel().getEntitiesOfClass(clazz, AABB.ofSize(pos.getCenter(), 1024, 1024, 1024));
             return characters.isEmpty() && Mob.checkMobSpawnRules(character, level, spawnType, pos, random);
-        }
-        else
-        {
+        } else {
             characters = level.getEntitiesOfClass(Character.class, AABB.ofSize(pos.getCenter(), 1024, 1024, 1024));
             return characters.isEmpty() && Mob.checkMobSpawnRules(character, level, spawnType, pos, random);
         }
     }
 
-    public void setMeditationStatus(MeditationStatus meditationStatus)
-    {
+    public void setMeditationStatus(MeditationStatus meditationStatus) {
         this.entityData.set(DATA_MEDITATION_STATUS, meditationStatus);
     }
 
-    public MeditationStatus getMeditationStatus()
-    {
+    public MeditationStatus getMeditationStatus() {
         return this.entityData.get(DATA_MEDITATION_STATUS);
     }
 
-    public enum MeditationStatus
-    {
+    public enum MeditationStatus {
         STARTING,
         FLOATING,
         FINISHING,

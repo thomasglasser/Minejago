@@ -24,11 +24,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
-
-public class ThrownIronShuriken extends AbstractArrow
-{
+public class ThrownIronShuriken extends AbstractArrow {
     private static final EntityDataAccessor<Boolean> ID_FOIL = SynchedEntityData.defineId(ThrownIronShuriken.class, EntityDataSerializers.BOOLEAN);
 
     private static final byte FLAG_DEALT_DAMAGE = 100;
@@ -47,8 +45,7 @@ public class ThrownIronShuriken extends AbstractArrow
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder)
-    {
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(ID_FOIL, false);
     }
@@ -61,13 +58,12 @@ public class ThrownIronShuriken extends AbstractArrow
         if (pos == null)
             pos = this.position();
 
-	    if (this.inGroundTime > 4) {
+        if (this.inGroundTime > 4) {
             this.dealtDamage = true;
             level().broadcastEntityEvent(this, FLAG_DEALT_DAMAGE);
         }
 
-        if (!this.dealtDamage && this.tickCount > 40)
-        {
+        if (!this.dealtDamage && this.tickCount > 40) {
             Vec3 vec3 = pos.subtract(this.position());
             this.setPos(this.getX(), this.getY() + vec3.y * 0.015D, this.getZ());
             if (this.level().isClientSide) {
@@ -77,12 +73,10 @@ public class ThrownIronShuriken extends AbstractArrow
             double d0 = 0.05D;
             this.setDeltaMovement(this.getDeltaMovement().scale(0.95D).add(vec3.normalize().scale(d0)));
 
-            if (this.position().closerThan(pos, 2))
-            {
+            if (this.position().closerThan(pos, 2)) {
                 this.dealtDamage = true;
             }
-        }
-        else {
+        } else {
             this.setNoGravity(!this.dealtDamage);
         }
 
@@ -138,8 +132,7 @@ public class ThrownIronShuriken extends AbstractArrow
     }
 
     @Override
-    protected ItemStack getDefaultPickupItem()
-    {
+    protected ItemStack getDefaultPickupItem() {
         return MinejagoItems.IRON_SHURIKEN.get().getDefaultInstance();
     }
 
@@ -147,20 +140,16 @@ public class ThrownIronShuriken extends AbstractArrow
      * Called by a player entity when they collide with an entity
      */
     public void playerTouch(Player pEntity) {
-        if (this.tickCount > 3)
-        {
+        if (this.tickCount > 3) {
             if (!(pEntity.swinging || inGround))
                 onHitEntity(new EntityHitResult(pEntity));
             if (!this.level().isClientSide()) {
-                if (tickCount > 40)
-                {
+                if (tickCount > 40) {
                     this.setNoPhysics(true);
                 }
                 super.playerTouch(pEntity);
             }
-        }
-        else
-        {
+        } else {
             super.playerTouch(pEntity);
         }
     }
@@ -196,11 +185,9 @@ public class ThrownIronShuriken extends AbstractArrow
 
     @Override
     public void handleEntityEvent(byte id) {
-        if (id == FLAG_DEALT_DAMAGE)
-        {
+        if (id == FLAG_DEALT_DAMAGE) {
             this.dealtDamage = true;
-        }
-        else
+        } else
             super.handleEntityEvent(id);
     }
 

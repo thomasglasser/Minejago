@@ -2,17 +2,15 @@ package dev.thomasglasser.minejago.data.tags;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
+import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.PaintingVariantTagsProvider;
 import net.minecraft.tags.PaintingVariantTags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
-import java.util.concurrent.CompletableFuture;
-
-public class MinejagoPaintingVariantTagsProvider extends PaintingVariantTagsProvider
-{
+public class MinejagoPaintingVariantTagsProvider extends PaintingVariantTagsProvider {
     public MinejagoPaintingVariantTagsProvider(PackOutput pOutput, CompletableFuture<HolderLookup.Provider> pProvider, @Nullable ExistingFileHelper existingFileHelper) {
         super(pOutput, pProvider, Minejago.MOD_ID, existingFileHelper);
     }

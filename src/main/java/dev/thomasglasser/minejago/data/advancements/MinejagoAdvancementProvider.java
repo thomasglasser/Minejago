@@ -3,17 +3,15 @@ package dev.thomasglasser.minejago.data.advancements;
 import dev.thomasglasser.minejago.data.advancements.packs.MinejagoAdventureAdvancements;
 import dev.thomasglasser.minejago.data.advancements.packs.MinejagoHusbandryAdvancements;
 import dev.thomasglasser.minejago.data.advancements.packs.MinejagoStoryAdvancements;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.AdvancementProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-
-public class MinejagoAdvancementProvider extends AdvancementProvider
-{
+public class MinejagoAdvancementProvider extends AdvancementProvider {
     /**
      * Constructs an advancement provider using the generators to write the
      * advancements to a file.
@@ -26,7 +24,6 @@ public class MinejagoAdvancementProvider extends AdvancementProvider
         super(output, registries, existingFileHelper, List.of(
                 new MinejagoStoryAdvancements(enUs),
                 new MinejagoAdventureAdvancements(enUs),
-                new MinejagoHusbandryAdvancements(enUs)
-        ));
+                new MinejagoHusbandryAdvancements(enUs)));
     }
 }

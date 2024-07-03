@@ -18,8 +18,7 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
-public class KrunchaModel<T extends Kruncha> extends HumanoidModel<T>
-{
+public class KrunchaModel<T extends Kruncha> extends HumanoidModel<T> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Minejago.modLoc("kruncha"), "main");
 
     public KrunchaModel(ModelPart pRoot) {
@@ -66,19 +65,18 @@ public class KrunchaModel<T extends Kruncha> extends HumanoidModel<T>
         super.setupAnim(pEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
         ItemStack itemstack = pEntity.getMainHandItem();
         if (pEntity.isAggressive() && (itemstack.isEmpty() || !itemstack.is(Items.BOW))) {
-            float f = Mth.sin(this.attackTime * (float)Math.PI);
-            float f1 = Mth.sin((1.0F - (1.0F - this.attackTime) * (1.0F - this.attackTime)) * (float)Math.PI);
+            float f = Mth.sin(this.attackTime * (float) Math.PI);
+            float f1 = Mth.sin((1.0F - (1.0F - this.attackTime) * (1.0F - this.attackTime)) * (float) Math.PI);
             this.rightArm.zRot = 0.0F;
             this.leftArm.zRot = 0.0F;
             this.rightArm.yRot = -(0.1F - f * 0.6F);
             this.leftArm.yRot = 0.1F - f * 0.6F;
-            this.rightArm.xRot = (-(float)Math.PI / 2F);
-            this.leftArm.xRot = (-(float)Math.PI / 2F);
+            this.rightArm.xRot = (-(float) Math.PI / 2F);
+            this.leftArm.xRot = (-(float) Math.PI / 2F);
             this.rightArm.xRot -= f * 1.2F - f1 * 0.4F;
             this.leftArm.xRot -= f * 1.2F - f1 * 0.4F;
             AnimationUtils.bobArms(this.rightArm, this.leftArm, pAgeInTicks);
         }
-
     }
 
     public void translateToHand(HumanoidArm pSide, PoseStack pPoseStack) {
@@ -88,5 +86,4 @@ public class KrunchaModel<T extends Kruncha> extends HumanoidModel<T>
         modelpart.translateAndRotate(pPoseStack);
         modelpart.x -= f;
     }
-
 }

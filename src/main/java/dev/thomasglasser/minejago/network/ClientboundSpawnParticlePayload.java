@@ -12,8 +12,8 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
 
-public record ClientboundSpawnParticlePayload(ParticleOptions particleOptions, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) implements ExtendedPacketPayload
-{
+public record ClientboundSpawnParticlePayload(ParticleOptions particleOptions, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) implements ExtendedPacketPayload {
+
     public static final Type<ClientboundSpawnParticlePayload> TYPE = new Type<>(Minejago.modLoc("clientbound_spawn_particle"));
     public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundSpawnParticlePayload> CODEC = NetworkUtils.composite(
             ParticleTypes.STREAM_CODEC, ClientboundSpawnParticlePayload::particleOptions,
@@ -23,8 +23,7 @@ public record ClientboundSpawnParticlePayload(ParticleOptions particleOptions, d
             ByteBufCodecs.DOUBLE, ClientboundSpawnParticlePayload::xSpeed,
             ByteBufCodecs.DOUBLE, ClientboundSpawnParticlePayload::ySpeed,
             ByteBufCodecs.DOUBLE, ClientboundSpawnParticlePayload::zSpeed,
-            ClientboundSpawnParticlePayload::new
-    );
+            ClientboundSpawnParticlePayload::new);
 
     // ON CLIENT
     public void handle(Player player) {
@@ -32,8 +31,7 @@ public record ClientboundSpawnParticlePayload(ParticleOptions particleOptions, d
     }
 
     @Override
-    public Type<? extends CustomPacketPayload> type()
-    {
+    public Type<? extends CustomPacketPayload> type() {
         return TYPE;
     }
 }

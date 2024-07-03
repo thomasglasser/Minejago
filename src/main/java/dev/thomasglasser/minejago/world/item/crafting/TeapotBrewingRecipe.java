@@ -30,8 +30,7 @@ public class TeapotBrewingRecipe implements Recipe<TeapotBrewingRecipe.TeapotBre
             Ingredient ingredient,
             Holder<Potion> result,
             float xp,
-            IntProvider i
-    ) {
+            IntProvider i) {
         this.group = string;
         this.base = base;
         this.ingredient = ingredient;
@@ -41,14 +40,12 @@ public class TeapotBrewingRecipe implements Recipe<TeapotBrewingRecipe.TeapotBre
     }
 
     @Override
-    public boolean matches(TeapotBrewingRecipeInput input, Level p_345375_)
-    {
+    public boolean matches(TeapotBrewingRecipeInput input, Level p_345375_) {
         return ingredient.test(input.ingredient()) && base == input.base();
     }
 
     @Override
-    public ItemStack assemble(TeapotBrewingRecipeInput input, HolderLookup.Provider provider)
-    {
+    public ItemStack assemble(TeapotBrewingRecipeInput input, HolderLookup.Provider provider) {
         return getResultItem(provider);
     }
 
@@ -72,8 +69,7 @@ public class TeapotBrewingRecipe implements Recipe<TeapotBrewingRecipe.TeapotBre
     }
 
     @Override
-    public ItemStack getResultItem(HolderLookup.Provider provider)
-    {
+    public ItemStack getResultItem(HolderLookup.Provider provider) {
         return MinejagoItemUtils.fillTeacup(result);
     }
 
@@ -108,36 +104,31 @@ public class TeapotBrewingRecipe implements Recipe<TeapotBrewingRecipe.TeapotBre
         return MinejagoBlocks.TEAPOT.get().asItem().getDefaultInstance();
     }
 
-    public Holder<Potion> getBase()
-    {
+    public Holder<Potion> getBase() {
         return base;
     }
 
     public interface Factory<T extends TeapotBrewingRecipe> {
         T create(String group,
-                 Holder<Potion> base,
-                 Ingredient ingredient,
-                 Holder<Potion> result,
-                 float xp,
-                 IntProvider i);
+                Holder<Potion> base,
+                Ingredient ingredient,
+                Holder<Potion> result,
+                float xp,
+                IntProvider i);
     }
 
-    public record TeapotBrewingRecipeInput(Holder<Potion> base, ItemStack ingredient) implements RecipeInput
-    {
+    public record TeapotBrewingRecipeInput(Holder<Potion> base, ItemStack ingredient) implements RecipeInput {
         @Override
-        public ItemStack getItem(int p_346128_)
-        {
-            return switch (p_346128_)
-                    {
-                        case 0 -> MinejagoItemUtils.fillTeacup(base);
-                        case 1 -> ingredient;
-                        default -> ItemStack.EMPTY;
-                    };
+        public ItemStack getItem(int p_346128_) {
+            return switch (p_346128_) {
+                case 0 -> MinejagoItemUtils.fillTeacup(base);
+                case 1 -> ingredient;
+                default -> ItemStack.EMPTY;
+            };
         }
 
         @Override
-        public int size()
-        {
+        public int size() {
             return 2;
         }
     }

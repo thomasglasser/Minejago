@@ -10,79 +10,69 @@ import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec2;
 
-public class ImmersionPackEntry extends IndexModeEntryProvider
-{
-	public static final String ID = "immersion_pack";
+public class ImmersionPackEntry extends IndexModeEntryProvider {
+    public static final String ID = "immersion_pack";
 
-	public ImmersionPackEntry(CategoryProviderBase parent)
-	{
-		super(parent);
-	}
+    public ImmersionPackEntry(CategoryProviderBase parent) {
+        super(parent);
+    }
 
-	@Override
-	protected void generatePages()
-	{
-		// Summary Text
-		page("summary_text", () -> BookTextPageModel.create()
-				.withTitle(entryName()))
-				.withText(context().pageText());
+    @Override
+    protected void generatePages() {
+        // Summary Text
+        page("summary_text", () -> BookTextPageModel.create()
+                .withTitle(entryName()))
+                        .withText(context().pageText());
 
-		pageText("The Immersion Pack is a resource pack that makes the world of Ninjago feel more whole with small changes, such as turning Note Blocks into Drums.");
+        pageText("The Immersion Pack is a resource pack that makes the world of Ninjago feel more whole with small changes, such as turning Note Blocks into Drums.");
 
-		// Summary Image
-		// TODO: Get drums recreation pic
-		page("summary_image", () -> BookImagePageModel.create()
-				.withImages(modLoc("textures/modonomicon/wiki/expansions/immersion_pack/drum_scene.png"))
-				.withText(context().pageText()));
+        // Summary Image
+        // TODO: Get drums recreation pic
+        page("summary_image", () -> BookImagePageModel.create()
+                .withImages(modLoc("textures/modonomicon/wiki/expansions/immersion_pack/drum_scene.png"))
+                .withText(context().pageText()));
 
-		pageText("We are aware this image is missing. It will be added in the next update.");
-	}
+        pageText("We are aware this image is missing. It will be added in the next update.");
+    }
 
-	@Override
-	public BookEntryModel generate(Vec2 location)
-	{
-		this.context().entry(this.entryId());
+    @Override
+    public BookEntryModel generate(Vec2 location) {
+        this.context().entry(this.entryId());
 
-		var entry = BookEntryModel.create(
-						this.modLoc(this.context().categoryId() + "/" + this.context().entryId()),
-						entryName()
-				)
-				.withDescription(entryDescription());
+        var entry = BookEntryModel.create(
+                this.modLoc(this.context().categoryId() + "/" + this.context().entryId()),
+                entryName())
+                .withDescription(entryDescription());
 
-		entry.withIcon(this.entryIcon());
-		entry.withLocation(location);
-		entry.withEntryBackground(this.entryBackground());
+        entry.withIcon(this.entryIcon());
+        entry.withLocation(location);
+        entry.withEntryBackground(this.entryBackground());
 
-		this.entry = this.additionalSetup(entry);
+        this.entry = this.additionalSetup(entry);
 
-		this.generatePages();
+        this.generatePages();
 
-		this.parent.add(this.entry);
-		return this.entry;
-	}
+        this.parent.add(this.entry);
+        return this.entry;
+    }
 
-	@Override
-	protected String entryId()
-	{
-		return ID;
-	}
+    @Override
+    protected String entryId() {
+        return ID;
+    }
 
-	@Override
-	protected String entryName()
-	{
-		return MinejagoPacks.IMMERSION.titleKey();
-	}
+    @Override
+    protected String entryName() {
+        return MinejagoPacks.IMMERSION.titleKey();
+    }
 
-	@Override
-	protected String entryDescription()
-	{
-		return MinejagoPacks.IMMERSION.descriptionKey();
-	}
+    @Override
+    protected String entryDescription() {
+        return MinejagoPacks.IMMERSION.descriptionKey();
+    }
 
-	@Override
-	protected BookIconModel entryIcon()
-	{
-		return BookIconModel.create(Blocks.NOTE_BLOCK);
-	}
-
+    @Override
+    protected BookIconModel entryIcon() {
+        return BookIconModel.create(Blocks.NOTE_BLOCK);
+    }
 }

@@ -55,6 +55,9 @@ import dev.thomasglasser.minejago.world.level.block.entity.TeapotBlockEntity;
 import dev.thomasglasser.tommylib.api.client.ClientUtils;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import dev.thomasglasser.tommylib.api.world.entity.PlayerRideableFlying;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -105,75 +108,55 @@ import net.tslat.tes.api.util.TESClientUtil;
 import org.lwjgl.glfw.GLFW;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-public class MinejagoClientEvents
-{
-    public static void onPlayerLoggedIn()
-    {
+public class MinejagoClientEvents {
+    public static void onPlayerLoggedIn() {
         MinejagoClientUtils.refreshVip();
     }
 
-    public static void onClientTick()
-    {
+    public static void onClientTick() {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null)
             return;
         if (PlayerRideableFlying.isRidingFlyable(player)) {
-            if (MinejagoKeyMappings.ASCEND.isDown())
-            {
-                ((PlayerRideableFlying)player.getVehicle()).ascend();
+            if (MinejagoKeyMappings.ASCEND.isDown()) {
+                ((PlayerRideableFlying) player.getVehicle()).ascend();
                 TommyLibServices.NETWORK.sendToServer(new ServerboundFlyVehiclePayload(ServerboundFlyVehiclePayload.Stage.START_ASCEND));
-            }
-            else if (MinejagoKeyMappings.DESCEND.isDown())
-            {
-                ((PlayerRideableFlying)player.getVehicle()).descend();
+            } else if (MinejagoKeyMappings.DESCEND.isDown()) {
+                ((PlayerRideableFlying) player.getVehicle()).descend();
                 TommyLibServices.NETWORK.sendToServer(new ServerboundFlyVehiclePayload(ServerboundFlyVehiclePayload.Stage.START_DESCEND));
-            }
-            else
-            {
-                ((PlayerRideableFlying)player.getVehicle()).stop();
+            } else {
+                ((PlayerRideableFlying) player.getVehicle()).stop();
                 TommyLibServices.NETWORK.sendToServer(new ServerboundFlyVehiclePayload(ServerboundFlyVehiclePayload.Stage.STOP));
             }
         }
     }
 
-    public static List<ItemStack> getItemsForTab(ResourceKey<CreativeModeTab> tab, HolderLookup.Provider lookupProvider)
-    {
+    public static List<ItemStack> getItemsForTab(ResourceKey<CreativeModeTab> tab, HolderLookup.Provider lookupProvider) {
         List<ItemStack> items = new ArrayList<>();
 
-        if (tab == CreativeModeTabs.FOOD_AND_DRINKS)
-        {
+        if (tab == CreativeModeTabs.FOOD_AND_DRINKS) {
             for (Holder<Potion> potion : BuiltInRegistries.POTION.holders().filter(ref -> ref.key().location().getNamespace().equals(ResourceLocation.DEFAULT_NAMESPACE) || ref.key().location().getNamespace().equals(Minejago.MOD_ID)).toList()) {
                 items.add(MinejagoItemUtils.fillTeacup(potion));
             }
         }
 
-        if (tab == CreativeModeTabs.COMBAT)
-        {
-            MinejagoArmors.ARMOR_SETS.forEach(set ->
-                    items.addAll(set.getAllAsItems().stream().map(Item::getDefaultInstance).toList()));
+        if (tab == CreativeModeTabs.COMBAT) {
+            MinejagoArmors.ARMOR_SETS.forEach(set -> items.addAll(set.getAllAsItems().stream().map(Item::getDefaultInstance).toList()));
         }
 
-        if (tab == CreativeModeTabs.FUNCTIONAL_BLOCKS)
-        {
+        if (tab == CreativeModeTabs.FUNCTIONAL_BLOCKS) {
             items.add(SkulkinRaid.getLeaderBannerInstance(lookupProvider.lookupOrThrow(Registries.BANNER_PATTERN)));
         }
 
         return items;
     }
 
-    public static void onInput(int key)
-    {
+    public static void onInput(int key) {
         Player mainClientPlayer = ClientUtils.getMainClientPlayer();
-        if (mainClientPlayer != null && !(key >= GLFW.GLFW_KEY_F1 && key <= GLFW.GLFW_KEY_F25) && !MinejagoKeyMappings.MEDITATE.isDown() && key != GLFW.GLFW_KEY_LEFT_SHIFT && key != GLFW.GLFW_KEY_ESCAPE)
-        {
+        if (mainClientPlayer != null && !(key >= GLFW.GLFW_KEY_F1 && key <= GLFW.GLFW_KEY_F25) && !MinejagoKeyMappings.MEDITATE.isDown() && key != GLFW.GLFW_KEY_LEFT_SHIFT && key != GLFW.GLFW_KEY_ESCAPE) {
             FocusData focusData = mainClientPlayer.getData(MinejagoAttachmentTypes.FOCUS);
             CompoundTag persistentData = TommyLibServices.ENTITY.getPersistentData(mainClientPlayer);
-            if (focusData.isMeditating() && persistentData.getInt("WaitTicks") <= 0)
-            {
+            if (focusData.isMeditating() && persistentData.getInt("WaitTicks") <= 0) {
                 TommyLibServices.NETWORK.sendToServer(new ServerboundStopMeditationPayload(true));
                 focusData.stopMeditating();
                 persistentData.putInt("WaitTicks", 5);
@@ -182,13 +165,11 @@ public class MinejagoClientEvents
         }
     }
 
-    public static int renderPowerSymbol(GuiGraphics guiGraphics, Minecraft mc, DeltaTracker deltaTracker, LivingEntity entity, float opacity, boolean inWorldHud)
-    {
+    public static int renderPowerSymbol(GuiGraphics guiGraphics, Minecraft mc, DeltaTracker deltaTracker, LivingEntity entity, float opacity, boolean inWorldHud) {
         if (mc.level != null && !inWorldHud) {
             Registry<Power> powers = mc.level.registryAccess().registry(MinejagoRegistries.POWER).get();
             Power power = powers.get(entity.getData(MinejagoAttachmentTypes.POWER).power());
-            if (power != null)
-            {
+            if (power != null) {
                 TESClientUtil.prepRenderForTexture(power.getIcon());
                 guiGraphics.pose().pushPose();
                 guiGraphics.pose().scale(0.5f, 0.5f, 1.0f);
@@ -201,13 +182,11 @@ public class MinejagoClientEvents
         return 0;
     }
 
-    public static void onClientSetup(FMLClientSetupEvent event)
-    {
+    public static void onClientSetup(FMLClientSetupEvent event) {
         if (Minejago.Dependencies.DYNAMIC_LIGHTS.isInstalled()) MinejagoDynamicLights.register();
     }
 
-    public static void onRegisterLayers(EntityRenderersEvent.RegisterLayerDefinitions event)
-    {
+    public static void onRegisterLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(ThrownBoneKnifeModel.LAYER_LOCATION, ThrownBoneKnifeModel::createBodyLayer);
         event.registerLayerDefinition(BambooStaffModel.LAYER_LOCATION, BambooStaffModel::createBodyLayer);
         event.registerLayerDefinition(SpearModel.LAYER_LOCATION, SpearModel::createBodyLayer);
@@ -219,8 +198,7 @@ public class MinejagoClientEvents
         event.registerLayerDefinition(NuckalModel.LAYER_LOCATION, NuckalModel::createBodyLayer);
     }
 
-    public static void onRegisterRenderer(EntityRenderersEvent.RegisterRenderers event)
-    {
+    public static void onRegisterRenderer(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(MinejagoEntityTypes.THROWN_BONE_KNIFE.get(), ThrownBoneKnifeRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.THROWN_BAMBOO_STAFF.get(), ThrownBambooStaffRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.THROWN_IRON_SPEAR.get(), ThrownIronSpearRenderer::new);
@@ -246,8 +224,7 @@ public class MinejagoClientEvents
         event.registerBlockEntityRenderer(MinejagoBlockEntityTypes.BRUSHABLE.get(), BrushableBlockRenderer::new);
     }
 
-    public static void registerModels(ModelEvent.RegisterAdditional event)
-    {
+    public static void registerModels(ModelEvent.RegisterAdditional event) {
         event.register(ModelResourceLocation.standalone(Minejago.modLoc("item/iron_scythe_inventory")));
         event.register(ModelResourceLocation.standalone(Minejago.modLoc("item/scythe_of_quakes_inventory")));
         event.register(ModelResourceLocation.standalone(Minejago.modLoc("item/iron_spear_inventory")));
@@ -256,15 +233,13 @@ public class MinejagoClientEvents
 
         ResourceManager manager = Minecraft.getInstance().getResourceManager();
         Map<ResourceLocation, Resource> map = manager.listResources("models/item/minejago_armor", (location -> location.getPath().endsWith(".json")));
-        for (ResourceLocation rl : map.keySet())
-        {
+        for (ResourceLocation rl : map.keySet()) {
             ResourceLocation stripped = ResourceLocation.fromNamespaceAndPath(rl.getNamespace(), rl.getPath().substring("models/".length(), rl.getPath().indexOf(".json")));
             event.register(ModelResourceLocation.standalone(stripped));
         }
     }
 
-    public static void onRegisterParticleProviders(RegisterParticleProvidersEvent event)
-    {
+    public static void onRegisterParticleProviders(RegisterParticleProvidersEvent event) {
         event.registerSpriteSet(MinejagoParticleTypes.SPARKS.get(), SparksParticle.Provider::new);
         event.registerSpriteSet(MinejagoParticleTypes.SPARKLES.get(), SparklesParticle.Provider::new);
         event.registerSpriteSet(MinejagoParticleTypes.SNOWS.get(), SnowsParticle.Provider::new);
@@ -273,28 +248,23 @@ public class MinejagoClientEvents
         event.registerSpriteSet(MinejagoParticleTypes.VAPORS.get(), VaporsParticle.Provider::new);
     }
 
-    public static void onRegisterItemColorHandlers(RegisterColorHandlersEvent.Item event)
-    {
+    public static void onRegisterItemColorHandlers(RegisterColorHandlersEvent.Item event) {
         event.register((pStack, pTintIndex) -> {
             if (pTintIndex == 0)
                 return pStack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).getColor();
             return -1;
         }, MinejagoItems.FILLED_TEACUP.get());
-        event.register((itemStack, i) ->
-        {
-            BlockState blockstate = ((BlockItem)itemStack.getItem()).getBlock().defaultBlockState();
+        event.register((itemStack, i) -> {
+            BlockState blockstate = ((BlockItem) itemStack.getItem()).getBlock().defaultBlockState();
             return ClientUtils.getMinecraft().getBlockColors().getColor(blockstate, ClientUtils.getLevel(), null, i);
         }, MinejagoBlocks.FOCUS_LEAVES_SET.leaves().get());
     }
 
-    public static void onRegisterBlockColorHandlers(RegisterColorHandlersEvent.Block event)
-    {
-        event.register(((blockState, blockAndTintGetter, blockPos, i) ->
-        {
+    public static void onRegisterBlockColorHandlers(RegisterColorHandlersEvent.Block event) {
+        event.register(((blockState, blockAndTintGetter, blockPos, i) -> {
             if (blockPos == null || blockAndTintGetter == null)
                 return -1;
-            if (i == 1 && blockAndTintGetter.getBlockEntity(blockPos) instanceof TeapotBlockEntity teapotBlockEntity && blockState.getValue(TeapotBlock.FILLED))
-            {
+            if (i == 1 && blockAndTintGetter.getBlockEntity(blockPos) instanceof TeapotBlockEntity teapotBlockEntity && blockState.getValue(TeapotBlock.FILLED)) {
                 return PotionContents.createItemStack(Items.POTION, teapotBlockEntity.getPotion()).get(DataComponents.POTION_CONTENTS).getColor();
             }
             return -1;
@@ -302,41 +272,34 @@ public class MinejagoClientEvents
         event.register(((blockState, blockAndTintGetter, blockPos, i) -> blockAndTintGetter != null && blockPos != null ? BiomeColors.getAverageFoliageColor(blockAndTintGetter, blockPos) : FoliageColor.getDefaultColor()), MinejagoBlocks.FOCUS_LEAVES_SET.leaves().get());
     }
 
-    public static void onAddLayers(EntityRenderersEvent.AddLayers event)
-    {
+    public static void onAddLayers(EntityRenderersEvent.AddLayers event) {
         EntityModelSet models = event.getEntityModels();
 
         for (PlayerSkin.Model skin : event.getSkins()) {
             LivingEntityRenderer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> player = event.getSkin(skin);
 
-            if (player != null)
-            {
+            if (player != null) {
                 player.addLayer(new SnapshotTesterLayer<>(player, models));
                 player.addLayer(new OgDevTeamLayer<>(player, models));
             }
         }
     }
 
-    public static void onBuildCreativeTabContent(BuildCreativeModeTabContentsEvent event)
-    {
+    public static void onBuildCreativeTabContent(BuildCreativeModeTabContentsEvent event) {
         event.acceptAll(MinejagoClientEvents.getItemsForTab(event.getTabKey(), event.getParameters().holders()));
     }
 
-    public static void onClientConfigChanged(ModConfigEvent event)
-    {
-        if (event.getConfig().getType() == ModConfig.Type.CLIENT && Minecraft.getInstance().player != null)
-        {
+    public static void onClientConfigChanged(ModConfigEvent event) {
+        if (event.getConfig().getType() == ModConfig.Type.CLIENT && Minecraft.getInstance().player != null) {
             MinejagoClientUtils.refreshVip();
         }
     }
 
-    public static void onRegisterGuiOverlays(RegisterGuiLayersEvent event)
-    {
+    public static void onRegisterGuiOverlays(RegisterGuiLayersEvent event) {
         event.registerAbove(ResourceLocation.withDefaultNamespace("food_level"), Minejago.modLoc("focus"), MinejagoGuis::renderFocusBar);
     }
 
-    public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event)
-    {
+    public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
         event.registerReloadListener(MinejagoClientUtils.getBewlr());
     }
 }

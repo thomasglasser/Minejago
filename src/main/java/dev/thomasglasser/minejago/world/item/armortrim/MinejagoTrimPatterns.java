@@ -5,8 +5,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.armortrim.TrimPattern;
 
-public class MinejagoTrimPatterns
-{
+public class MinejagoTrimPatterns {
     public static final ResourceKey<TrimPattern> FOUR_WEAPONS = registryKey("four_weapons");
 
     private static ResourceKey<TrimPattern> registryKey(String path) {

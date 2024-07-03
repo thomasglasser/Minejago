@@ -6,10 +6,8 @@ import net.minecraft.commands.CommandSourceStack;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.server.command.ConfigCommand;
 
-public class MinejagoCommandEvents
-{
-    public static void onCommandsRegister(RegisterCommandsEvent event)
-    {
+public class MinejagoCommandEvents {
+    public static void onCommandsRegister(RegisterCommandsEvent event) {
         CommandDispatcher<CommandSourceStack> dispatcher = event.getDispatcher();
 
         PowerCommand.register(dispatcher);

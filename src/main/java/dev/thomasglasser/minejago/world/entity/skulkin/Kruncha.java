@@ -10,8 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
-public class Kruncha extends MeleeCompatibleSkeletonRaider
-{
+public class Kruncha extends MeleeCompatibleSkeletonRaider {
     public Kruncha(EntityType<? extends Kruncha> entityType, Level level) {
         super(entityType, level);
     }

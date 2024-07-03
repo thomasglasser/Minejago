@@ -6,8 +6,7 @@ import dev.thomasglasser.tommylib.api.registration.DeferredRegister;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundEvent;
 
-public class MinejagoSoundEvents
-{
+public class MinejagoSoundEvents {
     public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(BuiltInRegistries.SOUND_EVENT, Minejago.MOD_ID);
 
     // Teapot
@@ -49,13 +48,11 @@ public class MinejagoSoundEvents
     public static final DeferredHolder<SoundEvent, SoundEvent> EARTH_DRAGON_ROAR = register("earth_dragon", "entity", "roar");
     public static final DeferredHolder<SoundEvent, SoundEvent> EARTH_DRAGON_STEP = register("earth_dragon", "entity", "step");
 
-    private static DeferredHolder<SoundEvent, SoundEvent> register(String subject, String type, String name)
-    {
+    private static DeferredHolder<SoundEvent, SoundEvent> register(String subject, String type, String name) {
         return SOUND_EVENTS.register(subject + "_" + name, () -> SoundEvent.createVariableRangeEvent(Minejago.modLoc(type + "." + subject + "." + name)));
     }
 
-    private static DeferredHolder<SoundEvent, SoundEvent> register(String subject, String name)
-    {
+    private static DeferredHolder<SoundEvent, SoundEvent> register(String subject, String name) {
         return SOUND_EVENTS.register(subject + "_" + name, () -> SoundEvent.createVariableRangeEvent(Minejago.modLoc(subject + "." + name)));
     }
 

@@ -8,25 +8,21 @@ import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.tommylib.api.data.tags.ExtendedItemTagsProvider;
+import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
-import java.util.concurrent.CompletableFuture;
-
-public class MinejagoItemTagsProvider extends ExtendedItemTagsProvider
-{
+public class MinejagoItemTagsProvider extends ExtendedItemTagsProvider {
     public MinejagoItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> future, CompletableFuture<TagLookup<Block>> blockTagsProvider, ExistingFileHelper existingFileHelper) {
         super(output, future, blockTagsProvider, Minejago.MOD_ID, existingFileHelper);
     }
 
     @Override
-    protected void addTags(HolderLookup.Provider lookupProvider)
-    {
+    protected void addTags(HolderLookup.Provider lookupProvider) {
         tag(ItemTags.PIGLIN_LOVED)
                 .addTag(MinejagoItemTags.GOLDEN_WEAPONS);
         tag(ItemTags.SWORDS)
@@ -43,7 +39,6 @@ public class MinejagoItemTagsProvider extends ExtendedItemTagsProvider
                 .add(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.BOW).value())
                 .add(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.KNIFE).value())
                 .add(MinejagoArmors.SAMUKAIS_CHESTPLATE.get());
-
 
         copy(MinejagoBlockTags.TEAPOTS, MinejagoItemTags.TEAPOTS);
 

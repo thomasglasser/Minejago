@@ -20,13 +20,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LecternRenderer.class)
-public class LecternRendererMixin
-{
-    @Shadow @Final private BookModel bookModel;
+public class LecternRendererMixin {
+    @Shadow
+    @Final
+    private BookModel bookModel;
 
     @Inject(method = "render(Lnet/minecraft/world/level/block/entity/LecternBlockEntity;FLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;II)V", at = @At("HEAD"), cancellable = true)
-    private void render(LecternBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, CallbackInfo ci)
-    {
+    private void render(LecternBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, CallbackInfo ci) {
         BlockState blockState = blockEntity.getBlockState();
         if (blockState.getValue(LecternBlock.HAS_BOOK) && blockEntity.getBook().is(MinejagoItemTags.LECTERN_SCROLLS)) {
             poseStack.pushPose();

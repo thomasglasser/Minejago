@@ -22,11 +22,9 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
-
-public class ThrownBoneKnife extends AbstractArrow
-{
+public class ThrownBoneKnife extends AbstractArrow {
     private static final EntityDataAccessor<Byte> ID_LOYALTY = SynchedEntityData.defineId(ThrownBoneKnife.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<Boolean> ID_FOIL = SynchedEntityData.defineId(ThrownBoneKnife.class, EntityDataSerializers.BOOLEAN);
 
@@ -43,10 +41,9 @@ public class ThrownBoneKnife extends AbstractArrow
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder)
-    {
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
-        builder.define(ID_LOYALTY, (byte)0);
+        builder.define(ID_LOYALTY, (byte) 0);
         builder.define(ID_FOIL, false);
     }
 
@@ -71,12 +68,12 @@ public class ThrownBoneKnife extends AbstractArrow
             } else {
                 this.setNoPhysics(true);
                 Vec3 vec3 = entity.getEyePosition().subtract(this.position());
-                this.setPosRaw(this.getX(), this.getY() + vec3.y * 0.015D * (double)i, this.getZ());
+                this.setPosRaw(this.getX(), this.getY() + vec3.y * 0.015D * (double) i, this.getZ());
                 if (this.level().isClientSide) {
                     this.yOld = this.getY();
                 }
 
-                double d0 = 0.05D * (double)i;
+                double d0 = 0.05D * (double) i;
                 this.setDeltaMovement(this.getDeltaMovement().scale(0.95D).add(vec3.normalize().scale(d0)));
             }
         }
@@ -142,8 +139,7 @@ public class ThrownBoneKnife extends AbstractArrow
     }
 
     @Override
-    protected ItemStack getDefaultPickupItem()
-    {
+    protected ItemStack getDefaultPickupItem() {
         return MinejagoItems.BONE_KNIFE.get().getDefaultInstance();
     }
 
@@ -154,7 +150,6 @@ public class ThrownBoneKnife extends AbstractArrow
         if (this.ownedBy(pEntity) || this.getOwner() == null) {
             super.playerTouch(pEntity);
         }
-
     }
 
     /**
@@ -176,7 +171,6 @@ public class ThrownBoneKnife extends AbstractArrow
         if (this.pickup != Pickup.ALLOWED || i <= 0) {
             super.tickDespawn();
         }
-
     }
 
     public boolean shouldRender(double pX, double pY, double pZ) {

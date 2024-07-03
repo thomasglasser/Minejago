@@ -12,6 +12,7 @@ import dev.thomasglasser.minejago.world.focus.modifier.resourcekey.ResourceKeyFo
 import dev.thomasglasser.minejago.world.focus.modifier.world.WorldFocusModifiers;
 import dev.thomasglasser.tommylib.api.network.NeoForgeNetworkUtils;
 import dev.thomasglasser.tommylib.api.packs.PackInfo;
+import java.util.Optional;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackResources;
@@ -25,27 +26,19 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 
-import java.util.Optional;
-
-public class MinejagoCoreEvents
-{
-    public static void onAddPackFinders(AddPackFindersEvent event)
-    {
-        for (PackInfo info : MinejagoPacks.getPacks())
-        {
-            if (event.getPackType() == info.type())
-            {
+public class MinejagoCoreEvents {
+    public static void onAddPackFinders(AddPackFindersEvent event) {
+        for (PackInfo info : MinejagoPacks.getPacks()) {
+            if (event.getPackType() == info.type()) {
                 var resourcePath = ModList.get().getModFileById(Minejago.MOD_ID).getFile().findResource("packs/" + info.knownPack().namespace() + "/" + info.knownPack().id());
                 var pack = Pack.readMetaAndCreate(new PackLocationInfo("builtin/" + info.knownPack().id(), Component.translatable(info.titleKey()), info.source(), Optional.of(info.knownPack())), new Pack.ResourcesSupplier() {
                     @Override
-                    public PackResources openFull(PackLocationInfo p_326241_, Pack.Metadata p_325959_)
-                    {
+                    public PackResources openFull(PackLocationInfo p_326241_, Pack.Metadata p_325959_) {
                         return new PathPackResources(p_326241_, resourcePath);
                     }
 
                     @Override
-                    public PackResources openPrimary(PackLocationInfo p_326301_)
-                    {
+                    public PackResources openPrimary(PackLocationInfo p_326301_) {
                         return new PathPackResources(p_326301_, resourcePath);
                     }
                 }, info.type(), PackInfo.BUILT_IN_SELECTION_CONFIG);
@@ -54,15 +47,12 @@ public class MinejagoCoreEvents
         }
     }
 
-    public static void onNewDataPackRegistry(DataPackRegistryEvent.NewRegistry event)
-    {
+    public static void onNewDataPackRegistry(DataPackRegistryEvent.NewRegistry event) {
         event.dataPackRegistry(MinejagoRegistries.POWER, Power.CODEC, Power.CODEC);
     }
 
-    public static void onAddReloadListeners(AddReloadListenerEvent event)
-    {
-        event.addListener((ResourceManagerReloadListener) resourceManager ->
-        {
+    public static void onAddReloadListeners(AddReloadListenerEvent event) {
+        event.addListener((ResourceManagerReloadListener) resourceManager -> {
             ResourceKeyFocusModifiers.load(resourceManager);
             BlockStateFocusModifiers.load(resourceManager);
             EntityTypeFocusModifiers.load(resourceManager);
@@ -71,8 +61,7 @@ public class MinejagoCoreEvents
         });
     }
 
-    public static void onRegisterPackets(RegisterPayloadHandlersEvent event)
-    {
+    public static void onRegisterPackets(RegisterPayloadHandlersEvent event) {
         PayloadRegistrar registrar = event.registrar(Minejago.MOD_ID);
         MinejagoPayloads.PAYLOADS.forEach((info) -> NeoForgeNetworkUtils.register(registrar, info));
     }

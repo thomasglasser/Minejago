@@ -3,6 +3,8 @@ package dev.thomasglasser.minejago.world.item.armor;
 import dev.thomasglasser.minejago.client.renderer.armor.SkeletalArmorRenderer;
 import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;
 import dev.thomasglasser.tommylib.api.world.item.armor.BaseGeoArmorItem;
+import java.util.List;
+import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.Holder;
@@ -13,16 +15,12 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.function.Consumer;
-
-public class SkeletalChestplateItem extends BaseGeoArmorItem
-{
+public class SkeletalChestplateItem extends BaseGeoArmorItem {
     private final Skulkin.Variant variant;
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 

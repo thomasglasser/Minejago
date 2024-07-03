@@ -14,8 +14,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-public class ThrownIronSpearRenderer extends EntityRenderer<ThrownIronSpear>
-{
+public class ThrownIronSpearRenderer extends EntityRenderer<ThrownIronSpear> {
     public static final ResourceLocation TEXTURE_LOCATION = Minejago.modLoc("textures/entity/item/iron_spear.png");
     private final SpearModel model;
 

@@ -12,25 +12,21 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
 
-public record ServerboundStopMeditationPayload(boolean fail) implements ExtendedPacketPayload
-{
+public record ServerboundStopMeditationPayload(boolean fail) implements ExtendedPacketPayload {
     public static final Type<ServerboundStopMeditationPayload> TYPE = new Type<>(Minejago.modLoc("serverbound_stop_meditation"));
     public static final StreamCodec<ByteBuf, ServerboundStopMeditationPayload> CODEC = StreamCodec.composite(
             ByteBufCodecs.BOOL, ServerboundStopMeditationPayload::fail,
-            ServerboundStopMeditationPayload::new
-    );
+            ServerboundStopMeditationPayload::new);
 
     public void handle(@Nullable Player player) {
-        if (player instanceof ServerPlayer serverPlayer)
-        {
+        if (player instanceof ServerPlayer serverPlayer) {
             player.getData(MinejagoAttachmentTypes.FOCUS).stopMeditating();
             TommyLibServices.NETWORK.sendToAllClients(new ClientboundStopMeditationPayload(serverPlayer.getUUID(), fail), serverPlayer.getServer());
         }
     }
 
     @Override
-    public Type<? extends CustomPacketPayload> type()
-    {
+    public Type<? extends CustomPacketPayload> type() {
         return TYPE;
     }
 }

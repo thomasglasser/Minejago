@@ -17,8 +17,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class TopPostBlock extends HorizontalDirectionalBlock
-{
+public class TopPostBlock extends HorizontalDirectionalBlock {
     private static final VoxelShape SHAPE_NORTH = box(0.0, 0.0, 14.9, 16.0, 16.0, 16.0);
     private static final VoxelShape SHAPE_SOUTH = box(0.0, 0.0, 0.0, 16.0, 16.0, 1.1);
     private static final VoxelShape SHAPE_EAST = box(0.0, 0.0, 0.0, 1.1, 16.0, 16.0);
@@ -29,13 +28,11 @@ public class TopPostBlock extends HorizontalDirectionalBlock
         this.registerDefaultState(
                 this.stateDefinition
                         .any()
-                        .setValue(FACING, Direction.NORTH)
-        );
+                        .setValue(FACING, Direction.NORTH));
     }
 
     @Override
-    protected MapCodec<? extends HorizontalDirectionalBlock> codec()
-    {
+    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
         return simpleCodec(TopPostBlock::new);
     }
 
@@ -69,8 +66,7 @@ public class TopPostBlock extends HorizontalDirectionalBlock
 
     @Override
     public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos currentPos, BlockPos neighborPos) {
-        if (direction.getOpposite() == state.getValue(FACING) && !state.canSurvive(level, currentPos))
-        {
+        if (direction.getOpposite() == state.getValue(FACING) && !state.canSurvive(level, currentPos)) {
             return Blocks.AIR.defaultBlockState();
         }
 

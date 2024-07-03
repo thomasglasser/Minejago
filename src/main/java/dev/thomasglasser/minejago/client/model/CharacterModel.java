@@ -9,14 +9,12 @@ import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 public class CharacterModel<T extends Character> extends DefaultedEntityGeoModel<T> {
     private final boolean slim;
 
-    public CharacterModel(boolean slim)
-    {
+    public CharacterModel(boolean slim) {
         super(Minejago.modLoc("layered_biped"), true);
         this.slim = slim;
     }
 
-    public CharacterModel()
-    {
+    public CharacterModel() {
         this(false);
     }
 

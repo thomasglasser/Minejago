@@ -11,6 +11,12 @@ import dev.thomasglasser.tommylib.api.registration.DeferredRegister;
 import dev.thomasglasser.tommylib.api.world.level.block.BlockUtils;
 import dev.thomasglasser.tommylib.api.world.level.block.LeavesSet;
 import dev.thomasglasser.tommylib.api.world.level.block.WoodSet;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.SortedMap;
+import java.util.TreeMap;
+import java.util.function.Supplier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
@@ -26,15 +32,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.SortedMap;
-import java.util.TreeMap;
-import java.util.function.Supplier;
-
-public class MinejagoBlocks
-{
+public class MinejagoBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Minejago.MOD_ID);
 
     // Tea Trees
@@ -57,8 +55,7 @@ public class MinejagoBlocks
     private static <T extends Block> DeferredBlock<T> registerBlockAndItemAndWrap(
             String name,
             Supplier<T> blockFactory,
-            List<ResourceKey<CreativeModeTab>> tabs)
-    {
+            List<ResourceKey<CreativeModeTab>> tabs) {
         return BlockUtils.registerBlockAndItemAndWrap(BLOCKS, name, blockFactory, MinejagoItems::register, tabs);
     }
 
@@ -66,38 +63,31 @@ public class MinejagoBlocks
             String name,
             Supplier<T> blockFactory,
             Item.Properties properties,
-            List<ResourceKey<CreativeModeTab>> tabs)
-    {
+            List<ResourceKey<CreativeModeTab>> tabs) {
         return BlockUtils.registerBlockAndItemAndWrap(BLOCKS, name, blockFactory, MinejagoItems::register, properties, tabs);
     }
 
-    private static <T extends Block> DeferredBlock<T> register(String name, Supplier<T> blockFactory)
-    {
+    private static <T extends Block> DeferredBlock<T> register(String name, Supplier<T> blockFactory) {
         return BlockUtils.register(BLOCKS, name, blockFactory);
     }
 
-    private static WoodSet registerWoodSet(String name, MapColor logColor, MapColor strippedLogColor, Supplier<TagKey<Block>> logTag, Supplier<TagKey<Item>> logItemTag)
-    {
+    private static WoodSet registerWoodSet(String name, MapColor logColor, MapColor strippedLogColor, Supplier<TagKey<Block>> logTag, Supplier<TagKey<Item>> logItemTag) {
         return BlockUtils.registerWoodSet(BLOCKS, name, logColor, strippedLogColor, MinejagoItems::register);
     }
 
-    private static LeavesSet registerLeavesSet(String name, TreeGrower treeGrower)
-    {
+    private static LeavesSet registerLeavesSet(String name, TreeGrower treeGrower) {
         return BlockUtils.registerLeavesSet(BLOCKS, name, treeGrower, MinejagoItems::register);
     }
 
-    private static SortedMap<DyeColor, DeferredBlock<TeapotBlock>> teapots()
-    {
+    private static SortedMap<DyeColor, DeferredBlock<TeapotBlock>> teapots() {
         SortedMap<DyeColor, DeferredBlock<TeapotBlock>> map = new TreeMap<>();
-        for (DyeColor color : DyeColor.values())
-        {
+        for (DyeColor color : DyeColor.values()) {
             map.put(color, registerBlockAndItemAndWrap(color.getName() + "_teapot", () -> new TeapotBlock(BlockBehaviour.Properties.of().mapColor(color).instabreak().noOcclusion()), List.of(CreativeModeTabs.FUNCTIONAL_BLOCKS)));
         }
         return map;
     }
 
-    public static List<Block> allPots()
-    {
+    public static List<Block> allPots() {
         List<Block> pots = new ArrayList<>();
         pots.add(TEAPOT.get());
         TEAPOTS.values().forEach(blockDeferredBlock -> pots.add(blockDeferredBlock.get()));

@@ -40,23 +40,21 @@ public class SimpleBrewingSerializer<T extends TeapotBrewingRecipe> implements R
     }
 
     public TeapotBrewingRecipe create(String group,
-                                      Holder<Potion> base,
-                                      Ingredient ingredient,
-                                      Holder<Potion> result,
-                                      float xp,
-                                      IntProvider i) {
+            Holder<Potion> base,
+            Ingredient ingredient,
+            Holder<Potion> result,
+            float xp,
+            IntProvider i) {
         return this.factory.create(group, base, ingredient, result, xp, i);
     }
 
     @Override
-    public MapCodec<T> codec()
-    {
+    public MapCodec<T> codec() {
         return codec;
     }
 
     @Override
-    public StreamCodec<RegistryFriendlyByteBuf, T> streamCodec()
-    {
+    public StreamCodec<RegistryFriendlyByteBuf, T> streamCodec() {
         return streamCodec;
     }
 }

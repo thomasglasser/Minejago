@@ -18,18 +18,15 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 
-public final class MinejagoItemUtils
-{
+public final class MinejagoItemUtils {
     private MinejagoItemUtils() {}
 
-    public static ItemStack fillTeacup(Holder<Potion> potion)
-    {
+    public static ItemStack fillTeacup(Holder<Potion> potion) {
         return PotionContents.createItemStack(MinejagoItems.FILLED_TEACUP.get(), potion);
     }
 
-    public static ItemStack createGoldenWeaponsMap(ServerLevel serverLevel, Entity entity)
-    {
-        ItemStack itemstack = MapItem.create(serverLevel, (int)entity.getX(), (int)entity.getZ(), (byte)4, true, true);
+    public static ItemStack createGoldenWeaponsMap(ServerLevel serverLevel, Entity entity) {
+        ItemStack itemstack = MapItem.create(serverLevel, (int) entity.getX(), (int) entity.getZ(), (byte) 4, true, true);
         MapItem.renderBiomePreviewMap(serverLevel, itemstack);
         /* TODO: Find lightning */ BlockPos pos1 = serverLevel.findNearestMapStructure(StructureTags.VILLAGE, entity.getOnPos(), Integer.MAX_VALUE, false);
         /* TODO: Find fire */ BlockPos pos2 = serverLevel.findNearestMapStructure(StructureTags.RUINED_PORTAL, entity.getOnPos(), Integer.MAX_VALUE, false);

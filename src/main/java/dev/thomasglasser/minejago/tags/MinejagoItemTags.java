@@ -7,8 +7,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 
-public class MinejagoItemTags
-{
+public class MinejagoItemTags {
     public static final TagKey<Item> GOLDEN_WEAPONS = create("golden_weapons");
     public static final TagKey<Item> TEAPOTS = create("teapots");
     public static final TagKey<Item> LECTERN_SCROLLS = create("lectern_scrolls");
@@ -19,8 +18,7 @@ public class MinejagoItemTags
     // Logs
     public static final TagKey<Item> ENCHANTED_LOGS = TagUtils.logs(Registries.ITEM, MinejagoBlocks.ENCHANTED_WOOD_SET);
 
-    private static TagKey<Item> create(String name)
-    {
+    private static TagKey<Item> create(String name) {
         return TagKey.create(Registries.ITEM, Minejago.modLoc(name));
     }
 }

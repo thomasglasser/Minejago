@@ -5,8 +5,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.storage.loot.LootTable;
 
-public class MinejagoArchaeologyLootKeys
-{
+public class MinejagoArchaeologyLootKeys {
     public static final ResourceKey<LootTable> CAVE_OF_DESPAIR = modLoc("cave_of_despair");
 
     private static ResourceKey<LootTable> modLoc(String name) {

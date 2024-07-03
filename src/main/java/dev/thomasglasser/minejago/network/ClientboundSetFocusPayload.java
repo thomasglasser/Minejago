@@ -10,26 +10,22 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
 
-public record ClientboundSetFocusPayload(int focusLevel, float saturationLevel) implements ExtendedPacketPayload
-{
-	public static final Type<ClientboundSetFocusPayload> TYPE = new Type<>(Minejago.modLoc("clientbound_set_focus"));
-	public static final StreamCodec<ByteBuf, ClientboundSetFocusPayload> CODEC = StreamCodec.composite(
-			ByteBufCodecs.INT, ClientboundSetFocusPayload::focusLevel,
-			ByteBufCodecs.FLOAT, ClientboundSetFocusPayload::saturationLevel,
-			ClientboundSetFocusPayload::new
-	);
+public record ClientboundSetFocusPayload(int focusLevel, float saturationLevel) implements ExtendedPacketPayload {
+    public static final Type<ClientboundSetFocusPayload> TYPE = new Type<>(Minejago.modLoc("clientbound_set_focus"));
+    public static final StreamCodec<ByteBuf, ClientboundSetFocusPayload> CODEC = StreamCodec.composite(
+            ByteBufCodecs.INT, ClientboundSetFocusPayload::focusLevel,
+            ByteBufCodecs.FLOAT, ClientboundSetFocusPayload::saturationLevel,
+            ClientboundSetFocusPayload::new);
 
-	// ON CLIENT
-	public void handle(Player player)
-	{
-		FocusData focusData = player.getData(MinejagoAttachmentTypes.FOCUS);
-		focusData.setFocusLevel(focusLevel);
-		focusData.setSaturation(saturationLevel);
-	}
+    // ON CLIENT
+    public void handle(Player player) {
+        FocusData focusData = player.getData(MinejagoAttachmentTypes.FOCUS);
+        focusData.setFocusLevel(focusLevel);
+        focusData.setSaturation(saturationLevel);
+    }
 
-	@Override
-	public Type<? extends CustomPacketPayload> type()
-	{
-		return TYPE;
-	}
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
+    }
 }

@@ -37,11 +37,8 @@ import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import org.apache.commons.lang3.text.WordUtils;
 
-public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider
-{
-
-    public MinejagoEnUsLanguageProvider(PackOutput output)
-    {
+public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider {
+    public MinejagoEnUsLanguageProvider(PackOutput output) {
         super(output, Minejago.MOD_ID, "en_us");
     }
 
@@ -55,34 +52,29 @@ public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider
         add(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get(), "Banner Pattern");
         add(MinejagoItems.IRON_SPEAR.get(), "Iron Spear");
         add(MinejagoItems.IRON_SHURIKEN.get(), "Iron Shuriken");
-        MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
-                add(item.get(), "Skeletal Chestplate"));
-        MinejagoArmors.ARMOR_SETS.forEach(set ->
-                set.getAll().forEach(item ->
-                {
-                    String nameForSlot = switch (set.getForItem(item.get())) {
-                        case FEET -> "Boots";
-                        case LEGS -> "Pants";
-                        case CHEST -> "Jacket";
-                        case HEAD -> "Hood";
-                        default -> null;
-                    };
+        MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(item -> add(item.get(), "Skeletal Chestplate"));
+        MinejagoArmors.ARMOR_SETS.forEach(set -> set.getAll().forEach(item -> {
+            String nameForSlot = switch (set.getForItem(item.get())) {
+                case FEET -> "Boots";
+                case LEGS -> "Pants";
+                case CHEST -> "Jacket";
+                case HEAD -> "Hood";
+                default -> null;
+            };
 
-                    add(item.get(), set.getDisplayName() + " " + nameForSlot);
-                }));
-        MinejagoArmors.POWER_SETS.forEach(set ->
-                set.getAll().forEach(item ->
-                {
-                    String nameForSlot = switch (set.getForItem(item.get())) {
-                        case FEET -> "Boots";
-                        case LEGS -> "Pants";
-                        case CHEST -> "Jacket";
-                        case HEAD -> "Hood";
-                        default -> null;
-                    };
+            add(item.get(), set.getDisplayName() + " " + nameForSlot);
+        }));
+        MinejagoArmors.POWER_SETS.forEach(set -> set.getAll().forEach(item -> {
+            String nameForSlot = switch (set.getForItem(item.get())) {
+                case FEET -> "Boots";
+                case LEGS -> "Pants";
+                case CHEST -> "Jacket";
+                case HEAD -> "Hood";
+                default -> null;
+            };
 
-                    add(item.get(), set.getDisplayName() + " " + nameForSlot);
-                }));
+            add(item.get(), set.getDisplayName() + " " + nameForSlot);
+        }));
         add(MinejagoArmors.SAMUKAIS_CHESTPLATE.get(), "Samukai's Chestplate");
         add(MinejagoItems.IRON_KATANA.get(), "Iron Katana");
         add(MinejagoItems.IRON_SCYTHE.get(), "Iron Scythe");
@@ -93,8 +85,7 @@ public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider
         add(MinejagoItems.EMPTY_GOLDEN_WEAPONS_MAP.get(), "Empty Golden Weapons Map");
 
         add(MinejagoBlocks.TEAPOT.get(), "Teapot");
-        MinejagoBlocks.TEAPOTS.forEach((color, pot) ->
-                add(pot.get(), WordUtils.capitalize(color.getName().replace('_', ' ')) + " Teapot"));
+        MinejagoBlocks.TEAPOTS.forEach((color, pot) -> add(pot.get(), WordUtils.capitalize(color.getName().replace('_', ' ')) + " Teapot"));
         add(MinejagoBlocks.JASPOT.get(), "Jaspot");
         add(MinejagoBlocks.FLAME_TEAPOT.get(), "Flame Teapot");
 
@@ -112,10 +103,8 @@ public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider
 
         addDesc(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get(), "Four Weapons");
 
-        MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
-        {
-            String nameForVariant = switch (item.get().getVariant())
-            {
+        MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(item -> {
+            String nameForVariant = switch (item.get().getVariant()) {
                 case STRENGTH -> "Red";
                 case SPEED -> "Blue";
                 case BOW -> "White";
@@ -132,8 +121,7 @@ public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider
         add(MinejagoItems.FILLED_TEACUP.get(), Potions.WATER, "Cup of Water");
         add(MinejagoItems.FILLED_TEACUP.get(), MinejagoPotions.MILK, "Cup of Milk");
 
-        for (Holder<Potion> potion : BuiltInRegistries.POTION.holders().filter(ref -> ref.key().location().getNamespace().equals(ResourceLocation.DEFAULT_NAMESPACE)).toList())
-        {
+        for (Holder<Potion> potion : BuiltInRegistries.POTION.holders().filter(ref -> ref.key().location().getNamespace().equals(ResourceLocation.DEFAULT_NAMESPACE)).toList()) {
             ResourceLocation location = potion.unwrapKey().orElseThrow().location();
             if (!(potion == Potions.WATER) && !(location.getPath().contains("long") || location.getPath().contains("strong")))
                 add(MinejagoItems.FILLED_TEACUP.get(), potion, Items.POTION.getName(PotionContents.createItemStack(Items.POTION, potion)).getString().replace("Potion", "Tea"));
@@ -297,17 +285,15 @@ public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider
 
         add(TeapotBrewingRecipeCategory.TITLE, "Teapot Brewing");
 
-	    addConfigs();
+        addConfigs();
     }
 
-    public void addTea(Holder<Potion> tea, String name)
-    {
+    public void addTea(Holder<Potion> tea, String name) {
         addPotions(tea, name);
         add(MinejagoItems.FILLED_TEACUP.get(), tea, name);
     }
 
-    public void addConfigs()
-    {
+    public void addConfigs() {
         addConfigTitle(Minejago.MOD_NAME);
 
         // Server
@@ -356,8 +342,7 @@ public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider
         addConfig("yOffset", "Y Offset");
     }
 
-    public void addPluginConfig(ResourceLocation location, String name)
-    {
+    public void addPluginConfig(ResourceLocation location, String name) {
         super.addPluginConfig(location, Minejago.MOD_NAME, name);
     }
 }

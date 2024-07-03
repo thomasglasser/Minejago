@@ -1,5 +1,7 @@
 package dev.thomasglasser.minejago.data.worldgen.placement;
 
+import static net.minecraft.data.worldgen.placement.VegetationPlacements.treePlacement;
+
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.data.worldgen.features.MinejagoVegetationFeatures;
 import net.minecraft.core.Holder;
@@ -12,19 +14,16 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.RarityFilter;
 
-import static net.minecraft.data.worldgen.placement.VegetationPlacements.treePlacement;
+public class MinejagoVegetationPlacements {
+    public static final ResourceKey<PlacedFeature> MEADOW_FOCUS_TREES = create("meadow_focus_trees");
 
-public class MinejagoVegetationPlacements
-{	public static final ResourceKey<PlacedFeature> MEADOW_FOCUS_TREES = create("meadow_focus_trees");
+    public static void bootstrap(BootstrapContext<PlacedFeature> context) {
+        HolderGetter<ConfiguredFeature<?, ?>> configuredFeatures = context.lookup(Registries.CONFIGURED_FEATURE);
+        Holder<ConfiguredFeature<?, ?>> focusTrees = configuredFeatures.getOrThrow(MinejagoVegetationFeatures.MEADOW_FOCUS_TREES);
+        PlacementUtils.register(context, MEADOW_FOCUS_TREES, focusTrees, treePlacement(RarityFilter.onAverageOnceEvery(100)));
+    }
 
-	public static void bootstrap(BootstrapContext<PlacedFeature> context)
-	{
-		HolderGetter<ConfiguredFeature<?, ?>> configuredFeatures = context.lookup(Registries.CONFIGURED_FEATURE);
-		Holder<ConfiguredFeature<?, ?>> focusTrees = configuredFeatures.getOrThrow(MinejagoVegetationFeatures.MEADOW_FOCUS_TREES);
-		PlacementUtils.register(context, MEADOW_FOCUS_TREES, focusTrees, treePlacement(RarityFilter.onAverageOnceEvery(100)));
-	}
-
-	public static ResourceKey<PlacedFeature> create(String name) {
-		return ResourceKey.create(Registries.PLACED_FEATURE, Minejago.modLoc(name));
-	}
+    public static ResourceKey<PlacedFeature> create(String name) {
+        return ResourceKey.create(Registries.PLACED_FEATURE, Minejago.modLoc(name));
+    }
 }

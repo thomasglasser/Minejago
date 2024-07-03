@@ -1,5 +1,7 @@
 package dev.thomasglasser.minejago.world.item;
 
+import static dev.thomasglasser.minejago.world.item.MinejagoItems.MOD_NEEDED;
+
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.MinejagoClientUtils;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
@@ -9,6 +11,7 @@ import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
 import dev.thomasglasser.minejago.world.focus.FocusData;
 import dev.thomasglasser.tommylib.api.world.item.BaseModeledItem;
+import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.Registry;
@@ -33,14 +36,8 @@ import net.minecraft.world.item.component.Unbreakable;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 
-import java.util.List;
-
-import static dev.thomasglasser.minejago.world.item.MinejagoItems.MOD_NEEDED;
-
-public abstract class GoldenWeaponItem extends BaseModeledItem
-{
-    public GoldenWeaponItem(Properties pProperties)
-    {
+public abstract class GoldenWeaponItem extends BaseModeledItem {
+    public GoldenWeaponItem(Properties pProperties) {
         super(pProperties.rarity(Rarity.EPIC).fireResistant().stacksTo(1)
                 .component(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true)
                 .component(DataComponents.MAX_DAMAGE, 0)
@@ -62,15 +59,12 @@ public abstract class GoldenWeaponItem extends BaseModeledItem
 
     @Override
     public final InteractionResult useOn(UseOnContext pContext) {
-        if (MinejagoServerConfig.requireCompatiblePower)
-        {
-            if (!canPowerHandle(pContext.getPlayer().getData(MinejagoAttachmentTypes.POWER).power(), pContext.getLevel().registryAccess().registryOrThrow(MinejagoRegistries.POWER)))
-            {
+        if (MinejagoServerConfig.requireCompatiblePower) {
+            if (!canPowerHandle(pContext.getPlayer().getData(MinejagoAttachmentTypes.POWER).power(), pContext.getLevel().registryAccess().registryOrThrow(MinejagoRegistries.POWER))) {
                 if (MinejagoServerConfig.enableMalfunction) {
                     goCrazy(pContext.getPlayer());
                 }
-                if (this.getFailSound() != null)
-                {
+                if (this.getFailSound() != null) {
                     pContext.getLevel().playSound(null, pContext.getPlayer().blockPosition(), getFailSound(), SoundSource.PLAYERS);
                 }
                 return InteractionResult.CONSUME_PARTIAL;
@@ -78,13 +72,10 @@ public abstract class GoldenWeaponItem extends BaseModeledItem
         }
         Player player = pContext.getPlayer();
         FocusData focusData = player == null ? null : player.getData(MinejagoAttachmentTypes.FOCUS);
-        if (focusData != null)
-        {
+        if (focusData != null) {
             focusData.addExhaustion(FocusConstants.EXHAUSTION_GOLDEN_WEAPON);
-            if (focusData.getFocusLevel() < FocusConstants.GOLDEN_WEAPON_LEVEL)
-            {
-                if (this.getFailSound() != null)
-                {
+            if (focusData.getFocusLevel() < FocusConstants.GOLDEN_WEAPON_LEVEL) {
+                if (this.getFailSound() != null) {
                     pContext.getLevel().playSound(null, player.blockPosition(), getFailSound(), SoundSource.PLAYERS);
                 }
                 return InteractionResult.CONSUME_PARTIAL;
@@ -97,15 +88,12 @@ public abstract class GoldenWeaponItem extends BaseModeledItem
 
     @Override
     public final void releaseUsing(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity, int pTimeCharged) {
-        if (pLivingEntity instanceof Player &&  MinejagoServerConfig.requireCompatiblePower)
-        {
-            if (!canPowerHandle(pLivingEntity.getData(MinejagoAttachmentTypes.POWER).power(), pLevel.registryAccess().registryOrThrow(MinejagoRegistries.POWER)))
-            {
+        if (pLivingEntity instanceof Player && MinejagoServerConfig.requireCompatiblePower) {
+            if (!canPowerHandle(pLivingEntity.getData(MinejagoAttachmentTypes.POWER).power(), pLevel.registryAccess().registryOrThrow(MinejagoRegistries.POWER))) {
                 if (MinejagoServerConfig.enableMalfunction) {
                     goCrazy((Player) pLivingEntity);
                 }
-                if (this.getFailSound() != null)
-                {
+                if (this.getFailSound() != null) {
                     pLevel.playSound(null, pLivingEntity.blockPosition(), getFailSound(), SoundSource.PLAYERS);
                 }
                 return;
@@ -113,8 +101,7 @@ public abstract class GoldenWeaponItem extends BaseModeledItem
         }
         Player player = pLivingEntity instanceof Player p ? p : null;
         FocusData focusData = player == null ? null : player.getData(MinejagoAttachmentTypes.FOCUS);
-        if (focusData != null)
-        {
+        if (focusData != null) {
             focusData.addExhaustion(FocusConstants.EXHAUSTION_GOLDEN_WEAPON);
         }
         doReleaseUsing(pStack, pLevel, pLivingEntity, pTimeCharged);
@@ -125,15 +112,12 @@ public abstract class GoldenWeaponItem extends BaseModeledItem
 
     @Override
     public final void onUseTick(Level level, LivingEntity livingEntity, ItemStack stack, int remainingUseDuration) {
-        if (livingEntity instanceof Player && MinejagoServerConfig.requireCompatiblePower)
-        {
-            if (!canPowerHandle(livingEntity.getData(MinejagoAttachmentTypes.POWER).power(), level.registryAccess().registryOrThrow(MinejagoRegistries.POWER)))
-            {
+        if (livingEntity instanceof Player && MinejagoServerConfig.requireCompatiblePower) {
+            if (!canPowerHandle(livingEntity.getData(MinejagoAttachmentTypes.POWER).power(), level.registryAccess().registryOrThrow(MinejagoRegistries.POWER))) {
                 if (MinejagoServerConfig.enableMalfunction) {
                     goCrazy((Player) livingEntity);
                 }
-                if (this.getFailSound() != null)
-                {
+                if (this.getFailSound() != null) {
                     level.playSound(null, livingEntity.blockPosition(), getFailSound(), SoundSource.PLAYERS);
                 }
                 return;
@@ -141,13 +125,10 @@ public abstract class GoldenWeaponItem extends BaseModeledItem
         }
         Player player = livingEntity instanceof Player p ? p : null;
         FocusData focusData = player == null ? null : player.getData(MinejagoAttachmentTypes.FOCUS);
-        if (focusData != null)
-        {
+        if (focusData != null) {
             focusData.addExhaustion(FocusConstants.EXHAUSTION_GOLDEN_WEAPON);
-            if (focusData.getFocusLevel() < FocusConstants.GOLDEN_WEAPON_LEVEL)
-            {
-                if (this.getFailSound() != null)
-                {
+            if (focusData.getFocusLevel() < FocusConstants.GOLDEN_WEAPON_LEVEL) {
+                if (this.getFailSound() != null) {
                     level.playSound(null, livingEntity.blockPosition(), getFailSound(), SoundSource.PLAYERS);
                 }
                 return;
@@ -161,22 +142,18 @@ public abstract class GoldenWeaponItem extends BaseModeledItem
 
     protected abstract void goCrazy(Player player);
 
-    public static void overload(LivingEntity entity)
-    {
+    public static void overload(LivingEntity entity) {
         // TODO: Weapons portal event
     }
 
-    public SoundEvent getFailSound()
-    {
+    public SoundEvent getFailSound() {
         return null;
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, TooltipContext tooltipContext, List<Component> list, TooltipFlag tooltipFlag)
-    {
+    public void appendHoverText(ItemStack itemStack, TooltipContext tooltipContext, List<Component> list, TooltipFlag tooltipFlag) {
         super.appendHoverText(itemStack, tooltipContext, list, tooltipFlag);
-        if (tooltipFlag.isAdvanced())
-        {
+        if (tooltipFlag.isAdvanced()) {
             if (!Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled())
                 list.add(Component.translatable(MOD_NEEDED, Minejago.Dependencies.PLAYER_ANIMATOR.getModId()).withStyle(ChatFormatting.RED));
             if (!Minejago.Dependencies.DYNAMIC_LIGHTS.isInstalled())
@@ -185,8 +162,7 @@ public abstract class GoldenWeaponItem extends BaseModeledItem
     }
 
     @Override
-    public BlockEntityWithoutLevelRenderer getBEWLR()
-    {
+    public BlockEntityWithoutLevelRenderer getBEWLR() {
         return MinejagoClientUtils.getBewlr();
     }
 }

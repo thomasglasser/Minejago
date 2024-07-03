@@ -1,7 +1,6 @@
 package dev.thomasglasser.minejago.data.advancements.packs;
 
-public class MinejagoStoryAdvancementKeys
-{
+public class MinejagoStoryAdvancementKeys {
     public static final String CATEGORY = "story";
 
     public static final String ROOT = "root";

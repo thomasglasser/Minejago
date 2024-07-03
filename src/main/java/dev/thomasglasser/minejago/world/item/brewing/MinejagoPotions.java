@@ -9,8 +9,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.alchemy.Potion;
 
-public class MinejagoPotions
-{
+public class MinejagoPotions {
     public static final DeferredRegister<Potion> POTIONS = DeferredRegister.create(Registries.POTION, Minejago.MOD_ID);
 
     public static final DeferredHolder<Potion, Potion> ACACIA_TEA = register("acacia_tea", MinejagoMobEffects.ACACIA_TEA);
@@ -26,13 +25,11 @@ public class MinejagoPotions
     public static final DeferredHolder<Potion, Potion> MILK = register("milk", MinejagoMobEffects.CURE);
     public static final DeferredHolder<Potion, Potion> FOCUS_TEA = register("focus_tea", 4, MinejagoMobEffects.HYPERFOCUS);
 
-    private static DeferredHolder<Potion, Potion> register(String name, DeferredHolder<MobEffect, MobEffect> effect)
-    {
+    private static DeferredHolder<Potion, Potion> register(String name, DeferredHolder<MobEffect, MobEffect> effect) {
         return POTIONS.register(name, () -> new Potion(new MobEffectInstance(effect)));
     }
 
-    private static DeferredHolder<Potion, Potion> register(String name, int duration, DeferredHolder<MobEffect, MobEffect> effect)
-    {
+    private static DeferredHolder<Potion, Potion> register(String name, int duration, DeferredHolder<MobEffect, MobEffect> effect) {
         return POTIONS.register(name, () -> new Potion(new MobEffectInstance(effect, duration)));
     }
 

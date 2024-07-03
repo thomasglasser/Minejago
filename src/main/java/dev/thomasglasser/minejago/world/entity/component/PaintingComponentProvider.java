@@ -19,11 +19,10 @@ import snownee.jade.impl.ui.ElementHelper;
 
 public enum PaintingComponentProvider implements IEntityComponentProvider, IServerDataProvider<EntityAccessor> {
     INSTANCE;
-    
+
     @Override
     public void appendTooltip(ITooltip iTooltip, EntityAccessor entityAccessor, IPluginConfig iPluginConfig) {
-        if (((Painting)entityAccessor.getEntity()).getVariant().is(MinejagoPaintingVariants.FOUR_WEAPONS) && !entityAccessor.getServerData().getBoolean("MapTaken"))
-        {
+        if (((Painting) entityAccessor.getEntity()).getVariant().is(MinejagoPaintingVariants.FOUR_WEAPONS) && !entityAccessor.getServerData().getBoolean("MapTaken")) {
             IElement icon = ElementHelper.INSTANCE.item(Items.MAP.getDefaultInstance(), 0.5f).translate(new Vec2(0, -2));
             iTooltip.add(icon);
             iTooltip.append(Component.translatable("entity.minejago.painting.waila.map"));
@@ -37,8 +36,7 @@ public enum PaintingComponentProvider implements IEntityComponentProvider, IServ
 
     @Override
     public void appendServerData(CompoundTag compoundTag, EntityAccessor accessor) {
-        if (accessor.getEntity() instanceof Painting painting)
-        {
+        if (accessor.getEntity() instanceof Painting painting) {
             CompoundTag tag = TommyLibServices.ENTITY.getPersistentData(painting);
             compoundTag.putBoolean("MapTaken", tag.getBoolean("MapTaken"));
         }

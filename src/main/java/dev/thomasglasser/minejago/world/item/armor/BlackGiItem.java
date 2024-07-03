@@ -2,19 +2,17 @@ package dev.thomasglasser.minejago.world.item.armor;
 
 import dev.thomasglasser.minejago.client.renderer.armor.BlackGiRenderer;
 import dev.thomasglasser.tommylib.api.world.item.armor.BaseGeoArmorItem;
+import java.util.function.Consumer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import javax.annotation.Nullable;
-import java.util.function.Consumer;
-
-public class BlackGiItem extends BaseGeoArmorItem implements GiGeoArmorItem
-{
+public class BlackGiItem extends BaseGeoArmorItem implements GiGeoArmorItem {
     private AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public BlackGiItem(Type type, Properties pProperties) {

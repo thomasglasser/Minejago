@@ -1,8 +1,13 @@
 package dev.thomasglasser.minejago.world.level.levelgen.structure.pools;
 
+import static net.minecraft.data.worldgen.Pools.EMPTY;
+
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Either;
 import dev.thomasglasser.minejago.Minejago;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
@@ -12,17 +17,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.structure.pools.LegacySinglePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.SinglePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
-import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
-
-import static net.minecraft.data.worldgen.Pools.EMPTY;
-
-public class MinejagoPools
-{
+public class MinejagoPools {
     public static ResourceKey<StructureTemplatePool> createKey(String name) {
         return ResourceKey.create(Registries.TEMPLATE_POOL, Minejago.modLoc(name));
     }

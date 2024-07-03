@@ -1,19 +1,22 @@
 package dev.thomasglasser.minejago.client.particle;
 
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.*;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.ParticleRenderType;
+import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.core.particles.SimpleParticleType;
 
 public class SparklesParticle extends TextureSheetParticle {
-
     public SparklesParticle(ClientLevel pLevel, double pX, double pY, double pZ) {
         super(pLevel, pX, pY, pZ);
-        this.lifetime = 10 + ((int)(Math.random() * 6));
+        this.lifetime = 10 + ((int) (Math.random() * 6));
     }
 
     public SparklesParticle(ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
         super(pLevel, pX, pY, pZ, pXSpeed, pYSpeed, pZSpeed);
-        this.lifetime = 10 + ((int)(Math.random() * 6));
+        this.lifetime = 10 + ((int) (Math.random() * 6));
     }
 
     @Override

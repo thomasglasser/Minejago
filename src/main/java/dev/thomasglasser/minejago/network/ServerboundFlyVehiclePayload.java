@@ -9,18 +9,16 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
 
-public record ServerboundFlyVehiclePayload(Stage stage) implements ExtendedPacketPayload
-{
+public record ServerboundFlyVehiclePayload(Stage stage) implements ExtendedPacketPayload {
     public static final Type<ServerboundFlyVehiclePayload> TYPE = new Type<>(Minejago.modLoc("serverbound_fly_vehicle"));
     public static final StreamCodec<FriendlyByteBuf, ServerboundFlyVehiclePayload> CODEC = StreamCodec.composite(
             NetworkUtils.enumCodec(Stage.class), ServerboundFlyVehiclePayload::stage,
-            ServerboundFlyVehiclePayload::new
-    );
+            ServerboundFlyVehiclePayload::new);
 
     // On Server
     public void handle(Player player) {
-        if(player.getVehicle() instanceof PlayerRideableFlying flying){
-            switch (stage){
+        if (player.getVehicle() instanceof PlayerRideableFlying flying) {
+            switch (stage) {
                 case START_ASCEND -> flying.ascend();
                 case START_DESCEND -> flying.descend();
                 case STOP -> flying.stop();
@@ -29,8 +27,7 @@ public record ServerboundFlyVehiclePayload(Stage stage) implements ExtendedPacke
     }
 
     @Override
-    public Type<? extends CustomPacketPayload> type()
-    {
+    public Type<? extends CustomPacketPayload> type() {
         return TYPE;
     }
 

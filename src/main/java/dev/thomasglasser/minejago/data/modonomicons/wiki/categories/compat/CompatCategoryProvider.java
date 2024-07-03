@@ -5,9 +5,7 @@ import com.klikli_dev.modonomicon.api.datagen.SingleBookSubProvider;
 import com.klikli_dev.modonomicon.api.datagen.book.BookIconModel;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 
-public class CompatCategoryProvider extends IndexModeCategoryProvider
-{
-
+public class CompatCategoryProvider extends IndexModeCategoryProvider {
     public static final String ID = "compat";
 
     public CompatCategoryProvider(SingleBookSubProvider parent) {
@@ -20,26 +18,22 @@ public class CompatCategoryProvider extends IndexModeCategoryProvider
     }
 
     @Override
-    public String categoryId()
-    {
+    public String categoryId() {
         return ID;
     }
 
     @Override
-    protected String categoryName()
-    {
+    protected String categoryName() {
         return "Mod Compatibilities & Enhancements";
     }
 
     @Override
-    protected String categoryDescription()
-    {
+    protected String categoryDescription() {
         return "Optional mods that enhance the Minejago experience.";
     }
 
     @Override
-    protected BookIconModel categoryIcon()
-    {
+    protected BookIconModel categoryIcon() {
         return BookIconModel.create(MinejagoItems.SCYTHE_OF_QUAKES);
     }
 }

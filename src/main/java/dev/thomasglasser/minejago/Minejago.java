@@ -46,164 +46,148 @@ import org.apache.logging.log4j.Logger;
 
 @Mod(Minejago.MOD_ID)
 public class Minejago {
+    public static final String MOD_ID = "minejago";
+    public static final String MOD_NAME = "Minejago";
+    public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
 
-	public static final String MOD_ID = "minejago";
-	public static final String MOD_NAME = "Minejago";
-	public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
+    public Minejago(IEventBus bus) {
+        LOGGER.info("Initializing {} for {} in a {} environment...", MOD_NAME, TommyLibServices.PLATFORM.getPlatformName(), TommyLibServices.PLATFORM.getEnvironmentName());
 
-	public Minejago(IEventBus bus)
-	{
-		LOGGER.info("Initializing {} for {} in a {} environment...", MOD_NAME, TommyLibServices.PLATFORM.getPlatformName(), TommyLibServices.PLATFORM.getEnvironmentName());
+        initRegistries();
 
-		initRegistries();
+        registerConfigs();
 
-		registerConfigs();
+        if (Dependencies.TSLAT_ENTITY_STATUS.isInstalled()) {
+            TESAPI.addTESHudElement(Minejago.modLoc("power_symbol"), MinejagoClientEvents::renderPowerSymbol);
+        }
 
-		if (Dependencies.TSLAT_ENTITY_STATUS.isInstalled())
-		{
-			TESAPI.addTESHudElement(Minejago.modLoc("power_symbol"), MinejagoClientEvents::renderPowerSymbol);
-		}
+        MinejagoPayloads.init();
 
-		MinejagoPayloads.init();
+        if (FMLEnvironment.dist.isClient()) bus.addListener(MinejagoClientEvents::onClientSetup);
 
-		if (FMLEnvironment.dist.isClient()) bus.addListener(MinejagoClientEvents::onClientSetup);
+        addModListeners(bus);
+        if (FMLEnvironment.dist.isClient()) addModClientListeners(bus);
 
-		addModListeners(bus);
-		if (FMLEnvironment.dist.isClient()) addModClientListeners(bus);
+        addForgeListeners();
+        if (FMLEnvironment.dist.isClient()) addForgeClientListeners();
 
-		addForgeListeners();
-		if (FMLEnvironment.dist.isClient()) addForgeClientListeners();
+        bus.addListener(MinejagoDataGenerators::gatherData);
+    }
 
-		bus.addListener(MinejagoDataGenerators::gatherData);
-	}
+    public static ResourceLocation modLoc(String path) {
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
+    }
 
-	public static ResourceLocation modLoc(String path)
-	{
-		return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
-	}
+    private static void initRegistries() {
+        MinejagoRegistries.init();
 
-	private static void initRegistries()
-	{
-		MinejagoRegistries.init();
+        MinejagoArmorMaterials.init();
+        MinejagoDataComponents.init();
+        MinejagoRecipeTypes.init();
+        MinejagoRecipeSerializers.init();
+        MinejagoArmors.init();
+        MinejagoTiers.init();
+        MinejagoPowers.init();
+        MinejagoEntityTypes.init();
+        MinejagoParticleTypes.init();
+        MinejagoBlocks.init();
+        MinejagoBlockEntityTypes.init();
+        MinejagoItems.init();
+        MinejagoPotions.init();
+        MinejagoSoundEvents.init();
+        MinejagoMobEffects.init();
+        MinejagoKeyMappings.init();
+        MinejagoCreativeModeTabs.init();
+        MinejagoGameEvents.init();
+        MinejagoMemoryModuleTypes.init();
+        MinejagoCriteriaTriggers.init();
+        ResourceKeyFocusModifiers.init();
+        MinejagoAttachmentTypes.init();
+        MinejagoEntitySerializers.init();
+        MinejagoMapDecorationTypes.init();
+    }
 
-		MinejagoArmorMaterials.init();
-		MinejagoDataComponents.init();
-		MinejagoRecipeTypes.init();
-		MinejagoRecipeSerializers.init();
-		MinejagoArmors.init();
-		MinejagoTiers.init();
-		MinejagoPowers.init();
-		MinejagoEntityTypes.init();
-		MinejagoParticleTypes.init();
-		MinejagoBlocks.init();
-		MinejagoBlockEntityTypes.init();
-		MinejagoItems.init();
-		MinejagoPotions.init();
-		MinejagoSoundEvents.init();
-		MinejagoMobEffects.init();
-		MinejagoKeyMappings.init();
-		MinejagoCreativeModeTabs.init();
-		MinejagoGameEvents.init();
-		MinejagoMemoryModuleTypes.init();
-		MinejagoCriteriaTriggers.init();
-		ResourceKeyFocusModifiers.init();
-		MinejagoAttachmentTypes.init();
-		MinejagoEntitySerializers.init();
-		MinejagoMapDecorationTypes.init();
-	}
-
-	private static void registerConfigs()
-	{
+    private static void registerConfigs() {
 //		MidnightConfig.init(Minejago.MOD_ID, MinejagoServerConfig.class);
 //		if (TommyLibServices.PLATFORM.isClientSide()) MidnightConfig.init(Minejago.MOD_ID, MinejagoClientConfig.class);
-	}
+    }
 
-	private void addModListeners(IEventBus bus)
-	{
-		bus.addListener(MinejagoClientEvents::onClientConfigChanged);
-		bus.addListener(MinejagoEntityEvents::onEntityAttributeCreation);
-		bus.addListener(MinejagoEntityEvents::onSpawnPlacementsRegister);
-		bus.addListener(MinejagoCoreEvents::onAddPackFinders);
-		bus.addListener(MinejagoCoreEvents::onNewDataPackRegistry);
-		bus.addListener(MinejagoCoreEvents::onRegisterPackets);
-	}
+    private void addModListeners(IEventBus bus) {
+        bus.addListener(MinejagoClientEvents::onClientConfigChanged);
+        bus.addListener(MinejagoEntityEvents::onEntityAttributeCreation);
+        bus.addListener(MinejagoEntityEvents::onSpawnPlacementsRegister);
+        bus.addListener(MinejagoCoreEvents::onAddPackFinders);
+        bus.addListener(MinejagoCoreEvents::onNewDataPackRegistry);
+        bus.addListener(MinejagoCoreEvents::onRegisterPackets);
+    }
 
-	private void addModClientListeners(IEventBus bus)
-	{
-		bus.addListener(MinejagoClientEvents::onRegisterParticleProviders);
-		bus.addListener(MinejagoClientEvents::onRegisterItemColorHandlers);
-		bus.addListener(MinejagoClientEvents::onRegisterBlockColorHandlers);
-		bus.addListener(MinejagoClientEvents::onRegisterRenderer);
-		bus.addListener(MinejagoClientEvents::onRegisterLayers);
-		bus.addListener(MinejagoClientEvents::registerModels);
-		bus.addListener(MinejagoClientEvents::onAddLayers);
-		bus.addListener(MinejagoClientEvents::onBuildCreativeTabContent);
-		bus.addListener(MinejagoClientEvents::onRegisterGuiOverlays);
-		bus.addListener(MinejagoClientEvents::registerClientReloadListeners);
-	}
+    private void addModClientListeners(IEventBus bus) {
+        bus.addListener(MinejagoClientEvents::onRegisterParticleProviders);
+        bus.addListener(MinejagoClientEvents::onRegisterItemColorHandlers);
+        bus.addListener(MinejagoClientEvents::onRegisterBlockColorHandlers);
+        bus.addListener(MinejagoClientEvents::onRegisterRenderer);
+        bus.addListener(MinejagoClientEvents::onRegisterLayers);
+        bus.addListener(MinejagoClientEvents::registerModels);
+        bus.addListener(MinejagoClientEvents::onAddLayers);
+        bus.addListener(MinejagoClientEvents::onBuildCreativeTabContent);
+        bus.addListener(MinejagoClientEvents::onRegisterGuiOverlays);
+        bus.addListener(MinejagoClientEvents::registerClientReloadListeners);
+    }
 
-	private void addForgeListeners()
-	{
-		NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onLivingTick);
-		NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onPlayerEntityInteract);
-		NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onPlayerTick);
-		NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onServerPlayerLoggedIn);
-		NeoForge.EVENT_BUS.addListener(MinejagoCommandEvents::onCommandsRegister);
-		NeoForge.EVENT_BUS.addListener(MinejagoCoreEvents::onAddReloadListeners);
-		NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onLivingKnockBack);
-	}
+    private void addForgeListeners() {
+        NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onLivingTick);
+        NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onPlayerEntityInteract);
+        NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onPlayerTick);
+        NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onServerPlayerLoggedIn);
+        NeoForge.EVENT_BUS.addListener(MinejagoCommandEvents::onCommandsRegister);
+        NeoForge.EVENT_BUS.addListener(MinejagoCoreEvents::onAddReloadListeners);
+        NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onLivingKnockBack);
+    }
 
-	private void addForgeClientListeners()
-	{
-		NeoForge.EVENT_BUS.addListener((ClientPlayerNetworkEvent.LoggingIn event) -> MinejagoClientEvents.onPlayerLoggedIn());
-		NeoForge.EVENT_BUS.addListener((ClientTickEvent.Post event) -> MinejagoClientEvents.onClientTick());
-		NeoForge.EVENT_BUS.addListener((InputEvent.Key event) -> MinejagoClientEvents.onInput(event.getKey()));
-	}
-	
-	public enum Dependencies
-	{
-		MOONLIGHT_LIB("moonlight"),
-		DYNAMIC_LIGHTS("ryoamiclights"),
-		TRIMMED("trimmed"),
-		PLAYER_ANIMATOR("playeranimator"),
-		MODONOMICON("modonomicon"),
-		TSLAT_ENTITY_STATUS("tslatentitystatus");
+    private void addForgeClientListeners() {
+        NeoForge.EVENT_BUS.addListener((ClientPlayerNetworkEvent.LoggingIn event) -> MinejagoClientEvents.onPlayerLoggedIn());
+        NeoForge.EVENT_BUS.addListener((ClientTickEvent.Post event) -> MinejagoClientEvents.onClientTick());
+        NeoForge.EVENT_BUS.addListener((InputEvent.Key event) -> MinejagoClientEvents.onInput(event.getKey()));
+    }
 
-		private final String modId;
+    public enum Dependencies {
+        MOONLIGHT_LIB("moonlight"),
+        DYNAMIC_LIGHTS("ryoamiclights"),
+        TRIMMED("trimmed"),
+        PLAYER_ANIMATOR("playeranimator"),
+        MODONOMICON("modonomicon"),
+        TSLAT_ENTITY_STATUS("tslatentitystatus");
 
-		Dependencies(String modId)
-		{
-			this.modId = modId;
-		}
+        private final String modId;
 
-		public String getModId() {
-			return modId;
-		}
+        Dependencies(String modId) {
+            this.modId = modId;
+        }
 
-		public boolean isInstalled()
-		{
-			return TommyLibServices.PLATFORM.isModLoaded(getModId());
-		}
+        public String getModId() {
+            return modId;
+        }
 
-		public ResourceLocation modLoc(String path)
-		{
-			return ResourceLocation.fromNamespaceAndPath(modId, path);
-		}
-	}
+        public boolean isInstalled() {
+            return TommyLibServices.PLATFORM.isModLoaded(getModId());
+        }
 
-	public enum Expansions
-	{
-		IMMERSION_PACK("immersion");
+        public ResourceLocation modLoc(String path) {
+            return ResourceLocation.fromNamespaceAndPath(modId, path);
+        }
+    }
 
-		private final String id;
+    public enum Expansions {
+        IMMERSION_PACK("immersion");
 
-		Expansions(String id)
-		{
-			this.id = id;
-		}
+        private final String id;
 
-		public String getId() {
-			return id;
-		}
-	}
+        Expansions(String id) {
+            this.id = id;
+        }
+
+        public String getId() {
+            return id;
+        }
+    }
 }

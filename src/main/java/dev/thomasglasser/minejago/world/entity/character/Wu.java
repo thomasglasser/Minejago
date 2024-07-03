@@ -14,6 +14,11 @@ import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.level.storage.PowerData;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -36,6 +41,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
 import net.tslat.smartbrainlib.api.core.behaviour.FirstApplicableBehaviour;
 import net.tslat.smartbrainlib.util.BrainUtils;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
@@ -43,15 +49,7 @@ import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.constant.DefaultAnimations;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-public class Wu extends Character
-{
+public class Wu extends Character {
     public static final String POWER_GIVEN_KEY = "gui.power_selection.power_given";
     public static final String NO_POWER_GIVEN_KEY = "gui.power_selection.no_power_given";
 
@@ -68,8 +66,8 @@ public class Wu extends Character
 
     public static AttributeSupplier.Builder createAttributes() {
         return Character.createAttributes()
-                .add(Attributes.MAX_HEALTH, ((RangedAttribute)Attributes.MAX_HEALTH.value()).getMaxValue())
-                .add(Attributes.ATTACK_KNOCKBACK, ((RangedAttribute)Attributes.ATTACK_KNOCKBACK.value()).getMaxValue())
+                .add(Attributes.MAX_HEALTH, ((RangedAttribute) Attributes.MAX_HEALTH.value()).getMaxValue())
+                .add(Attributes.ATTACK_KNOCKBACK, ((RangedAttribute) Attributes.ATTACK_KNOCKBACK.value()).getMaxValue())
                 .add(Attributes.ATTACK_DAMAGE, 20);
     }
 
@@ -79,8 +77,7 @@ public class Wu extends Character
     }
 
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData)
-    {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData) {
         populateDefaultEquipmentSlots(random, difficultyInstance);
         setCanPickUpLoot(false);
         return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData);
@@ -88,8 +85,7 @@ public class Wu extends Character
 
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if (player.getInventory().hasAnyMatching(itemStack -> itemStack.has(MinejagoDataComponents.GOLDEN_WEAPONS_MAP.get())))
-        {
+        if (player.getInventory().hasAnyMatching(itemStack -> itemStack.has(MinejagoDataComponents.GOLDEN_WEAPONS_MAP.get()))) {
             Registry<Power> registry = level().registryAccess().registryOrThrow(MinejagoRegistries.POWER);
 
             if (!MinejagoServerConfig.drainPool || (powersToGive.size() <= 1)) {
@@ -121,21 +117,16 @@ public class Wu extends Character
                     }
                 }
             }
-        }
-        else if (!player.getInventory().hasAnyOf(Set.copyOf(MinejagoArmors.BLACK_GI_SET.getAllAsItems())))
-        {
-            MinejagoArmors.BLACK_GI_SET.getAllAsItems().forEach(armorItem ->
-                    player.addItem(armorItem.getDefaultInstance()));
+        } else if (!player.getInventory().hasAnyOf(Set.copyOf(MinejagoArmors.BLACK_GI_SET.getAllAsItems()))) {
+            MinejagoArmors.BLACK_GI_SET.getAllAsItems().forEach(armorItem -> player.addItem(armorItem.getDefaultInstance()));
         }
 
         return super.mobInteract(player, hand);
     }
 
     @SafeVarargs
-    public final List<ResourceKey<Power>> addPowersToGive(ResourceKey<Power>... keys)
-    {
-        Arrays.stream(keys).forEach(key ->
-        {
+    public final List<ResourceKey<Power>> addPowersToGive(ResourceKey<Power>... keys) {
+        Arrays.stream(keys).forEach(key -> {
             if (!powersToGive.contains(key)) powersToGive.add(key);
         });
 
@@ -143,10 +134,8 @@ public class Wu extends Character
     }
 
     @SafeVarargs
-    public final List<ResourceKey<Power>> removePowersToGive(ResourceKey<Power>... keys)
-    {
-        Arrays.stream(keys).forEach(key ->
-        {
+    public final List<ResourceKey<Power>> removePowersToGive(ResourceKey<Power>... keys) {
+        Arrays.stream(keys).forEach(key -> {
             while (powersToGive.contains(key)) powersToGive.remove(key);
         });
 
@@ -160,13 +149,11 @@ public class Wu extends Character
                         Pair.of(new GivePowerAndGi<Character>()
                                 .startCondition(character -> character instanceof Wu wu && wu.givingPower)
                                 .whenStarting(character -> character.setDoingSpinjitzu(true))
-                                .whenStopping(character -> character.setDoingSpinjitzu(false)), 0)
-        ));
+                                .whenStopping(character -> character.setDoingSpinjitzu(false)), 0)));
     }
 
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar)
-    {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
         controllerRegistrar.add(new AnimationController<>(this, "StickAttack", 5, state -> {
             if (this.swinging)
                 return /*getMainHandItem().getItem() == MinejagoItems.BAMBOO_STAFF.get() ? state.setAndContinue(ATTACK_SWING_WITH_STICK) :*/ state.setAndContinue(DefaultAnimations.ATTACK_SWING);
@@ -181,8 +168,7 @@ public class Wu extends Character
 
             return PlayState.STOP;
         }));
-        controllerRegistrar.add(new AnimationController<GeoAnimatable>(this, "spinjitzu", animationState ->
-        {
+        controllerRegistrar.add(new AnimationController<GeoAnimatable>(this, "spinjitzu", animationState -> {
             if (isDoingSpinjitzu())
                 return animationState.setAndContinue(SPINJITZU);
 

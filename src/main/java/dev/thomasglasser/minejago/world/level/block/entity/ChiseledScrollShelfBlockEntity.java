@@ -26,8 +26,7 @@ public class ChiseledScrollShelfBlockEntity extends ChiseledBookShelfBlockEntity
     }
 
     @Override
-    public BlockEntityType<?> getType()
-    {
+    public BlockEntityType<?> getType() {
         return MinejagoBlockEntityTypes.CHISELED_SCROLL_SHELF.get();
     }
 }

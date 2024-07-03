@@ -40,73 +40,52 @@ public class MinejagoBlockEntityWithoutLevelRenderer extends BlockEntityWithoutL
     public void renderByItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
         poseStack.pushPose();
         if (stack.is(MinejagoItems.IRON_SCYTHE.get())) {
-            if (!(displayContext == ItemDisplayContext.GUI || displayContext == ItemDisplayContext.FIXED || displayContext == ItemDisplayContext.GROUND))
-            {
+            if (!(displayContext == ItemDisplayContext.GUI || displayContext == ItemDisplayContext.FIXED || displayContext == ItemDisplayContext.GROUND)) {
                 poseStack.scale(1.0F, -1.0F, -1.0F);
                 VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, this.scytheModel.renderType(Minejago.modLoc("textures/entity/item/iron_scythe.png")), false, stack.hasFoil());
                 this.scytheModel.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
-            }
-            else
-            {
+            } else {
                 poseStack.translate(0.5D, 0.5D, 0.5D);
                 ClientUtils.renderItem(stack, displayContext, false, poseStack, buffer, packedLight, packedOverlay, Minejago.MOD_ID, "iron_scythe_inventory");
             }
-        }
-        else if (stack.is(MinejagoItems.BAMBOO_STAFF.get())) {
-            if (!(displayContext == ItemDisplayContext.GUI || displayContext == ItemDisplayContext.FIXED || displayContext == ItemDisplayContext.GROUND))
-            {
+        } else if (stack.is(MinejagoItems.BAMBOO_STAFF.get())) {
+            if (!(displayContext == ItemDisplayContext.GUI || displayContext == ItemDisplayContext.FIXED || displayContext == ItemDisplayContext.GROUND)) {
                 poseStack.scale(1.0F, -1.0F, -1.0F);
                 poseStack.translate(0.0D, -0.7D, 0.0D);
                 VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, this.bambooStaffModel.renderType(Minejago.modLoc("textures/entity/item/bamboo_staff.png")), false, stack.hasFoil());
                 this.bambooStaffModel.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay, -1);
-            }
-            else
-            {
+            } else {
                 poseStack.translate(0.5D, 0.5D, 0.5D);
                 ClientUtils.renderItem(stack, displayContext, false, poseStack, buffer, packedLight, packedOverlay, Minejago.MOD_ID, "bamboo_staff_inventory");
             }
-        }
-        else if (stack.is(MinejagoItems.SCYTHE_OF_QUAKES.get())) {
-            if (!(displayContext == ItemDisplayContext.GUI || displayContext == ItemDisplayContext.FIXED || displayContext == ItemDisplayContext.GROUND))
-            {
+        } else if (stack.is(MinejagoItems.SCYTHE_OF_QUAKES.get())) {
+            if (!(displayContext == ItemDisplayContext.GUI || displayContext == ItemDisplayContext.FIXED || displayContext == ItemDisplayContext.GROUND)) {
                 poseStack.scale(1.0F, -1.0F, -1.0F);
                 VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, this.scytheModel.renderType(Minejago.modLoc("textures/entity/item/scythe_of_quakes.png")), false, stack.hasFoil());
                 this.scytheModel.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
-            }
-            else
-            {
+            } else {
                 poseStack.translate(0.5D, 0.5D, 0.5D);
                 ClientUtils.renderItem(stack, displayContext, false, poseStack, buffer, packedLight, packedOverlay, Minejago.MOD_ID, "scythe_of_quakes_inventory");
             }
-        }
-        else if (stack.is(MinejagoItems.IRON_SPEAR.get())) {
-            if (!(displayContext == ItemDisplayContext.GUI || displayContext == ItemDisplayContext.FIXED || displayContext == ItemDisplayContext.GROUND))
-            {
+        } else if (stack.is(MinejagoItems.IRON_SPEAR.get())) {
+            if (!(displayContext == ItemDisplayContext.GUI || displayContext == ItemDisplayContext.FIXED || displayContext == ItemDisplayContext.GROUND)) {
                 poseStack.scale(1.0F, -1.0F, -1.0F);
                 VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, this.spearModel.renderType(Minejago.modLoc("textures/entity/item/iron_spear.png")), false, stack.hasFoil());
                 this.spearModel.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
-            }
-            else
-            {
+            } else {
                 poseStack.translate(0.5D, 0.5D, 0.5D);
                 ClientUtils.renderItem(stack, displayContext, false, poseStack, buffer, packedLight, packedOverlay, Minejago.MOD_ID, "iron_spear_inventory");
             }
-        }
-        else if (stack.getItem() instanceof PoweredArmorItem)
-        {
+        } else if (stack.getItem() instanceof PoweredArmorItem) {
             poseStack.translate(0.5D, 0.5D, 0.5D);
             ResourceLocation location = stack.getOrDefault(MinejagoDataComponents.POWER.get(), MinejagoPowers.NONE.location());
             final String[] path = new String[1];
-            MinejagoArmors.POWER_SETS.forEach(armorSet ->
-                    armorSet.getAll().forEach(item ->
-                    {
-                        if (stack.is(item.get()))
-                        {
-                            path[0] = item.getId().getPath();
-                        }
-                    }));
-            if (!path[0].isEmpty())
-            {
+            MinejagoArmors.POWER_SETS.forEach(armorSet -> armorSet.getAll().forEach(item -> {
+                if (stack.is(item.get())) {
+                    path[0] = item.getId().getPath();
+                }
+            }));
+            if (!path[0].isEmpty()) {
                 ClientUtils.renderItem(stack, displayContext, false, poseStack, buffer, packedLight, packedOverlay, location.getNamespace(), "minejago_armor/" + location.getPath() + "_" + path[0]);
             }
         }

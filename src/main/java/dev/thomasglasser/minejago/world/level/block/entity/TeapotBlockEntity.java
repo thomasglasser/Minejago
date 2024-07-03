@@ -7,6 +7,7 @@ import dev.thomasglasser.minejago.world.item.crafting.TeapotBrewingRecipe;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import dev.thomasglasser.tommylib.api.world.level.block.entity.ItemHolder;
+import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -36,10 +37,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.Optional;
-
-public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameable
-{
+public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameable {
     private static final int MAX_CUPS = 6;
 
     private ItemStack item = ItemStack.EMPTY;
@@ -72,30 +70,25 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
         return item.isEmpty();
     }
 
-    public static void serverTick(Level pLevel, BlockPos pPos, BlockState pState, TeapotBlockEntity pBlockEntity)
-    {
+    public static void serverTick(Level pLevel, BlockPos pPos, BlockState pState, TeapotBlockEntity pBlockEntity) {
         if (pBlockEntity.cups < 3)
             pLevel.setBlock(pPos, pState.setValue(TeapotBlock.FILLED, false), Block.UPDATE_ALL);
         else
             pLevel.setBlock(pPos, pState.setValue(TeapotBlock.FILLED, true), Block.UPDATE_ALL);
 
-        if (pBlockEntity.cups > 0)
-        {
+        if (pBlockEntity.cups > 0) {
             Optional<RecipeHolder<TeapotBrewingRecipe>> recipe = pBlockEntity.quickCheck.getRecipeFor(new TeapotBrewingRecipe.TeapotBrewingRecipeInput(pBlockEntity.potion, pBlockEntity.item), pLevel);
 
             pBlockEntity.cups = Math.min(pBlockEntity.cups, MAX_CUPS);
 
-            if (pBlockEntity.brewing)
-            {
+            if (pBlockEntity.brewing) {
                 pBlockEntity.brewTime--;
-                if (pBlockEntity.brewTime <= 0)
-                {
+                if (pBlockEntity.brewTime <= 0) {
                     pBlockEntity.brewing = false;
                     pBlockEntity.done = true;
                     pLevel.playSound(null, pPos, MinejagoSoundEvents.TEAPOT_WHISTLE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 
-                    if (recipe.isPresent())
-                    {
+                    if (recipe.isPresent()) {
                         pBlockEntity.potion = recipe.get().value().getResultItem(pLevel.registryAccess()).get(DataComponents.POTION_CONTENTS).potion().orElse(null);
                         pBlockEntity.experiencePerCup = recipe.get().value().getExperience() / pBlockEntity.cups;
                         pBlockEntity.experienceCups = pBlockEntity.cups;
@@ -128,38 +121,28 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
                 pBlockEntity.done = false;
             }
             BlockState below = pLevel.getBlockState(pPos.below());
-            if (pLevel.dimension() == Level.NETHER)
-            {
-                if (pBlockEntity.temp < 100 && !pBlockEntity.isBoiling())
-                {
+            if (pLevel.dimension() == Level.NETHER) {
+                if (pBlockEntity.temp < 100 && !pBlockEntity.isBoiling()) {
                     pBlockEntity.temp = 100;
                     pBlockEntity.heating = true;
                     setChanged(pLevel, pPos, pState);
                 }
-            }
-            else if ((below.is(BlockTags.CAMPFIRES) || below.is(BlockTags.FIRE)))
-            {
-                if (!(pBlockEntity.brewing || pBlockEntity.boiling || pBlockEntity.done))
-                {
+            } else if ((below.is(BlockTags.CAMPFIRES) || below.is(BlockTags.FIRE))) {
+                if (!(pBlockEntity.brewing || pBlockEntity.boiling || pBlockEntity.done)) {
                     pBlockEntity.heating = true;
                     setChanged(pLevel, pPos, pState);
                 }
-            }
-            else if (pBlockEntity.temp > TeapotBlock.getBiomeTemperature(pLevel, pPos))
-            {
+            } else if (pBlockEntity.temp > TeapotBlock.getBiomeTemperature(pLevel, pPos)) {
                 if (pLevel.getBiome(pPos).value().getBaseTemperature() < 2.0)
                     pBlockEntity.temp--;
                 pBlockEntity.temp--;
                 setChanged(pLevel, pPos, pState);
             }
-            if (pBlockEntity.temp < 100 && pBlockEntity.isBoiling())
-            {
+            if (pBlockEntity.temp < 100 && pBlockEntity.isBoiling()) {
                 pBlockEntity.boiling = false;
                 setChanged(pLevel, pPos, pState);
             }
-        }
-        else
-        {
+        } else {
             pBlockEntity.potion = null;
             pBlockEntity.boiling = false;
             pBlockEntity.done = false;
@@ -173,15 +156,13 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
     }
 
     @Override
-    protected void loadAdditional(CompoundTag compoundTag, HolderLookup.Provider provider)
-    {
+    protected void loadAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
         super.loadAdditional(compoundTag, provider);
         NonNullList<ItemStack> itemList = NonNullList.withSize(1, ItemStack.EMPTY);
         ContainerHelper.loadAllItems(compoundTag, itemList, provider);
         item = itemList.getFirst();
         Holder<Potion> newPotion = BuiltInRegistries.POTION.getHolder(ResourceLocation.parse(compoundTag.getString("Potion"))).orElse(null);
-        if (newPotion != potion)
-        {
+        if (newPotion != potion) {
             potion = newPotion;
             if (this.level != null && this.level.isClientSide)
                 level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_ALL);
@@ -194,8 +175,7 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
     }
 
     @Override
-    protected void saveAdditional(CompoundTag compoundTag, HolderLookup.Provider provider)
-    {
+    protected void saveAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
         super.saveAdditional(compoundTag, provider);
         ContainerHelper.saveAllItems(compoundTag, NonNullList.withSize(1, item), provider);
         if (this.potion != null) {
@@ -209,15 +189,13 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
     }
 
     @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider provider)
-    {
+    public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
         CompoundTag updateTag = super.getUpdateTag(provider);
         saveAdditional(updateTag, provider);
         return updateTag;
     }
 
-    public void take(int count)
-    {
+    public void take(int count) {
         this.cups -= count;
         setChanged(level, getBlockPos(), getBlockState());
     }
@@ -251,14 +229,10 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
         return cups;
     }
 
-    public boolean tryFill(int cups, Holder<Potion> potion)
-    {
-        if (cups > MAX_CUPS - getCups() || potion == null)
-        {
+    public boolean tryFill(int cups, Holder<Potion> potion) {
+        if (cups > MAX_CUPS - getCups() || potion == null) {
             return false;
-        }
-        else if (potion == this.potion)
-        {
+        } else if (potion == this.potion) {
             this.cups += cups;
             setChanged(level, getBlockPos(), getBlockState());
             return true;
@@ -287,7 +261,6 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
         pLevel.sendBlockUpdated(pPos, pLevel.getBlockState(pPos), pState, Block.UPDATE_ALL);
     }
 
-
     public void setPotion(Holder<Potion> potion) {
         this.potion = potion;
     }
@@ -309,15 +282,12 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
 
     @Override
     public ItemStack insert(int slot, ItemStack stack) {
-        if (slot == 0)
-        {
+        if (slot == 0) {
             ItemStack newStack = stack.copy();
             newStack.setCount(1);
             item = newStack;
             return item;
-        }
-        else
-        {
+        } else {
             Minejago.LOGGER.error("Teapot index out of bounds!");
             return stack;
         }
@@ -338,15 +308,12 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
         return false;
     }
 
-    public boolean hasRecipe(ItemStack item, Level level)
-    {
+    public boolean hasRecipe(ItemStack item, Level level) {
         return quickCheck.getRecipeFor(new TeapotBrewingRecipe.TeapotBrewingRecipeInput(potion, item), level).isPresent();
     }
 
-    public void giveExperienceForCup(ServerLevel serverLevel, Vec3 pos)
-    {
-        if (experienceCups > 0)
-        {
+    public void giveExperienceForCup(ServerLevel serverLevel, Vec3 pos) {
+        if (experienceCups > 0) {
             ExperienceOrb.award(serverLevel, pos, (int) experiencePerCup);
             experienceCups--;
         }

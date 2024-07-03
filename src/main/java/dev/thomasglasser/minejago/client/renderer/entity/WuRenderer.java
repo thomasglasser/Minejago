@@ -3,11 +3,10 @@ package dev.thomasglasser.minejago.client.renderer.entity;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.model.WuModel;
 import dev.thomasglasser.minejago.world.entity.character.Character;
+import java.util.Calendar;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-
-import java.util.Calendar;
 
 public class WuRenderer<T extends Character> extends CharacterRenderer<T> {
     public WuRenderer(EntityRendererProvider.Context context) {

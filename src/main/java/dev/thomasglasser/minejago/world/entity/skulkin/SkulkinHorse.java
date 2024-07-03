@@ -30,12 +30,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.tslat.smartbrainlib.api.core.navigation.SmoothGroundNavigation;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
-
-public class SkulkinHorse extends SkeletonHorse implements Enemy
-{
-
+public class SkulkinHorse extends SkeletonHorse implements Enemy {
     public SkulkinHorse(EntityType<? extends SkulkinHorse> entityType, Level level) {
         super(entityType, level);
         this.skeletonTrapGoal = new SkulkinTrapGoal(this);
@@ -46,8 +43,7 @@ public class SkulkinHorse extends SkeletonHorse implements Enemy
     }
 
     @Override
-    protected PathNavigation createNavigation(Level level)
-    {
+    protected PathNavigation createNavigation(Level level) {
         return new SmoothGroundNavigation(this, level);
     }
 
@@ -58,8 +54,7 @@ public class SkulkinHorse extends SkeletonHorse implements Enemy
     }
 
     @Override
-    protected void registerGoals()
-    {
+    protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(0, new MeleeAttackGoal(this, 1.2, false));
@@ -102,8 +97,7 @@ public class SkulkinHorse extends SkeletonHorse implements Enemy
         }
     }
 
-    public static class SkulkinTrapGoal extends SkeletonTrapGoal
-    {
+    public static class SkulkinTrapGoal extends SkeletonTrapGoal {
         private final SkulkinHorse horse;
 
         public SkulkinTrapGoal(SkulkinHorse skeletonHorse) {
@@ -115,7 +109,7 @@ public class SkulkinHorse extends SkeletonHorse implements Enemy
         public AbstractHorse createHorse(DifficultyInstance difficulty) {
             SkulkinHorse skeletonHorse = MinejagoEntityTypes.SKULKIN_HORSE.get().create(this.horse.level());
             if (skeletonHorse != null) {
-                skeletonHorse.finalizeSpawn((ServerLevel)this.horse.level(), difficulty, MobSpawnType.TRIGGERED, null);
+                skeletonHorse.finalizeSpawn((ServerLevel) this.horse.level(), difficulty, MobSpawnType.TRIGGERED, null);
                 skeletonHorse.setPos(this.horse.getX(), this.horse.getY(), this.horse.getZ());
                 skeletonHorse.invulnerableTime = 60;
                 skeletonHorse.setPersistenceRequired();
@@ -133,7 +127,7 @@ public class SkulkinHorse extends SkeletonHorse implements Enemy
         public Skeleton createSkeleton(DifficultyInstance difficulty, AbstractHorse horse) {
             Skulkin skeleton = MinejagoEntityTypes.SKULKIN.get().create(horse.level());
             if (skeleton != null) {
-                skeleton.finalizeSpawn((ServerLevel)horse.level(), difficulty, MobSpawnType.TRIGGERED, null);
+                skeleton.finalizeSpawn((ServerLevel) horse.level(), difficulty, MobSpawnType.TRIGGERED, null);
                 skeleton.setPos(horse.getX(), horse.getY(), horse.getZ());
                 skeleton.invulnerableTime = 60;
                 skeleton.setPersistenceRequired();
@@ -148,8 +142,7 @@ public class SkulkinHorse extends SkeletonHorse implements Enemy
             return skeleton;
         }
 
-        private boolean equipArmor(Mob mob)
-        {
+        private boolean equipArmor(Mob mob) {
             return (mob.level().isDay() && mob.level().canSeeSky(mob.blockPosition()));
         }
     }

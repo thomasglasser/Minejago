@@ -33,8 +33,7 @@ public class DragonHeadBlockEntity extends BlockEntity implements GeoBlockEntity
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-        controllerRegistrar.add(new AnimationController<>(this, state ->
-        {
+        controllerRegistrar.add(new AnimationController<>(this, state -> {
             if (state.getAnimatable().getBlockState().getValue(DragonHeadBlock.ACTIVATED))
                 return state.setAndContinue(ACTIVATE);
             return PlayState.STOP;
@@ -47,20 +46,15 @@ public class DragonHeadBlockEntity extends BlockEntity implements GeoBlockEntity
     }
 
     public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState state, T blockEntity) {
-        if (blockEntity instanceof DragonHeadBlockEntity dragonHeadBlockEntity && state.getValue(DragonHeadBlock.ACTIVATED))
-        {
+        if (blockEntity instanceof DragonHeadBlockEntity dragonHeadBlockEntity && state.getValue(DragonHeadBlock.ACTIVATED)) {
             dragonHeadBlockEntity.activatedTicks++;
-            if (dragonHeadBlockEntity.activatedTicks > 100)
-            {
+            if (dragonHeadBlockEntity.activatedTicks > 100) {
                 level.destroyBlock(pos, false);
-                if (state.getBlock() instanceof DragonHeadBlock dragonHeadBlock && level instanceof ServerLevel serverLevel)
-                {
+                if (state.getBlock() instanceof DragonHeadBlock dragonHeadBlock && level instanceof ServerLevel serverLevel) {
                     dragonHeadBlock.getEntityType().spawn(serverLevel, pos, MobSpawnType.TRIGGERED);
                     serverLevel.playSound(null, pos, MinejagoSoundEvents.EARTH_DRAGON_AWAKEN.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
                 }
-            }
-            else if (dragonHeadBlockEntity.activatedTicks > 35 && dragonHeadBlockEntity.hasScythe)
-            {
+            } else if (dragonHeadBlockEntity.activatedTicks > 35 && dragonHeadBlockEntity.hasScythe) {
                 dragonHeadBlockEntity.hasScythe = false;
                 ItemEntity item = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), MinejagoItems.SCYTHE_OF_QUAKES.get().getDefaultInstance());
                 level.addFreshEntity(item);

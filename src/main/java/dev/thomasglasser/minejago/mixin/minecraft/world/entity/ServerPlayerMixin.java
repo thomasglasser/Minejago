@@ -28,12 +28,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ServerPlayer.class)
-public abstract class ServerPlayerMixin
-{
-    @Shadow public abstract ServerLevel serverLevel();
+public abstract class ServerPlayerMixin {
+    @Shadow
+    public abstract ServerLevel serverLevel();
 
     @Unique
-    private final ServerPlayer INSTANCE = (ServerPlayer)(Object)this;
+    private final ServerPlayer INSTANCE = (ServerPlayer) (Object) this;
 
     @Unique
     private FocusData focusData;
@@ -43,22 +43,19 @@ public abstract class ServerPlayerMixin
     private boolean lastFoodSaturationZero;
 
     @Inject(method = "crit", at = @At("HEAD"))
-    private void minejago_crit(Entity entityHit, CallbackInfo ci)
-    {
+    private void minejago_crit(Entity entityHit, CallbackInfo ci) {
         if (entityHit instanceof ServerPlayer sp)
             MinejagoEntityEvents.stopSpinjitzu(sp.getData(MinejagoAttachmentTypes.SPINJITZU), sp, true);
     }
 
     @Inject(method = "magicCrit", at = @At("HEAD"))
-    private void minejago_magicCrit(Entity entityHit, CallbackInfo ci)
-    {
+    private void minejago_magicCrit(Entity entityHit, CallbackInfo ci) {
         if (entityHit instanceof ServerPlayer sp)
             MinejagoEntityEvents.stopSpinjitzu(sp.getData(MinejagoAttachmentTypes.SPINJITZU), sp, true);
     }
 
     @Inject(method = "openItemGui", at = @At("HEAD"))
-    private void minejago_openItemGui(ItemStack stack, InteractionHand hand, CallbackInfo ci)
-    {
+    private void minejago_openItemGui(ItemStack stack, InteractionHand hand, CallbackInfo ci) {
         if (stack.is(MinejagoItems.WRITTEN_SCROLL.get())) {
             if (WrittenBookItem.resolveBookComponents(stack, INSTANCE.createCommandSourceStack(), INSTANCE)) {
                 INSTANCE.containerMenu.broadcastChanges();
@@ -69,16 +66,14 @@ public abstract class ServerPlayerMixin
     }
 
     @Inject(method = "startSleepInBed", at = @At("HEAD"), cancellable = true)
-    private void minejago_startSleepInBed(BlockPos bedPos, CallbackInfoReturnable<Either<Player.BedSleepingProblem, Unit>> cir)
-    {
-        SkulkinRaid raid = ((SkulkinRaidsHolder)serverLevel()).getSkulkinRaidAt(bedPos);
+    private void minejago_startSleepInBed(BlockPos bedPos, CallbackInfoReturnable<Either<Player.BedSleepingProblem, Unit>> cir) {
+        SkulkinRaid raid = ((SkulkinRaidsHolder) serverLevel()).getSkulkinRaidAt(bedPos);
         if (raid != null && raid.isActive())
             cir.setReturnValue(Either.left(Player.BedSleepingProblem.NOT_SAFE));
     }
 
     @Inject(method = "doTick", at = @At("TAIL"))
-    private void minejago_doTick(CallbackInfo ci)
-    {
+    private void minejago_doTick(CallbackInfo ci) {
         if (focusData == null)
             focusData = INSTANCE.getData(MinejagoAttachmentTypes.FOCUS);
         if (this.lastSentFocus != focusData.getFocusLevel() || this.focusData.getSaturationLevel() == 0.0F != this.lastFoodSaturationZero) {

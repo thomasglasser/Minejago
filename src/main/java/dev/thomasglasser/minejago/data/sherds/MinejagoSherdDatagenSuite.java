@@ -6,17 +6,13 @@ import dev.thomasglasser.sherdsapi.api.data.NeoForgeSherdDatagenSuite;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
-public class MinejagoSherdDatagenSuite extends NeoForgeSherdDatagenSuite
-{
-	public MinejagoSherdDatagenSuite(GatherDataEvent event)
-	{
-		super(event, Minejago.MOD_ID);
-	}
+public class MinejagoSherdDatagenSuite extends NeoForgeSherdDatagenSuite {
+    public MinejagoSherdDatagenSuite(GatherDataEvent event) {
+        super(event, Minejago.MOD_ID);
+    }
 
-	@Override
-	public void generate()
-	{
-		MinejagoItems.SHERDS.forEach(string ->
-				makeSherdSuite(string, BuiltInRegistries.ITEM.get(modLoc(string + "_pottery_sherd")), string + "_pottery_pattern"));
-	}
+    @Override
+    public void generate() {
+        MinejagoItems.SHERDS.forEach(string -> makeSherdSuite(string, BuiltInRegistries.ITEM.get(modLoc(string + "_pottery_sherd")), string + "_pottery_pattern"));
+    }
 }

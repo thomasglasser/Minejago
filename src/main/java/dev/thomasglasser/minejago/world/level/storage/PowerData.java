@@ -13,18 +13,16 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 
 public record PowerData(ResourceKey<Power> power, boolean given) {
+
     public static final Codec<PowerData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                    ResourceKey.codec(MinejagoRegistries.POWER).fieldOf("power").forGetter(PowerData::power),
-                    Codec.BOOL.fieldOf("given").forGetter(PowerData::given))
+            ResourceKey.codec(MinejagoRegistries.POWER).fieldOf("power").forGetter(PowerData::power),
+            Codec.BOOL.fieldOf("given").forGetter(PowerData::given))
             .apply(instance, PowerData::new));
-    
-    public PowerData()
-    {
+    public PowerData() {
         this(MinejagoPowers.NONE, false);
     }
 
-    public PowerData(ResourceLocation location, boolean given)
-    {
+    public PowerData(ResourceLocation location, boolean given) {
         this(ResourceKey.create(MinejagoRegistries.POWER, location), given);
     }
 
@@ -33,8 +31,7 @@ public record PowerData(ResourceKey<Power> power, boolean given) {
         return power == null ? MinejagoPowers.NONE : power;
     }
 
-    public void save(LivingEntity entity)
-    {
+    public void save(LivingEntity entity) {
         entity.setData(MinejagoAttachmentTypes.POWER, this);
         if (entity instanceof ServerPlayer serverPlayer)
             MinejagoCriteriaTriggers.GOT_POWER.get().trigger(serverPlayer, this.power());

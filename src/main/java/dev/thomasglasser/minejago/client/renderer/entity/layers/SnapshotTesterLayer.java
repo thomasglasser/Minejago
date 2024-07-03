@@ -6,6 +6,7 @@ import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.MinejagoClientConfig;
 import dev.thomasglasser.minejago.client.MinejagoClientUtils;
 import dev.thomasglasser.minejago.client.model.PilotsSnapshotTesterHatModel;
+import java.util.Calendar;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -16,8 +17,6 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
-
-import java.util.Calendar;
 
 public class SnapshotTesterLayer<T extends LivingEntity> extends RenderLayer<T, PlayerModel<T>> {
     private static final ResourceLocation BAMBOO_HAT_TEXTURE = Minejago.modLoc("textures/entity/player/pilots_snapshot_hat.png");
@@ -37,11 +36,9 @@ public class SnapshotTesterLayer<T extends LivingEntity> extends RenderLayer<T, 
 
     @Override
     protected ResourceLocation getTextureLocation(T entity) {
-        return switch (MinejagoClientConfig.snapshotTesterCosmeticChoice)
-        {
+        return switch (MinejagoClientConfig.snapshotTesterCosmeticChoice) {
 
-            case BAMBOO_HAT ->
-            {
+            case BAMBOO_HAT -> {
                 if (xmasTextures)
                     yield HOLIDAY_HAT_TEXTURE;
                 else
@@ -55,17 +52,13 @@ public class SnapshotTesterLayer<T extends LivingEntity> extends RenderLayer<T, 
         VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityCutout(getTextureLocation(entity)));
 
         getParentModel().getHead().translateAndRotate(poseStack);
-        if (entity instanceof AbstractClientPlayer player)
-        {
-            if (MinejagoClientUtils.renderSnapshotTesterLayer(player))
-            {
-                switch (MinejagoClientUtils.snapshotChoice(player))
-                {
+        if (entity instanceof AbstractClientPlayer player) {
+            if (MinejagoClientUtils.renderSnapshotTesterLayer(player)) {
+                switch (MinejagoClientUtils.snapshotChoice(player)) {
                     case BAMBOO_HAT -> pilotsSnapshotTesterHatModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
                 }
             }
-        }
-        else
+        } else
             pilotsSnapshotTesterHatModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
     }
 }

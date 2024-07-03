@@ -3,6 +3,7 @@ package dev.thomasglasser.minejago.advancements.criterion;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
+import java.util.Optional;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
@@ -12,12 +13,8 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.alchemy.Potion;
 
-import java.util.Optional;
-
-public class BrewedTeaTrigger extends SimpleCriterionTrigger<BrewedTeaTrigger.TriggerInstance>
-{
-    public BrewedTeaTrigger() {
-    }
+public class BrewedTeaTrigger extends SimpleCriterionTrigger<BrewedTeaTrigger.TriggerInstance> {
+    public BrewedTeaTrigger() {}
 
     public Codec<TriggerInstance> codec() {
         return TriggerInstance.CODEC;

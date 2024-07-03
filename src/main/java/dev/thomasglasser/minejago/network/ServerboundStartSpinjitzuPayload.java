@@ -15,11 +15,9 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
-
-public record ServerboundStartSpinjitzuPayload() implements ExtendedPacketPayload
-{
+public record ServerboundStartSpinjitzuPayload() implements ExtendedPacketPayload {
     public static final ServerboundStartSpinjitzuPayload INSTANCE = new ServerboundStartSpinjitzuPayload();
 
     public static final Type<ServerboundStartSpinjitzuPayload> TYPE = new Type<>(Minejago.modLoc("serverbound_start_spinjitzu"));
@@ -27,18 +25,15 @@ public record ServerboundStartSpinjitzuPayload() implements ExtendedPacketPayloa
 
     // ON SERVER
     public void handle(@Nullable Player player) {
-        if (player instanceof ServerPlayer serverPlayer)
-        {
+        if (player instanceof ServerPlayer serverPlayer) {
             serverPlayer.setData(MinejagoAttachmentTypes.SPINJITZU, new SpinjitzuData(true, true));
             TommyLibServices.NETWORK.sendToAllClients(new ClientboundStartSpinjitzuPayload(serverPlayer.getUUID()), serverPlayer.getServer());
             AttributeInstance speed = serverPlayer.getAttribute(Attributes.MOVEMENT_SPEED);
-            if (speed != null && !speed.hasModifier(SpinjitzuData.SPEED_MODIFIER))
-            {
+            if (speed != null && !speed.hasModifier(SpinjitzuData.SPEED_MODIFIER)) {
                 speed.addTransientModifier(new AttributeModifier(SpinjitzuData.SPEED_MODIFIER, 1.5, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
             }
             AttributeInstance kb = serverPlayer.getAttribute(Attributes.ATTACK_KNOCKBACK);
-            if (kb != null && !kb.hasModifier(SpinjitzuData.KNOCKBACK_MODIFIER))
-            {
+            if (kb != null && !kb.hasModifier(SpinjitzuData.KNOCKBACK_MODIFIER)) {
                 kb.addTransientModifier(new AttributeModifier(SpinjitzuData.KNOCKBACK_MODIFIER, 1.5, AttributeModifier.Operation.ADD_VALUE));
             }
             serverPlayer.level().playSound(null, serverPlayer.blockPosition(), MinejagoSoundEvents.SPINJITZU_START.get(), SoundSource.PLAYERS);
@@ -46,8 +41,7 @@ public record ServerboundStartSpinjitzuPayload() implements ExtendedPacketPayloa
     }
 
     @Override
-    public Type<? extends CustomPacketPayload> type()
-    {
+    public Type<? extends CustomPacketPayload> type() {
         return TYPE;
     }
 }

@@ -9,22 +9,16 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.server.packs.PackType;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
-
-public class MinejagoItemModels extends ExtendedItemModelProvider
-{
-    public MinejagoItemModels(PackOutput output, ExistingFileHelper helper)
-    {
+public class MinejagoItemModels extends ExtendedItemModelProvider {
+    public MinejagoItemModels(PackOutput output, ExistingFileHelper helper) {
         super(output, Minejago.MOD_ID, helper);
-
     }
 
     @Override
-    protected void registerModels()
-    {
+    protected void registerModels() {
         basicItemHandheld(MinejagoItems.BONE_KNIFE);
         basicItemHandheld(MinejagoItems.IRON_SHURIKEN);
-        MinejagoArmors.ARMOR_SETS.forEach(armorSet -> armorSet.getAll().forEach(item ->
-        {
+        MinejagoArmors.ARMOR_SETS.forEach(armorSet -> armorSet.getAll().forEach(item -> {
             String nameForSlot = switch (armorSet.getForItem(item.get())) {
                 case FEET -> "boots";
                 case LEGS -> "pants";
@@ -35,8 +29,7 @@ public class MinejagoItemModels extends ExtendedItemModelProvider
 
             singleTexture(item.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/" + armorSet.getName() + "_" + nameForSlot));
         }));
-        MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(item ->
-                singleTexture(item.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/skeletal_chestplate_" + item.get().getVariant().getColor().getName())));
+        MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(item -> singleTexture(item.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/skeletal_chestplate_" + item.get().getVariant().getColor().getName())));
         basicItem(MinejagoArmors.SAMUKAIS_CHESTPLATE.get());
         basicItem(MinejagoItems.TEACUP.get());
         basicItem(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get());
@@ -60,8 +53,7 @@ public class MinejagoItemModels extends ExtendedItemModelProvider
 
         basicInventoryItem(MinejagoItems.WOODEN_NUNCHUCKS);
 
-        MinejagoBlocks.TEAPOTS.forEach((dyeColor, itemRegistryObject) ->
-        {
+        MinejagoBlocks.TEAPOTS.forEach((dyeColor, itemRegistryObject) -> {
             if (existingFileHelper.exists(Minejago.modLoc("textures/item/" + dyeColor.getName() + "_teapot.png"), PackType.CLIENT_RESOURCES))
                 basicItem(itemRegistryObject.get().asItem());
         });

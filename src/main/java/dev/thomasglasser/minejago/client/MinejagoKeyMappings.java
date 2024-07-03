@@ -11,8 +11,7 @@ public class MinejagoKeyMappings {
     public static final KeyMapping ASCEND = register("ascend", InputConstants.KEY_UP, KeyMapping.CATEGORY_MOVEMENT);
     public static final KeyMapping DESCEND = register("descend", InputConstants.KEY_DOWN, KeyMapping.CATEGORY_MOVEMENT);
 
-    private static KeyMapping register(String name, int key, String category)
-    {
+    private static KeyMapping register(String name, int key, String category) {
         return ClientUtils.registerKeyMapping(Minejago.modLoc(name), key, category);
     }
 

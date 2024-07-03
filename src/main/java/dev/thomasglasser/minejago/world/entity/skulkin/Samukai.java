@@ -26,7 +26,6 @@ import net.tslat.smartbrainlib.api.core.behaviour.FirstApplicableBehaviour;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.attack.AnimatableMeleeAttack;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.target.InvalidateAttackTarget;
 import net.tslat.smartbrainlib.example.SBLSkeleton;
-import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
@@ -36,8 +35,7 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class Samukai extends MeleeCompatibleSkeletonRaider implements GeoEntity
-{
+public class Samukai extends MeleeCompatibleSkeletonRaider implements GeoEntity {
     public static final RawAnimation MISC_SIT = RawAnimation.begin().thenPlay("misc.sit");
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
@@ -49,8 +47,7 @@ public class Samukai extends MeleeCompatibleSkeletonRaider implements GeoEntity
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder)
-    {
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(THROWING, false);
     }
@@ -63,18 +60,15 @@ public class Samukai extends MeleeCompatibleSkeletonRaider implements GeoEntity
         setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(MinejagoItems.BONE_KNIFE.get()));
     }
 
-    public static AttributeSupplier.@NotNull Builder createAttributes()
-    {
+    public static AttributeSupplier.Builder createAttributes() {
         return AbstractSkeleton.createAttributes()
                 .add(Attributes.MAX_HEALTH, 50)
                 .add(Attributes.ATTACK_DAMAGE, 4.0);
     }
 
     @Override
-    public void performRangedAttack(LivingEntity target, float velocity)
-    {
-        for (int i = -1; i < 3; i++)
-        {
+    public void performRangedAttack(LivingEntity target, float velocity) {
+        for (int i = -1; i < 3; i++) {
             ThrownBoneKnife thrownBoneKnife = new ThrownBoneKnife(this.level(), this, MinejagoItems.BONE_KNIFE.get().getDefaultInstance());
             double d = target.getX() - this.getX();
             double e = target.getY(0.3333333333333333) - thrownBoneKnife.getY() + i;
@@ -89,16 +83,14 @@ public class Samukai extends MeleeCompatibleSkeletonRaider implements GeoEntity
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
         controllerRegistrar.add(DefaultAnimations.genericWalkController(this));
-        controllerRegistrar.add(new AnimationController<>(this, "Throw", 0, state ->
-        {
+        controllerRegistrar.add(new AnimationController<>(this, "Throw", 0, state -> {
             if (entityData.get(THROWING))
                 return state.setAndContinue(DefaultAnimations.ATTACK_THROW);
 
             return PlayState.STOP;
         }));
         controllerRegistrar.add(DefaultAnimations.genericAttackAnimation(this, DefaultAnimations.ATTACK_SWING));
-        controllerRegistrar.add(new AnimationController<>(this, "Sit", 0, state ->
-        {
+        controllerRegistrar.add(new AnimationController<>(this, "Sit", 0, state -> {
             if (this.getVehicle() != null)
                 return state.setAndContinue(MISC_SIT);
 

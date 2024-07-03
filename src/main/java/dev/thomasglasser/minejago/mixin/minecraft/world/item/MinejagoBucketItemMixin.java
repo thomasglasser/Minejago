@@ -24,8 +24,7 @@ public class MinejagoBucketItemMixin implements PotionCupHolder {
 
     @Override
     public Holder<Potion> getPotion(ItemStack stack) {
-        if (stack.is(Items.WATER_BUCKET))
-        {
+        if (stack.is(Items.WATER_BUCKET)) {
             return Potions.WATER;
         }
         return null;

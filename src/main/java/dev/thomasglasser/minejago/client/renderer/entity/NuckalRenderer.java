@@ -9,8 +9,7 @@ import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.resources.ResourceLocation;
 
-public class NuckalRenderer extends HumanoidMobRenderer<Nuckal, NuckalModel<Nuckal>>
-{
+public class NuckalRenderer extends HumanoidMobRenderer<Nuckal, NuckalModel<Nuckal>> {
     public static final ResourceLocation TEXTURE_LOCATION = Minejago.modLoc("textures/entity/skulkin/nuckal.png");
 
     public NuckalRenderer(EntityRendererProvider.Context context) {

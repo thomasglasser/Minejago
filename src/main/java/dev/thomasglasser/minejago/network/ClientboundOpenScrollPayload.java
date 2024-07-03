@@ -15,30 +15,25 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-public record ClientboundOpenScrollPayload(InteractionHand hand) implements ExtendedPacketPayload
-{
+public record ClientboundOpenScrollPayload(InteractionHand hand) implements ExtendedPacketPayload {
     public static final Type<ClientboundOpenScrollPayload> TYPE = new Type<>(Minejago.modLoc("clientbound_open_scroll"));
     public static final StreamCodec<FriendlyByteBuf, ClientboundOpenScrollPayload> CODEC = StreamCodec.composite(
             NetworkUtils.enumCodec(InteractionHand.class), ClientboundOpenScrollPayload::hand,
-            ClientboundOpenScrollPayload::new
-    );
+            ClientboundOpenScrollPayload::new);
 
     // ON CLIENT
-    public void handle(@Nullable Player player)
-    {
+    public void handle(@Nullable Player player) {
         ItemStack itemStack = ClientUtils.getMainClientPlayer().getItemInHand(hand);
         if (itemStack.is(MinejagoItems.WRITTEN_SCROLL.get())) {
             BookViewScreen.BookAccess bookAccess = BookViewScreen.BookAccess.fromItem(itemStack);
-            if (bookAccess != null)
-            {
+            if (bookAccess != null) {
                 ClientUtils.setScreen(new ScrollViewScreen(bookAccess));
             }
         }
     }
 
     @Override
-    public Type<? extends CustomPacketPayload> type()
-    {
+    public Type<? extends CustomPacketPayload> type() {
         return TYPE;
     }
 }

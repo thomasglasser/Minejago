@@ -19,7 +19,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.PotionItem;
-import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
@@ -29,8 +28,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 
-public class FilledTeacupItem extends PotionItem implements PotionCupHolder
-{
+public class FilledTeacupItem extends PotionItem implements PotionCupHolder {
     public FilledTeacupItem(Properties pProperties) {
         super(pProperties);
     }
@@ -40,13 +38,13 @@ public class FilledTeacupItem extends PotionItem implements PotionCupHolder
      * the Item before the action is complete.
      */
     public ItemStack finishUsingItem(ItemStack pStack, Level pLevel, LivingEntity pEntityLiving) {
-        Player player = pEntityLiving instanceof Player ? (Player)pEntityLiving : null;
+        Player player = pEntityLiving instanceof Player ? (Player) pEntityLiving : null;
         if (player instanceof ServerPlayer) {
-            CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer)player, pStack);
+            CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer) player, pStack);
         }
 
         if (!pLevel.isClientSide && pStack.has(DataComponents.POTION_CONTENTS)) {
-            for(MobEffectInstance mobEffectInstance : pStack.get(DataComponents.POTION_CONTENTS).getAllEffects()) {
+            for (MobEffectInstance mobEffectInstance : pStack.get(DataComponents.POTION_CONTENTS).getAllEffects()) {
                 pEntityLiving.addEffect(new MobEffectInstance(mobEffectInstance));
             }
         }
@@ -81,16 +79,15 @@ public class FilledTeacupItem extends PotionItem implements PotionCupHolder
         Player player = pContext.getPlayer();
         ItemStack itemstack = pContext.getItemInHand();
         BlockState blockstate = level.getBlockState(blockpos);
-        if (pContext.getClickedFace() != Direction.DOWN && blockstate.is(BlockTags.CONVERTABLE_TO_MUD) && itemstack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).is(Potions.WATER))
-        {
+        if (pContext.getClickedFace() != Direction.DOWN && blockstate.is(BlockTags.CONVERTABLE_TO_MUD) && itemstack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).is(Potions.WATER)) {
             level.playSound(null, blockpos, SoundEvents.GENERIC_SPLASH, SoundSource.PLAYERS, 1.0F, 1.0F);
             player.setItemInHand(pContext.getHand(), ItemUtils.createFilledResult(itemstack, player, new ItemStack(MinejagoItems.TEACUP.get())));
             player.awardStat(Stats.ITEM_USED.get(itemstack.getItem()));
             if (!level.isClientSide) {
-                ServerLevel serverlevel = (ServerLevel)level;
+                ServerLevel serverlevel = (ServerLevel) level;
 
-                for(int i = 0; i < 5; ++i) {
-                    serverlevel.sendParticles(ParticleTypes.SPLASH, (double)blockpos.getX() + level.random.nextDouble(), (double)(blockpos.getY() + 1), (double)blockpos.getZ() + level.random.nextDouble(), 1, 0.0D, 0.0D, 0.0D, 1.0D);
+                for (int i = 0; i < 5; ++i) {
+                    serverlevel.sendParticles(ParticleTypes.SPLASH, (double) blockpos.getX() + level.random.nextDouble(), (double) (blockpos.getY() + 1), (double) blockpos.getZ() + level.random.nextDouble(), 1, 0.0D, 0.0D, 0.0D, 1.0D);
                 }
             }
 

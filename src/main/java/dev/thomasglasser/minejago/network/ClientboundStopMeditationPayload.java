@@ -9,6 +9,7 @@ import dev.thomasglasser.tommylib.api.client.ClientUtils;
 import dev.thomasglasser.tommylib.api.client.animation.AnimationUtils;
 import dev.thomasglasser.tommylib.api.network.ExtendedPacketPayload;
 import io.netty.buffer.ByteBuf;
+import java.util.UUID;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -16,24 +17,19 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
 
-import java.util.UUID;
-
-public record ClientboundStopMeditationPayload(UUID uuid, boolean fail) implements ExtendedPacketPayload
-{
+public record ClientboundStopMeditationPayload(UUID uuid, boolean fail) implements ExtendedPacketPayload {
     public static final Type<ClientboundStopMeditationPayload> TYPE = new Type<>(Minejago.modLoc("clientbound_stop_meditation"));
     public static final StreamCodec<ByteBuf, ClientboundStopMeditationPayload> CODEC = StreamCodec.composite(
             UUIDUtil.STREAM_CODEC, ClientboundStopMeditationPayload::uuid,
             ByteBufCodecs.BOOL, ClientboundStopMeditationPayload::fail,
-            ClientboundStopMeditationPayload::new
-    );
+            ClientboundStopMeditationPayload::new);
 
     // On Client
     public void handle(Player player) {
         AbstractClientPlayer clientPlayer = ClientUtils.getClientPlayerByUUID(uuid);
         FocusData focusData = clientPlayer.getData(MinejagoAttachmentTypes.FOCUS);
         focusData.stopMeditating();
-        if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled())
-        {
+        if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled()) {
             if (fail)
                 AnimationUtils.stopAnimation(clientPlayer);
             else
@@ -42,8 +38,7 @@ public record ClientboundStopMeditationPayload(UUID uuid, boolean fail) implemen
     }
 
     @Override
-    public Type<? extends CustomPacketPayload> type()
-    {
+    public Type<? extends CustomPacketPayload> type() {
         return TYPE;
     }
 }

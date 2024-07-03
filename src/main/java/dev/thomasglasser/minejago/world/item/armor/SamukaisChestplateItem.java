@@ -2,21 +2,19 @@ package dev.thomasglasser.minejago.world.item.armor;
 
 import dev.thomasglasser.minejago.client.renderer.armor.SamukaisChestplateRenderer;
 import dev.thomasglasser.tommylib.api.world.item.armor.BaseGeoArmorItem;
+import java.util.function.Consumer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import javax.annotation.Nullable;
-import java.util.function.Consumer;
-
-public class SamukaisChestplateItem extends BaseGeoArmorItem
-{
+public class SamukaisChestplateItem extends BaseGeoArmorItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public SamukaisChestplateItem(Holder<ArmorMaterial> armorMaterial, Properties properties) {

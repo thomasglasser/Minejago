@@ -6,8 +6,7 @@ import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.data.ParticleDescriptionProvider;
 
-public class MinejagoParticleDescriptionProvider extends ParticleDescriptionProvider
-{
+public class MinejagoParticleDescriptionProvider extends ParticleDescriptionProvider {
     public MinejagoParticleDescriptionProvider(PackOutput output, ExistingFileHelper fileHelper) {
         super(output, fileHelper);
     }
@@ -18,7 +17,6 @@ public class MinejagoParticleDescriptionProvider extends ParticleDescriptionProv
                 Minejago.modLoc("vapor_0"),
                 Minejago.modLoc("vapor_1"),
                 Minejago.modLoc("vapor_2"),
-                Minejago.modLoc("vapor_3")
-        );
+                Minejago.modLoc("vapor_3"));
     }
 }

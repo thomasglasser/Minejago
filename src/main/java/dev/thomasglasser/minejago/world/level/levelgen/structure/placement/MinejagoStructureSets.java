@@ -11,8 +11,7 @@ import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStructurePlacement;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
 
-public class MinejagoStructureSets
-{
+public class MinejagoStructureSets {
     public static final ResourceKey<StructureSet> FOUR_WEAPONS = register("four_weapons");
     public static final ResourceKey<StructureSet> CAVE_OF_DESPAIR = register("cave_of_despair");
     public static final ResourceKey<StructureSet> NINJAGO_CITY = register("ninjago_city");
@@ -23,18 +22,15 @@ public class MinejagoStructureSets
         // Fun Easter egg: the number used for four weapons and the starting number is the word "ninja" numerically
         context.register(
                 FOUR_WEAPONS,
-                new StructureSet(holderGetter.getOrThrow(MinejagoStructures.FOUR_WEAPONS), new RandomSpreadStructurePlacement(64, 16, RandomSpreadType.LINEAR, 14914101))
-        );
+                new StructureSet(holderGetter.getOrThrow(MinejagoStructures.FOUR_WEAPONS), new RandomSpreadStructurePlacement(64, 16, RandomSpreadType.LINEAR, 14914101)));
 
         context.register(
                 CAVE_OF_DESPAIR,
-                new StructureSet(holderGetter.getOrThrow(MinejagoStructures.CAVE_OF_DESPAIR), new RandomSpreadStructurePlacement(32, 8, RandomSpreadType.LINEAR, 14914102))
-        );
+                new StructureSet(holderGetter.getOrThrow(MinejagoStructures.CAVE_OF_DESPAIR), new RandomSpreadStructurePlacement(32, 8, RandomSpreadType.LINEAR, 14914102)));
 
         context.register(
                 NINJAGO_CITY,
-                new StructureSet(holderGetter.getOrThrow(MinejagoStructures.NINJAGO_CITY), new RandomSpreadStructurePlacement(128, 32, RandomSpreadType.LINEAR, 14914103))
-        );
+                new StructureSet(holderGetter.getOrThrow(MinejagoStructures.NINJAGO_CITY), new RandomSpreadStructurePlacement(128, 32, RandomSpreadType.LINEAR, 14914103)));
     }
 
     private static ResourceKey<StructureSet> register(String name) {

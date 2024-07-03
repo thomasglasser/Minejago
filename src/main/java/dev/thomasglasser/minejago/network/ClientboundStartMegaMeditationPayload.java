@@ -8,24 +8,20 @@ import dev.thomasglasser.tommylib.api.client.ClientUtils;
 import dev.thomasglasser.tommylib.api.client.animation.AnimationUtils;
 import dev.thomasglasser.tommylib.api.network.ExtendedPacketPayload;
 import io.netty.buffer.ByteBuf;
+import java.util.UUID;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
 
-import java.util.UUID;
-
-public record ClientboundStartMegaMeditationPayload(UUID uuid) implements ExtendedPacketPayload
-{
+public record ClientboundStartMegaMeditationPayload(UUID uuid) implements ExtendedPacketPayload {
     public static final Type<ClientboundStartMegaMeditationPayload> TYPE = new Type<>(Minejago.modLoc("clientbound_start_mega_meditation"));
     public static final StreamCodec<ByteBuf, ClientboundStartMegaMeditationPayload> CODEC = StreamCodec.composite(
             UUIDUtil.STREAM_CODEC, ClientboundStartMegaMeditationPayload::uuid,
-            ClientboundStartMegaMeditationPayload::new
-    );
+            ClientboundStartMegaMeditationPayload::new);
 
     // On Client
-    public void handle(Player player)
-    {
+    public void handle(Player player) {
         player = ClientUtils.getClientPlayerByUUID(uuid);
         player.getData(MinejagoAttachmentTypes.FOCUS).startMegaMeditating();
 
@@ -34,8 +30,7 @@ public record ClientboundStartMegaMeditationPayload(UUID uuid) implements Extend
     }
 
     @Override
-    public Type<? extends CustomPacketPayload> type()
-    {
+    public Type<? extends CustomPacketPayload> type() {
         return TYPE;
     }
 }

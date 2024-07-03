@@ -6,48 +6,41 @@ import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterCo
 import dev.thomasglasser.minejago.client.renderer.entity.layers.VipData;
 import dev.thomasglasser.minejago.network.ServerboundChangeVipDataPayload;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.world.entity.player.Player;
-import org.apache.commons.io.IOUtils;
-
-import javax.annotation.Nullable;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.UUID;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.world.entity.player.Player;
+import org.apache.commons.io.IOUtils;
+import org.jetbrains.annotations.Nullable;
 
 public class MinejagoClientUtils {
     private static final HashMap<Player, VipData> vipData = new HashMap<>();
     private static final MinejagoBlockEntityWithoutLevelRenderer bewlr = new MinejagoBlockEntityWithoutLevelRenderer();
 
-    public static boolean renderSnapshotTesterLayer(AbstractClientPlayer player)
-    {
+    public static boolean renderSnapshotTesterLayer(AbstractClientPlayer player) {
         return vipData.get(player) != null && vipData.get(player).displaySnapshot() && snapshotChoice(player) != null;
     }
 
     @Nullable
-    public static SnapshotTesterCosmeticOptions snapshotChoice(AbstractClientPlayer player)
-    {
+    public static SnapshotTesterCosmeticOptions snapshotChoice(AbstractClientPlayer player) {
         return vipData.get(player) != null && vipData.get(player).choice() != null ? vipData.get(player).choice() : null;
     }
 
-    public static boolean renderDevLayer(AbstractClientPlayer player)
-    {
+    public static boolean renderDevLayer(AbstractClientPlayer player) {
         return vipData.get(player) != null && vipData.get(player).displayDev();
     }
 
-    public static boolean renderOgDevLayer(AbstractClientPlayer player)
-    {
+    public static boolean renderOgDevLayer(AbstractClientPlayer player) {
         return vipData.get(player) != null && vipData.get(player).displayOgDev();
     }
 
-    public static void refreshVip()
-    {
-        if (Minecraft.getInstance().player != null)
-        {
+    public static void refreshVip() {
+        if (Minecraft.getInstance().player != null) {
             UUID uuid = Minecraft.getInstance().player.getUUID();
 
             boolean displaySnapshot;
@@ -62,19 +55,15 @@ public class MinejagoClientUtils {
         }
     }
 
-
-    public static boolean checkSnapshotTester(UUID uuid)
-    {
+    public static boolean checkSnapshotTester(UUID uuid) {
         return isVip(uuid, "snapshot");
     }
 
-    public static boolean checkDevTeam(UUID uuid)
-    {
+    public static boolean checkDevTeam(UUID uuid) {
         return isVip(uuid, "dev");
     }
 
-    public static boolean checkOgDevTeam(UUID uuid)
-    {
+    public static boolean checkOgDevTeam(UUID uuid) {
         return isVip(uuid, "og_dev");
     }
 
@@ -86,7 +75,7 @@ public class MinejagoClientUtils {
         BufferedReader fileReader = null;
 
         try {
-            HttpURLConnection connection = (HttpURLConnection)new URL("https://gist.github.com/thomasglasser/281c3473f07430ddb83aac3e357a7797/raw/").openConnection();
+            HttpURLConnection connection = (HttpURLConnection) new URL("https://gist.github.com/thomasglasser/281c3473f07430ddb83aac3e357a7797/raw/").openConnection();
 
             connection.setConnectTimeout(1000);
             connection.connect();
@@ -110,12 +99,10 @@ public class MinejagoClientUtils {
                             try {
                                 givenUUID = UUID.fromString(lineSplit[1]);
 
-                                if (givenUUID.equals(uuid) && lineSplit[2].contains(type))
-                                {
+                                if (givenUUID.equals(uuid) && lineSplit[2].contains(type)) {
                                     return true;
                                 }
-                            }
-                            catch (IllegalArgumentException ex) {
+                            } catch (IllegalArgumentException ex) {
                                 Minejago.LOGGER.error("Invalid UUID format from web: " + lineSplit[1]);
                             }
                         }
@@ -124,19 +111,16 @@ public class MinejagoClientUtils {
             }
 
             connection.disconnect();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             Minejago.LOGGER.error("Error while performing HTTP Tasks, dropping.", e);
-        }
-        finally {
+        } finally {
             IOUtils.closeQuietly(fileReader);
         }
 
         return false;
     }
 
-    public static MinejagoBlockEntityWithoutLevelRenderer getBewlr()
-    {
+    public static MinejagoBlockEntityWithoutLevelRenderer getBewlr() {
         return bewlr;
     }
 }

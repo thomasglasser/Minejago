@@ -19,16 +19,14 @@ public class DragonHeadModel extends GeoModel<DragonHeadBlockEntity> {
 
     @Override
     public ResourceLocation getTextureResource(DragonHeadBlockEntity animatable) {
-        if (dragon == null && animatable.getBlockState().getBlock() instanceof DragonHeadBlock dragonHeadBlock)
-        {
+        if (dragon == null && animatable.getBlockState().getBlock() instanceof DragonHeadBlock dragonHeadBlock) {
             dragon = BuiltInRegistries.ENTITY_TYPE.getKey(dragonHeadBlock.getEntityType()).getPath();
         }
         return Minejago.modLoc("textures/entity/dragon/" + dragon + ".png");
     }
 
     @Override
-    public ResourceLocation getAnimationResource(DragonHeadBlockEntity animatable)
-    {
+    public ResourceLocation getAnimationResource(DragonHeadBlockEntity animatable) {
         if (block == null) block = BuiltInRegistries.BLOCK.getKey(animatable.getBlockState().getBlock()).getPath();
         return Minejago.modLoc("animations/block/" + block + ".animation.json");
     }
@@ -41,8 +39,7 @@ public class DragonHeadModel extends GeoModel<DragonHeadBlockEntity> {
         return Minejago.modLoc("textures/entity/dragon/" + dragon + ".png");
     }
 
-    public ResourceLocation getAnimationResource(String block)
-    {
+    public ResourceLocation getAnimationResource(String block) {
         return Minejago.modLoc("animations/block/" + block + ".animation.json");
     }
 }

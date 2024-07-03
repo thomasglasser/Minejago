@@ -14,8 +14,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-public class ThrownBambooStaffRenderer extends EntityRenderer<ThrownBambooStaff>
-{
+public class ThrownBambooStaffRenderer extends EntityRenderer<ThrownBambooStaff> {
     public static final ResourceLocation TEXTURE_LOCATION = Minejago.modLoc("textures/entity/item/bamboo_staff.png");
     private final BambooStaffModel model;
 

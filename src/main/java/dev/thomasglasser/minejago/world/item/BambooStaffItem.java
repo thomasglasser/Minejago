@@ -1,6 +1,5 @@
 package dev.thomasglasser.minejago.world.item;
 
-import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.MinejagoClientUtils;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownBambooStaff;
@@ -15,8 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.Level;
 
-public class BambooStaffItem extends BaseModeledThrowableSwordItem
-{
+public class BambooStaffItem extends BaseModeledThrowableSwordItem {
     public BambooStaffItem(Tier pTier, Properties pProperties) {
         super(pTier, pProperties);
     }
