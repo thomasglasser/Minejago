@@ -51,6 +51,70 @@
     ],
     "subtitle": "subtitles.entity.earth_dragon.step"
   },
+  "entity.skull_motorbike.ambient_active": {
+    "sounds": [
+      "minejago:entity/skull_motorbike/ambient_active"
+    ],
+    "subtitle": "subtitles.entity.skull_motorbike.ambient_active"
+  },
+  "entity.skull_motorbike.ambient_idle": {
+    "sounds": [
+      "minejago:entity/skull_motorbike/ambient_idle"
+    ],
+    "subtitle": "subtitles.entity.skull_motorbike.ambient_idle"
+  },
+  "entity.skull_motorbike.death": {
+    "sounds": [
+      "minejago:entity/skull_motorbike/death"
+    ],
+    "subtitle": "subtitles.entity.skull_motorbike.death"
+  },
+  "entity.skull_motorbike.hurt": {
+    "sounds": [
+      "minejago:entity/skull_motorbike/hurt1",
+      "minejago:entity/skull_motorbike/hurt2",
+      "minejago:entity/skull_motorbike/hurt3"
+    ],
+    "subtitle": "subtitles.entity.skull_motorbike.hurt"
+  },
+  "entity.skull_motorbike.ignition": {
+    "sounds": [
+      "minejago:entity/skull_motorbike/ignition"
+    ],
+    "subtitle": "subtitles.entity.skull_motorbike.ignition"
+  },
+  "entity.skull_truck.ambient_active": {
+    "sounds": [
+      "minejago:entity/skull_truck/ambient_active"
+    ],
+    "subtitle": "subtitles.entity.skull_truck.ambient_active"
+  },
+  "entity.skull_truck.ambient_idle": {
+    "sounds": [
+      "minejago:entity/skull_truck/ambient_idle"
+    ],
+    "subtitle": "subtitles.entity.skull_truck.ambient_idle"
+  },
+  "entity.skull_truck.death": {
+    "sounds": [
+      "minejago:entity/skull_truck/death"
+    ],
+    "subtitle": "subtitles.entity.skull_truck.death"
+  },
+  "entity.skull_truck.hurt": {
+    "sounds": [
+      "minejago:entity/skull_truck/hurt1",
+      "minejago:entity/skull_truck/hurt2",
+      "minejago:entity/skull_truck/hurt3"
+    ],
+    "subtitle": "subtitles.entity.skull_truck.hurt"
+  },
+  "entity.skull_truck.ignition": {
+    "sounds": [
+      "minejago:entity/skull_truck/ignition"
+    ],
+    "subtitle": "subtitles.entity.skull_truck.ignition"
+  },
   "item.bamboo_staff.impact": {
     "sounds": [
       "minejago:item/bamboo_staff/impact"

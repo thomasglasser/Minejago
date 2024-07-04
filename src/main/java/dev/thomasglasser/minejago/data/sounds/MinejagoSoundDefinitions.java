@@ -43,5 +43,17 @@ public class MinejagoSoundDefinitions extends ExtendedSoundDefinitionsProvider {
         add(MinejagoSoundEvents.EARTH_DRAGON_HURT);
         add(MinejagoSoundEvents.EARTH_DRAGON_ROAR);
         add(MinejagoSoundEvents.EARTH_DRAGON_STEP);
+
+        add(MinejagoSoundEvents.SKULL_TRUCK_AMBIENT_ACTIVE);
+        add(MinejagoSoundEvents.SKULL_TRUCK_AMBIENT_IDLE);
+        add(MinejagoSoundEvents.SKULL_TRUCK_DEATH);
+        add(MinejagoSoundEvents.SKULL_TRUCK_HURT, 3);
+        add(MinejagoSoundEvents.SKULL_TRUCK_IGNITION);
+
+        add(MinejagoSoundEvents.SKULL_MOTORBIKE_AMBIENT_ACTIVE);
+        add(MinejagoSoundEvents.SKULL_MOTORBIKE_AMBIENT_IDLE);
+        add(MinejagoSoundEvents.SKULL_MOTORBIKE_DEATH);
+        add(MinejagoSoundEvents.SKULL_MOTORBIKE_HURT, 3);
+        add(MinejagoSoundEvents.SKULL_MOTORBIKE_IGNITION);
     }
 }

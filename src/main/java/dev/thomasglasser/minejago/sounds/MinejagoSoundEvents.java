@@ -48,6 +48,20 @@ public class MinejagoSoundEvents {
     public static final DeferredHolder<SoundEvent, SoundEvent> EARTH_DRAGON_ROAR = register("earth_dragon", "entity", "roar");
     public static final DeferredHolder<SoundEvent, SoundEvent> EARTH_DRAGON_STEP = register("earth_dragon", "entity", "step");
 
+    // Skull Truck
+    public static final DeferredHolder<SoundEvent, SoundEvent> SKULL_TRUCK_AMBIENT_ACTIVE = register("skull_truck", "entity", "ambient_active");
+    public static final DeferredHolder<SoundEvent, SoundEvent> SKULL_TRUCK_AMBIENT_IDLE = register("skull_truck", "entity", "ambient_idle");
+    public static final DeferredHolder<SoundEvent, SoundEvent> SKULL_TRUCK_DEATH = register("skull_truck", "entity", "death");
+    public static final DeferredHolder<SoundEvent, SoundEvent> SKULL_TRUCK_HURT = register("skull_truck", "entity", "hurt");
+    public static final DeferredHolder<SoundEvent, SoundEvent> SKULL_TRUCK_IGNITION = register("skull_truck", "entity", "ignition");
+
+    // Skull Motorbike
+    public static final DeferredHolder<SoundEvent, SoundEvent> SKULL_MOTORBIKE_AMBIENT_ACTIVE = register("skull_motorbike", "entity", "ambient_active");
+    public static final DeferredHolder<SoundEvent, SoundEvent> SKULL_MOTORBIKE_AMBIENT_IDLE = register("skull_motorbike", "entity", "ambient_idle");
+    public static final DeferredHolder<SoundEvent, SoundEvent> SKULL_MOTORBIKE_DEATH = register("skull_motorbike", "entity", "death");
+    public static final DeferredHolder<SoundEvent, SoundEvent> SKULL_MOTORBIKE_HURT = register("skull_motorbike", "entity", "hurt");
+    public static final DeferredHolder<SoundEvent, SoundEvent> SKULL_MOTORBIKE_IGNITION = register("skull_motorbike", "entity", "ignition");
+
     private static DeferredHolder<SoundEvent, SoundEvent> register(String subject, String type, String name) {
         return SOUND_EVENTS.register(subject + "_" + name, () -> SoundEvent.createVariableRangeEvent(Minejago.modLoc(type + "." + subject + "." + name)));
     }

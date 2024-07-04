@@ -38,9 +38,4 @@ public class TrainingGiItem extends PoweredArmorItem {
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return cache;
     }
-
-    @Override
-    public boolean isSkintight() {
-        return true;
-    }
 }

@@ -5,7 +5,6 @@ import dev.thomasglasser.minejago.core.component.MinejagoDataComponents;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.tommylib.api.world.item.ModeledItem;
-import dev.thomasglasser.tommylib.api.world.item.armor.BaseGeoArmorItem;
 import java.util.List;
 import java.util.Optional;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -19,7 +18,7 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 
-public abstract class PoweredArmorItem extends BaseGeoArmorItem implements GiGeoArmorItem, ModeledItem {
+public abstract class PoweredArmorItem extends GiGeoArmorItem implements ModeledItem {
     public PoweredArmorItem(Holder<ArmorMaterial> pMaterial, Type type, Properties pProperties) {
         super(pMaterial, type, pProperties);
     }

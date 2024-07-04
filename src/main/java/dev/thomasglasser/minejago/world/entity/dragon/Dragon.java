@@ -1,13 +1,16 @@
 package dev.thomasglasser.minejago.world.entity.dragon;
 
+import dev.thomasglasser.minejago.network.ClientboundOpenDragonInventoryScreenPayload;
 import dev.thomasglasser.minejago.tags.MinejagoItemTags;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.character.Character;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
 import dev.thomasglasser.minejago.world.focus.FocusData;
+import dev.thomasglasser.minejago.world.inventory.DragonInventoryMenu;
 import dev.thomasglasser.minejago.world.item.GoldenWeaponItem;
 import dev.thomasglasser.minejago.world.level.storage.PowerData;
+import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import dev.thomasglasser.tommylib.api.world.entity.PlayerRideableFlying;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import java.util.HashMap;
@@ -16,24 +19,33 @@ import java.util.Map;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
+import net.minecraft.world.Container;
+import net.minecraft.world.ContainerListener;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.HasCustomInventoryScreen;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.Saddleable;
+import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -46,6 +58,9 @@ import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -81,9 +96,11 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBrainOwner<Dragon>, PlayerRideableFlying, RangedAttackMob {
+public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBrainOwner<Dragon>, PlayerRideableFlying, RangedAttackMob, Saddleable, ContainerListener, HasCustomInventoryScreen {
     public static final RawAnimation LIFT = RawAnimation.begin().thenPlay("move.lift");
     private static final EntityDataAccessor<Boolean> DATA_SHOOTING = SynchedEntityData.defineId(Dragon.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_SADDLED = SynchedEntityData.defineId(Dragon.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_CHESTED = SynchedEntityData.defineId(Dragon.class, EntityDataSerializers.BOOLEAN);
     public static final int TICKS_PER_FLAP = 39;
     public static final double HEAL_BOND = 0.05;
     public static final double FOOD_BOND = 0.1;
@@ -99,11 +116,14 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
     private int flyingTicks = 0;
     private double speedMultiplier = 1;
 
+    protected SimpleContainer inventory;
+
     public Dragon(EntityType<? extends Dragon> entityType, Level level, ResourceKey<Power> power, TagKey<Power> powers) {
         super(entityType, level);
         new PowerData(power, false).save(this);
         this.acceptablePowers = powers;
         setTame(false, false);
+        createInventory();
     }
 
     @Override
@@ -153,6 +173,8 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(DATA_SHOOTING, false);
+        builder.define(DATA_SADDLED, false);
+        builder.define(DATA_CHESTED, false);
     }
 
     @Override
@@ -235,7 +257,7 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
     @Override
     public void travel(Vec3 pTravelVector) {
         if (this.isAlive()) {
-            if (this.isVehicle()) {
+            if (this.isVehicle() && hasControllingPassenger()) {
                 Vec3 velocity = this.getDeltaMovement();
                 switch (flight) {
                     case ASCENDING:
@@ -284,7 +306,14 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
     @Nullable
     @Override
     public LivingEntity getControllingPassenger() {
-        return getFirstPassenger() instanceof LivingEntity livingEntity ? livingEntity : null;
+        if (this.isSaddled()) {
+            Entity entity = this.getFirstPassenger();
+            if (entity instanceof Player player) {
+                return player;
+            }
+        }
+
+        return super.getControllingPassenger();
     }
 
     public double getVerticalSpeed() {
@@ -359,9 +388,15 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
                 player.getData(MinejagoAttachmentTypes.FOCUS).addExhaustion(FocusConstants.EXHAUSTION_DRAGON_TALK);
                 return InteractionResult.SUCCESS;
             } else if ((bond >= 10 && focusData.getFocusLevel() >= FocusConstants.DRAGON_TAME_LEVEL) || player.getAbilities().instabuild) {
-                if (ownedBy || hasControllingPassenger())
-                    player.startRiding(this);
-                else if (level().holderOrThrow(player.getData(MinejagoAttachmentTypes.POWER).power()).is(acceptablePowers) && focusData.getFocusLevel() >= 14) {
+                if (ownedBy || hasControllingPassenger()) {
+                    if (!this.hasChest() && stack.is(Items.CHEST)) {
+                        this.equipChest(player, stack);
+                        return InteractionResult.sidedSuccess(this.level().isClientSide);
+                    } else if (stack.is(Items.SADDLE) && isSaddleable() && !isSaddled())
+                        this.equipSaddle(stack, SoundSource.PLAYERS);
+                    else
+                        player.startRiding(this);
+                } else if (level().holderOrThrow(player.getData(MinejagoAttachmentTypes.POWER).power()).is(acceptablePowers) && focusData.getFocusLevel() >= 14) {
                     // TODO: give DX suit
                     player.getData(MinejagoAttachmentTypes.FOCUS).addExhaustion(FocusConstants.EXHAUSTION_DRAGON_TAME);
                     tame(player);
@@ -535,5 +570,201 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
     @Override
     public boolean isFood(ItemStack stack) {
         return stack.is(MinejagoItemTags.DRAGON_FOODS) || stack.is(MinejagoItemTags.DRAGON_TREATS);
+    }
+
+    @Override
+    public boolean isSaddleable() {
+        return this.isAlive() && this.isTame();
+    }
+
+    @Override
+    public void equipSaddle(ItemStack stack, @org.jetbrains.annotations.Nullable SoundSource soundSource) {
+        inventory.setItem(0, stack);
+    }
+
+    @Override
+    public boolean isSaddled() {
+        return this.entityData.get(DATA_SADDLED);
+    }
+
+    public int getInventoryColumns() {
+        return entityData.get(DATA_CHESTED) ? 5 : 0;
+    }
+
+    public final int getInventorySize() {
+        return getInventorySize(this.getInventoryColumns());
+    }
+
+    public static int getInventorySize(int columns) {
+        return columns * 3 + 1;
+    }
+
+    protected void createInventory() {
+        SimpleContainer simplecontainer = this.inventory;
+        this.inventory = new SimpleContainer(this.getInventorySize());
+        if (simplecontainer != null) {
+            simplecontainer.removeListener(this);
+            int i = Math.min(simplecontainer.getContainerSize(), this.inventory.getContainerSize());
+
+            for (int j = 0; j < i; j++) {
+                ItemStack itemstack = simplecontainer.getItem(j);
+                if (!itemstack.isEmpty()) {
+                    this.inventory.setItem(j, itemstack.copy());
+                }
+            }
+        }
+
+        this.inventory.addListener(this);
+        this.syncSaddleToClients();
+    }
+
+    protected void syncSaddleToClients() {
+        if (!this.level().isClientSide) {
+            entityData.set(DATA_SADDLED, !inventory.getItem(0).isEmpty());
+        }
+    }
+
+    @Override
+    public void openCustomInventoryScreen(Player player) {
+        if (player instanceof ServerPlayer serverPlayer && (!this.isVehicle() || this.hasPassenger(player)) && this.isTame()) {
+            if (serverPlayer.containerMenu != serverPlayer.inventoryMenu) {
+                serverPlayer.closeContainer();
+            }
+
+            serverPlayer.nextContainerCounter();
+            int i = getInventoryColumns();
+            TommyLibServices.NETWORK.sendToClient(new ClientboundOpenDragonInventoryScreenPayload(getId(), getInventoryColumns(), serverPlayer.containerCounter), serverPlayer);
+            serverPlayer.containerMenu = new DragonInventoryMenu(serverPlayer.containerCounter, player.getInventory(), inventory, this, i);
+            serverPlayer.initMenu(player.containerMenu);
+            net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(new net.neoforged.neoforge.event.entity.player.PlayerContainerEvent.Open(serverPlayer, serverPlayer.containerMenu));
+        }
+    }
+
+    @Override
+    protected void dropEquipment() {
+        super.dropEquipment();
+        if (this.inventory != null) {
+            for (int i = 0; i < this.inventory.getContainerSize(); i++) {
+                ItemStack itemstack = this.inventory.getItem(i);
+                if (!itemstack.isEmpty() && !EnchantmentHelper.has(itemstack, EnchantmentEffectComponents.PREVENT_EQUIPMENT_DROP)) {
+                    this.spawnAtLocation(itemstack);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        if (!this.inventory.getItem(0).isEmpty()) {
+            compound.put("SaddleItem", this.inventory.getItem(0).save(this.registryAccess()));
+        }
+        compound.putBoolean("Chested", this.hasChest());
+        if (this.hasChest()) {
+            ListTag listtag = new ListTag();
+
+            for (int i = 1; i < this.inventory.getContainerSize(); i++) {
+                ItemStack itemstack = this.inventory.getItem(i);
+                if (!itemstack.isEmpty()) {
+                    CompoundTag compoundtag = new CompoundTag();
+                    compoundtag.putByte("Slot", (byte) (i - 1));
+                    listtag.add(itemstack.save(this.registryAccess(), compoundtag));
+                }
+            }
+
+            compound.put("Items", listtag);
+        }
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        if (compound.contains("SaddleItem", 10)) {
+            ItemStack itemstack = ItemStack.parse(this.registryAccess(), compound.getCompound("SaddleItem")).orElse(ItemStack.EMPTY);
+            if (itemstack.is(Items.SADDLE)) {
+                this.inventory.setItem(0, itemstack);
+            }
+        }
+        this.setChest(compound.getBoolean("Chested"));
+        this.createInventory();
+        if (this.hasChest()) {
+            ListTag listtag = compound.getList("Items", 10);
+
+            for (int i = 0; i < listtag.size(); i++) {
+                CompoundTag compoundtag = listtag.getCompound(i);
+                int j = compoundtag.getByte("Slot") & 255;
+                if (j < this.inventory.getContainerSize() - 1) {
+                    this.inventory.setItem(j + 1, ItemStack.parse(this.registryAccess(), compoundtag).orElse(ItemStack.EMPTY));
+                }
+            }
+        }
+
+        this.syncSaddleToClients();
+    }
+
+    public boolean hasChest() {
+        return this.entityData.get(DATA_CHESTED);
+    }
+
+    public void setChest(boolean chested) {
+        this.entityData.set(DATA_CHESTED, chested);
+    }
+
+    @Override
+    public SlotAccess getSlot(int slot) {
+        return slot == 499 ? new SlotAccess() {
+            @Override
+            public ItemStack get() {
+                return hasChest() ? new ItemStack(Items.CHEST) : ItemStack.EMPTY;
+            }
+
+            @Override
+            public boolean set(ItemStack p_149485_) {
+                if (p_149485_.isEmpty()) {
+                    if (hasChest()) {
+                        setChest(false);
+                        createInventory();
+                    }
+
+                    return true;
+                } else if (p_149485_.is(Items.CHEST)) {
+                    if (!hasChest()) {
+                        setChest(true);
+                        createInventory();
+                    }
+
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        } : super.getSlot(slot);
+    }
+
+    private void equipChest(Player player, ItemStack chestStack) {
+        this.setChest(true);
+        this.playSound(SoundEvents.DONKEY_CHEST, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
+        chestStack.consume(1, player);
+        this.createInventory();
+    }
+
+    public boolean hasInventoryChanged(Container inventory) {
+        return this.inventory != inventory;
+    }
+
+    @Override
+    public void containerChanged(Container invBasic) {
+        boolean flag = this.isSaddled();
+        this.syncSaddleToClients();
+        if (this.tickCount > 20 && !flag && this.isSaddled()) {
+            this.playSound(this.getSaddleSoundEvent(), 0.5F, 1.0F);
+        }
+    }
+
+    @Override
+    public Vec3 getPassengerRidingPosition(Entity entity) {
+        if (isSaddled())
+            return super.getPassengerRidingPosition(entity).add(0, 0.0625, 0);
+        return super.getPassengerRidingPosition(entity);
     }
 }

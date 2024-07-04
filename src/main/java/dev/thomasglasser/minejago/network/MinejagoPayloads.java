@@ -23,6 +23,7 @@ public class MinejagoPayloads {
         PAYLOADS.add(new PayloadInfo<>(ClientboundStopAnimationPayload.TYPE, ExtendedPacketPayload.Direction.SERVER_TO_CLIENT, ClientboundStopAnimationPayload.CODEC));
         PAYLOADS.add(new PayloadInfo<>(ClientboundStopMeditationPayload.TYPE, ExtendedPacketPayload.Direction.SERVER_TO_CLIENT, ClientboundStopMeditationPayload.CODEC));
         PAYLOADS.add(new PayloadInfo<>(ClientboundStopSpinjitzuPayload.TYPE, ExtendedPacketPayload.Direction.SERVER_TO_CLIENT, ClientboundStopSpinjitzuPayload.CODEC));
+        PAYLOADS.add(new PayloadInfo<>(ClientboundOpenDragonInventoryScreenPayload.TYPE, ExtendedPacketPayload.Direction.SERVER_TO_CLIENT, ClientboundOpenDragonInventoryScreenPayload.CODEC));
 
         // Serverbound
         PAYLOADS.add(new PayloadInfo<>(ServerboundChangeVipDataPayload.TYPE, ExtendedPacketPayload.Direction.CLIENT_TO_SERVER, ServerboundChangeVipDataPayload.CODEC));

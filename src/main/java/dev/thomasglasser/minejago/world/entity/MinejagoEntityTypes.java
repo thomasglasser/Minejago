@@ -24,9 +24,6 @@ import dev.thomasglasser.minejago.world.entity.skulkin.SkullMotorbike;
 import dev.thomasglasser.minejago.world.entity.skulkin.SkullTruck;
 import dev.thomasglasser.tommylib.api.registration.DeferredHolder;
 import dev.thomasglasser.tommylib.api.registration.DeferredRegister;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Supplier;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -35,6 +32,10 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
 
 public class MinejagoEntityTypes {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, Minejago.MOD_ID);
@@ -90,23 +91,24 @@ public class MinejagoEntityTypes {
     public static final DeferredHolder<EntityType<?>, EntityType<EarthDragon>> EARTH_DRAGON = register("earth_dragon", () -> EntityType.Builder.of(EarthDragon::new, MobCategory.CREATURE)
             .sized(4.8125f, 3.00f)
             .passengerAttachments(
-                    new Vec3(0.0, -1.3, 1.0),
-                    new Vec3(0.0, -1.3, -0.7))
+                    new Vec3(0.0, 2.8275, 1.65),
+                    new Vec3(0.0, 2.8275, 0.9))
             .build("earth_dragon"));
     public static final DeferredHolder<EntityType<?>, EntityType<Samukai>> SAMUKAI = register("samukai", () -> EntityType.Builder.of(Samukai::new, MobCategory.MONSTER)
             .sized(0.875f, 2.375f)
             .build("samukai"));
+    // TODO: Fix seating
     public static final DeferredHolder<EntityType<?>, EntityType<SkullTruck>> SKULL_TRUCK = register("skull_truck", () -> EntityType.Builder.of(SkullTruck::new, MobCategory.MISC)
             .sized(3.5f, 3.1875f)
             .passengerAttachments(
-                    new Vec3(0.0, -2.3, 0.0),
-                    new Vec3(0.4, -2.3, -0.7),
-                    new Vec3(-0.4, -2.3, -0.7))
+                    new Vec3(0.0, 1.2625, 0.0),
+                    new Vec3(0.3875, 1.2625, -0.725),
+                    new Vec3(-0.3875, 1.2625, -0.725))
             .build("skull_truck"));
-
     public static final DeferredHolder<EntityType<?>, EntityType<SkullMotorbike>> SKULL_MOTORBIKE = register("skull_motorbike", () -> EntityType.Builder.of(SkullMotorbike::new, MobCategory.MISC)
             .sized(1.375f, 1.5f)
-            .passengerAttachments(0)
+            .passengerAttachments(
+                    new Vec3(0.0, 0.45, -0.3))
             .build("skull_motorbike"));
 
     private static <T extends EntityType<?>> DeferredHolder<EntityType<?>, T> register(String name, Supplier<T> type) {

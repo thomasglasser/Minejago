@@ -191,6 +191,18 @@ public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider {
         add(MinejagoSoundEvents.EARTH_DRAGON_ROAR, "Earth Dragon roars");
         add(MinejagoSoundEvents.EARTH_DRAGON_STEP, "Earth Dragon steps");
 
+        add(MinejagoSoundEvents.SKULL_TRUCK_AMBIENT_ACTIVE, "Skull Truck revs");
+        add(MinejagoSoundEvents.SKULL_TRUCK_AMBIENT_IDLE, "Skull Truck idles");
+        add(MinejagoSoundEvents.SKULL_TRUCK_DEATH, "Skull Truck breaks");
+        add(MinejagoSoundEvents.SKULL_TRUCK_HURT, "Skull Truck dents");
+        add(MinejagoSoundEvents.SKULL_TRUCK_IGNITION, "Skull Truck starts");
+
+        add(MinejagoSoundEvents.SKULL_MOTORBIKE_AMBIENT_ACTIVE, "Skull Motorbike revs");
+        add(MinejagoSoundEvents.SKULL_MOTORBIKE_AMBIENT_IDLE, "Skull Motorbike idles");
+        add(MinejagoSoundEvents.SKULL_MOTORBIKE_DEATH, "Skull Motorbike breaks");
+        add(MinejagoSoundEvents.SKULL_MOTORBIKE_HURT, "Skull Motorbike dents");
+        add(MinejagoSoundEvents.SKULL_MOTORBIKE_IGNITION, "Skull Motorbike starts");
+
         add(MinejagoMobEffects.ACACIA_TEA.get(), "Acacia Tea");
         add(MinejagoMobEffects.OAK_TEA.get(), "Oak Tea");
         add(MinejagoMobEffects.CHERRY_TEA.get(), "Cherry Tea");

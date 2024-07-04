@@ -3,7 +3,7 @@
 	"minecraft:geometry": [
 		{
 			"description": {
-				"identifier": "geometry.unknown",
+				"identifier": "geometry.earth_dragon",
 				"texture_width": 512,
 				"texture_height": 512,
 				"visible_bounds_width": 16,
@@ -289,7 +289,58 @@
 					"parent": "earth_dragon",
 					"pivot": [22, 45, 39],
 					"cubes": [
-						{"origin": [-20, 23, -34], "size": [40, 21, 77], "uv": [0, 0]}
+						{"origin": [-21, 23, -34], "size": [40, 21, 77], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "saddle",
+					"parent": "body",
+					"pivot": [-1, 3.5, 14.5]
+				},
+				{
+					"name": "chair1",
+					"parent": "saddle",
+					"pivot": [4, 43.4, -30.5],
+					"cubes": [
+						{"origin": [-5, 44.4, -31.5], "size": [10, 1, 8], "uv": [0, 407]},
+						{"origin": [-5, 45.4, -24.5], "size": [10, 8, 1], "uv": [54, 414]}
+					]
+				},
+				{
+					"name": "chair2",
+					"parent": "saddle",
+					"pivot": [4, 44.4, -23.5],
+					"cubes": [
+						{"origin": [-5, 44.4, -19.25], "size": [10, 1, 8], "uv": [0, 407]},
+						{"origin": [-5, 45.4, -12.25], "size": [10, 8, 1], "uv": [54, 414]}
+					]
+				},
+				{
+					"name": "flagpole",
+					"parent": "saddle",
+					"pivot": [1, 46.4, -22.5],
+					"cubes": [
+						{"origin": [1, 46.4, -23.5], "size": [1, 32, 1], "pivot": [1, 46.4, -22.5], "rotation": [0, 0, 7.5], "uv": [0, 420]},
+						{"origin": [2.55, 65.82, -23], "size": [6, 13, 0], "pivot": [7.55, 65.8, -22], "rotation": [0, 0, 7.5], "uv": [9, 427]},
+						{"origin": [-2, 46.25, -23.5], "size": [1, 32, 1], "pivot": [-2, 46.3, -22.5], "rotation": [0, 0, -7.5], "uv": [0, 420]},
+						{"origin": [-8.55, 66.33, -23], "size": [6, 13, 0], "pivot": [-3.5, 66.1, -22.15], "rotation": [0, 0, -7.5], "uv": [9, 440]}
+					]
+				},
+				{
+					"name": "chests",
+					"parent": "body",
+					"pivot": [-10, 24.5, -35.5],
+					"cubes": [
+						{"origin": [-15, 25.5, -36.5], "size": [6, 8, 3], "uv": [56, 443]},
+						{"origin": [9, 25.5, -36.5], "size": [6, 8, 3], "uv": [56, 443]}
+					]
+				},
+				{
+					"name": "strap",
+					"parent": "body",
+					"pivot": [-1, 3.5, 14.5],
+					"cubes": [
+						{"origin": [-20, 23.5, -33.5], "size": [40, 20, 21], "inflate": 1, "uv": [16, 354]}
 					]
 				}
 			]

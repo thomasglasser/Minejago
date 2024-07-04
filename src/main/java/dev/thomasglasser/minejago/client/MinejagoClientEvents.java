@@ -3,7 +3,6 @@ package dev.thomasglasser.minejago.client;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.gui.MinejagoGuis;
 import dev.thomasglasser.minejago.client.model.BambooStaffModel;
-import dev.thomasglasser.minejago.client.model.DragonModel;
 import dev.thomasglasser.minejago.client.model.KrunchaModel;
 import dev.thomasglasser.minejago.client.model.NuckalModel;
 import dev.thomasglasser.minejago.client.model.OgDevTeamBeardModel;
@@ -20,6 +19,7 @@ import dev.thomasglasser.minejago.client.particle.SparksParticle;
 import dev.thomasglasser.minejago.client.particle.VaporsParticle;
 import dev.thomasglasser.minejago.client.renderer.block.DragonHeadRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.CharacterRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.DragonRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.EarthBlastRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.KrunchaRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.NuckalRenderer;
@@ -105,7 +105,6 @@ import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.tslat.tes.api.util.TESClientUtil;
 import org.lwjgl.glfw.GLFW;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 public class MinejagoClientEvents {
     public static void onPlayerLoggedIn() {
@@ -213,7 +212,7 @@ public class MinejagoClientEvents {
         event.registerEntityRenderer(MinejagoEntityTypes.KRUNCHA.get(), KrunchaRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.NUCKAL.get(), NuckalRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.SKULKIN_HORSE.get(), SkulkinHorseRenderer::new);
-        event.registerEntityRenderer(MinejagoEntityTypes.EARTH_DRAGON.get(), pContext -> new GeoEntityRenderer<>(pContext, new DragonModel<>(MinejagoEntityTypes.EARTH_DRAGON.getId())));
+        event.registerEntityRenderer(MinejagoEntityTypes.EARTH_DRAGON.get(), pContext -> new DragonRenderer<>(pContext, MinejagoEntityTypes.EARTH_DRAGON.getId()));
         event.registerEntityRenderer(MinejagoEntityTypes.SAMUKAI.get(), SamukaiRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.SKULL_TRUCK.get(), SkullTruckRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.SKULL_MOTORBIKE.get(), SkullMotorbikeRenderer::new);
