@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.data.loot;
 
-import static dev.thomasglasser.minejago.data.loot.MinejagoArchaeologyLootKeys.CAVE_OF_DESPAIR;
+import static dev.thomasglasser.minejago.world.level.storage.loot.MinejagoArchaeologyLootKeys.CAVE_OF_DESPAIR;
 
 import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;

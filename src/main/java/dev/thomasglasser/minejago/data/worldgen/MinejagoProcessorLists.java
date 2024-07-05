@@ -1,7 +1,7 @@
 package dev.thomasglasser.minejago.data.worldgen;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.data.loot.MinejagoArchaeologyLootKeys;
+import dev.thomasglasser.minejago.world.level.storage.loot.MinejagoArchaeologyLootKeys;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import java.util.List;
 import net.minecraft.core.registries.Registries;

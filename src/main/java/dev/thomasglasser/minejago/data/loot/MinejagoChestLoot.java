@@ -2,6 +2,8 @@ package dev.thomasglasser.minejago.data.loot;
 
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import java.util.function.BiConsumer;
+
+import dev.thomasglasser.minejago.world.level.storage.loot.MinejagoChestLootKeys;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.resources.ResourceKey;

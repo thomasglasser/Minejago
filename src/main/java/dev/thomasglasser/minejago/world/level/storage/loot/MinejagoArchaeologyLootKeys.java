@@ -1,4 +1,4 @@
-package dev.thomasglasser.minejago.data.loot;
+package dev.thomasglasser.minejago.world.level.storage.loot;
 
 import dev.thomasglasser.minejago.Minejago;
 import net.minecraft.core.registries.Registries;
