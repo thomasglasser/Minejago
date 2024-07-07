@@ -201,16 +201,6 @@ public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider {
         add(MinejagoSoundEvents.SKULL_MOTORBIKE_HURT.get(), "Skull Motorbike dents");
         add(MinejagoSoundEvents.SKULL_MOTORBIKE_IGNITION.get(), "Skull Motorbike starts");
 
-        add(MinejagoMobEffects.ACACIA_TEA.get(), "Acacia Tea");
-        add(MinejagoMobEffects.OAK_TEA.get(), "Oak Tea");
-        add(MinejagoMobEffects.CHERRY_TEA.get(), "Cherry Tea");
-        add(MinejagoMobEffects.SPRUCE_TEA.get(), "Spruce Tea");
-        add(MinejagoMobEffects.MANGROVE_TEA.get(), "Mangrove Tea");
-        add(MinejagoMobEffects.JUNGLE_TEA.get(), "Jungle Tea");
-        add(MinejagoMobEffects.DARK_OAK_TEA.get(), "Dark Oak Tea");
-        add(MinejagoMobEffects.BIRCH_TEA.get(), "Birch Tea");
-        add(MinejagoMobEffects.AZALEA_TEA.get(), "Azalea Tea");
-        add(MinejagoMobEffects.FLOWERING_AZALEA_TEA.get(), "Flowering Azalea Tea");
         add(MinejagoMobEffects.CURE.get(), "Instant Cure");
         add(MinejagoMobEffects.HYPERFOCUS.get(), "Hyperfocus");
 

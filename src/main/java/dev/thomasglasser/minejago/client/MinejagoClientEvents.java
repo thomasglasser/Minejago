@@ -9,6 +9,7 @@ import dev.thomasglasser.minejago.client.model.OgDevTeamBeardModel;
 import dev.thomasglasser.minejago.client.model.PilotsSnapshotTesterHatModel;
 import dev.thomasglasser.minejago.client.model.ScytheModel;
 import dev.thomasglasser.minejago.client.model.SpearModel;
+import dev.thomasglasser.minejago.client.model.SpinjitzuModel;
 import dev.thomasglasser.minejago.client.model.ThrownBoneKnifeModel;
 import dev.thomasglasser.minejago.client.model.ThrownIronShurikenModel;
 import dev.thomasglasser.minejago.client.particle.BoltsParticle;
@@ -77,6 +78,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
@@ -190,6 +192,7 @@ public class MinejagoClientEvents {
         event.registerLayerDefinition(OgDevTeamBeardModel.LAYER_LOCATION, OgDevTeamBeardModel::createBodyLayer);
         event.registerLayerDefinition(KrunchaModel.LAYER_LOCATION, KrunchaModel::createBodyLayer);
         event.registerLayerDefinition(NuckalModel.LAYER_LOCATION, NuckalModel::createBodyLayer);
+        event.registerLayerDefinition(SpinjitzuModel.LAYER_LOCATION, SpinjitzuModel::createBodyLayer);
     }
 
     public static void onRegisterRenderer(EntityRenderersEvent.RegisterRenderers event) {
@@ -239,7 +242,7 @@ public class MinejagoClientEvents {
     public static void onRegisterItemColorHandlers(RegisterColorHandlersEvent.Item event) {
         event.register((pStack, pTintIndex) -> {
             if (pTintIndex == 0)
-                return pStack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).getColor();
+                return FastColor.ARGB32.opaque(pStack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).getColor());
             return -1;
         }, MinejagoItems.FILLED_TEACUP.get());
         event.register((itemStack, i) -> {

@@ -3,12 +3,11 @@ package dev.thomasglasser.minejago.world.item;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.tommylib.api.world.entity.projectile.ThrownSword;
 import dev.thomasglasser.tommylib.api.world.item.ThrowableSwordItem;
+import java.util.function.Supplier;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
-
-import java.util.function.Supplier;
 
 public class ShurikenItem extends ThrowableSwordItem {
     public ShurikenItem(Supplier<EntityType<? extends ThrownSword>> projectile, Tier pTier, Properties pProperties) {
