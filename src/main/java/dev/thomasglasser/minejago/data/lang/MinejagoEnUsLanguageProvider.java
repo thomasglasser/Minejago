@@ -167,41 +167,39 @@ public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider {
 
         addPotions(MinejagoPotions.MILK, "Milk");
 
-        add(MinejagoSoundEvents.TEAPOT_WHISTLE, "Teapot whistles");
-        add(MinejagoSoundEvents.SPINJITZU_START, "Spinjitzu activates");
-        add(MinejagoSoundEvents.SPINJITZU_ACTIVE, "Spinjitzu whooshes");
-        add(MinejagoSoundEvents.SPINJITZU_STOP, "Spinjitzu fades");
-        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_FAIL, "Scythe flickers");
-        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_EXPLOSION, "Ground quakes");
-        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_CASCADE, "Scythe drags");
-        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_PATH, "Scythe beams");
-        add(MinejagoSoundEvents.BONE_KNIFE_THROW, "Knife flies");
-        add(MinejagoSoundEvents.BONE_KNIFE_IMPACT, "Knife sticks");
-        add(MinejagoSoundEvents.BAMBOO_STAFF_THROW, "Staff tosses");
-        add(MinejagoSoundEvents.BAMBOO_STAFF_IMPACT, "Staff lands");
-        add(MinejagoSoundEvents.SHURIKEN_THROW, "Shuriken flies");
-        add(MinejagoSoundEvents.SHURIKEN_IMPACT, "Shuriken sticks");
-        add(MinejagoSoundEvents.SPEAR_THROW, "Spear tosses");
-        add(MinejagoSoundEvents.SPEAR_IMPACT, "Spear lands");
-        add(MinejagoSoundEvents.EARTH_DRAGON_AMBIENT, "Earth Dragon breathes");
-        add(MinejagoSoundEvents.EARTH_DRAGON_AWAKEN, "Earth Dragon awakens");
-        add(MinejagoSoundEvents.EARTH_DRAGON_DEATH, "Earth Dragon dies");
-        add(MinejagoSoundEvents.EARTH_DRAGON_FLAP, "Earth Dragon awakens");
-        add(MinejagoSoundEvents.EARTH_DRAGON_HURT, "Earth Dragon flaps");
-        add(MinejagoSoundEvents.EARTH_DRAGON_ROAR, "Earth Dragon roars");
-        add(MinejagoSoundEvents.EARTH_DRAGON_STEP, "Earth Dragon steps");
-
-        add(MinejagoSoundEvents.SKULL_TRUCK_AMBIENT_ACTIVE, "Skull Truck revs");
-        add(MinejagoSoundEvents.SKULL_TRUCK_AMBIENT_IDLE, "Skull Truck idles");
-        add(MinejagoSoundEvents.SKULL_TRUCK_DEATH, "Skull Truck breaks");
-        add(MinejagoSoundEvents.SKULL_TRUCK_HURT, "Skull Truck dents");
-        add(MinejagoSoundEvents.SKULL_TRUCK_IGNITION, "Skull Truck starts");
-
-        add(MinejagoSoundEvents.SKULL_MOTORBIKE_AMBIENT_ACTIVE, "Skull Motorbike revs");
-        add(MinejagoSoundEvents.SKULL_MOTORBIKE_AMBIENT_IDLE, "Skull Motorbike idles");
-        add(MinejagoSoundEvents.SKULL_MOTORBIKE_DEATH, "Skull Motorbike breaks");
-        add(MinejagoSoundEvents.SKULL_MOTORBIKE_HURT, "Skull Motorbike dents");
-        add(MinejagoSoundEvents.SKULL_MOTORBIKE_IGNITION, "Skull Motorbike starts");
+        add(MinejagoSoundEvents.TEAPOT_WHISTLE.get(), "Teapot whistles");
+        add(MinejagoSoundEvents.SPINJITZU_START.get(), "Spinjitzu activates");
+        add(MinejagoSoundEvents.SPINJITZU_ACTIVE.get(), "Spinjitzu whooshes");
+        add(MinejagoSoundEvents.SPINJITZU_STOP.get(), "Spinjitzu fades");
+        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_FAIL.get(), "Scythe flickers");
+        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_EXPLOSION.get(), "Ground quakes");
+        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_CASCADE.get(), "Scythe drags");
+        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_PATH.get(), "Scythe beams");
+        add(MinejagoSoundEvents.BONE_KNIFE_THROW.get(), "Knife flies");
+        add(MinejagoSoundEvents.BONE_KNIFE_IMPACT.get(), "Knife sticks");
+        add(MinejagoSoundEvents.BAMBOO_STAFF_THROW.get(), "Staff tosses");
+        add(MinejagoSoundEvents.BAMBOO_STAFF_IMPACT.get(), "Staff lands");
+        add(MinejagoSoundEvents.SHURIKEN_THROW.get(), "Shuriken flies");
+        add(MinejagoSoundEvents.SHURIKEN_IMPACT.get(), "Shuriken sticks");
+        add(MinejagoSoundEvents.SPEAR_THROW.get(), "Spear tosses");
+        add(MinejagoSoundEvents.SPEAR_IMPACT.get(), "Spear lands");
+        add(MinejagoSoundEvents.EARTH_DRAGON_AMBIENT.get(), "Earth Dragon breathes");
+        add(MinejagoSoundEvents.EARTH_DRAGON_AWAKEN.get(), "Earth Dragon awakens");
+        add(MinejagoSoundEvents.EARTH_DRAGON_DEATH.get(), "Earth Dragon dies");
+        add(MinejagoSoundEvents.EARTH_DRAGON_FLAP.get(), "Earth Dragon awakens");
+        add(MinejagoSoundEvents.EARTH_DRAGON_HURT.get(), "Earth Dragon flaps");
+        add(MinejagoSoundEvents.EARTH_DRAGON_ROAR.get(), "Earth Dragon roars");
+        add(MinejagoSoundEvents.EARTH_DRAGON_STEP.get(), "Earth Dragon steps");
+        add(MinejagoSoundEvents.SKULL_TRUCK_AMBIENT_ACTIVE.get(), "Skull Truck revs");
+        add(MinejagoSoundEvents.SKULL_TRUCK_AMBIENT_IDLE.get(), "Skull Truck idles");
+        add(MinejagoSoundEvents.SKULL_TRUCK_DEATH.get(), "Skull Truck breaks");
+        add(MinejagoSoundEvents.SKULL_TRUCK_HURT.get(), "Skull Truck dents");
+        add(MinejagoSoundEvents.SKULL_TRUCK_IGNITION.get(), "Skull Truck starts");
+        add(MinejagoSoundEvents.SKULL_MOTORBIKE_AMBIENT_ACTIVE.get(), "Skull Motorbike revs");
+        add(MinejagoSoundEvents.SKULL_MOTORBIKE_AMBIENT_IDLE.get(), "Skull Motorbike idles");
+        add(MinejagoSoundEvents.SKULL_MOTORBIKE_DEATH.get(), "Skull Motorbike breaks");
+        add(MinejagoSoundEvents.SKULL_MOTORBIKE_HURT.get(), "Skull Motorbike dents");
+        add(MinejagoSoundEvents.SKULL_MOTORBIKE_IGNITION.get(), "Skull Motorbike starts");
 
         add(MinejagoMobEffects.ACACIA_TEA.get(), "Acacia Tea");
         add(MinejagoMobEffects.OAK_TEA.get(), "Oak Tea");
@@ -303,7 +301,20 @@ public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider {
     }
 
     public void addConfigs() {
-        // TODO: Convert config comments to translations
+        // TODO: Add when config screen is added
+//        add(MinejagoServerConfig.FEATURES_COMMENT_KEY, "Optional features that enhance the mod, but may not match the desired experience of some players");
+//        add(MinejagoServerConfig.ENABLE_TECH_KEY, "Enable the technology of the mod, such as vehicles and computers");
+//        add(MinejagoServerConfig.ENABLE_SKULKIN_RAIDS_KEY, "Enable Skulkin Raids on Four Weapons structures");
+//
+//        add(MinejagoServerConfig.POWERS_COMMENT_KEY, "Settings for powers (elemental or otherwise)");
+//        add(MinejagoServerConfig.ALLOW_CHOOSE_KEY, "Allow players to choose the power given to them by interacting with Master Wu");
+//        add(MinejagoServerConfig.ALLOW_CHANGE_KEY, "Allow players to get a new power by interacting with Master Wu again");
+//        add(MinejagoServerConfig.DRAIN_POOL_KEY, "Remove a power from the option list once given and reset when all powers have been given");
+//        add(MinejagoServerConfig.ENABLE_NO_POWER_KEY, "Enable players to receive no power from Master Wu");
+//
+//        add(MinejagoServerConfig.GOLDEN_WEAPONS_COMMENT_KEY, "Settings for the four Golden Weapons");
+//        add(MinejagoServerConfig.REQUIRE_COMPATIBLE_POWER_KEY, "Require users to have a compatible power");
+//        add(MinejagoServerConfig.ENABLE_MALFUNCTION_KEY, "Enable an abnormal reaction when handled by someone without a compatible power");
     }
 
     public void addPluginConfig(ResourceLocation location, String name) {

@@ -123,6 +123,7 @@ public class Minejago {
         bus.addListener(MinejagoCoreEvents::onAddPackFinders);
         bus.addListener(MinejagoCoreEvents::onNewDataPackRegistry);
         bus.addListener(MinejagoCoreEvents::onRegisterPackets);
+        bus.addListener(MinejagoEntityEvents::onAddBlocksToBlockEntityType);
     }
 
     private void addModClientListeners(IEventBus bus) {

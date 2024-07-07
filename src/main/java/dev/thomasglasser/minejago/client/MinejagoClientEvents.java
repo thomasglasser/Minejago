@@ -28,10 +28,6 @@ import dev.thomasglasser.minejago.client.renderer.entity.SkulkinHorseRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.SkulkinRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.SkullMotorbikeRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.SkullTruckRenderer;
-import dev.thomasglasser.minejago.client.renderer.entity.ThrownBambooStaffRenderer;
-import dev.thomasglasser.minejago.client.renderer.entity.ThrownBoneKnifeRenderer;
-import dev.thomasglasser.minejago.client.renderer.entity.ThrownIronShurikenRenderer;
-import dev.thomasglasser.minejago.client.renderer.entity.ThrownIronSpearRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.WuRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.OgDevTeamLayer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterLayer;
@@ -52,6 +48,7 @@ import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
 import dev.thomasglasser.minejago.world.level.block.entity.TeapotBlockEntity;
 import dev.thomasglasser.tommylib.api.client.ClientUtils;
+import dev.thomasglasser.tommylib.api.client.renderer.entity.ThrownSwordRenderer;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import dev.thomasglasser.tommylib.api.world.entity.PlayerRideableFlying;
 import java.util.ArrayList;
@@ -196,10 +193,10 @@ public class MinejagoClientEvents {
     }
 
     public static void onRegisterRenderer(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(MinejagoEntityTypes.THROWN_BONE_KNIFE.get(), ThrownBoneKnifeRenderer::new);
-        event.registerEntityRenderer(MinejagoEntityTypes.THROWN_BAMBOO_STAFF.get(), ThrownBambooStaffRenderer::new);
-        event.registerEntityRenderer(MinejagoEntityTypes.THROWN_IRON_SPEAR.get(), ThrownIronSpearRenderer::new);
-        event.registerEntityRenderer(MinejagoEntityTypes.THROWN_IRON_SHURIKEN.get(), ThrownIronShurikenRenderer::new);
+        event.registerEntityRenderer(MinejagoEntityTypes.THROWN_BONE_KNIFE.get(), (context -> new ThrownSwordRenderer<>(context, MinejagoItems.BONE_KNIFE.getId(), new ThrownBoneKnifeModel(context.bakeLayer(ThrownBoneKnifeModel.LAYER_LOCATION)))));
+        event.registerEntityRenderer(MinejagoEntityTypes.THROWN_BAMBOO_STAFF.get(), (context -> new ThrownSwordRenderer<>(context, MinejagoItems.BAMBOO_STAFF.getId(), new BambooStaffModel(context.bakeLayer(BambooStaffModel.LAYER_LOCATION)))));
+        event.registerEntityRenderer(MinejagoEntityTypes.THROWN_IRON_SPEAR.get(), (context -> new ThrownSwordRenderer<>(context, MinejagoItems.IRON_SPEAR.getId(), new SpearModel(context.bakeLayer(SpearModel.LAYER_LOCATION)))));
+        event.registerEntityRenderer(MinejagoEntityTypes.THROWN_IRON_SHURIKEN.get(), (context -> new ThrownSwordRenderer<>(context, MinejagoItems.IRON_SHURIKEN.getId(), new ThrownIronShurikenModel(context.bakeLayer(ThrownIronShurikenModel.LAYER_LOCATION)))));
         event.registerEntityRenderer(MinejagoEntityTypes.EARTH_BLAST.get(), EarthBlastRenderer::new);
 
         event.registerEntityRenderer(MinejagoEntityTypes.WU.get(), WuRenderer::new);
@@ -222,12 +219,6 @@ public class MinejagoClientEvents {
     }
 
     public static void registerModels(ModelEvent.RegisterAdditional event) {
-        event.register(ModelResourceLocation.standalone(Minejago.modLoc("item/iron_scythe_inventory")));
-        event.register(ModelResourceLocation.standalone(Minejago.modLoc("item/scythe_of_quakes_inventory")));
-        event.register(ModelResourceLocation.standalone(Minejago.modLoc("item/iron_spear_inventory")));
-        event.register(ModelResourceLocation.standalone(Minejago.modLoc("item/wooden_nunchucks_inventory")));
-        event.register(ModelResourceLocation.standalone(Minejago.modLoc("item/bamboo_staff_inventory")));
-
         ResourceManager manager = Minecraft.getInstance().getResourceManager();
         Map<ResourceLocation, Resource> map = manager.listResources("models/item/minejago_armor", (location -> location.getPath().endsWith(".json")));
         for (ResourceLocation rl : map.keySet()) {

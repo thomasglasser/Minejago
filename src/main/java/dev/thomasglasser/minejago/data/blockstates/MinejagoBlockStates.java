@@ -14,6 +14,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.models.blockstates.BlockStateGenerator;
 import net.minecraft.data.models.blockstates.Condition;
@@ -29,6 +30,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
@@ -101,6 +103,10 @@ public class MinejagoBlockStates extends ExtendedBlockStateProvider {
 
         woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET);
         leavesSet(MinejagoBlocks.FOCUS_LEAVES_SET);
+
+        models().withExistingParent(BuiltInRegistries.BLOCK.getKey(MinejagoBlocks.CHISELED_SCROLL_SHELF.get()).getPath(), BuiltInRegistries.BLOCK.getKey(Blocks.CHISELED_BOOKSHELF).withPrefix("block/"));
+        models().withExistingParent(MinejagoBlocks.CHISELED_SCROLL_SHELF.getId().getPath() + "_inventory", BuiltInRegistries.BLOCK.getKey(Blocks.CHISELED_BOOKSHELF).withPrefix("block/").withSuffix("_inventory"))
+                .texture("front", modBlockModel(MinejagoBlocks.CHISELED_SCROLL_SHELF.getId().getPath() + "_empty"));
     }
 
     @Override

@@ -1,10 +1,11 @@
 package dev.thomasglasser.minejago.world.item;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.client.renderer.item.WoodenNunchucksRenderer;
+import dev.thomasglasser.minejago.client.renderer.item.NunchucksRenderer;
 import dev.thomasglasser.tommylib.api.world.item.BaseModeledItem;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -61,7 +62,6 @@ public class NunchucksItem extends BaseModeledItem implements GeoItem {
         return InteractionResultHolder.consume(player.getItemInHand(hand));
     }
 
-    // TODO: Able to be enchanted with quick charge to charge 2x faster?
     @Override
     public int getUseDuration(ItemStack pStack, LivingEntity p_344979_) {
         return 100;
@@ -94,8 +94,8 @@ public class NunchucksItem extends BaseModeledItem implements GeoItem {
     @Override
     public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected) {
         if (pEntity instanceof Player player && !player.isUsingItem() && !player.getCooldowns().isOnCooldown(this)) {
-            if (pLevel instanceof ServerLevel)
-                triggerAnim(pEntity, GeoItem.getOrAssignId(pStack, (ServerLevel) pLevel), "use_controller", "idle");
+            if (pLevel instanceof ServerLevel serverLevel)
+                triggerAnim(pEntity, GeoItem.getOrAssignId(pStack, serverLevel), "use_controller", "idle");
             resetDamage(pStack);
         }
 
@@ -105,14 +105,18 @@ public class NunchucksItem extends BaseModeledItem implements GeoItem {
     public static void resetDamage(ItemStack stack) {
         ItemAttributeModifiers original = stack.get(DataComponents.ATTRIBUTE_MODIFIERS);
         if (original != null) {
-            original.modifiers().removeIf(entry -> entry.modifier().id().equals(DAMAGE_MODIFIER));
-            stack.set(DataComponents.ATTRIBUTE_MODIFIERS, original);
+            ItemAttributeModifiers.Builder itemAttributeModifiers = ItemAttributeModifiers.builder();
+            original.modifiers().forEach(entry -> {
+                if (!entry.modifier().id().equals(DAMAGE_MODIFIER))
+                    itemAttributeModifiers.add(entry.attribute(), entry.modifier(), entry.slot());
+            });
+            stack.set(DataComponents.ATTRIBUTE_MODIFIERS, itemAttributeModifiers.build());
         }
     }
 
     @Override
     public BlockEntityWithoutLevelRenderer getBEWLR() {
-        if (bewlr == null) bewlr = new WoodenNunchucksRenderer();
+        if (bewlr == null) bewlr = new NunchucksRenderer(BuiltInRegistries.ITEM.getKey(this));
         return bewlr;
     }
 }

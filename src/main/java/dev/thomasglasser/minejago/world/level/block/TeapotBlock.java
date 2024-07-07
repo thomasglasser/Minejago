@@ -20,7 +20,6 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -36,6 +35,7 @@ import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SupportType;
+import net.minecraft.world.level.block.entity.BannerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -129,11 +129,6 @@ public class TeapotBlock extends BaseEntityBlock {
         }
     }
 
-    public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, LivingEntity pPlacer, ItemStack pStack) {
-        if (pLevel.getBlockEntity(pPos) instanceof TeapotBlockEntity teapot) teapot.setTemperature(TeapotBlock.getBiomeTemperature(pLevel, pPos) / 2);
-        // TODO: Copy block entity component here?
-    }
-
     public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom) {
         if (pLevel.getBlockEntity(pPos) instanceof TeapotBlockEntity be && (be.isBoiling() || be.isDone())) {
             double d0 = (double) pPos.getX() - 0.03D + (double) pRandom.nextFloat() * 0.2D;
@@ -166,11 +161,10 @@ public class TeapotBlock extends BaseEntityBlock {
     }
 
     @Override
-    public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
-        ItemStack stack = new ItemStack(asItem());
-        TeapotBlockEntity be = (TeapotBlockEntity) levelReader.getBlockEntity(blockPos);
-        be.saveToItem(stack, levelReader.registryAccess());
-        return stack;
+    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
+        return level.getBlockEntity(pos) instanceof BannerBlockEntity bannerblockentity
+                ? bannerblockentity.getItem()
+                : super.getCloneItemStack(level, pos, state);
     }
 
     public static int getBiomeTemperature(Level level, BlockPos pos) {

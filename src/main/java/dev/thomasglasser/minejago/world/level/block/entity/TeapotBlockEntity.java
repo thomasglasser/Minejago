@@ -37,6 +37,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
+// TODO: Custom name and data saving on break
 public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameable {
     private static final int MAX_CUPS = 6;
 

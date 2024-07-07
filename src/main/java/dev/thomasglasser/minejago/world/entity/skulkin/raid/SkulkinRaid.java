@@ -457,8 +457,6 @@ public class SkulkinRaid {
         int j = this.getDefaultNumSpawns(i, bl2) + this.getPotentialBonusSpawns(this.random, i, difficultyInstance, bl2);
 
         if (this.groupsSpawned >= this.numGroups - 1) bl = spawnBosses(i, pos);
-        System.out.println("GS" + groupsSpawned);
-        System.out.println("NG" + numGroups);
 
         for (int l = 0; l < j; ++l) {
             MeleeCompatibleSkeletonRaider raider = MinejagoEntityTypes.SKULKIN.get().create(this.level);

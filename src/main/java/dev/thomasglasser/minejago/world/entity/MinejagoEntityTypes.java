@@ -10,10 +10,7 @@ import dev.thomasglasser.minejago.world.entity.character.Zane;
 import dev.thomasglasser.minejago.world.entity.dragon.Dragon;
 import dev.thomasglasser.minejago.world.entity.dragon.EarthDragon;
 import dev.thomasglasser.minejago.world.entity.projectile.EarthBlast;
-import dev.thomasglasser.minejago.world.entity.projectile.ThrownBambooStaff;
-import dev.thomasglasser.minejago.world.entity.projectile.ThrownBoneKnife;
-import dev.thomasglasser.minejago.world.entity.projectile.ThrownIronShuriken;
-import dev.thomasglasser.minejago.world.entity.projectile.ThrownIronSpear;
+import dev.thomasglasser.minejago.world.entity.projectile.ThrownShuriken;
 import dev.thomasglasser.minejago.world.entity.skulkin.AbstractSkulkinVehicle;
 import dev.thomasglasser.minejago.world.entity.skulkin.Kruncha;
 import dev.thomasglasser.minejago.world.entity.skulkin.Nuckal;
@@ -24,6 +21,10 @@ import dev.thomasglasser.minejago.world.entity.skulkin.SkullMotorbike;
 import dev.thomasglasser.minejago.world.entity.skulkin.SkullTruck;
 import dev.thomasglasser.tommylib.api.registration.DeferredHolder;
 import dev.thomasglasser.tommylib.api.registration.DeferredRegister;
+import dev.thomasglasser.tommylib.api.world.entity.projectile.ThrownSword;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -33,24 +34,20 @@ import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Supplier;
-
 public class MinejagoEntityTypes {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, Minejago.MOD_ID);
 
     // PROJECTILES
-    public static final DeferredHolder<EntityType<?>, EntityType<ThrownBambooStaff>> THROWN_BAMBOO_STAFF = register("thrown_bamboo_staff", () -> EntityType.Builder.<ThrownBambooStaff>of(ThrownBambooStaff::new, MobCategory.MISC)
+    public static final DeferredHolder<EntityType<?>, EntityType<ThrownSword>> THROWN_BAMBOO_STAFF = register("thrown_bamboo_staff", () -> EntityType.Builder.<ThrownSword>of(ThrownSword::new, MobCategory.MISC)
             .sized(0.5F, 0.5F)
             .build("thrown_bamboo_staff"));
-    public static final DeferredHolder<EntityType<?>, EntityType<ThrownBoneKnife>> THROWN_BONE_KNIFE = register("thrown_bone_knife", () -> EntityType.Builder.<ThrownBoneKnife>of(ThrownBoneKnife::new, MobCategory.MISC)
+    public static final DeferredHolder<EntityType<?>, EntityType<ThrownSword>> THROWN_BONE_KNIFE = register("thrown_bone_knife", () -> EntityType.Builder.<ThrownSword>of(ThrownSword::new, MobCategory.MISC)
             .sized(0.5F, 0.5F)
             .build("thrown_bone_knife"));
-    public static final DeferredHolder<EntityType<?>, EntityType<ThrownIronSpear>> THROWN_IRON_SPEAR = register("thrown_iron_spear", () -> EntityType.Builder.<ThrownIronSpear>of(ThrownIronSpear::new, MobCategory.MISC)
+    public static final DeferredHolder<EntityType<?>, EntityType<ThrownSword>> THROWN_IRON_SPEAR = register("thrown_iron_spear", () -> EntityType.Builder.<ThrownSword>of(ThrownSword::new, MobCategory.MISC)
             .sized(0.5F, 0.5F)
             .build("thrown_iron_spear"));
-    public static final DeferredHolder<EntityType<?>, EntityType<ThrownIronShuriken>> THROWN_IRON_SHURIKEN = register("thrown_iron_shuriken", () -> EntityType.Builder.<ThrownIronShuriken>of(ThrownIronShuriken::new, MobCategory.MISC)
+    public static final DeferredHolder<EntityType<?>, EntityType<ThrownShuriken>> THROWN_IRON_SHURIKEN = register("thrown_iron_shuriken", () -> EntityType.Builder.<ThrownShuriken>of(ThrownShuriken::new, MobCategory.MISC)
             .sized(0.5F, 0.5F)
             .build("thrown_iron_spear"));
     public static final DeferredHolder<EntityType<?>, EntityType<EarthBlast>> EARTH_BLAST = register("earth_blast", () -> EntityType.Builder.of(((EntityType<EarthBlast> entityType, Level level) -> new EarthBlast(entityType, level)), MobCategory.MISC)
@@ -97,7 +94,6 @@ public class MinejagoEntityTypes {
     public static final DeferredHolder<EntityType<?>, EntityType<Samukai>> SAMUKAI = register("samukai", () -> EntityType.Builder.of(Samukai::new, MobCategory.MONSTER)
             .sized(0.875f, 2.375f)
             .build("samukai"));
-    // TODO: Fix seating
     public static final DeferredHolder<EntityType<?>, EntityType<SkullTruck>> SKULL_TRUCK = register("skull_truck", () -> EntityType.Builder.of(SkullTruck::new, MobCategory.MISC)
             .sized(3.5f, 3.1875f)
             .passengerAttachments(

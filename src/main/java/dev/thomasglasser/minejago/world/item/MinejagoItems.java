@@ -1,19 +1,24 @@
 package dev.thomasglasser.minejago.world.item;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.client.MinejagoClientUtils;
+import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.tags.MinejagoBannerPatternTags;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.item.armortrim.MinejagoTrimPatterns;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.tommylib.api.registration.DeferredItem;
 import dev.thomasglasser.tommylib.api.registration.DeferredRegister;
+import dev.thomasglasser.tommylib.api.world.item.BaseModeledThrowableSwordItem;
 import dev.thomasglasser.tommylib.api.world.item.CustomEmptyMapItem;
 import dev.thomasglasser.tommylib.api.world.item.ItemUtils;
+import dev.thomasglasser.tommylib.api.world.item.ThrowableSwordItem;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -34,13 +39,19 @@ import net.minecraft.world.item.armortrim.TrimPattern;
 public class MinejagoItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Minejago.MOD_ID);
     public static final List<String> SHERDS = new ArrayList<>();
+
     public static final String MOD_NEEDED = "error.mod_needed";
 
-    public static final DeferredItem<BambooStaffItem> BAMBOO_STAFF = register("bamboo_staff", () -> new BambooStaffItem(Tiers.WOOD, new Item.Properties().attributes(SwordItem.createAttributes(Tiers.WOOD, 2, -1))), List.of(CreativeModeTabs.COMBAT));
-    public static final DeferredItem<BoneKnifeItem> BONE_KNIFE = register("bone_knife", () -> new BoneKnifeItem(MinejagoTiers.BONE, new Item.Properties().attributes(SwordItem.createAttributes(MinejagoTiers.BONE, 3, -2))), List.of(CreativeModeTabs.COMBAT));
-    public static final DeferredItem<SpearItem> IRON_SPEAR = register("iron_spear", () -> new SpearItem(Tiers.IRON, (new Item.Properties().attributes(SpearItem.createAttributes(Tiers.IRON, 4, -2.8F, 1f)))), List.of(CreativeModeTabs.COMBAT));
+    public static final DeferredItem<BaseModeledThrowableSwordItem> BAMBOO_STAFF = register("bamboo_staff", () -> new BaseModeledThrowableSwordItem(MinejagoEntityTypes.THROWN_BAMBOO_STAFF::value, MinejagoSoundEvents.BAMBOO_STAFF_THROW, MinejagoSoundEvents.BAMBOO_STAFF_IMPACT, Tiers.WOOD, new Item.Properties().attributes(SwordItem.createAttributes(Tiers.WOOD, 2, -1))) {
+        @Override
+        public BlockEntityWithoutLevelRenderer getBEWLR() {
+            return MinejagoClientUtils.getBewlr();
+        }
+    }, List.of(CreativeModeTabs.COMBAT));
+    public static final DeferredItem<ThrowableSwordItem> BONE_KNIFE = register("bone_knife", () -> new ThrowableSwordItem(MinejagoEntityTypes.THROWN_BONE_KNIFE::value, MinejagoSoundEvents.BONE_KNIFE_THROW, MinejagoSoundEvents.BONE_KNIFE_IMPACT, MinejagoTiers.BONE, new Item.Properties().attributes(SwordItem.createAttributes(MinejagoTiers.BONE, 3, -2))), List.of(CreativeModeTabs.COMBAT));
+    public static final DeferredItem<SpearItem> IRON_SPEAR = register("iron_spear", () -> new SpearItem(MinejagoEntityTypes.THROWN_IRON_SPEAR::value, Tiers.IRON, (new Item.Properties().attributes(SpearItem.createAttributes(Tiers.IRON, 4, -2.8F, 1f)))), List.of(CreativeModeTabs.COMBAT));
     public static final DeferredItem<ScytheOfQuakesItem> SCYTHE_OF_QUAKES = register("scythe_of_quakes", () -> new ScytheOfQuakesItem(new Item.Properties()), List.of(CreativeModeTabs.COMBAT, CreativeModeTabs.TOOLS_AND_UTILITIES));
-    public static final DeferredItem<ShurikenItem> IRON_SHURIKEN = register("iron_shuriken", () -> new ShurikenItem(Tiers.IRON, (new Item.Properties().attributes(SwordItem.createAttributes(Tiers.IRON, 1, 1F)))), List.of(CreativeModeTabs.COMBAT));
+    public static final DeferredItem<ThrowableSwordItem> IRON_SHURIKEN = register("iron_shuriken", () -> new ShurikenItem(MinejagoEntityTypes.THROWN_IRON_SHURIKEN::value, Tiers.IRON, (new Item.Properties().attributes(SwordItem.createAttributes(Tiers.IRON, 1, 1F)))), List.of(CreativeModeTabs.COMBAT));
     public static final DeferredItem<SwordItem> IRON_KATANA = register("iron_katana", () -> new SwordItem(Tiers.IRON, new Item.Properties().attributes(SwordItem.createAttributes(Tiers.IRON, 1, -1.4F))), List.of(CreativeModeTabs.COMBAT));
     public static final DeferredItem<TeacupItem> TEACUP = register("teacup", () -> new TeacupItem(new Item.Properties()), List.of(CreativeModeTabs.INGREDIENTS));
     public static final DeferredItem<FilledTeacupItem> FILLED_TEACUP = register("filled_teacup", () -> new FilledTeacupItem(new Item.Properties().stacksTo(1)), List.of());

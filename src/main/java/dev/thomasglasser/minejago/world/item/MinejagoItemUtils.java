@@ -7,15 +7,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.StructureTags;
-import net.minecraft.util.Mth;
 import net.minecraft.util.Unit;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 
 public final class MinejagoItemUtils {
@@ -38,11 +35,5 @@ public final class MinejagoItemUtils {
         if (pos4 != null) MapItemSavedData.addTargetDecoration(itemstack, pos4, "ice", serverLevel.holderOrThrow(MinejagoMapDecorationTypes.SHURIKENS_OF_ICE.getKey()));
         itemstack.set(MinejagoDataComponents.GOLDEN_WEAPONS_MAP.get(), Unit.INSTANCE);
         return itemstack;
-    }
-
-    public static byte getLoyaltyFromItem(ItemStack stack, Level level, Entity entity) {
-        return level instanceof ServerLevel serverlevel
-                ? (byte) Mth.clamp(EnchantmentHelper.getTridentReturnToOwnerAcceleration(serverlevel, stack, entity), 0, 127)
-                : 0;
     }
 }

@@ -1,11 +1,12 @@
 package dev.thomasglasser.minejago.world.entity.skulkin;
 
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
-import dev.thomasglasser.minejago.world.entity.projectile.ThrownBoneKnife;
+import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.MeleeCompatibleSkeletonRaider;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.tommylib.api.world.entity.ai.behavior.RangedItemAttack;
+import dev.thomasglasser.tommylib.api.world.entity.projectile.ThrownSword;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -69,14 +70,14 @@ public class Samukai extends MeleeCompatibleSkeletonRaider implements GeoEntity 
     @Override
     public void performRangedAttack(LivingEntity target, float velocity) {
         for (int i = -1; i < 3; i++) {
-            ThrownBoneKnife thrownBoneKnife = new ThrownBoneKnife(this.level(), this, MinejagoItems.BONE_KNIFE.get().getDefaultInstance());
+            ThrownSword thrownKnife = new ThrownSword(MinejagoEntityTypes.THROWN_BONE_KNIFE.get(), this.level(), this, MinejagoItems.BONE_KNIFE.get().getDefaultInstance(), MinejagoSoundEvents.BONE_KNIFE_IMPACT);
             double d = target.getX() - this.getX();
-            double e = target.getY(0.3333333333333333) - thrownBoneKnife.getY() + i;
+            double e = target.getY(0.3333333333333333) - thrownKnife.getY() + i;
             double f = target.getZ() - this.getZ();
             double g = Math.sqrt(d * d + f * f);
-            thrownBoneKnife.shoot(d, e + g * 0.2F, f, 1.6F, (float) (14 - this.level().getDifficulty().getId() * 4));
+            thrownKnife.shoot(d, e + g * 0.2F, f, 1.6F, (float) (14 - this.level().getDifficulty().getId() * 4));
             this.playSound(MinejagoSoundEvents.BONE_KNIFE_THROW.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-            this.level().addFreshEntity(thrownBoneKnife);
+            this.level().addFreshEntity(thrownKnife);
         }
     }
 
