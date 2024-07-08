@@ -3,6 +3,7 @@ package dev.thomasglasser.minejago.world.entity.power;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.client.renderer.entity.layers.SpinjitzuLayer;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -19,17 +20,14 @@ import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.util.ExtraCodecs;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
 
 public class Power {
     public static final Codec<Power> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ResourceLocation.CODEC.fieldOf("id").forGetter(Power::getId),
             TextColor.CODEC.optionalFieldOf("power_color", TextColor.fromLegacyFormat(ChatFormatting.GRAY)).forGetter(Power::getColor),
             ComponentSerialization.CODEC.optionalFieldOf("tagline", Component.empty()).forGetter(Power::getTagline),
-            ExtraCodecs.VECTOR3F.optionalFieldOf("main_spinjitzu_color", new Vector3f()/*TODO: Replace with default spinjitzu color*/).forGetter(Power::getMainSpinjitzuColor),
-            ExtraCodecs.VECTOR3F.optionalFieldOf("alt_spinjitzu_color", new Vector3f()/*TODO: Replace with default spinjitzu color*/).forGetter(Power::getAltSpinjitzuColor),
+            Codec.INT.optionalFieldOf("spinjitzu_color", SpinjitzuLayer.DEFAULT).forGetter(Power::getSpinjitzuColor),
             BuiltInRegistries.PARTICLE_TYPE.byNameCodec().optionalFieldOf("border_particle").forGetter(Power::getBorderParticleType),
             Codec.BOOL.optionalFieldOf("has_sets", false).forGetter(Power::hasSets),
             Display.CODEC.optionalFieldOf("display", Display.EMPTY).forGetter(Power::getDisplay),
@@ -37,8 +35,7 @@ public class Power {
 
     private final ResourceLocation id;
     private final TextColor color;
-    protected Vector3f mainSpinjitzuColor;
-    protected Vector3f altSpinjitzuColor;
+    protected int spinjitzuColor;
     @Nullable
     protected Supplier<? extends ParticleOptions> borderParticle;
     protected boolean hasSets;
@@ -57,12 +54,11 @@ public class Power {
         return new Builder(Minejago.modLoc(id));
     }
 
-    protected Power(ResourceLocation id, TextColor color, @Nullable Component tagline, Vector3f mainSpinjitzuColor, Vector3f altSpinjitzuColor, @Nullable Supplier<? extends ParticleOptions> borderParticle, boolean hasSets, @Nullable Display display, boolean isSpecial) {
+    protected Power(ResourceLocation id, TextColor color, @Nullable Component tagline, int spinjitzuColor, @Nullable Supplier<? extends ParticleOptions> borderParticle, boolean hasSets, @Nullable Display display, boolean isSpecial) {
         this.id = id;
         this.color = color;
         this.tagline = tagline == null ? Component.empty() : tagline;
-        this.mainSpinjitzuColor = mainSpinjitzuColor;
-        this.altSpinjitzuColor = altSpinjitzuColor;
+        this.spinjitzuColor = spinjitzuColor;
         this.borderParticle = borderParticle;
         this.hasSets = hasSets;
         this.display = display == null ? Display.EMPTY : display;
@@ -70,16 +66,12 @@ public class Power {
         this.icon = ResourceLocation.fromNamespaceAndPath(id.getNamespace(), "textures/power/" + id.getPath() + ".png");
     }
 
-    protected Power(ResourceLocation id, TextColor color, @Nullable Component tagline, Vector3f mainSpinjitzuColor, Vector3f altSpinjitzuColor, Optional<ParticleType<?>> borderParticle, boolean hasSets, Display display, boolean isSpecial) {
-        this(id, color, tagline, mainSpinjitzuColor, altSpinjitzuColor, borderParticle.orElse(null) instanceof ParticleOptions ? () -> (ParticleOptions) borderParticle.orElse(null) : null, hasSets, display, isSpecial);
+    protected Power(ResourceLocation id, TextColor color, @Nullable Component tagline, int spinjitzuColor, Optional<ParticleType<?>> borderParticle, boolean hasSets, Display display, boolean isSpecial) {
+        this(id, color, tagline, spinjitzuColor, borderParticle.orElse(null) instanceof ParticleOptions ? () -> (ParticleOptions) borderParticle.orElse(null) : null, hasSets, display, isSpecial);
     }
 
-    public Vector3f getMainSpinjitzuColor() {
-        return mainSpinjitzuColor;
-    }
-
-    public Vector3f getAltSpinjitzuColor() {
-        return altSpinjitzuColor;
+    public int getSpinjitzuColor() {
+        return spinjitzuColor;
     }
 
     @Nullable
@@ -171,8 +163,7 @@ public class Power {
     public static class Builder {
         private final ResourceLocation id;
         private TextColor color;
-        protected Vector3f mainSpinjitzuColor;
-        protected Vector3f altSpinjitzuColor;
+        protected int spinjitzuColor;
         protected Supplier<? extends ParticleOptions> borderParticle;
         protected boolean hasSets;
         protected Display display;
@@ -183,8 +174,7 @@ public class Power {
             this.id = id;
             this.color = TextColor.fromLegacyFormat(ChatFormatting.GRAY);
             this.tagline = Component.empty();
-            this.mainSpinjitzuColor = new Vector3f(); // TODO: Replace with default spinjitzu color
-            this.altSpinjitzuColor = new Vector3f(); // TODO: Replace with default spinjitzu color
+            this.spinjitzuColor = SpinjitzuLayer.DEFAULT;
             this.borderParticle = null;
             this.hasSets = false;
             this.display = Display.EMPTY;
@@ -216,13 +206,8 @@ public class Power {
             return this;
         }
 
-        public Builder mainSpinjitzuColor(Vector3f color) {
-            this.mainSpinjitzuColor = color;
-            return this;
-        }
-
-        public Builder altSpinjitzuColor(Vector3f color) {
-            this.altSpinjitzuColor = color;
+        public Builder spinjitzuColor(int color) {
+            this.spinjitzuColor = color;
             return this;
         }
 
@@ -262,7 +247,7 @@ public class Power {
         }
 
         public Power build() {
-            return new Power(id, color, tagline, mainSpinjitzuColor, altSpinjitzuColor, borderParticle, hasSets, display, isSpecial);
+            return new Power(id, color, tagline, spinjitzuColor, borderParticle, hasSets, display, isSpecial);
         }
     }
 }

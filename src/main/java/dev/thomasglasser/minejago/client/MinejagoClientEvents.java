@@ -32,6 +32,7 @@ import dev.thomasglasser.minejago.client.renderer.entity.SkullTruckRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.WuRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.OgDevTeamLayer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterLayer;
+import dev.thomasglasser.minejago.client.renderer.entity.layers.SpinjitzuLayer;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import dev.thomasglasser.minejago.network.ServerboundFlyVehiclePayload;
 import dev.thomasglasser.minejago.network.ServerboundStopMeditationPayload;
@@ -272,6 +273,7 @@ public class MinejagoClientEvents {
             if (player != null) {
                 player.addLayer(new SnapshotTesterLayer<>(player, models));
                 player.addLayer(new OgDevTeamLayer<>(player, models));
+                player.addLayer(new SpinjitzuLayer<>(player, models));
             }
         }
     }

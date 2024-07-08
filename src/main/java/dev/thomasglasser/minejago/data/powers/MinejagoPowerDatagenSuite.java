@@ -18,8 +18,7 @@ public class MinejagoPowerDatagenSuite extends PowerDatagenSuite {
                 .color("#EDECE4")
                 .defaultTagline()
                 // TODO: Implement colors
-//                        .mainSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_LIGHT_BLUE)
-//                        .altSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_WHITE)
+//                        .spinjitzuColor(SpinjitzuParticleOptions.ELEMENT_LIGHT_BLUE)
                 .hasSets()
                 .defaultDisplay(),
                 MinejagoParticleTypes.SNOWS, "snow", 4, true, config -> {});
@@ -27,8 +26,7 @@ public class MinejagoPowerDatagenSuite extends PowerDatagenSuite {
                 .color("#5A4441")
                 .defaultTagline()
                 // TODO: Implement colors
-//                        .mainSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_BROWN)
-//                        .altSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_TAN)
+//                        .spinjitzuColor(SpinjitzuParticleOptions.ELEMENT_BROWN)
                 .hasSets()
                 .defaultDisplay(),
                 MinejagoParticleTypes.ROCKS, "rock", 4, true, config -> config.tagline("Solid as rock."));
@@ -36,8 +34,7 @@ public class MinejagoPowerDatagenSuite extends PowerDatagenSuite {
                 .color("#B90E04")
                 .defaultTagline()
                 // TODO: Implement colors
-//                        .mainSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_ORANGE)
-//                        .altSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_YELLOW)
+//                        .spinjitzuColor(SpinjitzuParticleOptions.ELEMENT_ORANGE)
                 .hasSets()
                 .defaultDisplay(),
                 MinejagoParticleTypes.SPARKS, "spark", 4, true, config -> config.tagline("It burns bright in you."));
@@ -45,16 +42,14 @@ public class MinejagoPowerDatagenSuite extends PowerDatagenSuite {
                 .color("#4668D5")
                 .defaultTagline()
                 // TODO: Implement colors
-//                        .mainSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_BLUE)
-//                        .altSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_LIGHT_BLUE)
+//                        .spinjitzuColor(SpinjitzuParticleOptions.ELEMENT_BLUE)
                 .hasSets()
                 .defaultDisplay(),
                 MinejagoParticleTypes.BOLTS, "bolt", 4, true, config -> {});
         makePowerSuite(MinejagoPowers.CREATION, builder -> builder
                 .color("#F8D66F")
                 // TODO: Implement colors
-//                        .mainSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_DARK_GOLD)
-//                        .altSpinjitzuColor(SpinjitzuParticleOptions.ELEMENT_GOLD)
+//                        .spinjitzuColor(SpinjitzuParticleOptions.ELEMENT_DARK_GOLD)
                 .defaultDisplay()
                 .isSpecial(),
                 MinejagoParticleTypes.SPARKLES, "sparkle", 4, false, config -> {});

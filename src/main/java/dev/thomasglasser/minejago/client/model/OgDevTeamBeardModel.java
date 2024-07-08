@@ -39,7 +39,7 @@ public class OgDevTeamBeardModel extends Model {
     }
 
     @Override
-    public void renderToBuffer(PoseStack p_103111_, VertexConsumer p_103112_, int p_103113_, int p_103114_, int p_350308_) {
-        this.body.render(p_103111_, p_103112_, p_103113_, p_103114_, p_350308_);
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
+        this.body.render(poseStack, buffer, packedLight, packedOverlay, color);
     }
 }
