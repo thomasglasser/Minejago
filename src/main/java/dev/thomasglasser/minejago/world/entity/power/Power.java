@@ -3,7 +3,6 @@ package dev.thomasglasser.minejago.world.entity.power;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.client.renderer.entity.layers.SpinjitzuLayer;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -27,7 +26,6 @@ public class Power {
             ResourceLocation.CODEC.fieldOf("id").forGetter(Power::getId),
             TextColor.CODEC.optionalFieldOf("power_color", TextColor.fromLegacyFormat(ChatFormatting.GRAY)).forGetter(Power::getColor),
             ComponentSerialization.CODEC.optionalFieldOf("tagline", Component.empty()).forGetter(Power::getTagline),
-            Codec.INT.optionalFieldOf("spinjitzu_color", SpinjitzuLayer.DEFAULT).forGetter(Power::getSpinjitzuColor),
             BuiltInRegistries.PARTICLE_TYPE.byNameCodec().optionalFieldOf("border_particle").forGetter(Power::getBorderParticleType),
             Codec.BOOL.optionalFieldOf("has_sets", false).forGetter(Power::hasSets),
             Display.CODEC.optionalFieldOf("display", Display.EMPTY).forGetter(Power::getDisplay),
@@ -35,7 +33,6 @@ public class Power {
 
     private final ResourceLocation id;
     private final TextColor color;
-    protected int spinjitzuColor;
     @Nullable
     protected Supplier<? extends ParticleOptions> borderParticle;
     protected boolean hasSets;
@@ -46,6 +43,10 @@ public class Power {
     private String descId;
     private final ResourceLocation icon;
 
+    public static Builder builder(ResourceKey<Power> id) {
+        return new Builder(id.location());
+    }
+
     public static Builder builder(ResourceLocation id) {
         return new Builder(id);
     }
@@ -54,11 +55,10 @@ public class Power {
         return new Builder(Minejago.modLoc(id));
     }
 
-    protected Power(ResourceLocation id, TextColor color, @Nullable Component tagline, int spinjitzuColor, @Nullable Supplier<? extends ParticleOptions> borderParticle, boolean hasSets, @Nullable Display display, boolean isSpecial) {
+    protected Power(ResourceLocation id, TextColor color, @Nullable Component tagline, @Nullable Supplier<? extends ParticleOptions> borderParticle, boolean hasSets, @Nullable Display display, boolean isSpecial) {
         this.id = id;
         this.color = color;
         this.tagline = tagline == null ? Component.empty() : tagline;
-        this.spinjitzuColor = spinjitzuColor;
         this.borderParticle = borderParticle;
         this.hasSets = hasSets;
         this.display = display == null ? Display.EMPTY : display;
@@ -66,12 +66,8 @@ public class Power {
         this.icon = ResourceLocation.fromNamespaceAndPath(id.getNamespace(), "textures/power/" + id.getPath() + ".png");
     }
 
-    protected Power(ResourceLocation id, TextColor color, @Nullable Component tagline, int spinjitzuColor, Optional<ParticleType<?>> borderParticle, boolean hasSets, Display display, boolean isSpecial) {
-        this(id, color, tagline, spinjitzuColor, borderParticle.orElse(null) instanceof ParticleOptions ? () -> (ParticleOptions) borderParticle.orElse(null) : null, hasSets, display, isSpecial);
-    }
-
-    public int getSpinjitzuColor() {
-        return spinjitzuColor;
+    protected Power(ResourceLocation id, TextColor color, @Nullable Component tagline, Optional<ParticleType<?>> borderParticle, boolean hasSets, Display display, boolean isSpecial) {
+        this(id, color, tagline, borderParticle.orElse(null) instanceof ParticleOptions ? () -> (ParticleOptions) borderParticle.orElse(null) : null, hasSets, display, isSpecial);
     }
 
     @Nullable
@@ -174,7 +170,6 @@ public class Power {
             this.id = id;
             this.color = TextColor.fromLegacyFormat(ChatFormatting.GRAY);
             this.tagline = Component.empty();
-            this.spinjitzuColor = SpinjitzuLayer.DEFAULT;
             this.borderParticle = null;
             this.hasSets = false;
             this.display = Display.EMPTY;
@@ -203,11 +198,6 @@ public class Power {
 
         public Builder defaultTagline() {
             this.tagline = Power.defaultTagline(id);
-            return this;
-        }
-
-        public Builder spinjitzuColor(int color) {
-            this.spinjitzuColor = color;
             return this;
         }
 
@@ -247,7 +237,7 @@ public class Power {
         }
 
         public Power build() {
-            return new Power(id, color, tagline, spinjitzuColor, borderParticle, hasSets, display, isSpecial);
+            return new Power(id, color, tagline, borderParticle, hasSets, display, isSpecial);
         }
     }
 }

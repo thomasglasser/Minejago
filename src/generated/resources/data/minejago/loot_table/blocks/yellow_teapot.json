@@ -8,22 +8,11 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:copy_name",
-              "source": "block_entity"
-            },
-            {
               "function": "minecraft:copy_components",
-              "source": "block_entity"
-            },
-            {
-              "component": "minecraft:container",
-              "entries": [
-                {
-                  "type": "minecraft:dynamic",
-                  "name": "minejago:teapot_contents"
-                }
+              "include": [
+                "minecraft:container"
               ],
-              "function": "minecraft:set_contents"
+              "source": "block_entity"
             }
           ],
           "name": "minejago:yellow_teapot"

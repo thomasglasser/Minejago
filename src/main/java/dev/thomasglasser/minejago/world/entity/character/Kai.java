@@ -10,7 +10,7 @@ import net.minecraft.world.level.Level;
 public class Kai extends Character {
     public Kai(EntityType<? extends Kai> entityType, Level level) {
         super(entityType, level);
-        new PowerData(MinejagoPowers.FIRE, true).save(this);
+        new PowerData(MinejagoPowers.FIRE, true).save(this, false);
     }
 
     @Override

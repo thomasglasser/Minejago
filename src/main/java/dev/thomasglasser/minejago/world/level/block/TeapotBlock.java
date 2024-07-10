@@ -9,8 +9,11 @@ import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTy
 import dev.thomasglasser.minejago.world.level.block.entity.TeapotBlockEntity;
 import dev.thomasglasser.tommylib.api.world.item.ItemUtils;
 import java.util.List;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,8 +23,13 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -35,7 +43,6 @@ import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SupportType;
-import net.minecraft.world.level.block.entity.BannerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -52,6 +59,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 public class TeapotBlock extends BaseEntityBlock {
+    public static final String POTION = "container.teapot.potion";
+    public static final String POTION_AND_ITEM = "container.teapot.potion_and_item";
     public static final VoxelShape SHAPE = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 10.0D, 13.0D);
     public static final ResourceLocation CONTENTS = Minejago.modLoc("teapot_contents");
     public static final BooleanProperty FILLED = BooleanProperty.create("filled");
@@ -142,29 +151,9 @@ public class TeapotBlock extends BaseEntityBlock {
         return true;
     }
 
-    public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
+    @Override
+    protected boolean isPathfindable(BlockState state, PathComputationType pathComputationType) {
         return false;
-    }
-
-    @Override
-    public List<ItemStack> getDrops(BlockState pState, LootParams.Builder pBuilder) {
-        BlockEntity blockentity = pBuilder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
-        if (blockentity instanceof TeapotBlockEntity be) {
-            pBuilder = pBuilder.withDynamicDrop(CONTENTS, (consumer) -> {
-                for (int i = 0; i < be.getContainerSize(); ++i) {
-                    consumer.accept(be.getInSlot(i));
-                }
-            });
-        }
-
-        return super.getDrops(pState, pBuilder);
-    }
-
-    @Override
-    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
-        return level.getBlockEntity(pos) instanceof BannerBlockEntity bannerblockentity
-                ? bannerblockentity.getItem()
-                : super.getCloneItemStack(level, pos, state);
     }
 
     public static int getBiomeTemperature(Level level, BlockPos pos) {
@@ -223,5 +212,59 @@ public class TeapotBlock extends BaseEntityBlock {
             return level.getBlockState(pos.above()).isFaceSturdy(level, pos.above(), Direction.DOWN, SupportType.CENTER);
         }
         return true;
+    }
+
+    @Override
+    public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+        BlockEntity blockentity = level.getBlockEntity(pos);
+        if (blockentity instanceof TeapotBlockEntity teapotBlockEntity) {
+            if (!level.isClientSide && player.isCreative() && !teapotBlockEntity.isEmpty()) {
+                ItemStack itemstack = asItem().getDefaultInstance();
+                itemstack.applyComponents(blockentity.collectComponents());
+                ItemEntity itementity = new ItemEntity(
+                        level, (double) pos.getX() + 0.5, (double) pos.getY() + 0.5, (double) pos.getZ() + 0.5, itemstack);
+                itementity.setDefaultPickUpDelay();
+                level.addFreshEntity(itementity);
+            }
+        }
+
+        return super.playerWillDestroy(level, pos, state, player);
+    }
+
+    @Override
+    protected List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
+        BlockEntity blockentity = params.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
+        if (blockentity instanceof TeapotBlockEntity teapotBlockEntity) {
+            params = params.withDynamicDrop(CONTENTS, p_56219_ -> {
+                for (int i = 0; i < teapotBlockEntity.getContainerSize(); i++) {
+                    p_56219_.accept(teapotBlockEntity.getInSlot(i));
+                }
+            });
+        }
+
+        return super.getDrops(state, params);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+        ItemContainerContents contents = stack.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY);
+        if (contents.getSlots() > 0) {
+            tooltipComponents.add(Component.translatable(contents.getStackInSlot(0).isEmpty() ? POTION : POTION_AND_ITEM, (contents.getStackInSlot(1).get(DataComponents.POTION_CONTENTS).potion().orElseThrow() == Potions.WATER ? Blocks.WATER.getName() : contents.getStackInSlot(1).getHoverName()), contents.getStackInSlot(0).getHoverName()).withStyle(ChatFormatting.GRAY));
+        }
+    }
+
+    @Override
+    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
+        ItemStack itemstack = super.getCloneItemStack(level, pos, state);
+        level.getBlockEntity(pos, MinejagoBlockEntityTypes.TEAPOT.get()).ifPresent(p_323411_ -> p_323411_.saveToItem(itemstack, level.registryAccess()));
+        return itemstack;
+    }
+
+    @Override
+    protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
+        super.onPlace(state, level, pos, oldState, movedByPiston);
+        if (level.getBlockEntity(pos) instanceof TeapotBlockEntity teapotBlockEntity)
+            teapotBlockEntity.setTemperature(getBiomeTemperature(level, pos));
     }
 }

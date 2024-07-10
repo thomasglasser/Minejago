@@ -61,7 +61,7 @@ public class Wu extends Character {
 
     public Wu(EntityType<? extends Wu> entityType, Level level) {
         super(entityType, level);
-        new PowerData(MinejagoPowers.CREATION, true).save(this);
+        new PowerData(MinejagoPowers.CREATION, true).save(this, false);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -107,7 +107,7 @@ public class Wu extends Character {
                         ResourceKey<Power> newPower = powersToGive.get(random.nextInt(powersToGive.size()));
                         if (newPower != MinejagoPowers.NONE) removePowersToGive(newPower);
                         if (newPower == MinejagoPowers.NONE) {
-                            new PowerData(newPower, true).save(serverPlayer);
+                            new PowerData(newPower, true).save(serverPlayer, true);
                             serverPlayer.displayClientMessage(Component.translatable(Wu.NO_POWER_GIVEN_KEY), true);
                             givingPower = false;
                         } else {

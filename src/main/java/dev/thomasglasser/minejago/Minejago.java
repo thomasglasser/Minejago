@@ -147,12 +147,15 @@ public class Minejago {
         NeoForge.EVENT_BUS.addListener(MinejagoCommandEvents::onCommandsRegister);
         NeoForge.EVENT_BUS.addListener(MinejagoCoreEvents::onAddReloadListeners);
         NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onLivingKnockBack);
+        NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onEntityJoinLevel);
+        NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onPlayerClone);
     }
 
     private void addForgeClientListeners() {
         NeoForge.EVENT_BUS.addListener((ClientPlayerNetworkEvent.LoggingIn event) -> MinejagoClientEvents.onPlayerLoggedIn());
         NeoForge.EVENT_BUS.addListener((ClientTickEvent.Post event) -> MinejagoClientEvents.onClientTick());
         NeoForge.EVENT_BUS.addListener((InputEvent.Key event) -> MinejagoClientEvents.onInput(event.getKey()));
+        NeoForge.EVENT_BUS.addListener(MinejagoClientEvents::onPostPlayerRender);
     }
 
     public enum Dependencies {

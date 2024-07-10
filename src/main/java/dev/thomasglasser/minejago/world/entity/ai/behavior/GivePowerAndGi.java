@@ -58,7 +58,7 @@ public class GivePowerAndGi<E extends PathfinderMob> extends MoveToWalkTarget<E>
     @Override
     protected void stop(E entity) {
         super.stop(entity);
-        new PowerData(power, true).save(target);
+        new PowerData(power, true).save(target, true);
         Power power1 = entity.level().holderOrThrow(power).value();
         if (power1 != null && power1.hasSets()) equipGi();
         if (power1 != null) target.sendSystemMessage(Component.translatable(Wu.POWER_GIVEN_KEY, entity.getDisplayName(), target.getDisplayName(), power1.getFormattedName(), power1.getTagline()));

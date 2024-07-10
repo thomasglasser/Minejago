@@ -62,6 +62,9 @@ public class MinejagoSoundEvents {
     public static final DeferredHolder<SoundEvent, SoundEvent> SKULL_MOTORBIKE_HURT = register("skull_motorbike", "entity", "hurt");
     public static final DeferredHolder<SoundEvent, SoundEvent> SKULL_MOTORBIKE_IGNITION = register("skull_motorbike", "entity", "ignition");
 
+    // Skulkin Raid
+    public static final DeferredHolder<SoundEvent, SoundEvent> SKULKIN_RAID_HORN = register("skulkin_raid", "event", "horn");
+
     private static DeferredHolder<SoundEvent, SoundEvent> register(String subject, String type, String name) {
         return SOUND_EVENTS.register(subject + "_" + name, () -> SoundEvent.createVariableRangeEvent(Minejago.modLoc(type + "." + subject + "." + name)));
     }

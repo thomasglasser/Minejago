@@ -23,7 +23,7 @@ public class Cole extends Character {
 
     public Cole(EntityType<? extends Cole> entityType, Level level) {
         super(entityType, level);
-        new PowerData(MinejagoPowers.EARTH, true).save(this);
+        new PowerData(MinejagoPowers.EARTH, true).save(this, false);
     }
 
     @Override

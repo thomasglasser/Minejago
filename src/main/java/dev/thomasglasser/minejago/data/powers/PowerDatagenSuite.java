@@ -97,7 +97,7 @@ public class PowerDatagenSuite {
     public void generate() {}
 
     public PowerDatagenSuite makePowerSuite(ResourceKey<Power> key, Consumer<Power.Builder> builderConsumer, @Nullable Supplier<? extends ParticleOptions> borderParticle, List<ResourceLocation> particleTextures, boolean hasSets, Consumer<PowerConfig> configConsumer) {
-        Power.Builder builder = Power.builder(key.location());
+        Power.Builder builder = Power.builder(key);
 
         builderConsumer.accept(builder);
 

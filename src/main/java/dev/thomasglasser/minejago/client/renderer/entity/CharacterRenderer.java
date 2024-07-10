@@ -4,17 +4,18 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import dev.thomasglasser.minejago.client.model.CharacterModel;
+import dev.thomasglasser.minejago.client.model.SpinjitzuModel;
+import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.character.Character;
 import dev.thomasglasser.tommylib.api.client.renderer.entity.layers.geo.ElytraAndItemArmorGeoLayer;
 import dev.thomasglasser.tommylib.api.world.item.armor.GeoArmorItem;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ShieldItem;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
@@ -22,6 +23,7 @@ import software.bernie.geckolib.renderer.layer.BlockAndItemGeoLayer;
 import software.bernie.geckolib.renderer.specialty.DynamicGeoEntityRenderer;
 
 public class CharacterRenderer<T extends Character> extends DynamicGeoEntityRenderer<T> {
+    private static final String BODY = "body";
     private static final String LEFT_HAND = "left_hand";
     private static final String RIGHT_HAND = "right_hand";
     private static final String LEFT_BOOT = "left_foot";
@@ -35,6 +37,8 @@ public class CharacterRenderer<T extends Character> extends DynamicGeoEntityRend
 
     protected ItemStack mainHandItem;
     protected ItemStack offhandItem;
+
+    private SpinjitzuModel<T> spinjitzuModel;
 
     public CharacterRenderer(EntityRendererProvider.Context context, CharacterModel<T> model) {
         super(context, model);
@@ -84,46 +88,20 @@ public class CharacterRenderer<T extends Character> extends DynamicGeoEntityRend
         });
 
         // Add some held item rendering
-        addRenderLayer(new BlockAndItemGeoLayer<>(this) {
-            @Nullable
+        addRenderLayer(new BlockAndItemGeoLayer<>(this, (bone, character) -> switch (bone.getName()) {
+            case LEFT_HAND -> animatable.isLeftHanded() ? mainHandItem : offhandItem;
+            case RIGHT_HAND -> animatable.isLeftHanded() ? offhandItem : mainHandItem;
+            default -> null;
+        }, (bone, character) -> null) {
             @Override
-            protected ItemStack getStackForBone(GeoBone bone, T animatable) {
-                // Retrieve the items in the entity's hands for the relevant bone
-                return switch (bone.getName()) {
-                    case LEFT_HAND -> animatable.isLeftHanded() ? mainHandItem : offhandItem;
-                    case RIGHT_HAND -> animatable.isLeftHanded() ? offhandItem : mainHandItem;
-                    default -> null;
-                };
-            }
-
-            @Override
-            protected ItemDisplayContext getTransformTypeForStack(GeoBone bone, ItemStack stack, T animatable) {
-                // Apply the camera transform for the given hand
-                return switch (bone.getName()) {
-                    case RIGHT_HAND -> ItemDisplayContext.THIRD_PERSON_RIGHT_HAND;
-                    case LEFT_HAND -> ItemDisplayContext.THIRD_PERSON_LEFT_HAND;
-                    default -> ItemDisplayContext.NONE;
-                };
-            }
-
-            // Do some quick render modifications depending on what the item is
-            @Override
-            protected void renderStackForBone(PoseStack poseStack, GeoBone bone, ItemStack stack, T animatable,
-                    MultiBufferSource bufferSource, float partialTick, int packedLight, int packedOverlay) {
-                if (stack == mainHandItem) {
-                    poseStack.mulPose(Axis.XP.rotationDegrees(-90f));
-
-                    if (stack.getItem() instanceof ShieldItem)
-                        poseStack.translate(0, 0.125, -0.25);
-                } else if (stack == offhandItem) {
-                    poseStack.mulPose(Axis.XP.rotationDegrees(-90f));
-
-                    if (stack.getItem() instanceof ShieldItem) {
-                        poseStack.translate(0, 0.125, 0.25);
-                        poseStack.mulPose(Axis.YP.rotationDegrees(180));
-                    }
+            protected void renderStackForBone(PoseStack poseStack, GeoBone bone, ItemStack stack, T animatable, MultiBufferSource bufferSource, float partialTick, int packedLight, int packedOverlay) {
+                if (bone.getName().equals(RIGHT_HAND)) {
+                    poseStack.mulPose(Axis.YP.rotationDegrees(90.0F));
+                    poseStack.mulPose(Axis.ZP.rotationDegrees(-30.0F));
+                    poseStack.translate(0.3D, 0.5D, 0.0D);
+                    if (model.isSlim())
+                        poseStack.translate(-0.1D, -0.1D, 0.0D);
                 }
-
                 super.renderStackForBone(poseStack, bone, stack, animatable, bufferSource, partialTick, packedLight, packedOverlay);
             }
         });
@@ -149,6 +127,28 @@ public class CharacterRenderer<T extends Character> extends DynamicGeoEntityRend
     public void render(T entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         setModelProperties(entity);
         super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
+        if (entity.isDoingSpinjitzu()) {
+            if (spinjitzuModel == null) {
+                spinjitzuModel = new SpinjitzuModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(SpinjitzuModel.LAYER_LOCATION));
+            }
+            spinjitzuModel.setupAnim(entity, 0, 0, entity.tickCount + partialTick, 0, 0);
+            copyFromBone(model.getBone(BODY).orElseThrow(), spinjitzuModel.getBody());
+            poseStack.mulPose(Axis.XP.rotationDegrees(180.0F));
+            int color = entity.level().holderOrThrow(entity.getData(MinejagoAttachmentTypes.POWER).power()).value().getColor().getValue();
+            spinjitzuModel.render(poseStack, bufferSource, entity.tickCount, partialTick, color);
+        }
+    }
+
+    private void copyFromBone(GeoBone bone, ModelPart part) {
+        part.x = bone.getPosX();
+        part.y = bone.getPosY();
+        part.z = bone.getPosZ();
+        part.xRot = bone.getRotX();
+        part.yRot = bone.getRotY();
+        part.zRot = bone.getRotZ();
+        part.xScale = bone.getScaleX();
+        part.yScale = bone.getScaleY();
+        part.zScale = bone.getScaleZ();
     }
 
     protected void setModelProperties(T entity) {

@@ -26,7 +26,7 @@ public class Zane extends Character {
 
     public Zane(EntityType<? extends Zane> entityType, Level level) {
         super(entityType, level);
-        new PowerData(MinejagoPowers.ICE, true).save(this);
+        new PowerData(MinejagoPowers.ICE, true).save(this, false);
         this.setPathfindingMalus(PathType.WATER, 0.0F);
     }
 

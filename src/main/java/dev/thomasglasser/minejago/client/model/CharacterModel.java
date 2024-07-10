@@ -32,4 +32,8 @@ public class CharacterModel<T extends Character> extends DefaultedEntityGeoModel
     public ResourceLocation getAnimationResource(T animatable) {
         return Minejago.modLoc("animations/entity/character.animation.json");
     }
+
+    public boolean isSlim() {
+        return slim;
+    }
 }

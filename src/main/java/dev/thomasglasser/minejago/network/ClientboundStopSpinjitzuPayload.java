@@ -3,8 +3,6 @@ package dev.thomasglasser.minejago.network;
 import dev.kosmx.playerAnim.api.firstPerson.FirstPersonMode;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.animation.definitions.PlayerAnimations;
-import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
-import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
 import dev.thomasglasser.tommylib.api.client.ClientUtils;
 import dev.thomasglasser.tommylib.api.client.animation.AnimationUtils;
 import dev.thomasglasser.tommylib.api.network.ExtendedPacketPayload;
@@ -27,7 +25,6 @@ public record ClientboundStopSpinjitzuPayload(UUID uuid, boolean fail) implement
     // On Client
     public void handle(Player player) {
         AbstractClientPlayer clientPlayer = ClientUtils.getClientPlayerByUUID(uuid);
-        clientPlayer.setData(MinejagoAttachmentTypes.SPINJITZU, new SpinjitzuData(clientPlayer.getData(MinejagoAttachmentTypes.SPINJITZU).unlocked(), false));
         if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled()) {
             if (fail)
                 AnimationUtils.startAnimation(PlayerAnimations.Spinjitzu.WOBBLE.getAnimation(), null, clientPlayer, FirstPersonMode.VANILLA);

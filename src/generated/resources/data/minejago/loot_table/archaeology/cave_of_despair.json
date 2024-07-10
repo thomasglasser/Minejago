@@ -10,6 +10,10 @@
         },
         {
           "type": "minecraft:item",
+          "name": "minejago:terrain_armor_trim_smithing_template"
+        },
+        {
+          "type": "minecraft:item",
           "name": "minecraft:terracotta"
         },
         {

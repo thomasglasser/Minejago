@@ -74,7 +74,7 @@ public class PowerCommand {
 
         for (Entity entity : entities) {
             if (entity instanceof LivingEntity livingEntity) {
-                new PowerData(power.key(), false).save(livingEntity);
+                new PowerData(power.key(), false).save(livingEntity, true);
                 ++i;
             }
             logPowerChange(pSource.getSource(), entity, power.key(), false);
@@ -88,7 +88,7 @@ public class PowerCommand {
 
         for (Entity entity : entities) {
             if (entity instanceof LivingEntity livingEntity) {
-                new PowerData(MinejagoPowers.NONE, false).save(livingEntity);
+                new PowerData(MinejagoPowers.NONE, false).save(livingEntity, true);
                 ++i;
             }
             logPowerChange(pSource.getSource(), entity, MinejagoPowers.NONE, true);

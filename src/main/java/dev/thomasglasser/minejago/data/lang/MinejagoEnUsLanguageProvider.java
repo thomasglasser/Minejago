@@ -20,8 +20,9 @@ import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
+import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPatterns;
-import dev.thomasglasser.tommylib.api.data.lang.ExtendedLanguageProvider;
+import dev.thomasglasser.tommylib.api.data.lang.ExtendedEnUsLanguageProvider;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -34,9 +35,9 @@ import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import org.apache.commons.lang3.text.WordUtils;
 
-public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider {
+public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
     public MinejagoEnUsLanguageProvider(PackOutput output) {
-        super(output, Minejago.MOD_ID, "en_us");
+        super(output, Minejago.MOD_ID);
     }
 
     @Override
@@ -124,6 +125,9 @@ public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider {
                 add(MinejagoItems.FILLED_TEACUP.get(), potion, Items.POTION.getName(PotionContents.createItemStack(Items.POTION, potion)).getString().replace("Potion", "Tea"));
         }
 
+        addSmithingTemplate(MinejagoItems.FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE.get());
+        addSmithingTemplate(MinejagoItems.TERRAIN_ARMOR_TRIM_SMITHING_TEMPLATE.get());
+
         add(MinejagoEntityTypes.THROWN_BONE_KNIFE.get(), "Bone Knife");
         add(MinejagoEntityTypes.THROWN_BAMBOO_STAFF.get(), "Bamboo Staff");
         add(MinejagoEntityTypes.THROWN_IRON_SHURIKEN.get(), "Iron Shuriken");
@@ -200,6 +204,7 @@ public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider {
         add(MinejagoSoundEvents.SKULL_MOTORBIKE_DEATH.get(), "Skull Motorbike breaks");
         add(MinejagoSoundEvents.SKULL_MOTORBIKE_HURT.get(), "Skull Motorbike dents");
         add(MinejagoSoundEvents.SKULL_MOTORBIKE_IGNITION.get(), "Skull Motorbike starts");
+        add(MinejagoSoundEvents.SKULKIN_RAID_HORN.get(), "Skeletal horn blares");
 
         add(MinejagoMobEffects.CURE.get(), "Instant Cure");
         add(MinejagoMobEffects.HYPERFOCUS.get(), "Hyperfocus");
@@ -281,6 +286,9 @@ public class MinejagoEnUsLanguageProvider extends ExtendedLanguageProvider {
         add(SkulkinRaid.RAID_NAME_COMPONENT, "Skulkin Raid");
 
         add(TeapotBrewingRecipeCategory.TITLE, "Teapot Brewing");
+
+        add(TeapotBlock.POTION, "%s");
+        add(TeapotBlock.POTION_AND_ITEM, "%s with %s");
 
         addConfigs();
     }

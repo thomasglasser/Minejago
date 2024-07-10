@@ -54,12 +54,8 @@ public class EntityMixin {
     private void minejago_makeStuckInBlock(BlockState state, Vec3 motionMultiplier, CallbackInfo ci) {
         if (INSTANCE instanceof LivingEntity livingEntity) {
             SpinjitzuData spinjitzuData = livingEntity.getData(MinejagoAttachmentTypes.SPINJITZU);
-            if (spinjitzuData.active()) {
-                if (livingEntity instanceof ServerPlayer player) {
-                    MinejagoEntityEvents.stopSpinjitzu(spinjitzuData, player, true);
-                } else {
-                    livingEntity.setData(MinejagoAttachmentTypes.SPINJITZU, new SpinjitzuData(true, false));
-                }
+            if (spinjitzuData.active() && livingEntity instanceof ServerPlayer player) {
+                MinejagoEntityEvents.stopSpinjitzu(spinjitzuData, player, true);
             }
         }
     }

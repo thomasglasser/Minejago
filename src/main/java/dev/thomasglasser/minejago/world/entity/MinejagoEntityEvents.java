@@ -2,7 +2,6 @@ package dev.thomasglasser.minejago.world.entity;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleUtils;
 import dev.thomasglasser.minejago.network.ClientboundRefreshVipDataPayload;
@@ -39,10 +38,6 @@ import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
-import java.util.List;
-import java.util.Set;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -75,12 +70,18 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingKnockBackEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+
+import java.util.List;
+import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public class MinejagoEntityEvents {
     public static final Predicate<LivingEntity> NO_SPINJITZU = (player -> player.isCrouching() ||
@@ -105,7 +106,7 @@ public class MinejagoEntityEvents {
             player.isNoGravity() ||
             player.isInLava() ||
             player.isFallFlying() ||
-            !player.blockPosition().toString().equals(TommyLibServices.ENTITY.getPersistentData(player).getString("StartPos")));
+            (!TommyLibServices.ENTITY.getPersistentData(player).getString("StartPos").isEmpty() && !player.blockPosition().toString().equals(TommyLibServices.ENTITY.getPersistentData(player).getString("StartPos"))));
 
     public static void onPlayerTick(PlayerTickEvent.Post event) {
         Player player = event.getEntity();
@@ -129,10 +130,10 @@ public class MinejagoEntityEvents {
 
                 if (!player.onGround()) {
                     persistentData.putInt("OffGroundTicks", persistentData.getInt("OffGroundTicks") + 1);
-                    TommyLibServices.ENTITY.setPersistentData(player, persistentData, false);
+                    TommyLibServices.ENTITY.setPersistentData(player, persistentData, true);
                 } else if (persistentData.getInt("OffGroundTicks") > 0) {
                     persistentData.putInt("OffGroundTicks", 0);
-                    TommyLibServices.ENTITY.setPersistentData(player, persistentData, false);
+                    TommyLibServices.ENTITY.setPersistentData(player, persistentData, true);
                 }
 
                 if (spinjitzu.unlocked()) {
@@ -146,7 +147,6 @@ public class MinejagoEntityEvents {
                             stopSpinjitzu(spinjitzu, serverPlayer, !serverPlayer.isCrouching());
                             return;
                         }
-                        MinejagoCriteriaTriggers.DID_SPINJITZU.get().trigger(serverPlayer);
                         focusData.addExhaustion(FocusConstants.EXHAUSTION_SPINJITZU);
                         if (player.tickCount % 20 == 0) {
                             level.playSound(null, serverPlayer.blockPosition(), MinejagoSoundEvents.SPINJITZU_ACTIVE.get(), SoundSource.PLAYERS);
@@ -336,7 +336,7 @@ public class MinejagoEntityEvents {
 
     public static void stopSpinjitzu(SpinjitzuData spinjitzu, ServerPlayer serverPlayer, boolean fail) {
         if (spinjitzu.active()) {
-            serverPlayer.setData(MinejagoAttachmentTypes.SPINJITZU, new SpinjitzuData(spinjitzu.unlocked(), false));
+            new SpinjitzuData(spinjitzu.unlocked(), false).save(serverPlayer, true);
             TommyLibServices.NETWORK.sendToAllClients(new ClientboundStopSpinjitzuPayload(serverPlayer.getUUID(), fail), serverPlayer.getServer());
             AttributeInstance speed = serverPlayer.getAttribute(Attributes.MOVEMENT_SPEED);
             if (speed != null && speed.hasModifier(SpinjitzuData.SPEED_MODIFIER))
@@ -367,5 +367,19 @@ public class MinejagoEntityEvents {
 
     public static void onAddBlocksToBlockEntityType(BlockEntityTypeAddBlocksEvent event) {
         event.modify(BlockEntityType.BRUSHABLE_BLOCK, MinejagoBlocks.SUSPICIOUS_RED_SAND.get());
+    }
+
+    public static void onEntityJoinLevel(EntityJoinLevelEvent event) {
+        if (!event.getLevel().isClientSide && event.getEntity() instanceof LivingEntity livingEntity) {
+            livingEntity.getData(MinejagoAttachmentTypes.SPINJITZU).save(livingEntity, true);
+            livingEntity.getData(MinejagoAttachmentTypes.POWER).save(livingEntity, true);
+        }
+    }
+
+    public static void onPlayerClone(PlayerEvent.Clone event) {
+        if (!event.getEntity().level().isClientSide) {
+            event.getEntity().getData(MinejagoAttachmentTypes.SPINJITZU).save(event.getEntity(), true);
+            event.getEntity().getData(MinejagoAttachmentTypes.POWER).save(event.getEntity(), true);
+        }
     }
 }

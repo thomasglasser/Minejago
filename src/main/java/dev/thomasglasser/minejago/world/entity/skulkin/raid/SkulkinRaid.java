@@ -6,6 +6,7 @@ import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
 import dev.thomasglasser.minejago.advancements.criterion.SkulkinRaidTrigger;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
+import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.skulkin.Kruncha;
 import dev.thomasglasser.minejago.world.entity.skulkin.Nuckal;
@@ -33,7 +34,6 @@ import net.minecraft.network.protocol.game.ClientboundSoundPacket;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -442,7 +442,7 @@ public class SkulkinRaid {
             double e = vec3.x + 13.0 / d * (vec32.x - vec3.x);
             double g = vec3.z + 13.0 / d * (vec32.z - vec3.z);
             if (d <= 64.0 || collection.contains(serverPlayer)) {
-                serverPlayer.connection.send(new ClientboundSoundPacket(SoundEvents.RAID_HORN, SoundSource.NEUTRAL, e, serverPlayer.getY(), g, 64.0F, 1.0F, l)); // TODO: Custom horn
+                serverPlayer.connection.send(new ClientboundSoundPacket(MinejagoSoundEvents.SKULKIN_RAID_HORN, SoundSource.NEUTRAL, e, serverPlayer.getY(), g, 64.0F, 1.0F, l));
             }
         }
     }

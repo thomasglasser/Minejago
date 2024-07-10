@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 public class Jay extends Character {
     public Jay(EntityType<? extends Jay> entityType, Level level) {
         super(entityType, level);
-        new PowerData(MinejagoPowers.LIGHTNING, true).save(this);
+        new PowerData(MinejagoPowers.LIGHTNING, true).save(this, false);
     }
 
     @Override

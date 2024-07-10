@@ -45,13 +45,13 @@ public record ServerboundSetPowerDataPayload(ResourceKey<Power> power, boolean m
             }
             if (power != MinejagoPowers.NONE && wu != null) wu.removePowersToGive(power);
             if (power == MinejagoPowers.NONE) {
-                new PowerData(power, true).save(serverPlayer);
+                new PowerData(power, true).save(serverPlayer, true);
                 serverPlayer.displayClientMessage(Component.translatable(Wu.NO_POWER_GIVEN_KEY), true);
             } else if (wu != null) {
                 BrainUtils.setMemory(wu, MemoryModuleType.INTERACTION_TARGET, serverPlayer);
                 BrainUtils.setMemory(wu, MinejagoMemoryModuleTypes.SELECTED_POWER.get(), power);
             } else {
-                new PowerData(power, true).save(serverPlayer);
+                new PowerData(power, true).save(serverPlayer, true);
             }
         }
     }

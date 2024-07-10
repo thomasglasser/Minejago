@@ -259,7 +259,7 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
 
     @Override
     public void setDoingSpinjitzu(boolean doingSpinjitzu) {
-        setData(MinejagoAttachmentTypes.SPINJITZU, new SpinjitzuData(true, doingSpinjitzu));
+        new SpinjitzuData(true, doingSpinjitzu).save(this, !level().isClientSide);
     }
 
     public static boolean checkCharacterSpawnRules(Class<? extends Character> clazz, EntityType<? extends Character> character, LevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {

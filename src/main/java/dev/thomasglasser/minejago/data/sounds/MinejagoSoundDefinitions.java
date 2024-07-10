@@ -55,5 +55,7 @@ public class MinejagoSoundDefinitions extends ExtendedSoundDefinitionsProvider {
         add(MinejagoSoundEvents.SKULL_MOTORBIKE_DEATH);
         add(MinejagoSoundEvents.SKULL_MOTORBIKE_HURT, 3);
         add(MinejagoSoundEvents.SKULL_MOTORBIKE_IGNITION);
+
+        add(MinejagoSoundEvents.SKULKIN_RAID_HORN);
     }
 }

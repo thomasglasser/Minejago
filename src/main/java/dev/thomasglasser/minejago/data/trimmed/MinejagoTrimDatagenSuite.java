@@ -17,5 +17,7 @@ public class MinejagoTrimDatagenSuite extends TrimDatagenSuite {
     public void generate() {
         makePattern(MinejagoTrimPatterns.FOUR_WEAPONS, MinejagoItems.FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE.get(), false, patternConfig -> patternConfig
                 .createCopyRecipe(Items.IRON_BLOCK));
+        makePattern(MinejagoTrimPatterns.TERRAIN, MinejagoItems.TERRAIN_ARMOR_TRIM_SMITHING_TEMPLATE.get(), false, patternConfig -> patternConfig
+                .createCopyRecipe(Items.STONE));
     }
 }

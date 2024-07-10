@@ -120,7 +120,7 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
 
     public Dragon(EntityType<? extends Dragon> entityType, Level level, ResourceKey<Power> power, TagKey<Power> powers) {
         super(entityType, level);
-        new PowerData(power, false).save(this);
+        new PowerData(power, false).save(this, false);
         this.acceptablePowers = powers;
         setTame(false, false);
         createInventory();

@@ -1,5 +1,6 @@
 package dev.thomasglasser.minejago.client;
 
+import com.mojang.math.Axis;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.gui.MinejagoGuis;
 import dev.thomasglasser.minejago.client.model.BambooStaffModel;
@@ -32,7 +33,6 @@ import dev.thomasglasser.minejago.client.renderer.entity.SkullTruckRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.WuRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.OgDevTeamLayer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterLayer;
-import dev.thomasglasser.minejago.client.renderer.entity.layers.SpinjitzuLayer;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import dev.thomasglasser.minejago.network.ServerboundFlyVehiclePayload;
 import dev.thomasglasser.minejago.network.ServerboundStopMeditationPayload;
@@ -102,6 +102,7 @@ import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.neoforge.client.event.RenderPlayerEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.tslat.tes.api.util.TESClientUtil;
 import org.lwjgl.glfw.GLFW;
@@ -273,7 +274,6 @@ public class MinejagoClientEvents {
             if (player != null) {
                 player.addLayer(new SnapshotTesterLayer<>(player, models));
                 player.addLayer(new OgDevTeamLayer<>(player, models));
-                player.addLayer(new SpinjitzuLayer<>(player, models));
             }
         }
     }
@@ -294,5 +294,17 @@ public class MinejagoClientEvents {
 
     public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
         event.registerReloadListener(MinejagoClientUtils.getBewlr());
+    }
+
+    public static void onPostPlayerRender(RenderPlayerEvent.Post event) {
+        Player player = event.getEntity();
+        SpinjitzuModel<Player> model = new SpinjitzuModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(SpinjitzuModel.LAYER_LOCATION));
+        if (player.getData(MinejagoAttachmentTypes.SPINJITZU).active()) {
+            model.setupAnim(player, 0, 0, player.tickCount + event.getPartialTick(), 0, 0);
+            model.getBody().copyFrom(event.getRenderer().getModel().body);
+            event.getPoseStack().mulPose(Axis.XP.rotationDegrees(180.0F));
+            int color = player.level().holderOrThrow(player.getData(MinejagoAttachmentTypes.POWER).power()).value().getColor().getValue();
+            model.render(event.getPoseStack(), event.getMultiBufferSource(), player.tickCount, event.getPartialTick(), 0xFF000000 | color);
+        }
     }
 }

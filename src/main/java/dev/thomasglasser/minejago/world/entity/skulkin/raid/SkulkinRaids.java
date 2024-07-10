@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.Map;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerLevel;
@@ -74,7 +73,7 @@ public class SkulkinRaids extends SavedData {
         } else if (!MinejagoServerConfig.INSTANCE.enableSkulkinRaids.get()) {
             return null;
         } else {
-            if (serverPlayer.level().registryAccess().registryOrThrow(Registries.DIMENSION_TYPE).createIntrusiveHolder(serverPlayer.level().dimensionType()).is(MinejagoDimensionTypeTags.HAS_SKULKIN_RAIDS)) {
+            if (!serverPlayer.level().dimensionTypeRegistration().is(MinejagoDimensionTypeTags.HAS_SKULKIN_RAIDS)) {
                 return null;
             } else {
                 SkulkinRaid raid = this.getOrCreateSkulkinRaid(serverPlayer.serverLevel(), serverPlayer.blockPosition());

@@ -115,6 +115,12 @@
     ],
     "subtitle": "subtitles.entity.skull_truck.ignition"
   },
+  "event.skulkin_raid.horn": {
+    "sounds": [
+      "minejago:event/skulkin_raid/horn"
+    ],
+    "subtitle": "subtitles.event.skulkin_raid.horn"
+  },
   "item.bamboo_staff.impact": {
     "sounds": [
       "minejago:item/bamboo_staff/impact"
