@@ -2,6 +2,7 @@ package dev.thomasglasser.minejago.world.level.block;
 
 import com.mojang.serialization.MapCodec;
 import dev.thomasglasser.minejago.world.level.block.entity.DragonButtonBlockEntity;
+import java.util.Map;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -33,8 +34,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Map;
 
 public class DragonButtonBlock extends HorizontalDirectionalBlock implements EntityBlock {
     public static final VoxelShape BOTTOM_SHAPE = Block.box(5, 0, 5, 11, 16, 11);
