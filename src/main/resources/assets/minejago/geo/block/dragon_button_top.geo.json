@@ -1,0 +1,44 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.dragon_button_top",
+				"texture_width": 64,
+				"texture_height": 32,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [0, 0.75, 0]
+			},
+			"bones": [
+				{
+					"name": "stand",
+					"pivot": [0, -25, 0],
+					"cubes": [
+						{"origin": [-4, 0, -4], "size": [8, 2, 8], "uv": [0, 0]},
+						{"origin": [-1, 2, -1], "size": [2, 2, 3], "uv": [12, 10]}
+					]
+				},
+				{
+					"name": "dragon",
+					"pivot": [0, 4, 2],
+					"cubes": [
+						{"origin": [-1, 4, -5], "size": [2, 2, 10], "uv": [22, 0]},
+						{"origin": [-1, 6, -5], "size": [2, 5, 2], "uv": [0, 0]},
+						{"origin": [-1, 10, -9], "size": [2, 2, 4], "uv": [0, 10]},
+						{"origin": [-0.001, 2, -11], "size": [0.001, 13, 20], "uv": [0, -1]},
+						{"origin": [-1, 6, -8], "size": [2, 2, 3], "uv": [21, 12]}
+					]
+				},
+				{
+					"name": "button",
+					"pivot": [0, 4, 2],
+					"cubes": [
+						{"origin": [-1, 4, -2], "size": [2, 0, 4], "uv": [29, 13]},
+						{"origin": [-0.95, 4, -1], "size": [1.9, 1, 2], "uv": [26, 0]}
+					]
+				}
+			]
+		}
+	]
+}

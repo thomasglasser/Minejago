@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:builtin/entity",
+  "textures": {
+    "particle": "minejago:entity/dragon/earth_dragon"
+  }
+}

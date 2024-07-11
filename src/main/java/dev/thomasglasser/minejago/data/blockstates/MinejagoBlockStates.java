@@ -27,7 +27,6 @@ import net.minecraft.data.models.model.ModelTemplates;
 import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.PackType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -88,15 +87,17 @@ public class MinejagoBlockStates extends ExtendedBlockStateProvider {
 
         getVariantBuilder(MinejagoBlocks.EARTH_DRAGON_HEAD.get()).forAllStates(blockState -> {
             Direction facing = blockState.getValue(TopPostBlock.FACING);
-            ModelFile model = new ModelFile.ExistingModelFile(modLoc("block/earth_dragon_head.geo.json"), existingFileHelper) {
-                @Override
-                protected boolean exists() {
-                    return existingFileHelper.exists(getUncheckedLocation(), new ExistingFileHelper.ResourceType(PackType.CLIENT_RESOURCES, "", "geo"));
-                }
-            };
 
             return ConfiguredModel.builder()
-                    .modelFile(model)
+                    .modelFile(models().getBuilder(MinejagoBlocks.EARTH_DRAGON_HEAD.getId().getPath()).parent(new ModelFile.UncheckedModelFile(mcLoc("builtin/entity"))).texture("particle", modLoc("entity/dragon/earth_dragon")))
+                    .rotationY((int) (facing.getOpposite()).toYRot())
+                    .build();
+        });
+
+        getVariantBuilder(MinejagoBlocks.DRAGON_BUTTON.get()).forAllStates(blockState -> {
+            Direction facing = blockState.getValue(TopPostBlock.FACING);
+            return ConfiguredModel.builder()
+                    .modelFile(models().getBuilder(MinejagoBlocks.DRAGON_BUTTON.getId().getPath()).parent(new ModelFile.UncheckedModelFile(mcLoc("builtin/entity"))).texture("particle", modBlockModel(MinejagoBlocks.DRAGON_BUTTON.getId().getPath())))
                     .rotationY((int) (facing.getOpposite()).toYRot())
                     .build();
         });

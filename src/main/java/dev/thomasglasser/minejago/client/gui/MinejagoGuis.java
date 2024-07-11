@@ -28,7 +28,7 @@ public class MinejagoGuis {
 
     public static void renderFocusBar(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
         Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.gameMode != null && minecraft.gameMode.canHurtPlayer()) {
+        if (minecraft.gameMode != null && minecraft.gameMode.canHurtPlayer() && !minecraft.options.hideGui) {
             Gui gui = minecraft.gui;
             Player player = ClientUtils.getMainClientPlayer();
             LivingEntity livingEntity = gui.getPlayerVehicleWithHealth();

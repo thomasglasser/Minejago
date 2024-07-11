@@ -1,33 +1,33 @@
 {
   "variants": {
     "activated=false,facing=east": {
-      "model": "minejago:block/earth_dragon_head.geo.json",
+      "model": "minejago:block/earth_dragon_head",
       "y": 90
     },
     "activated=false,facing=north": {
-      "model": "minejago:block/earth_dragon_head.geo.json"
+      "model": "minejago:block/earth_dragon_head"
     },
     "activated=false,facing=south": {
-      "model": "minejago:block/earth_dragon_head.geo.json",
+      "model": "minejago:block/earth_dragon_head",
       "y": 180
     },
     "activated=false,facing=west": {
-      "model": "minejago:block/earth_dragon_head.geo.json",
+      "model": "minejago:block/earth_dragon_head",
       "y": 270
     },
     "activated=true,facing=east": {
-      "model": "minejago:block/earth_dragon_head.geo.json",
+      "model": "minejago:block/earth_dragon_head",
       "y": 90
     },
     "activated=true,facing=north": {
-      "model": "minejago:block/earth_dragon_head.geo.json"
+      "model": "minejago:block/earth_dragon_head"
     },
     "activated=true,facing=south": {
-      "model": "minejago:block/earth_dragon_head.geo.json",
+      "model": "minejago:block/earth_dragon_head",
       "y": 180
     },
     "activated=true,facing=west": {
-      "model": "minejago:block/earth_dragon_head.geo.json",
+      "model": "minejago:block/earth_dragon_head",
       "y": 270
     }
   }

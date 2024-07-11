@@ -16,6 +16,7 @@ public class MinejagoBlockEntityTypes {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ChiseledScrollShelfBlockEntity>> CHISELED_SCROLL_SHELF = register("chiseled_scroll_shelf", () -> BlockEntityType.Builder.of(ChiseledScrollShelfBlockEntity::new, MinejagoBlocks.CHISELED_SCROLL_SHELF.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MinejagoBrushableBlockEntity>> BRUSHABLE = register("brushable", () -> BlockEntityType.Builder.of(MinejagoBrushableBlockEntity::new, MinejagoBlocks.SUSPICIOUS_RED_SAND.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DragonHeadBlockEntity>> DRAGON_HEAD = register("dragon_head", () -> BlockEntityType.Builder.of(DragonHeadBlockEntity::new, MinejagoBlocks.EARTH_DRAGON_HEAD.get()).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DragonButtonBlockEntity>> DRAGON_BUTTON = register("dragon_button", () -> BlockEntityType.Builder.of(DragonButtonBlockEntity::new, MinejagoBlocks.DRAGON_BUTTON.get()).build(null));
 
     private static <T extends BlockEntityType<?>> DeferredHolder<BlockEntityType<?>, T> register(String name, Supplier<T> type) {
         return BLOCK_ENTITY_TYPES.register(name, type);

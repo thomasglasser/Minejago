@@ -30,6 +30,7 @@ public class MinejagoBlockLoot extends ExtendedBlockLootSubProvider {
 
         dropSelf(MinejagoBlocks.GOLD_DISC.get());
         dropSelf(MinejagoBlocks.TOP_POST.get());
+        dropSelf(MinejagoBlocks.DRAGON_BUTTON.get());
 
         add(MinejagoBlocks.SUSPICIOUS_RED_SAND.get(), noDrop());
 

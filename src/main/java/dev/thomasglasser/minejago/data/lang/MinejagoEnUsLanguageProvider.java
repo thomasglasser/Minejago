@@ -92,6 +92,7 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(MinejagoBlocks.CHISELED_SCROLL_SHELF.get(), "Chiseled Scroll Shelf");
         add(MinejagoBlocks.EARTH_DRAGON_HEAD.get(), "Earth Dragon Head");
         add(MinejagoBlocks.SUSPICIOUS_RED_SAND.get(), "Suspicious Red Sand");
+        add(MinejagoBlocks.DRAGON_BUTTON.get(), "Dragon Button");
 
         add(MinejagoBlocks.ENCHANTED_WOOD_SET, "Enchanted");
 
@@ -127,6 +128,7 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
 
         addSmithingTemplate(MinejagoItems.FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE.get());
         addSmithingTemplate(MinejagoItems.TERRAIN_ARMOR_TRIM_SMITHING_TEMPLATE.get());
+        addSmithingTemplate(MinejagoItems.LOTUS_ARMOR_TRIM_SMITHING_TEMPLATE.get());
 
         add(MinejagoEntityTypes.THROWN_BONE_KNIFE.get(), "Bone Knife");
         add(MinejagoEntityTypes.THROWN_BAMBOO_STAFF.get(), "Bamboo Staff");

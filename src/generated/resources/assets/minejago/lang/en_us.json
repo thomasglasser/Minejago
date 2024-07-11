@@ -86,6 +86,7 @@
   "block.minejago.brown_teapot": "Brown Teapot",
   "block.minejago.chiseled_scroll_shelf": "Chiseled Scroll Shelf",
   "block.minejago.cyan_teapot": "Cyan Teapot",
+  "block.minejago.dragon_button": "Dragon Button",
   "block.minejago.earth_dragon_head": "Earth Dragon Head",
   "block.minejago.enchanted_log": "Enchanted Log",
   "block.minejago.enchanted_planks": "Enchanted Planks",
@@ -304,6 +305,7 @@
   "item.minejago.jay_spawn_egg": "Jay Spawn Egg",
   "item.minejago.kai_spawn_egg": "Kai Spawn Egg",
   "item.minejago.kruncha_spawn_egg": "Kruncha Spawn Egg",
+  "item.minejago.lotus_armor_trim_smithing_template": "Smithing Template",
   "item.minejago.master_pottery_sherd": "Master Pottery Sherd",
   "item.minejago.nuckal_spawn_egg": "Nuckal Spawn Egg",
   "item.minejago.nya_spawn_egg": "Nya Spawn Egg",
@@ -440,5 +442,6 @@
   "subtitles.spinjitzu.start": "Spinjitzu activates",
   "subtitles.spinjitzu.stop": "Spinjitzu fades",
   "trim_pattern.minejago.four_weapons": "Four Weapons Armor Trim",
+  "trim_pattern.minejago.lotus": "Lotus Armor Trim",
   "trim_pattern.minejago.terrain": "Terrain Armor Trim"
 }

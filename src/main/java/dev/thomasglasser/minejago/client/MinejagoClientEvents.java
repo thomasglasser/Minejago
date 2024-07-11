@@ -19,6 +19,7 @@ import dev.thomasglasser.minejago.client.particle.SnowsParticle;
 import dev.thomasglasser.minejago.client.particle.SparklesParticle;
 import dev.thomasglasser.minejago.client.particle.SparksParticle;
 import dev.thomasglasser.minejago.client.particle.VaporsParticle;
+import dev.thomasglasser.minejago.client.renderer.block.DragonButtonRenderer;
 import dev.thomasglasser.minejago.client.renderer.block.DragonHeadRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.CharacterRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.DragonRenderer;
@@ -53,10 +54,6 @@ import dev.thomasglasser.tommylib.api.client.ClientUtils;
 import dev.thomasglasser.tommylib.api.client.renderer.entity.ThrownSwordRenderer;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import dev.thomasglasser.tommylib.api.world.entity.PlayerRideableFlying;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -106,6 +103,11 @@ import net.neoforged.neoforge.client.event.RenderPlayerEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.tslat.tes.api.util.TESClientUtil;
 import org.lwjgl.glfw.GLFW;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class MinejagoClientEvents {
     public static void onPlayerLoggedIn() {
@@ -221,6 +223,7 @@ public class MinejagoClientEvents {
 
         event.registerBlockEntityRenderer(MinejagoBlockEntityTypes.DRAGON_HEAD.get(), pContext -> new DragonHeadRenderer());
         event.registerBlockEntityRenderer(MinejagoBlockEntityTypes.BRUSHABLE.get(), BrushableBlockRenderer::new);
+        event.registerBlockEntityRenderer(MinejagoBlockEntityTypes.DRAGON_BUTTON.get(), context -> new DragonButtonRenderer(MinejagoBlocks.DRAGON_BUTTON.getId()));
     }
 
     public static void registerModels(ModelEvent.RegisterAdditional event) {
