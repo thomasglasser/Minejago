@@ -68,7 +68,7 @@ public class Wu extends Character {
         return Character.createAttributes()
                 .add(Attributes.MAX_HEALTH, ((RangedAttribute) Attributes.MAX_HEALTH.value()).getMaxValue())
                 .add(Attributes.ATTACK_KNOCKBACK, ((RangedAttribute) Attributes.ATTACK_KNOCKBACK.value()).getMaxValue())
-                .add(Attributes.ATTACK_DAMAGE, 20);
+                .add(Attributes.ATTACK_DAMAGE, ((RangedAttribute) Attributes.ATTACK_DAMAGE.value()).getMaxValue());
     }
 
     @Override

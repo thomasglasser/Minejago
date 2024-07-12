@@ -15,6 +15,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
@@ -24,6 +25,7 @@ import software.bernie.geckolib.renderer.specialty.DynamicGeoEntityRenderer;
 
 public class CharacterRenderer<T extends Character> extends DynamicGeoEntityRenderer<T> {
     private static final String BODY = "body";
+    private static final String HEAD = "head";
     private static final String LEFT_HAND = "left_hand";
     private static final String RIGHT_HAND = "right_hand";
     private static final String LEFT_BOOT = "left_foot";
@@ -95,14 +97,19 @@ public class CharacterRenderer<T extends Character> extends DynamicGeoEntityRend
         }, (bone, character) -> null) {
             @Override
             protected void renderStackForBone(PoseStack poseStack, GeoBone bone, ItemStack stack, T animatable, MultiBufferSource bufferSource, float partialTick, int packedLight, int packedOverlay) {
-                if (bone.getName().equals(RIGHT_HAND)) {
-                    poseStack.mulPose(Axis.YP.rotationDegrees(90.0F));
-                    poseStack.mulPose(Axis.ZP.rotationDegrees(-30.0F));
-                    poseStack.translate(0.3D, 0.5D, 0.0D);
-                    if (model.isSlim())
-                        poseStack.translate(-0.1D, -0.1D, 0.0D);
-                }
+                poseStack.translate(0, 0.1D, -0.1D);
+                poseStack.mulPose(Axis.XP.rotationDegrees(-80.0F));
                 super.renderStackForBone(poseStack, bone, stack, animatable, bufferSource, partialTick, packedLight, packedOverlay);
+            }
+
+            @Override
+            protected ItemDisplayContext getTransformTypeForStack(GeoBone bone, ItemStack stack, T animatable) {
+                return switch (bone.getName()) {
+                    case LEFT_HAND -> ItemDisplayContext.THIRD_PERSON_LEFT_HAND;
+                    case RIGHT_HAND -> ItemDisplayContext.THIRD_PERSON_RIGHT_HAND;
+                    case HEAD -> ItemDisplayContext.HEAD;
+                    default -> ItemDisplayContext.NONE;
+                };
             }
         });
     }
