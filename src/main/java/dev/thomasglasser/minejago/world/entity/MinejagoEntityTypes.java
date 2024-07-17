@@ -37,7 +37,7 @@ import net.minecraft.world.phys.Vec3;
 public class MinejagoEntityTypes {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, Minejago.MOD_ID);
 
-    // PROJECTILES
+    // Projectiles
     public static final DeferredHolder<EntityType<?>, EntityType<ThrownSword>> THROWN_BAMBOO_STAFF = register("thrown_bamboo_staff", () -> EntityType.Builder.<ThrownSword>of(ThrownSword::new, MobCategory.MISC)
             .sized(0.5F, 0.5F)
             .build("thrown_bamboo_staff"));
@@ -54,7 +54,7 @@ public class MinejagoEntityTypes {
             .sized(1.0F, 1.0F)
             .build("earth_blast"));
 
-    // MOBS
+    // Characters
     public static final DeferredHolder<EntityType<?>, EntityType<Wu>> WU = register("wu", () -> EntityType.Builder.of(Wu::new, MobCategory.CREATURE)
             .sized(0.6f, 1.95f)
             .build("wu"));
@@ -73,6 +73,8 @@ public class MinejagoEntityTypes {
     public static final DeferredHolder<EntityType<?>, EntityType<Zane>> ZANE = register("zane", () -> EntityType.Builder.of(Zane::new, MobCategory.CREATURE)
             .sized(0.6f, 1.95f)
             .build("zane"));
+
+    // Skulkin
     public static final DeferredHolder<EntityType<?>, EntityType<Skulkin>> SKULKIN = register("skulkin", () -> EntityType.Builder.of(Skulkin::new, MobCategory.MONSTER)
             .sized(0.6f, 1.95f)
             .build("skulkin"));
@@ -85,12 +87,6 @@ public class MinejagoEntityTypes {
     public static final DeferredHolder<EntityType<?>, EntityType<SkulkinHorse>> SKULKIN_HORSE = register("skulkin_horse", () -> EntityType.Builder.of(SkulkinHorse::new, MobCategory.CREATURE)
             .sized(1.3964844f, 1.6f)
             .build("skulkin_horse"));
-    public static final DeferredHolder<EntityType<?>, EntityType<EarthDragon>> EARTH_DRAGON = register("earth_dragon", () -> EntityType.Builder.of(EarthDragon::new, MobCategory.CREATURE)
-            .sized(4.8125f, 3.00f)
-            .passengerAttachments(
-                    new Vec3(0.0, 2.8275, 1.65),
-                    new Vec3(0.0, 2.8275, 0.9))
-            .build("earth_dragon"));
     public static final DeferredHolder<EntityType<?>, EntityType<Samukai>> SAMUKAI = register("samukai", () -> EntityType.Builder.of(Samukai::new, MobCategory.MONSTER)
             .sized(0.875f, 2.375f)
             .build("samukai"));
@@ -106,6 +102,14 @@ public class MinejagoEntityTypes {
             .passengerAttachments(
                     new Vec3(0.0, 0.45, -0.3))
             .build("skull_motorbike"));
+
+    // Dragons
+    public static final DeferredHolder<EntityType<?>, EntityType<EarthDragon>> EARTH_DRAGON = register("earth_dragon", () -> EntityType.Builder.of(EarthDragon::new, MobCategory.CREATURE)
+            .sized(4.8125f, 3.00f)
+            .passengerAttachments(
+                    new Vec3(0.0, 2.8275, 1.65),
+                    new Vec3(0.0, 2.8275, 0.9))
+            .build("earth_dragon"));
 
     private static <T extends EntityType<?>> DeferredHolder<EntityType<?>, T> register(String name, Supplier<T> type) {
         return ENTITY_TYPES.register(name, type);

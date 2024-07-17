@@ -1,0 +1,43 @@
+{
+  "parent": "minejago:story/enter_golden_weapons_structure",
+  "criteria": {
+    "enter_cave_of_despair": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "structures": "minejago:cave_of_despair"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:location"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.minejago.story.enter_all_golden_weapons_structures.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "minejago:scythe_of_quakes"
+    },
+    "title": {
+      "translate": "advancement.minejago.story.enter_all_golden_weapons_structures.title"
+    }
+  },
+  "requirements": [
+    [
+      "enter_cave_of_despair"
+    ]
+  ],
+  "rewards": {
+    "experience": 50
+  },
+  "sends_telemetry_event": true
+}

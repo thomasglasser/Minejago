@@ -3,7 +3,6 @@ package dev.thomasglasser.minejago.data.advancements.packs;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.tommylib.api.data.advancements.ExtendedAdvancementGenerator;
-import java.util.Map;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementType;
 import net.minecraft.advancements.critereon.BlockPredicate;
@@ -22,7 +21,7 @@ public class MinejagoHusbandryAdvancements extends ExtendedAdvancementGenerator 
 
     @Override
     public void generate(HolderLookup.Provider provider) {
-        AdvancementHolder harvestWithScythe = create(ResourceLocation.withDefaultNamespace("husbandry/plant_seed"), MinejagoItems.IRON_SCYTHE.get(), "harvest_with_scythe", AdvancementType.TASK, true, true, false, null, Map.of(
-                "harvest_with_scythe", ItemUsedOnLocationTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location().setBlock(BlockPredicate.Builder.block().of(BlockTags.CROPS)), ItemPredicate.Builder.item().of(MinejagoItems.IRON_SCYTHE.get()))), "The Ninja Reaper", "Use a Scythe to instantly replant a crop");
+        AdvancementHolder harvestWithScythe = create(ResourceLocation.withDefaultNamespace("husbandry/plant_seed"), MinejagoItems.IRON_SCYTHE.get(), "harvest_with_scythe", AdvancementType.TASK, true, true, false, null,
+                "harvest_with_scythe", ItemUsedOnLocationTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location().setBlock(BlockPredicate.Builder.block().of(BlockTags.CROPS)), ItemPredicate.Builder.item().of(MinejagoItems.IRON_SCYTHE.get())), "The Ninja Reaper", "Use a Scythe to instantly replant a crop");
     }
 }

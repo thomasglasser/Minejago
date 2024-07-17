@@ -288,7 +288,8 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
         NONE
     }
 
-    protected int getCurrentSwingDuration() {
+    @Override
+    public int getCurrentSwingDuration() {
         int baseSwingDuration = 18;
         if (MobEffectUtil.hasDigSpeed(this)) {
             return baseSwingDuration - (1 + MobEffectUtil.getDigSpeedAmplification(this));

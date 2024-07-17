@@ -114,7 +114,8 @@ public class Samukai extends MeleeCompatibleSkeletonRaider implements GeoEntity 
         return cache;
     }
 
-    protected int getCurrentSwingDuration() {
+    @Override
+    public int getCurrentSwingDuration() {
         int baseSwingDuration = 10;
         if (MobEffectUtil.hasDigSpeed(this)) {
             return baseSwingDuration - (1 + MobEffectUtil.getDigSpeedAmplification(this));
