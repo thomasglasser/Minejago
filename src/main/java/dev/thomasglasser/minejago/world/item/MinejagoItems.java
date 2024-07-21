@@ -58,7 +58,7 @@ public class MinejagoItems {
     public static final DeferredItem<WrittenScrollItem> WRITTEN_SCROLL = register("written_scroll", () -> new WrittenScrollItem(new Item.Properties().stacksTo(1)), List.of());
     public static final DeferredItem<CustomEmptyMapItem> EMPTY_GOLDEN_WEAPONS_MAP = register("empty_golden_weapons_map", () -> new CustomEmptyMapItem(MinejagoItemUtils::createGoldenWeaponsMap, new Item.Properties()), List.of(MinejagoCreativeModeTabs.MINEJAGO.getKey()));
 
-    // POTTERY SHERDS
+    // Pottery Sherds
     public static final DeferredItem<Item> POTTERY_SHERD_ICE_CUBE = registerSherd("ice_cube");
     public static final DeferredItem<Item> POTTERY_SHERD_THUNDER = registerSherd("thunder");
     public static final DeferredItem<Item> POTTERY_SHERD_PEAKS = registerSherd("peaks");
@@ -67,12 +67,12 @@ public class MinejagoItems {
     public static final DeferredItem<Item> POTTERY_SHERD_DRAGONS_HEAD = registerSherd("dragons_head");
     public static final DeferredItem<Item> POTTERY_SHERD_DRAGONS_TAIL = registerSherd("dragons_tail");
 
-    // SMITHING TEMPLATES
+    // Smithing Templates
     public static final DeferredItem<SmithingTemplateItem> FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE = registerSmithingTemplate(MinejagoTrimPatterns.FOUR_WEAPONS);
     public static final DeferredItem<SmithingTemplateItem> TERRAIN_ARMOR_TRIM_SMITHING_TEMPLATE = registerSmithingTemplate(MinejagoTrimPatterns.TERRAIN);
     public static final DeferredItem<SmithingTemplateItem> LOTUS_ARMOR_TRIM_SMITHING_TEMPLATE = registerSmithingTemplate(MinejagoTrimPatterns.LOTUS);
 
-    // SPAWN EGGS
+    // Spawn Eggs
     public static final DeferredItem<SpawnEggItem> WU_SPAWN_EGG = registerSpawnEgg("wu_spawn_egg", MinejagoEntityTypes.WU::get, 16645363, 14689295);
     public static final DeferredItem<SpawnEggItem> KAI_SPAWN_EGG = registerSpawnEgg("kai_spawn_egg", MinejagoEntityTypes.KAI::get, 9507597, 5185296);
     public static final DeferredItem<SpawnEggItem> NYA_SPAWN_EGG = registerSpawnEgg("nya_spawn_egg", MinejagoEntityTypes.NYA::get, 9507597, 3223857);
@@ -87,6 +87,10 @@ public class MinejagoItems {
     public static final DeferredItem<SpawnEggItem> SAMUKAI_SPAWN_EGG = registerSpawnEgg("samukai_spawn_egg", MinejagoEntityTypes.SAMUKAI::get, 0xdbd7bd, 0xb90e04);
     public static final DeferredItem<SpawnEggItem> SKULL_TRUCK_SPAWN_EGG = registerSpawnEgg("skull_truck_spawn_egg", MinejagoEntityTypes.SKULL_TRUCK::get, 0xcbc6a5, 0x832696);
     public static final DeferredItem<SpawnEggItem> SKULL_MOTORBIKE_SPAWN_EGG = registerSpawnEgg("skull_motorbike_spawn_egg", MinejagoEntityTypes.SKULL_MOTORBIKE::get, 0xd4cfae, 0x9143ff);
+
+    // Spinjitzu Course Elements
+    public static final DeferredItem<SpinjitzuCourseElementItem> CENTER_SPINJITZU_COURSE_ELEMENT = register("center_spinjitzu_course_element", () -> new SpinjitzuCourseElementItem(MinejagoEntityTypes.CENTER_SPINJITZU_COURSE_ELEMENT::get, new Item.Properties()), List.of(CreativeModeTabs.REDSTONE_BLOCKS));
+    public static final DeferredItem<SpinjitzuCourseElementItem> BOUNCING_POLE_SPINJITZU_COURSE_ELEMENT = register("bouncing_pole_spinjitzu_course_element", () -> new SpinjitzuCourseElementItem(MinejagoEntityTypes.BOUNCING_POLE_SPINJITZU_COURSE_ELEMENT::get, new Item.Properties()), List.of(CreativeModeTabs.REDSTONE_BLOCKS));
 
     public static <T extends Item> DeferredItem<T> register(String name, Supplier<T> itemSupplier, List<ResourceKey<CreativeModeTab>> tabs) {
         return ItemUtils.register(ITEMS, name, itemSupplier, tabs);

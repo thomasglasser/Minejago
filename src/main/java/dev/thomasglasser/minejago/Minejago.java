@@ -43,6 +43,8 @@ import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
+import net.neoforged.neoforge.client.gui.ConfigurationScreen;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
 import net.tslat.tes.api.TESAPI;
 import org.apache.logging.log4j.LogManager;
@@ -114,6 +116,7 @@ public class Minejago {
     private static void registerConfigs(ModContainer modContainer) {
         modContainer.registerConfig(ModConfig.Type.SERVER, MinejagoServerConfig.INSTANCE.getConfigSpec());
         modContainer.registerConfig(ModConfig.Type.CLIENT, MinejagoClientConfig.INSTANCE.getConfigSpec());
+        modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
     }
 
     private void addModListeners(IEventBus bus) {

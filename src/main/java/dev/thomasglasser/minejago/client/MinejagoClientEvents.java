@@ -4,6 +4,8 @@ import com.mojang.math.Axis;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.gui.MinejagoGuis;
 import dev.thomasglasser.minejago.client.model.BambooStaffModel;
+import dev.thomasglasser.minejago.client.model.BouncingPoleSpinjitzuCourseElementModel;
+import dev.thomasglasser.minejago.client.model.CenterSpinjitzuCourseElementModel;
 import dev.thomasglasser.minejago.client.model.KrunchaModel;
 import dev.thomasglasser.minejago.client.model.NuckalModel;
 import dev.thomasglasser.minejago.client.model.OgDevTeamBeardModel;
@@ -31,6 +33,7 @@ import dev.thomasglasser.minejago.client.renderer.entity.SkulkinHorseRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.SkulkinRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.SkullMotorbikeRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.SkullTruckRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.SpinjitzuCourseElementRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.WuRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.OgDevTeamLayer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterLayer;
@@ -219,6 +222,8 @@ public class MinejagoClientEvents {
         event.registerEntityRenderer(MinejagoEntityTypes.SAMUKAI.get(), SamukaiRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.SKULL_TRUCK.get(), SkullTruckRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.SKULL_MOTORBIKE.get(), SkullMotorbikeRenderer::new);
+        event.registerEntityRenderer(MinejagoEntityTypes.CENTER_SPINJITZU_COURSE_ELEMENT.get(), pContext -> new SpinjitzuCourseElementRenderer<>(pContext, new CenterSpinjitzuCourseElementModel()));
+        event.registerEntityRenderer(MinejagoEntityTypes.BOUNCING_POLE_SPINJITZU_COURSE_ELEMENT.get(), pContext -> new SpinjitzuCourseElementRenderer<>(pContext, new BouncingPoleSpinjitzuCourseElementModel()));
 
         event.registerBlockEntityRenderer(MinejagoBlockEntityTypes.DRAGON_HEAD.get(), pContext -> new DragonHeadRenderer());
         event.registerBlockEntityRenderer(MinejagoBlockEntityTypes.BRUSHABLE.get(), BrushableBlockRenderer::new);

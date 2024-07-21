@@ -58,7 +58,7 @@ public class MinejagoMobEffects {
 
         @Override
         public boolean shouldTickEffect(@Nullable MobEffectInstance effectInstance, @Nullable LivingEntity entity, int ticksRemaining, int amplifier) {
-            return effectInstance != null && effectInstance.getDuration() > 1;
+            return effectInstance != null && (effectInstance.getDuration() > 1 || effectInstance.isInfiniteDuration());
         }
     });
 

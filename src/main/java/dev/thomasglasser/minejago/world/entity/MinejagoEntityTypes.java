@@ -19,6 +19,8 @@ import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;
 import dev.thomasglasser.minejago.world.entity.skulkin.SkulkinHorse;
 import dev.thomasglasser.minejago.world.entity.skulkin.SkullMotorbike;
 import dev.thomasglasser.minejago.world.entity.skulkin.SkullTruck;
+import dev.thomasglasser.minejago.world.entity.spinjitzucourse.BouncingPoleSpinjitzuCourseElement;
+import dev.thomasglasser.minejago.world.entity.spinjitzucourse.CenterSpinjitzuCourseElement;
 import dev.thomasglasser.tommylib.api.registration.DeferredHolder;
 import dev.thomasglasser.tommylib.api.registration.DeferredRegister;
 import dev.thomasglasser.tommylib.api.world.entity.projectile.ThrownSword;
@@ -110,6 +112,13 @@ public class MinejagoEntityTypes {
                     new Vec3(0.0, 2.8275, 1.65),
                     new Vec3(0.0, 2.8275, 0.9))
             .build("earth_dragon"));
+
+    // Spinjitzu Course Elements
+    public static final DeferredHolder<EntityType<?>, EntityType<CenterSpinjitzuCourseElement>> CENTER_SPINJITZU_COURSE_ELEMENT = register("center_spinjitzu_course_element", () -> EntityType.Builder.of(CenterSpinjitzuCourseElement::new, MobCategory.MISC)
+            .build("center_spinjitzu_course_element"));
+    public static final DeferredHolder<EntityType<?>, EntityType<BouncingPoleSpinjitzuCourseElement>> BOUNCING_POLE_SPINJITZU_COURSE_ELEMENT = register("bouncing_pole_spinjitzu_course_element", () -> EntityType.Builder.of(BouncingPoleSpinjitzuCourseElement::new, MobCategory.MISC)
+            .sized(0.75f, 0.375f)
+            .build("bouncing_pole_spinjitzu_course_element"));
 
     private static <T extends EntityType<?>> DeferredHolder<EntityType<?>, T> register(String name, Supplier<T> type) {
         return ENTITY_TYPES.register(name, type);

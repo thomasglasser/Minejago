@@ -55,6 +55,8 @@ public class MinejagoItemModels extends ExtendedItemModelProvider {
         basicItem(MinejagoItems.WRITABLE_SCROLL.get());
         basicItem(MinejagoItems.WRITTEN_SCROLL.get());
         basicItem(MinejagoBlocks.DRAGON_BUTTON.get().asItem());
+        basicItem(MinejagoItems.CENTER_SPINJITZU_COURSE_ELEMENT);
+        basicItem(MinejagoItems.BOUNCING_POLE_SPINJITZU_COURSE_ELEMENT);
 
         basicInventoryItem(MinejagoItems.WOODEN_NUNCHUCKS);
 

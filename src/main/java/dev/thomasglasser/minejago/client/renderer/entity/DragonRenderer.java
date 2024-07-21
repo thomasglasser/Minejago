@@ -14,7 +14,7 @@ public class DragonRenderer<T extends Dragon> extends GeoEntityRenderer<T> {
     private static final String CHESTS = "chests";
 
     public DragonRenderer(EntityRendererProvider.Context renderManager, ResourceLocation entityLoc) {
-        super(renderManager, new DefaultedEntityGeoModel<>(ResourceLocation.fromNamespaceAndPath(entityLoc.getNamespace(), "dragon/" + entityLoc.getPath()), true));
+        super(renderManager, new DefaultedEntityGeoModel<>(entityLoc.withPrefix("dragon/"), true));
     }
 
     @Override

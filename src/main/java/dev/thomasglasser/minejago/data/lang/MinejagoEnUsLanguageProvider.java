@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.data.lang;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.client.MinejagoClientConfig;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.PowerSelectionScreen;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.ScrollEditScreen;
@@ -8,6 +9,7 @@ import dev.thomasglasser.minejago.client.gui.screens.inventory.ScrollViewScreen;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import dev.thomasglasser.minejago.plugins.MinejagoWailaPlugin;
 import dev.thomasglasser.minejago.plugins.jei.TeapotBrewingRecipeCategory;
+import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.server.commands.PowerCommand;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
@@ -81,6 +83,8 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(MinejagoItems.WRITABLE_SCROLL.get(), "Scroll and Quill");
         add(MinejagoItems.WRITTEN_SCROLL.get(), "Written Scroll");
         add(MinejagoItems.EMPTY_GOLDEN_WEAPONS_MAP.get(), "Empty Golden Weapons Map");
+        add(MinejagoItems.CENTER_SPINJITZU_COURSE_ELEMENT.get(), "Center Spinjitzu Course Element");
+        add(MinejagoItems.BOUNCING_POLE_SPINJITZU_COURSE_ELEMENT.get(), "Bouncing Pole Spinjitzu Course Element");
 
         add(MinejagoBlocks.TEAPOT.get(), "Teapot");
         MinejagoBlocks.TEAPOTS.forEach((color, pot) -> add(pot.get(), WordUtils.capitalize(color.getName().replace('_', ' ')) + " Teapot"));
@@ -149,6 +153,8 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(MinejagoEntityTypes.SAMUKAI.get(), "Samukai", MinejagoItems.SAMUKAI_SPAWN_EGG.get());
         add(MinejagoEntityTypes.SKULL_TRUCK.get(), "Skull Truck", MinejagoItems.SKULL_TRUCK_SPAWN_EGG.get());
         add(MinejagoEntityTypes.SKULL_MOTORBIKE.get(), "Skull Motorbike", MinejagoItems.SKULL_MOTORBIKE_SPAWN_EGG.get());
+        add(MinejagoEntityTypes.CENTER_SPINJITZU_COURSE_ELEMENT.get(), "Center Spinjitzu Course Element");
+        add(MinejagoEntityTypes.BOUNCING_POLE_SPINJITZU_COURSE_ELEMENT.get(), "Bouncing Pole Spinjitzu Course Element");
 
         addPattern(MinejagoBannerPatterns.FOUR_WEAPONS_LEFT, "Four Weapons Left");
         addPattern(MinejagoBannerPatterns.FOUR_WEAPONS_RIGHT, "Four Weapons Right");
@@ -301,20 +307,33 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
     }
 
     public void addConfigs() {
-        // TODO: Add when config screen is added
-//        add(MinejagoServerConfig.FEATURES_COMMENT_KEY, "Optional features that enhance the mod, but may not match the desired experience of some players");
-//        add(MinejagoServerConfig.ENABLE_TECH_KEY, "Enable the technology of the mod, such as vehicles and computers");
-//        add(MinejagoServerConfig.ENABLE_SKULKIN_RAIDS_KEY, "Enable Skulkin Raids on Four Weapons structures");
-//
-//        add(MinejagoServerConfig.POWERS_COMMENT_KEY, "Settings for powers (elemental or otherwise)");
-//        add(MinejagoServerConfig.ALLOW_CHOOSE_KEY, "Allow players to choose the power given to them by interacting with Master Wu");
-//        add(MinejagoServerConfig.ALLOW_CHANGE_KEY, "Allow players to get a new power by interacting with Master Wu again");
-//        add(MinejagoServerConfig.DRAIN_POOL_KEY, "Remove a power from the option list once given and reset when all powers have been given");
-//        add(MinejagoServerConfig.ENABLE_NO_POWER_KEY, "Enable players to receive no power from Master Wu");
-//
-//        add(MinejagoServerConfig.GOLDEN_WEAPONS_COMMENT_KEY, "Settings for the four Golden Weapons");
-//        add(MinejagoServerConfig.REQUIRE_COMPATIBLE_POWER_KEY, "Require users to have a compatible power");
-//        add(MinejagoServerConfig.ENABLE_MALFUNCTION_KEY, "Enable an abnormal reaction when handled by someone without a compatible power");
+        addConfigTitle(Minejago.MOD_NAME);
+
+        // Server
+        addConfigSection(MinejagoServerConfig.FEATURES, "Optional features that enhance the mod, but may not match the desired experience of some players");
+        addConfig(MinejagoServerConfig.INSTANCE.enableTech, "Enable Technology", "Enable the technology of the mod, such as vehicles and computers");
+        addConfig(MinejagoServerConfig.INSTANCE.enableSkulkinRaids, "Enable Skulkin Raids", "Enable Skulkin Raids on Four Weapons structures");
+
+        addConfigSection(MinejagoServerConfig.POWERS, "Settings for powers (elemental or otherwise)");
+        addConfig(MinejagoServerConfig.INSTANCE.allowChoose, "Allow Choosing Power", "Allow players to choose the power given to them by interacting with Master Wu");
+        addConfig(MinejagoServerConfig.INSTANCE.allowChange, "Allow Changing Power", "Allow players to get a new power by interacting with Master Wu again");
+        addConfig(MinejagoServerConfig.INSTANCE.drainPool, "Drain Power Pool", "Remove a power from the option list once given and reset when all powers have been given");
+        addConfig(MinejagoServerConfig.INSTANCE.enableNoPower, "Enable No Power", "Enable players to receive no power from Master Wu");
+
+        addConfigSection(MinejagoServerConfig.GOLDEN_WEAPONS, "Settings for the four Golden Weapons");
+        addConfig(MinejagoServerConfig.INSTANCE.requireCompatiblePower, "Require Compatible Power", "Require users to have a compatible power");
+        addConfig(MinejagoServerConfig.INSTANCE.enableMalfunction, "Enable Malfunction", "Enable an abnormal reaction when handled by someone without a compatible power");
+
+        // Client
+        addConfigSection(MinejagoClientConfig.COSMETICS, "Settings for player cosmetics");
+        addConfig(MinejagoClientConfig.INSTANCE.displaySnapshotTesterCosmetic, "Display Snapshot Tester Cosmetic", "Display your preferred Snapshot Tester Cosmetic (if eligible)");
+        addConfig(MinejagoClientConfig.INSTANCE.snapshotTesterCosmeticChoice, "Snapshot Tester Cosmetic Choice", "The Snapshot Tester Cosmetic to be displayed (if eligible)");
+        addConfig(MinejagoClientConfig.INSTANCE.displayDevTeamCosmetic, "Display Dev Team Cosmetic", "Display the Dev Team cosmetic (if eligible)");
+        addConfig(MinejagoClientConfig.INSTANCE.displayOgDevTeamCosmetic, "Display OG Dev Team Cosmetic", "Display the OG Dev Team cosmetic (if eligible)");
+
+        addConfigSection(MinejagoClientConfig.FOCUS_BAR, "Settings for focus bar");
+        addConfig(MinejagoClientConfig.INSTANCE.xOffset, "Horizontal Offset", "Horizontal pixels off from the normal position");
+        addConfig(MinejagoClientConfig.INSTANCE.yOffset, "Vertical Offset", "Vertical pixels off from the normal position");
     }
 
     public void addPluginConfig(ResourceLocation location, String name) {

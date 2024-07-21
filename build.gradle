@@ -179,7 +179,7 @@ dependencies {
 	implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
 	implementation "net.tslat.tes:TES-neoforge-${minecraft_version}:${tes_version}"
 	implementation "net.tslat.effectslib:TslatEffectsLib-neoforge-${minecraft_version}:${tslateffectslib_version}"
-	implementation "maven.modrinth:ryoamiclights:${ryoamiclights_version}-neoforge"
+	compileOnly "maven.modrinth:ryoamiclights:${ryoamiclights_version}-neoforge"
 	implementation "com.klikli_dev:modonomicon-${minecraft_version}-neoforge:${modonomicon_version}"
 	implementation "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 	implementation "maven.modrinth:jade:${jade_version}+neoforge"
