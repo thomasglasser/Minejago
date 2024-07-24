@@ -17,8 +17,8 @@ public class MinejagoClientConfig {
 
     // Focus Bar
     public static final String FOCUS_BAR = "focus_bar";
-    public final ModConfigSpec.IntValue xOffset;
-    public final ModConfigSpec.IntValue yOffset;
+    public final ModConfigSpec.ConfigValue<Integer> xOffset;
+    public final ModConfigSpec.ConfigValue<Integer> yOffset;
 
     public MinejagoClientConfig() {
         ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
@@ -36,9 +36,9 @@ public class MinejagoClientConfig {
 
         builder.push(FOCUS_BAR);
         xOffset = builder
-                .defineInRange("x_offset", 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
+                .define("x_offset", 0);
         yOffset = builder
-                .defineInRange("y_offset", 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
+                .define("y_offset", 0);
         builder.pop();
 
         configSpec = builder.build();
