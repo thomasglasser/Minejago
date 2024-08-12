@@ -2,7 +2,7 @@
   "type": "minecraft:jigsaw",
   "biomes": "#minejago:has_cave_of_despair",
   "max_distance_from_center": 80,
-  "size": 7,
+  "size": 20,
   "spawn_overrides": {
     "ambient": {
       "bounding_box": "full",

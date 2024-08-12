@@ -44,7 +44,7 @@ public class MinejagoStructures {
                                 .terrainAdapation(TerrainAdjustment.BEARD_THIN)
                                 .build(),
                         holderGetter2.getOrThrow(FourWeaponsPools.START),
-                        7,
+                        JigsawStructure.MAX_DEPTH,
                         ConstantHeight.of(VerticalAnchor.absolute(0)),
                         false,
                         Heightmap.Types.WORLD_SURFACE_WG));
@@ -61,7 +61,7 @@ public class MinejagoStructures {
                                                 MobCategory.AMBIENT, new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create())))
                                 .build(),
                         holderGetter2.getOrThrow(CaveOfDespairPools.START),
-                        7,
+                        JigsawStructure.MAX_DEPTH,
                         ConstantHeight.of(VerticalAnchor.absolute(40)),
                         false));
 
@@ -72,7 +72,8 @@ public class MinejagoStructures {
                                 .terrainAdapation(TerrainAdjustment.BEARD_THIN)
                                 .build(),
                         holderGetter2.getOrThrow(NinjagoCityPools.BUILDINGS),
-                        7,
+                        // May need to be limited if this becomes recursive
+                        JigsawStructure.MAX_DEPTH,
                         ConstantHeight.of(VerticalAnchor.absolute(0)),
                         false,
                         Heightmap.Types.WORLD_SURFACE_WG));

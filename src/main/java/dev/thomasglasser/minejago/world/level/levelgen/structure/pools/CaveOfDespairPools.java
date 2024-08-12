@@ -1,6 +1,5 @@
 package dev.thomasglasser.minejago.world.level.levelgen.structure.pools;
 
-import static dev.thomasglasser.minejago.Minejago.modLoc;
 import static net.minecraft.data.worldgen.Pools.EMPTY;
 
 import com.google.common.collect.ImmutableList;
@@ -11,6 +10,7 @@ import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 
@@ -27,6 +27,6 @@ public class CaveOfDespairPools {
         bootstrapContext.register(
                 START,
                 new StructureTemplatePool(
-                        empty, ImmutableList.of(Pair.of(MinejagoPools.singleElement(modLoc("cave_of_despair/base"), susPlacer), 1)), StructureTemplatePool.Projection.RIGID));
+                        empty, ImmutableList.of(Pair.of(StructurePoolElement.single(START.location().toString(), susPlacer), 1)), StructureTemplatePool.Projection.RIGID));
     }
 }
