@@ -21,6 +21,13 @@ public class CenterSpinjitzuCourseElementModel extends DefaultedEntityGeoModel<C
                 spinning.setRotY(animatable.tickCount * 0.5f);
                 spinning.setRotZ(0);
             }
+        } else {
+            GeoBone spinning = this.getBone("spinning").orElse(null);
+            if (spinning != null) {
+                spinning.setRotX(0);
+                spinning.setRotY(0);
+                spinning.setRotZ(0);
+            }
         }
     }
 }

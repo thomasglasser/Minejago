@@ -19,7 +19,8 @@ public class BouncingPoleSpinjitzuCourseElementModel extends DefaultedEntityGeoM
             if (pole != null) {
                 float bounceTicks = animatable.getBounceTicks();
                 float yOffset = bounceTicks < BouncingPoleSpinjitzuCourseElement.HALF_BOUNCE_TICKS ? bounceTicks : BouncingPoleSpinjitzuCourseElement.MAX_BOUNCE_TICKS - bounceTicks;
-                pole.setPosY(pole.getParent().getPosY() + yOffset);
+                // Because of when tick is called, we have to render 1 pixel lower
+                pole.setPosY(pole.getParent().getPosY() + yOffset - 1);
             }
         }
     }

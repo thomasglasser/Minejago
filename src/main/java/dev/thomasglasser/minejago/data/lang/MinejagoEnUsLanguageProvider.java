@@ -17,19 +17,24 @@ import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.character.Wu;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
+import dev.thomasglasser.minejago.world.entity.spinjitzucourse.AbstractSpinjitzuCourseElement;
 import dev.thomasglasser.minejago.world.item.MinejagoCreativeModeTabs;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import dev.thomasglasser.minejago.world.item.SpinjitzuCourseElementItem;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPatterns;
 import dev.thomasglasser.tommylib.api.data.lang.ExtendedEnUsLanguageProvider;
+import dev.thomasglasser.tommylib.api.registration.DeferredHolder;
+import dev.thomasglasser.tommylib.api.registration.DeferredItem;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
@@ -83,8 +88,6 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(MinejagoItems.WRITABLE_SCROLL.get(), "Scroll and Quill");
         add(MinejagoItems.WRITTEN_SCROLL.get(), "Written Scroll");
         add(MinejagoItems.EMPTY_GOLDEN_WEAPONS_MAP.get(), "Empty Golden Weapons Map");
-        add(MinejagoItems.CENTER_SPINJITZU_COURSE_ELEMENT.get(), "Center Spinjitzu Course Element");
-        add(MinejagoItems.BOUNCING_POLE_SPINJITZU_COURSE_ELEMENT.get(), "Bouncing Pole Spinjitzu Course Element");
 
         add(MinejagoBlocks.TEAPOT.get(), "Teapot");
         MinejagoBlocks.TEAPOTS.forEach((color, pot) -> add(pot.get(), WordUtils.capitalize(color.getName().replace('_', ' ')) + " Teapot"));
@@ -153,8 +156,10 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(MinejagoEntityTypes.SAMUKAI.get(), "Samukai", MinejagoItems.SAMUKAI_SPAWN_EGG.get());
         add(MinejagoEntityTypes.SKULL_TRUCK.get(), "Skull Truck", MinejagoItems.SKULL_TRUCK_SPAWN_EGG.get());
         add(MinejagoEntityTypes.SKULL_MOTORBIKE.get(), "Skull Motorbike", MinejagoItems.SKULL_MOTORBIKE_SPAWN_EGG.get());
-        add(MinejagoEntityTypes.CENTER_SPINJITZU_COURSE_ELEMENT.get(), "Center Spinjitzu Course Element");
-        add(MinejagoEntityTypes.BOUNCING_POLE_SPINJITZU_COURSE_ELEMENT.get(), "Bouncing Pole Spinjitzu Course Element");
+
+        addSpinjitzuCourseElement(MinejagoEntityTypes.CENTER_SPINJITZU_COURSE_ELEMENT, MinejagoItems.CENTER_SPINJITZU_COURSE_ELEMENT, "Center");
+        addSpinjitzuCourseElement(MinejagoEntityTypes.BOUNCING_POLE_SPINJITZU_COURSE_ELEMENT, MinejagoItems.BOUNCING_POLE_SPINJITZU_COURSE_ELEMENT, "Bouncing Pole");
+        addSpinjitzuCourseElement(MinejagoEntityTypes.ROCKING_POLE_SPINJITZU_COURSE_ELEMENT, MinejagoItems.ROCKING_POLE_SPINJITZU_COURSE_ELEMENT, "Rocking Pole");
 
         addPattern(MinejagoBannerPatterns.FOUR_WEAPONS_LEFT, "Four Weapons Left");
         addPattern(MinejagoBannerPatterns.FOUR_WEAPONS_RIGHT, "Four Weapons Right");
@@ -301,12 +306,12 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         addConfigs();
     }
 
-    public void addTea(Holder<Potion> tea, String name) {
+    protected void addTea(Holder<Potion> tea, String name) {
         addPotions(tea, name);
         add(MinejagoItems.FILLED_TEACUP.get(), tea, name);
     }
 
-    public void addConfigs() {
+    protected void addConfigs() {
         addConfigTitle(Minejago.MOD_NAME);
 
         // Server
@@ -336,7 +341,12 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         addConfig(MinejagoClientConfig.INSTANCE.yOffset, "Vertical Offset", "Vertical pixels off from the normal position");
     }
 
-    public void addPluginConfig(ResourceLocation location, String name) {
+    protected void addPluginConfig(ResourceLocation location, String name) {
         super.addPluginConfig(location, Minejago.MOD_NAME, name);
+    }
+
+    protected <T extends AbstractSpinjitzuCourseElement<T>> void addSpinjitzuCourseElement(DeferredHolder<EntityType<?>, EntityType<T>> entity, DeferredItem<? extends SpinjitzuCourseElementItem> item, String name) {
+        add(entity.get(), name + " Spinjitzu Course Element");
+        add(item.get(), name + " Spinjitzu Course Element");
     }
 }

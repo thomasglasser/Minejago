@@ -10,6 +10,7 @@ import dev.thomasglasser.minejago.client.model.KrunchaModel;
 import dev.thomasglasser.minejago.client.model.NuckalModel;
 import dev.thomasglasser.minejago.client.model.OgDevTeamBeardModel;
 import dev.thomasglasser.minejago.client.model.PilotsSnapshotTesterHatModel;
+import dev.thomasglasser.minejago.client.model.RockingPoleSpinjitzuCourseElementModel;
 import dev.thomasglasser.minejago.client.model.ScytheModel;
 import dev.thomasglasser.minejago.client.model.SpearModel;
 import dev.thomasglasser.minejago.client.model.SpinjitzuModel;
@@ -224,6 +225,7 @@ public class MinejagoClientEvents {
         event.registerEntityRenderer(MinejagoEntityTypes.SKULL_MOTORBIKE.get(), SkullMotorbikeRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.CENTER_SPINJITZU_COURSE_ELEMENT.get(), pContext -> new SpinjitzuCourseElementRenderer<>(pContext, new CenterSpinjitzuCourseElementModel()));
         event.registerEntityRenderer(MinejagoEntityTypes.BOUNCING_POLE_SPINJITZU_COURSE_ELEMENT.get(), pContext -> new SpinjitzuCourseElementRenderer<>(pContext, new BouncingPoleSpinjitzuCourseElementModel()));
+        event.registerEntityRenderer(MinejagoEntityTypes.ROCKING_POLE_SPINJITZU_COURSE_ELEMENT.get(), pContext -> new SpinjitzuCourseElementRenderer<>(pContext, new RockingPoleSpinjitzuCourseElementModel()));
 
         event.registerBlockEntityRenderer(MinejagoBlockEntityTypes.DRAGON_HEAD.get(), pContext -> new DragonHeadRenderer());
         event.registerBlockEntityRenderer(MinejagoBlockEntityTypes.BRUSHABLE.get(), BrushableBlockRenderer::new);

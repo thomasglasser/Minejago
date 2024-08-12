@@ -91,6 +91,7 @@ public class MinejagoItems {
     // Spinjitzu Course Elements
     public static final DeferredItem<SpinjitzuCourseElementItem> CENTER_SPINJITZU_COURSE_ELEMENT = register("center_spinjitzu_course_element", () -> new SpinjitzuCourseElementItem(MinejagoEntityTypes.CENTER_SPINJITZU_COURSE_ELEMENT::get, new Item.Properties()), List.of(CreativeModeTabs.REDSTONE_BLOCKS));
     public static final DeferredItem<SpinjitzuCourseElementItem> BOUNCING_POLE_SPINJITZU_COURSE_ELEMENT = register("bouncing_pole_spinjitzu_course_element", () -> new SpinjitzuCourseElementItem(MinejagoEntityTypes.BOUNCING_POLE_SPINJITZU_COURSE_ELEMENT::get, new Item.Properties()), List.of(CreativeModeTabs.REDSTONE_BLOCKS));
+    public static final DeferredItem<SpinjitzuCourseElementItem> ROCKING_POLE_SPINJITZU_COURSE_ELEMENT = register("rocking_pole_spinjitzu_course_element", () -> new SpinjitzuCourseElementItem(MinejagoEntityTypes.ROCKING_POLE_SPINJITZU_COURSE_ELEMENT::get, new Item.Properties()), List.of(CreativeModeTabs.REDSTONE_BLOCKS));
 
     public static <T extends Item> DeferredItem<T> register(String name, Supplier<T> itemSupplier, List<ResourceKey<CreativeModeTab>> tabs) {
         return ItemUtils.register(ITEMS, name, itemSupplier, tabs);

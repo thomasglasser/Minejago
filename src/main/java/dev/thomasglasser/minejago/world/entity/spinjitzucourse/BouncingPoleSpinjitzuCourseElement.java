@@ -5,7 +5,6 @@ import java.util.List;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -19,7 +18,7 @@ public class BouncingPoleSpinjitzuCourseElement extends AbstractSpinjitzuCourseE
 
     public BouncingPoleSpinjitzuCourseElement(EntityType<?> entityType, Level level) {
         super(entityType, level);
-        this.pole = new BouncingPoleSpinjitzuCoursePart(this, "pole", 0.625f, 1.5625f, 0, 0, 0);
+        this.pole = new BouncingPoleSpinjitzuCoursePart(this, "pole", 0.625f, 1.51f, 0, 0, 0);
     }
 
     @Override
@@ -34,11 +33,11 @@ public class BouncingPoleSpinjitzuCourseElement extends AbstractSpinjitzuCourseE
 
     @Override
     public void tick() {
-        super.tick();
         if (this.bounceTicks > 0)
-            this.bounceTicks -= 0.1f;
+            this.bounceTicks--;
         else
             this.bounceTicks = MAX_BOUNCE_TICKS;
+        super.tick();
     }
 
     public float getBounceTicks() {
@@ -57,7 +56,7 @@ public class BouncingPoleSpinjitzuCourseElement extends AbstractSpinjitzuCourseE
 
         @Override
         public void calculatePosition() {
-            float bounceTicks = this.getParent().bounceTicks;
+            float bounceTicks = getParent().getBounceTicks();
             float yOffset = bounceTicks < HALF_BOUNCE_TICKS ? bounceTicks : MAX_BOUNCE_TICKS - bounceTicks;
             moveTo(getParent().getX(), getParent().getY() + (yOffset / 16f), getParent().getZ());
         }
@@ -76,7 +75,6 @@ public class BouncingPoleSpinjitzuCourseElement extends AbstractSpinjitzuCourseE
     private void bounceUp(Entity entity) {
         Vec3 vec3 = entity.getDeltaMovement();
         if (vec3.y < 0.0) {
-            double d0 = entity instanceof LivingEntity ? 1.0 : 0.8;
             entity.setDeltaMovement(vec3.x, 0.5, vec3.z);
         }
     }
