@@ -14,6 +14,7 @@ import dev.thomasglasser.minejago.client.model.RockingPoleSpinjitzuCourseElement
 import dev.thomasglasser.minejago.client.model.ScytheModel;
 import dev.thomasglasser.minejago.client.model.SpearModel;
 import dev.thomasglasser.minejago.client.model.SpinjitzuModel;
+import dev.thomasglasser.minejago.client.model.SpinningPoleSpinjitzuCourseElementModel;
 import dev.thomasglasser.minejago.client.model.ThrownBoneKnifeModel;
 import dev.thomasglasser.minejago.client.model.ThrownIronShurikenModel;
 import dev.thomasglasser.minejago.client.particle.BoltsParticle;
@@ -34,11 +35,11 @@ import dev.thomasglasser.minejago.client.renderer.entity.SkulkinHorseRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.SkulkinRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.SkullMotorbikeRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.SkullTruckRenderer;
-import dev.thomasglasser.minejago.client.renderer.entity.SpinjitzuCourseElementRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.WuRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.OgDevTeamLayer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterLayer;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
+import dev.thomasglasser.minejago.network.ClientboundStartSpinjitzuPayload;
 import dev.thomasglasser.minejago.network.ServerboundFlyVehiclePayload;
 import dev.thomasglasser.minejago.network.ServerboundStopMeditationPayload;
 import dev.thomasglasser.minejago.plugins.MinejagoDynamicLights;
@@ -58,10 +59,6 @@ import dev.thomasglasser.tommylib.api.client.ClientUtils;
 import dev.thomasglasser.tommylib.api.client.renderer.entity.ThrownSwordRenderer;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import dev.thomasglasser.tommylib.api.world.entity.PlayerRideableFlying;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -111,6 +108,12 @@ import net.neoforged.neoforge.client.event.RenderPlayerEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.tslat.tes.api.util.TESClientUtil;
 import org.lwjgl.glfw.GLFW;
+import software.bernie.geckolib.renderer.GeoEntityRenderer;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class MinejagoClientEvents {
     public static void onPlayerLoggedIn() {
@@ -223,9 +226,10 @@ public class MinejagoClientEvents {
         event.registerEntityRenderer(MinejagoEntityTypes.SAMUKAI.get(), SamukaiRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.SKULL_TRUCK.get(), SkullTruckRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.SKULL_MOTORBIKE.get(), SkullMotorbikeRenderer::new);
-        event.registerEntityRenderer(MinejagoEntityTypes.CENTER_SPINJITZU_COURSE_ELEMENT.get(), pContext -> new SpinjitzuCourseElementRenderer<>(pContext, new CenterSpinjitzuCourseElementModel()));
-        event.registerEntityRenderer(MinejagoEntityTypes.BOUNCING_POLE_SPINJITZU_COURSE_ELEMENT.get(), pContext -> new SpinjitzuCourseElementRenderer<>(pContext, new BouncingPoleSpinjitzuCourseElementModel()));
-        event.registerEntityRenderer(MinejagoEntityTypes.ROCKING_POLE_SPINJITZU_COURSE_ELEMENT.get(), pContext -> new SpinjitzuCourseElementRenderer<>(pContext, new RockingPoleSpinjitzuCourseElementModel()));
+        event.registerEntityRenderer(MinejagoEntityTypes.CENTER_SPINJITZU_COURSE_ELEMENT.get(), pContext -> new GeoEntityRenderer<>(pContext, new CenterSpinjitzuCourseElementModel()));
+        event.registerEntityRenderer(MinejagoEntityTypes.BOUNCING_POLE_SPINJITZU_COURSE_ELEMENT.get(), pContext -> new GeoEntityRenderer<>(pContext, new BouncingPoleSpinjitzuCourseElementModel()));
+        event.registerEntityRenderer(MinejagoEntityTypes.ROCKING_POLE_SPINJITZU_COURSE_ELEMENT.get(), pContext -> new GeoEntityRenderer<>(pContext, new RockingPoleSpinjitzuCourseElementModel()));
+        event.registerEntityRenderer(MinejagoEntityTypes.SPINNING_POLE_SPINJITZU_COURSE_ELEMENT.get(), pContext -> new GeoEntityRenderer<>(pContext, new SpinningPoleSpinjitzuCourseElementModel()));
 
         event.registerBlockEntityRenderer(MinejagoBlockEntityTypes.DRAGON_HEAD.get(), pContext -> new DragonHeadRenderer());
         event.registerBlockEntityRenderer(MinejagoBlockEntityTypes.BRUSHABLE.get(), BrushableBlockRenderer::new);
@@ -308,7 +312,7 @@ public class MinejagoClientEvents {
     public static void onPostPlayerRender(RenderPlayerEvent.Post event) {
         Player player = event.getEntity();
         SpinjitzuModel<Player> model = new SpinjitzuModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(SpinjitzuModel.LAYER_LOCATION));
-        if (player.getData(MinejagoAttachmentTypes.SPINJITZU).active()) {
+        if (player.getData(MinejagoAttachmentTypes.SPINJITZU).active() && TommyLibServices.ENTITY.getPersistentData(player).getInt(ClientboundStartSpinjitzuPayload.KEY_SPINJITZUSTARTTICKS) <= 0) {
             model.setupAnim(player, 0, 0, player.tickCount + event.getPartialTick(), 0, 0);
             model.getBody().copyFrom(event.getRenderer().getModel().body);
             event.getPoseStack().mulPose(Axis.XP.rotationDegrees(180.0F));

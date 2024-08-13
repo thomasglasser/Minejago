@@ -58,6 +58,7 @@ public class MinejagoItemModels extends ExtendedItemModelProvider {
         basicItem(MinejagoItems.CENTER_SPINJITZU_COURSE_ELEMENT);
         basicItem(MinejagoItems.BOUNCING_POLE_SPINJITZU_COURSE_ELEMENT);
         basicItem(MinejagoItems.ROCKING_POLE_SPINJITZU_COURSE_ELEMENT);
+        basicItem(MinejagoItems.SPINNING_POLE_SPINJITZU_COURSE_ELEMENT);
 
         basicInventoryItem(MinejagoItems.WOODEN_NUNCHUCKS);
 

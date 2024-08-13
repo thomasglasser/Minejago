@@ -160,6 +160,7 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         addSpinjitzuCourseElement(MinejagoEntityTypes.CENTER_SPINJITZU_COURSE_ELEMENT, MinejagoItems.CENTER_SPINJITZU_COURSE_ELEMENT, "Center");
         addSpinjitzuCourseElement(MinejagoEntityTypes.BOUNCING_POLE_SPINJITZU_COURSE_ELEMENT, MinejagoItems.BOUNCING_POLE_SPINJITZU_COURSE_ELEMENT, "Bouncing Pole");
         addSpinjitzuCourseElement(MinejagoEntityTypes.ROCKING_POLE_SPINJITZU_COURSE_ELEMENT, MinejagoItems.ROCKING_POLE_SPINJITZU_COURSE_ELEMENT, "Rocking Pole");
+        addSpinjitzuCourseElement(MinejagoEntityTypes.SPINNING_POLE_SPINJITZU_COURSE_ELEMENT, MinejagoItems.SPINNING_POLE_SPINJITZU_COURSE_ELEMENT, "Spinning Pole");
 
         addPattern(MinejagoBannerPatterns.FOUR_WEAPONS_LEFT, "Four Weapons Left");
         addPattern(MinejagoBannerPatterns.FOUR_WEAPONS_RIGHT, "Four Weapons Right");

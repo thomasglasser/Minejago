@@ -7,6 +7,7 @@ import dev.thomasglasser.minejago.core.particles.MinejagoParticleUtils;
 import dev.thomasglasser.minejago.network.ClientboundRefreshVipDataPayload;
 import dev.thomasglasser.minejago.network.ClientboundStartMeditationPayload;
 import dev.thomasglasser.minejago.network.ClientboundStartMegaMeditationPayload;
+import dev.thomasglasser.minejago.network.ClientboundStartSpinjitzuPayload;
 import dev.thomasglasser.minejago.network.ClientboundStopAnimationPayload;
 import dev.thomasglasser.minejago.network.ClientboundStopMeditationPayload;
 import dev.thomasglasser.minejago.network.ClientboundStopSpinjitzuPayload;
@@ -217,6 +218,9 @@ public class MinejagoEntityEvents {
                     ((SkulkinRaidsHolder) level).getSkulkinRaids().createOrExtendSkulkinRaid(serverPlayer);
                 }
             } else {
+                int startTicks = persistentData.getInt(ClientboundStartSpinjitzuPayload.KEY_SPINJITZUSTARTTICKS);
+                if (startTicks > 0)
+                    persistentData.putInt(ClientboundStartSpinjitzuPayload.KEY_SPINJITZUSTARTTICKS, startTicks - 1);
                 if (waitTicks > 0) {
                     persistentData.putInt("WaitTicks", --waitTicks);
                 } else if (MinejagoKeyMappings.ACTIVATE_SPINJITZU.isDown() && !focusData.isMeditating()) {

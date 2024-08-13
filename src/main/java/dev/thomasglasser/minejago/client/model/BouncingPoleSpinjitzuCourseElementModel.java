@@ -22,6 +22,8 @@ public class BouncingPoleSpinjitzuCourseElementModel extends DefaultedEntityGeoM
                 // Because of when tick is called, we have to render 1 pixel lower
                 pole.setPosY(pole.getParent().getPosY() + yOffset - 1);
             }
+        } else {
+            this.getBone("pole").ifPresent(pole -> pole.setPosY(pole.getParent().getPosY()));
         }
     }
 }

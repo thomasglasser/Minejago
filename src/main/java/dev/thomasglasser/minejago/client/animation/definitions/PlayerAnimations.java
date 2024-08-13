@@ -11,7 +11,7 @@ public class PlayerAnimations {
     private static final List<KeyframeAnimation> MEDITATION = AnimationSerializing.deserializeAnimation(new InputStreamReader(Objects.requireNonNull(PlayerAnimations.class.getClassLoader().getResourceAsStream("assets/minejago/animations/player/meditation.animation.json"))));
 
     public enum Spinjitzu {
-        START(SPINJITZU.get(0)),
+        START(SPINJITZU.getFirst()),
         ACTIVE(SPINJITZU.get(1)),
         WOBBLE(SPINJITZU.get(2)),
         FINISH(SPINJITZU.get(3));
@@ -28,7 +28,7 @@ public class PlayerAnimations {
     }
 
     public enum Meditation {
-        START(MEDITATION.get(0)),
+        START(MEDITATION.getFirst()),
         FLOAT(MEDITATION.get(1)),
         FINISH(MEDITATION.get(2));
 
