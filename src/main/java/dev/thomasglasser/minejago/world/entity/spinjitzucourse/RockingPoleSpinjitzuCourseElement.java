@@ -4,11 +4,9 @@ import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import java.util.List;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 
 public class RockingPoleSpinjitzuCourseElement extends AbstractSpinjitzuCourseElement<RockingPoleSpinjitzuCourseElement> {
     private final SpinjitzuCourseElementPart<RockingPoleSpinjitzuCourseElement> pole;
@@ -29,15 +27,8 @@ public class RockingPoleSpinjitzuCourseElement extends AbstractSpinjitzuCourseEl
     }
 
     @Override
-    public void checkPartCollisions(SpinjitzuCourseElementPart<RockingPoleSpinjitzuCourseElement> part) {
-        level().getEntities(this, part.getBoundingBox(), EntitySelector.NO_SPECTATORS).forEach(this::knockback);
-    }
-
-    private void knockback(Entity entity) {
-        Vec3 vec3 = entity.getDeltaMovement();
-        if (vec3.y < 0.0) {
-            entity.setDeltaMovement(vec3.x, 0.5, vec3.z);
-        }
+    public void checkPartCollision(SpinjitzuCourseElementPart<RockingPoleSpinjitzuCourseElement> part, Entity entity) {
+        bounceUp(entity);
     }
 
     private static class RockingPoleSpinjitzuCoursePart extends SpinjitzuCourseElementPart<RockingPoleSpinjitzuCourseElement> {
@@ -52,16 +43,6 @@ public class RockingPoleSpinjitzuCourseElement extends AbstractSpinjitzuCourseEl
             float zOffset = Mth.sin(speedMultiplier * getParent().tickCount) * maxAngle;
             float yOffset = (zOffset < 0 ? zOffset : -zOffset) + 0.3f;
             moveTo(getParent().getX(), getParent().getY() + yOffset, getParent().getZ() - zOffset);
-        }
-
-        @Override
-        public boolean canBeCollidedWith() {
-            return true;
-        }
-
-        @Override
-        public boolean isPickable() {
-            return !this.isRemoved();
         }
     }
 }

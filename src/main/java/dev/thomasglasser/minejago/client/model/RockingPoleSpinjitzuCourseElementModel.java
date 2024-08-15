@@ -15,7 +15,7 @@ public class RockingPoleSpinjitzuCourseElementModel extends DefaultedEntityGeoMo
     @Override
     public void setCustomAnimations(RockingPoleSpinjitzuCourseElement animatable, long instanceId, AnimationState<RockingPoleSpinjitzuCourseElement> animationState) {
         super.setCustomAnimations(animatable, instanceId, animationState);
-        if (animatable.isActive() && animatable.playActiveAnimation()) {
+        if (animatable.isFullyActive()) {
             GeoBone pole = this.getBone("pole").orElse(null);
             if (pole != null) {
                 float maxAngle = 1f;
@@ -24,7 +24,7 @@ public class RockingPoleSpinjitzuCourseElementModel extends DefaultedEntityGeoMo
                 pole.setRotX(angleX);
             }
         } else {
-            this.getBone("pole").ifPresent(pole -> pole.setRotX(0));
+            this.getBone("pole").ifPresent(pole -> pole.setRotX(animatable.getXRot()));
         }
     }
 }

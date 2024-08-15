@@ -29,7 +29,8 @@ public class SpinjitzuCourseElementItem extends Item {
                     pos = pos.add(0, -0.5, 0);
                 }
                 entity.moveTo(pos);
-                entity.setYRot(context.getPlayer().getYRot());
+                if (context.getPlayer() != null)
+                    entity.setYRot(context.getPlayer().getYRot());
                 context.getLevel().addFreshEntity(entity);
                 if (!(context.getPlayer() != null && context.getPlayer().getAbilities().instabuild))
                     context.getItemInHand().shrink(1);

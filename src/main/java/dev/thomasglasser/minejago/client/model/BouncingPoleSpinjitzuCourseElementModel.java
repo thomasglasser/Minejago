@@ -14,7 +14,7 @@ public class BouncingPoleSpinjitzuCourseElementModel extends DefaultedEntityGeoM
     @Override
     public void setCustomAnimations(BouncingPoleSpinjitzuCourseElement animatable, long instanceId, AnimationState<BouncingPoleSpinjitzuCourseElement> animationState) {
         super.setCustomAnimations(animatable, instanceId, animationState);
-        if (animatable.isActive() && animatable.playActiveAnimation()) {
+        if (animatable.isFullyActive()) {
             GeoBone pole = this.getBone("pole").orElse(null);
             if (pole != null) {
                 float bounceTicks = animatable.getBounceTicks();

@@ -1,0 +1,87 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"misc.living": {
+			"loop": true,
+			"animation_length": 3.5,
+			"bones": {
+				"swordshield": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0],
+							"easing": "linear"
+						},
+						"3.5": {
+							"vector": [0, 0, 1800],
+							"easing": "linear"
+						}
+					}
+				},
+				"swordshield2": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0],
+							"easing": "linear"
+						},
+						"3.5": {
+							"vector": [0, 0, -1800],
+							"easing": "linear"
+						}
+					}
+				},
+				"structure": {
+					"relative_to": {
+						"rotation": "entity"
+					},
+					"rotation": [0, 0, 0.01]
+				}
+			}
+		},
+		"misc.idle": {
+			"loop": true,
+			"bones": {
+				"structure": {
+					"position": {
+						"vector": [0, -67, 0],
+						"easing": "linear"
+					}
+				}
+			}
+		},
+		"misc.deploy": {
+			"animation_length": 2.5,
+			"bones": {
+				"structure": {
+					"position": {
+						"0.0": {
+							"vector": [0, -67, 0],
+							"easing": "linear"
+						},
+						"2.5": {
+							"vector": [0, 0, 0],
+							"easing": "linear"
+						}
+					}
+				}
+			}
+		},
+		"misc.rest": {
+			"animation_length": 2.5,
+			"bones": {
+				"structure": {
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0],
+							"easing": "linear"
+						},
+						"2.5": {
+							"vector": [0, -67, 0],
+							"easing": "linear"
+						}
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minejago:item/spinning_dummies_spinjitzu_course_element"
+  }
+}

@@ -87,7 +87,6 @@ public class DragonButtonBlock extends HorizontalDirectionalBlock implements Ent
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty OPEN = BooleanProperty.create("open");
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
-    public static final int PRESSED_TICKS = 10;
 
     public static MapCodec<DragonButtonBlock> CODEC = simpleCodec(DragonButtonBlock::new);
 
@@ -149,7 +148,7 @@ public class DragonButtonBlock extends HorizontalDirectionalBlock implements Ent
             Vec3 relativeHitVec = hitVec
                     .add(lookOffset.multiply(0.001D, 0.001D, 0.001D))
                     .subtract(pos.getX(), pos.getY(), pos.getZ());
-            if (state.getValue(OPEN) && !state.getValue(POWERED) && BUTTON_SHAPES.get(state.getValue(FACING)).bounds().contains(relativeHitVec)) {
+            if (state.getValue(OPEN) && BUTTON_SHAPES.get(state.getValue(FACING)).bounds().contains(relativeHitVec)) {
                 if (level.getBlockEntity(pos) instanceof DragonButtonBlockEntity entity) {
                     entity.triggerAnim("click", DragonButtonBlockEntity.CLICK);
                 }
@@ -164,9 +163,8 @@ public class DragonButtonBlock extends HorizontalDirectionalBlock implements Ent
     }
 
     public void press(BlockState state, Level level, BlockPos pos, @Nullable Player player) {
-        level.setBlock(pos, state.setValue(POWERED, Boolean.TRUE), Block.UPDATE_ALL);
+        level.setBlock(pos, state.cycle(POWERED), Block.UPDATE_ALL);
         this.updateNeighbours(state, level, pos);
-        level.scheduleTick(pos, this, PRESSED_TICKS);
         // TODO: Sound
         level.gameEvent(player, GameEvent.BLOCK_ACTIVATE, pos);
         if (state.getValue(PART) == Part.TOP && level.getBlockState(pos.below()).getValue(PART) == Part.BOTTOM)

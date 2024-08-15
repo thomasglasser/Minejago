@@ -4,7 +4,7 @@
     "default": "minejago:fancy_focus_bees_0002",
     "features": [
       {
-        "chance": 0.1,
+        "chance": 1.0,
         "feature": "minejago:fancy_focus_bees_0002"
       }
     ]

@@ -22,7 +22,11 @@ import dev.thomasglasser.minejago.world.entity.skulkin.SkullTruck;
 import dev.thomasglasser.minejago.world.entity.spinjitzucourse.BouncingPoleSpinjitzuCourseElement;
 import dev.thomasglasser.minejago.world.entity.spinjitzucourse.CenterSpinjitzuCourseElement;
 import dev.thomasglasser.minejago.world.entity.spinjitzucourse.RockingPoleSpinjitzuCourseElement;
+import dev.thomasglasser.minejago.world.entity.spinjitzucourse.SpinningAxesSpinjitzuCourseElement;
+import dev.thomasglasser.minejago.world.entity.spinjitzucourse.SpinningDummiesSpinjitzuCourseElement;
+import dev.thomasglasser.minejago.world.entity.spinjitzucourse.SpinningMacesSpinjitzuCourseElement;
 import dev.thomasglasser.minejago.world.entity.spinjitzucourse.SpinningPoleSpinjitzuCourseElement;
+import dev.thomasglasser.minejago.world.entity.spinjitzucourse.SwirlingKnivesSpinjitzuCourseElement;
 import dev.thomasglasser.tommylib.api.registration.DeferredHolder;
 import dev.thomasglasser.tommylib.api.registration.DeferredRegister;
 import dev.thomasglasser.tommylib.api.world.entity.projectile.ThrownSword;
@@ -125,7 +129,20 @@ public class MinejagoEntityTypes {
             .sized(0.75f, 0.375f)
             .build("rocking_pole_spinjitzu_course_element"));
     public static final DeferredHolder<EntityType<?>, EntityType<SpinningPoleSpinjitzuCourseElement>> SPINNING_POLE_SPINJITZU_COURSE_ELEMENT = register("spinning_pole_spinjitzu_course_element", () -> EntityType.Builder.of(SpinningPoleSpinjitzuCourseElement::new, MobCategory.MISC)
+            .sized(0.625f, 2.0625f)
             .build("spinning_pole_spinjitzu_course_element"));
+    public static final DeferredHolder<EntityType<?>, EntityType<SpinningMacesSpinjitzuCourseElement>> SPINNING_MACES_SPINJITZU_COURSE_ELEMENT = register("spinning_maces_spinjitzu_course_element", () -> EntityType.Builder.of(SpinningMacesSpinjitzuCourseElement::new, MobCategory.MISC)
+            .sized(1f, 4.25f)
+            .build("spinning_maces_spinjitzu_course_element"));
+    public static final DeferredHolder<EntityType<?>, EntityType<SpinningDummiesSpinjitzuCourseElement>> SPINNING_DUMMIES_SPINJITZU_COURSE_ELEMENT = register("spinning_dummies_spinjitzu_course_element", () -> EntityType.Builder.of(SpinningDummiesSpinjitzuCourseElement::new, MobCategory.MISC)
+            .sized(1f, 4.25f)
+            .build("spinning_dummies_spinjitzu_course_element"));
+    public static final DeferredHolder<EntityType<?>, EntityType<SwirlingKnivesSpinjitzuCourseElement>> SWIRLING_KNIVES_SPINJITZU_COURSE_ELEMENT = register("swirling_knives_spinjitzu_course_element", () -> EntityType.Builder.of(SwirlingKnivesSpinjitzuCourseElement::new, MobCategory.MISC)
+            .sized(1f, 4.25f)
+            .build("swirling_knives_spinjitzu_course_element"));
+    public static final DeferredHolder<EntityType<?>, EntityType<SpinningAxesSpinjitzuCourseElement>> SPINNING_AXES_SPINJITZU_COURSE_ELEMENT = register("spinning_axes_spinjitzu_course_element", () -> EntityType.Builder.of(SpinningAxesSpinjitzuCourseElement::new, MobCategory.MISC)
+            .sized(1f, 4.25f)
+            .build("spinning_axes_spinjitzu_course_element"));
 
     private static <T extends EntityType<?>> DeferredHolder<EntityType<?>, T> register(String name, Supplier<T> type) {
         return ENTITY_TYPES.register(name, type);

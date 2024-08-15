@@ -1,10 +1,7 @@
 package dev.thomasglasser.minejago.world.entity.spinjitzucourse;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerEntity;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
@@ -19,6 +16,8 @@ public abstract class SpinjitzuCourseElementPart<T extends AbstractSpinjitzuCour
     protected final double offsetX;
     protected final double offsetY;
     protected final double offsetZ;
+
+    protected boolean active = false;
 
     public SpinjitzuCourseElementPart(T parent, String name, float width, float height, double offsetX, double offsetY, double offsetZ) {
         super(parent);
@@ -42,7 +41,7 @@ public abstract class SpinjitzuCourseElementPart<T extends AbstractSpinjitzuCour
 
     @Override
     public boolean isPickable() {
-        return true;
+        return active;
     }
 
     @Nullable
@@ -56,7 +55,7 @@ public abstract class SpinjitzuCourseElementPart<T extends AbstractSpinjitzuCour
      */
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        return !this.isInvulnerableTo(source) && this.getParent().hurt(source, amount);
+        return active && !this.isInvulnerableTo(source) && this.getParent().hurt(source, amount);
     }
 
     /**
@@ -68,13 +67,8 @@ public abstract class SpinjitzuCourseElementPart<T extends AbstractSpinjitzuCour
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity entity) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public EntityDimensions getDimensions(Pose pose) {
-        return this.size;
+        return active ? this.size : EntityDimensions.scalable(0.0f, 0.0f);
     }
 
     @Override
@@ -89,4 +83,9 @@ public abstract class SpinjitzuCourseElementPart<T extends AbstractSpinjitzuCour
     }
 
     public abstract void calculatePosition();
+
+    public void setActive(boolean active) {
+        this.active = active;
+        refreshDimensions();
+    }
 }
