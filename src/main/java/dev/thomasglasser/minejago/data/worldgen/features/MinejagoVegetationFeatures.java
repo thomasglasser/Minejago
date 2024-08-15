@@ -21,10 +21,10 @@ public class MinejagoVegetationFeatures {
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
         HolderGetter<PlacedFeature> placedFeatures = context.lookup(Registries.PLACED_FEATURE);
         Holder.Reference<PlacedFeature> focusFancyBees0002 = placedFeatures.getOrThrow(MinejagoTreePlacements.FANCY_FOCUS_BEES_0002);
-        FeatureUtils.register(context, MEADOW_FOCUS_TREES, Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(new WeightedPlacedFeature(focusFancyBees0002, 0.1f)), focusFancyBees0002));
+        FeatureUtils.register(context, MEADOW_FOCUS_TREES, Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(new WeightedPlacedFeature(focusFancyBees0002, 1f)), focusFancyBees0002));
     }
 
-    public static ResourceKey<ConfiguredFeature<?, ?>> create(String name) {
+    private static ResourceKey<ConfiguredFeature<?, ?>> create(String name) {
         return ResourceKey.create(Registries.CONFIGURED_FEATURE, Minejago.modLoc(name));
     }
 }

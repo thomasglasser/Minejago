@@ -25,10 +25,6 @@ import net.neoforged.neoforge.common.world.BiomeModifiers;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 public class MinejagoBiomeModifiers {
-    private static ResourceKey<BiomeModifier> register(String name) {
-        return ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, Minejago.modLoc(name));
-    }
-
     public static void bootstrap(BootstrapContext<BiomeModifier> context) {
         HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
         HolderGetter<PlacedFeature> placedFeatures = context.lookup(Registries.PLACED_FEATURE);
@@ -42,6 +38,10 @@ public class MinejagoBiomeModifiers {
         // Add features
         Holder.Reference<PlacedFeature> focusTrees = placedFeatures.getOrThrow(MinejagoVegetationPlacements.MEADOW_FOCUS_TREES);
         context.register(register("add_focus_trees"), new BiomeModifiers.AddFeaturesBiomeModifier(biomes.getOrThrow(MinejagoBiomeTags.HAS_FOCUS_TREES), HolderSet.direct(focusTrees), GenerationStep.Decoration.VEGETAL_DECORATION));
+    }
+
+    private static ResourceKey<BiomeModifier> register(String name) {
+        return ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, Minejago.modLoc(name));
     }
 
     @SafeVarargs
