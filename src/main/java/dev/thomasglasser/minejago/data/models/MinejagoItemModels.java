@@ -63,6 +63,7 @@ public class MinejagoItemModels extends ExtendedItemModelProvider {
         basicItem(MinejagoItems.SPINNING_DUMMIES_SPINJITZU_COURSE_ELEMENT);
         basicItem(MinejagoItems.SWIRLING_KNIVES_SPINJITZU_COURSE_ELEMENT);
         basicItem(MinejagoItems.SPINNING_AXES_SPINJITZU_COURSE_ELEMENT);
+        basicItem(MinejagoBlocks.EARTH_DRAGON_HEAD.get().asItem());
 
         basicInventoryItem(MinejagoItems.WOODEN_NUNCHUCKS);
 
