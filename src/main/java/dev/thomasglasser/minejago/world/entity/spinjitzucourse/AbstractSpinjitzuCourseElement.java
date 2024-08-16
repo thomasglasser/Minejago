@@ -18,6 +18,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -41,10 +42,14 @@ public abstract class AbstractSpinjitzuCourseElement<T extends AbstractSpinjitzu
 
     public final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
+    protected final Vec3 visitBox;
+
+    protected SpinjitzuCourseTracker courseTracker;
     protected int activeAnimationTicks = 0;
 
-    public AbstractSpinjitzuCourseElement(EntityType<?> entityType, Level level) {
+    public AbstractSpinjitzuCourseElement(EntityType<?> entityType, Level level, Vec3 visitBox) {
         super(entityType, level);
+        this.visitBox = visitBox;
     }
 
     @Override
@@ -149,6 +154,10 @@ public abstract class AbstractSpinjitzuCourseElement<T extends AbstractSpinjitzu
                                 checkPartCollision(subEntity, entity);
                             });
                     subEntity.tick();
+                }
+
+                if (courseTracker != null) {
+                    level().getEntities(this, AABB.ofSize(position().add(0, getDimensions(null).height() / 2, 0), visitBox.x(), visitBox.y(), visitBox.z()), entity -> entity instanceof Player).forEach(entity -> courseTracker.markVisited(this, (Player) entity));
                 }
             }
         } else {
@@ -261,29 +270,11 @@ public abstract class AbstractSpinjitzuCourseElement<T extends AbstractSpinjitzu
 
     protected abstract List<SpinjitzuCourseElementPart<T>> getSubEntities();
 
-    @Override
-    public boolean shouldBeSaved() {
-        return super.shouldBeSaved();
+    public void beginTracking(SpinjitzuCourseTracker courseTracker) {
+        this.courseTracker = courseTracker;
     }
 
-    protected class PlatformSpinjitzuCoursePart extends SpinjitzuCourseElementPart<T> {
-        public PlatformSpinjitzuCoursePart(T parent, String name, float width, float height, double offsetX, double offsetY, double offsetZ) {
-            super(parent, name, width, height, offsetX, offsetY, offsetZ);
-            moveTo(getParent().getX() + offsetX, getParent().getY() + offsetY, getParent().getZ() + offsetZ);
-        }
-
-        public PlatformSpinjitzuCoursePart(T parent, boolean top) {
-            this(parent, top ? "top" : "bottom", 3.625f, 0.3125f, 0, top ? 3.9375f : 0, 0);
-        }
-
-        @Override
-        public boolean canBeCollidedWith() {
-            return true;
-        }
-
-        @Override
-        public void calculatePosition() {
-            this.moveTo(getParent().getX() + offsetX, getParent().getY() + offsetY, getParent().getZ() + offsetZ);
-        }
+    public void endTracking() {
+        this.courseTracker = null;
     }
 }

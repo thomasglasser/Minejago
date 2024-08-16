@@ -8,20 +8,31 @@ import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.ai.behavior.GivePowerAndGi;
 import dev.thomasglasser.minejago.world.entity.ai.memory.MinejagoMemoryModuleTypes;
+import dev.thomasglasser.minejago.world.entity.ai.poi.MinejagoPoiTypes;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.power.Power;
+import dev.thomasglasser.minejago.world.entity.spinjitzucourse.AbstractSpinjitzuCourseElement;
+import dev.thomasglasser.minejago.world.entity.spinjitzucourse.SpinjitzuCourseTracker;
+import dev.thomasglasser.minejago.world.focus.FocusConstants;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.level.storage.PowerData;
+import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import net.minecraft.SharedConstants;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -29,12 +40,15 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
+import net.minecraft.world.entity.ai.memory.WalkTarget;
+import net.minecraft.world.entity.ai.village.poi.PoiManager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -49,12 +63,16 @@ import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.constant.DefaultAnimations;
 
-public class Wu extends Character {
+public class Wu extends Character implements SpinjitzuCourseTracker {
     public static final String POWER_GIVEN_KEY = "gui.power_selection.power_given";
     public static final String NO_POWER_GIVEN_KEY = "gui.power_selection.no_power_given";
 
     public static final RawAnimation ATTACK_SWING_WITH_STICK = RawAnimation.begin().thenPlay("attack.swing_with_stick");
     public static final RawAnimation MOVE_WALK_WITH_STICK = RawAnimation.begin().thenPlay("move.walk_with_stick");
+
+    protected final Map<Player, SpinjitzuCourseData> courseData = new HashMap<>();
+    protected final Map<Integer, List<Player>> entitiesOnCooldown = new HashMap<>();
+    protected final List<AbstractSpinjitzuCourseElement<?>> trackedCourseElements = new ArrayList<>();
 
     protected List<ResourceKey<Power>> powersToGive = new ArrayList<>();
     protected boolean givingPower;
@@ -119,9 +137,75 @@ public class Wu extends Character {
             }
         } else if (!player.getInventory().hasAnyOf(Set.copyOf(MinejagoArmors.BLACK_GI_SET.getAllAsItems()))) {
             MinejagoArmors.BLACK_GI_SET.getAllAsItems().forEach(armorItem -> player.addItem(armorItem.getDefaultInstance()));
+        } else if (level() instanceof ServerLevel serverLevel && player.getData(MinejagoAttachmentTypes.FOCUS).getFocusLevel() >= FocusConstants.LEARN_SPINJITZU_LEVEL) {
+            if (courseData.containsKey(player)) {
+                new SpinjitzuData(true, false).save(player, true);
+                player.getData(MinejagoAttachmentTypes.FOCUS).addExhaustion(FocusConstants.EXHAUSTION_LEARN_SPINJITZU);
+                // TODO: Make happy noise (particles?)
+                player.sendSystemMessage(Component.literal("Success"));
+                stopTracking(player);
+            } else {
+                List<LivingEntity> cooldownList = new ArrayList<>();
+                entitiesOnCooldown.values().forEach(cooldownList::addAll);
+                if (cooldownList.contains(player)) {
+                    // TODO: Make sad noise (particles?)
+                    player.sendSystemMessage(Component.literal("Cooldown"));
+                } else {
+                    Optional<BlockPos> teapotPos = serverLevel.getPoiManager().findClosest(poi -> poi.is(MinejagoPoiTypes.TEAPOTS), blockPosition(), MinejagoServerConfig.INSTANCE.courseRadius.get(), PoiManager.Occupancy.ANY);
+                    if (teapotPos.isPresent()) {
+                        if (trackedCourseElements.isEmpty()) {
+                            List<? extends AbstractSpinjitzuCourseElement<?>> nearbyElements = level().getEntities(this, getBoundingBox().inflate(MinejagoServerConfig.INSTANCE.courseRadius.get()), entity -> entity instanceof AbstractSpinjitzuCourseElement<?> element && element.isActive()).stream().map(entity -> (AbstractSpinjitzuCourseElement<?>) entity).toList();
+                            if (!nearbyElements.isEmpty()) {
+                                trackedCourseElements.addAll(nearbyElements);
+                                nearbyElements.forEach(element -> element.beginTracking(this));
+                            }
+                        }
+                        if (trackedCourseElements.isEmpty()) {
+                            // TODO: Make sad noise (particles?)
+                            player.sendSystemMessage(Component.literal("No course"));
+                        } else {
+                            courseData.put(player, new SpinjitzuCourseData());
+                            BlockPos pos = teapotPos.get();
+                            BrainUtils.setMemory(this, MemoryModuleType.WALK_TARGET, new WalkTarget(pos.relative(Direction.getRandom(random)), 1f, 2));
+                            // TODO: Sit down and begin tea animation that lasts exactly as long as alloted time
+                            // ^ behavior, set memories needed
+                            player.sendSystemMessage(Component.literal("Sitting down"));
+                        }
+                    } else {
+                        // TODO: Make sad noise (particles?)
+                        player.sendSystemMessage(Component.literal("No teapots"));
+                    }
+                }
+            }
         }
 
         return super.mobInteract(player, hand);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (!level().isClientSide) {
+            Map<Player, SpinjitzuCourseData> currentPlayers = new HashMap<>(this.courseData);
+            currentPlayers.forEach((player, data) -> {
+                data.tick();
+                if (data.getRunTicks() >= (MinejagoServerConfig.INSTANCE.courseTimeLimit.get() * SharedConstants.TICKS_PER_SECOND)) {
+                    // TODO: Make sad noise (particles?)
+                    player.sendSystemMessage(Component.literal("Time's up"));
+                    stopTracking(player);
+                    entitiesOnCooldown.computeIfAbsent((int) (level().getGameTime() + SharedConstants.TICKS_PER_GAME_DAY), k -> new ArrayList<>()).add(player);
+                }
+            });
+            entitiesOnCooldown.remove((int) level().getGameTime());
+        }
+    }
+
+    protected void stopTracking(Player player) {
+        courseData.remove(player);
+        if (courseData.isEmpty()) {
+            trackedCourseElements.forEach(AbstractSpinjitzuCourseElement::endTracking);
+            trackedCourseElements.clear();
+        }
     }
 
     @SafeVarargs
@@ -176,5 +260,10 @@ public class Wu extends Character {
 
             return PlayState.STOP;
         }));
+    }
+
+    @Override
+    public void markVisited(AbstractSpinjitzuCourseElement<?> element, Player visitor) {
+        courseData.computeIfAbsent(visitor, k -> new SpinjitzuCourseData()).markVisited(element);
     }
 }

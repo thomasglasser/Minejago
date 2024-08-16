@@ -231,7 +231,7 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
     public void tick() {
         super.tick();
         Power power1 = level().holderOrThrow(this.getData(MinejagoAttachmentTypes.POWER).power()).value();
-        if (!level().isClientSide && isDoingSpinjitzu() && power1 != null) {
+        if (!level().isClientSide && isDoingSpinjitzu()) {
             if (tickCount % 20 == 0) {
                 level().playSound(null, blockPosition(), MinejagoSoundEvents.SPINJITZU_ACTIVE.get(), SoundSource.NEUTRAL);
                 level().gameEvent(this, MinejagoGameEvents.SPINJITZU, blockPosition());

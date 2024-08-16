@@ -8,9 +8,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 
-public class SpinningAxesSpinjitzuCourseElement extends AbstractSpinjitzuCourseElement<SpinningAxesSpinjitzuCourseElement> {
-    private final PlatformSpinjitzuCoursePart bottom;
-    private final PlatformSpinjitzuCoursePart top;
+public class SpinningAxesSpinjitzuCourseElement extends PlatformedSpinjitzuCourseElement<SpinningAxesSpinjitzuCourseElement> {
     private final SpinningAxesSpinjitzuCourseElementPart axe1;
     private final SpinningAxesSpinjitzuCourseElementPart axe2;
     private final SpinningAxesSpinjitzuCourseElementPart axe3;
@@ -18,8 +16,6 @@ public class SpinningAxesSpinjitzuCourseElement extends AbstractSpinjitzuCourseE
 
     public SpinningAxesSpinjitzuCourseElement(EntityType<?> entityType, Level level) {
         super(entityType, level);
-        bottom = new PlatformSpinjitzuCoursePart(this, false);
-        top = new PlatformSpinjitzuCoursePart(this, true);
         axe1 = new SpinningAxesSpinjitzuCourseElementPart(this, "axe1", 0.5f, 0.5f, 0, 1.75f, 1.125f, true);
         axe2 = new SpinningAxesSpinjitzuCourseElementPart(this, "axe2", 0.5f, 0.5f, 0, 1.75f, -1.125f, false);
         axe3 = new SpinningAxesSpinjitzuCourseElementPart(this, "axe3", 0.5f, 0.5f, 1.125f, 1.75f, 0, false);
@@ -33,7 +29,7 @@ public class SpinningAxesSpinjitzuCourseElement extends AbstractSpinjitzuCourseE
 
     @Override
     protected List<SpinjitzuCourseElementPart<SpinningAxesSpinjitzuCourseElement>> getSubEntities() {
-        return List.of(axe1, axe2, axe3, axe4, bottom, top);
+        return List.of(bottom, top, axe1, axe2, axe3, axe4);
     }
 
     @Override

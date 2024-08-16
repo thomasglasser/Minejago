@@ -7,12 +7,15 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public class RockingPoleSpinjitzuCourseElement extends AbstractSpinjitzuCourseElement<RockingPoleSpinjitzuCourseElement> {
+    public static final Vec3 VISIT_BOX = new Vec3(0.625, 2, 1.875);
+
     private final SpinjitzuCourseElementPart<RockingPoleSpinjitzuCourseElement> pole;
 
     public RockingPoleSpinjitzuCourseElement(EntityType<?> entityType, Level level) {
-        super(entityType, level);
+        super(entityType, level, VISIT_BOX);
         this.pole = new RockingPoleSpinjitzuCoursePart(this, "pole", 0.625f, 1.3125f, 0, 0, 0);
     }
 

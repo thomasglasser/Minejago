@@ -330,6 +330,11 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         addConfig(MinejagoServerConfig.INSTANCE.drainPool, "Drain Power Pool", "Remove a power from the option list once given and reset when all powers have been given");
         addConfig(MinejagoServerConfig.INSTANCE.enableNoPower, "Enable No Power", "Enable players to receive no power from Master Wu");
 
+        addConfigSection(MinejagoServerConfig.SPINJITZU, "Spinjitzu", "Settings for Spinjitzu");
+        addConfig(MinejagoServerConfig.INSTANCE.requireCourseCompletion, "Require Course Completion", "Require players to complete the Spinjitzu course to use Spinjitzu");
+        addConfig(MinejagoServerConfig.INSTANCE.courseTimeLimit, "Course Time Limit", "The amount of time (in seconds) a player has to complete the Spinjitzu course to unlock Spinjitzu");
+        addConfig(MinejagoServerConfig.INSTANCE.courseRadius, "Course Radius", "The radius that the center Spinjitzu element will search for other course elements");
+
         addConfigSection(MinejagoServerConfig.GOLDEN_WEAPONS, "Golden Weapons", "Settings for the four Golden Weapons");
         addConfig(MinejagoServerConfig.INSTANCE.requireCompatiblePower, "Require Compatible Power", "Require users to have a compatible power");
         addConfig(MinejagoServerConfig.INSTANCE.enableMalfunction, "Enable Malfunction", "Enable an abnormal reaction when handled by someone without a compatible power");

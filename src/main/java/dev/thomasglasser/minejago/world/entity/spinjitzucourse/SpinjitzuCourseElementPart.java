@@ -73,7 +73,7 @@ public abstract class SpinjitzuCourseElementPart<T extends AbstractSpinjitzuCour
 
     @Override
     public boolean shouldBeSaved() {
-        return false;
+        return active;
     }
 
     @Override

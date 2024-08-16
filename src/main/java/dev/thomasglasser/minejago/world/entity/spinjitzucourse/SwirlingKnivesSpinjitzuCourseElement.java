@@ -10,16 +10,12 @@ import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.constant.DefaultAnimations;
 
-public class SwirlingKnivesSpinjitzuCourseElement extends AbstractSpinjitzuCourseElement<SwirlingKnivesSpinjitzuCourseElement> {
-    private final PlatformSpinjitzuCoursePart bottom;
-    private final PlatformSpinjitzuCoursePart top;
+public class SwirlingKnivesSpinjitzuCourseElement extends PlatformedSpinjitzuCourseElement<SwirlingKnivesSpinjitzuCourseElement> {
     private final SpinningSpinjitzuCourseElementPart<SwirlingKnivesSpinjitzuCourseElement> knives1;
     private final SpinningSpinjitzuCourseElementPart<SwirlingKnivesSpinjitzuCourseElement> knives2;
 
     public SwirlingKnivesSpinjitzuCourseElement(EntityType<?> entityType, Level level) {
         super(entityType, level);
-        bottom = new PlatformSpinjitzuCoursePart(this, false);
-        top = new PlatformSpinjitzuCoursePart(this, true);
         knives1 = new SpinningSpinjitzuCourseElementPart<>(this, "knives_1", 1.25f, 1.25f, 0, 1.5f, 1.125f);
         knives2 = new SpinningSpinjitzuCourseElementPart<>(this, "knives_2", 1.25f, 1.25f, 0, 1.5f, -1.125f);
     }
@@ -31,7 +27,7 @@ public class SwirlingKnivesSpinjitzuCourseElement extends AbstractSpinjitzuCours
 
     @Override
     protected List<SpinjitzuCourseElementPart<SwirlingKnivesSpinjitzuCourseElement>> getSubEntities() {
-        return List.of(knives1, knives2, bottom, top);
+        return List.of(bottom, top, knives1, knives2);
     }
 
     @Override

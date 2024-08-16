@@ -85,7 +85,8 @@ import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 public class MinejagoEntityEvents {
-    public static final Predicate<LivingEntity> NO_SPINJITZU = (player -> player.isCrouching() ||
+    public static final Predicate<LivingEntity> NO_SPINJITZU = (player -> !player.getData(MinejagoAttachmentTypes.SPINJITZU).canDoSpinjitzu() ||
+            player.isCrouching() ||
             player.getVehicle() != null ||
             player.isVisuallySwimming() ||
             player.isUnderWater() ||
@@ -137,7 +138,7 @@ public class MinejagoEntityEvents {
                     TommyLibServices.ENTITY.setPersistentData(player, persistentData, true);
                 }
 
-                if (spinjitzu.unlocked()) {
+                if (spinjitzu.canDoSpinjitzu()) {
                     if (spinjitzu.active()) {
                         if (focusData.isMeditating()) {
                             focusData.stopMeditating();

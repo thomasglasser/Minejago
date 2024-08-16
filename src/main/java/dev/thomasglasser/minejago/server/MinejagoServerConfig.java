@@ -19,6 +19,12 @@ public class MinejagoServerConfig {
     public final ModConfigSpec.BooleanValue drainPool;
     public final ModConfigSpec.BooleanValue enableNoPower;
 
+    // Spinjitzu
+    public static final String SPINJITZU = "spinjitzu";
+    public final ModConfigSpec.BooleanValue requireCourseCompletion;
+    public final ModConfigSpec.IntValue courseTimeLimit;
+    public final ModConfigSpec.IntValue courseRadius;
+
     // Golden Weapons
     public static final String GOLDEN_WEAPONS = "golden_weapons";
     public final ModConfigSpec.BooleanValue requireCompatiblePower;
@@ -43,6 +49,17 @@ public class MinejagoServerConfig {
                 .define("drain_pool", true);
         enableNoPower = builder
                 .define("enable_no_power", true);
+        builder.pop();
+
+        builder.push(SPINJITZU);
+        requireCourseCompletion = builder
+                .define("require_course_completion", true);
+        courseTimeLimit = builder
+                // TODO: Set to reasonable time (require projectile interruption?)
+                .defineInRange("course_time_limit", 30, 5, 300);
+        courseRadius = builder
+                // TODO: Set default to radius needed for monastery
+                .defineInRange("course_radius", 10, 1, 50);
         builder.pop();
 
         builder.push(GOLDEN_WEAPONS);

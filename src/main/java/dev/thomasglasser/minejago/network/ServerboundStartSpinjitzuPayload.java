@@ -2,6 +2,7 @@ package dev.thomasglasser.minejago.network;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
+import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
 import dev.thomasglasser.tommylib.api.network.ExtendedPacketPayload;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
@@ -25,7 +26,7 @@ public record ServerboundStartSpinjitzuPayload() implements ExtendedPacketPayloa
     // ON SERVER
     public void handle(@Nullable Player player) {
         if (player instanceof ServerPlayer serverPlayer) {
-            new SpinjitzuData(true, true).save(serverPlayer, true);
+            new SpinjitzuData(serverPlayer.getData(MinejagoAttachmentTypes.SPINJITZU).unlocked(), true).save(serverPlayer, true);
             TommyLibServices.NETWORK.sendToAllClients(new ClientboundStartSpinjitzuPayload(serverPlayer.getUUID()), serverPlayer.getServer());
             AttributeInstance speed = serverPlayer.getAttribute(Attributes.MOVEMENT_SPEED);
             if (speed != null && !speed.hasModifier(SpinjitzuData.SPEED_MODIFIER)) {

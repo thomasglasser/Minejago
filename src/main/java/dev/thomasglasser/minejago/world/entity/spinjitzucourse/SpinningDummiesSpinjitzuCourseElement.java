@@ -13,21 +13,17 @@ import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
 
-public class SpinningDummiesSpinjitzuCourseElement extends AbstractSpinjitzuCourseElement<SpinningDummiesSpinjitzuCourseElement> {
+public class SpinningDummiesSpinjitzuCourseElement extends PlatformedSpinjitzuCourseElement<SpinningDummiesSpinjitzuCourseElement> {
     private static final RawAnimation DUMMY_1_HIT_ANIMATION = RawAnimation.begin().thenPlay("misc.dummy_1.interact");
     private static final RawAnimation DUMMY_2_HIT_ANIMATION = RawAnimation.begin().thenPlay("misc.dummy_2.interact");
     private static final RawAnimation DUMMY_3_HIT_ANIMATION = RawAnimation.begin().thenPlay("misc.dummy_3.interact");
 
-    private final PlatformSpinjitzuCoursePart bottom;
-    private final PlatformSpinjitzuCoursePart top;
     private final SpinningDummiesSpinjitzuCourseElementPart dummy1;
     private final SpinningDummiesSpinjitzuCourseElementPart dummy2;
     private final SpinningDummiesSpinjitzuCourseElementPart dummy3;
 
     public SpinningDummiesSpinjitzuCourseElement(EntityType<?> entityType, Level level) {
         super(entityType, level);
-        this.bottom = new PlatformSpinjitzuCoursePart(this, false);
-        this.top = new PlatformSpinjitzuCoursePart(this, true);
         this.dummy1 = new SpinningDummiesSpinjitzuCourseElementPart(this, "dummy_1", 1f, 1.875f, 0.125f, 1.6875f, 1.1875f);
         this.dummy2 = new SpinningDummiesSpinjitzuCourseElementPart(this, "dummy_2", 1f, 1.875f, -0.125f, 1.6875f, -1.1875f);
         this.dummy3 = new SpinningDummiesSpinjitzuCourseElementPart(this, "dummy_3", 1f, 1.875f, 1.375f, 0.3125f, -0.25f);
@@ -40,7 +36,7 @@ public class SpinningDummiesSpinjitzuCourseElement extends AbstractSpinjitzuCour
 
     @Override
     protected List<SpinjitzuCourseElementPart<SpinningDummiesSpinjitzuCourseElement>> getSubEntities() {
-        return List.of(this.dummy1, this.dummy2, this.dummy3, this.bottom, this.top);
+        return List.of(top, bottom, dummy1, dummy2, dummy3);
     }
 
     @Override

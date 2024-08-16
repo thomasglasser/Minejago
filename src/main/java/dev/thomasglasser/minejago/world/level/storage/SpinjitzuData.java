@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
 import dev.thomasglasser.minejago.network.ClientboundSyncSpinjitzuDataPayload;
+import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import io.netty.buffer.ByteBuf;
@@ -31,9 +32,8 @@ public record SpinjitzuData(boolean unlocked, boolean active) {
         this(false, false);
     }
 
-    @Override
-    public boolean unlocked() {
-        return unlocked || true /* TODO: Unlock system */;
+    public boolean canDoSpinjitzu() {
+        return !MinejagoServerConfig.INSTANCE.requireCourseCompletion.get() || unlocked;
     }
 
     public void save(LivingEntity entity, boolean syncToClient) {
