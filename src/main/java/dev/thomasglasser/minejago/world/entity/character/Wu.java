@@ -7,6 +7,7 @@ import dev.thomasglasser.minejago.network.ClientboundOpenPowerSelectionScreenPay
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.ai.behavior.GivePowerAndGi;
+import dev.thomasglasser.minejago.world.entity.ai.behavior.TrackSpinjitzuCourseCompletion;
 import dev.thomasglasser.minejago.world.entity.ai.memory.MinejagoMemoryModuleTypes;
 import dev.thomasglasser.minejago.world.entity.ai.poi.MinejagoPoiTypes;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
@@ -22,11 +23,11 @@ import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
@@ -34,10 +35,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -50,6 +53,7 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.WalkTarget;
 import net.minecraft.world.entity.ai.village.poi.PoiManager;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
@@ -70,12 +74,14 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
     public static final RawAnimation ATTACK_SWING_WITH_STICK = RawAnimation.begin().thenPlay("attack.swing_with_stick");
     public static final RawAnimation MOVE_WALK_WITH_STICK = RawAnimation.begin().thenPlay("move.walk_with_stick");
 
-    protected final Map<Player, SpinjitzuCourseData> courseData = new HashMap<>();
+    protected final Map<Player, Set<AbstractSpinjitzuCourseElement<?>>> courseData = new HashMap<>();
     protected final Map<Integer, List<Player>> entitiesOnCooldown = new HashMap<>();
-    protected final List<AbstractSpinjitzuCourseElement<?>> trackedCourseElements = new ArrayList<>();
+    protected final Set<AbstractSpinjitzuCourseElement<?>> trackedCourseElements = new HashSet<>();
 
     protected List<ResourceKey<Power>> powersToGive = new ArrayList<>();
     protected boolean givingPower;
+    protected boolean lifting;
+    protected boolean interrupted;
 
     public Wu(EntityType<? extends Wu> entityType, Level level) {
         super(entityType, level);
@@ -103,7 +109,8 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
 
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if (player.getInventory().hasAnyMatching(itemStack -> itemStack.has(MinejagoDataComponents.GOLDEN_WEAPONS_MAP.get()))) {
+        boolean canGivePower = !player.getData(MinejagoAttachmentTypes.POWER).given() || MinejagoServerConfig.INSTANCE.allowChange.get();
+        if (canGivePower && player.getInventory().hasAnyMatching(itemStack -> itemStack.has(MinejagoDataComponents.GOLDEN_WEAPONS_MAP.get()))) {
             Registry<Power> registry = level().registryAccess().registryOrThrow(MinejagoRegistries.POWER);
 
             if (!MinejagoServerConfig.INSTANCE.drainPool.get() || (powersToGive.size() <= 1)) {
@@ -114,24 +121,22 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
             }
 
             if (player instanceof ServerPlayer serverPlayer && hand == InteractionHand.MAIN_HAND) {
-                givingPower = !serverPlayer.getData(MinejagoAttachmentTypes.POWER).given() || MinejagoServerConfig.INSTANCE.allowChange.get();
-                if (givingPower) {
-                    if (MinejagoServerConfig.INSTANCE.allowChoose.get()) {
-                        TommyLibServices.NETWORK.sendToClient(new ClientboundOpenPowerSelectionScreenPayload(powersToGive, Optional.of(this.getId())), serverPlayer);
-                    } else if (this.distanceTo(serverPlayer) > 1.0f) {
-                        ResourceKey<Power> oldPower = serverPlayer.getData(MinejagoAttachmentTypes.POWER).power();
-                        if (serverPlayer.getData(MinejagoAttachmentTypes.POWER).given() && oldPower != MinejagoPowers.NONE && MinejagoServerConfig.INSTANCE.drainPool.get())
-                            addPowersToGive(oldPower);
-                        ResourceKey<Power> newPower = powersToGive.get(random.nextInt(powersToGive.size()));
-                        if (newPower != MinejagoPowers.NONE) removePowersToGive(newPower);
-                        if (newPower == MinejagoPowers.NONE) {
-                            new PowerData(newPower, true).save(serverPlayer, true);
-                            serverPlayer.displayClientMessage(Component.translatable(Wu.NO_POWER_GIVEN_KEY), true);
-                            givingPower = false;
-                        } else {
-                            BrainUtils.setMemory(this, MemoryModuleType.INTERACTION_TARGET, serverPlayer);
-                            BrainUtils.setMemory(this, MinejagoMemoryModuleTypes.SELECTED_POWER.get(), newPower);
-                        }
+                givingPower = true;
+                if (MinejagoServerConfig.INSTANCE.allowChoose.get()) {
+                    TommyLibServices.NETWORK.sendToClient(new ClientboundOpenPowerSelectionScreenPayload(powersToGive, Optional.of(this.getId())), serverPlayer);
+                } else if (this.distanceTo(serverPlayer) > 1.0f) {
+                    ResourceKey<Power> oldPower = serverPlayer.getData(MinejagoAttachmentTypes.POWER).power();
+                    if (serverPlayer.getData(MinejagoAttachmentTypes.POWER).given() && oldPower != MinejagoPowers.NONE && MinejagoServerConfig.INSTANCE.drainPool.get())
+                        addPowersToGive(oldPower);
+                    ResourceKey<Power> newPower = powersToGive.get(random.nextInt(powersToGive.size()));
+                    if (newPower != MinejagoPowers.NONE) removePowersToGive(newPower);
+                    if (newPower == MinejagoPowers.NONE) {
+                        new PowerData(newPower, true).save(serverPlayer, true);
+                        serverPlayer.displayClientMessage(Component.translatable(Wu.NO_POWER_GIVEN_KEY), true);
+                        givingPower = false;
+                    } else {
+                        BrainUtils.setMemory(this, MemoryModuleType.INTERACTION_TARGET, serverPlayer);
+                        BrainUtils.setMemory(this, MinejagoMemoryModuleTypes.SELECTED_POWER.get(), newPower);
                     }
                 }
             }
@@ -139,11 +144,16 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
             MinejagoArmors.BLACK_GI_SET.getAllAsItems().forEach(armorItem -> player.addItem(armorItem.getDefaultInstance()));
         } else if (level() instanceof ServerLevel serverLevel && player.getData(MinejagoAttachmentTypes.FOCUS).getFocusLevel() >= FocusConstants.LEARN_SPINJITZU_LEVEL) {
             if (courseData.containsKey(player)) {
-                new SpinjitzuData(true, false).save(player, true);
-                player.getData(MinejagoAttachmentTypes.FOCUS).addExhaustion(FocusConstants.EXHAUSTION_LEARN_SPINJITZU);
-                // TODO: Make happy noise (particles?)
-                player.sendSystemMessage(Component.literal("Success"));
-                stopTracking(player);
+                if (courseData.get(player).equals(trackedCourseElements)) {
+                    new SpinjitzuData(true, false).save(player, true);
+                    player.getData(MinejagoAttachmentTypes.FOCUS).addExhaustion(FocusConstants.EXHAUSTION_LEARN_SPINJITZU);
+                    // TODO: Make happy noise (particles?)
+                    player.sendSystemMessage(Component.literal("Success"));
+                    stopTracking(player);
+                    setLifting(false);
+                    setInterrupted(false);
+                    getBrain().setActiveActivityIfPossible(Activity.IDLE);
+                }
             } else {
                 List<LivingEntity> cooldownList = new ArrayList<>();
                 entitiesOnCooldown.values().forEach(cooldownList::addAll);
@@ -164,12 +174,11 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
                             // TODO: Make sad noise (particles?)
                             player.sendSystemMessage(Component.literal("No course"));
                         } else {
-                            courseData.put(player, new SpinjitzuCourseData());
+                            courseData.put(player, new HashSet<>());
                             BlockPos pos = teapotPos.get();
                             BrainUtils.setMemory(this, MemoryModuleType.WALK_TARGET, new WalkTarget(pos.relative(Direction.getRandom(random)), 1f, 2));
-                            // TODO: Sit down and begin tea animation that lasts exactly as long as alloted time
-                            // ^ behavior, set memories needed
-                            player.sendSystemMessage(Component.literal("Sitting down"));
+                            // TODO: Doesn't stay in rest state, fix
+                            getBrain().setActiveActivityIfPossible(Activity.REST);
                         }
                     } else {
                         // TODO: Make sad noise (particles?)
@@ -186,21 +195,11 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
     public void tick() {
         super.tick();
         if (!level().isClientSide) {
-            Map<Player, SpinjitzuCourseData> currentPlayers = new HashMap<>(this.courseData);
-            currentPlayers.forEach((player, data) -> {
-                data.tick();
-                if (data.getRunTicks() >= (MinejagoServerConfig.INSTANCE.courseTimeLimit.get() * SharedConstants.TICKS_PER_SECOND)) {
-                    // TODO: Make sad noise (particles?)
-                    player.sendSystemMessage(Component.literal("Time's up"));
-                    stopTracking(player);
-                    entitiesOnCooldown.computeIfAbsent((int) (level().getGameTime() + SharedConstants.TICKS_PER_GAME_DAY), k -> new ArrayList<>()).add(player);
-                }
-            });
             entitiesOnCooldown.remove((int) level().getGameTime());
         }
     }
 
-    protected void stopTracking(Player player) {
+    public void stopTracking(Player player) {
         courseData.remove(player);
         if (courseData.isEmpty()) {
             trackedCourseElements.forEach(AbstractSpinjitzuCourseElement::endTracking);
@@ -229,11 +228,23 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
     @Override
     public BrainActivityGroup<Character> getIdleTasks() {
         return super.getIdleTasks().behaviours(
-                new FirstApplicableBehaviour<Character>(
+                new FirstApplicableBehaviour<>(
                         Pair.of(new GivePowerAndGi<Character>()
                                 .startCondition(character -> character instanceof Wu wu && wu.givingPower)
                                 .whenStarting(character -> character.setDoingSpinjitzu(true))
                                 .whenStopping(character -> character.setDoingSpinjitzu(false)), 0)));
+    }
+
+    public BrainActivityGroup<Character> getRestTasks() {
+        return new BrainActivityGroup<>(Activity.REST).behaviours(
+                new FirstApplicableBehaviour<>(
+                        Pair.of(new TrackSpinjitzuCourseCompletion(), 0)));
+    }
+
+    @Override
+    public Map<Activity, BrainActivityGroup<? extends Character>> getAdditionalTasks() {
+        return Map.of(
+                Activity.REST, getRestTasks());
     }
 
     @Override
@@ -264,6 +275,43 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
 
     @Override
     public void markVisited(AbstractSpinjitzuCourseElement<?> element, Player visitor) {
-        courseData.computeIfAbsent(visitor, k -> new SpinjitzuCourseData()).markVisited(element);
+        if (courseData.containsKey(visitor)) {
+            courseData.get(visitor).add(element);
+        }
+    }
+
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        if (/*getBrain().isActive(Activity.REST) && */!source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+            if (isLifting()) {
+                interrupted = true;
+            }
+            return false;
+        }
+        return super.hurt(source, amount);
+    }
+
+    public Map<Player, Set<AbstractSpinjitzuCourseElement<?>>> getCourseData() {
+        return courseData;
+    }
+
+    public Map<Integer, List<Player>> getEntitiesOnCooldown() {
+        return entitiesOnCooldown;
+    }
+
+    public boolean wasInterrupted() {
+        return interrupted;
+    }
+
+    public void setInterrupted(boolean interrupted) {
+        this.interrupted = interrupted;
+    }
+
+    public boolean isLifting() {
+        return lifting;
+    }
+
+    public void setLifting(boolean lifting) {
+        this.lifting = lifting;
     }
 }

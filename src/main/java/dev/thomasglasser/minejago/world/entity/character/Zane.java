@@ -53,6 +53,11 @@ public class Zane extends Character {
     }
 
     @Override
+    public boolean shouldSetRandomWalkTarget(Character character) {
+        return shouldFloatToSurfaceOfFluid(character);
+    }
+
+    @Override
     public boolean checkSpawnObstruction(LevelReader level) {
         return level.isUnobstructed(this);
     }
