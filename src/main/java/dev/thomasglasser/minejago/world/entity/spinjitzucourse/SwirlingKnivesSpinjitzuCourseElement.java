@@ -1,7 +1,6 @@
 package dev.thomasglasser.minejago.world.entity.spinjitzucourse;
 
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
-import java.util.List;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
@@ -11,23 +10,17 @@ import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.constant.DefaultAnimations;
 
 public class SwirlingKnivesSpinjitzuCourseElement extends PlatformedSpinjitzuCourseElement<SwirlingKnivesSpinjitzuCourseElement> {
-    private final SpinningSpinjitzuCourseElementPart<SwirlingKnivesSpinjitzuCourseElement> knives1;
-    private final SpinningSpinjitzuCourseElementPart<SwirlingKnivesSpinjitzuCourseElement> knives2;
-
     public SwirlingKnivesSpinjitzuCourseElement(EntityType<?> entityType, Level level) {
         super(entityType, level);
-        knives1 = new SpinningSpinjitzuCourseElementPart<>(this, "knives_1", 1.25f, 1.25f, 0, 1.5f, 1.125f);
-        knives2 = new SpinningSpinjitzuCourseElementPart<>(this, "knives_2", 1.25f, 1.25f, 0, 1.5f, -1.125f);
+
+        SpinningSpinjitzuCourseElementPart<SwirlingKnivesSpinjitzuCourseElement> knives1 = new SpinningSpinjitzuCourseElementPart<>(this, "knives_1", 1.25f, 1.25f, 0, 1.5f, 1.125f);
+        SpinningSpinjitzuCourseElementPart<SwirlingKnivesSpinjitzuCourseElement> knives2 = new SpinningSpinjitzuCourseElementPart<>(this, "knives_2", 1.25f, 1.25f, 0, 1.5f, -1.125f);
+        defineParts(bottom, top, knives1, knives2);
     }
 
     @Override
     protected Item getDropItem() {
         return MinejagoItems.SWIRLING_KNIVES_SPINJITZU_COURSE_ELEMENT.get();
-    }
-
-    @Override
-    protected List<SpinjitzuCourseElementPart<SwirlingKnivesSpinjitzuCourseElement>> getSubEntities() {
-        return List.of(bottom, top, knives1, knives2);
     }
 
     @Override

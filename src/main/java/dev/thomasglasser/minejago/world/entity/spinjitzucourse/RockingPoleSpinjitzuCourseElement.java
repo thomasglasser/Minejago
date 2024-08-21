@@ -1,7 +1,6 @@
 package dev.thomasglasser.minejago.world.entity.spinjitzucourse;
 
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
-import java.util.List;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -12,21 +11,15 @@ import net.minecraft.world.phys.Vec3;
 public class RockingPoleSpinjitzuCourseElement extends AbstractSpinjitzuCourseElement<RockingPoleSpinjitzuCourseElement> {
     public static final Vec3 VISIT_BOX = new Vec3(0.625, 2, 1.875);
 
-    private final SpinjitzuCourseElementPart<RockingPoleSpinjitzuCourseElement> pole;
-
     public RockingPoleSpinjitzuCourseElement(EntityType<?> entityType, Level level) {
         super(entityType, level, VISIT_BOX);
-        this.pole = new RockingPoleSpinjitzuCoursePart(this, "pole", 0.625f, 1.3125f, 0, 0, 0);
+        SpinjitzuCourseElementPart<RockingPoleSpinjitzuCourseElement> pole = new RockingPoleSpinjitzuCoursePart(this, "pole", 0.625f, 1.3125f, 0, 0, 0);
+        defineParts(pole);
     }
 
     @Override
     protected Item getDropItem() {
         return MinejagoItems.ROCKING_POLE_SPINJITZU_COURSE_ELEMENT.get();
-    }
-
-    @Override
-    protected List<SpinjitzuCourseElementPart<RockingPoleSpinjitzuCourseElement>> getSubEntities() {
-        return List.of(this.pole);
     }
 
     @Override

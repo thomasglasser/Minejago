@@ -1,7 +1,6 @@
 package dev.thomasglasser.minejago.world.entity.spinjitzucourse;
 
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
-import java.util.List;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
@@ -13,22 +12,17 @@ public class BouncingPoleSpinjitzuCourseElement extends AbstractSpinjitzuCourseE
     public static final int MAX_BOUNCE_TICKS = 10;
     public static final int HALF_BOUNCE_TICKS = MAX_BOUNCE_TICKS / 2;
 
-    private final BouncingPoleSpinjitzuCoursePart pole;
     private float bounceTicks;
 
     public BouncingPoleSpinjitzuCourseElement(EntityType<?> entityType, Level level) {
         super(entityType, level, VISIT_BOX);
-        this.pole = new BouncingPoleSpinjitzuCoursePart(this, "pole", 0.625f, 1.51f, 0, 0, 0);
+        BouncingPoleSpinjitzuCoursePart pole = new BouncingPoleSpinjitzuCoursePart(this, "pole", 0.625f, 1.51f, 0, 0, 0);
+        defineParts(pole);
     }
 
     @Override
     protected Item getDropItem() {
         return MinejagoItems.BOUNCING_POLE_SPINJITZU_COURSE_ELEMENT.get();
-    }
-
-    @Override
-    protected List<SpinjitzuCourseElementPart<BouncingPoleSpinjitzuCourseElement>> getSubEntities() {
-        return List.of(this.pole);
     }
 
     @Override

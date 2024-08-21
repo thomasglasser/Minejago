@@ -1,7 +1,6 @@
 package dev.thomasglasser.minejago.world.entity.spinjitzucourse;
 
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
-import java.util.List;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -18,25 +17,17 @@ public class SpinningDummiesSpinjitzuCourseElement extends PlatformedSpinjitzuCo
     private static final RawAnimation DUMMY_2_HIT_ANIMATION = RawAnimation.begin().thenPlay("misc.dummy_2.interact");
     private static final RawAnimation DUMMY_3_HIT_ANIMATION = RawAnimation.begin().thenPlay("misc.dummy_3.interact");
 
-    private final SpinningDummiesSpinjitzuCourseElementPart dummy1;
-    private final SpinningDummiesSpinjitzuCourseElementPart dummy2;
-    private final SpinningDummiesSpinjitzuCourseElementPart dummy3;
-
     public SpinningDummiesSpinjitzuCourseElement(EntityType<?> entityType, Level level) {
         super(entityType, level);
-        this.dummy1 = new SpinningDummiesSpinjitzuCourseElementPart(this, "dummy_1", 1f, 1.875f, 0.125f, 1.6875f, 1.1875f);
-        this.dummy2 = new SpinningDummiesSpinjitzuCourseElementPart(this, "dummy_2", 1f, 1.875f, -0.125f, 1.6875f, -1.1875f);
-        this.dummy3 = new SpinningDummiesSpinjitzuCourseElementPart(this, "dummy_3", 1f, 1.875f, 1.375f, 0.3125f, -0.25f);
+        SpinningDummiesSpinjitzuCourseElementPart dummy1 = new SpinningDummiesSpinjitzuCourseElementPart(this, "dummy_1", 1f, 1.875f, 0.125f, 1.6875f, 1.1875f);
+        SpinningDummiesSpinjitzuCourseElementPart dummy2 = new SpinningDummiesSpinjitzuCourseElementPart(this, "dummy_2", 1f, 1.875f, -0.125f, 1.6875f, -1.1875f);
+        SpinningDummiesSpinjitzuCourseElementPart dummy3 = new SpinningDummiesSpinjitzuCourseElementPart(this, "dummy_3", 1f, 1.875f, 1.375f, 0.3125f, -0.25f);
+        defineParts(top, bottom, dummy1, dummy2, dummy3);
     }
 
     @Override
     protected Item getDropItem() {
         return MinejagoItems.SPINNING_DUMMIES_SPINJITZU_COURSE_ELEMENT.get();
-    }
-
-    @Override
-    protected List<SpinjitzuCourseElementPart<SpinningDummiesSpinjitzuCourseElement>> getSubEntities() {
-        return List.of(top, bottom, dummy1, dummy2, dummy3);
     }
 
     @Override

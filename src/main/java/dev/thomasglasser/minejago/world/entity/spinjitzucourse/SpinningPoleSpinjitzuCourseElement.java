@@ -23,11 +23,6 @@ public class SpinningPoleSpinjitzuCourseElement extends AbstractSpinjitzuCourseE
     }
 
     @Override
-    protected List<SpinjitzuCourseElementPart<SpinningPoleSpinjitzuCourseElement>> getSubEntities() {
-        return List.of();
-    }
-
-    @Override
     public void tick() {
         super.tick();
         if (isFullyActive()) {
