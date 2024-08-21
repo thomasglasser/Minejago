@@ -285,13 +285,6 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
         return this.entityData.get(DATA_MEDITATION_STATUS);
     }
 
-    public enum MeditationStatus {
-        STARTING,
-        FLOATING,
-        FINISHING,
-        NONE
-    }
-
     @Override
     public int getCurrentSwingDuration() {
         int baseSwingDuration = 18;
@@ -300,5 +293,12 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
         } else {
             return this.hasEffect(MobEffects.DIG_SLOWDOWN) ? baseSwingDuration + (1 + this.getEffect(MobEffects.DIG_SLOWDOWN).getAmplifier()) * 2 : baseSwingDuration;
         }
+    }
+
+    public enum MeditationStatus {
+        STARTING,
+        FLOATING,
+        FINISHING,
+        NONE
     }
 }

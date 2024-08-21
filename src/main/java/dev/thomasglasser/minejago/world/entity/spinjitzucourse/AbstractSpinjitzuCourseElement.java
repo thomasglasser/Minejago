@@ -33,6 +33,7 @@ public abstract class AbstractSpinjitzuCourseElement<T extends AbstractSpinjitzu
     public static final String DEPLOY_KEY = "deploy";
     public static final String REST_KEY = "rest";
 
+    protected static final EntityDataAccessor<Float> DATA_Y_ROT = SynchedEntityData.defineId(AbstractSpinjitzuCourseElement.class, EntityDataSerializers.FLOAT);
     protected static final EntityDataAccessor<Float> DATA_ID_DAMAGE = SynchedEntityData.defineId(AbstractSpinjitzuCourseElement.class, EntityDataSerializers.FLOAT);
     protected static final EntityDataAccessor<Boolean> DATA_ID_ACTIVE = SynchedEntityData.defineId(AbstractSpinjitzuCourseElement.class, EntityDataSerializers.BOOLEAN);
     protected static final EntityDataAccessor<Integer> DATA_ID_SIGNAL_BELOW = SynchedEntityData.defineId(AbstractSpinjitzuCourseElement.class, EntityDataSerializers.INT);
@@ -68,7 +69,7 @@ public abstract class AbstractSpinjitzuCourseElement<T extends AbstractSpinjitzu
                     this.discard();
                 }
             } else {
-                this.destroy(source);
+                this.destroy();
             }
 
             return true;
@@ -84,10 +85,19 @@ public abstract class AbstractSpinjitzuCourseElement<T extends AbstractSpinjitzu
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        builder.define(DATA_Y_ROT, 0.0F);
         builder.define(DATA_ID_DAMAGE, 0.0F);
         builder.define(DATA_ID_ACTIVE, false);
         builder.define(DATA_ID_SIGNAL_BELOW, 0);
         builder.define(DATA_ID_ACTIVE_TICKS, 0);
+    }
+
+    public void setYRotSynced(float yRot) {
+        this.entityData.set(DATA_Y_ROT, yRot);
+    }
+
+    public float getYRotSynced() {
+        return this.entityData.get(DATA_Y_ROT);
     }
 
     public void setDamage(float damage) {
@@ -114,7 +124,7 @@ public abstract class AbstractSpinjitzuCourseElement<T extends AbstractSpinjitzu
         return this.entityData.get(DATA_ID_ACTIVE_TICKS);
     }
 
-    protected void destroy(DamageSource source) {
+    protected void destroy() {
         this.destroy(this.getDropItem());
     }
 
@@ -140,8 +150,10 @@ public abstract class AbstractSpinjitzuCourseElement<T extends AbstractSpinjitzu
         super.tick();
 
         // Ensures dimensions sync with entity data
-        if (tickCount < 2)
+        if (tickCount < 2) {
             refreshDimensions();
+            setYRot(getYRotSynced());
+        }
 
         int activeTicks = getActiveTicks();
         if (isActive()) {
@@ -225,10 +237,22 @@ public abstract class AbstractSpinjitzuCourseElement<T extends AbstractSpinjitzu
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag compound) {}
+    protected void addAdditionalSaveData(CompoundTag compound) {
+        compound.putFloat("y_rot", getYRotSynced());
+        compound.putFloat("damage", getDamage());
+        compound.putBoolean("active", isActive());
+        compound.putInt("signal_below", getSignalBelow());
+        compound.putInt("active_ticks", getActiveTicks());
+    }
 
     @Override
-    protected void readAdditionalSaveData(CompoundTag compound) {}
+    protected void readAdditionalSaveData(CompoundTag compound) {
+        setYRotSynced(compound.getFloat("y_rot"));
+        setDamage(compound.getFloat("damage"));
+        setActive(compound.getBoolean("active"));
+        setSignalBelow(compound.getInt("signal_below"));
+        setActiveTicks(compound.getInt("active_ticks"));
+    }
 
     protected void setActive(boolean active) {
         this.entityData.set(DATA_ID_ACTIVE, active);

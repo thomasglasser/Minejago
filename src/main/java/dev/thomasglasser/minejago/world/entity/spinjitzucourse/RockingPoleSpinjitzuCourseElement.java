@@ -43,9 +43,17 @@ public class RockingPoleSpinjitzuCourseElement extends AbstractSpinjitzuCourseEl
         public void calculatePosition() {
             float maxAngle = 1f;
             float speedMultiplier = 0.5f;
-            float zOffset = Mth.sin(speedMultiplier * getParent().tickCount) * maxAngle;
-            float yOffset = (zOffset < 0 ? zOffset : -zOffset) + 0.3f;
-            moveTo(getParent().getX(), getParent().getY() + yOffset, getParent().getZ() - zOffset);
+            float poleOffset = Mth.sin(speedMultiplier * getParent().tickCount) * maxAngle;
+            float yOffset = (poleOffset < 0 ? poleOffset : -poleOffset) + 0.3f;
+            float xOffset = 0;
+            float zOffset = 0;
+            switch (getParent().getDirection().getClockWise()) {
+                case DOWN, UP, NORTH -> zOffset = -poleOffset;
+                case WEST -> xOffset = -poleOffset;
+                case SOUTH -> zOffset = poleOffset;
+                case EAST -> xOffset = poleOffset;
+            }
+            moveTo(getParent().getX() + xOffset, getParent().getY() + yOffset, getParent().getZ() + zOffset);
         }
     }
 }

@@ -8,6 +8,12 @@ public class SpinningSpinjitzuCourseElementPart<T extends AbstractSpinjitzuCours
     @Override
     public void calculatePosition() {
         double angleRadians = getParent().tickCount * 0.5f;
+        angleRadians += switch (getParent().getDirection().getClockWise()) {
+            case DOWN, UP, NORTH -> 0;
+            case EAST -> Math.PI * 1.5;
+            case SOUTH -> Math.PI;
+            case WEST -> Math.PI / 2.0;
+        };
         double cos = Math.cos(angleRadians);
         double sin = Math.sin(angleRadians);
         double rotatedX = offsetX * cos + offsetZ * sin;

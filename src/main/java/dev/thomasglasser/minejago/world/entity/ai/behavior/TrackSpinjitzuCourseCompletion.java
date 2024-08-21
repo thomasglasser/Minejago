@@ -12,7 +12,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.schedule.Activity;
 import net.tslat.smartbrainlib.api.core.behaviour.ExtendedBehaviour;
 
 public class TrackSpinjitzuCourseCompletion<T extends Wu> extends ExtendedBehaviour<T> {
@@ -31,7 +30,7 @@ public class TrackSpinjitzuCourseCompletion<T extends Wu> extends ExtendedBehavi
 
     public TrackSpinjitzuCourseCompletion() {
         super();
-        runFor(wu -> MinejagoServerConfig.INSTANCE.courseTimeLimit.get() * SharedConstants.TICKS_PER_SECOND);
+        runFor(wu -> Integer.MAX_VALUE);
     }
 
     @Override
@@ -111,7 +110,6 @@ public class TrackSpinjitzuCourseCompletion<T extends Wu> extends ExtendedBehavi
             entity.stopTracking(player);
             entity.getEntitiesOnCooldown().computeIfAbsent((int) (entity.level().getGameTime() + SharedConstants.TICKS_PER_GAME_DAY), k -> new ArrayList<>()).add(player);
         });
-        entity.getBrain().setActiveActivityIfPossible(Activity.IDLE);
     }
 
     @Override

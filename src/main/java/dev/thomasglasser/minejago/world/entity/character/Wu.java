@@ -152,7 +152,6 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
                     stopTracking(player);
                     setLifting(false);
                     setInterrupted(false);
-                    getBrain().setActiveActivityIfPossible(Activity.IDLE);
                 }
             } else {
                 List<LivingEntity> cooldownList = new ArrayList<>();
@@ -232,19 +231,8 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
                         Pair.of(new GivePowerAndGi<Character>()
                                 .startCondition(character -> character instanceof Wu wu && wu.givingPower)
                                 .whenStarting(character -> character.setDoingSpinjitzu(true))
-                                .whenStopping(character -> character.setDoingSpinjitzu(false)), 0)));
-    }
-
-    public BrainActivityGroup<Character> getRestTasks() {
-        return new BrainActivityGroup<>(Activity.REST).behaviours(
-                new FirstApplicableBehaviour<>(
+                                .whenStopping(character -> character.setDoingSpinjitzu(false)), 0),
                         Pair.of(new TrackSpinjitzuCourseCompletion(), 0)));
-    }
-
-    @Override
-    public Map<Activity, BrainActivityGroup<? extends Character>> getAdditionalTasks() {
-        return Map.of(
-                Activity.REST, getRestTasks());
     }
 
     @Override
@@ -282,7 +270,7 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if (/*getBrain().isActive(Activity.REST) && */!source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+        if (!courseData.isEmpty() && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             if (isLifting()) {
                 interrupted = true;
             }
@@ -313,5 +301,10 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
 
     public void setLifting(boolean lifting) {
         this.lifting = lifting;
+    }
+
+    @Override
+    public boolean shouldSetRandomWalkTarget(Character character) {
+        return courseData.isEmpty();
     }
 }
