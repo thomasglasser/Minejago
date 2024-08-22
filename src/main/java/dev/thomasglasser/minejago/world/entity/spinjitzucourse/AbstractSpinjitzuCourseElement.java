@@ -1,5 +1,6 @@
 package dev.thomasglasser.minejago.world.entity.spinjitzucourse;
 
+import java.util.Arrays;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -27,8 +28,6 @@ import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.util.GeckoLibUtil;
-
-import java.util.Arrays;
 
 public abstract class AbstractSpinjitzuCourseElement<T extends AbstractSpinjitzuCourseElement<T>> extends Entity implements GeoEntity {
     public static final String DEPLOY_KEY = "deploy";
