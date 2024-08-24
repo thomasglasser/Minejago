@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.function.Supplier;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.BannerPatternItem;
@@ -30,6 +31,7 @@ import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.armortrim.TrimPattern;
+import net.minecraft.world.level.block.entity.BannerPattern;
 
 public class MinejagoItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Minejago.MOD_ID);
@@ -50,13 +52,16 @@ public class MinejagoItems {
     public static final DeferredItem<SwordItem> IRON_KATANA = register("iron_katana", () -> new SwordItem(Tiers.IRON, new Item.Properties().attributes(SwordItem.createAttributes(Tiers.IRON, 1, -1.4F))), List.of(CreativeModeTabs.COMBAT));
     public static final DeferredItem<TeacupItem> TEACUP = register("teacup", () -> new TeacupItem(new Item.Properties()), List.of(CreativeModeTabs.INGREDIENTS));
     public static final DeferredItem<FilledTeacupItem> FILLED_TEACUP = register("filled_teacup", () -> new FilledTeacupItem(new Item.Properties().stacksTo(1)), List.of());
-    public static final DeferredItem<BannerPatternItem> FOUR_WEAPONS_BANNER_PATTERN = register("four_weapons_banner_pattern", () -> new BannerPatternItem(MinejagoBannerPatternTags.PATTERN_ITEM_FOUR_WEAPONS, (new Item.Properties()).stacksTo(1).rarity(Rarity.EPIC)), List.of(CreativeModeTabs.INGREDIENTS));
     public static final DeferredItem<ScytheItem> IRON_SCYTHE = register("iron_scythe", () -> new ScytheItem(Tiers.IRON, new Item.Properties().attributes(DiggerItem.createAttributes(Tiers.IRON, 8, -3.5F))), List.of(CreativeModeTabs.TOOLS_AND_UTILITIES, CreativeModeTabs.COMBAT));
     public static final DeferredItem<NunchucksItem> WOODEN_NUNCHUCKS = register("wooden_nunchucks", () -> new NunchucksItem(new Item.Properties().stacksTo(1)), List.of(CreativeModeTabs.COMBAT));
     public static final DeferredItem<ScrollItem> SCROLL = register("scroll", () -> new ScrollItem(new Item.Properties()), List.of(CreativeModeTabs.INGREDIENTS));
     public static final DeferredItem<WritableScrollItem> WRITABLE_SCROLL = register("writable_scroll", () -> new WritableScrollItem(new Item.Properties().stacksTo(1)), List.of(CreativeModeTabs.TOOLS_AND_UTILITIES));
     public static final DeferredItem<WrittenScrollItem> WRITTEN_SCROLL = register("written_scroll", () -> new WrittenScrollItem(new Item.Properties().stacksTo(1)), List.of());
     public static final DeferredItem<CustomEmptyMapItem> EMPTY_GOLDEN_WEAPONS_MAP = register("empty_golden_weapons_map", () -> new CustomEmptyMapItem(MinejagoItemUtils::createGoldenWeaponsMap, new Item.Properties()), List.of(MinejagoCreativeModeTabs.MINEJAGO.getKey()));
+
+    // Banner Patterns
+    public static final DeferredItem<BannerPatternItem> FOUR_WEAPONS_BANNER_PATTERN = registerBannerPattern("four_weapons", MinejagoBannerPatternTags.PATTERN_ITEM_FOUR_WEAPONS);
+    public static final DeferredItem<BannerPatternItem> NINJA_BANNER_PATTERN = registerBannerPattern("ninja", MinejagoBannerPatternTags.PATTERN_ITEM_NINJA);
 
     // Pottery Sherds
     public static final DeferredItem<Item> POTTERY_SHERD_ICE_CUBE = registerSherd("ice_cube");
@@ -102,12 +107,16 @@ public class MinejagoItems {
         return ItemUtils.register(ITEMS, name, itemSupplier, tabs);
     }
 
+    public static void init() {}
+
+    private static DeferredItem<BannerPatternItem> registerBannerPattern(String name, TagKey<BannerPattern> patterns) {
+        return register(name + "_banner_pattern", () -> new BannerPatternItem(patterns, (new Item.Properties()).stacksTo(1).rarity(Rarity.EPIC)), List.of(CreativeModeTabs.INGREDIENTS));
+    }
+
     private static DeferredItem<Item> registerSherd(String name) {
         SHERDS.add(name);
         return ItemUtils.registerSherd(ITEMS, name);
     }
-
-    public static void init() {}
 
     private static DeferredItem<SmithingTemplateItem> registerSmithingTemplate(ResourceKey<TrimPattern> pattern) {
         return ItemUtils.registerSmithingTemplate(ITEMS, pattern);

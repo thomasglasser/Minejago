@@ -21,6 +21,8 @@ public class MinejagoBannerPatternTagsProvider extends BannerPatternTagsProvider
         tag(MinejagoBannerPatternTags.PATTERN_ITEM_FOUR_WEAPONS)
                 .add(MinejagoBannerPatterns.FOUR_WEAPONS_LEFT)
                 .add(MinejagoBannerPatterns.FOUR_WEAPONS_RIGHT);
+        tag(MinejagoBannerPatternTags.PATTERN_ITEM_NINJA)
+                .add(MinejagoBannerPatterns.NINJA);
         tag(BannerPatternTags.NO_ITEM_REQUIRED)
                 .add(MinejagoBannerPatterns.EDGE_LINES);
     }

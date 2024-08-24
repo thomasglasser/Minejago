@@ -1,12 +1,13 @@
 package dev.thomasglasser.minejago.world.item;
 
 import dev.thomasglasser.minejago.world.entity.spinjitzucourse.AbstractSpinjitzuCourseElement;
-import java.util.function.Supplier;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.phys.Vec3;
+
+import java.util.function.Supplier;
 
 public class SpinjitzuCourseElementItem extends Item {
     private Supplier<EntityType<? extends AbstractSpinjitzuCourseElement<?>>> entityType;
@@ -23,12 +24,12 @@ public class SpinjitzuCourseElementItem extends Item {
         } else {
             AbstractSpinjitzuCourseElement<?> entity = entityType.get().create(context.getLevel());
             if (entity != null) {
-                Vec3 pos = context.getClickLocation();
-                if (context.getLevel().getBlockState(context.getClickedPos()).canBeReplaced()) {
-                    context.getLevel().removeBlock(context.getClickedPos(), false);
-                    pos = pos.add(0, -0.5, 0);
+                BlockPos pos = context.getClickedPos();
+                if (context.getLevel().getBlockState(pos).canBeReplaced()) {
+                    context.getLevel().removeBlock(pos, false);
+                    pos = pos.below();
                 }
-                entity.moveTo(pos);
+                entity.moveTo(pos.above().getBottomCenter());
                 if (context.getPlayer() != null)
                     entity.setYRotSynced(context.getPlayer().getDirection().getOpposite().toYRot());
                 context.getLevel().addFreshEntity(entity);

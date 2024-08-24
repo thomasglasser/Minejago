@@ -10,6 +10,7 @@ public class MinejagoBannerPatterns {
     public static final ResourceKey<BannerPattern> FOUR_WEAPONS_LEFT = create("four_weapons_left");
     public static final ResourceKey<BannerPattern> FOUR_WEAPONS_RIGHT = create("four_weapons_right");
     public static final ResourceKey<BannerPattern> EDGE_LINES = create("edge_lines");
+    public static final ResourceKey<BannerPattern> NINJA = create("ninja");
 
     private static ResourceKey<BannerPattern> create(String name) {
         return ResourceKey.create(Registries.BANNER_PATTERN, Minejago.modLoc(name));
@@ -19,6 +20,7 @@ public class MinejagoBannerPatterns {
         register(context, FOUR_WEAPONS_LEFT);
         register(context, FOUR_WEAPONS_RIGHT);
         register(context, EDGE_LINES);
+        register(context, NINJA);
     }
 
     public static void register(BootstrapContext<BannerPattern> bootstrapContext, ResourceKey<BannerPattern> resourceKey) {

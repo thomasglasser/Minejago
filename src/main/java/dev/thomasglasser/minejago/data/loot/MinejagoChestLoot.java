@@ -16,8 +16,13 @@ public record MinejagoChestLoot(HolderLookup.Provider provider) implements LootT
                     .add(LootItem.lootTableItem(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get()))
                     .add(LootItem.lootTableItem(MinejagoItems.FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE.get())));
 
+    public static final LootTable.Builder MONASTERY = LootTable.lootTable().withPool(
+            LootPool.lootPool()
+                    .add(LootItem.lootTableItem(MinejagoItems.NINJA_BANNER_PATTERN.get())));
+
     @Override
     public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> p_249643_) {
         p_249643_.accept(MinejagoChestLootKeys.FOUR_WEAPONS, FOUR_WEAPONS);
+        p_249643_.accept(MinejagoChestLootKeys.MONASTERY, MONASTERY);
     }
 }

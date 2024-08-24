@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minejago:ninja_banner_pattern"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "minejago:chests/monastery"
+}

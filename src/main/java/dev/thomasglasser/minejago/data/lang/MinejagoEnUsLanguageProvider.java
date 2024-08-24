@@ -54,7 +54,6 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(MinejagoItems.SCYTHE_OF_QUAKES.get(), "Scythe of Quakes");
         add(MinejagoItems.TEACUP.get(), "Teacup");
         add(MinejagoItems.FILLED_TEACUP.get(), "Tea");
-        add(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get(), "Banner Pattern");
         add(MinejagoItems.IRON_SPEAR.get(), "Iron Spear");
         add(MinejagoItems.IRON_SHURIKEN.get(), "Iron Shuriken");
         MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(item -> add(item.get(), "Skeletal Chestplate"));
@@ -106,8 +105,6 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(MinejagoBlocks.FOCUS_LEAVES_SET, "Focus");
 
         add(SkulkinRaid.SKULKINS_BANNER_PATTERN_NAME, "Cursed Banner");
-
-        addDesc(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get(), "Four Weapons");
 
         MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(item -> {
             String nameForVariant = switch (item.get().getVariant()) {
@@ -166,9 +163,13 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         addSpinjitzuCourseElement(MinejagoEntityTypes.SWIRLING_KNIVES_SPINJITZU_COURSE_ELEMENT, MinejagoItems.SWIRLING_KNIVES_SPINJITZU_COURSE_ELEMENT, "Swirling Knives");
         addSpinjitzuCourseElement(MinejagoEntityTypes.SPINNING_AXES_SPINJITZU_COURSE_ELEMENT, MinejagoItems.SPINNING_AXES_SPINJITZU_COURSE_ELEMENT, "Spinning Axes");
 
+        addPattern(MinejagoBannerPatterns.EDGE_LINES, "Edge Lines");
+
         addPattern(MinejagoBannerPatterns.FOUR_WEAPONS_LEFT, "Four Weapons Left");
         addPattern(MinejagoBannerPatterns.FOUR_WEAPONS_RIGHT, "Four Weapons Right");
-        addPattern(MinejagoBannerPatterns.EDGE_LINES, "Edge Lines");
+        addPatternItem(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN, "Four Weapons");
+
+        addPatternAndItem(MinejagoBannerPatterns.NINJA, MinejagoItems.NINJA_BANNER_PATTERN, "Ninja");
 
         add(Items.FILLED_MAP.getDescriptionId() + ".golden_weapons", "Golden Weapons Map");
 
@@ -352,7 +353,7 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
     }
 
     protected void addPluginConfig(ResourceLocation location, String name) {
-        super.addPluginConfig(location, Minejago.MOD_NAME, name);
+        addPluginConfig(location, Minejago.MOD_NAME, name);
     }
 
     protected <T extends AbstractSpinjitzuCourseElement<T>> void addSpinjitzuCourseElement(DeferredHolder<EntityType<?>, EntityType<T>> entity, DeferredItem<? extends SpinjitzuCourseElementItem> item, String name) {
