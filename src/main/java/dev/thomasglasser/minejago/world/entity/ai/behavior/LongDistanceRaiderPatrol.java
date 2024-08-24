@@ -1,7 +1,7 @@
 package dev.thomasglasser.minejago.world.entity.ai.behavior;
 
 import com.mojang.datafixers.util.Pair;
-import dev.thomasglasser.minejago.world.entity.skulkin.raid.MeleeCompatibleSkeletonRaider;
+import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaider;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -15,7 +15,7 @@ import net.minecraft.world.phys.Vec3;
 import net.tslat.smartbrainlib.api.core.behaviour.ExtendedBehaviour;
 import net.tslat.smartbrainlib.util.BrainUtils;
 
-public class LongDistanceRaiderPatrol<T extends MeleeCompatibleSkeletonRaider> extends ExtendedBehaviour<T> {
+public class LongDistanceRaiderPatrol<T extends SkulkinRaider> extends ExtendedBehaviour<T> {
     private static final List<Pair<MemoryModuleType<?>, MemoryStatus>> MEMORY_REQUIREMENTS = List.of(Pair.of(MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT), Pair.of(MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryStatus.REGISTERED));
 
     protected float leaderSpeedModifier = 1;

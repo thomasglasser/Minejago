@@ -87,8 +87,8 @@ public class SkulkinRaid {
     private static final int HERO_OF_THE_VILLAGE_DURATION = 48000;
     public static final int VALID_RAID_RADIUS_SQR = 9216;
     public static final int RAID_REMOVAL_THRESHOLD_SQR = 12544;
-    private final Map<Integer, MeleeCompatibleSkeletonRaider> groupToLeaderMap = Maps.newHashMap();
-    private final Map<Integer, Set<MeleeCompatibleSkeletonRaider>> groupRaiderMap = Maps.newHashMap();
+    private final Map<Integer, SkulkinRaider> groupToLeaderMap = Maps.newHashMap();
+    private final Map<Integer, Set<SkulkinRaider>> groupRaiderMap = Maps.newHashMap();
     private long ticksActive;
     private BlockPos center;
     private final ServerLevel level;
@@ -398,13 +398,13 @@ public class SkulkinRaid {
     }
 
     private void updateRaiders() {
-        Iterator<Set<MeleeCompatibleSkeletonRaider>> iterator = this.groupRaiderMap.values().iterator();
-        Set<MeleeCompatibleSkeletonRaider> set = Sets.<MeleeCompatibleSkeletonRaider>newHashSet();
+        Iterator<Set<SkulkinRaider>> iterator = this.groupRaiderMap.values().iterator();
+        Set<SkulkinRaider> set = Sets.<SkulkinRaider>newHashSet();
 
         while (iterator.hasNext()) {
-            Set<MeleeCompatibleSkeletonRaider> set2 = iterator.next();
+            Set<SkulkinRaider> set2 = iterator.next();
 
-            for (MeleeCompatibleSkeletonRaider raider : set2) {
+            for (SkulkinRaider raider : set2) {
                 BlockPos blockPos = raider.blockPosition();
                 if (raider.isRemoved() || raider.level().dimension() != this.level.dimension() || this.center.distSqr(blockPos) >= 12544.0) {
                     set.add(raider);
@@ -424,7 +424,7 @@ public class SkulkinRaid {
             }
         }
 
-        for (MeleeCompatibleSkeletonRaider raider2 : set) {
+        for (SkulkinRaider raider2 : set) {
             this.removeFromSkulkinRaid(raider2, true);
         }
     }
@@ -459,7 +459,7 @@ public class SkulkinRaid {
         if (this.groupsSpawned >= this.numGroups - 1) bl = spawnBosses(i, pos);
 
         for (int l = 0; l < j; ++l) {
-            MeleeCompatibleSkeletonRaider raider = MinejagoEntityTypes.SKULKIN.get().create(this.level);
+            SkulkinRaider raider = MinejagoEntityTypes.SKULKIN.get().create(this.level);
             if (raider == null) {
                 break;
             }
@@ -494,7 +494,7 @@ public class SkulkinRaid {
         this.setDirty();
     }
 
-    public void joinSkulkinRaid(int wave, MeleeCompatibleSkeletonRaider raider, @Nullable BlockPos pos, boolean isRecruited) {
+    public void joinSkulkinRaid(int wave, SkulkinRaider raider, @Nullable BlockPos pos, boolean isRecruited) {
         boolean bl = this.addWaveMob(wave, raider);
         if (bl) {
             raider.setCurrentSkulkinRaid(this);
@@ -517,8 +517,8 @@ public class SkulkinRaid {
     public float getHealthOfLivingMeleeCompatibleSkeletonRaiders() {
         float f = 0.0F;
 
-        for (Set<MeleeCompatibleSkeletonRaider> set : this.groupRaiderMap.values()) {
-            for (MeleeCompatibleSkeletonRaider raider : set) {
+        for (Set<SkulkinRaider> set : this.groupRaiderMap.values()) {
+            for (SkulkinRaider raider : set) {
                 f += raider.getHealth();
             }
         }
@@ -534,8 +534,8 @@ public class SkulkinRaid {
         return this.groupRaiderMap.values().stream().mapToInt(Set::size).sum();
     }
 
-    public void removeFromSkulkinRaid(MeleeCompatibleSkeletonRaider raider, boolean wanderedOutOfSkulkinRaid) {
-        Set<MeleeCompatibleSkeletonRaider> set = (Set) this.groupRaiderMap.get(raider.getWave());
+    public void removeFromSkulkinRaid(SkulkinRaider raider, boolean wanderedOutOfSkulkinRaid) {
+        Set<SkulkinRaider> set = (Set) this.groupRaiderMap.get(raider.getWave());
         if (set != null) {
             boolean bl = set.remove(raider);
             if (bl) {
@@ -568,7 +568,7 @@ public class SkulkinRaid {
     }
 
     @Nullable
-    public MeleeCompatibleSkeletonRaider getLeader(int wave) {
+    public SkulkinRaider getLeader(int wave) {
         return this.groupToLeaderMap.get(wave);
     }
 
@@ -594,16 +594,16 @@ public class SkulkinRaid {
         return null;
     }
 
-    private boolean addWaveMob(int wave, MeleeCompatibleSkeletonRaider raider) {
+    private boolean addWaveMob(int wave, SkulkinRaider raider) {
         return this.addWaveMob(wave, raider, true);
     }
 
-    public boolean addWaveMob(int wave, MeleeCompatibleSkeletonRaider raider, boolean isRecruited) {
+    public boolean addWaveMob(int wave, SkulkinRaider raider, boolean isRecruited) {
         this.groupRaiderMap.computeIfAbsent(wave, integer -> Sets.newHashSet());
-        Set<MeleeCompatibleSkeletonRaider> set = this.groupRaiderMap.get(wave);
-        MeleeCompatibleSkeletonRaider raider2 = null;
+        Set<SkulkinRaider> set = this.groupRaiderMap.get(wave);
+        SkulkinRaider raider2 = null;
 
-        for (MeleeCompatibleSkeletonRaider raider3 : set) {
+        for (SkulkinRaider raider3 : set) {
             if (raider3.getUUID().equals(raider.getUUID())) {
                 raider2 = raider3;
                 break;
@@ -625,7 +625,7 @@ public class SkulkinRaid {
         return true;
     }
 
-    public void setLeader(int wave, MeleeCompatibleSkeletonRaider raider) {
+    public void setLeader(int wave, SkulkinRaider raider) {
         this.groupToLeaderMap.put(wave, raider);
         raider.setItemSlot(EquipmentSlot.HEAD, getLeaderBannerInstance(raider.registryAccess().lookupOrThrow(Registries.BANNER_PATTERN)));
         raider.setDropChance(EquipmentSlot.HEAD, 2.0F);
@@ -737,7 +737,7 @@ public class SkulkinRaid {
             this.joinSkulkinRaid(i, kruncha, pos, false);
 
         if (MinejagoServerConfig.INSTANCE.enableTech.get()) {
-            List<MeleeCompatibleSkeletonRaider> raiders = new ArrayList<>();
+            List<SkulkinRaider> raiders = new ArrayList<>();
             if (nuckal != null) raiders.add(nuckal);
             if (kruncha != null) raiders.add(kruncha);
 
@@ -752,16 +752,16 @@ public class SkulkinRaid {
 
             samukai.startRiding(truck);
 
-            for (MeleeCompatibleSkeletonRaider raider : raiders) {
+            for (SkulkinRaider raider : raiders) {
                 raider.startRiding(truck, true);
             }
         } else {
-            List<MeleeCompatibleSkeletonRaider> raiders = new ArrayList<>();
+            List<SkulkinRaider> raiders = new ArrayList<>();
             raiders.add(samukai);
             if (nuckal != null) raiders.add(nuckal);
             if (kruncha != null) raiders.add(kruncha);
 
-            for (MeleeCompatibleSkeletonRaider raider : raiders) {
+            for (SkulkinRaider raider : raiders) {
                 Mob horse = MinejagoEntityTypes.SKULKIN_HORSE.get().create(level);
                 if (horse == null)
                     break;

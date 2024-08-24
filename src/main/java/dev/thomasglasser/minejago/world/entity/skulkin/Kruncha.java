@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.world.entity.skulkin;
 
-import dev.thomasglasser.minejago.world.entity.skulkin.raid.MeleeCompatibleSkeletonRaider;
+import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaider;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
-public class Kruncha extends MeleeCompatibleSkeletonRaider {
+public class Kruncha extends SkulkinRaider {
     public Kruncha(EntityType<? extends Kruncha> entityType, Level level) {
         super(entityType, level);
     }

@@ -2,7 +2,7 @@ package dev.thomasglasser.minejago.world.entity.skulkin;
 
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
-import dev.thomasglasser.minejago.world.entity.skulkin.raid.MeleeCompatibleSkeletonRaider;
+import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaider;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.tommylib.api.world.entity.ai.behavior.RangedItemAttack;
@@ -36,7 +36,7 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class Samukai extends MeleeCompatibleSkeletonRaider implements GeoEntity {
+public class Samukai extends SkulkinRaider implements GeoEntity {
     public static final RawAnimation MISC_SIT = RawAnimation.begin().thenPlay("misc.sit");
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);

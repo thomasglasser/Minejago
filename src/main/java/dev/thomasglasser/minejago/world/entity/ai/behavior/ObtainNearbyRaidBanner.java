@@ -1,8 +1,8 @@
 package dev.thomasglasser.minejago.world.entity.ai.behavior;
 
 import com.mojang.datafixers.util.Pair;
-import dev.thomasglasser.minejago.world.entity.skulkin.raid.MeleeCompatibleSkeletonRaider;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
+import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaider;
 import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.entity.BannerPattern;
 import net.tslat.smartbrainlib.api.core.behaviour.ExtendedBehaviour;
 import net.tslat.smartbrainlib.util.BrainUtils;
 
-public class ObtainNearbyRaidBanner<T extends MeleeCompatibleSkeletonRaider> extends ExtendedBehaviour<T> {
+public class ObtainNearbyRaidBanner<T extends SkulkinRaider> extends ExtendedBehaviour<T> {
     private static final List<Pair<MemoryModuleType<?>, MemoryStatus>> MEMORY_REQUIREMENTS = List.of(Pair.of(MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT));
 
     private final Predicate<ItemEntity> entityPredicate;
@@ -37,7 +37,7 @@ public class ObtainNearbyRaidBanner<T extends MeleeCompatibleSkeletonRaider> ext
                 && !raid.isOver()
                 && entity.canBeLeader()
                 && !stackPredicate.test(entity.getItemBySlot(EquipmentSlot.HEAD), entity.registryAccess().lookupOrThrow(Registries.BANNER_PATTERN))) {
-            MeleeCompatibleSkeletonRaider raider = raid.getLeader(entity.getWave());
+            SkulkinRaider raider = raid.getLeader(entity.getWave());
             if (raider == null || !raider.isAlive()) {
                 List<ItemEntity> list = entity.level().getEntitiesOfClass(ItemEntity.class, entity.getBoundingBox().inflate(16.0, 8.0, 16.0), entityPredicate);
                 return !list.isEmpty();

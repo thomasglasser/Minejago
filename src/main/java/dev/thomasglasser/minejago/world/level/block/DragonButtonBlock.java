@@ -141,7 +141,9 @@ public class DragonButtonBlock extends HorizontalDirectionalBlock implements Ent
 
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-        if (!level.isClientSide && state.getValue(PART) == Part.TOP) {
+        if (level.isClientSide) {
+            return InteractionResult.SUCCESS;
+        } else if (state.getValue(PART) == Part.TOP) {
             VoxelShape dragon = state.getValue(OPEN) ? OPEN_DRAGON_SHAPES.get(state.getValue(FACING)) : CLOSED_DRAGON_SHAPES.get(state.getValue(FACING));
             Vec3 lookOffset = player.getViewVector(1.0F); // unit normal vector in look direction
             Vec3 hitVec = hitResult.getLocation();
@@ -156,8 +158,8 @@ public class DragonButtonBlock extends HorizontalDirectionalBlock implements Ent
             } else if (dragon.bounds().contains(relativeHitVec)) {
                 level.setBlock(pos, state.cycle(OPEN), Block.UPDATE_ALL);
                 level.setBlock(pos.below(), level.getBlockState(pos.below()).cycle(OPEN), Block.UPDATE_ALL);
-                return InteractionResult.SUCCESS;
             }
+            return InteractionResult.SUCCESS;
         }
         return super.useWithoutItem(state, level, pos, player, hitResult);
     }

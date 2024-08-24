@@ -6,7 +6,6 @@ import dev.thomasglasser.minejago.world.entity.ai.behavior.ObtainNearbyRaidBanne
 import dev.thomasglasser.minejago.world.entity.ai.behavior.PathfindToSkulkinRaid;
 import dev.thomasglasser.minejago.world.entity.ai.behavior.SeekAndTakeFourWeaponsMap;
 import dev.thomasglasser.minejago.world.entity.character.Character;
-import dev.thomasglasser.tommylib.api.world.entity.MeleeCompatibleSkeleton;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import java.util.List;
 import java.util.function.BiPredicate;
@@ -47,8 +46,8 @@ import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
 import net.tslat.smartbrainlib.example.SBLSkeleton;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class MeleeCompatibleSkeletonRaider extends MeleeCompatibleSkeleton {
-    protected static final EntityDataAccessor<Boolean> IS_CELEBRATING = SynchedEntityData.defineId(MeleeCompatibleSkeletonRaider.class, EntityDataSerializers.BOOLEAN);
+public abstract class SkulkinRaider extends SBLSkeleton {
+    protected static final EntityDataAccessor<Boolean> IS_CELEBRATING = SynchedEntityData.defineId(SkulkinRaider.class, EntityDataSerializers.BOOLEAN);
     private static final BiPredicate<ItemStack, HolderLookup<BannerPattern>> ALLOWED_STACKS = (stack, lookup) -> ItemStack.matches(stack, SkulkinRaid.getLeaderBannerInstance(lookup));
     private static final Predicate<ItemEntity> ALLOWED_ITEMS = itemEntity -> !itemEntity.hasPickUpDelay()
             && itemEntity.isAlive()
@@ -63,7 +62,7 @@ public abstract class MeleeCompatibleSkeletonRaider extends MeleeCompatibleSkele
     private boolean canJoinSkulkinRaid;
     private int ticksOutsideSkulkinRaid;
 
-    public MeleeCompatibleSkeletonRaider(EntityType<? extends MeleeCompatibleSkeleton> entityType, Level level) {
+    public SkulkinRaider(EntityType<? extends SkulkinRaider> entityType, Level level) {
         super(entityType, level);
         navigation.setCanFloat(true);
     }
@@ -157,7 +156,7 @@ public abstract class MeleeCompatibleSkeletonRaider extends MeleeCompatibleSkele
         return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData);
     }
 
-    public static boolean checkSpawnRules(EntityType<? extends MeleeCompatibleSkeletonRaider> pPatrollingMonster, LevelAccessor pLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) {
+    public static boolean checkSpawnRules(EntityType<? extends SkulkinRaider> pPatrollingMonster, LevelAccessor pLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) {
         return pLevel.getBrightness(LightLayer.BLOCK, pPos) <= 8 && checkAnyLightMonsterSpawnRules(pPatrollingMonster, pLevel, pSpawnType, pPos, pRandom);
     }
 

@@ -58,7 +58,7 @@ public class SkulkinRaids extends SavedData {
         }
     }
 
-    public static boolean canJoinSkulkinRaid(MeleeCompatibleSkeletonRaider raider, SkulkinRaid raid) {
+    public static boolean canJoinSkulkinRaid(SkulkinRaider raider, SkulkinRaid raid) {
         if (raider != null && raid != null && raid.getLevel() != null) {
             return raider.isAlive() && raider.canJoinSkulkinRaid() && raider.getNoActionTime() <= 2400 && raider.level().dimensionType() == raid.getLevel().dimensionType();
         } else {

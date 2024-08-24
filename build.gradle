@@ -175,12 +175,10 @@ dependencies {
 	jarJar implementation("dev.kosmx.player-anim:player-animation-lib-forge:${playeranimator_version}")
 
 	implementation "dev.thomasglasser.sherdsapi:sherdsapi-neoforge-${minecraft_version}:${sherdsapi_version}"
-	implementation "net.tslat.smartbrainlib:SmartBrainLib-neoforge-${previous_minecraft_version}:${sbl_version}"
-//	implementation "net.tslat.smartbrainlib:SmartBrainLib-neoforge-${minecraft_version}:${sbl_version}"
+	implementation "net.tslat.smartbrainlib:SmartBrainLib-neoforge-${minecraft_version}:${sbl_version}"
 	implementation "software.bernie.geckolib:geckolib-neoforge-${previous_minecraft_version}:${geckolib_version}"
 //	implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
-	implementation "net.tslat.tes:TES-neoforge-${previous_minecraft_version}:${tes_version}"
-//	implementation "net.tslat.tes:TES-neoforge-${minecraft_version}:${tes_version}"
+	implementation "net.tslat.tes:TES-neoforge-${minecraft_version}:${tes_version}"
 	implementation "net.tslat.effectslib:TslatEffectsLib-neoforge-${previous_minecraft_version}:${tslateffectslib_version}"
 //	implementation "net.tslat.effectslib:TslatEffectsLib-neoforge-${minecraft_version}:${tslateffectslib_version}"
 	compileOnly "maven.modrinth:ryoamiclights:${ryoamiclights_version}-neoforge"
@@ -191,6 +189,7 @@ dependencies {
 	// Runtime
 	// For ryoamiclights
 	runtimeOnly "maven.modrinth:obsidianui:${obsidianui_version}-neoforge"
+	runtimeOnly "maven.modrinth:worldedit:${worldedit_version}"
 }
 
 processResources {

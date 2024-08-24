@@ -2,8 +2,8 @@ package dev.thomasglasser.minejago.world.entity.ai.behavior;
 
 import com.google.common.collect.Sets;
 import com.mojang.datafixers.util.Pair;
-import dev.thomasglasser.minejago.world.entity.skulkin.raid.MeleeCompatibleSkeletonRaider;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
+import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaider;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaids;
 import dev.thomasglasser.minejago.world.level.MinejagoLevelUtils;
 import java.util.List;
@@ -17,7 +17,7 @@ import net.minecraft.world.phys.Vec3;
 import net.tslat.smartbrainlib.api.core.behaviour.ExtendedBehaviour;
 import net.tslat.smartbrainlib.util.BrainUtils;
 
-public class PathfindToSkulkinRaid<T extends MeleeCompatibleSkeletonRaider> extends ExtendedBehaviour<T> {
+public class PathfindToSkulkinRaid<T extends SkulkinRaider> extends ExtendedBehaviour<T> {
     private static final List<Pair<MemoryModuleType<?>, MemoryStatus>> MEMORY_REQUIREMENTS = List.of(Pair.of(MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT));
 
     private int recruitmentTick;
@@ -59,13 +59,13 @@ public class PathfindToSkulkinRaid<T extends MeleeCompatibleSkeletonRaider> exte
 
     private void recruitNearby(SkulkinRaid raid, T entity) {
         if (raid.isActive()) {
-            Set<MeleeCompatibleSkeletonRaider> set = Sets.newHashSet();
-            List<MeleeCompatibleSkeletonRaider> list = entity
+            Set<SkulkinRaider> set = Sets.newHashSet();
+            List<SkulkinRaider> list = entity
                     .level()
-                    .getEntitiesOfClass(MeleeCompatibleSkeletonRaider.class, entity.getBoundingBox().inflate(16.0), raiderx -> !raiderx.hasActiveSkulkinRaid() && SkulkinRaids.canJoinSkulkinRaid(raiderx, raid));
+                    .getEntitiesOfClass(SkulkinRaider.class, entity.getBoundingBox().inflate(16.0), raiderx -> !raiderx.hasActiveSkulkinRaid() && SkulkinRaids.canJoinSkulkinRaid(raiderx, raid));
             set.addAll(list);
 
-            for (MeleeCompatibleSkeletonRaider raider : set) {
+            for (SkulkinRaider raider : set) {
                 raid.joinSkulkinRaid(raid.getGroupsSpawned(), raider, null, true);
             }
         }

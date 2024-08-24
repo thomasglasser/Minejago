@@ -4,7 +4,7 @@ import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.tags.MinejagoStructureTags;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;
-import dev.thomasglasser.minejago.world.entity.skulkin.raid.MeleeCompatibleSkeletonRaider;
+import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaider;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaidsHolder;
 import java.util.List;
 import net.minecraft.core.BlockPos;
@@ -92,10 +92,10 @@ public class SkulkinArmySpawner implements CustomSpawner {
         BlockState blockState = level.getBlockState(pos);
         if (!NaturalSpawner.isValidEmptySpawnBlock(level, pos, blockState, blockState.getFluidState(), MinejagoEntityTypes.SKULKIN.get())) {
             return false;
-        } else if (!MeleeCompatibleSkeletonRaider.checkSpawnRules(MinejagoEntityTypes.SKULKIN.get(), level, MobSpawnType.PATROL, pos, random)) {
+        } else if (!SkulkinRaider.checkSpawnRules(MinejagoEntityTypes.SKULKIN.get(), level, MobSpawnType.PATROL, pos, random)) {
             return false;
         } else {
-            MeleeCompatibleSkeletonRaider raider = MinejagoEntityTypes.SKULKIN.get().create(level);
+            SkulkinRaider raider = MinejagoEntityTypes.SKULKIN.get().create(level);
             if (raider != null) {
                 raider.setPos(pos.getX(), pos.getY(), pos.getZ());
                 raider.finalizeSpawn(level, level.getCurrentDifficultyAt(pos), MobSpawnType.PATROL, null);

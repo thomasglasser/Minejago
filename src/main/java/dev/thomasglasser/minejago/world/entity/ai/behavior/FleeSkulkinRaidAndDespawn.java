@@ -7,8 +7,8 @@ import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.skulkin.AbstractSkulkinVehicle;
 import dev.thomasglasser.minejago.world.entity.skulkin.SkulkinHorse;
 import dev.thomasglasser.minejago.world.entity.skulkin.SkullTruck;
-import dev.thomasglasser.minejago.world.entity.skulkin.raid.MeleeCompatibleSkeletonRaider;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
+import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaider;
 import dev.thomasglasser.minejago.world.level.MinejagoLevelUtils;
 import java.util.List;
 import net.minecraft.server.level.ServerLevel;
@@ -19,7 +19,7 @@ import net.minecraft.world.entity.ai.memory.WalkTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.ExtendedBehaviour;
 import net.tslat.smartbrainlib.util.BrainUtils;
 
-public class FleeSkulkinRaidAndDespawn<T extends MeleeCompatibleSkeletonRaider> extends ExtendedBehaviour<T> {
+public class FleeSkulkinRaidAndDespawn<T extends SkulkinRaider> extends ExtendedBehaviour<T> {
     public static final List<Pair<MemoryModuleType<?>, MemoryStatus>> MEMORY_REQUIREMENTS = List.of(Pair.of(MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT));
 
     @Override

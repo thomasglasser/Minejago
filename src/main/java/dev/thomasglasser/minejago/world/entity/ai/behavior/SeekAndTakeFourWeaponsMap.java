@@ -2,7 +2,7 @@ package dev.thomasglasser.minejago.world.entity.ai.behavior;
 
 import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
-import dev.thomasglasser.minejago.world.entity.skulkin.raid.MeleeCompatibleSkeletonRaider;
+import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaider;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaidsHolder;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.level.MinejagoLevelUtils;
@@ -21,7 +21,7 @@ import net.minecraft.world.phys.Vec3;
 import net.tslat.smartbrainlib.api.core.behaviour.ExtendedBehaviour;
 import net.tslat.smartbrainlib.util.BrainUtils;
 
-public class SeekAndTakeFourWeaponsMap<T extends MeleeCompatibleSkeletonRaider> extends ExtendedBehaviour<T> {
+public class SeekAndTakeFourWeaponsMap<T extends SkulkinRaider> extends ExtendedBehaviour<T> {
     private static final List<Pair<MemoryModuleType<?>, MemoryStatus>> MEMORY_REQUIREMENTS = List.of(Pair.of(MemoryModuleType.WALK_TARGET, MemoryStatus.REGISTERED));
 
     private double speedModifier;
