@@ -1,13 +1,12 @@
 package dev.thomasglasser.minejago.world.item;
 
 import dev.thomasglasser.minejago.world.entity.spinjitzucourse.AbstractSpinjitzuCourseElement;
+import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
-
-import java.util.function.Supplier;
 
 public class SpinjitzuCourseElementItem extends Item {
     private Supplier<EntityType<? extends AbstractSpinjitzuCourseElement<?>>> entityType;

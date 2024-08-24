@@ -189,7 +189,7 @@ public abstract class AbstractSpinjitzuCourseElement<T extends AbstractSpinjitzu
             this.setDamage(this.getDamage() - 1.0F);
         }
 
-        int signalBelow = level().getSignal(this.blockPosition().below(), Direction.UP);
+        int signalBelow = Math.max(level().getSignal(this.blockPosition().below(), Direction.UP), level().getSignal(this.blockPosition().below(2), Direction.UP));
         if (signalBelow > 0) {
             if (getSignalBelow() <= 0)
                 setActive(!isActive());
