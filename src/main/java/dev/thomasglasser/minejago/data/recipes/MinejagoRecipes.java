@@ -7,7 +7,6 @@ import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.tommylib.api.data.recipes.ExtendedRecipeProvider;
 import dev.thomasglasser.tommylib.api.registration.DeferredHolder;
 import dev.thomasglasser.tommylib.api.tags.ConventionalItemTags;
-import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -29,6 +28,8 @@ import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
+
+import java.util.concurrent.CompletableFuture;
 
 public class MinejagoRecipes extends ExtendedRecipeProvider {
     public static HolderLookup.Provider lookupProvider = null;
@@ -116,6 +117,15 @@ public class MinejagoRecipes extends ExtendedRecipeProvider {
                 .requires(MinejagoItems.SCROLL.get())
                 .requires(Items.FEATHER)
                 .requires(Items.INK_SAC)
+                .unlockedBy("has_scroll", has(MinejagoItems.SCROLL.get()))
+                .save(writer);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, MinejagoBlocks.SCROLL_SHELF.get(), 1)
+                .pattern("ppp")
+                .pattern("sss")
+                .pattern("ppp")
+                .define('p', ItemTags.PLANKS)
+                .define('s', MinejagoItems.SCROLL.get())
                 .unlockedBy("has_scroll", has(MinejagoItems.SCROLL.get()))
                 .save(writer);
 

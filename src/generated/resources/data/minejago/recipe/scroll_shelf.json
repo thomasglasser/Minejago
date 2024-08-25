@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "p": {
+      "tag": "minecraft:planks"
+    },
+    "s": {
+      "item": "minejago:scroll"
+    }
+  },
+  "pattern": [
+    "ppp",
+    "sss",
+    "ppp"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minejago:scroll_shelf"
+  }
+}
