@@ -20,6 +20,7 @@ import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.advancements.critereon.ItemUsedOnLocationTrigger;
 import net.minecraft.advancements.critereon.LocationPredicate;
 import net.minecraft.advancements.critereon.PlayerTrigger;
 import net.minecraft.advancements.critereon.TameAnimalTrigger;
@@ -45,7 +46,10 @@ public class MinejagoStoryAdvancements extends ExtendedAdvancementGenerator {
         AdvancementHolder root = root(MinejagoItems.SCYTHE_OF_QUAKES.get(), "root", ResourceLocation.withDefaultNamespace("textures/gui/advancements/backgrounds/stone.png"), AdvancementType.TASK, false, false, false, null,
                 "get_crafting_table", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.CRAFTING_TABLE), "Minejago", "Long before time had a name...");
 
-        AdvancementHolder getBlackGi = create(root, MinejagoArmors.BLACK_GI_SET.HEAD.get(), "get_black_gi", AdvancementType.TASK, true, true, false, null,
+        AdvancementHolder enterMonastery = create(root, MinejagoItems.SCROLL.get(), "enter_monastery", AdvancementType.TASK, true, true, false, null,
+                "enter_monastery", PlayerTrigger.TriggerInstance.located(LocationPredicate.Builder.inStructure(registries.lookupOrThrow(Registries.STRUCTURE).getOrThrow(MinejagoStructures.MONASTERY_OF_SPINJITZU))), "Long Before Time Had a Name...", "Enter the Monastery of Spinjitzu");
+
+        AdvancementHolder getBlackGi = create(enterMonastery, MinejagoArmors.BLACK_GI_SET.HEAD.get(), "get_black_gi", AdvancementType.TASK, true, true, false, null,
                 "get_black_gi_set", InventoryChangeTrigger.TriggerInstance.hasItems(MinejagoArmors.BLACK_GI_SET.getAllAsItems().toArray(new ItemLike[] {})), "Ninja in Training", "Receive the Black Gi");
 
         AdvancementHolder doSpinjitzu = create(getBlackGi, PotionContents.createItemStack(MinejagoItems.FILLED_TEACUP.get(), MinejagoPotions.OAK_TEA.asReferenceFrom(registries)), "do_spinjitzu", AdvancementType.TASK, true, true, false, null,
@@ -70,5 +74,8 @@ public class MinejagoStoryAdvancements extends ExtendedAdvancementGenerator {
 
         AdvancementHolder tameDragon = create(enterGoldenWeaponsStructure, Items.SADDLE, "tame_dragon", AdvancementType.CHALLENGE, true, true, false, AdvancementRewards.Builder.experience(15).build(),
                 "tame_dragon", TameAnimalTrigger.TriggerInstance.tamedAnimal(EntityPredicate.Builder.entity().of(MinejagoEntityTypeTags.DRAGONS)), "Out of this World", "Tame a dragon");
+
+        AdvancementHolder useScytheOfQuakes = create(enterGoldenWeaponsStructure, MinejagoItems.SCYTHE_OF_QUAKES.get(), "use_scythe_of_quakes", AdvancementType.TASK, true, true, false, null,
+                "use_scythe_of_quakes", ItemUsedOnLocationTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location(), ItemPredicate.Builder.item().of(MinejagoItems.SCYTHE_OF_QUAKES.get())), "A Groundbreaking Discovery", "Perform an ability using the Scythe of Quakes");
     }
 }

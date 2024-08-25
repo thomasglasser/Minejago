@@ -1,5 +1,5 @@
 {
-  "parent": "minejago:story/root",
+  "parent": "minejago:story/enter_monastery",
   "criteria": {
     "get_black_gi_set": {
       "conditions": {

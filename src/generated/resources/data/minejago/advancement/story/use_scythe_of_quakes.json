@@ -1,0 +1,40 @@
+{
+  "parent": "minejago:story/enter_golden_weapons_structure",
+  "criteria": {
+    "use_scythe_of_quakes": {
+      "conditions": {
+        "location": [
+          {
+            "condition": "minecraft:location_check",
+            "predicate": {}
+          },
+          {
+            "condition": "minecraft:match_tool",
+            "predicate": {
+              "items": "minejago:scythe_of_quakes"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:item_used_on_block"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.minejago.story.use_scythe_of_quakes.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minejago:scythe_of_quakes"
+    },
+    "title": {
+      "translate": "advancement.minejago.story.use_scythe_of_quakes.title"
+    }
+  },
+  "requirements": [
+    [
+      "use_scythe_of_quakes"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

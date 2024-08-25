@@ -30,5 +30,8 @@ public class MinejagoBiomeTagsProvider extends BiomeTagsProvider {
         tag(MinejagoBiomeTags.HAS_NINJAGO_CITY)
                 .add(Biomes.PLAINS)
                 .add(Biomes.SAVANNA);
+        tag(MinejagoBiomeTags.HAS_MONASTERY_OF_SPINJITZU)
+                .add(Biomes.JAGGED_PEAKS)
+                .add(Biomes.STONY_PEAKS);
     }
 }

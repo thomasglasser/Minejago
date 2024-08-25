@@ -24,5 +24,6 @@ public class MinejagoPools {
         FourWeaponsPools.bootstrap(context);
         CaveOfDespairPools.bootstrap(context);
         NinjagoCityPools.bootstrap(context);
+        MonasteryOfSpinjitzuPools.bootstrap(context);
     }
 }

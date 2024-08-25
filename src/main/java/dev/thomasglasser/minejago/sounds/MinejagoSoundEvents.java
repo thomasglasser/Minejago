@@ -65,6 +65,9 @@ public class MinejagoSoundEvents {
     // Skulkin Raid
     public static final DeferredHolder<SoundEvent, SoundEvent> SKULKIN_RAID_HORN = register("skulkin_raid", "event", "horn");
 
+    // Musics
+    public static final DeferredHolder<SoundEvent, SoundEvent> MUSIC_MONASTERY_OF_SPINJITZU = register("music", "monastery_of_spinjitzu");
+
     private static DeferredHolder<SoundEvent, SoundEvent> register(String subject, String type, String name) {
         return SOUND_EVENTS.register(subject + "_" + name, () -> SoundEvent.createVariableRangeEvent(Minejago.modLoc(type + "." + subject + "." + name)));
     }

@@ -4,6 +4,7 @@ import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.tags.MinejagoBiomeTags;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.pools.CaveOfDespairPools;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.pools.FourWeaponsPools;
+import dev.thomasglasser.minejago.world.level.levelgen.structure.pools.MonasteryOfSpinjitzuPools;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.pools.NinjagoCityPools;
 import java.util.Map;
 import net.minecraft.core.HolderGetter;
@@ -27,6 +28,7 @@ public class MinejagoStructures {
     public static final ResourceKey<Structure> FOUR_WEAPONS = createKey("four_weapons");
     public static final ResourceKey<Structure> CAVE_OF_DESPAIR = createKey("cave_of_despair");
     public static final ResourceKey<Structure> NINJAGO_CITY = createKey("ninjago_city");
+    public static final ResourceKey<Structure> MONASTERY_OF_SPINJITZU = createKey("monastery_of_spinjitzu");
 
     private static ResourceKey<Structure> createKey(String name) {
         return ResourceKey.create(Registries.STRUCTURE, Minejago.modLoc(name));
@@ -73,6 +75,18 @@ public class MinejagoStructures {
                                 .build(),
                         holderGetter2.getOrThrow(NinjagoCityPools.BUILDINGS),
                         // May need to be limited if this becomes recursive
+                        JigsawStructure.MAX_DEPTH,
+                        ConstantHeight.of(VerticalAnchor.absolute(0)),
+                        false,
+                        Heightmap.Types.WORLD_SURFACE_WG));
+
+        context.register(MONASTERY_OF_SPINJITZU,
+                new JigsawStructure(
+                        new Structure.StructureSettings.Builder(holderGetter.getOrThrow(MinejagoBiomeTags.HAS_MONASTERY_OF_SPINJITZU))
+                                .generationStep(GenerationStep.Decoration.SURFACE_STRUCTURES)
+                                .terrainAdapation(TerrainAdjustment.BEARD_THIN)
+                                .build(),
+                        holderGetter2.getOrThrow(MonasteryOfSpinjitzuPools.START),
                         JigsawStructure.MAX_DEPTH,
                         ConstantHeight.of(VerticalAnchor.absolute(0)),
                         false,

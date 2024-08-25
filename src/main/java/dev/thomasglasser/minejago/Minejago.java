@@ -161,6 +161,7 @@ public class Minejago {
         NeoForge.EVENT_BUS.addListener((ClientTickEvent.Post event) -> MinejagoClientEvents.onClientTick());
         NeoForge.EVENT_BUS.addListener((InputEvent.Key event) -> MinejagoClientEvents.onInput(event.getKey()));
         NeoForge.EVENT_BUS.addListener(MinejagoClientEvents::onPostPlayerRender);
+        NeoForge.EVENT_BUS.addListener(MinejagoClientEvents::onSelectMusic);
     }
 
     public enum Dependencies {

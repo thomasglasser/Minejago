@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minejago:four_weapons_banner_pattern"
+          "name": "minejago:ninja_banner_pattern"
         }
       ],
       "rolls": {
@@ -20,7 +20,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minejago:four_weapons_armor_trim_smithing_template"
+          "name": "minejago:lotus_armor_trim_smithing_template"
         }
       ],
       "rolls": {
@@ -30,5 +30,5 @@
       }
     }
   ],
-  "random_sequence": "minejago:chests/four_weapons"
+  "random_sequence": "minejago:chests/monastery_of_spinjitzu"
 }

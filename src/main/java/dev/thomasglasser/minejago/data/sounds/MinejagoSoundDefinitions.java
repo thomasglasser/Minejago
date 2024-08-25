@@ -57,5 +57,7 @@ public class MinejagoSoundDefinitions extends ExtendedSoundDefinitionsProvider {
         add(MinejagoSoundEvents.SKULL_MOTORBIKE_IGNITION);
 
         add(MinejagoSoundEvents.SKULKIN_RAID_HORN);
+
+        add(MinejagoSoundEvents.MUSIC_MONASTERY_OF_SPINJITZU);
     }
 }

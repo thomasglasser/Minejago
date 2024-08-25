@@ -11,6 +11,7 @@ import dev.thomasglasser.minejago.data.loot.MinejagoLootTables;
 import dev.thomasglasser.minejago.data.models.MinejagoItemModels;
 import dev.thomasglasser.minejago.data.modonomicons.MinejagoBookProvider;
 import dev.thomasglasser.minejago.data.particles.MinejagoParticleDescriptionProvider;
+import dev.thomasglasser.minejago.data.patches.MinejagoDataPatchProvider;
 import dev.thomasglasser.minejago.data.powers.MinejagoPowerDatagenSuite;
 import dev.thomasglasser.minejago.data.recipes.MinejagoRecipes;
 import dev.thomasglasser.minejago.data.recipes.expansions.MinejagoPotionPotPackRecipes;
@@ -121,6 +122,7 @@ public class MinejagoDataGenerators {
         generator.addProvider(includeServer, new MinejagoAdvancementProvider(packOutput, lookupProvider, existingFileHelper, enUs));
         generator.addProvider(includeServer, new MinejagoRecipes(packOutput, lookupProvider));
         generator.addProvider(includeServer, new MinejagoBookProvider(packOutput, lookupProvider, enUs::add));
+        generator.addProvider(includeServer, new MinejagoDataPatchProvider(generator));
 
         //Client
         generator.addProvider(includeClient, new MinejagoBlockStates(packOutput, existingFileHelper));

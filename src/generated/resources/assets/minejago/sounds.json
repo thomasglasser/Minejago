@@ -193,6 +193,12 @@
     ],
     "subtitle": "subtitles.item.spear.throw"
   },
+  "music.monastery_of_spinjitzu": {
+    "sounds": [
+      "minejago:music/monastery_of_spinjitzu"
+    ],
+    "subtitle": "subtitles.music.monastery_of_spinjitzu"
+  },
   "spinjitzu.active": {
     "sounds": [
       "minejago:spinjitzu/active"

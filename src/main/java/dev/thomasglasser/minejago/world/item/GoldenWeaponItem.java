@@ -65,7 +65,7 @@ public abstract class GoldenWeaponItem extends BaseModeledItem {
                 if (this.getFailSound() != null) {
                     pContext.getLevel().playSound(null, pContext.getPlayer().blockPosition(), getFailSound(), SoundSource.PLAYERS);
                 }
-                return InteractionResult.CONSUME_PARTIAL;
+                return pContext.getLevel().isClientSide ? InteractionResult.SUCCESS : InteractionResult.FAIL;
             }
         }
         Player player = pContext.getPlayer();
@@ -76,7 +76,7 @@ public abstract class GoldenWeaponItem extends BaseModeledItem {
                 if (this.getFailSound() != null) {
                     pContext.getLevel().playSound(null, player.blockPosition(), getFailSound(), SoundSource.PLAYERS);
                 }
-                return InteractionResult.CONSUME_PARTIAL;
+                return pContext.getLevel().isClientSide ? InteractionResult.SUCCESS : InteractionResult.FAIL;
             }
         }
         return doUseOn(pContext);
