@@ -32,6 +32,7 @@ import net.minecraft.world.level.Level;
 import net.tslat.smartbrainlib.api.core.navigation.SmoothGroundNavigation;
 import org.jetbrains.annotations.Nullable;
 
+// TODO: Add skeleton trap in underworld
 public class SkulkinHorse extends SkeletonHorse implements Enemy {
     public SkulkinHorse(EntityType<? extends SkulkinHorse> entityType, Level level) {
         super(entityType, level);

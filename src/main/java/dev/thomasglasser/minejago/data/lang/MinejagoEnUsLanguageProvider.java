@@ -99,6 +99,7 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(MinejagoBlocks.EARTH_DRAGON_HEAD.get(), "Earth Dragon Head");
         add(MinejagoBlocks.SUSPICIOUS_RED_SAND.get(), "Suspicious Red Sand");
         add(MinejagoBlocks.DRAGON_BUTTON.get(), "Dragon Button");
+        add(MinejagoBlocks.SCROLL_SHELF.get(), "Scroll Shelf");
 
         add(MinejagoBlocks.ENCHANTED_WOOD_SET, "Enchanted");
 

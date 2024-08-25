@@ -3,6 +3,7 @@ package dev.thomasglasser.minejago.world.focus.modifier;
 import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
 
+// TODO: Put on json generator site
 public abstract class FocusModifier {
     private final ResourceLocation id;
     private final double modifier;

@@ -28,6 +28,7 @@ import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -108,6 +109,7 @@ public class MinejagoBlockStates extends ExtendedBlockStateProvider {
         models().withExistingParent(BuiltInRegistries.BLOCK.getKey(MinejagoBlocks.CHISELED_SCROLL_SHELF.get()).getPath(), BuiltInRegistries.BLOCK.getKey(Blocks.CHISELED_BOOKSHELF).withPrefix("block/"));
         models().withExistingParent(MinejagoBlocks.CHISELED_SCROLL_SHELF.getId().getPath() + "_inventory", BuiltInRegistries.BLOCK.getKey(Blocks.CHISELED_BOOKSHELF).withPrefix("block/").withSuffix("_inventory"))
                 .texture("front", modBlockModel(MinejagoBlocks.CHISELED_SCROLL_SHELF.getId().getPath() + "_empty"));
+        simpleBlock(MinejagoBlocks.SCROLL_SHELF.get(), models().cubeColumnHorizontal(MinejagoBlocks.SCROLL_SHELF.getId().getPath(), modBlockModel(MinejagoBlocks.SCROLL_SHELF.getId().getPath()), mcBlockModel(Items.OAK_PLANKS.builtInRegistryHolder().key().location().getPath())));
     }
 
     @Override

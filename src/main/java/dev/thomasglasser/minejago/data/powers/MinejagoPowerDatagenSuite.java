@@ -17,41 +17,43 @@ public class MinejagoPowerDatagenSuite extends PowerDatagenSuite {
         makePowerSuite(MinejagoPowers.ICE, builder -> builder
                 .color("#EDECE4")
                 .defaultTagline()
-                // TODO: Implement colors
-//                        .spinjitzuColor(SpinjitzuParticleOptions.ELEMENT_LIGHT_BLUE)
                 .hasSets()
                 .defaultDisplay(),
-                MinejagoParticleTypes.SNOWS, "snow", 4, true, config -> {});
+                MinejagoParticleTypes.SNOWS, "snow", 4, true, config -> {
+                    // TODO: Name, description, lore, tagline
+                });
         makePowerSuite(MinejagoPowers.EARTH, builder -> builder
                 .color("#5A4441")
                 .defaultTagline()
-                // TODO: Implement colors
-//                        .spinjitzuColor(SpinjitzuParticleOptions.ELEMENT_BROWN)
                 .hasSets()
                 .defaultDisplay(),
-                MinejagoParticleTypes.ROCKS, "rock", 4, true, config -> config.tagline("Solid as rock."));
+                MinejagoParticleTypes.ROCKS, "rock", 4, true, config -> {
+                    // TODO: Name, description, lore
+                    config.tagline("Solid as rock.");
+                });
         makePowerSuite(MinejagoPowers.FIRE, builder -> builder
                 .color("#B90E04")
                 .defaultTagline()
-                // TODO: Implement colors
-//                        .spinjitzuColor(SpinjitzuParticleOptions.ELEMENT_ORANGE)
                 .hasSets()
                 .defaultDisplay(),
-                MinejagoParticleTypes.SPARKS, "spark", 4, true, config -> config.tagline("It burns bright in you."));
+                MinejagoParticleTypes.SPARKS, "spark", 4, true, config -> {
+                    // TODO: Name, description, lore
+                    config.tagline("It burns bright in you.");
+                });
         makePowerSuite(MinejagoPowers.LIGHTNING, builder -> builder
                 .color("#4668D5")
                 .defaultTagline()
-                // TODO: Implement colors
-//                        .spinjitzuColor(SpinjitzuParticleOptions.ELEMENT_BLUE)
                 .hasSets()
                 .defaultDisplay(),
-                MinejagoParticleTypes.BOLTS, "bolt", 4, true, config -> {});
+                MinejagoParticleTypes.BOLTS, "bolt", 4, true, config -> {
+                    // TODO: Name, description, lore, tagline
+                });
         makePowerSuite(MinejagoPowers.CREATION, builder -> builder
                 .color("#F8D66F")
-                // TODO: Implement colors
-//                        .spinjitzuColor(SpinjitzuParticleOptions.ELEMENT_DARK_GOLD)
                 .defaultDisplay()
                 .isSpecial(),
-                MinejagoParticleTypes.SPARKLES, "sparkle", 4, false, config -> {});
+                MinejagoParticleTypes.SPARKLES, "sparkle", 4, false, config -> {
+                    // TODO: Name, description, lore, tagline
+                });
     }
 }

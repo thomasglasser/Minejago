@@ -68,6 +68,8 @@ public class MinejagoItemModels extends ExtendedItemModelProvider {
 
         basicInventoryItem(MinejagoItems.WOODEN_NUNCHUCKS);
 
+        basicBlockItem(MinejagoBlocks.SCROLL_SHELF);
+
         withExistingParent(MinejagoItems.FILLED_TEACUP.getId().getPath(), mcItemModel("generated"))
                 .texture("layer0", modItemModel(MinejagoItems.FILLED_TEACUP.getId().getPath() + "_overlay"))
                 .texture("layer1", modItemModel(MinejagoItems.FILLED_TEACUP.getId().getPath()));

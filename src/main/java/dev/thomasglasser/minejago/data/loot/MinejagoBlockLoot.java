@@ -1,5 +1,6 @@
 package dev.thomasglasser.minejago.data.loot;
 
+import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.tommylib.api.data.loot.ExtendedBlockLootSubProvider;
@@ -35,6 +36,7 @@ public class MinejagoBlockLoot extends ExtendedBlockLootSubProvider {
         add(MinejagoBlocks.SUSPICIOUS_RED_SAND.get(), noDrop());
 
         add(MinejagoBlocks.CHISELED_SCROLL_SHELF.get(), createSilkTouchOnlyTable(MinejagoBlocks.CHISELED_SCROLL_SHELF.get()));
+        add(MinejagoBlocks.SCROLL_SHELF.get(), block -> createSingleItemTableWithSilkTouch(block, MinejagoItems.SCROLL.get(), ConstantValue.exactly(3.0F)));
 
         woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET);
         leavesSet(MinejagoBlocks.FOCUS_LEAVES_SET);

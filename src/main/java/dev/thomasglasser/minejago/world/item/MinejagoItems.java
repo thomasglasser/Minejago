@@ -46,13 +46,18 @@ public class MinejagoItems {
         }
     }, List.of(CreativeModeTabs.COMBAT));
     public static final DeferredItem<ThrowableSwordItem> BONE_KNIFE = register("bone_knife", () -> new ThrowableSwordItem(MinejagoEntityTypes.THROWN_BONE_KNIFE::value, MinejagoSoundEvents.BONE_KNIFE_THROW, MinejagoSoundEvents.BONE_KNIFE_IMPACT, MinejagoTiers.BONE, new Item.Properties().attributes(SwordItem.createAttributes(MinejagoTiers.BONE, 3, -2))), List.of(CreativeModeTabs.COMBAT));
+    // TODO: Move to expansion
     public static final DeferredItem<SpearItem> IRON_SPEAR = register("iron_spear", () -> new SpearItem(MinejagoEntityTypes.THROWN_IRON_SPEAR::value, Tiers.IRON, (new Item.Properties().attributes(SpearItem.createAttributes(Tiers.IRON, 4, -2.8F, 1f)))), List.of(CreativeModeTabs.COMBAT));
     public static final DeferredItem<ScytheOfQuakesItem> SCYTHE_OF_QUAKES = register("scythe_of_quakes", () -> new ScytheOfQuakesItem(new Item.Properties()), List.of(CreativeModeTabs.COMBAT, CreativeModeTabs.TOOLS_AND_UTILITIES));
+    // TODO: Move to expansion
     public static final DeferredItem<ThrowableSwordItem> IRON_SHURIKEN = register("iron_shuriken", () -> new ShurikenItem(MinejagoEntityTypes.THROWN_IRON_SHURIKEN::value, Tiers.IRON, (new Item.Properties().attributes(SwordItem.createAttributes(Tiers.IRON, 1, 1F)))), List.of(CreativeModeTabs.COMBAT));
+    // TODO: Move to expansion
     public static final DeferredItem<SwordItem> IRON_KATANA = register("iron_katana", () -> new SwordItem(Tiers.IRON, new Item.Properties().attributes(SwordItem.createAttributes(Tiers.IRON, 1, -1.4F))), List.of(CreativeModeTabs.COMBAT));
     public static final DeferredItem<TeacupItem> TEACUP = register("teacup", () -> new TeacupItem(new Item.Properties()), List.of(CreativeModeTabs.INGREDIENTS));
     public static final DeferredItem<FilledTeacupItem> FILLED_TEACUP = register("filled_teacup", () -> new FilledTeacupItem(new Item.Properties().stacksTo(1)), List.of());
+    // TODO: Move to expansion
     public static final DeferredItem<ScytheItem> IRON_SCYTHE = register("iron_scythe", () -> new ScytheItem(Tiers.IRON, new Item.Properties().attributes(DiggerItem.createAttributes(Tiers.IRON, 8, -3.5F))), List.of(CreativeModeTabs.TOOLS_AND_UTILITIES, CreativeModeTabs.COMBAT));
+    // TODO: Move to expansion
     public static final DeferredItem<NunchucksItem> WOODEN_NUNCHUCKS = register("wooden_nunchucks", () -> new NunchucksItem(new Item.Properties().stacksTo(1)), List.of(CreativeModeTabs.COMBAT));
     public static final DeferredItem<ScrollItem> SCROLL = register("scroll", () -> new ScrollItem(new Item.Properties()), List.of(CreativeModeTabs.INGREDIENTS));
     public static final DeferredItem<WritableScrollItem> WRITABLE_SCROLL = register("writable_scroll", () -> new WritableScrollItem(new Item.Properties().stacksTo(1)), List.of(CreativeModeTabs.TOOLS_AND_UTILITIES));

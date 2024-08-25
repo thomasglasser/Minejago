@@ -159,7 +159,6 @@ public class Power {
     public static class Builder {
         private final ResourceLocation id;
         private TextColor color;
-        protected int spinjitzuColor;
         protected Supplier<? extends ParticleOptions> borderParticle;
         protected boolean hasSets;
         protected Display display;

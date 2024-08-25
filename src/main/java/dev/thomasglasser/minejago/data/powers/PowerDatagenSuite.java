@@ -240,12 +240,7 @@ public class PowerDatagenSuite {
         }
     }
 
-    record AltTranslation(BiConsumer<String, String> consumer, String translation) {
-        AltTranslation(BiConsumer<String, String> consumer, String translation) {
-            this.consumer = consumer;
-            this.translation = translation;
-        }
-
+    public record AltTranslation(BiConsumer<String, String> consumer, String translation) {
         public void finish(String key) {
             this.consumer.accept(key, this.translation);
         }
