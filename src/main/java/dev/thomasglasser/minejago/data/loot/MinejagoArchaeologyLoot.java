@@ -2,9 +2,7 @@ package dev.thomasglasser.minejago.data.loot;
 
 import static dev.thomasglasser.minejago.world.level.storage.loot.MinejagoArchaeologyLootKeys.CAVE_OF_DESPAIR;
 
-import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
-import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import java.util.function.BiConsumer;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.LootTableSubProvider;
@@ -22,12 +20,7 @@ public record MinejagoArchaeologyLoot(HolderLookup.Provider provider) implements
                     .add(LootItem.lootTableItem(Items.TERRACOTTA))
                     .add(LootItem.lootTableItem(Items.LIGHT_GRAY_TERRACOTTA))
                     .add(LootItem.lootTableItem(Items.CLAY_BALL))
-                    .add(LootItem.lootTableItem(Items.EMERALD))
-                    .add(LootItem.lootTableItem(MinejagoItems.BONE_KNIFE.get()))
-                    .add(LootItem.lootTableItem(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.STRENGTH).get()))
-                    .add(LootItem.lootTableItem(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.SPEED).get()))
-                    .add(LootItem.lootTableItem(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.KNIFE).get()))
-                    .add(LootItem.lootTableItem(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.BOW).get())));
+                    .add(LootItem.lootTableItem(Items.EMERALD)));
 
     @Override
     public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> biConsumer) {

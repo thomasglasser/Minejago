@@ -35,8 +35,8 @@ public class MinejagoClientUtils {
         return vipData.get(player) != null && vipData.get(player).displayDev();
     }
 
-    public static boolean renderOgDevLayer(AbstractClientPlayer player) {
-        return vipData.get(player) != null && vipData.get(player).displayOgDev();
+    public static boolean renderLegacyDevLayer(AbstractClientPlayer player) {
+        return vipData.get(player) != null && vipData.get(player).displayLegacyDev();
     }
 
     public static void refreshVip() {
@@ -45,13 +45,13 @@ public class MinejagoClientUtils {
 
             boolean displaySnapshot;
 //            boolean displayDev;
-            boolean displayOgDev;
+            boolean displayLegacyDev;
 
             displaySnapshot = MinejagoClientConfig.INSTANCE.displaySnapshotTesterCosmetic.get() && MinejagoClientUtils.checkSnapshotTester(uuid);
 //            displayDev = MinejagoClientConfig.displayDevTeamCosmetic && MinejagoClientUtils.checkDevTeam(uuid);
-            displayOgDev = MinejagoClientConfig.INSTANCE.displayOgDevTeamCosmetic.get() && MinejagoClientUtils.checkOgDevTeam(uuid);
+            displayLegacyDev = MinejagoClientConfig.INSTANCE.displayLegacyDevTeamCosmetic.get() && MinejagoClientUtils.checkLegacyDevTeam(uuid);
 
-            TommyLibServices.NETWORK.sendToServer(new ServerboundChangeVipDataPayload(uuid, new VipData(MinejagoClientConfig.INSTANCE.snapshotTesterCosmeticChoice.get(), displaySnapshot, /*displayDev*/false, displayOgDev)));
+            TommyLibServices.NETWORK.sendToServer(new ServerboundChangeVipDataPayload(uuid, new VipData(MinejagoClientConfig.INSTANCE.snapshotTesterCosmeticChoice.get(), displaySnapshot, /*displayDev*/false, displayLegacyDev)));
         }
     }
 
@@ -63,8 +63,8 @@ public class MinejagoClientUtils {
         return isVip(uuid, "dev");
     }
 
-    public static boolean checkOgDevTeam(UUID uuid) {
-        return isVip(uuid, "og_dev");
+    public static boolean checkLegacyDevTeam(UUID uuid) {
+        return isVip(uuid, "legacy_dev");
     }
 
     public static void setVipData(Player player, VipData data) {
@@ -89,22 +89,20 @@ public class MinejagoClientUtils {
             fileReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String line;
 
-            if (vipData != null) {
-                while ((line = fileReader.readLine()) != null) {
-                    if (!line.startsWith(" <!DOCTYPE")) {
-                        String[] lineSplit = line.split("\\|");
-                        UUID givenUUID;
+            while ((line = fileReader.readLine()) != null) {
+                if (!line.startsWith(" <!DOCTYPE")) {
+                    String[] lineSplit = line.split("\\|");
+                    UUID givenUUID;
 
-                        if (lineSplit.length > 2) {
-                            try {
-                                givenUUID = UUID.fromString(lineSplit[1]);
+                    if (lineSplit.length > 2) {
+                        try {
+                            givenUUID = UUID.fromString(lineSplit[1]);
 
-                                if (givenUUID.equals(uuid) && lineSplit[2].contains(type)) {
-                                    return true;
-                                }
-                            } catch (IllegalArgumentException ex) {
-                                Minejago.LOGGER.error("Invalid UUID format from web: " + lineSplit[1]);
+                            if (givenUUID.equals(uuid) && lineSplit[2].contains(type)) {
+                                return true;
                             }
+                        } catch (IllegalArgumentException ex) {
+                            Minejago.LOGGER.error("Invalid UUID format from web: " + lineSplit[1]);
                         }
                     }
                 }

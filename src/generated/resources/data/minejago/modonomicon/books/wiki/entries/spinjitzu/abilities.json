@@ -1,0 +1,53 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "minejago:spinjitzu",
+  "description": "book.minejago.wiki.spinjitzu.abilities.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "minecraft:wind_charge"
+  },
+  "name": "book.minejago.wiki.spinjitzu.abilities.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "attributes",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.minejago.wiki.spinjitzu.abilities.attributes.text",
+      "title": "book.minejago.wiki.spinjitzu.abilities.attributes.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "passive_knockback",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.minejago.wiki.spinjitzu.abilities.passive_knockback.text",
+      "title": "book.minejago.wiki.spinjitzu.abilities.passive_knockback.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:image",
+      "anchor": "environmental",
+      "border": true,
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "images": [
+        "minejago:textures/modonomicon/wiki/spinjitzu/abilities/environmental.png"
+      ],
+      "text": "book.minejago.wiki.spinjitzu.abilities.environmental.text",
+      "title": "book.minejago.wiki.spinjitzu.abilities.environmental.title",
+      "use_legacy_rendering": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 1,
+  "x": 0,
+  "y": 0
+}

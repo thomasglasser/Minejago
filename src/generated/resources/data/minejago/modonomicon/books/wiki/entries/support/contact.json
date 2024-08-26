@@ -11,7 +11,21 @@
   "pages": [
     {
       "type": "modonomicon:image",
-      "anchor": "",
+      "anchor": "github",
+      "border": true,
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "images": [
+        "minejago:textures/modonomicon/wiki/support/mod_pages/github.png"
+      ],
+      "text": "book.minejago.wiki.support.contact.github.text",
+      "title": "book.minejago.wiki.support.contact.github.title",
+      "use_legacy_rendering": false
+    },
+    {
+      "type": "modonomicon:image",
+      "anchor": "discord",
       "border": true,
       "condition": {
         "type": "modonomicon:none"
@@ -24,48 +38,22 @@
       "use_legacy_rendering": false
     },
     {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.minejago.wiki.support.contact.online_wiki.text",
-      "title": "book.minejago.wiki.support.contact.online_wiki.title",
-      "use_markdown_in_title": false
-    },
-    {
       "type": "modonomicon:image",
-      "anchor": "",
+      "anchor": "email",
       "border": true,
       "condition": {
         "type": "modonomicon:none"
       },
       "images": [
-        "minejago:textures/modonomicon/wiki/support/contact/github.png"
+        "minejago:textures/modonomicon/wiki/support/contact/email.png"
       ],
-      "text": "book.minejago.wiki.support.contact.github.text",
-      "title": "book.minejago.wiki.support.contact.github.title",
-      "use_legacy_rendering": false
-    },
-    {
-      "type": "modonomicon:image",
-      "anchor": "",
-      "border": true,
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "images": [
-        "minejago:textures/modonomicon/wiki/support/contact/modrinth.png",
-        "minejago:textures/modonomicon/wiki/support/contact/curseforge.png"
-      ],
-      "text": "book.minejago.wiki.support.contact.mod_pages.text",
-      "title": "book.minejago.wiki.support.contact.mod_pages.title",
+      "text": "book.minejago.wiki.support.contact.email.text",
+      "title": "book.minejago.wiki.support.contact.email.title",
       "use_legacy_rendering": false
     }
   ],
   "show_when_any_parent_unlocked": false,
-  "sort_number": 0,
+  "sort_number": 3,
   "x": 0,
   "y": 0
 }

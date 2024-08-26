@@ -1,0 +1,56 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "minejago:focus",
+  "description": "book.minejago.wiki.focus.tea.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "minejago:filled_teacup"
+  },
+  "name": "book.minejago.wiki.focus.tea.name",
+  "pages": [
+    {
+      "type": "modonomicon:image",
+      "anchor": "hyperfocus",
+      "border": true,
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "images": [
+        "minejago:textures/mob_effect/hyperfocus.png"
+      ],
+      "text": "book.minejago.wiki.focus.tea.hyperfocus.text",
+      "title": "book.minejago.wiki.focus.tea.hyperfocus.title",
+      "use_legacy_rendering": false
+    },
+    {
+      "type": "modonomicon:image",
+      "anchor": "tree",
+      "border": true,
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "images": [
+        "minejago:textures/modonomicon/wiki/focus/tea/tree.png"
+      ],
+      "text": "book.minejago.wiki.focus.tea.tree.text",
+      "title": "book.minejago.wiki.focus.tea.tree.title",
+      "use_legacy_rendering": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "advancements",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.minejago.wiki.focus.tea.advancements.text",
+      "title": "book.minejago.wiki.focus.tea.advancements.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 2,
+  "x": 0,
+  "y": 0
+}

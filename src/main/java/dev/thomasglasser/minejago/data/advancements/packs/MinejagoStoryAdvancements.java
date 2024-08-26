@@ -59,7 +59,7 @@ public class MinejagoStoryAdvancements extends ExtendedAdvancementGenerator {
                 "get_four_weapons_map", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(Items.FILLED_MAP).hasComponents(DataComponentPredicate.builder().expect(MinejagoDataComponents.GOLDEN_WEAPONS_MAP.get(), Unit.INSTANCE).build()).build()), "The Journey Begins", "Obtain a Four Weapons Map");
 
         ItemStack fireHead = MinejagoArmors.TRAINING_GI_SET.HEAD.get().getDefaultInstance();
-        fireHead.set(MinejagoDataComponents.POWER.get(), MinejagoPowers.FIRE.location());
+        fireHead.set(MinejagoDataComponents.POWER.get(), MinejagoPowers.FIRE);
         AdvancementHolder getPower = create(getFourWeaponsMap, fireHead, "get_power", AdvancementType.TASK, true, true, false, null,
                 "get_power", GotPowerTrigger.TriggerInstance.gotPower(), "I've Got the Power!", "Discover your elemental power");
 

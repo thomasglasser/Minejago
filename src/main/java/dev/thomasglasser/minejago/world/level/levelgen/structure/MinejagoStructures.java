@@ -6,7 +6,9 @@ import dev.thomasglasser.minejago.world.level.levelgen.structure.pools.CaveOfDes
 import dev.thomasglasser.minejago.world.level.levelgen.structure.pools.FourWeaponsPools;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.pools.MonasteryOfSpinjitzuPools;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.pools.NinjagoCityPools;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
@@ -38,6 +40,7 @@ public class MinejagoStructures {
         HolderGetter<Biome> holderGetter = context.lookup(Registries.BIOME);
         HolderGetter<StructureTemplatePool> holderGetter2 = context.lookup(Registries.TEMPLATE_POOL);
 
+        // TODO: Put back to normal when HSB fixed
         context.register(
                 FOUR_WEAPONS,
                 new JigsawStructure(
@@ -46,10 +49,15 @@ public class MinejagoStructures {
                                 .terrainAdapation(TerrainAdjustment.BEARD_THIN)
                                 .build(),
                         holderGetter2.getOrThrow(FourWeaponsPools.START),
+                        Optional.empty(),
                         JigsawStructure.MAX_DEPTH,
                         ConstantHeight.of(VerticalAnchor.absolute(0)),
                         false,
-                        Heightmap.Types.WORLD_SURFACE_WG));
+                        Optional.of(Heightmap.Types.WORLD_SURFACE_WG),
+                        80,
+                        List.of(),
+                        JigsawStructure.DEFAULT_DIMENSION_PADDING,
+                        JigsawStructure.DEFAULT_LIQUID_SETTINGS));
 
         context.register(
                 CAVE_OF_DESPAIR,
@@ -63,9 +71,15 @@ public class MinejagoStructures {
                                                 MobCategory.AMBIENT, new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create())))
                                 .build(),
                         holderGetter2.getOrThrow(CaveOfDespairPools.START),
+                        Optional.empty(),
                         JigsawStructure.MAX_DEPTH,
                         ConstantHeight.of(VerticalAnchor.absolute(40)),
-                        false));
+                        false,
+                        Optional.empty(),
+                        80,
+                        List.of(),
+                        JigsawStructure.DEFAULT_DIMENSION_PADDING,
+                        JigsawStructure.DEFAULT_LIQUID_SETTINGS));
 
         context.register(NINJAGO_CITY,
                 new JigsawStructure(
@@ -74,11 +88,15 @@ public class MinejagoStructures {
                                 .terrainAdapation(TerrainAdjustment.BEARD_THIN)
                                 .build(),
                         holderGetter2.getOrThrow(NinjagoCityPools.BUILDINGS),
-                        // May need to be limited if this becomes recursive
+                        Optional.empty(),
                         JigsawStructure.MAX_DEPTH,
                         ConstantHeight.of(VerticalAnchor.absolute(0)),
                         false,
-                        Heightmap.Types.WORLD_SURFACE_WG));
+                        Optional.of(Heightmap.Types.WORLD_SURFACE_WG),
+                        80,
+                        List.of(),
+                        JigsawStructure.DEFAULT_DIMENSION_PADDING,
+                        JigsawStructure.DEFAULT_LIQUID_SETTINGS));
 
         context.register(MONASTERY_OF_SPINJITZU,
                 new JigsawStructure(
@@ -87,9 +105,14 @@ public class MinejagoStructures {
                                 .terrainAdapation(TerrainAdjustment.BEARD_THIN)
                                 .build(),
                         holderGetter2.getOrThrow(MonasteryOfSpinjitzuPools.START),
+                        Optional.empty(),
                         JigsawStructure.MAX_DEPTH,
                         ConstantHeight.of(VerticalAnchor.absolute(0)),
                         false,
-                        Heightmap.Types.WORLD_SURFACE_WG));
+                        Optional.of(Heightmap.Types.WORLD_SURFACE_WG),
+                        80,
+                        List.of(),
+                        JigsawStructure.DEFAULT_DIMENSION_PADDING,
+                        JigsawStructure.DEFAULT_LIQUID_SETTINGS));
     }
 }

@@ -1,0 +1,39 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "minejago:support",
+  "description": "book.minejago.wiki.support.wiki.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "minecraft:enchanted_book"
+  },
+  "name": "book.minejago.wiki.support.wiki.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "in_game",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.minejago.wiki.support.wiki.in_game.text",
+      "title": "book.minejago.wiki.support.wiki.in_game.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "online",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.minejago.wiki.support.wiki.online.text",
+      "title": "book.minejago.wiki.support.wiki.online.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 2,
+  "x": 0,
+  "y": 0
+}

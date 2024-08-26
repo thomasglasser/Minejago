@@ -1,0 +1,42 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "minejago:support",
+  "description": "book.minejago.wiki.support.donations.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "minecraft:emerald"
+  },
+  "name": "book.minejago.wiki.support.donations.name",
+  "pages": [
+    {
+      "type": "modonomicon:image",
+      "anchor": "buy_me_a_coffee",
+      "border": true,
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "images": [
+        "minejago:textures/modonomicon/wiki/donations/buy_me_a_coffee.png"
+      ],
+      "text": "",
+      "title": "",
+      "use_legacy_rendering": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "links",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.minejago.wiki.support.donations.links.text",
+      "title": "book.minejago.wiki.support.donations.links.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 1,
+  "x": 0,
+  "y": 0
+}

@@ -346,7 +346,7 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         addConfig(MinejagoClientConfig.INSTANCE.displaySnapshotTesterCosmetic, "Display Snapshot Tester Cosmetic", "Display your preferred Snapshot Tester Cosmetic (if eligible)");
         addConfig(MinejagoClientConfig.INSTANCE.snapshotTesterCosmeticChoice, "Snapshot Tester Cosmetic Choice", "The Snapshot Tester Cosmetic to be displayed (if eligible)");
         addConfig(MinejagoClientConfig.INSTANCE.displayDevTeamCosmetic, "Display Dev Team Cosmetic", "Display the Dev Team cosmetic (if eligible)");
-        addConfig(MinejagoClientConfig.INSTANCE.displayOgDevTeamCosmetic, "Display OG Dev Team Cosmetic", "Display the OG Dev Team cosmetic (if eligible)");
+        addConfig(MinejagoClientConfig.INSTANCE.displayLegacyDevTeamCosmetic, "Display Legacy Dev Team Cosmetic", "Display the Legacy Dev Team cosmetic (if eligible)");
 
         addConfigSection(MinejagoClientConfig.FOCUS_BAR, "Focus Bar", "Settings for focus bar");
         addConfig(MinejagoClientConfig.INSTANCE.xOffset, "Horizontal Offset", "Horizontal pixels off from the normal position");

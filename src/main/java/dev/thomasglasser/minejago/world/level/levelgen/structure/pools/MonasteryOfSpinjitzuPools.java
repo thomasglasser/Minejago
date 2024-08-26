@@ -14,6 +14,7 @@ import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 
 public class MonasteryOfSpinjitzuPools {
     public static final ResourceKey<StructureTemplatePool> START = MinejagoPools.createKey("monastery_of_spinjitzu/base");
+    public static final ResourceKey<StructureTemplatePool> GROUND = MinejagoPools.createKey("monastery_of_spinjitzu/ground");
 
     public static void bootstrap(BootstrapContext<StructureTemplatePool> bootstrapContext) {
         HolderGetter<StructureTemplatePool> holderGetter = bootstrapContext.lookup(Registries.TEMPLATE_POOL);
@@ -24,5 +25,9 @@ public class MonasteryOfSpinjitzuPools {
                 START,
                 new StructureTemplatePool(
                         holder, ImmutableList.of(Pair.of(StructurePoolElement.single(START.location().toString()), 1)), StructureTemplatePool.Projection.RIGID));
+        bootstrapContext.register(
+                GROUND,
+                new StructureTemplatePool(
+                        holder, ImmutableList.of(Pair.of(StructurePoolElement.single(GROUND.location().toString()), 1)), StructureTemplatePool.Projection.RIGID));
     }
 }

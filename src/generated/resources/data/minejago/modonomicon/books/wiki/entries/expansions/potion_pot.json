@@ -2,37 +2,37 @@
   "background_u_index": 0,
   "background_v_index": 0,
   "category": "minejago:expansions",
-  "description": "pack.minejago.potion_pot.description",
+  "description": "book.minejago.wiki.expansions.potion_pot.description",
   "hide_while_locked": false,
   "icon": {
     "item": "minejago:filled_teacup"
   },
-  "name": "pack.minejago.potion_pot.name",
+  "name": "book.minejago.wiki.expansions.potion_pot.name",
   "pages": [
     {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.minejago.wiki.expansions.potion_pot.summary_text.text",
-      "title": "pack.minejago.potion_pot.name",
-      "use_markdown_in_title": false
-    },
-    {
       "type": "modonomicon:image",
-      "anchor": "",
+      "anchor": "usage_image",
       "border": true,
       "condition": {
         "type": "modonomicon:none"
       },
       "images": [
-        "minejago:textures/modonomicon/wiki/expansions/potion_pot_pack/regeneration_pot.png"
+        "minejago:textures/modonomicon/wiki/expansions/potion_pot/usage.png"
       ],
       "text": "",
-      "title": "",
+      "title": "book.minejago.wiki.expansions.potion_pot.usage_image.title",
       "use_legacy_rendering": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "usage",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.minejago.wiki.expansions.potion_pot.usage.text",
+      "title": "book.minejago.wiki.expansions.potion_pot.usage.title",
+      "use_markdown_in_title": false
     }
   ],
   "show_when_any_parent_unlocked": false,

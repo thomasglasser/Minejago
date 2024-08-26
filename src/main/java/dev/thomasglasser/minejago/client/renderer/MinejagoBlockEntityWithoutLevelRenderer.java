@@ -58,7 +58,7 @@ public class MinejagoBlockEntityWithoutLevelRenderer extends BlockEntityWithoutL
             this.spearModel.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
         } else if (stack.getItem() instanceof PoweredArmorItem) {
             poseStack.translate(0.5D, 0.5D, 0.5D);
-            ResourceLocation location = stack.getOrDefault(MinejagoDataComponents.POWER.get(), MinejagoPowers.NONE.location());
+            ResourceLocation location = stack.getOrDefault(MinejagoDataComponents.POWER.get(), MinejagoPowers.NONE).location();
             final String[] path = new String[1];
             MinejagoArmors.POWER_SETS.forEach(armorSet -> armorSet.getAll().forEach(item -> {
                 if (stack.is(item.get())) {

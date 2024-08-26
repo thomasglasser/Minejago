@@ -27,7 +27,7 @@ public abstract class PoweredArmorItem extends GiGeoArmorItem implements Modeled
     public void appendHoverText(ItemStack itemStack, TooltipContext tooltipContext, List<Component> list, TooltipFlag tooltipFlag) {
         HolderLookup.Provider registries = tooltipContext.registries();
         if (registries != null && itemStack.has(MinejagoDataComponents.POWER.get())) {
-            ResourceLocation key = itemStack.get(MinejagoDataComponents.POWER.get());
+            ResourceLocation key = itemStack.get(MinejagoDataComponents.POWER.get()).location();
             Optional<Holder.Reference<Power>> power = registries.lookupOrThrow(MinejagoRegistries.POWER).get(ResourceKey.create(MinejagoRegistries.POWER, key));
             if (power.isPresent()) {
                 MutableComponent component = Component.translatable(key.toLanguageKey("power"));

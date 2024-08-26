@@ -22,18 +22,18 @@ public class SkulkinRaidTrigger extends SimpleCriterionTrigger<SkulkinRaidTrigge
         this.trigger(serverPlayer, triggerInstance -> triggerInstance.status.isPresent() && triggerInstance.status.get() == status);
     }
 
-    public record TriggerInstance(Optional<Status> status, Optional<ContextAwarePredicate> player) implements SimpleCriterionTrigger.SimpleInstance {
+    public record TriggerInstance(Optional<ContextAwarePredicate> player, Optional<Status> status) implements SimpleCriterionTrigger.SimpleInstance {
         public static final Codec<SkulkinRaidTrigger.TriggerInstance> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
-                Codec.STRING.comapFlatMap(s -> DataResult.success(Status.of(s)), Status::toString).optionalFieldOf("status").forGetter(TriggerInstance::status),
-                EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(SkulkinRaidTrigger.TriggerInstance::player))
+                EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(SkulkinRaidTrigger.TriggerInstance::player),
+                Codec.STRING.comapFlatMap(s -> DataResult.success(Status.of(s)), Status::toString).optionalFieldOf("status").forGetter(TriggerInstance::status))
                 .apply(instance, SkulkinRaidTrigger.TriggerInstance::new));
 
         public static Criterion<SkulkinRaidTrigger.TriggerInstance> raidStarted() {
-            return MinejagoCriteriaTriggers.SKULKIN_RAID_STATUS_CHANGED.get().createCriterion(new TriggerInstance(Optional.of(Status.STARTED), Optional.empty()));
+            return MinejagoCriteriaTriggers.SKULKIN_RAID_STATUS_CHANGED.get().createCriterion(new TriggerInstance(Optional.empty(), Optional.of(Status.STARTED)));
         }
 
         public static Criterion<SkulkinRaidTrigger.TriggerInstance> raidWon() {
-            return MinejagoCriteriaTriggers.SKULKIN_RAID_STATUS_CHANGED.get().createCriterion(new TriggerInstance(Optional.of(Status.WON), Optional.empty()));
+            return MinejagoCriteriaTriggers.SKULKIN_RAID_STATUS_CHANGED.get().createCriterion(new TriggerInstance(Optional.empty(), Optional.of(Status.WON)));
         }
     }
 

@@ -31,7 +31,7 @@ public class MinejagoPowers {
             if (power.hasSets) {
                 MinejagoArmors.POWER_SETS.forEach(armorSet -> armorSet.getAll().forEach(item -> {
                     ItemStack stack = item.get().getDefaultInstance();
-                    stack.set(MinejagoDataComponents.POWER.get(), powerReference.key().location());
+                    stack.set(MinejagoDataComponents.POWER.get(), powerReference.key());
                     list.add(stack);
                 }));
             }

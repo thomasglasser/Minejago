@@ -13,7 +13,7 @@ public class MinejagoClientConfig {
     public final ModConfigSpec.BooleanValue displaySnapshotTesterCosmetic;
     public final ModConfigSpec.EnumValue<SnapshotTesterCosmeticOptions> snapshotTesterCosmeticChoice;
     public final ModConfigSpec.BooleanValue displayDevTeamCosmetic;
-    public final ModConfigSpec.BooleanValue displayOgDevTeamCosmetic;
+    public final ModConfigSpec.BooleanValue displayLegacyDevTeamCosmetic;
 
     // Focus Bar
     public static final String FOCUS_BAR = "focus_bar";
@@ -30,8 +30,8 @@ public class MinejagoClientConfig {
                 .defineEnum("snapshot_tester_cosmetic_choice", SnapshotTesterCosmeticOptions.BAMBOO_HAT);
         displayDevTeamCosmetic = builder
                 .define("display_dev_team_cosmetic", true);
-        displayOgDevTeamCosmetic = builder
-                .define("display_og_dev_team_cosmetic", true);
+        displayLegacyDevTeamCosmetic = builder
+                .define("display_legacy_dev_team_cosmetic", true);
         builder.pop();
 
         builder.push(FOCUS_BAR);

@@ -53,7 +53,6 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.WalkTarget;
 import net.minecraft.world.entity.ai.village.poi.PoiManager;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
@@ -117,7 +116,7 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
                 powersToGive = new ArrayList<>(registry.registryKeySet());
                 if (!MinejagoServerConfig.INSTANCE.enableNoPower.get())
                     removePowersToGive(MinejagoPowers.NONE);
-                powersToGive.removeIf(key -> registry.get(key) != null && registry.get(key).isSpecial());
+                powersToGive.removeIf(key -> registry.get(key).isSpecial());
             }
 
             if (player instanceof ServerPlayer serverPlayer && hand == InteractionHand.MAIN_HAND) {
@@ -175,9 +174,7 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
                         } else {
                             courseData.put(player, new HashSet<>());
                             BlockPos pos = teapotPos.get();
-                            BrainUtils.setMemory(this, MemoryModuleType.WALK_TARGET, new WalkTarget(pos.relative(Direction.getRandom(random)), 1f, 2));
-                            // TODO: Doesn't stay in rest state, fix
-                            getBrain().setActiveActivityIfPossible(Activity.REST);
+                            BrainUtils.setMemory(this, MemoryModuleType.WALK_TARGET, new WalkTarget(pos.relative(Direction.getRandom(random)), 1f, 0));
                         }
                     } else {
                         // TODO: Make sad noise (particles?)

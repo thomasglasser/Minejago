@@ -1,0 +1,41 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "minejago:decorations",
+  "description": "book.minejago.wiki.decorations.scroll.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "minejago:scroll"
+  },
+  "name": "book.minejago.wiki.decorations.scroll.name",
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "scroll_shelf",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "item": {
+        "item": "minejago:scroll_shelf"
+      },
+      "text": "book.minejago.wiki.decorations.scroll.scroll_shelf.text",
+      "title": "book.minejago.wiki.decorations.scroll.scroll_shelf.title"
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "writable",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "item": {
+        "item": "minejago:writable_scroll"
+      },
+      "text": "book.minejago.wiki.decorations.scroll.writable.text",
+      "title": "book.minejago.wiki.decorations.scroll.writable.title"
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 1,
+  "x": 0,
+  "y": 0
+}

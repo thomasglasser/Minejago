@@ -1,0 +1,61 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "minejago:apis",
+  "description": "book.minejago.wiki.apis.focus_modifiers.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "minecraft:candle"
+  },
+  "name": "book.minejago.wiki.apis.focus_modifiers.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "example",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.minejago.wiki.apis.focus_modifiers.example.text",
+      "title": "book.minejago.wiki.apis.focus_modifiers.example.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "format",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.minejago.wiki.apis.focus_modifiers.format.text",
+      "title": "book.minejago.wiki.apis.focus_modifiers.format.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "targets_1",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.minejago.wiki.apis.focus_modifiers.targets_1.text",
+      "title": "book.minejago.wiki.apis.focus_modifiers.targets_1.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "targets_2",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.minejago.wiki.apis.focus_modifiers.targets_2.text",
+      "title": "book.minejago.wiki.apis.focus_modifiers.targets_2.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 2,
+  "x": 0,
+  "y": 0
+}

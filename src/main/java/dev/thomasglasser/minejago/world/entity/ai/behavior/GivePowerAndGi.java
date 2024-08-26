@@ -78,7 +78,7 @@ public class GivePowerAndGi<E extends PathfinderMob> extends MoveToWalkTarget<E>
             if (ro != null) {
                 ArmorItem armor = ro.get();
                 ItemStack armorStack = armor.getDefaultInstance();
-                armorStack.set(MinejagoDataComponents.POWER.get(), power.location());
+                armorStack.set(MinejagoDataComponents.POWER.get(), power);
                 if (target instanceof Player player) {
                     ItemStack oldStack = player.getItemBySlot(value.getSlot());
                     if (!player.addItem(oldStack)) player.drop(oldStack, true);

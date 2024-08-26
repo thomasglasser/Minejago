@@ -1,0 +1,58 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "minejago:decorations",
+  "description": "book.minejago.wiki.decorations.paintings.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "minecraft:painting"
+  },
+  "name": "book.minejago.wiki.decorations.paintings.name",
+  "pages": [
+    {
+      "type": "modonomicon:image",
+      "anchor": "placeable",
+      "border": true,
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "images": [
+        "minejago:textures/painting/a_morning_brew",
+        "minejago:textures/painting/ambushed",
+        "minejago:textures/painting/before_the_storm",
+        "minejago:textures/painting/creation",
+        "minejago:textures/painting/earth",
+        "minejago:textures/painting/fire",
+        "minejago:textures/painting/fruit_colored_ninja",
+        "minejago:textures/painting/ice",
+        "minejago:textures/painting/it_takes_a_village",
+        "minejago:textures/painting/lightning",
+        "minejago:textures/painting/needs_hair_gel",
+        "minejago:textures/painting/not_for_furniture"
+      ],
+      "text": "book.minejago.wiki.decorations.paintings.placeable.text",
+      "title": "book.minejago.wiki.decorations.paintings.placeable.title",
+      "use_legacy_rendering": false
+    },
+    {
+      "type": "modonomicon:image",
+      "anchor": "structure",
+      "border": true,
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "images": [
+        "minejago:textures/painting/four_weapons",
+        "minejago:textures/painting/the_fourth_mountain",
+        "minejago:textures/painting/it_takes_a_village_wrecked"
+      ],
+      "text": "book.minejago.wiki.decorations.paintings.structure.text",
+      "title": "book.minejago.wiki.decorations.paintings.structure.title",
+      "use_legacy_rendering": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 0,
+  "x": 0,
+  "y": 0
+}

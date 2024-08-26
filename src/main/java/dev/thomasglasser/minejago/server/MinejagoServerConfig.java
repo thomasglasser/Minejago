@@ -58,8 +58,7 @@ public class MinejagoServerConfig {
                 // TODO: Set to reasonable time (require projectile interruption?)
                 .defineInRange("course_time_limit", 30, 5, 300);
         courseRadius = builder
-                // TODO: Set default to radius needed for monastery
-                .defineInRange("course_radius", 10, 1, 50);
+                .defineInRange("course_radius", 64, 1, 128);
         builder.pop();
 
         builder.push(GOLDEN_WEAPONS);

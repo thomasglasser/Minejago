@@ -201,6 +201,7 @@ public class MinejagoEntityEvents {
                                 i.set(EntityTypeFocusModifiers.applyModifier(entity, i.get()));
                             }
                         });
+                        serverPlayer.getInventory().items.forEach(stack -> i.set(ItemStackFocusModifiers.applyModifier(stack, i.get())));
                         focusData.meditate(focusData.isMegaMeditating(), (int) i.getAndSet(0), 0.1f);
                     }
 

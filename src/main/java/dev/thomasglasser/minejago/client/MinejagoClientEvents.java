@@ -6,8 +6,8 @@ import dev.thomasglasser.minejago.client.gui.MinejagoGuis;
 import dev.thomasglasser.minejago.client.model.BambooStaffModel;
 import dev.thomasglasser.minejago.client.model.BouncingPoleSpinjitzuCourseElementModel;
 import dev.thomasglasser.minejago.client.model.KrunchaModel;
+import dev.thomasglasser.minejago.client.model.LegacyDevTeamBeardModel;
 import dev.thomasglasser.minejago.client.model.NuckalModel;
-import dev.thomasglasser.minejago.client.model.OgDevTeamBeardModel;
 import dev.thomasglasser.minejago.client.model.PilotsSnapshotTesterHatModel;
 import dev.thomasglasser.minejago.client.model.RockingPoleSpinjitzuCourseElementModel;
 import dev.thomasglasser.minejago.client.model.ScytheModel;
@@ -37,7 +37,7 @@ import dev.thomasglasser.minejago.client.renderer.entity.SkulkinRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.SkullMotorbikeRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.SkullTruckRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.WuRenderer;
-import dev.thomasglasser.minejago.client.renderer.entity.layers.OgDevTeamLayer;
+import dev.thomasglasser.minejago.client.renderer.entity.layers.LegacyDevTeamLayer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterLayer;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import dev.thomasglasser.minejago.network.ClientboundStartSpinjitzuPayload;
@@ -209,7 +209,7 @@ public class MinejagoClientEvents {
         event.registerLayerDefinition(ThrownIronShurikenModel.LAYER_LOCATION, ThrownIronShurikenModel::createBodyLayer);
         event.registerLayerDefinition(ScytheModel.LAYER_LOCATION, ScytheModel::createBodyLayer);
         event.registerLayerDefinition(PilotsSnapshotTesterHatModel.LAYER_LOCATION, PilotsSnapshotTesterHatModel::createBodyLayer);
-        event.registerLayerDefinition(OgDevTeamBeardModel.LAYER_LOCATION, OgDevTeamBeardModel::createBodyLayer);
+        event.registerLayerDefinition(LegacyDevTeamBeardModel.LAYER_LOCATION, LegacyDevTeamBeardModel::createBodyLayer);
         event.registerLayerDefinition(KrunchaModel.LAYER_LOCATION, KrunchaModel::createBodyLayer);
         event.registerLayerDefinition(NuckalModel.LAYER_LOCATION, NuckalModel::createBodyLayer);
         event.registerLayerDefinition(SpinjitzuModel.LAYER_LOCATION, SpinjitzuModel::createBodyLayer);
@@ -300,7 +300,7 @@ public class MinejagoClientEvents {
 
             if (player != null) {
                 player.addLayer(new SnapshotTesterLayer<>(player, models));
-                player.addLayer(new OgDevTeamLayer<>(player, models));
+                player.addLayer(new LegacyDevTeamLayer<>(player, models));
             }
         }
     }

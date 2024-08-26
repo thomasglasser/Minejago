@@ -2,17 +2,23 @@ package dev.thomasglasser.minejago.world.entity.ai.behavior;
 
 import com.mojang.datafixers.util.Pair;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
+import dev.thomasglasser.minejago.world.entity.ai.poi.MinejagoPoiTypes;
 import dev.thomasglasser.minejago.world.entity.character.Wu;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import net.minecraft.SharedConstants;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
+import net.minecraft.world.entity.ai.memory.WalkTarget;
+import net.minecraft.world.entity.ai.village.poi.PoiManager;
 import net.minecraft.world.entity.player.Player;
 import net.tslat.smartbrainlib.api.core.behaviour.ExtendedBehaviour;
+import net.tslat.smartbrainlib.util.BrainUtils;
 
 public class TrackSpinjitzuCourseCompletion<T extends Wu> extends ExtendedBehaviour<T> {
     // TODO: Animation times
@@ -35,7 +41,16 @@ public class TrackSpinjitzuCourseCompletion<T extends Wu> extends ExtendedBehavi
 
     @Override
     protected boolean checkExtraStartConditions(ServerLevel level, T entity) {
-        return super.checkExtraStartConditions(level, entity) && !entity.getCourseData().isEmpty();
+        if (level.getPoiManager().findClosest(poi -> poi.is(MinejagoPoiTypes.TEAPOTS), entity.blockPosition(), 2, PoiManager.Occupancy.ANY).isPresent()) {
+            return super.checkExtraStartConditions(level, entity);
+        } else if (BrainUtils.getMemory(entity, MemoryModuleType.WALK_TARGET) == null && !entity.getCourseData().isEmpty()) {
+            Optional<BlockPos> potPos = level.getPoiManager().findClosest(poi -> poi.is(MinejagoPoiTypes.TEAPOTS), entity.blockPosition(), MinejagoServerConfig.INSTANCE.courseRadius.get(), PoiManager.Occupancy.ANY);
+            if (potPos.isPresent())
+                BrainUtils.setMemory(entity, MemoryModuleType.WALK_TARGET, new WalkTarget(potPos.get(), 1f, 0));
+            else
+                entity.getCourseData().clear();
+        }
+        return false;
     }
 
     @Override

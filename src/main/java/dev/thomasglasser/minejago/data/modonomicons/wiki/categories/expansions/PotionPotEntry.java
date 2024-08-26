@@ -1,69 +1,50 @@
 package dev.thomasglasser.minejago.data.modonomicons.wiki.categories.expansions;
 
-import com.klikli_dev.modonomicon.api.datagen.CategoryProviderBase;
 import com.klikli_dev.modonomicon.api.datagen.IndexModeEntryProvider;
-import com.klikli_dev.modonomicon.api.datagen.book.BookEntryModel;
 import com.klikli_dev.modonomicon.api.datagen.book.BookIconModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookImagePageModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
-import dev.thomasglasser.minejago.packs.MinejagoPacks;
+import dev.thomasglasser.minejago.data.modonomicons.wiki.WikiBookSubProvider;
 import dev.thomasglasser.minejago.world.item.MinejagoItemUtils;
 import net.minecraft.world.item.alchemy.Potions;
-import net.minecraft.world.phys.Vec2;
 
 public class PotionPotEntry extends IndexModeEntryProvider {
-    public static final String ID = "potion_pot";
+    private static final String ID = "potion_pot";
 
-    public PotionPotEntry(CategoryProviderBase parent) {
+    public PotionPotEntry(ExpansionsCategoryProvider parent) {
         super(parent);
     }
 
     @Override
     protected void generatePages() {
-        // Summary Text
-        page("summary_text", () -> BookTextPageModel.create()
-                .withTitle(entryName()))
-                        .withText(context().pageText());
+        page("usage_image", () -> BookImagePageModel.create()
+                .withAnchor("usage_image")
+                .withImages(WikiBookSubProvider.wikiTexture("expansions/potion_pot/usage.png"))
+                .withTitle(context().pageTitle()));
 
-        pageText("""
-                The Potion Pot Pack is a data pack that allows the player to brew vanilla potions in teapots using the vanilla brewing recipes.
-                These recipes may be overridden by a datapack, which will have no effect on the brewing stand, but if the brewing recipes have been changed by a mod, the teapot recipes will remain the same as vanilla unless also overridden by a data pack.
+        add(context().pageTitle(), "Usage");
+
+        page("usage", () -> BookTextPageModel.create()
+                .withAnchor("usage")
+                .withTitle(context().pageTitle())
+                .withText(context().pageText()));
+
+        add(context().pageTitle(), "Usage");
+        add(context().pageText(), """
+                Making the potion tea involves using the same ingredients as the brewing stand.
+                For example, adding nether wart to water in a teapot will create an awkward potion tea.
+                Adding a fermented spider eye to the awkward potion tea will create a potion of weakness tea.
                 """);
-
-        // Summary Image
-        page("summary_image", () -> BookImagePageModel.create()
-                .withImages(modLoc("textures/modonomicon/wiki/expansions/potion_pot_pack/regeneration_pot.png")));
-    }
-
-    @Override
-    public BookEntryModel generate(Vec2 location) {
-        this.context().entry(this.entryId());
-
-        var entry = BookEntryModel.create(
-                this.modLoc(this.context().categoryId() + "/" + this.context().entryId()),
-                entryName())
-                .withDescription(entryDescription());
-
-        entry.withIcon(this.entryIcon());
-        entry.withLocation(location);
-        entry.withEntryBackground(this.entryBackground());
-
-        this.entry = this.additionalSetup(entry);
-
-        this.generatePages();
-
-        this.parent.add(this.entry);
-        return this.entry;
     }
 
     @Override
     protected String entryName() {
-        return MinejagoPacks.POTION_POT.titleKey();
+        return "Potion Pot Pack";
     }
 
     @Override
     protected String entryDescription() {
-        return MinejagoPacks.POTION_POT.descriptionKey();
+        return "The Potion Pot Pack is a datapack that allows brewing vanilla potions in teapots";
     }
 
     @Override

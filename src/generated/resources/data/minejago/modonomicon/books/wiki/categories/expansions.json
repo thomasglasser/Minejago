@@ -8,11 +8,11 @@
   "display_mode": "index",
   "entry_textures": "modonomicon:textures/gui/entry_textures.png",
   "icon": {
-    "item": "minejago:teapot"
+    "item": "minecraft:nether_star"
   },
   "max_scroll_x": 512,
   "max_scroll_y": 512,
   "name": "book.minejago.wiki.expansions.name",
   "show_category_button": true,
-  "sort_number": 1
+  "sort_number": 9
 }
