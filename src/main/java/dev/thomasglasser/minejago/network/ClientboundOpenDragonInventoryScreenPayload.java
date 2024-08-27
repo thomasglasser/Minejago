@@ -1,10 +1,9 @@
 package dev.thomasglasser.minejago.network;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.client.gui.screens.inventory.DragonInventoryScreen;
+import dev.thomasglasser.minejago.client.MinejagoClientUtils;
 import dev.thomasglasser.minejago.world.entity.dragon.Dragon;
 import dev.thomasglasser.minejago.world.inventory.DragonInventoryMenu;
-import dev.thomasglasser.tommylib.api.client.ClientUtils;
 import dev.thomasglasser.tommylib.api.network.ExtendedPacketPayload;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -30,7 +29,7 @@ public record ClientboundOpenDragonInventoryScreenPayload(int id, int columns, i
             DragonInventoryMenu dragonInventoryMenu = new DragonInventoryMenu(
                     containerId, player.getInventory(), simplecontainer, dragon, columns);
             player.containerMenu = dragonInventoryMenu;
-            ClientUtils.setScreen(new DragonInventoryScreen(dragonInventoryMenu, player.getInventory(), dragon, columns));
+            MinejagoClientUtils.openDragonInventoryScreen(dragonInventoryMenu, player, dragon, columns);
         }
     }
 

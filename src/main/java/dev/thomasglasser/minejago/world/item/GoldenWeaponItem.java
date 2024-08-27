@@ -9,8 +9,10 @@ import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
 import dev.thomasglasser.minejago.world.focus.FocusData;
+import dev.thomasglasser.tommylib.api.client.renderer.BewlrProvider;
 import dev.thomasglasser.tommylib.api.world.item.BaseModeledItem;
 import java.util.List;
+import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.component.DataComponents;
@@ -160,7 +162,12 @@ public abstract class GoldenWeaponItem extends BaseModeledItem {
     }
 
     @Override
-    public BlockEntityWithoutLevelRenderer getBEWLR() {
-        return MinejagoClientUtils.getBewlr();
+    public void createBewlrProvider(Consumer<BewlrProvider> consumer) {
+        consumer.accept(new BewlrProvider() {
+            @Override
+            public BlockEntityWithoutLevelRenderer getBewlr() {
+                return MinejagoClientUtils.getBewlr();
+            }
+        });
     }
 }

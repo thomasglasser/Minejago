@@ -1,3 +1,14 @@
 {
-  "id": "minejago:none"
+  "display": {
+    "description": {
+      "translate": "power.minejago.none.description"
+    },
+    "lore": {
+      "translate": "power.minejago.none.lore"
+    }
+  },
+  "id": "minejago:none",
+  "tagline": {
+    "translate": "power.minejago.none.tagline"
+  }
 }

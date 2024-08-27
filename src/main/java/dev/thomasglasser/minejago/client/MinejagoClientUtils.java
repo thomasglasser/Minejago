@@ -1,19 +1,32 @@
 package dev.thomasglasser.minejago.client;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.client.gui.screens.inventory.DragonInventoryScreen;
+import dev.thomasglasser.minejago.client.gui.screens.inventory.PowerSelectionScreen;
+import dev.thomasglasser.minejago.client.gui.screens.inventory.ScrollViewScreen;
 import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterCosmeticOptions;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.VipData;
 import dev.thomasglasser.minejago.network.ServerboundChangeVipDataPayload;
+import dev.thomasglasser.minejago.world.entity.character.Wu;
+import dev.thomasglasser.minejago.world.entity.dragon.Dragon;
+import dev.thomasglasser.minejago.world.entity.power.Power;
+import dev.thomasglasser.minejago.world.inventory.DragonInventoryMenu;
+import dev.thomasglasser.tommylib.api.client.ClientUtils;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.inventory.BookViewScreen;
 import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.player.Player;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.Nullable;
@@ -120,5 +133,17 @@ public class MinejagoClientUtils {
 
     public static MinejagoBlockEntityWithoutLevelRenderer getBewlr() {
         return bewlr;
+    }
+
+    public static void openPowerSelectionScreen(List<ResourceKey<Power>> powers, Optional<Integer> wuId) {
+        ClientUtils.setScreen(new PowerSelectionScreen(Component.translatable("gui.power_selection.title"), powers, wuId.isPresent() && ClientUtils.getEntityById(wuId.get()) instanceof Wu wu ? wu : null));
+    }
+
+    public static void openScrollScreen(BookViewScreen.BookAccess bookAccess) {
+        ClientUtils.setScreen(new ScrollViewScreen(bookAccess));
+    }
+
+    public static void openDragonInventoryScreen(DragonInventoryMenu dragonInventoryMenu, Player player, Dragon dragon, int columns) {
+        ClientUtils.setScreen(new DragonInventoryScreen(dragonInventoryMenu, player.getInventory(), dragon, columns));
     }
 }

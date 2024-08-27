@@ -26,7 +26,7 @@ import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaidsHolder;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
 import dev.thomasglasser.minejago.world.focus.FocusData;
 import dev.thomasglasser.minejago.world.focus.modifier.blockstate.BlockStateFocusModifiers;
-import dev.thomasglasser.minejago.world.focus.modifier.entity.EntityTypeFocusModifiers;
+import dev.thomasglasser.minejago.world.focus.modifier.entity.EntityFocusModifiers;
 import dev.thomasglasser.minejago.world.focus.modifier.itemstack.ItemStackFocusModifiers;
 import dev.thomasglasser.minejago.world.focus.modifier.resourcekey.ResourceKeyFocusModifiers;
 import dev.thomasglasser.minejago.world.focus.modifier.world.Weather;
@@ -39,6 +39,10 @@ import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -79,11 +83,6 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
-
-import java.util.List;
-import java.util.Set;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 public class MinejagoEntityEvents {
     public static final Predicate<LivingEntity> NO_SPINJITZU = (player -> !player.getData(MinejagoAttachmentTypes.SPINJITZU).canDoSpinjitzu() ||
@@ -199,7 +198,7 @@ public class MinejagoEntityEvents {
                             } else if (entity instanceof ItemFrame itemFrame) {
                                 i.set(ItemStackFocusModifiers.applyModifier(itemFrame.getItem(), i.get()));
                             } else {
-                                i.set(EntityTypeFocusModifiers.applyModifier(entity, i.get()));
+                                i.set(EntityFocusModifiers.applyModifier(entity, i.get()));
                             }
                         });
                         serverPlayer.getInventory().items.forEach(stack -> i.set(ItemStackFocusModifiers.applyModifier(stack, i.get())));

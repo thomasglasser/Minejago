@@ -23,7 +23,7 @@ public record ClientboundChangeVipDataPayload(UUID uuid, VipData vipData) implem
     // ON CLIENT
     @Override
     public void handle(@Nullable Player player) {
-        MinejagoClientUtils.setVipData(ClientUtils.getClientPlayerByUUID(uuid), vipData);
+        MinejagoClientUtils.setVipData(ClientUtils.getPlayerByUUID(uuid), vipData);
     }
 
     @Override

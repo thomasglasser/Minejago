@@ -6,7 +6,7 @@ import dev.thomasglasser.minejago.network.MinejagoPayloads;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.focus.modifier.blockstate.BlockStateFocusModifiers;
-import dev.thomasglasser.minejago.world.focus.modifier.entity.EntityTypeFocusModifiers;
+import dev.thomasglasser.minejago.world.focus.modifier.entity.EntityFocusModifiers;
 import dev.thomasglasser.minejago.world.focus.modifier.itemstack.ItemStackFocusModifiers;
 import dev.thomasglasser.minejago.world.focus.modifier.resourcekey.ResourceKeyFocusModifiers;
 import dev.thomasglasser.minejago.world.focus.modifier.world.WorldFocusModifiers;
@@ -55,7 +55,7 @@ public class MinejagoCoreEvents {
         event.addListener((ResourceManagerReloadListener) resourceManager -> {
             ResourceKeyFocusModifiers.load(resourceManager);
             BlockStateFocusModifiers.load(resourceManager);
-            EntityTypeFocusModifiers.load(resourceManager);
+            EntityFocusModifiers.load(resourceManager);
             ItemStackFocusModifiers.load(resourceManager);
             WorldFocusModifiers.load(resourceManager);
         });

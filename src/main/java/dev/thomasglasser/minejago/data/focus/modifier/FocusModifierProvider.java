@@ -4,7 +4,7 @@ import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.focus.modifier.FocusModifier;
 import dev.thomasglasser.minejago.world.focus.modifier.Operation;
 import dev.thomasglasser.minejago.world.focus.modifier.blockstate.BlockStateFocusModifier;
-import dev.thomasglasser.minejago.world.focus.modifier.entity.EntityTypeFocusModifier;
+import dev.thomasglasser.minejago.world.focus.modifier.entity.EntityFocusModifier;
 import dev.thomasglasser.minejago.world.focus.modifier.itemstack.ItemStackFocusModifier;
 import dev.thomasglasser.minejago.world.focus.modifier.resourcekey.ResourceKeyFocusModifier;
 import java.nio.file.Path;
@@ -130,7 +130,7 @@ public abstract class FocusModifierProvider implements DataProvider {
     }
 
     protected void add(ResourceLocation location, EntityType<?> type, CompoundTag nbt, double modifier, Operation operation) {
-        add(new EntityTypeFocusModifier(location, type, nbt, modifier, operation));
+        add(new EntityFocusModifier(location, type, nbt, modifier, operation));
     }
 
     protected void add(double modifier, Operation operation, ItemStack... stacks) {

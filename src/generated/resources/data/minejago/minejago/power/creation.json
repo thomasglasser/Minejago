@@ -1,13 +1,5 @@
 {
   "border_particle": "minejago:sparkles",
-  "display": {
-    "description": {
-      "translate": "power.minejago.creation.description"
-    },
-    "lore": {
-      "translate": "power.minejago.creation.lore"
-    }
-  },
   "id": "minejago:creation",
   "is_special": true,
   "power_color": "#F8D66F"

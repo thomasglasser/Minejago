@@ -64,7 +64,7 @@ public class Minejago {
 
         registerConfigs(modContainer);
 
-        if (Dependencies.TSLAT_ENTITY_STATUS.isInstalled()) {
+        if (Dependencies.TSLAT_ENTITY_STATUS.isInstalled() && FMLEnvironment.dist.isClient()) {
             TESAPI.addTESHudElement(Minejago.modLoc("power_symbol"), MinejagoClientEvents::renderPowerSymbol);
         }
 
@@ -103,7 +103,6 @@ public class Minejago {
         MinejagoPotions.init();
         MinejagoSoundEvents.init();
         MinejagoMobEffects.init();
-        MinejagoKeyMappings.init();
         MinejagoCreativeModeTabs.init();
         MinejagoGameEvents.init();
         MinejagoMemoryModuleTypes.init();
@@ -113,16 +112,20 @@ public class Minejago {
         MinejagoEntitySerializers.init();
         MinejagoMapDecorationTypes.init();
         MinejagoPoiTypes.init();
+
+        if (FMLEnvironment.dist.isClient())
+            MinejagoKeyMappings.init();
     }
 
     private static void registerConfigs(ModContainer modContainer) {
         modContainer.registerConfig(ModConfig.Type.SERVER, MinejagoServerConfig.INSTANCE.getConfigSpec());
-        modContainer.registerConfig(ModConfig.Type.CLIENT, MinejagoClientConfig.INSTANCE.getConfigSpec());
-        modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
+        if (FMLEnvironment.dist.isClient()) {
+            modContainer.registerConfig(ModConfig.Type.CLIENT, MinejagoClientConfig.INSTANCE.getConfigSpec());
+            modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
+        }
     }
 
     private void addModListeners(IEventBus bus) {
-        bus.addListener(MinejagoClientEvents::onClientConfigChanged);
         bus.addListener(MinejagoEntityEvents::onEntityAttributeCreation);
         bus.addListener(MinejagoEntityEvents::onSpawnPlacementsRegister);
         bus.addListener(MinejagoCoreEvents::onAddPackFinders);
@@ -132,6 +135,7 @@ public class Minejago {
     }
 
     private void addModClientListeners(IEventBus bus) {
+        bus.addListener(MinejagoClientEvents::onClientConfigChanged);
         bus.addListener(MinejagoClientEvents::onRegisterParticleProviders);
         bus.addListener(MinejagoClientEvents::onRegisterItemColorHandlers);
         bus.addListener(MinejagoClientEvents::onRegisterBlockColorHandlers);

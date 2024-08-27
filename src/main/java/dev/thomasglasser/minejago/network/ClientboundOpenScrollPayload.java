@@ -1,7 +1,7 @@
 package dev.thomasglasser.minejago.network;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.client.gui.screens.inventory.ScrollViewScreen;
+import dev.thomasglasser.minejago.client.MinejagoClientUtils;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.tommylib.api.client.ClientUtils;
 import dev.thomasglasser.tommylib.api.network.ExtendedPacketPayload;
@@ -27,7 +27,7 @@ public record ClientboundOpenScrollPayload(InteractionHand hand) implements Exte
         if (itemStack.is(MinejagoItems.WRITTEN_SCROLL.get())) {
             BookViewScreen.BookAccess bookAccess = BookViewScreen.BookAccess.fromItem(itemStack);
             if (bookAccess != null) {
-                ClientUtils.setScreen(new ScrollViewScreen(bookAccess));
+                MinejagoClientUtils.openScrollScreen(bookAccess);
             }
         }
     }

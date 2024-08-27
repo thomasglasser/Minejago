@@ -22,7 +22,7 @@ public record ClientboundStartMegaMeditationPayload(UUID uuid) implements Extend
 
     // On Client
     public void handle(Player player) {
-        player = ClientUtils.getClientPlayerByUUID(uuid);
+        player = ClientUtils.getPlayerByUUID(uuid);
         player.getData(MinejagoAttachmentTypes.FOCUS).startMegaMeditating();
 
         if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled())

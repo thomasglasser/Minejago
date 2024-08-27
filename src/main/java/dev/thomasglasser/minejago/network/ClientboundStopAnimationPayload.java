@@ -20,7 +20,7 @@ public record ClientboundStopAnimationPayload(UUID uuid) implements ExtendedPack
 
     // ON CLIENT
     public void handle(@Nullable Player player) {
-        AnimationUtils.stopAnimation(ClientUtils.getClientPlayerByUUID(uuid));
+        AnimationUtils.stopAnimation(ClientUtils.getPlayerByUUID(uuid));
     }
 
     @Override

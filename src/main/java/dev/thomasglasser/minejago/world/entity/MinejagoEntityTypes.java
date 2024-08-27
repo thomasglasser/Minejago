@@ -10,7 +10,6 @@ import dev.thomasglasser.minejago.world.entity.character.Zane;
 import dev.thomasglasser.minejago.world.entity.dragon.Dragon;
 import dev.thomasglasser.minejago.world.entity.dragon.EarthDragon;
 import dev.thomasglasser.minejago.world.entity.projectile.EarthBlast;
-import dev.thomasglasser.minejago.world.entity.projectile.ThrownShuriken;
 import dev.thomasglasser.minejago.world.entity.skulkin.AbstractSkulkinVehicle;
 import dev.thomasglasser.minejago.world.entity.skulkin.Kruncha;
 import dev.thomasglasser.minejago.world.entity.skulkin.Nuckal;
@@ -52,12 +51,6 @@ public class MinejagoEntityTypes {
     public static final DeferredHolder<EntityType<?>, EntityType<ThrownSword>> THROWN_BONE_KNIFE = register("thrown_bone_knife", () -> EntityType.Builder.<ThrownSword>of(ThrownSword::new, MobCategory.MISC)
             .sized(0.5F, 0.5F)
             .build("thrown_bone_knife"));
-    public static final DeferredHolder<EntityType<?>, EntityType<ThrownSword>> THROWN_IRON_SPEAR = register("thrown_iron_spear", () -> EntityType.Builder.<ThrownSword>of(ThrownSword::new, MobCategory.MISC)
-            .sized(0.5F, 0.5F)
-            .build("thrown_iron_spear"));
-    public static final DeferredHolder<EntityType<?>, EntityType<ThrownShuriken>> THROWN_IRON_SHURIKEN = register("thrown_iron_shuriken", () -> EntityType.Builder.<ThrownShuriken>of(ThrownShuriken::new, MobCategory.MISC)
-            .sized(0.5F, 0.5F)
-            .build("thrown_iron_spear"));
     public static final DeferredHolder<EntityType<?>, EntityType<EarthBlast>> EARTH_BLAST = register("earth_blast", () -> EntityType.Builder.of(((EntityType<EarthBlast> entityType, Level level) -> new EarthBlast(entityType, level)), MobCategory.MISC)
             .sized(1.0F, 1.0F)
             .build("earth_blast"));

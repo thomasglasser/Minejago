@@ -26,8 +26,7 @@ public class MinejagoItemTagsProvider extends ExtendedItemTagsProvider {
         tag(ItemTags.PIGLIN_LOVED)
                 .addTag(MinejagoItemTags.GOLDEN_WEAPONS);
         tag(ItemTags.SWORDS)
-                .add(MinejagoItems.BONE_KNIFE.get())
-                .add(MinejagoItems.IRON_KATANA.get());
+                .add(MinejagoItems.BONE_KNIFE.get());
         tag(MinejagoItemTags.GOLDEN_WEAPONS)
                 .add(MinejagoItems.SCYTHE_OF_QUAKES.get());
         MinejagoArmors.ARMOR_SETS.forEach(this::armorSet);

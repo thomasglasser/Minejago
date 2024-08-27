@@ -7,6 +7,7 @@ import dev.thomasglasser.tommylib.api.registration.DeferredRegister;
 import dev.thomasglasser.tommylib.api.world.item.armor.ArmorSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Supplier;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
@@ -22,8 +23,8 @@ public class MinejagoArmors {
     public static final SkeletalChestplateSet SKELETAL_CHESTPLATE_SET = new SkeletalChestplateSet();
     public static final DeferredItem<SamukaisChestplateItem> SAMUKAIS_CHESTPLATE = register("samukais_chestplate", () -> new SamukaisChestplateItem(MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
 
-    public static final ArmorSet BLACK_GI_SET = create("black_gi", "Black Gi", false, BlackGiItem.class, DEFAULT_PROPERTIES);
-    public static final ArmorSet TRAINING_GI_SET = create("training_gi", "Training Gi", true, TrainingGiItem.class, DEFAULT_PROPERTIES);
+    public static final ArmorSet BLACK_GI_SET = create("black_gi", "Black Gi", false, BlackGiItem::new, DEFAULT_PROPERTIES);
+    public static final ArmorSet TRAINING_GI_SET = create("training_gi", "Training Gi", true, TrainingGiItem::new, DEFAULT_PROPERTIES);
 
     public static class SkeletalChestplateSet {
         private final DeferredItem<SkeletalChestplateItem> RED;
@@ -57,40 +58,16 @@ public class MinejagoArmors {
         }
     }
 
-    private static ArmorSet create(String name, String displayName, boolean powered, Class<? extends ArmorItem> clazz, Item.Properties properties) {
+    private static ArmorSet create(String name, String displayName, boolean powered, BiFunction<ArmorItem.Type, Item.Properties, ArmorItem> item, Item.Properties properties) {
         Supplier<ArmorItem> headItem;
         Supplier<ArmorItem> chestItem;
         Supplier<ArmorItem> legsItem;
         Supplier<ArmorItem> feetItem;
 
-        headItem = () -> {
-            try {
-                return clazz.getDeclaredConstructor(ArmorItem.Type.class, Item.Properties.class).newInstance(ArmorItem.Type.HELMET, properties);
-            } catch (Exception e) {
-                throw new RuntimeException("Armor construction failed! Error: " + e);
-            }
-        };
-        chestItem = () -> {
-            try {
-                return clazz.getDeclaredConstructor(ArmorItem.Type.class, Item.Properties.class).newInstance(ArmorItem.Type.CHESTPLATE, properties);
-            } catch (Exception e) {
-                throw new RuntimeException("Armor construction failed! Error: " + e);
-            }
-        };
-        legsItem = () -> {
-            try {
-                return clazz.getDeclaredConstructor(ArmorItem.Type.class, Item.Properties.class).newInstance(ArmorItem.Type.LEGGINGS, properties);
-            } catch (Exception e) {
-                throw new RuntimeException("Armor construction failed! Error: " + e);
-            }
-        };
-        feetItem = () -> {
-            try {
-                return clazz.getDeclaredConstructor(ArmorItem.Type.class, Item.Properties.class).newInstance(ArmorItem.Type.BOOTS, properties);
-            } catch (Exception e) {
-                throw new RuntimeException("Armor construction failed! Error: " + e);
-            }
-        };
+        headItem = () -> item.apply(ArmorItem.Type.HELMET, properties);
+        chestItem = () -> item.apply(ArmorItem.Type.CHESTPLATE, properties);
+        legsItem = () -> item.apply(ArmorItem.Type.LEGGINGS, properties);
+        feetItem = () -> item.apply(ArmorItem.Type.BOOTS, properties);
 
         DeferredItem<ArmorItem> head = register(name + "_hood", headItem);
         DeferredItem<ArmorItem> chest = register(name + "_jacket", chestItem);

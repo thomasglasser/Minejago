@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.thomasglasser.minejago.client.model.BambooStaffModel;
 import dev.thomasglasser.minejago.client.model.ScytheModel;
-import dev.thomasglasser.minejago.client.model.SpearModel;
 import dev.thomasglasser.minejago.core.component.MinejagoDataComponents;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
@@ -24,7 +23,6 @@ import net.minecraft.world.item.ItemStack;
 
 public class MinejagoBlockEntityWithoutLevelRenderer extends BlockEntityWithoutLevelRenderer implements ResourceManagerReloadListener {
     private BambooStaffModel bambooStaffModel;
-    private SpearModel spearModel;
     private ScytheModel scytheModel;
 
     public MinejagoBlockEntityWithoutLevelRenderer() {
@@ -33,17 +31,12 @@ public class MinejagoBlockEntityWithoutLevelRenderer extends BlockEntityWithoutL
 
     public void onResourceManagerReload(ResourceManager manager) {
         this.bambooStaffModel = new BambooStaffModel(Minecraft.getInstance().getEntityModels().bakeLayer(BambooStaffModel.LAYER_LOCATION));
-        this.spearModel = new SpearModel(Minecraft.getInstance().getEntityModels().bakeLayer(SpearModel.LAYER_LOCATION));
         this.scytheModel = new ScytheModel(Minecraft.getInstance().getEntityModels().bakeLayer(ScytheModel.LAYER_LOCATION));
     }
 
     public void renderByItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
         poseStack.pushPose();
-        if (stack.is(MinejagoItems.IRON_SCYTHE.get())) {
-            poseStack.scale(1.0F, -1.0F, -1.0F);
-            VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, this.scytheModel.renderType(ThrownSwordRenderer.TEXTURE.apply(MinejagoItems.IRON_SCYTHE.getId())), false, stack.hasFoil());
-            this.scytheModel.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
-        } else if (stack.is(MinejagoItems.BAMBOO_STAFF.get())) {
+        if (stack.is(MinejagoItems.BAMBOO_STAFF.get())) {
             poseStack.scale(1.0F, -1.0F, -1.0F);
             poseStack.translate(0.0D, -0.7D, 0.0D);
             VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, this.bambooStaffModel.renderType(ThrownSwordRenderer.TEXTURE.apply(MinejagoItems.BAMBOO_STAFF.getId())), false, stack.hasFoil());
@@ -52,10 +45,6 @@ public class MinejagoBlockEntityWithoutLevelRenderer extends BlockEntityWithoutL
             poseStack.scale(1.0F, -1.0F, -1.0F);
             VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, this.scytheModel.renderType(ThrownSwordRenderer.TEXTURE.apply(MinejagoItems.SCYTHE_OF_QUAKES.getId())), false, stack.hasFoil());
             this.scytheModel.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
-        } else if (stack.is(MinejagoItems.IRON_SPEAR.get())) {
-            poseStack.scale(1.0F, -1.0F, -1.0F);
-            VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, this.spearModel.renderType(ThrownSwordRenderer.TEXTURE.apply(MinejagoItems.IRON_SPEAR.getId())), false, stack.hasFoil());
-            this.spearModel.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
         } else if (stack.getItem() instanceof PoweredArmorItem) {
             poseStack.translate(0.5D, 0.5D, 0.5D);
             ResourceLocation location = stack.getOrDefault(MinejagoDataComponents.POWER.get(), MinejagoPowers.NONE).location();

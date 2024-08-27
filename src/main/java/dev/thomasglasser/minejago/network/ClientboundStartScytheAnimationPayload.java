@@ -29,7 +29,7 @@ public record ClientboundStartScytheAnimationPayload(UUID uuid, ItemAnimations.S
     // ON CLIENT
     public void handle(@Nullable Player player) {
         if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled())
-            AnimationUtils.startAnimation(startAnim.getAnimation(), goAnim.map(ItemAnimations.ScytheOfQuakes::getAnimation).orElse(null), ClientUtils.getClientPlayerByUUID(uuid), FirstPersonMode.THIRD_PERSON_MODEL);
+            AnimationUtils.startAnimation(startAnim.getAnimation(), goAnim.map(ItemAnimations.ScytheOfQuakes::getAnimation).orElse(null), ClientUtils.getPlayerByUUID(uuid), FirstPersonMode.THIRD_PERSON_MODEL);
     }
 
     @Override

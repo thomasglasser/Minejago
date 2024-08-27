@@ -9,7 +9,6 @@ import dev.thomasglasser.tommylib.api.network.ExtendedPacketPayload;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import io.netty.buffer.ByteBuf;
 import java.util.UUID;
-import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -24,7 +23,7 @@ public record ClientboundStartSpinjitzuPayload(UUID uuid) implements ExtendedPac
 
     // On Client
     public void handle(Player player) {
-        AbstractClientPlayer clientPlayer = ClientUtils.getClientPlayerByUUID(uuid);
+        Player clientPlayer = ClientUtils.getPlayerByUUID(uuid);
         if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled()) {
             AnimationUtils.startAnimation(PlayerAnimations.Spinjitzu.START.getAnimation(), PlayerAnimations.Spinjitzu.ACTIVE.getAnimation(), clientPlayer, FirstPersonMode.VANILLA);
             TommyLibServices.ENTITY.getPersistentData(clientPlayer).putInt(KEY_SPINJITZUSTARTTICKS, 10);

@@ -14,17 +14,17 @@ import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.entity.Entity;
 
-public class EntityTypeFocusModifiers {
-    private static final List<EntityTypeFocusModifier> ENTITY_TYPE_FOCUS_MODIFIERS = new ArrayList<>();
+public class EntityFocusModifiers {
+    private static final List<EntityFocusModifier> ENTITY_TYPE_FOCUS_MODIFIERS = new ArrayList<>();
 
-    private EntityTypeFocusModifiers() {
-        throw new UnsupportedOperationException("EntityTypeFocusModifiers only contains static definitions.");
+    private EntityFocusModifiers() {
+        throw new UnsupportedOperationException("EntityFocusModifiers only contains static definitions.");
     }
 
     public static void load(ResourceManager resourceManager) {
         ENTITY_TYPE_FOCUS_MODIFIERS.clear();
         resourceManager.listResources(Minejago.MOD_ID + "/focus_modifiers/entity_type", (path) -> path.getPath().endsWith(".json"))
-                .forEach(EntityTypeFocusModifiers::load);
+                .forEach(EntityFocusModifiers::load);
     }
 
     private static void load(ResourceLocation resourceId, Resource resource) {
@@ -35,7 +35,7 @@ public class EntityTypeFocusModifiers {
 
             try {
                 JsonObject json = JsonParser.parseReader(reader).getAsJsonObject();
-                EntityTypeFocusModifier.fromJson(id, json).ifPresent(ENTITY_TYPE_FOCUS_MODIFIERS::add);
+                EntityFocusModifier.fromJson(id, json).ifPresent(ENTITY_TYPE_FOCUS_MODIFIERS::add);
             } catch (Throwable var7) {
                 try {
                     reader.close();
@@ -53,10 +53,10 @@ public class EntityTypeFocusModifiers {
     }
 
     public static double applyModifier(Entity entity, double oldValue) {
-        List<EntityTypeFocusModifier> data = ENTITY_TYPE_FOCUS_MODIFIERS.stream().filter(modifier -> modifier.getEntityType().equals(entity.getType()) && NbtUtils.compareNbt(modifier.getNbt(), new EntityDataAccessor(entity).getData(), true)).toList();
+        List<EntityFocusModifier> data = ENTITY_TYPE_FOCUS_MODIFIERS.stream().filter(modifier -> modifier.getEntityType().equals(entity.getType()) && NbtUtils.compareNbt(modifier.getNbt(), new EntityDataAccessor(entity).getData(), true)).toList();
         if (!data.isEmpty()) {
             double newValue = oldValue;
-            for (EntityTypeFocusModifier modifier : data) {
+            for (EntityFocusModifier modifier : data) {
                 newValue = modifier.apply(newValue);
             }
             return newValue;

@@ -13,14 +13,33 @@ public class MinejagoPowerDatagenSuite extends PowerDatagenSuite {
 
     @Override
     public void generate() {
-        makePowerSuite(MinejagoPowers.NONE);
+        // TODO: Better descriptions, lore, taglines
+        makePowerSuite(MinejagoPowers.NONE, builder -> builder
+                .defaultTagline()
+                .defaultDisplay(),
+                false,
+                config -> {
+                    config.tagline("The average Joe.");
+                    config.desc("""
+                            TODO: Description
+                            """);
+                    config.lore("TODO: Lore");
+                });
         makePowerSuite(MinejagoPowers.ICE, builder -> builder
                 .color("#EDECE4")
                 .defaultTagline()
                 .hasSets()
                 .defaultDisplay(),
                 MinejagoParticleTypes.SNOWS, "snow", 4, true, config -> {
-                    // TODO: Name, description, lore, tagline
+                    config.tagline("Cool as ice.");
+                    config.desc("""
+                            Like ice itself, the Master of Ice is cold and calculating.
+                            They keep their cool in the heat of battle,
+                            and can keep their team in check.
+
+                            TODO:Description
+                            """);
+                    config.lore("TODO: Lore");
                 });
         makePowerSuite(MinejagoPowers.EARTH, builder -> builder
                 .color("#5A4441")
@@ -28,8 +47,11 @@ public class MinejagoPowerDatagenSuite extends PowerDatagenSuite {
                 .hasSets()
                 .defaultDisplay(),
                 MinejagoParticleTypes.ROCKS, "rock", 4, true, config -> {
-                    // TODO: Name, description, lore
                     config.tagline("Solid as rock.");
+                    config.desc("""
+                            TODO: Description
+                            """);
+                    config.lore("TODO: Lore");
                 });
         makePowerSuite(MinejagoPowers.FIRE, builder -> builder
                 .color("#B90E04")
@@ -37,8 +59,11 @@ public class MinejagoPowerDatagenSuite extends PowerDatagenSuite {
                 .hasSets()
                 .defaultDisplay(),
                 MinejagoParticleTypes.SPARKS, "spark", 4, true, config -> {
-                    // TODO: Name, description, lore
                     config.tagline("It burns bright in you.");
+                    config.desc("""
+                            TODO: Description
+                            """);
+                    config.lore("TODO: Lore");
                 });
         makePowerSuite(MinejagoPowers.LIGHTNING, builder -> builder
                 .color("#4668D5")
@@ -46,14 +71,15 @@ public class MinejagoPowerDatagenSuite extends PowerDatagenSuite {
                 .hasSets()
                 .defaultDisplay(),
                 MinejagoParticleTypes.BOLTS, "bolt", 4, true, config -> {
-                    // TODO: Name, description, lore, tagline
+                    config.tagline("Ignite the storm within.");
+                    config.desc("""
+                            TODO: Description
+                            """);
+                    config.lore("TODO: Lore");
                 });
         makePowerSuite(MinejagoPowers.CREATION, builder -> builder
                 .color("#F8D66F")
-                .defaultDisplay()
                 .isSpecial(),
-                MinejagoParticleTypes.SPARKLES, "sparkle", 4, false, config -> {
-                    // TODO: Name, description, lore, tagline
-                });
+                MinejagoParticleTypes.SPARKLES, "sparkle", 4, false, config -> {});
     }
 }

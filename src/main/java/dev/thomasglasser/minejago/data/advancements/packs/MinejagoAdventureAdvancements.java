@@ -38,7 +38,7 @@ public class MinejagoAdventureAdvancements extends ExtendedAdvancementGenerator 
 
     @Override
     public void generate(HolderLookup.Provider provider) {
-        AdvancementHolder interactWithMainSix = create(ResourceLocation.withDefaultNamespace("adventure/root"), MinejagoItems.IRON_KATANA.get(), "interact_with_main_six", AdvancementType.GOAL, true, true, false, null, AdvancementRequirements.Strategy.AND, Map.of(
+        AdvancementHolder interactWithMainSix = create(ResourceLocation.withDefaultNamespace("adventure/root"), MinejagoItems.BAMBOO_STAFF.get(), "interact_with_main_six", AdvancementType.GOAL, true, true, false, null, AdvancementRequirements.Strategy.AND, Map.of(
                 "interact_wu", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), Optional.of(EntityPredicate.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.WU.get()).build()))),
                 "interact_nya", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), Optional.of(EntityPredicate.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.NYA.get()).build()))),
                 "interact_jay", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity(ItemPredicate.Builder.item(), Optional.of(EntityPredicate.wrap(EntityPredicate.Builder.entity().of(MinejagoEntityTypes.JAY.get()).build()))),

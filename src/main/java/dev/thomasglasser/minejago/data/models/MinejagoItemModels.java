@@ -19,7 +19,6 @@ public class MinejagoItemModels extends ExtendedItemModelProvider {
     @Override
     protected void registerModels() {
         basicItemHandheld(MinejagoItems.BONE_KNIFE);
-        basicItemHandheld(MinejagoItems.IRON_SHURIKEN);
         MinejagoArmors.ARMOR_SETS.forEach(armorSet -> armorSet.getAll().forEach(item -> {
             String nameForSlot = switch (armorSet.getForItem(item.get())) {
                 case FEET -> "boots";
@@ -35,7 +34,6 @@ public class MinejagoItemModels extends ExtendedItemModelProvider {
         basicItem(MinejagoArmors.SAMUKAIS_CHESTPLATE.get());
         basicItem(MinejagoItems.TEACUP.get());
         basicItem(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get());
-        basicItemHandheld(MinejagoItems.IRON_KATANA);
         basicItem(MinejagoItems.POTTERY_SHERD_ICE_CUBE.get());
         basicItem(MinejagoItems.POTTERY_SHERD_THUNDER.get());
         basicItem(MinejagoItems.POTTERY_SHERD_PEAKS.get());
@@ -65,8 +63,6 @@ public class MinejagoItemModels extends ExtendedItemModelProvider {
         basicItem(MinejagoItems.SPINNING_AXES_SPINJITZU_COURSE_ELEMENT);
         basicItem(MinejagoBlocks.EARTH_DRAGON_HEAD.get().asItem());
         basicItem(MinejagoItems.NINJA_BANNER_PATTERN.get());
-
-        basicInventoryItem(MinejagoItems.WOODEN_NUNCHUCKS);
 
         basicBlockItem(MinejagoBlocks.SCROLL_SHELF);
 
@@ -101,14 +97,6 @@ public class MinejagoItemModels extends ExtendedItemModelProvider {
 
         MinejagoArmors.TRAINING_GI_SET.getAll().forEach(item -> withEntityModel(item).guiLight(BlockModel.GuiLight.FRONT));
 
-        withEntityModelInHand(MinejagoItems.IRON_SCYTHE, withEntityModel(MinejagoItems.IRON_SCYTHE)
-                .texture("particle", modItemModel(MinejagoItems.SCYTHE_OF_QUAKES.getId().getPath()))
-                .transforms()
-                .transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(0, -90, 0).translation(-8, 25, 10).end()
-                .transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND).rotation(0, 90, 0).translation(8, 25, 10).end()
-                .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0, -90, 25).translation(-3, 25, 1).end()
-                .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(0, 90, -25).translation(13, 25, 1).end()
-                .end(), basicInventoryItem(MinejagoItems.IRON_SCYTHE));
         withEntityModelInHand(MinejagoItems.BAMBOO_STAFF, withEntityModel(MinejagoItems.BAMBOO_STAFF)
                 .texture("particle", modItemModel(MinejagoItems.BAMBOO_STAFF.getId().getPath()))
                 .transforms()
@@ -125,21 +113,6 @@ public class MinejagoItemModels extends ExtendedItemModelProvider {
                 .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0, -90, 25).translation(-3, 25, 1).end()
                 .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(0, 90, -25).translation(13, 25, 1).end()
                 .end(), basicInventoryItem(MinejagoItems.SCYTHE_OF_QUAKES));
-        withEntityModelInHand(MinejagoItems.IRON_SPEAR, withEntityModel(MinejagoItems.IRON_SPEAR)
-                .texture("particle", modItemModel(MinejagoItems.IRON_SPEAR.getId().getPath()))
-                .transforms()
-                .transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(0, 60, 0).translation(11, 17, -2).end()
-                .transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND).rotation(0, 60, 0).translation(3, 17, 12).end()
-                .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0, -90, 25).translation(-3, 17, 1).end()
-                .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(-4.9f, -6.64f, 4.5f).translation(2.75f, -4, -0.5f).end()
-                .end(), basicInventoryItem(MinejagoItems.IRON_SPEAR));
-        withEntityModelInHand(MinejagoItems.WOODEN_NUNCHUCKS, withEntityModel(MinejagoItems.WOODEN_NUNCHUCKS)
-                .transforms()
-                .transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(-3.34f, -2.79f, 2.27f).translation(0.25f, -5, -1.5f).scale(0.8f).end()
-                .transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND).rotation(-3.34f, -2.79f, 2.27f).translation(0.25f, -5f, -1.5f).scale(0.8f).end()
-                .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(-4.9f, -6.64f, 4.5f).translation(2.75f, -4f, -0.5f).end()
-                .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(-4.9f, -6.64f, 4.5f).translation(2.75f, -4f, -0.5f).end()
-                .end(), basicInventoryItem(MinejagoItems.WOODEN_NUNCHUCKS));
 
         withExistingParent(MinejagoBlocks.CHISELED_SCROLL_SHELF.getId().getPath(), MinejagoBlocks.CHISELED_SCROLL_SHELF.getId().withPrefix("block/").withSuffix("_inventory"));
     }

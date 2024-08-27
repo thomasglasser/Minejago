@@ -10,7 +10,6 @@ import dev.thomasglasser.tommylib.api.client.animation.AnimationUtils;
 import dev.thomasglasser.tommylib.api.network.ExtendedPacketPayload;
 import io.netty.buffer.ByteBuf;
 import java.util.UUID;
-import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -26,7 +25,7 @@ public record ClientboundStopMeditationPayload(UUID uuid, boolean fail) implemen
 
     // On Client
     public void handle(Player player) {
-        AbstractClientPlayer clientPlayer = ClientUtils.getClientPlayerByUUID(uuid);
+        Player clientPlayer = ClientUtils.getPlayerByUUID(uuid);
         FocusData focusData = clientPlayer.getData(MinejagoAttachmentTypes.FOCUS);
         focusData.stopMeditating();
         if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled()) {

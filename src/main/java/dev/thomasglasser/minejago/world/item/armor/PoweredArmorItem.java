@@ -4,9 +4,11 @@ import dev.thomasglasser.minejago.client.MinejagoClientUtils;
 import dev.thomasglasser.minejago.core.component.MinejagoDataComponents;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.world.entity.power.Power;
+import dev.thomasglasser.tommylib.api.client.renderer.BewlrProvider;
 import dev.thomasglasser.tommylib.api.world.item.ModeledItem;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -39,7 +41,12 @@ public abstract class PoweredArmorItem extends GiGeoArmorItem implements Modeled
     }
 
     @Override
-    public BlockEntityWithoutLevelRenderer getBEWLR() {
-        return MinejagoClientUtils.getBewlr();
+    public void createBewlrProvider(Consumer<BewlrProvider> consumer) {
+        consumer.accept(new BewlrProvider() {
+            @Override
+            public BlockEntityWithoutLevelRenderer getBewlr() {
+                return MinejagoClientUtils.getBewlr();
+            }
+        });
     }
 }

@@ -11,7 +11,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
@@ -34,13 +33,6 @@ public class MinejagoBlockTagsProvider extends ExtendedBlockTagsProvider {
             pots.add(pot.get());
         }
 
-        tag(MinejagoBlockTags.SHURIKEN_BREAKS)
-                .addTag(BlockTags.CROPS)
-                .addTag(BlockTags.FLOWERS)
-                .addTag(BlockTags.SAPLINGS)
-                .addTag(BlockTags.REPLACEABLE)
-                .add(Blocks.SUGAR_CANE);
-
         tag(BlockTags.MINEABLE_WITH_SHOVEL)
                 .add(MinejagoBlocks.SUSPICIOUS_RED_SAND.get());
 
@@ -49,10 +41,5 @@ public class MinejagoBlockTagsProvider extends ExtendedBlockTagsProvider {
 
         woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET);
         leavesSet(MinejagoBlocks.FOCUS_LEAVES_SET);
-
-        tag(MinejagoBlockTags.MINEABLE_WITH_SCYTHE)
-                .addTags(BlockTags.CROPS)
-                .addTags(BlockTags.FLOWERS)
-                .addTags(BlockTags.SAPLINGS);
     }
 }

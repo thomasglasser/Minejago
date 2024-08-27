@@ -54,8 +54,6 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(MinejagoItems.SCYTHE_OF_QUAKES.get(), "Scythe of Quakes");
         add(MinejagoItems.TEACUP.get(), "Teacup");
         add(MinejagoItems.FILLED_TEACUP.get(), "Tea");
-        add(MinejagoItems.IRON_SPEAR.get(), "Iron Spear");
-        add(MinejagoItems.IRON_SHURIKEN.get(), "Iron Shuriken");
         MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(item -> add(item.get(), "Skeletal Chestplate"));
         MinejagoArmors.ARMOR_SETS.forEach(set -> set.getAll().forEach(item -> {
             String nameForSlot = switch (set.getForItem(item.get())) {
@@ -80,9 +78,6 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
             add(item.get(), set.getDisplayName() + " " + nameForSlot);
         }));
         add(MinejagoArmors.SAMUKAIS_CHESTPLATE.get(), "Samukai's Chestplate");
-        add(MinejagoItems.IRON_KATANA.get(), "Iron Katana");
-        add(MinejagoItems.IRON_SCYTHE.get(), "Iron Scythe");
-        add(MinejagoItems.WOODEN_NUNCHUCKS.get(), "Wooden Nunchucks");
         add(MinejagoItems.SCROLL.get(), "Scroll");
         add(MinejagoItems.WRITABLE_SCROLL.get(), "Scroll and Quill");
         add(MinejagoItems.WRITTEN_SCROLL.get(), "Written Scroll");
@@ -137,8 +132,6 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
 
         add(MinejagoEntityTypes.THROWN_BONE_KNIFE.get(), "Bone Knife");
         add(MinejagoEntityTypes.THROWN_BAMBOO_STAFF.get(), "Bamboo Staff");
-        add(MinejagoEntityTypes.THROWN_IRON_SHURIKEN.get(), "Iron Shuriken");
-        add(MinejagoEntityTypes.THROWN_IRON_SPEAR.get(), "Iron Spear");
         add(MinejagoEntityTypes.EARTH_BLAST.get(), "Earth Blast");
         add(MinejagoEntityTypes.WU.get(), "Wu", MinejagoItems.WU_SPAWN_EGG.get());
         add(MinejagoEntityTypes.KAI.get(), "Kai", MinejagoItems.KAI_SPAWN_EGG.get());
@@ -203,10 +196,6 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(MinejagoSoundEvents.BONE_KNIFE_IMPACT.get(), "Knife sticks");
         add(MinejagoSoundEvents.BAMBOO_STAFF_THROW.get(), "Staff tosses");
         add(MinejagoSoundEvents.BAMBOO_STAFF_IMPACT.get(), "Staff lands");
-        add(MinejagoSoundEvents.SHURIKEN_THROW.get(), "Shuriken flies");
-        add(MinejagoSoundEvents.SHURIKEN_IMPACT.get(), "Shuriken sticks");
-        add(MinejagoSoundEvents.SPEAR_THROW.get(), "Spear tosses");
-        add(MinejagoSoundEvents.SPEAR_IMPACT.get(), "Spear lands");
         add(MinejagoSoundEvents.EARTH_DRAGON_AMBIENT.get(), "Earth Dragon breathes");
         add(MinejagoSoundEvents.EARTH_DRAGON_AWAKEN.get(), "Earth Dragon awakens");
         add(MinejagoSoundEvents.EARTH_DRAGON_DEATH.get(), "Earth Dragon dies");

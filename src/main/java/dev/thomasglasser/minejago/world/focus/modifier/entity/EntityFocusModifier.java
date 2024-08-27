@@ -13,11 +13,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 
-public class EntityTypeFocusModifier extends FocusModifier {
+public class EntityFocusModifier extends FocusModifier {
     private final EntityType<?> entityType;
     private final CompoundTag nbt;
 
-    public EntityTypeFocusModifier(ResourceLocation id, EntityType<?> entityType, CompoundTag nbt, double modifier, Operation operation) {
+    public EntityFocusModifier(ResourceLocation id, EntityType<?> entityType, CompoundTag nbt, double modifier, Operation operation) {
         super(id, modifier, operation);
         this.entityType = entityType;
         this.nbt = nbt;
@@ -32,10 +32,10 @@ public class EntityTypeFocusModifier extends FocusModifier {
     }
 
     public String toString() {
-        return "EntityTypeFocusModifier{id=" + getId() + "entityType=" + entityType + "nbt=" + nbt + "}";
+        return "EntityFocusModifier{id=" + getId() + "entityType=" + entityType + "nbt=" + nbt + "}";
     }
 
-    public static Optional<EntityTypeFocusModifier> fromJson(ResourceLocation id, JsonObject json) {
+    public static Optional<EntityFocusModifier> fromJson(ResourceLocation id, JsonObject json) {
         if (json.has("entity_type") && json.has("modifier")) {
             ResourceLocation entityTypeLoc = ResourceLocation.CODEC.parse(JsonOps.INSTANCE, json.get("entity_type")).result().orElse(ResourceLocation.withDefaultNamespace(""));
             if (!BuiltInRegistries.ENTITY_TYPE.containsKey(entityTypeLoc)) {
@@ -51,7 +51,7 @@ public class EntityTypeFocusModifier extends FocusModifier {
                 }
                 JsonPrimitive modifierElement = json.get("modifier").getAsJsonPrimitive();
                 if (modifierElement.isNumber()) {
-                    return Optional.of(new EntityTypeFocusModifier(id, BuiltInRegistries.ENTITY_TYPE.get(entityTypeLoc), nbt, modifierElement.getAsDouble(), operation));
+                    return Optional.of(new EntityFocusModifier(id, BuiltInRegistries.ENTITY_TYPE.get(entityTypeLoc), nbt, modifierElement.getAsDouble(), operation));
                 } else {
                     Minejago.LOGGER.warn("Failed to parse entity focus modifier \"" + id + "\", invalid format: \"modifier\" field value isn't number.");
                     return Optional.empty();

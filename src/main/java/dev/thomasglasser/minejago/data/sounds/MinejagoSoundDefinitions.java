@@ -30,12 +30,6 @@ public class MinejagoSoundDefinitions extends ExtendedSoundDefinitionsProvider {
         add(MinejagoSoundEvents.BAMBOO_STAFF_THROW);
         add(MinejagoSoundEvents.BAMBOO_STAFF_IMPACT);
 
-        add(MinejagoSoundEvents.SHURIKEN_THROW);
-        add(MinejagoSoundEvents.SHURIKEN_IMPACT);
-
-        add(MinejagoSoundEvents.SPEAR_THROW);
-        add(MinejagoSoundEvents.SPEAR_IMPACT);
-
         add(MinejagoSoundEvents.EARTH_DRAGON_AMBIENT, 4);
         add(MinejagoSoundEvents.EARTH_DRAGON_AWAKEN);
         add(MinejagoSoundEvents.EARTH_DRAGON_DEATH);

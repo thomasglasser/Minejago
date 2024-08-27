@@ -1,8 +1,6 @@
 package dev.thomasglasser.minejago.data.patches;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.mojang.serialization.JsonOps;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
@@ -13,6 +11,7 @@ import net.enderturret.patchedmod.data.PatchProvider;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.KilledTrigger;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -36,16 +35,17 @@ public class MinejagoDataPatchProvider extends PatchProvider {
 
     @Override
     public void registerPatches() {
-        Map<String, JsonElement> mobsToKill = getMobsToKill(MOD_MOBS_TO_KILL);
+        HolderLookup.Provider provider = VanillaRegistries.createLookup();
+        Map<String, Criterion<?>> mobsToKill = getMobsToKill(MOD_MOBS_TO_KILL);
         OperationBuilder killAMob = patch(mcLoc("advancement/adventure/kill_a_mob"))
                 .compound();
         OperationBuilder killAllMobs = patch(mcLoc("advancement/adventure/kill_all_mobs"))
                 .compound();
         mobsToKill.forEach((string, element) -> {
-            killAMob.add("/criteria/" + string, element);
+            killAMob.add("/criteria/" + string, element, Criterion.CODEC, provider);
             killAMob.add("/requirements/0/-", string);
 
-            killAllMobs.add("/criteria/" + string, element);
+            killAllMobs.add("/criteria/" + string, element, Criterion.CODEC, provider);
             killAllMobs.add("/requirements/-", new String[] { string });
         });
         killAMob.end();
@@ -68,12 +68,12 @@ public class MinejagoDataPatchProvider extends PatchProvider {
         return ResourceLocation.withDefaultNamespace(path);
     }
 
-    private static Map<String, JsonElement> getMobsToKill(List<EntityType<?>> mobs) {
-        HashMap<String, JsonElement> criterion = new HashMap<>();
+    private static Map<String, Criterion<?>> getMobsToKill(List<EntityType<?>> mobs) {
+        HashMap<String, Criterion<?>> criterion = new HashMap<>();
         mobs.forEach(
                 p_314409_ -> criterion.put(
                         BuiltInRegistries.ENTITY_TYPE.getKey(p_314409_).toString(),
-                        Criterion.CODEC.encodeStart(VanillaRegistries.createLookup().createSerializationContext(JsonOps.INSTANCE), KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(p_314409_))).getOrThrow()));
+                        KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(p_314409_))));
         return criterion;
     }
 }

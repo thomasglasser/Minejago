@@ -11,12 +11,10 @@ import dev.thomasglasser.minejago.client.model.NuckalModel;
 import dev.thomasglasser.minejago.client.model.PilotsSnapshotTesterHatModel;
 import dev.thomasglasser.minejago.client.model.RockingPoleSpinjitzuCourseElementModel;
 import dev.thomasglasser.minejago.client.model.ScytheModel;
-import dev.thomasglasser.minejago.client.model.SpearModel;
 import dev.thomasglasser.minejago.client.model.SpinjitzuModel;
 import dev.thomasglasser.minejago.client.model.SpinningAxesSpinjitzuCourseElementModel;
 import dev.thomasglasser.minejago.client.model.SpinningSpinjitzuCourseElementModel;
 import dev.thomasglasser.minejago.client.model.ThrownBoneKnifeModel;
-import dev.thomasglasser.minejago.client.model.ThrownIronShurikenModel;
 import dev.thomasglasser.minejago.client.particle.BoltsParticle;
 import dev.thomasglasser.minejago.client.particle.RocksParticle;
 import dev.thomasglasser.minejago.client.particle.SnowsParticle;
@@ -205,8 +203,6 @@ public class MinejagoClientEvents {
     public static void onRegisterLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(ThrownBoneKnifeModel.LAYER_LOCATION, ThrownBoneKnifeModel::createBodyLayer);
         event.registerLayerDefinition(BambooStaffModel.LAYER_LOCATION, BambooStaffModel::createBodyLayer);
-        event.registerLayerDefinition(SpearModel.LAYER_LOCATION, SpearModel::createBodyLayer);
-        event.registerLayerDefinition(ThrownIronShurikenModel.LAYER_LOCATION, ThrownIronShurikenModel::createBodyLayer);
         event.registerLayerDefinition(ScytheModel.LAYER_LOCATION, ScytheModel::createBodyLayer);
         event.registerLayerDefinition(PilotsSnapshotTesterHatModel.LAYER_LOCATION, PilotsSnapshotTesterHatModel::createBodyLayer);
         event.registerLayerDefinition(LegacyDevTeamBeardModel.LAYER_LOCATION, LegacyDevTeamBeardModel::createBodyLayer);
@@ -218,8 +214,6 @@ public class MinejagoClientEvents {
     public static void onRegisterRenderer(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(MinejagoEntityTypes.THROWN_BONE_KNIFE.get(), (context -> new ThrownSwordRenderer<>(context, MinejagoItems.BONE_KNIFE.getId(), new ThrownBoneKnifeModel(context.bakeLayer(ThrownBoneKnifeModel.LAYER_LOCATION)))));
         event.registerEntityRenderer(MinejagoEntityTypes.THROWN_BAMBOO_STAFF.get(), (context -> new ThrownSwordRenderer<>(context, MinejagoItems.BAMBOO_STAFF.getId(), new BambooStaffModel(context.bakeLayer(BambooStaffModel.LAYER_LOCATION)))));
-        event.registerEntityRenderer(MinejagoEntityTypes.THROWN_IRON_SPEAR.get(), (context -> new ThrownSwordRenderer<>(context, MinejagoItems.IRON_SPEAR.getId(), new SpearModel(context.bakeLayer(SpearModel.LAYER_LOCATION)))));
-        event.registerEntityRenderer(MinejagoEntityTypes.THROWN_IRON_SHURIKEN.get(), (context -> new ThrownSwordRenderer<>(context, MinejagoItems.IRON_SHURIKEN.getId(), new ThrownIronShurikenModel(context.bakeLayer(ThrownIronShurikenModel.LAYER_LOCATION)))));
         event.registerEntityRenderer(MinejagoEntityTypes.EARTH_BLAST.get(), EarthBlastRenderer::new);
 
         event.registerEntityRenderer(MinejagoEntityTypes.WU.get(), WuRenderer::new);

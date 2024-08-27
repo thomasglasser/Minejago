@@ -31,14 +31,6 @@ public class MinejagoSoundEvents {
     public static final DeferredHolder<SoundEvent, SoundEvent> BONE_KNIFE_IMPACT = register("bone_knife", "item", "impact");
     public static final DeferredHolder<SoundEvent, SoundEvent> BONE_KNIFE_THROW = register("bone_knife", "item", "throw");
 
-    // Shuriken
-    public static final DeferredHolder<SoundEvent, SoundEvent> SHURIKEN_IMPACT = register("shuriken", "item", "impact");
-    public static final DeferredHolder<SoundEvent, SoundEvent> SHURIKEN_THROW = register("shuriken", "item", "throw");
-
-    // Spear
-    public static final DeferredHolder<SoundEvent, SoundEvent> SPEAR_IMPACT = register("spear", "item", "impact");
-    public static final DeferredHolder<SoundEvent, SoundEvent> SPEAR_THROW = register("spear", "item", "throw");
-
     // Earth Dragon
     public static final DeferredHolder<SoundEvent, SoundEvent> EARTH_DRAGON_AMBIENT = register("earth_dragon", "entity", "ambient");
     public static final DeferredHolder<SoundEvent, SoundEvent> EARTH_DRAGON_AWAKEN = register("earth_dragon", "entity", "awaken");

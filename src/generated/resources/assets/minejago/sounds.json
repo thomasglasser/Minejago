@@ -169,30 +169,6 @@
     ],
     "subtitle": "subtitles.item.scythe_of_quakes.path"
   },
-  "item.shuriken.impact": {
-    "sounds": [
-      "minejago:item/shuriken/impact"
-    ],
-    "subtitle": "subtitles.item.shuriken.impact"
-  },
-  "item.shuriken.throw": {
-    "sounds": [
-      "minejago:item/shuriken/throw"
-    ],
-    "subtitle": "subtitles.item.shuriken.throw"
-  },
-  "item.spear.impact": {
-    "sounds": [
-      "minejago:item/spear/impact"
-    ],
-    "subtitle": "subtitles.item.spear.impact"
-  },
-  "item.spear.throw": {
-    "sounds": [
-      "minejago:item/spear/throw"
-    ],
-    "subtitle": "subtitles.item.spear.throw"
-  },
   "music.monastery_of_spinjitzu": {
     "sounds": [
       "minejago:music/monastery_of_spinjitzu"
