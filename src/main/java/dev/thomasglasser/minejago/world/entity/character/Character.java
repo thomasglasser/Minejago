@@ -158,7 +158,7 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
                         new SetRandomLookTarget<>()), 					// Set the look target to a random nearby location
                 new OneRandomBehaviour<>( 								// Run only one of the below behaviours, picked at random
                         new Idle<>().runFor(entity -> entity.getRandom().nextInt(30, 60)),
-                        new SetRandomWalkTarget<Character>().startCondition(this::shouldSetRandomWalkTarget)));
+                        new SetRandomWalkTarget<Character>().avoidWaterWhen(this::shouldAvoidWater).startCondition(this::shouldSetRandomWalkTarget)));
     }
 
     @Override
@@ -181,6 +181,10 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
     public void onStopFloatingToSurfaceOfFluid(Character character) {}
 
     public boolean shouldSetRandomWalkTarget(Character character) {
+        return true;
+    }
+
+    public boolean shouldAvoidWater(Character character) {
         return true;
     }
 

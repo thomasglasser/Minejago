@@ -54,7 +54,12 @@ public class Zane extends Character {
 
     @Override
     public boolean shouldSetRandomWalkTarget(Character character) {
-        return shouldFloatToSurfaceOfFluid(character);
+        return !isInWater();
+    }
+
+    @Override
+    public boolean shouldAvoidWater(Character character) {
+        return false;
     }
 
     @Override
