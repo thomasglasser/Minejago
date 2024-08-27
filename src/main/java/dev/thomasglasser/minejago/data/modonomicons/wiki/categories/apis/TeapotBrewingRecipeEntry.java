@@ -85,7 +85,7 @@ public class TeapotBrewingRecipeEntry extends IndexModeEntryProvider {
     protected String entryDescription() {
         return """
                 Datapacks and mods are able to add new recipes to the teapot.
-                A generator for these recipes is available [here](https://jsons.thomasglasser.dev/partners/minejago/minejago-recipe/).
+                A generator for these recipes is available [here](https://jsons.thomasglasser.dev/minejago/mod_recipe/).
                 """;
     }
 

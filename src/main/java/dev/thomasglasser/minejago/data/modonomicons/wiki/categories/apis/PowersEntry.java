@@ -124,7 +124,7 @@ public class PowersEntry extends IndexModeEntryProvider {
     protected String entryDescription() {
         return """
                 Powers are data-driven, requiring a datapack and resource pack with a few simple files.
-                A generator for these powers is available [here](https://jsons.thomasglasser.dev/partners/minejago/power/).
+                A generator for these powers is available [here](https://jsons.thomasglasser.dev/minejago/power/).
                 """;
     }
 
