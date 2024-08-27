@@ -33,25 +33,23 @@ public class SimpleBrewingRecipeBuilder implements RecipeBuilder {
     private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
     @Nullable
     private String group;
-    private TeapotBrewingRecipe.Factory<?> factory;
 
-    private SimpleBrewingRecipeBuilder(RecipeCategory recipeCategory, Holder<Potion> base, Ingredient ingredient, Holder<Potion> result, float xp, IntProvider i, TeapotBrewingRecipe.Factory<?> factory) {
+    private SimpleBrewingRecipeBuilder(RecipeCategory recipeCategory, Holder<Potion> base, Ingredient ingredient, Holder<Potion> result, float xp, IntProvider i) {
         this.category = recipeCategory;
         this.base = base;
         this.ingredient = ingredient;
         this.result = result;
         this.experience = xp;
         this.brewingTime = i;
-        this.factory = factory;
     }
 
-    public static <T extends TeapotBrewingRecipe> SimpleBrewingRecipeBuilder generic(RecipeCategory recipeCategory,
+    public static SimpleBrewingRecipeBuilder generic(RecipeCategory recipeCategory,
             Holder<Potion> base,
             Ingredient ingredient,
             Holder<Potion> result,
             float xp,
             IntProvider i) {
-        return new SimpleBrewingRecipeBuilder(recipeCategory, base, ingredient, result, xp, i, TeapotBrewingRecipe::new);
+        return new SimpleBrewingRecipeBuilder(recipeCategory, base, ingredient, result, xp, i);
     }
 
     @Override
@@ -76,7 +74,7 @@ public class SimpleBrewingRecipeBuilder implements RecipeBuilder {
         this.ensureValid(id);
         Advancement.Builder builder = recipeOutput.advancement().addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id)).rewards(AdvancementRewards.Builder.recipe(id)).requirements(AdvancementRequirements.Strategy.OR);
         this.criteria.forEach(builder::addCriterion);
-        Recipe<?> abstractCookingRecipe = this.factory.create(Objects.requireNonNullElse(this.group, ""), base, ingredient, result, this.experience, this.brewingTime);
+        Recipe<?> abstractCookingRecipe = new TeapotBrewingRecipe(Objects.requireNonNullElse(this.group, ""), base, ingredient, result, this.experience, this.brewingTime);
         recipeOutput.accept(id, abstractCookingRecipe, builder.build(id.withPrefix("recipes/" + this.category.getFolderName() + "/")));
     }
 

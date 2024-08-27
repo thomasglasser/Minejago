@@ -4,6 +4,7 @@ import com.klikli_dev.modonomicon.api.datagen.IndexModeEntryProvider;
 import com.klikli_dev.modonomicon.api.datagen.book.BookIconModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookImagePageModel;
 import dev.thomasglasser.minejago.data.modonomicons.wiki.WikiBookSubProvider;
+import dev.thomasglasser.minejago.data.modonomicons.wiki.categories.spinjitzu.AbilitiesEntry;
 import net.minecraft.world.item.Items;
 
 public class RyoamicLightsEntry extends IndexModeEntryProvider {
@@ -17,7 +18,7 @@ public class RyoamicLightsEntry extends IndexModeEntryProvider {
     protected void generatePages() {
         page("spinjitzu", () -> BookImagePageModel.create()
                 .withAnchor("spinjitzu")
-                .withImages(WikiBookSubProvider.wikiTexture("dependencies/ryoamiclights/spinjitzu.png"))
+                .withImages(AbilitiesEntry.ENVIRONMENTAL_LOCATION)
                 .withTitle(context().pageTitle())
                 .withText(context().pageText()));
 

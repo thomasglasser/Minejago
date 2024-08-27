@@ -39,11 +39,11 @@ public class BouncingPoleSpinjitzuCourseElement extends AbstractSpinjitzuCourseE
     }
 
     @Override
-    public void checkPartCollision(SpinjitzuCourseElementPart<BouncingPoleSpinjitzuCourseElement> part, Entity entity) {
+    public void checkPartCollision(AbstractSpinjitzuCourseElementPart<BouncingPoleSpinjitzuCourseElement> part, Entity entity) {
         bounceUp(entity);
     }
 
-    private static class BouncingPoleSpinjitzuCoursePart extends SpinjitzuCourseElementPart<BouncingPoleSpinjitzuCourseElement> {
+    private static class BouncingPoleSpinjitzuCoursePart extends AbstractSpinjitzuCourseElementPart<BouncingPoleSpinjitzuCourseElement> {
         public BouncingPoleSpinjitzuCoursePart(BouncingPoleSpinjitzuCourseElement parent, String name, float width, float height, float offsetX, float offsetY, float offsetZ) {
             super(parent, name, width, height, offsetX, offsetY, offsetZ);
         }

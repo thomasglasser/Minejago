@@ -13,20 +13,6 @@
   "pages": [
     {
       "type": "modonomicon:image",
-      "anchor": "first_person_model",
-      "border": true,
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "images": [
-        "minejago:textures/modonomicon/wiki/dependencies/playeranimator/first_person_model.png"
-      ],
-      "text": "book.minejago.wiki.dependencies.playeranimator.first_person_model.text",
-      "title": "book.minejago.wiki.dependencies.playeranimator.first_person_model.title",
-      "use_legacy_rendering": false
-    },
-    {
-      "type": "modonomicon:image",
       "anchor": "spinjitzu",
       "border": true,
       "condition": {
@@ -47,7 +33,7 @@
         "type": "modonomicon:none"
       },
       "images": [
-        "minejago:textures/modonomicon/wiki/dependencies/playeranimator/golden_weapons.png"
+        "minejago:textures/modonomicon/wiki/powers/golden_weapons/scythe_of_quakes.png"
       ],
       "text": "book.minejago.wiki.dependencies.playeranimator.golden_weapons.text",
       "title": "book.minejago.wiki.dependencies.playeranimator.golden_weapons.title",

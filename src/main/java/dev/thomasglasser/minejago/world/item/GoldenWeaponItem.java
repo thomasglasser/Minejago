@@ -154,8 +154,8 @@ public abstract class GoldenWeaponItem extends BaseModeledItem {
         if (tooltipFlag.isAdvanced()) {
             if (!Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled())
                 list.add(Component.translatable(MOD_NEEDED, Minejago.Dependencies.PLAYER_ANIMATOR.getModId()).withStyle(ChatFormatting.RED));
-            if (!Minejago.Dependencies.DYNAMIC_LIGHTS.isInstalled())
-                list.add(Component.translatable(MOD_NEEDED, Minejago.Dependencies.DYNAMIC_LIGHTS.getModId()).withStyle(ChatFormatting.RED));
+            if (!Minejago.Dependencies.RYOAMIC_LIGHTS.isInstalled())
+                list.add(Component.translatable(MOD_NEEDED, Minejago.Dependencies.RYOAMIC_LIGHTS.getModId()).withStyle(ChatFormatting.RED));
         }
     }
 

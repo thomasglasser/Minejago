@@ -6,10 +6,12 @@ import com.klikli_dev.modonomicon.api.datagen.book.BookIconModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookImagePageModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
 import dev.thomasglasser.minejago.data.modonomicons.wiki.WikiBookSubProvider;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 
 public class AbilitiesEntry extends IndexModeEntryProvider {
     private static final String ID = "abilities";
+    public static final ResourceLocation ENVIRONMENTAL_LOCATION = WikiBookSubProvider.wikiTexture("spinjitzu/abilities/environmental.png");
 
     public AbilitiesEntry(CategoryProviderBase parent) {
         super(parent);
@@ -44,7 +46,7 @@ public class AbilitiesEntry extends IndexModeEntryProvider {
 
         page("environmental", () -> BookImagePageModel.create()
                 .withAnchor("environmental")
-                .withImages(WikiBookSubProvider.wikiTexture("spinjitzu/abilities/environmental.png"))
+                .withImages(ENVIRONMENTAL_LOCATION)
                 .withTitle(context().pageTitle())
                 .withText(context().pageText()));
 

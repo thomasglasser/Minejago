@@ -103,6 +103,9 @@ public class MinejagoStructures {
                         new Structure.StructureSettings.Builder(holderGetter.getOrThrow(MinejagoBiomeTags.HAS_MONASTERY_OF_SPINJITZU))
                                 .generationStep(GenerationStep.Decoration.SURFACE_STRUCTURES)
                                 .terrainAdapation(TerrainAdjustment.BEARD_THIN)
+                                .spawnOverrides(
+                                        Map.of(
+                                                MobCategory.MONSTER, new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create())))
                                 .build(),
                         holderGetter2.getOrThrow(MonasteryOfSpinjitzuPools.START),
                         Optional.empty(),

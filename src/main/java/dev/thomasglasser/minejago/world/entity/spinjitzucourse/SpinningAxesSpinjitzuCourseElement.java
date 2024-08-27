@@ -23,7 +23,7 @@ public class SpinningAxesSpinjitzuCourseElement extends PlatformedSpinjitzuCours
     }
 
     @Override
-    public void checkPartCollision(SpinjitzuCourseElementPart<SpinningAxesSpinjitzuCourseElement> part, Entity entity) {
+    public void checkPartCollision(AbstractSpinjitzuCourseElementPart<SpinningAxesSpinjitzuCourseElement> part, Entity entity) {
         entity.hurt(damageSources().trident(part, this), 4.0f);
     }
 

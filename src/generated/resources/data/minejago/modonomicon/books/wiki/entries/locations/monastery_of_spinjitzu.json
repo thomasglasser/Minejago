@@ -17,7 +17,7 @@
         "type": "modonomicon:none"
       },
       "images": [
-        "minejago:textures/modonomicon/wiki/locations/monastery_of_spinjitzu/spinjitzu_course.png"
+        "minejago:textures/modonomicon/wiki/spinjitzu/learning/course.png"
       ],
       "text": "",
       "title": "book.minejago.wiki.locations.monastery_of_spinjitzu.spinjitzu_course_image.title",
@@ -42,12 +42,12 @@
         "type": "modonomicon:none"
       },
       "images": [
-        "minejago:textures/item/master_pottery_sherd",
-        "minejago:textures/item/yin_yang_pottery_sherd",
-        "minejago:textures/item/dragons_head_pottery_sherd",
-        "minejago:textures/item/dragons_tail_pottery_sherd",
-        "minejago:textures/item/lotus_armor_trim_smithing_template",
-        "minejago:textures/item/ninja_banner_pattern"
+        "minejago:textures/item/master_pottery_sherd.png",
+        "minejago:textures/item/yin_yang_pottery_sherd.png",
+        "minejago:textures/item/dragons_head_pottery_sherd.png",
+        "minejago:textures/item/dragons_tail_pottery_sherd.png",
+        "minejago:textures/item/lotus_armor_trim_smithing_template.png",
+        "minejago:textures/item/ninja_banner_pattern.png"
       ],
       "text": "book.minejago.wiki.locations.monastery_of_spinjitzu.fancy_finds.text",
       "title": "book.minejago.wiki.locations.monastery_of_spinjitzu.fancy_finds.title",
@@ -61,7 +61,7 @@
         "type": "modonomicon:none"
       },
       "images": [
-        "minejago:textures/modonomicon/wiki/locations/monastery_of_spinjitzu/fateful_findings.png"
+        "minejago:textures/modonomicon/wiki/characters/ninja_team/wu.png"
       ],
       "text": "",
       "title": "book.minejago.wiki.locations.monastery_of_spinjitzu.fateful_findings_image.title",

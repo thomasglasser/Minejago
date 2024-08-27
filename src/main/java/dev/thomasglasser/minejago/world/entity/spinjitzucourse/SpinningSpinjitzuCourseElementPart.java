@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.world.entity.spinjitzucourse;
 
-public class SpinningSpinjitzuCourseElementPart<T extends AbstractSpinjitzuCourseElement<T>> extends SpinjitzuCourseElementPart<T> {
+public class SpinningSpinjitzuCourseElementPart<T extends AbstractSpinjitzuCourseElement<T>> extends AbstractSpinjitzuCourseElementPart<T> {
     public SpinningSpinjitzuCourseElementPart(T parent, String name, float width, float height, float offsetX, float offsetY, float offsetZ) {
         super(parent, name, width, height, offsetX, offsetY, offsetZ);
     }

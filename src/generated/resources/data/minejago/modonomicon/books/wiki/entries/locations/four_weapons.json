@@ -28,8 +28,8 @@
         "type": "modonomicon:none"
       },
       "images": [
-        "minejago:textures/item/four_weapons_banner_pattern",
-        "minejago:textures/item/four_weapons_armor_trim_smithing_template"
+        "minejago:textures/item/four_weapons_banner_pattern.png",
+        "minejago:textures/item/four_weapons_armor_trim_smithing_template.png"
       ],
       "text": "book.minejago.wiki.locations.four_weapons.fancy_finds.text",
       "title": "book.minejago.wiki.locations.four_weapons.fancy_finds.title",

@@ -18,6 +18,8 @@ ${description}
 config = "${mod_id}.mixins.json"
 [mc-publish]
 loaders = ['neoforge']
+[modproperties.${mod_id}.patched]
+format_version = 1
 [[dependencies.${mod_id}]]
 modId="neoforge"
 type="required"

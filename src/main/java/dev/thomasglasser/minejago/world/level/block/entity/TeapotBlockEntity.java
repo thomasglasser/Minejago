@@ -94,7 +94,7 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
 
                     if (recipe.isPresent()) {
                         pBlockEntity.potion = recipe.get().value().getResultItem(pLevel.registryAccess()).get(DataComponents.POTION_CONTENTS).potion().orElse(null);
-                        pBlockEntity.experiencePerCup = recipe.get().value().getExperience() / pBlockEntity.cups;
+                        pBlockEntity.experiencePerCup = recipe.get().value().experience() / pBlockEntity.cups;
                         pBlockEntity.experienceCups = pBlockEntity.cups;
                     }
                     pBlockEntity.item = ItemStack.EMPTY;
@@ -119,7 +119,7 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
                     setChanged(pLevel, pPos, pState);
                 }
             } else if (pBlockEntity.temp >= 100 && recipe.isPresent()) {
-                pBlockEntity.brewTime = (recipe.map(holder -> holder.value().getCookingTime()).orElseGet(() -> UniformInt.of(1200, 2400))).sample(pLevel.random);
+                pBlockEntity.brewTime = (recipe.map(holder -> holder.value().brewingTime()).orElseGet(() -> UniformInt.of(1200, 2400))).sample(pLevel.random);
                 pBlockEntity.brewing = true;
                 pBlockEntity.boiling = false;
                 pBlockEntity.done = false;

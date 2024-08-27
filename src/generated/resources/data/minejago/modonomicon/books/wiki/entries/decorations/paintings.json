@@ -17,18 +17,18 @@
         "type": "modonomicon:none"
       },
       "images": [
-        "minejago:textures/painting/a_morning_brew",
-        "minejago:textures/painting/ambushed",
-        "minejago:textures/painting/before_the_storm",
-        "minejago:textures/painting/creation",
-        "minejago:textures/painting/earth",
-        "minejago:textures/painting/fire",
-        "minejago:textures/painting/fruit_colored_ninja",
-        "minejago:textures/painting/ice",
-        "minejago:textures/painting/it_takes_a_village",
-        "minejago:textures/painting/lightning",
-        "minejago:textures/painting/needs_hair_gel",
-        "minejago:textures/painting/not_for_furniture"
+        "minejago:textures/painting/a_morning_brew.png",
+        "minejago:textures/painting/ambushed.png",
+        "minejago:textures/painting/before_the_storm.png",
+        "minejago:textures/painting/creation.png",
+        "minejago:textures/painting/earth.png",
+        "minejago:textures/painting/fire.png",
+        "minejago:textures/painting/fruit_colored_ninja.png",
+        "minejago:textures/painting/ice.png",
+        "minejago:textures/painting/it_takes_a_village.png",
+        "minejago:textures/painting/lightning.png",
+        "minejago:textures/painting/needs_hair_gel.png",
+        "minejago:textures/painting/not_for_furniture.png"
       ],
       "text": "book.minejago.wiki.decorations.paintings.placeable.text",
       "title": "book.minejago.wiki.decorations.paintings.placeable.title",
@@ -42,9 +42,9 @@
         "type": "modonomicon:none"
       },
       "images": [
-        "minejago:textures/painting/four_weapons",
-        "minejago:textures/painting/the_fourth_mountain",
-        "minejago:textures/painting/it_takes_a_village_wrecked"
+        "minejago:textures/painting/four_weapons.png",
+        "minejago:textures/painting/the_fourth_mountain.png",
+        "minejago:textures/painting/it_takes_a_village_wrecked.png"
       ],
       "text": "book.minejago.wiki.decorations.paintings.structure.text",
       "title": "book.minejago.wiki.decorations.paintings.structure.title",

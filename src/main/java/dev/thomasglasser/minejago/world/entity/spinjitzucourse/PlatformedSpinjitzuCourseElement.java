@@ -16,7 +16,7 @@ public abstract class PlatformedSpinjitzuCourseElement<T extends PlatformedSpinj
         top = new PlatformSpinjitzuCoursePart((T) this, true);
     }
 
-    protected class PlatformSpinjitzuCoursePart extends SpinjitzuCourseElementPart<T> {
+    protected class PlatformSpinjitzuCoursePart extends AbstractSpinjitzuCourseElementPart<T> {
         public PlatformSpinjitzuCoursePart(T parent, String name, float width, float height, double offsetX, double offsetY, double offsetZ) {
             super(parent, name, width, height, offsetX, offsetY, offsetZ);
             moveTo(getParent().getX() + offsetX, getParent().getY() + offsetY, getParent().getZ() + offsetZ);

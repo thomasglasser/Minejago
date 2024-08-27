@@ -305,7 +305,7 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
 
         add(SkulkinRaid.RAID_NAME_COMPONENT, "Skulkin Raid");
 
-        add(TeapotBrewingRecipeCategory.TITLE, "Teapot Brewing");
+        add(TeapotBrewingRecipeCategory.RECIPE_KEY, "Teapot Brewing");
 
         add(TeapotBlock.POTION, "%s");
         add(TeapotBlock.POTION_AND_ITEM, "%s with %s");

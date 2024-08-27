@@ -4,6 +4,7 @@ import com.klikli_dev.modonomicon.api.datagen.IndexModeEntryProvider;
 import com.klikli_dev.modonomicon.api.datagen.book.BookIconModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookImagePageModel;
 import dev.thomasglasser.minejago.data.modonomicons.wiki.WikiBookSubProvider;
+import dev.thomasglasser.minejago.data.modonomicons.wiki.categories.powers.GoldenWeaponsEntry;
 import dev.thomasglasser.minejago.data.modonomicons.wiki.categories.spinjitzu.SpinjitzuCategoryProvider;
 
 public class PlayerAnimatorEntry extends IndexModeEntryProvider {
@@ -15,15 +16,6 @@ public class PlayerAnimatorEntry extends IndexModeEntryProvider {
 
     @Override
     protected void generatePages() {
-        page("first_person_model", () -> BookImagePageModel.create()
-                .withAnchor("first_person_model")
-                .withImages(WikiBookSubProvider.wikiTexture("dependencies/playeranimator/first_person_model.png"))
-                .withTitle(context().pageTitle())
-                .withText(context().pageText()));
-
-        add(context().pageTitle(), "First-Person Model");
-        add(context().pageText(), "playerAnimator works with the [First-Person Model](https://modrinth.com/mod/first-person-model) mod to show animations in first person if installed.");
-
         page("spinjitzu", () -> BookImagePageModel.create()
                 .withAnchor("spinjitzu")
                 .withImages(WikiBookSubProvider.wikiTexture("dependencies/playeranimator/spinjitzu.png"))
@@ -35,7 +27,7 @@ public class PlayerAnimatorEntry extends IndexModeEntryProvider {
 
         page("golden_weapons", () -> BookImagePageModel.create()
                 .withAnchor("golden_weapons")
-                .withImages(WikiBookSubProvider.wikiTexture("dependencies/playeranimator/golden_weapons.png"))
+                .withImages(GoldenWeaponsEntry.SCYTHE_LOCATION)
                 .withTitle(context().pageTitle())
                 .withText(context().pageText()));
 

@@ -24,7 +24,7 @@ public class SwirlingKnivesSpinjitzuCourseElement extends PlatformedSpinjitzuCou
     }
 
     @Override
-    public void checkPartCollision(SpinjitzuCourseElementPart<SwirlingKnivesSpinjitzuCourseElement> part, Entity entity) {
+    public void checkPartCollision(AbstractSpinjitzuCourseElementPart<SwirlingKnivesSpinjitzuCourseElement> part, Entity entity) {
         super.checkPartCollision(part, entity);
         entity.hurt(damageSources().trident(part, this), 2);
     }

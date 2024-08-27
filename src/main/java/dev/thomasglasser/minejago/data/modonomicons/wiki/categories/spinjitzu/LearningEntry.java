@@ -7,9 +7,11 @@ import com.klikli_dev.modonomicon.api.datagen.book.page.BookImagePageModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
 import dev.thomasglasser.minejago.data.modonomicons.wiki.WikiBookSubProvider;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import net.minecraft.resources.ResourceLocation;
 
 public class LearningEntry extends IndexModeEntryProvider {
     private static final String ID = "learning";
+    public static final ResourceLocation COURSE_LOCATION = WikiBookSubProvider.wikiTexture("spinjitzu/learning/course.png");
 
     public LearningEntry(CategoryProviderBase parent) {
         super(parent);
@@ -19,7 +21,7 @@ public class LearningEntry extends IndexModeEntryProvider {
     protected void generatePages() {
         page("course", () -> BookImagePageModel.create()
                 .withAnchor("course")
-                .withImages(WikiBookSubProvider.wikiTexture("spinjitzu/learning/course.png"))
+                .withImages(COURSE_LOCATION)
                 .withTitle(context().pageTitle())
                 .withText(context().pageText()));
 

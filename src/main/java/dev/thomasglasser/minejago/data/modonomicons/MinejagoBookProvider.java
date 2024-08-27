@@ -18,6 +18,6 @@ public class MinejagoBookProvider extends BookProvider {
     }
 
     public static ResourceLocation itemLoc(DeferredItem<?> item) {
-        return item.getId().withPrefix("textures/item/");
+        return item.getId().withPrefix("textures/item/").withSuffix(".png");
     }
 }

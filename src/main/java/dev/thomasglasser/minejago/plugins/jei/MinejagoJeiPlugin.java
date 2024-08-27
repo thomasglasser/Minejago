@@ -6,45 +6,45 @@ import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.crafting.MinejagoRecipeTypes;
 import dev.thomasglasser.minejago.world.item.crafting.TeapotBrewingRecipe;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
-import dev.thomasglasser.tommylib.api.client.ClientUtils;
 import java.util.List;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.ISubtypeRegistration;
 import mezz.jei.library.plugins.vanilla.ingredients.subtypes.PotionSubtypeInterpreter;
+import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeHolder;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.item.crafting.RecipeManager;
 
 @JeiPlugin
 public class MinejagoJeiPlugin implements IModPlugin {
-    @Nullable
-    private TeapotBrewingRecipeCategory teapotBrewingRecipeCategory;
-
     @Override
-    public void registerCategories(IRecipeCategoryRegistration registration) {
-        registration.addRecipeCategories(
-                teapotBrewingRecipeCategory = new TeapotBrewingRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+    public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
+        MinejagoBlocks.allPots().forEach(block -> registration.addRecipeCatalyst(block.asItem().getDefaultInstance(), TeapotBrewingRecipeCategory.RECIPE_TYPE));
     }
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        if (teapotBrewingRecipeCategory != null)
-            registration.addRecipes(teapotBrewingRecipeCategory.getRecipeType(), getTeapotBrewingRecipes());
-    }
+        RecipeManager recipeManager = Minecraft.getInstance().getConnection().getRecipeManager();
 
-    public List<RecipeHolder<TeapotBrewingRecipe>> getTeapotBrewingRecipes() {
-        return ClientUtils.getMinecraft().level.getRecipeManager().getAllRecipesFor(MinejagoRecipeTypes.TEAPOT_BREWING.get());
+        registration.addRecipes(TeapotBrewingRecipeCategory.RECIPE_TYPE, compileTeapotBrewingRecipes(recipeManager));
     }
 
     @Override
-    public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        if (teapotBrewingRecipeCategory != null)
-            registration.addRecipeCatalyst(MinejagoBlocks.TEAPOT.get().asItem().getDefaultInstance(), teapotBrewingRecipeCategory.getRecipeType());
+    public void registerCategories(IRecipeCategoryRegistration registration) {
+        IGuiHelper guiHelper = registration.getJeiHelpers().getGuiHelper();
+
+        registration.addRecipeCategories(
+                new TeapotBrewingRecipeCategory(guiHelper));
+    }
+
+    private List<TeapotBrewingRecipe> compileTeapotBrewingRecipes(RecipeManager recipeManager) {
+        return recipeManager.getAllRecipesFor(MinejagoRecipeTypes.TEAPOT_BREWING.get()).stream().map(RecipeHolder::value).toList();
     }
 
     @Override

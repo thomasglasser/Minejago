@@ -6,7 +6,8 @@ import com.klikli_dev.modonomicon.api.datagen.book.BookIconModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookImagePageModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
 import dev.thomasglasser.minejago.data.modonomicons.MinejagoBookProvider;
-import dev.thomasglasser.minejago.data.modonomicons.wiki.WikiBookSubProvider;
+import dev.thomasglasser.minejago.data.modonomicons.wiki.categories.characters.NinjaTeamEntry;
+import dev.thomasglasser.minejago.data.modonomicons.wiki.categories.spinjitzu.LearningEntry;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 
 public class MonasteryOfSpinjitzuEntry extends IndexModeEntryProvider {
@@ -20,7 +21,7 @@ public class MonasteryOfSpinjitzuEntry extends IndexModeEntryProvider {
     protected void generatePages() {
         page("spinjitzu_course_image", () -> BookImagePageModel.create()
                 .withAnchor("spinjitzu_course_image")
-                .withImages(WikiBookSubProvider.wikiTexture("locations/monastery_of_spinjitzu/spinjitzu_course.png"))
+                .withImages(LearningEntry.COURSE_LOCATION)
                 .withTitle(context().pageTitle()));
 
         add(context().pageTitle(), "Spinjitzu Course");
@@ -60,7 +61,7 @@ public class MonasteryOfSpinjitzuEntry extends IndexModeEntryProvider {
 
         page("fateful_findings_image", () -> BookImagePageModel.create()
                 .withAnchor("fateful_findings_image")
-                .withImages(WikiBookSubProvider.wikiTexture("locations/monastery_of_spinjitzu/fateful_findings.png"))
+                .withImages(NinjaTeamEntry.WU_LOCATION)
                 .withTitle(context().pageTitle()));
 
         add(context().pageTitle(), "Fateful Findings");

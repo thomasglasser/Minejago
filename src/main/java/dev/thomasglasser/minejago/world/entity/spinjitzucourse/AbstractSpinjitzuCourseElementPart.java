@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.entity.PartEntity;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class SpinjitzuCourseElementPart<T extends AbstractSpinjitzuCourseElement<T>> extends PartEntity<T> {
+public abstract class AbstractSpinjitzuCourseElementPart<T extends AbstractSpinjitzuCourseElement<T>> extends PartEntity<T> {
     public final String name;
     private final EntityDimensions size;
     protected final double offsetX;
@@ -19,7 +19,7 @@ public abstract class SpinjitzuCourseElementPart<T extends AbstractSpinjitzuCour
 
     protected boolean active = false;
 
-    public SpinjitzuCourseElementPart(T parent, String name, float width, float height, double offsetX, double offsetY, double offsetZ) {
+    public AbstractSpinjitzuCourseElementPart(T parent, String name, float width, float height, double offsetX, double offsetY, double offsetZ) {
         super(parent);
         this.size = EntityDimensions.scalable(width, height);
         this.refreshDimensions();
@@ -28,6 +28,7 @@ public abstract class SpinjitzuCourseElementPart<T extends AbstractSpinjitzuCour
         this.offsetY = offsetY;
         this.offsetZ = offsetZ;
         moveTo(parent.getX() + offsetX, parent.getY() + offsetY, parent.getZ() + offsetZ);
+        noCulling = true;
     }
 
     @Override
@@ -56,6 +57,11 @@ public abstract class SpinjitzuCourseElementPart<T extends AbstractSpinjitzuCour
     @Override
     public boolean hurt(DamageSource source, float amount) {
         return active && !this.isInvulnerableTo(source) && this.getParent().hurt(source, amount);
+    }
+
+    @Override
+    public boolean isInvulnerableTo(DamageSource source) {
+        return getParent().isInvulnerableTo(source) || super.isInvulnerableTo(source);
     }
 
     /**

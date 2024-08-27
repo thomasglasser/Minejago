@@ -1,7 +1,6 @@
 package dev.thomasglasser.minejago.world.entity;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleUtils;
 import dev.thomasglasser.minejago.network.ClientboundRefreshVipDataPayload;
@@ -20,6 +19,7 @@ import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.character.Character;
 import dev.thomasglasser.minejago.world.entity.character.Cole;
 import dev.thomasglasser.minejago.world.entity.character.Zane;
+import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaidsHolder;
@@ -39,10 +39,6 @@ import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
-import java.util.List;
-import java.util.Set;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -83,6 +79,11 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+
+import java.util.List;
+import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public class MinejagoEntityEvents {
     public static final Predicate<LivingEntity> NO_SPINJITZU = (player -> !player.getData(MinejagoAttachmentTypes.SPINJITZU).canDoSpinjitzu() ||
@@ -330,7 +331,7 @@ public class MinejagoEntityEvents {
         InteractionHand hand = event.getHand();
         Entity entity = event.getTarget();
         CompoundTag persistentData = TommyLibServices.ENTITY.getPersistentData(entity);
-        if (world instanceof ServerLevel && hand == InteractionHand.MAIN_HAND && entity instanceof Painting painting && painting.getVariant().is(Minejago.modLoc("four_weapons")) && !persistentData.getBoolean("MapTaken")) {
+        if (world instanceof ServerLevel && hand == InteractionHand.MAIN_HAND && entity instanceof Painting painting && painting.getVariant().is(MinejagoPaintingVariants.FOUR_WEAPONS) && !persistentData.getBoolean("MapTaken")) {
             player.addItem(MinejagoItems.EMPTY_GOLDEN_WEAPONS_MAP.get().getDefaultInstance());
             if (!player.isCreative()) {
                 persistentData.putBoolean("MapTaken", true);

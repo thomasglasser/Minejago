@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.world.entity.spinjitzucourse;
 
 import java.util.Arrays;
+import java.util.List;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -48,11 +49,12 @@ public abstract class AbstractSpinjitzuCourseElement<T extends AbstractSpinjitzu
     protected SpinjitzuCourseTracker courseTracker;
     protected int activeAnimationTicks = 0;
 
-    protected SpinjitzuCourseElementPart<T>[] subEntities = new SpinjitzuCourseElementPart[0];
+    protected AbstractSpinjitzuCourseElementPart<T>[] subEntities = new AbstractSpinjitzuCourseElementPart[0];
 
     public AbstractSpinjitzuCourseElement(EntityType<?> entityType, Level level, Vec3 visitBox) {
         super(entityType, level);
         this.visitBox = visitBox;
+        noCulling = true;
     }
 
     @Override
@@ -76,6 +78,11 @@ public abstract class AbstractSpinjitzuCourseElement<T extends AbstractSpinjitzu
 
             return true;
         }
+    }
+
+    @Override
+    public boolean isInvulnerableTo(DamageSource source) {
+        return source.getDirectEntity() instanceof AbstractSpinjitzuCourseElement<?> || source.getDirectEntity() instanceof AbstractSpinjitzuCourseElementPart<?> || super.isInvulnerableTo(source);
     }
 
     public void destroy(Item dropItem) {
@@ -155,7 +162,7 @@ public abstract class AbstractSpinjitzuCourseElement<T extends AbstractSpinjitzu
         if (tickCount < 2) {
             refreshDimensions();
             setYRot(getYRotSynced());
-            for (SpinjitzuCourseElementPart<T> part : getParts()) {
+            for (AbstractSpinjitzuCourseElementPart<T> part : getParts()) {
                 part.setActive(isActive());
             }
         }
@@ -165,9 +172,9 @@ public abstract class AbstractSpinjitzuCourseElement<T extends AbstractSpinjitzu
             activeTicks++;
             if (isFullyActive()) {
                 activeAnimationTicks++;
-                for (SpinjitzuCourseElementPart<T> subEntity : getParts()) {
+                for (AbstractSpinjitzuCourseElementPart<T> subEntity : getParts()) {
                     level().getEntities(
-                            this, subEntity.getBoundingBox(), entity -> !Arrays.stream(getParts()).toList().contains(entity)).forEach(entity -> {
+                            this, subEntity.getBoundingBox(), entity -> !getPartsList().contains(entity)).forEach(entity -> {
                                 checkPartCollision(subEntity, entity);
                             });
                     subEntity.tick();
@@ -210,7 +217,7 @@ public abstract class AbstractSpinjitzuCourseElement<T extends AbstractSpinjitzu
     }
 
     @SafeVarargs
-    protected final void defineParts(SpinjitzuCourseElementPart<T>... parts) {
+    protected final void defineParts(AbstractSpinjitzuCourseElementPart<T>... parts) {
         this.subEntities = parts;
         setId(ENTITY_COUNTER.getAndAdd(parts.length + 1) + 1);
     }
@@ -229,11 +236,15 @@ public abstract class AbstractSpinjitzuCourseElement<T extends AbstractSpinjitzu
     }
 
     @Override
-    public SpinjitzuCourseElementPart<T>[] getParts() {
+    public AbstractSpinjitzuCourseElementPart<T>[] getParts() {
         return subEntities;
     }
 
-    public void checkPartCollision(SpinjitzuCourseElementPart<T> part, Entity entity) {
+    public List<AbstractSpinjitzuCourseElementPart<T>> getPartsList() {
+        return Arrays.asList(subEntities);
+    }
+
+    public void checkPartCollision(AbstractSpinjitzuCourseElementPart<T> part, Entity entity) {
         if (entity instanceof LivingEntity livingEntity)
             knockback(livingEntity, part);
     }
@@ -245,7 +256,7 @@ public abstract class AbstractSpinjitzuCourseElement<T extends AbstractSpinjitzu
         }
     }
 
-    protected void knockback(LivingEntity entity, SpinjitzuCourseElementPart<T> part) {
+    protected void knockback(LivingEntity entity, AbstractSpinjitzuCourseElementPart<T> part) {
         entity.knockback(5.0F, entity.getX() - part.getX(), entity.getZ() - part.getZ());
     }
 
@@ -275,7 +286,7 @@ public abstract class AbstractSpinjitzuCourseElement<T extends AbstractSpinjitzu
     protected void setActive(boolean active) {
         this.entityData.set(DATA_ID_ACTIVE, active);
         activeAnimationTicks = 0;
-        for (SpinjitzuCourseElementPart<T> part : getParts()) {
+        for (AbstractSpinjitzuCourseElementPart<T> part : getParts()) {
             part.setActive(active);
         }
         refreshDimensions();

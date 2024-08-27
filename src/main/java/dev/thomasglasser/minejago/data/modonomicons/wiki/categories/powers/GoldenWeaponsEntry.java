@@ -7,9 +7,11 @@ import com.klikli_dev.modonomicon.api.datagen.book.page.BookImagePageModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
 import dev.thomasglasser.minejago.data.modonomicons.wiki.WikiBookSubProvider;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import net.minecraft.resources.ResourceLocation;
 
 public class GoldenWeaponsEntry extends IndexModeEntryProvider {
     private static final String ID = "golden_weapons";
+    public static final ResourceLocation SCYTHE_LOCATION = WikiBookSubProvider.wikiTexture("powers/golden_weapons/scythe_of_quakes.png");
 
     public GoldenWeaponsEntry(CategoryProviderBase parent) {
         super(parent);
@@ -32,7 +34,7 @@ public class GoldenWeaponsEntry extends IndexModeEntryProvider {
 
         page("scythe_of_quakes", () -> BookImagePageModel.create()
                 .withAnchor("scythe_of_quakes")
-                .withImages(WikiBookSubProvider.wikiTexture("powers/golden_weapons/scythe_of_quakes.png"))
+                .withImages(SCYTHE_LOCATION)
                 .withTitle(context().pageTitle())
                 .withText(context().pageText()));
 

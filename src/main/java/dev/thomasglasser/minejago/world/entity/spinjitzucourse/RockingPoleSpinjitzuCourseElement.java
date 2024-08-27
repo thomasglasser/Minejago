@@ -13,7 +13,7 @@ public class RockingPoleSpinjitzuCourseElement extends AbstractSpinjitzuCourseEl
 
     public RockingPoleSpinjitzuCourseElement(EntityType<?> entityType, Level level) {
         super(entityType, level, VISIT_BOX);
-        SpinjitzuCourseElementPart<RockingPoleSpinjitzuCourseElement> pole = new RockingPoleSpinjitzuCoursePart(this, "pole", 0.625f, 1.3125f, 0, 0, 0);
+        AbstractSpinjitzuCourseElementPart<RockingPoleSpinjitzuCourseElement> pole = new RockingPoleSpinjitzuCoursePart(this, "pole", 0.625f, 1.3125f, 0, 0, 0);
         defineParts(pole);
     }
 
@@ -23,11 +23,11 @@ public class RockingPoleSpinjitzuCourseElement extends AbstractSpinjitzuCourseEl
     }
 
     @Override
-    public void checkPartCollision(SpinjitzuCourseElementPart<RockingPoleSpinjitzuCourseElement> part, Entity entity) {
+    public void checkPartCollision(AbstractSpinjitzuCourseElementPart<RockingPoleSpinjitzuCourseElement> part, Entity entity) {
         bounceUp(entity);
     }
 
-    private static class RockingPoleSpinjitzuCoursePart extends SpinjitzuCourseElementPart<RockingPoleSpinjitzuCourseElement> {
+    private static class RockingPoleSpinjitzuCoursePart extends AbstractSpinjitzuCourseElementPart<RockingPoleSpinjitzuCourseElement> {
         public RockingPoleSpinjitzuCoursePart(RockingPoleSpinjitzuCourseElement parent, String name, float width, float height, float offsetX, float offsetY, float offsetZ) {
             super(parent, name, width, height, offsetX, offsetY, offsetZ);
         }

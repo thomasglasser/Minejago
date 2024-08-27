@@ -17,7 +17,7 @@
         "type": "modonomicon:none"
       },
       "images": [
-        "minejago:textures/modonomicon/wiki/dependencies/ryoamiclights/spinjitzu.png"
+        "minejago:textures/modonomicon/wiki/spinjitzu/abilities/environmental.png"
       ],
       "text": "book.minejago.wiki.dependencies.ryoamiclights.spinjitzu.text",
       "title": "book.minejago.wiki.dependencies.ryoamiclights.spinjitzu.title",

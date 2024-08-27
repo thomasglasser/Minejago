@@ -63,6 +63,6 @@ public class PaintingsEntry extends IndexModeEntryProvider {
     }
 
     public static ResourceLocation paintingLoc(ResourceKey<PaintingVariant> painting) {
-        return painting.location().withPrefix("textures/painting/");
+        return painting.location().withPrefix("textures/painting/").withSuffix(".png");
     }
 }

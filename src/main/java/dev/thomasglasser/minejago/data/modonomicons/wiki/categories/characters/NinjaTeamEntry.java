@@ -7,9 +7,11 @@ import com.klikli_dev.modonomicon.api.datagen.book.page.BookImagePageModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
 import dev.thomasglasser.minejago.data.modonomicons.wiki.WikiBookSubProvider;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import net.minecraft.resources.ResourceLocation;
 
 public class NinjaTeamEntry extends IndexModeEntryProvider {
     private static final String ID = "ninja_team";
+    public static final ResourceLocation WU_LOCATION = WikiBookSubProvider.wikiTexture("characters/ninja_team/wu.png");
 
     public NinjaTeamEntry(CategoryProviderBase parent) {
         super(parent);
@@ -19,7 +21,7 @@ public class NinjaTeamEntry extends IndexModeEntryProvider {
     protected void generatePages() {
         page("wu_image", () -> BookImagePageModel.create()
                 .withAnchor("wu_image")
-                .withImages(WikiBookSubProvider.wikiTexture("characters/ninja_team/wu.png"))
+                .withImages(WU_LOCATION)
                 .withTitle(context().pageTitle()));
 
         add(context().pageTitle(), "Wu");

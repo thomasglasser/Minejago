@@ -199,7 +199,7 @@ public class MinejagoClientEvents {
     }
 
     public static void onClientSetup(FMLClientSetupEvent event) {
-        if (Minejago.Dependencies.DYNAMIC_LIGHTS.isInstalled()) MinejagoDynamicLights.register();
+        if (Minejago.Dependencies.RYOAMIC_LIGHTS.isInstalled()) MinejagoDynamicLights.register();
     }
 
     public static void onRegisterLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
@@ -338,7 +338,7 @@ public class MinejagoClientEvents {
     public static void onSelectMusic(SelectMusicEvent event) {
         if (event.getOriginalMusic() == Musics.GAME || event.getOriginalMusic() == Musics.CREATIVE) {
             Player player = ClientUtils.getMainClientPlayer();
-            if (!player.level().getEntities(player, player.getBoundingBox().inflate(32), entity -> entity instanceof Wu).isEmpty() && player.level().getBiome(player.blockPosition()).is(MinejagoBiomeTags.HAS_MONASTERY_OF_SPINJITZU)) {
+            if (!player.level().getEntities(player, player.getBoundingBox().inflate(128), entity -> entity instanceof Wu).isEmpty() && player.level().getBiome(player.blockPosition()).is(MinejagoBiomeTags.HAS_MONASTERY_OF_SPINJITZU)) {
                 event.setMusic(MinejagoMusics.MONASTERY_OF_SPINJITZU);
             } else if (Minecraft.getInstance().getMusicManager().isPlayingMusic(MinejagoMusics.MONASTERY_OF_SPINJITZU)) {
                 event.setMusic(null);
