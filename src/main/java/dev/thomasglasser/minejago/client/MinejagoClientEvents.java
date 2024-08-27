@@ -95,6 +95,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.sounds.Musics;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -324,6 +325,8 @@ public class MinejagoClientEvents {
             model.setupAnim(player, 0, 0, player.tickCount + event.getPartialTick(), 0, 0);
             model.getBody().copyFrom(event.getRenderer().getModel().body);
             event.getPoseStack().mulPose(Axis.XP.rotationDegrees(180.0F));
+            float scale = (float) player.getAttributeValue(Attributes.SCALE);
+            event.getPoseStack().scale(scale, scale, scale);
             int color = player.level().holderOrThrow(player.getData(MinejagoAttachmentTypes.POWER).power()).value().getColor().getValue();
             model.render(event.getPoseStack(), event.getMultiBufferSource(), player.tickCount, event.getPartialTick(), 0xFF000000 | color);
         }
