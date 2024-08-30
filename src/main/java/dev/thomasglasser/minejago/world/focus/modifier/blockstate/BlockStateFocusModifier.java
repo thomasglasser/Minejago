@@ -10,39 +10,50 @@ import dev.thomasglasser.minejago.world.focus.modifier.Operation;
 import java.util.Optional;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
 public class BlockStateFocusModifier extends FocusModifier {
+    @Nullable
     private final BlockState state;
+    @Nullable
+    private final Block block;
 
-    public BlockStateFocusModifier(ResourceLocation id, BlockState state, double modifier, Operation operation) {
+    public BlockStateFocusModifier(ResourceLocation id, @Nullable BlockState state, @Nullable Block block, double modifier, Operation operation) {
         super(id, modifier, operation);
         this.state = state;
+        this.block = block;
     }
 
-    public BlockState getState() {
+    public @Nullable BlockState getState() {
         return this.state;
     }
 
+    public @Nullable Block getBlock() {
+        return block;
+    }
+
     public String toString() {
-        return "BlockStateFocusModifier{id=" + getId() + "state=" + state + "}";
+        return "BlockStateFocusModifier{id=" + getId() + "state=" + state + "block=" + block + "}";
     }
 
     public static Optional<BlockStateFocusModifier> fromJson(ResourceLocation id, JsonObject json) {
         if (json.has("modifier")) {
             BlockState state = null;
+            Block block = null;
             if (json.has("state"))
                 state = BlockState.CODEC.parse(JsonOps.INSTANCE, json.get("state")).result().orElse(null);
             else if (json.has("block")) {
                 ResourceLocation loc = ResourceLocation.CODEC.parse(JsonOps.INSTANCE, json.get("block")).result().orElse(ResourceLocation.withDefaultNamespace(""));
                 if (BuiltInRegistries.BLOCK.containsKey(loc))
-                    state = BuiltInRegistries.BLOCK.get(loc).defaultBlockState();
+                    block = BuiltInRegistries.BLOCK.get(loc);
                 else {
                     Minejago.LOGGER.warn("Failed to parse block state focus modifier \"" + id + "\", invalid format: block not found.");
                     return Optional.empty();
                 }
             }
-            if (state == null) {
+            if (state == null && block == null) {
                 return Optional.empty();
             } else {
                 Operation operation = Operation.ADDITION;
@@ -51,7 +62,7 @@ public class BlockStateFocusModifier extends FocusModifier {
                 }
                 JsonPrimitive modifierElement = json.get("modifier").getAsJsonPrimitive();
                 if (modifierElement.isNumber()) {
-                    return Optional.of(new BlockStateFocusModifier(id, state, modifierElement.getAsDouble(), operation));
+                    return Optional.of(new BlockStateFocusModifier(id, state, block, modifierElement.getAsDouble(), operation));
                 } else {
                     Minejago.LOGGER.warn("Failed to parse block state focus modifier \"" + id + "\", invalid format: \"modifier\" field value isn't number.");
                     return Optional.empty();
@@ -66,10 +77,12 @@ public class BlockStateFocusModifier extends FocusModifier {
     @Override
     public JsonObject toJson() {
         JsonObject jsonObject = new JsonObject();
-        if (state == state.getBlock().defaultBlockState())
-            jsonObject.addProperty("block", BuiltInRegistries.BLOCK.getKey(state.getBlock()).toString());
-        else
+        if (state != null)
             jsonObject.add("state", BlockState.CODEC.encodeStart(JsonOps.INSTANCE, state).getOrThrow());
+        else if (block != null)
+            jsonObject.addProperty("block", BuiltInRegistries.BLOCK.getKey(block).toString());
+        else
+            throw new IllegalStateException("BlockStateFocusModifier must have either a state or block.");
         JsonObject info = super.toJson();
         for (String s : info.keySet()) {
             jsonObject.add(s, info.get(s));

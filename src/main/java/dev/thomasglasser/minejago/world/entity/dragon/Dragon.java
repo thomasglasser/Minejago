@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.world.entity.dragon;
 
 import dev.thomasglasser.minejago.network.ClientboundOpenDragonInventoryScreenPayload;
+import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.tags.MinejagoItemTags;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.character.Character;
@@ -468,7 +469,7 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
             for (int i = 0; i < 5; i++) {
                 serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, this.getRandomX(1.0D), this.getRandomY(), this.getRandomZ(1.0D), 1, d0, d1, d2, 1);
             }
-            serverLevel.playSound(null, this.blockPosition(), SoundEvents.VILLAGER_YES/*TODO:Happy*/, SoundSource.AMBIENT);
+            playSound(MinejagoSoundEvents.EARTH_DRAGON_BOND_UP.get());
         }
 
         return bond.get(player);
@@ -488,7 +489,7 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
             for (int i = 0; i < 5; i++) {
                 serverLevel.sendParticles(ParticleTypes.ANGRY_VILLAGER, this.getRandomX(1.0D), this.getRandomY(), this.getRandomZ(1.0D), 1, d0, d1, d2, 1);
             }
-            serverLevel.playSound(null, this.blockPosition(), SoundEvents.VILLAGER_NO /*TODO:Growl*/, SoundSource.AMBIENT);
+            playSound(MinejagoSoundEvents.EARTH_DRAGON_BOND_DOWN.get());
         }
 
         return bond.get(player);

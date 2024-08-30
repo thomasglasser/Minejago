@@ -1,4 +1,22 @@
 {
+  "block.dragon_button.click": {
+    "sounds": [
+      "minejago:block/dragon_button/click"
+    ],
+    "subtitle": "subtitles.block.dragon_button.click"
+  },
+  "block.dragon_button.close": {
+    "sounds": [
+      "minejago:block/dragon_button/close"
+    ],
+    "subtitle": "subtitles.block.dragon_button.close"
+  },
+  "block.dragon_button.open": {
+    "sounds": [
+      "minejago:block/dragon_button/open"
+    ],
+    "subtitle": "subtitles.block.dragon_button.open"
+  },
   "block.teapot.whistle": {
     "sounds": [
       "minejago:block/teapot/whistle"
@@ -19,6 +37,18 @@
       "minejago:entity/earth_dragon/awaken"
     ],
     "subtitle": "subtitles.entity.earth_dragon.awaken"
+  },
+  "entity.earth_dragon.bond_down": {
+    "sounds": [
+      "minejago:entity/earth_dragon/bond_down"
+    ],
+    "subtitle": "subtitles.entity.earth_dragon.bond_down"
+  },
+  "entity.earth_dragon.bond_up": {
+    "sounds": [
+      "minejago:entity/earth_dragon/bond_up"
+    ],
+    "subtitle": "subtitles.entity.earth_dragon.bond_up"
   },
   "entity.earth_dragon.death": {
     "sounds": [

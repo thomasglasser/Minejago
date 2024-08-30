@@ -12,6 +12,11 @@ public class MinejagoSoundEvents {
     // Teapot
     public static final DeferredHolder<SoundEvent, SoundEvent> TEAPOT_WHISTLE = register("teapot", "block", "whistle");
 
+    // Dragon Button
+    public static final DeferredHolder<SoundEvent, SoundEvent> DRAGON_BUTTON_OPEN = register("dragon_button", "block", "open");
+    public static final DeferredHolder<SoundEvent, SoundEvent> DRAGON_BUTTON_CLICK = register("dragon_button", "block", "click");
+    public static final DeferredHolder<SoundEvent, SoundEvent> DRAGON_BUTTON_CLOSE = register("dragon_button", "block", "close");
+
     // Spinjitzu
     public static final DeferredHolder<SoundEvent, SoundEvent> SPINJITZU_START = register("spinjitzu", "start");
     public static final DeferredHolder<SoundEvent, SoundEvent> SPINJITZU_ACTIVE = register("spinjitzu", "active");
@@ -39,6 +44,8 @@ public class MinejagoSoundEvents {
     public static final DeferredHolder<SoundEvent, SoundEvent> EARTH_DRAGON_HURT = register("earth_dragon", "entity", "hurt");
     public static final DeferredHolder<SoundEvent, SoundEvent> EARTH_DRAGON_ROAR = register("earth_dragon", "entity", "roar");
     public static final DeferredHolder<SoundEvent, SoundEvent> EARTH_DRAGON_STEP = register("earth_dragon", "entity", "step");
+    public static final DeferredHolder<SoundEvent, SoundEvent> EARTH_DRAGON_BOND_UP = register("earth_dragon", "entity", "bond_up");
+    public static final DeferredHolder<SoundEvent, SoundEvent> EARTH_DRAGON_BOND_DOWN = register("earth_dragon", "entity", "bond_down");
 
     // Skull Truck
     public static final DeferredHolder<SoundEvent, SoundEvent> SKULL_TRUCK_AMBIENT_ACTIVE = register("skull_truck", "entity", "ambient_active");
@@ -57,7 +64,7 @@ public class MinejagoSoundEvents {
     // Skulkin Raid
     public static final DeferredHolder<SoundEvent, SoundEvent> SKULKIN_RAID_HORN = register("skulkin_raid", "event", "horn");
 
-    // Musics
+    // Music
     public static final DeferredHolder<SoundEvent, SoundEvent> MUSIC_MONASTERY_OF_SPINJITZU = register("music", "monastery_of_spinjitzu");
 
     private static DeferredHolder<SoundEvent, SoundEvent> register(String subject, String type, String name) {

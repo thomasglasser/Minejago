@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "minejago:block/enchanted_slab"
+    },
+    "type=double": {
+      "model": "minejago:block/enchanted_planks"
+    },
+    "type=top": {
+      "model": "minejago:block/enchanted_slab_top"
+    }
+  }
+}

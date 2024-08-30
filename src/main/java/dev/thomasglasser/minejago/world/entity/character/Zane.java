@@ -73,7 +73,7 @@ public class Zane extends Character {
     }
 
     public static boolean checkZaneSpawnRules(EntityType<Zane> animal, LevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return Character.checkCharacterSpawnRules(Zane.class, animal, level, spawnType, pos, random) && level.getFluidState(pos).is(FluidTags.WATER) && level.getBlockState(pos.above()).is(Blocks.WATER);
+        return Character.checkCharacterSpawnRules(animal, level, spawnType, pos, random) && level.getFluidState(pos).is(FluidTags.WATER) && level.getBlockState(pos.above()).is(Blocks.WATER);
     }
 
     @Override

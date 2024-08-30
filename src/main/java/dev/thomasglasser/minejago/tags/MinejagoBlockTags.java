@@ -9,9 +9,6 @@ import net.minecraft.world.level.block.Block;
 public class MinejagoBlockTags {
     public static final TagKey<Block> TEAPOTS = create("teapots");
 
-    // Logs
-    public static final TagKey<Block> ENCHANTED_LOGS = create("enchanted_logs");
-
     private static TagKey<Block> create(String name) {
         return TagKey.create(Registries.BLOCK, Minejago.modLoc(name));
     }

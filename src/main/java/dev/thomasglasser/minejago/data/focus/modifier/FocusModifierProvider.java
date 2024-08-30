@@ -25,6 +25,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
@@ -89,12 +90,16 @@ public abstract class FocusModifierProvider implements DataProvider {
 
     protected void add(double modifier, Operation operation, Block... blocks) {
         for (Block block : blocks) {
-            add(BuiltInRegistries.BLOCK.getKey(block), block.defaultBlockState(), modifier, operation);
+            add(BuiltInRegistries.BLOCK.getKey(block), block, modifier, operation);
         }
     }
 
     protected void add(ResourceLocation location, BlockState state, double modifier, Operation operation) {
-        add(new BlockStateFocusModifier(location, state, modifier, operation));
+        add(new BlockStateFocusModifier(location, state, null, modifier, operation));
+    }
+
+    protected void add(ResourceLocation location, Block block, double modifier, Operation operation) {
+        add(new BlockStateFocusModifier(location, null, block, modifier, operation));
     }
 
     @SafeVarargs
@@ -140,7 +145,17 @@ public abstract class FocusModifierProvider implements DataProvider {
     }
 
     protected void add(ResourceLocation location, ItemStack stack, double modifier, Operation operation) {
-        add(new ItemStackFocusModifier(location, stack, modifier, operation));
+        add(new ItemStackFocusModifier(location, stack, null, modifier, operation));
+    }
+
+    protected void add(double modifier, Operation operation, Item... items) {
+        for (Item item : items) {
+            add(BuiltInRegistries.ITEM.getKey(item), item, modifier, operation);
+        }
+    }
+
+    protected void add(ResourceLocation location, Item item, double modifier, Operation operation) {
+        add(new ItemStackFocusModifier(location, ItemStack.EMPTY, item, modifier, operation));
     }
 
     @SafeVarargs

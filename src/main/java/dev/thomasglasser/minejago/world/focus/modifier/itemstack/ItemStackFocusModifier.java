@@ -12,42 +12,47 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 public class ItemStackFocusModifier extends FocusModifier {
     private final ItemStack stack;
+    @Nullable
+    private final Item item;
 
-    public ItemStackFocusModifier(ResourceLocation id, ItemStack stack, double modifier, Operation operation) {
+    public ItemStackFocusModifier(ResourceLocation id, ItemStack stack, @Nullable Item item, double modifier, Operation operation) {
         super(id, modifier, operation);
         this.stack = stack;
+        this.item = item;
     }
 
     public ItemStack getStack() {
         return this.stack;
     }
 
-    public Item getItem() {
-        return stack.getItem();
+    public @Nullable Item getItem() {
+        return this.item;
     }
 
     public String toString() {
-        return "ItemStackFocusModifier{id=" + getId() + "stack=" + stack + "}";
+        return "ItemStackFocusModifier{id=" + getId() + "stack=" + stack + "item=" + item + "}";
     }
 
     public static Optional<ItemStackFocusModifier> fromJson(ResourceLocation id, JsonObject json) {
         if (json.has("modifier")) {
             ItemStack stack = ItemStack.EMPTY;
+            Item item = null;
             if (json.has("stack"))
                 stack = ItemStack.CODEC.parse(JsonOps.INSTANCE, json.get("stack")).result().orElse(ItemStack.EMPTY);
             else if (json.has("item")) {
                 ResourceLocation loc = ResourceLocation.CODEC.parse(JsonOps.INSTANCE, json.get("item")).result().orElse(ResourceLocation.withDefaultNamespace(""));
                 if (BuiltInRegistries.ITEM.containsKey(loc))
-                    stack = BuiltInRegistries.ITEM.get(loc).getDefaultInstance();
+                    item = BuiltInRegistries.ITEM.get(loc);
                 else {
                     Minejago.LOGGER.warn("Failed to parse item stack focus modifier \"" + id + "\", invalid format: item not found.");
                     return Optional.empty();
                 }
             }
-            if (stack == ItemStack.EMPTY) {
+            if (stack == ItemStack.EMPTY && item == null) {
                 return Optional.empty();
             } else {
                 Operation operation = Operation.ADDITION;
@@ -56,7 +61,7 @@ public class ItemStackFocusModifier extends FocusModifier {
                 }
                 JsonPrimitive modifierElement = json.get("modifier").getAsJsonPrimitive();
                 if (modifierElement.isNumber()) {
-                    return Optional.of(new ItemStackFocusModifier(id, stack, modifierElement.getAsDouble(), operation));
+                    return Optional.of(new ItemStackFocusModifier(id, stack, item, modifierElement.getAsDouble(), operation));
                 } else {
                     Minejago.LOGGER.warn("Failed to parse item stack focus modifier \"" + id + "\", invalid format: \"modifier\" field value isn't number.");
                     return Optional.empty();
@@ -71,10 +76,12 @@ public class ItemStackFocusModifier extends FocusModifier {
     @Override
     public JsonObject toJson() {
         JsonObject jsonObject = new JsonObject();
-        if (stack.getCount() > 1 || !stack.getComponents().isEmpty())
+        if (!stack.isEmpty())
             jsonObject.add("stack", ItemStack.CODEC.encodeStart(JsonOps.INSTANCE, stack).result().orElseThrow());
+        else if (item != null)
+            jsonObject.addProperty("item", BuiltInRegistries.ITEM.getKey(item).toString());
         else
-            jsonObject.addProperty("item", BuiltInRegistries.ITEM.getKey(stack.getItem()).toString());
+            throw new IllegalStateException("ItemStackFocusModifier must have either a stack or an item.");
         JsonObject info = super.toJson();
         for (String s : info.keySet()) {
             jsonObject.add(s, info.get(s));

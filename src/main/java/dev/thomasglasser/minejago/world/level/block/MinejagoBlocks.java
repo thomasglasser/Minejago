@@ -2,10 +2,10 @@ package dev.thomasglasser.minejago.world.level.block;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.data.worldgen.features.MinejagoTreeFeatures;
-import dev.thomasglasser.minejago.tags.MinejagoBlockTags;
-import dev.thomasglasser.minejago.tags.MinejagoItemTags;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
+import dev.thomasglasser.minejago.world.entity.vehicle.MinejagoBoatTypes;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import dev.thomasglasser.minejago.world.level.block.state.properties.MinejagoWoodTypes;
 import dev.thomasglasser.tommylib.api.registration.DeferredBlock;
 import dev.thomasglasser.tommylib.api.registration.DeferredRegister;
 import dev.thomasglasser.tommylib.api.world.level.block.BlockUtils;
@@ -19,7 +19,7 @@ import java.util.TreeMap;
 import java.util.function.Supplier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.DyeColor;
@@ -30,6 +30,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BrushableBlock;
 import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 
@@ -37,7 +38,7 @@ public class MinejagoBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Minejago.MOD_ID);
 
     // Tea Trees
-    public static final WoodSet ENCHANTED_WOOD_SET = registerWoodSet("enchanted", MapColor.COLOR_PURPLE, MapColor.COLOR_GRAY, () -> MinejagoBlockTags.ENCHANTED_LOGS, () -> MinejagoItemTags.ENCHANTED_LOGS);
+    public static final WoodSet ENCHANTED_WOOD_SET = registerWoodSet("enchanted", MapColor.COLOR_PURPLE, MapColor.COLOR_GRAY, MinejagoWoodTypes.ENCHANTED, MinejagoBoatTypes.ENCHANTED.getValue());
     public static final LeavesSet FOCUS_LEAVES_SET = registerLeavesSet("focus", new TreeGrower("focus", 0.1F, Optional.empty(), Optional.empty(), Optional.of(MinejagoTreeFeatures.FOCUS), Optional.of(MinejagoTreeFeatures.FANCY_FOCUS), Optional.of(MinejagoTreeFeatures.FOCUS_BEES_005), Optional.of(MinejagoTreeFeatures.FANCY_FOCUS_BEES_005)));
 
     // Pots
@@ -74,8 +75,8 @@ public class MinejagoBlocks {
         return BlockUtils.register(BLOCKS, name, blockFactory);
     }
 
-    private static WoodSet registerWoodSet(String name, MapColor logColor, MapColor strippedLogColor, Supplier<TagKey<Block>> logTag, Supplier<TagKey<Item>> logItemTag) {
-        return BlockUtils.registerWoodSet(BLOCKS, name, logColor, strippedLogColor, MinejagoItems::register);
+    private static WoodSet registerWoodSet(String name, MapColor logColor, MapColor strippedLogColor, WoodType woodType, Boat.Type boatType) {
+        return BlockUtils.registerWoodSet(BLOCKS, name, logColor, strippedLogColor, woodType, boatType, MinejagoItems::register);
     }
 
     private static LeavesSet registerLeavesSet(String name, TreeGrower treeGrower) {

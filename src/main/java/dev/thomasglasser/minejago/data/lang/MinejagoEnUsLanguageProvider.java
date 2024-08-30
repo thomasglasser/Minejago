@@ -185,6 +185,9 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         addPotions(MinejagoPotions.MILK, "Milk");
 
         add(MinejagoSoundEvents.TEAPOT_WHISTLE.get(), "Teapot whistles");
+        add(MinejagoSoundEvents.DRAGON_BUTTON_OPEN.get(), "Dragon Button opens");
+        add(MinejagoSoundEvents.DRAGON_BUTTON_CLICK.get(), "Dragon Button clicks");
+        add(MinejagoSoundEvents.DRAGON_BUTTON_CLOSE.get(), "Dragon Button closes");
         add(MinejagoSoundEvents.SPINJITZU_START.get(), "Spinjitzu activates");
         add(MinejagoSoundEvents.SPINJITZU_ACTIVE.get(), "Spinjitzu whooshes");
         add(MinejagoSoundEvents.SPINJITZU_STOP.get(), "Spinjitzu fades");
@@ -203,6 +206,8 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(MinejagoSoundEvents.EARTH_DRAGON_HURT.get(), "Earth Dragon flaps");
         add(MinejagoSoundEvents.EARTH_DRAGON_ROAR.get(), "Earth Dragon roars");
         add(MinejagoSoundEvents.EARTH_DRAGON_STEP.get(), "Earth Dragon steps");
+        add(MinejagoSoundEvents.EARTH_DRAGON_BOND_UP.get(), "Earth Dragon growls happily");
+        add(MinejagoSoundEvents.EARTH_DRAGON_BOND_DOWN.get(), "Earth Dragon grumbles");
         add(MinejagoSoundEvents.SKULL_TRUCK_AMBIENT_ACTIVE.get(), "Skull Truck revs");
         add(MinejagoSoundEvents.SKULL_TRUCK_AMBIENT_IDLE.get(), "Skull Truck idles");
         add(MinejagoSoundEvents.SKULL_TRUCK_DEATH.get(), "Skull Truck breaks");

@@ -19,6 +19,7 @@ import static net.minecraft.world.level.block.Blocks.WHITE_CANDLE;
 import static net.minecraft.world.level.block.Blocks.YELLOW_CANDLE;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.world.entity.vehicle.MinejagoBoatTypes;
 import dev.thomasglasser.minejago.world.focus.modifier.Operation;
 import dev.thomasglasser.minejago.world.focus.modifier.world.Weather;
 import dev.thomasglasser.minejago.world.focus.modifier.world.WorldFocusModifier;
@@ -29,9 +30,11 @@ import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Block;
@@ -84,7 +87,7 @@ public class MinejagoFocusModifierProvider extends FocusModifierProvider {
             }
         }
         add(0.05, Operation.ADDITION, Blocks.WATER);
-        add(0.25, Operation.ADDITION, MinejagoBlocks.ENCHANTED_WOOD_SET.getAll().toArray(new Block[0]));
+        add(0.25, Operation.ADDITION, MinejagoBlocks.ENCHANTED_WOOD_SET.getAllBlocks().toArray(new Block[0]));
         add(0.2, Operation.ADDITION, MinejagoBlocks.SCROLL_SHELF.get());
     }
 
@@ -95,12 +98,17 @@ public class MinejagoFocusModifierProvider extends FocusModifierProvider {
 
     private void addMobEffects() {}
 
-    private void addEntities() {}
+    private void addEntities() {
+        CompoundTag enchanted = new CompoundTag();
+        enchanted.putString("Type", MinejagoBoatTypes.ENCHANTED.getValue().getSerializedName());
+        add(EntityType.BOAT, enchanted, 0.25, Operation.ADDITION);
+        add(EntityType.CHEST_BOAT, enchanted, 0.25, Operation.ADDITION);
+    }
 
     private void addItemStacks() {
-        List<ItemStack> GOLDEN_WEAPONS = List.of(
-                MinejagoItems.SCYTHE_OF_QUAKES.get().getDefaultInstance());
-        add(0.5, Operation.ADDITION, GOLDEN_WEAPONS.toArray(new ItemStack[] {}));
+        List<Item> GOLDEN_WEAPONS = List.of(
+                MinejagoItems.SCYTHE_OF_QUAKES.get());
+        add(0.5, Operation.ADDITION, GOLDEN_WEAPONS.toArray(new Item[] {}));
     }
 
     private void addStructures() {}

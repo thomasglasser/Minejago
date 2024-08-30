@@ -5,6 +5,9 @@
   "description": "book.minejago.wiki.apis.powers.description",
   "hide_while_locked": false,
   "icon": {
+    "components": {
+      "minejago:power": "minejago:fire"
+    },
     "item": "minejago:training_gi_jacket"
   },
   "name": "book.minejago.wiki.apis.powers.name",

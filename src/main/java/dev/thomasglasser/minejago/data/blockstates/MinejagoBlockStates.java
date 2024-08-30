@@ -7,6 +7,7 @@ import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.minejago.world.level.block.TopPostBlock;
 import dev.thomasglasser.tommylib.api.data.blockstates.ExtendedBlockStateProvider;
+import dev.thomasglasser.tommylib.api.world.level.block.WoodSet;
 import java.util.LinkedHashMap;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -28,7 +29,6 @@ import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -47,28 +47,28 @@ public class MinejagoBlockStates extends ExtendedBlockStateProvider {
     protected void registerStatesAndModels() {
         getVariantBuilder(MinejagoBlocks.TEAPOT.get()).forAllStates(blockState -> ConfiguredModel.builder()
                 .rotationY((int) (blockState.getValue(TeapotBlock.FACING).getOpposite()).toYRot())
-                .modelFile(blockState.getValue(TeapotBlock.FILLED) ? models().withExistingParent("teapot_filled", modBlockModel("teapot_filled_base")) : models().withExistingParent("teapot", modBlockModel("teapot_base")))
+                .modelFile(blockState.getValue(TeapotBlock.FILLED) ? models().withExistingParent("teapot_filled", modBlockLoc("teapot_filled_base")) : models().withExistingParent("teapot", modBlockLoc("teapot_base")))
                 .build());
         MinejagoBlocks.TEAPOTS.forEach((dyeColor, blockBlockRegistryObject) -> {
-            if (models().existingFileHelper.exists(modBlockModel(dyeColor.getName() + "_teapot"), TEXTURE)) {
+            if (models().existingFileHelper.exists(modBlockLoc(dyeColor.getName() + "_teapot"), TEXTURE)) {
                 getVariantBuilder(blockBlockRegistryObject.get()).forAllStates(blockState -> ConfiguredModel.builder()
                         .rotationY((int) (blockState.getValue(TeapotBlock.FACING).getOpposite()).toYRot())
-                        .modelFile(blockState.getValue(TeapotBlock.FILLED) ? models().withExistingParent(dyeColor.getName() + "_teapot_filled", modBlockModel("teapot_filled_base")).texture("pot", modBlockModel(dyeColor.getName() + "_teapot")).texture("particle", modItemModel(dyeColor.getName() + "_teapot")) : models().withExistingParent(dyeColor.getName() + "_teapot", modBlockModel("teapot_base")).texture("pot", modBlockModel(dyeColor.getName() + "_teapot")).texture("particle", modItemModel(dyeColor.getName() + "_teapot")))
+                        .modelFile(blockState.getValue(TeapotBlock.FILLED) ? models().withExistingParent(dyeColor.getName() + "_teapot_filled", modBlockLoc("teapot_filled_base")).texture("pot", modBlockLoc(dyeColor.getName() + "_teapot")).texture("particle", modItemLoc(dyeColor.getName() + "_teapot")) : models().withExistingParent(dyeColor.getName() + "_teapot", modBlockLoc("teapot_base")).texture("pot", modBlockLoc(dyeColor.getName() + "_teapot")).texture("particle", modItemLoc(dyeColor.getName() + "_teapot")))
                         .build());
             }
         });
         getVariantBuilder(MinejagoBlocks.JASPOT.get()).forAllStates(blockState -> ConfiguredModel.builder()
                 .rotationY((int) (blockState.getValue(TeapotBlock.FACING).getOpposite()).toYRot())
-                .modelFile(blockState.getValue(TeapotBlock.FILLED) ? models().withExistingParent("jaspot_filled", modBlockModel("teapot_filled_base")).texture("pot", modBlockModel("jaspot")).texture("particle", modItemModel("jaspot")) : models().withExistingParent("jaspot", modBlockModel("teapot_base")).texture("pot", modBlockModel("jaspot")).texture("particle", modItemModel("jaspot")))
+                .modelFile(blockState.getValue(TeapotBlock.FILLED) ? models().withExistingParent("jaspot_filled", modBlockLoc("teapot_filled_base")).texture("pot", modBlockLoc("jaspot")).texture("particle", modItemLoc("jaspot")) : models().withExistingParent("jaspot", modBlockLoc("teapot_base")).texture("pot", modBlockLoc("jaspot")).texture("particle", modItemLoc("jaspot")))
                 .build());
         getVariantBuilder(MinejagoBlocks.FLAME_TEAPOT.get()).forAllStates(blockState -> ConfiguredModel.builder()
                 .rotationY((int) (blockState.getValue(TeapotBlock.FACING).getOpposite()).toYRot())
-                .modelFile(blockState.getValue(TeapotBlock.FILLED) ? models().withExistingParent("flame_teapot_filled", modBlockModel("teapot_filled_base")).texture("pot", modBlockModel("flame_teapot")).texture("particle", modItemModel("flame_teapot")) : models().withExistingParent("flame_teapot", modBlockModel("teapot_base")).texture("pot", modBlockModel("flame_teapot")).texture("particle", modItemModel("flame_teapot")))
+                .modelFile(blockState.getValue(TeapotBlock.FILLED) ? models().withExistingParent("flame_teapot_filled", modBlockLoc("teapot_filled_base")).texture("pot", modBlockLoc("flame_teapot")).texture("particle", modItemLoc("flame_teapot")) : models().withExistingParent("flame_teapot", modBlockLoc("teapot_base")).texture("pot", modBlockLoc("flame_teapot")).texture("particle", modItemLoc("flame_teapot")))
                 .build());
 
         getVariantBuilder(MinejagoBlocks.GOLD_DISC.get()).forAllStates(blockState -> {
             Direction facing = blockState.getValue(DiscBlock.FACING);
-            ModelFile model = models().withExistingParent("gold_disc_" + blockState.getValue(DiscBlock.ROW).getSerializedName() + "_" + blockState.getValue(DiscBlock.COLUMN).getSerializedName(), modBlockModel("disc_" + blockState.getValue(DiscBlock.ROW).getSerializedName() + "_" + blockState.getValue(DiscBlock.COLUMN).getSerializedName())).texture("base", modBlockModel("gold_disc_base")).texture("bump", modBlockModel("gold_disc_bump"));
+            ModelFile model = models().withExistingParent("gold_disc_" + blockState.getValue(DiscBlock.ROW).getSerializedName() + "_" + blockState.getValue(DiscBlock.COLUMN).getSerializedName(), modBlockLoc("disc_" + blockState.getValue(DiscBlock.ROW).getSerializedName() + "_" + blockState.getValue(DiscBlock.COLUMN).getSerializedName())).texture("base", modBlockLoc("gold_disc_base")).texture("bump", modBlockLoc("gold_disc_bump"));
 
             return ConfiguredModel.builder()
                     .modelFile(model)
@@ -78,7 +78,7 @@ public class MinejagoBlockStates extends ExtendedBlockStateProvider {
 
         getVariantBuilder(MinejagoBlocks.TOP_POST.get()).forAllStates(blockState -> {
             Direction facing = blockState.getValue(TopPostBlock.FACING);
-            ModelFile model = models().getExistingFile(modBlockModel("top_post"));
+            ModelFile model = models().getExistingFile(modBlockLoc("top_post"));
 
             return ConfiguredModel.builder()
                     .modelFile(model)
@@ -98,18 +98,39 @@ public class MinejagoBlockStates extends ExtendedBlockStateProvider {
         getVariantBuilder(MinejagoBlocks.DRAGON_BUTTON.get()).forAllStates(blockState -> {
             Direction facing = blockState.getValue(TopPostBlock.FACING);
             return ConfiguredModel.builder()
-                    .modelFile(models().getBuilder(MinejagoBlocks.DRAGON_BUTTON.getId().getPath()).parent(new ModelFile.UncheckedModelFile(mcLoc("builtin/entity"))).texture("particle", modBlockModel(MinejagoBlocks.DRAGON_BUTTON.getId().getPath())))
+                    .modelFile(models().getBuilder(MinejagoBlocks.DRAGON_BUTTON.getId().getPath()).parent(new ModelFile.UncheckedModelFile(mcLoc("builtin/entity"))).texture("particle", blockLoc(MinejagoBlocks.DRAGON_BUTTON)))
                     .rotationY((int) (facing.getOpposite()).toYRot())
                     .build();
         });
 
-        woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET);
+//        woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET);
+        WoodSet set = MinejagoBlocks.ENCHANTED_WOOD_SET;
+        logBlock(set.log().get());
+        logBlock(set.strippedLog().get());
+        simpleBlock(set.wood().get(), models().cubeAll(set.wood().getId().getPath(), blockLoc(set.log())));
+        simpleBlock(set.strippedWood().get(), models().cubeAll(set.strippedWood().getId().getPath(), blockLoc(set.strippedLog())));
+        simpleBlock(set.planks().get());
+        slabBlock(set.slab().get(), blockLoc(set.planks()));
+        stairsBlock(set.stairs().get(), blockLoc(set.planks()));
+        pressurePlateBlock(set.pressurePlate().get(), blockLoc(set.planks()));
+        buttonBlock(set.button().get(), blockLoc(set.planks()));
+        fenceBlock(set.fence().get(), blockLoc(set.planks()));
+        fenceGateBlock(set.fenceGate().get(), blockLoc(set.planks()));
+        // TODO: Door block textures
+//        doorBlock(set.door().get(), blockLoc(set.door()).withSuffix("_bottom"), blockLoc(set.door()).withSuffix("_top"));
+        // TODO: Trapdoor block textures
+//        trapdoorBlock(set.trapdoor().get(), blockLoc(set.trapdoor()), true);
+        // TODO: Sign block textures
+//        signBlock(set.sign().get(), set.wallSign().get(), blockLoc(set.log()));
+        // TODO: Hanging sign block textures
+//        hangingSignBlock(set.hangingSign().get(), set.wallHangingSign().get(), blockLoc(set.log()));
+
         leavesSet(MinejagoBlocks.FOCUS_LEAVES_SET);
 
         models().withExistingParent(BuiltInRegistries.BLOCK.getKey(MinejagoBlocks.CHISELED_SCROLL_SHELF.get()).getPath(), BuiltInRegistries.BLOCK.getKey(Blocks.CHISELED_BOOKSHELF).withPrefix("block/"));
         models().withExistingParent(MinejagoBlocks.CHISELED_SCROLL_SHELF.getId().getPath() + "_inventory", BuiltInRegistries.BLOCK.getKey(Blocks.CHISELED_BOOKSHELF).withPrefix("block/").withSuffix("_inventory"))
-                .texture("front", modBlockModel(MinejagoBlocks.CHISELED_SCROLL_SHELF.getId().getPath() + "_empty"));
-        simpleBlock(MinejagoBlocks.SCROLL_SHELF.get(), models().cubeColumnHorizontal(MinejagoBlocks.SCROLL_SHELF.getId().getPath(), modBlockModel(MinejagoBlocks.SCROLL_SHELF.getId().getPath()), mcBlockModel(Items.OAK_PLANKS.builtInRegistryHolder().key().location().getPath())));
+                .texture("front", modBlockLoc(MinejagoBlocks.CHISELED_SCROLL_SHELF.getId().getPath() + "_empty"));
+        simpleBlock(MinejagoBlocks.SCROLL_SHELF.get(), models().cubeColumnHorizontal(MinejagoBlocks.SCROLL_SHELF.getId().getPath(), blockLoc(MinejagoBlocks.SCROLL_SHELF), mcBlockLoc(BuiltInRegistries.BLOCK.getKey(Blocks.OAK_PLANKS).getPath())));
     }
 
     @Override

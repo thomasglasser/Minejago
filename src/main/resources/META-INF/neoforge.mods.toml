@@ -14,6 +14,7 @@ authors="${mod_author}"
 description='''
 ${description}
 '''
+enumExtensions="META-INF/enum_extensions.json"
 [[mixins]]
 config = "${mod_id}.mixins.json"
 [mc-publish]

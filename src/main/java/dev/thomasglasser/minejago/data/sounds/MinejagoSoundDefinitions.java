@@ -15,6 +15,10 @@ public class MinejagoSoundDefinitions extends ExtendedSoundDefinitionsProvider {
     public void registerSounds() {
         add(MinejagoSoundEvents.TEAPOT_WHISTLE);
 
+        add(MinejagoSoundEvents.DRAGON_BUTTON_OPEN);
+        add(MinejagoSoundEvents.DRAGON_BUTTON_CLICK);
+        add(MinejagoSoundEvents.DRAGON_BUTTON_CLOSE);
+
         add(MinejagoSoundEvents.SPINJITZU_START);
         add(MinejagoSoundEvents.SPINJITZU_STOP);
         add(MinejagoSoundEvents.SPINJITZU_ACTIVE);
@@ -37,6 +41,8 @@ public class MinejagoSoundDefinitions extends ExtendedSoundDefinitionsProvider {
         add(MinejagoSoundEvents.EARTH_DRAGON_HURT);
         add(MinejagoSoundEvents.EARTH_DRAGON_ROAR);
         add(MinejagoSoundEvents.EARTH_DRAGON_STEP);
+        add(MinejagoSoundEvents.EARTH_DRAGON_BOND_UP);
+        add(MinejagoSoundEvents.EARTH_DRAGON_BOND_DOWN);
 
         add(MinejagoSoundEvents.SKULL_TRUCK_AMBIENT_ACTIVE);
         add(MinejagoSoundEvents.SKULL_TRUCK_AMBIENT_IDLE);

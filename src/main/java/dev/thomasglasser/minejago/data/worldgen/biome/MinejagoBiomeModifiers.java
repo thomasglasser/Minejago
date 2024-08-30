@@ -45,11 +45,6 @@ public class MinejagoBiomeModifiers {
     }
 
     @SafeVarargs
-    private static BiomeModifiers.AddSpawnsBiomeModifier addCharactersToBiomes(HolderSet<Biome> biomes, EntityType<? extends Entity>... entities) {
-        return addCharactersToBiomes(biomes, 1, entities);
-    }
-
-    @SafeVarargs
     private static BiomeModifiers.AddSpawnsBiomeModifier addCharactersToBiomes(HolderSet<Biome> biomes, int weight, EntityType<? extends Entity>... entities) {
         List<MobSpawnSettings.SpawnerData> data = new ArrayList<>();
 

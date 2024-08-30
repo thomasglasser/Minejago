@@ -9,6 +9,7 @@ import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
 import dev.thomasglasser.tommylib.api.network.NetworkUtils;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -24,6 +25,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectUtil;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -41,7 +43,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.phys.AABB;
 import net.tslat.smartbrainlib.api.SmartBrainOwner;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
 import net.tslat.smartbrainlib.api.core.SmartBrainProvider;
@@ -270,15 +271,17 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
         new SpinjitzuData(true, doingSpinjitzu).save(this, !level().isClientSide);
     }
 
-    public static boolean checkCharacterSpawnRules(Class<? extends Character> clazz, EntityType<? extends Character> character, LevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        List<? extends Character> characters;
-        if (level instanceof WorldGenRegion worldGenRegion) {
-            characters = worldGenRegion.getLevel().getEntitiesOfClass(clazz, AABB.ofSize(pos.getCenter(), 1024, 1024, 1024));
-            return characters.isEmpty() && Mob.checkMobSpawnRules(character, level, spawnType, pos, random);
-        } else {
-            characters = level.getEntitiesOfClass(Character.class, AABB.ofSize(pos.getCenter(), 1024, 1024, 1024));
-            return characters.isEmpty() && Mob.checkMobSpawnRules(character, level, spawnType, pos, random);
+    public static boolean checkCharacterSpawnRules(EntityType<? extends Character> character, LevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        List<Character> characters = new ArrayList<>();
+        ServerLevel serverLevel = level instanceof Level ? (ServerLevel) level : level instanceof WorldGenRegion ? ((WorldGenRegion) level).getLevel() : null;
+        if (serverLevel != null) {
+            for (Entity entity : serverLevel.getEntities().getAll()) {
+                if (entity.getType() == character) {
+                    characters.add((Character) entity);
+                }
+            }
         }
+        return characters.isEmpty() && Mob.checkMobSpawnRules(character, level, spawnType, pos, random);
     }
 
     public void setMeditationStatus(MeditationStatus meditationStatus) {

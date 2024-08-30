@@ -17,7 +17,6 @@ import dev.thomasglasser.minejago.network.ServerboundStopSpinjitzuPayload;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.character.Character;
-import dev.thomasglasser.minejago.world.entity.character.Cole;
 import dev.thomasglasser.minejago.world.entity.character.Zane;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
 import dev.thomasglasser.minejago.world.entity.power.Power;
@@ -188,10 +187,10 @@ public class MinejagoEntityEvents {
                         i.set(ResourceKeyFocusModifiers.applyModifier(level.getBiome(playerPos).unwrapKey().orElseThrow(), i.get()));
                         i.set(ResourceKeyFocusModifiers.applyModifier(level.dimension(), i.get()));
                         serverPlayer.serverLevel().structureManager().getAllStructuresAt(playerPos).keySet().forEach(structure -> i.set(ResourceKeyFocusModifiers.applyModifier(level.registryAccess().registryOrThrow(Registries.STRUCTURE).getResourceKey(structure).orElseThrow(), i.get())));
-                        Stream<BlockState> blocks = level.getBlockStates(player.getBoundingBox().inflate(2));
+                        Stream<BlockState> blocks = level.getBlockStates(player.getBoundingBox().inflate(4));
                         blocks.forEach(blockState -> i.set(BlockStateFocusModifiers.applyModifier(blockState, i.get())));
                         serverPlayer.getActiveEffects().forEach(mobEffectInstance -> i.set(ResourceKeyFocusModifiers.applyModifier(mobEffectInstance.getEffect().unwrapKey().orElseThrow(), i.get()) * (mobEffectInstance.getAmplifier() + 1)));
-                        List<Entity> entities = level.getEntities(serverPlayer, serverPlayer.getBoundingBox().inflate(2));
+                        List<Entity> entities = level.getEntities(serverPlayer, serverPlayer.getBoundingBox().inflate(4));
                         entities.forEach(entity -> {
                             if (entity instanceof ItemEntity item) {
                                 i.set(ItemStackFocusModifiers.applyModifier(item.getItem(), i.get()));
@@ -202,7 +201,7 @@ public class MinejagoEntityEvents {
                             }
                         });
                         serverPlayer.getInventory().items.forEach(stack -> i.set(ItemStackFocusModifiers.applyModifier(stack, i.get())));
-                        focusData.meditate(focusData.isMegaMeditating(), (int) i.getAndSet(0), 0.1f);
+                        focusData.meditate(focusData.isMegaMeditating(), (int) i.getAndSet(0), FocusConstants.FOCUS_SATURATION_NORMAL);
                     }
 
                     if (focusData.canMegaMeditate(serverPlayer)) {
@@ -214,6 +213,9 @@ public class MinejagoEntityEvents {
                         focusData.startMeditating();
                         TommyLibServices.NETWORK.sendToAllClients(new ClientboundStartMeditationPayload(player.getUUID()), level.getServer());
                     }
+                } else if (TommyLibServices.ENTITY.getPersistentData(serverPlayer).contains("StartPos")) {
+                    TommyLibServices.ENTITY.getPersistentData(serverPlayer).remove("StartPos");
+                    TommyLibServices.ENTITY.setPersistentData(serverPlayer, persistentData, true);
                 }
 
                 if (MinejagoLevelUtils.isGoldenWeaponsMapHolderNearby(serverPlayer, SkulkinRaid.RADIUS_BUFFER)) {
@@ -362,7 +364,7 @@ public class MinejagoEntityEvents {
 
     public static void onSpawnPlacementsRegister(RegisterSpawnPlacementsEvent event) {
         event.register(MinejagoEntityTypes.ZANE.get(), SpawnPlacementTypes.IN_WATER, Heightmap.Types.OCEAN_FLOOR_WG, Zane::checkZaneSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
-        event.register(MinejagoEntityTypes.COLE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ((entityType, serverLevelAccessor, mobSpawnType, blockPos, randomSource) -> Character.checkCharacterSpawnRules(Cole.class, entityType, serverLevelAccessor, mobSpawnType, blockPos, randomSource)), RegisterSpawnPlacementsEvent.Operation.AND);
+        event.register(MinejagoEntityTypes.COLE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Character::checkCharacterSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
     }
 
     public static void onLivingKnockBack(LivingKnockBackEvent event) {
@@ -373,6 +375,11 @@ public class MinejagoEntityEvents {
 
     public static void onAddBlocksToBlockEntityType(BlockEntityTypeAddBlocksEvent event) {
         event.modify(BlockEntityType.BRUSHABLE_BLOCK, MinejagoBlocks.SUSPICIOUS_RED_SAND.get());
+
+        event.modify(BlockEntityType.SIGN, MinejagoBlocks.ENCHANTED_WOOD_SET.sign().get());
+        event.modify(BlockEntityType.SIGN, MinejagoBlocks.ENCHANTED_WOOD_SET.wallSign().get());
+        event.modify(BlockEntityType.HANGING_SIGN, MinejagoBlocks.ENCHANTED_WOOD_SET.hangingSign().get());
+        event.modify(BlockEntityType.HANGING_SIGN, MinejagoBlocks.ENCHANTED_WOOD_SET.wallHangingSign().get());
     }
 
     public static void onEntityJoinLevel(EntityJoinLevelEvent event) {

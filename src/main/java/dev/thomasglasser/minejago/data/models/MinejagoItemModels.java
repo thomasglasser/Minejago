@@ -5,6 +5,7 @@ import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.tommylib.api.data.models.ExtendedItemModelProvider;
+import dev.thomasglasser.tommylib.api.world.level.block.WoodSet;
 import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.data.PackOutput;
 import net.minecraft.server.packs.PackType;
@@ -66,9 +67,9 @@ public class MinejagoItemModels extends ExtendedItemModelProvider {
 
         basicBlockItem(MinejagoBlocks.SCROLL_SHELF);
 
-        withExistingParent(MinejagoItems.FILLED_TEACUP.getId().getPath(), mcItemModel("generated"))
-                .texture("layer0", modItemModel(MinejagoItems.FILLED_TEACUP.getId().getPath() + "_overlay"))
-                .texture("layer1", modItemModel(MinejagoItems.FILLED_TEACUP.getId().getPath()));
+        withExistingParent(MinejagoItems.FILLED_TEACUP.getId().getPath(), mcItemLoc("generated"))
+                .texture("layer0", modItemLoc(MinejagoItems.FILLED_TEACUP.getId().getPath() + "_overlay"))
+                .texture("layer1", modItemLoc(MinejagoItems.FILLED_TEACUP.getId().getPath()));
 
         MinejagoBlocks.TEAPOTS.forEach((dyeColor, itemRegistryObject) -> {
             if (existingFileHelper.exists(Minejago.modLoc("textures/item/" + dyeColor.getName() + "_teapot.png"), PackType.CLIENT_RESOURCES))
@@ -92,13 +93,38 @@ public class MinejagoItemModels extends ExtendedItemModelProvider {
 
         withExistingParent(MinejagoItems.EMPTY_GOLDEN_WEAPONS_MAP.getId().getPath(), "item/map");
 
-        woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET);
+//        woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET);
+        WoodSet set = MinejagoBlocks.ENCHANTED_WOOD_SET;
+        withExistingParent(set.log().getId().getPath(), blockLoc(set.log()));
+        withExistingParent(set.strippedLog().getId().getPath(), blockLoc(set.strippedLog()));
+        withExistingParent(set.wood().getId().getPath(), blockLoc(set.wood()));
+        withExistingParent(set.strippedWood().getId().getPath(), blockLoc(set.strippedWood()));
+        withExistingParent(set.planks().getId().getPath(), blockLoc(set.planks()));
+        withExistingParent(set.slab().getId().getPath(), blockLoc(set.slab()));
+        withExistingParent(set.stairs().getId().getPath(), blockLoc(set.stairs()));
+        withExistingParent(set.pressurePlate().getId().getPath(), blockLoc(set.pressurePlate()));
+        buttonInventory(set.button().getId().getPath(), blockLoc(set.planks()));
+        fenceInventory(set.fence().getId().getPath(), blockLoc(set.planks()));
+        withExistingParent(set.fenceGate().getId().getPath(), blockLoc(set.fenceGate()));
+        // TODO: Door item texture
+//        basicItem(set.door().asItem());
+        // TODO: Trapdoor block textures
+//        withExistingParent(set.trapdoor().getId().getPath(), blockLoc(set.trapdoor()));
+        // TODO: Sign item texture
+//        basicItem(set.sign().asItem());
+        // TODO: Wall sign item texture
+//        basicItem(set.hangingSign().asItem());
+        // TODO: Boat item texture
+//        basicItem(set.boatItem());
+        // TODO: Chest boat item texture
+//        basicItem(set.chestBoatItem());
+
         leavesSet(MinejagoBlocks.FOCUS_LEAVES_SET);
 
         MinejagoArmors.TRAINING_GI_SET.getAll().forEach(item -> withEntityModel(item).guiLight(BlockModel.GuiLight.FRONT));
 
         withEntityModelInHand(MinejagoItems.BAMBOO_STAFF, withEntityModel(MinejagoItems.BAMBOO_STAFF)
-                .texture("particle", modItemModel(MinejagoItems.BAMBOO_STAFF.getId().getPath()))
+                .texture("particle", itemLoc(MinejagoItems.BAMBOO_STAFF))
                 .transforms()
                 .transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).translation(8, 5, 10.5f).end()
                 .transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND).translation(-8, 5, 10.5f).end()
@@ -106,7 +132,7 @@ public class MinejagoItemModels extends ExtendedItemModelProvider {
                 .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(0, 90, -25).translation(13, 8, 1).end()
                 .end(), basicInventoryItem(MinejagoItems.BAMBOO_STAFF));
         withEntityModelInHand(MinejagoItems.SCYTHE_OF_QUAKES, withEntityModel(MinejagoItems.SCYTHE_OF_QUAKES)
-                .texture("particle", modItemModel(MinejagoItems.SCYTHE_OF_QUAKES.getId().getPath()))
+                .texture("particle", itemLoc(MinejagoItems.SCYTHE_OF_QUAKES))
                 .transforms()
                 .transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(0, -90, 0).translation(-8, 25, 10).end()
                 .transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND).rotation(0, 90, 0).translation(8, 25, 10).end()

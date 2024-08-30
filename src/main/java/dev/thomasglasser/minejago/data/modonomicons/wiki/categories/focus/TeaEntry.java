@@ -5,8 +5,7 @@ import com.klikli_dev.modonomicon.api.datagen.book.BookIconModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookImagePageModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
 import dev.thomasglasser.minejago.data.modonomicons.wiki.WikiBookSubProvider;
-import dev.thomasglasser.minejago.world.item.MinejagoItemUtils;
-import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
+import dev.thomasglasser.minejago.world.item.MinejagoItems;
 
 public class TeaEntry extends IndexModeEntryProvider {
     private static final String ID = "tea";
@@ -68,7 +67,9 @@ public class TeaEntry extends IndexModeEntryProvider {
 
     @Override
     protected BookIconModel entryIcon() {
-        return BookIconModel.create(MinejagoItemUtils.fillTeacup(MinejagoPotions.FOCUS_TEA));
+        // TODO: Modonomicon fix for potions
+//        return BookIconModel.create(MinejagoItemUtils.fillTeacup(MinejagoPotions.FOCUS_TEA));
+        return BookIconModel.create(MinejagoItems.FILLED_TEACUP);
     }
 
     @Override

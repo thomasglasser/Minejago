@@ -53,15 +53,17 @@ public class BlockStateFocusModifiers {
     }
 
     public static double applyModifier(BlockState state, double oldValue) {
-        List<BlockStateFocusModifier> data = new ArrayList<>(BLOCK_STATE_FOCUS_MODIFIERS.stream().filter(modifier -> modifier.getState().getBlock() == state.getBlock()).toList());
+        List<BlockStateFocusModifier> data = new ArrayList<>(BLOCK_STATE_FOCUS_MODIFIERS.stream().filter(modifier -> modifier.getState() != null ? modifier.getState().getBlock() == state.getBlock() : modifier.getBlock() == state.getBlock()).toList());
         List<BlockStateFocusModifier> matches = new ArrayList<>(data);
         if (!data.isEmpty()) {
             for (BlockStateFocusModifier modifier : data) {
-                for (Map.Entry<Property<?>, Comparable<?>> entry : modifier.getState().getValues().entrySet()) {
-                    Property<?> property = entry.getKey();
-                    Comparable<?> comparable = entry.getValue();
-                    if (!state.getValue(property).equals(comparable))
-                        matches.remove(modifier);
+                if (modifier.getState() != null) {
+                    for (Map.Entry<Property<?>, Comparable<?>> entry : modifier.getState().getValues().entrySet()) {
+                        Property<?> property = entry.getKey();
+                        Comparable<?> comparable = entry.getValue();
+                        if (!state.getValue(property).equals(comparable))
+                            matches.remove(modifier);
+                    }
                 }
             }
 

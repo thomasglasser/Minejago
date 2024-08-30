@@ -28,10 +28,6 @@ public class MinejagoPotions {
     public static final DeferredHolder<Potion, Potion> MILK = register("milk", MinejagoMobEffects.CURE);
     public static final DeferredHolder<Potion, Potion> FOCUS_TEA = register("focus_tea", 4, MinejagoMobEffects.HYPERFOCUS);
 
-    private static DeferredHolder<Potion, Potion> register(String name) {
-        return POTIONS.register(name, Potion::new);
-    }
-
     private static DeferredHolder<Potion, Potion> register(String name, int color) {
         return POTIONS.register(name, () -> new EmptyColoredPotion(name, color));
     }

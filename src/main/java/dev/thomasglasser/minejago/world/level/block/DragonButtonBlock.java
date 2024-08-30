@@ -1,11 +1,13 @@
 package dev.thomasglasser.minejago.world.level.block;
 
 import com.mojang.serialization.MapCodec;
+import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.level.block.entity.DragonButtonBlockEntity;
 import java.util.Map;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionResult;
@@ -156,6 +158,12 @@ public class DragonButtonBlock extends HorizontalDirectionalBlock implements Ent
                 }
                 press(state, level, pos, player);
             } else if (dragon.bounds().contains(relativeHitVec)) {
+                boolean open = state.getValue(OPEN);
+                if (open) {
+                    level.playSound(null, pos, MinejagoSoundEvents.DRAGON_BUTTON_CLOSE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+                } else {
+                    level.playSound(null, pos, MinejagoSoundEvents.DRAGON_BUTTON_OPEN.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+                }
                 level.setBlock(pos, state.cycle(OPEN), Block.UPDATE_ALL);
                 level.setBlock(pos.below(), level.getBlockState(pos.below()).cycle(OPEN), Block.UPDATE_ALL);
             }
@@ -167,7 +175,7 @@ public class DragonButtonBlock extends HorizontalDirectionalBlock implements Ent
     public void press(BlockState state, Level level, BlockPos pos, @Nullable Player player) {
         level.setBlock(pos, state.cycle(POWERED), Block.UPDATE_ALL);
         this.updateNeighbours(state, level, pos);
-        // TODO: Sound
+        level.playSound(null, pos, MinejagoSoundEvents.DRAGON_BUTTON_CLICK.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
         level.gameEvent(player, GameEvent.BLOCK_ACTIVATE, pos);
         if (state.getValue(PART) == Part.TOP && level.getBlockState(pos.below()).getValue(PART) == Part.BOTTOM)
             press(level.getBlockState(pos.below()), level, pos.below(), player);

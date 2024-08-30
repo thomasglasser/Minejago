@@ -53,13 +53,16 @@ public class ItemStackFocusModifiers {
 
     public static double applyModifier(ItemStack stack, double oldValue) {
         List<ItemStackFocusModifier> data = ITEM_STACK_FOCUS_MODIFIERS.stream().filter(modifier -> {
-            AtomicBoolean sameComponents = new AtomicBoolean(true);
-            modifier.getStack().getComponents().forEach(component -> {
-                if (!component.equals(stack.get(component.type()))) {
-                    sameComponents.set(false);
-                }
-            });
-            return modifier.getStack().getItem() == stack.getItem() && sameComponents.get();
+            if (!modifier.getStack().isEmpty()) {
+                AtomicBoolean sameComponents = new AtomicBoolean(true);
+                modifier.getStack().getComponents().forEach(component -> {
+                    if (!component.equals(stack.get(component.type()))) {
+                        sameComponents.set(false);
+                    }
+                });
+                return modifier.getStack().getItem() == stack.getItem() && sameComponents.get();
+            } else
+                return modifier.getItem() == stack.getItem();
         }).toList();
         if (!data.isEmpty()) {
             double newValue = oldValue;
