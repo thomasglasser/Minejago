@@ -31,6 +31,7 @@ import dev.thomasglasser.minejago.world.focus.modifier.resourcekey.ResourceKeyFo
 import dev.thomasglasser.minejago.world.focus.modifier.world.Weather;
 import dev.thomasglasser.minejago.world.focus.modifier.world.WorldFocusModifiers;
 import dev.thomasglasser.minejago.world.item.GoldenWeaponItem;
+import dev.thomasglasser.minejago.world.item.MinejagoItemUtils;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.level.MinejagoLevelUtils;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
@@ -328,12 +329,12 @@ public class MinejagoEntityEvents {
 
     public static void onPlayerEntityInteract(PlayerInteractEvent.EntityInteract event) {
         Player player = event.getEntity();
-        Level world = event.getLevel();
+        Level level = event.getLevel();
         InteractionHand hand = event.getHand();
         Entity entity = event.getTarget();
         CompoundTag persistentData = TommyLibServices.ENTITY.getPersistentData(entity);
-        if (world instanceof ServerLevel && hand == InteractionHand.MAIN_HAND && entity instanceof Painting painting && painting.getVariant().is(MinejagoPaintingVariants.FOUR_WEAPONS) && !persistentData.getBoolean("MapTaken")) {
-            player.addItem(MinejagoItems.EMPTY_GOLDEN_WEAPONS_MAP.get().getDefaultInstance());
+        if (level instanceof ServerLevel serverLevel && hand == InteractionHand.MAIN_HAND && entity instanceof Painting painting && painting.getVariant().is(MinejagoPaintingVariants.FOUR_WEAPONS) && !persistentData.getBoolean("MapTaken")) {
+            player.addItem(MinejagoItemUtils.createCaveOfDespairMap(serverLevel, player));
             if (!player.isCreative()) {
                 persistentData.putBoolean("MapTaken", true);
                 persistentData.putBoolean("MapTakenByPlayer", true);

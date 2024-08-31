@@ -91,8 +91,6 @@ public class MinejagoItemModels extends ExtendedItemModelProvider {
         spawnEgg(MinejagoItems.SKULL_TRUCK_SPAWN_EGG);
         spawnEgg(MinejagoItems.SKULL_MOTORBIKE_SPAWN_EGG);
 
-        withExistingParent(MinejagoItems.EMPTY_GOLDEN_WEAPONS_MAP.getId().getPath(), "item/map");
-
 //        woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET);
         WoodSet set = MinejagoBlocks.ENCHANTED_WOOD_SET;
         withExistingParent(set.log().getId().getPath(), blockLoc(set.log()));

@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaider;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaidsHolder;
-import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import dev.thomasglasser.minejago.world.item.MinejagoItemUtils;
 import dev.thomasglasser.minejago.world.level.MinejagoLevelUtils;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import java.util.List;
@@ -65,7 +65,7 @@ public class SeekAndTakeFourWeaponsMap<T extends SkulkinRaider> extends Extended
                 persistentData.putBoolean("MapTaken", true);
                 TommyLibServices.ENTITY.setPersistentData(fw, persistentData, true);
                 ((SkulkinRaidsHolder) level).getSkulkinRaids().setMapTaken();
-                entity.setItemSlot(EquipmentSlot.OFFHAND, MinejagoItems.EMPTY_GOLDEN_WEAPONS_MAP.get().getDefaultInstance());
+                entity.setItemSlot(EquipmentSlot.OFFHAND, MinejagoItemUtils.createCaveOfDespairMap(level, entity));
                 entity.setDropChance(EquipmentSlot.OFFHAND, 2.0F);
                 Vec3 escapePos = null;
                 while (escapePos == null) {

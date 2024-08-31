@@ -161,7 +161,8 @@ public abstract class AbstractSpinjitzuCourseElement<T extends AbstractSpinjitzu
         // Ensures everything syncs properly
         if (tickCount < 2) {
             refreshDimensions();
-            setYRot(getYRotSynced());
+            if (getYRotSynced() != 0)
+                setYRot(getYRotSynced());
             for (AbstractSpinjitzuCourseElementPart<T> part : getParts()) {
                 part.setActive(isActive());
             }
@@ -329,5 +330,11 @@ public abstract class AbstractSpinjitzuCourseElement<T extends AbstractSpinjitzu
 
     public void endTracking() {
         this.courseTracker = null;
+    }
+
+    @Override
+    public void moveTo(double x, double y, double z, float yRot, float xRot) {
+        setYRotSynced(yRot);
+        super.moveTo(x, y, z, yRot, xRot);
     }
 }

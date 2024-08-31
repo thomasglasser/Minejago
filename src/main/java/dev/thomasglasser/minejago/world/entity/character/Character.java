@@ -9,8 +9,6 @@ import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
 import dev.thomasglasser.tommylib.api.network.NetworkUtils;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import java.util.ArrayList;
-import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializer;
@@ -72,6 +70,9 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Character extends AgeableMob implements SmartBrainOwner<Character>, GeoEntity, SpinjitzuDoer {
     public static final RawAnimation SPINJITZU = RawAnimation.begin().thenPlay("move.spinjitzu");
     public static final RawAnimation MEDITATION_START = RawAnimation.begin().thenPlay("move.meditation.start");
@@ -87,7 +88,9 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
 
     public Character(EntityType<? extends Character> entityType, Level level) {
         super(entityType, level);
-        navigation.setCanFloat(true);
+        getNavigation().setCanFloat(true);
+        // TODO: Wait for SBL update for InteractWithDoor alternative
+        getNavigation().getNodeEvaluator().setCanOpenDoors(true);
         setPersistenceRequired();
     }
 

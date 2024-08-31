@@ -19,6 +19,7 @@ import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVarian
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
 import dev.thomasglasser.minejago.world.entity.spinjitzucourse.AbstractSpinjitzuCourseElement;
 import dev.thomasglasser.minejago.world.item.MinejagoCreativeModeTabs;
+import dev.thomasglasser.minejago.world.item.MinejagoItemUtils;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.SpinjitzuCourseElementItem;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
@@ -81,7 +82,6 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(MinejagoItems.SCROLL.get(), "Scroll");
         add(MinejagoItems.WRITABLE_SCROLL.get(), "Scroll and Quill");
         add(MinejagoItems.WRITTEN_SCROLL.get(), "Written Scroll");
-        add(MinejagoItems.EMPTY_GOLDEN_WEAPONS_MAP.get(), "Empty Golden Weapons Map");
 
         add(MinejagoBlocks.TEAPOT.get(), "Teapot");
         MinejagoBlocks.TEAPOTS.forEach((color, pot) -> add(pot.get(), WordUtils.capitalize(color.getName().replace('_', ' ')) + " Teapot"));
@@ -303,6 +303,8 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
 
         add(TeapotBlock.POTION, "%s");
         add(TeapotBlock.POTION_AND_ITEM, "%s with %s");
+
+        add(MinejagoItemUtils.NO_STRUCTURES_FOUND, "You feel the weapons are not in this area...");
 
         addConfigs();
     }

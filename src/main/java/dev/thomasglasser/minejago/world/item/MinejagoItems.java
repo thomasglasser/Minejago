@@ -10,7 +10,6 @@ import dev.thomasglasser.tommylib.api.client.renderer.BewlrProvider;
 import dev.thomasglasser.tommylib.api.registration.DeferredItem;
 import dev.thomasglasser.tommylib.api.registration.DeferredRegister;
 import dev.thomasglasser.tommylib.api.world.item.BaseModeledThrowableSwordItem;
-import dev.thomasglasser.tommylib.api.world.item.CustomEmptyMapItem;
 import dev.thomasglasser.tommylib.api.world.item.ItemUtils;
 import dev.thomasglasser.tommylib.api.world.item.ThrowableSwordItem;
 import java.util.ArrayList;
@@ -58,7 +57,6 @@ public class MinejagoItems {
     public static final DeferredItem<ScrollItem> SCROLL = register("scroll", () -> new ScrollItem(new Item.Properties()), List.of(CreativeModeTabs.INGREDIENTS));
     public static final DeferredItem<WritableScrollItem> WRITABLE_SCROLL = register("writable_scroll", () -> new WritableScrollItem(new Item.Properties().stacksTo(1)), List.of(CreativeModeTabs.TOOLS_AND_UTILITIES));
     public static final DeferredItem<WrittenScrollItem> WRITTEN_SCROLL = register("written_scroll", () -> new WrittenScrollItem(new Item.Properties().stacksTo(1)), List.of());
-    public static final DeferredItem<CustomEmptyMapItem> EMPTY_GOLDEN_WEAPONS_MAP = register("empty_golden_weapons_map", () -> new CustomEmptyMapItem(MinejagoItemUtils::createGoldenWeaponsMap, new Item.Properties()), List.of(MinejagoCreativeModeTabs.MINEJAGO.getKey()));
 
     // Banner Patterns
     public static final DeferredItem<BannerPatternItem> FOUR_WEAPONS_BANNER_PATTERN = registerBannerPattern("four_weapons", MinejagoBannerPatternTags.PATTERN_ITEM_FOUR_WEAPONS);
