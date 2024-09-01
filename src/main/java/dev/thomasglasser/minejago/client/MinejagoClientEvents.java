@@ -69,9 +69,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.BossHealthOverlay;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -91,7 +93,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.sounds.Musics;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -124,6 +125,8 @@ import org.lwjgl.glfw.GLFW;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 public class MinejagoClientEvents {
+    private static final List<UUID> skulkinRaids = new ArrayList<>();
+
     public static void onPlayerLoggedIn() {
         MinejagoClientUtils.refreshVip();
     }
@@ -331,13 +334,18 @@ public class MinejagoClientEvents {
     }
 
     public static void onSelectMusic(SelectMusicEvent event) {
-        if (event.getOriginalMusic() == Musics.GAME || event.getOriginalMusic() == Musics.CREATIVE) {
-            Player player = ClientUtils.getMainClientPlayer();
-            if (!player.level().getEntities(player, player.getBoundingBox().inflate(128), entity -> entity instanceof Wu).isEmpty() && player.level().getBiome(player.blockPosition()).is(MinejagoBiomeTags.HAS_MONASTERY_OF_SPINJITZU)) {
-                event.setMusic(MinejagoMusics.MONASTERY_OF_SPINJITZU);
-            } else if (Minecraft.getInstance().getMusicManager().isPlayingMusic(MinejagoMusics.MONASTERY_OF_SPINJITZU)) {
-                event.setMusic(null);
-            }
+        Player player = ClientUtils.getMainClientPlayer();
+        BossHealthOverlay bossOverlay = ClientUtils.getMinecraft().gui.getBossOverlay();
+        if (bossOverlay.shouldPlayMusic() && skulkinRaids.stream().anyMatch(bossOverlay.events::containsKey)) {
+            event.setMusic(MinejagoMusics.SKULKIN_RAID);
+        } else if (!player.level().getEntities(player, player.getBoundingBox().inflate(128), entity -> entity instanceof Wu).isEmpty() && player.level().getBiome(player.blockPosition()).is(MinejagoBiomeTags.HAS_MONASTERY_OF_SPINJITZU)) {
+            event.setMusic(MinejagoMusics.MONASTERY_OF_SPINJITZU);
+        } else if (Minecraft.getInstance().getMusicManager().isPlayingMusic(MinejagoMusics.MONASTERY_OF_SPINJITZU) || Minecraft.getInstance().getMusicManager().isPlayingMusic(MinejagoMusics.SKULKIN_RAID)) {
+            event.setMusic(null);
         }
+    }
+
+    public static void addSkulkinRaid(UUID id) {
+        skulkinRaids.add(id);
     }
 }

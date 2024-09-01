@@ -5,6 +5,7 @@ import com.google.common.collect.Sets;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
 import dev.thomasglasser.minejago.advancements.criterion.SkulkinRaidTrigger;
+import dev.thomasglasser.minejago.network.ClientboundAddSkulkinRaidPayload;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
@@ -118,6 +119,8 @@ public class SkulkinRaid {
         this.center = blockPos;
         this.numGroups = this.getNumGroups(serverLevel.getDifficulty());
         this.status = SkulkinRaid.SkulkinRaidStatus.ONGOING;
+        this.raidEvent.setPlayBossMusic(this.active);
+        TommyLibServices.NETWORK.sendToAllClients(new ClientboundAddSkulkinRaidPayload(raidEvent.getId()), serverLevel.getServer());
     }
 
     public SkulkinRaid(ServerLevel serverLevel, CompoundTag compoundTag) {

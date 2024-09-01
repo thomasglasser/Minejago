@@ -39,10 +39,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ServerLevel.class)
 public abstract class ServerLevelMixin extends Level implements SkulkinRaidsHolder {
     @Unique
-    private final ServerLevel INSTANCE = ((ServerLevel) (Object) (this));
+    private final ServerLevel minejago$INSTANCE = ((ServerLevel) (Object) (this));
 
     @Unique
-    protected SkulkinRaids skulkinRaids;
+    protected SkulkinRaids minejago$skulkinRaids;
 
     @Mutable
     @Final
@@ -58,7 +58,7 @@ public abstract class ServerLevelMixin extends Level implements SkulkinRaidsHold
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void minejago_init(MinecraftServer minecraftServer, Executor executor, LevelStorageSource.LevelStorageAccess levelStorageAccess, ServerLevelData serverLevelData, ResourceKey resourceKey, LevelStem levelStem, ChunkProgressListener chunkProgressListener, boolean bl, long l, List list, boolean bl2, RandomSequences randomSequences, CallbackInfo ci) {
-        skulkinRaids = this.getDataStorage().computeIfAbsent(SkulkinRaids.factory(INSTANCE), SkulkinRaids.getFileId());
+        minejago$skulkinRaids = this.getDataStorage().computeIfAbsent(SkulkinRaids.factory(minejago$INSTANCE), SkulkinRaids.getFileId());
         List<CustomSpawner> spawners = customSpawners;
         customSpawners = new ArrayList<>();
         customSpawners.addAll(spawners);
@@ -72,7 +72,7 @@ public abstract class ServerLevelMixin extends Level implements SkulkinRaidsHold
 
     @Override
     public SkulkinRaids getSkulkinRaids() {
-        return skulkinRaids;
+        return minejago$skulkinRaids;
     }
 
     @Inject(method = "lambda$wakeUpAllPlayers$3", at = @At("TAIL"))

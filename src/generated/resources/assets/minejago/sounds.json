@@ -201,9 +201,19 @@
   },
   "music.monastery_of_spinjitzu": {
     "sounds": [
-      "minejago:music/monastery_of_spinjitzu"
-    ],
-    "subtitle": "subtitles.music.monastery_of_spinjitzu"
+      {
+        "name": "minejago:music/monastery_of_spinjitzu",
+        "stream": true
+      }
+    ]
+  },
+  "music.skulkin_raid": {
+    "sounds": [
+      {
+        "name": "minejago:music/skulkin_raid",
+        "stream": true
+      }
+    ]
   },
   "spinjitzu.active": {
     "sounds": [
