@@ -25,6 +25,7 @@ import net.minecraft.world.level.Level;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
 import net.tslat.smartbrainlib.api.core.behaviour.FirstApplicableBehaviour;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.attack.AnimatableMeleeAttack;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetWalkTargetToAttackTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.target.InvalidateAttackTarget;
 import net.tslat.smartbrainlib.example.SBLSkeleton;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -102,11 +103,18 @@ public class Samukai extends SkulkinRaider implements GeoEntity {
     @Override
     public BrainActivityGroup<? extends SBLSkeleton> getFightTasks() {
         return BrainActivityGroup.fightTasks(
-                new InvalidateAttackTarget<>(), 	 // Invalidate the attack target if it's no longer applicable
-                new FirstApplicableBehaviour<>( 																							  	 // Run only one of the below behaviours, trying each one in order
-                        new RangedItemAttack<>(20, MinejagoItems.BONE_KNIFE.get()).startCondition(entity -> entity.isHolding(MinejagoItems.BONE_KNIFE.get()) && entity.getHealth() <= (entity.getMaxHealth() / 4.0f)).whenStarting(entity -> entity.getEntityData().set(THROWING, true)).whenStopping(entity -> entity.getEntityData().set(THROWING, false)),	 												 // Fire a bow, if holding one
-                        new AnimatableMeleeAttack<>(4)) // Melee attack
-        );
+                new InvalidateAttackTarget<>(), // Invalidate the attack target if it's no longer applicable
+                new SetWalkTargetToAttackTarget<>() // Run at the target if not holding a bow
+                        .startCondition(entity -> !shouldThrowKnives(entity)),
+                new FirstApplicableBehaviour<>( // Run only one of the below behaviours, trying each one in order
+                        new RangedItemAttack<>(20, MinejagoItems.BONE_KNIFE.get()).startCondition(this::shouldThrowKnives).whenStarting(entity -> entity.getEntityData().set(THROWING, true)).whenStopping(entity -> entity.getEntityData().set(THROWING, false)),
+                        new AnimatableMeleeAttack<>(4) // Melee attack
+                                .whenStarting(entity -> setAggressive(true))
+                                .whenStopping(entity -> setAggressive(false))));
+    }
+
+    private boolean shouldThrowKnives(LivingEntity entity) {
+        return entity.isHolding(MinejagoItems.BONE_KNIFE.get()) && entity.getHealth() <= (entity.getMaxHealth() / 4.0f);
     }
 
     @Override
