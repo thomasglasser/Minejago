@@ -6,9 +6,7 @@ import dev.thomasglasser.minejago.world.level.block.entity.DragonButtonBlockEnti
 import java.util.Map;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -173,10 +171,14 @@ public class DragonButtonBlock extends HorizontalDirectionalBlock implements Ent
     }
 
     public void press(BlockState state, Level level, BlockPos pos, @Nullable Player player) {
+        boolean powered = state.getValue(POWERED);
+        if (powered)
+            level.gameEvent(player, GameEvent.BLOCK_DEACTIVATE, pos);
+        else
+            level.gameEvent(player, GameEvent.BLOCK_ACTIVATE, pos);
         level.setBlock(pos, state.cycle(POWERED), Block.UPDATE_ALL);
         this.updateNeighbours(state, level, pos);
         level.playSound(null, pos, MinejagoSoundEvents.DRAGON_BUTTON_CLICK.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
-        level.gameEvent(player, GameEvent.BLOCK_ACTIVATE, pos);
         if (state.getValue(PART) == Part.TOP && level.getBlockState(pos.below()).getValue(PART) == Part.BOTTOM)
             press(level.getBlockState(pos.below()), level, pos.below(), player);
     }
@@ -205,23 +207,6 @@ public class DragonButtonBlock extends HorizontalDirectionalBlock implements Ent
     @Override
     protected boolean isSignalSource(BlockState state) {
         return true;
-    }
-
-    @Override
-    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        if (state.getValue(POWERED)) {
-            this.checkPressed(state, level, pos);
-        }
-    }
-
-    protected void checkPressed(BlockState state, Level level, BlockPos pos) {
-        boolean powered = state.getValue(POWERED);
-        if (powered) {
-            level.setBlock(pos, state.setValue(POWERED, false), Block.UPDATE_ALL);
-            this.updateNeighbours(state, level, pos);
-            // TODO: Sound
-            level.gameEvent(null, GameEvent.BLOCK_DEACTIVATE, pos);
-        }
     }
 
     private void updateNeighbours(BlockState state, Level level, BlockPos pos) {

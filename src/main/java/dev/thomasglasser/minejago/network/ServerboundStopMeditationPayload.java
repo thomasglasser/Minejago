@@ -21,6 +21,7 @@ public record ServerboundStopMeditationPayload(boolean fail) implements Extended
     public void handle(@Nullable Player player) {
         if (player instanceof ServerPlayer serverPlayer) {
             player.getData(MinejagoAttachmentTypes.FOCUS).stopMeditating();
+            player.refreshDimensions();
             TommyLibServices.ENTITY.getPersistentData(serverPlayer).remove("StartPos");
             TommyLibServices.NETWORK.sendToAllClients(new ClientboundStopMeditationPayload(serverPlayer.getUUID(), fail), serverPlayer.getServer());
         }

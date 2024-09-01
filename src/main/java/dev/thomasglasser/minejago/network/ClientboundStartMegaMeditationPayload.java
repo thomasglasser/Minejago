@@ -24,6 +24,7 @@ public record ClientboundStartMegaMeditationPayload(UUID uuid) implements Extend
     public void handle(Player player) {
         player = ClientUtils.getPlayerByUUID(uuid);
         player.getData(MinejagoAttachmentTypes.FOCUS).startMegaMeditating();
+        player.refreshDimensions();
 
         if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled())
             AnimationUtils.startAnimation(PlayerAnimations.Meditation.FLOAT.getAnimation(), player, FirstPersonMode.VANILLA);

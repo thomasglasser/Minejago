@@ -76,6 +76,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.neoforge.event.entity.EntityEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingKnockBackEvent;
@@ -208,10 +209,12 @@ public class MinejagoEntityEvents {
                     if (focusData.canMegaMeditate(serverPlayer)) {
                         if (!focusData.isMegaMeditating()) {
                             focusData.startMegaMeditating();
+                            serverPlayer.refreshDimensions();
                             TommyLibServices.NETWORK.sendToAllClients(new ClientboundStartMegaMeditationPayload(player.getUUID()), level.getServer());
                         }
                     } else if (focusData.isMegaMeditating()) {
                         focusData.startMeditating();
+                        serverPlayer.refreshDimensions();
                         TommyLibServices.NETWORK.sendToAllClients(new ClientboundStartMeditationPayload(player.getUUID()), level.getServer());
                     }
                 } else if (TommyLibServices.ENTITY.getPersistentData(serverPlayer).contains("StartPos")) {
@@ -394,6 +397,12 @@ public class MinejagoEntityEvents {
         if (!event.getEntity().level().isClientSide) {
             event.getEntity().getData(MinejagoAttachmentTypes.SPINJITZU).save(event.getEntity(), true);
             event.getEntity().getData(MinejagoAttachmentTypes.POWER).save(event.getEntity(), true);
+        }
+    }
+
+    public static void onEntitySize(EntityEvent.Size event) {
+        if (event.getEntity() instanceof LivingEntity livingEntity && livingEntity.getData(MinejagoAttachmentTypes.FOCUS).isNormalMeditating()) {
+            event.setNewSize(event.getOldSize().scale(1, 0.7f));
         }
     }
 }

@@ -16,6 +16,7 @@ import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.character.Wu;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
+import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
 import dev.thomasglasser.minejago.world.entity.spinjitzucourse.AbstractSpinjitzuCourseElement;
 import dev.thomasglasser.minejago.world.item.MinejagoCreativeModeTabs;
@@ -102,17 +103,11 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
 
         add(SkulkinRaid.SKULKINS_BANNER_PATTERN_NAME, "Cursed Banner");
 
-        MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(item -> {
-            String nameForVariant = switch (item.get().getVariant()) {
-                case STRENGTH -> "Red";
-                case SPEED -> "Blue";
-                case BOW -> "White";
-                case KNIFE -> "Black";
-                case BONE -> "Bone";
-            };
-
-            addDesc(item.get(), nameForVariant);
-        });
+        add(Skulkin.Variant.STRENGTH, "Strength");
+        add(Skulkin.Variant.SPEED, "Speed");
+        add(Skulkin.Variant.BOW, "Bow");
+        add(Skulkin.Variant.KNIFE, "Knife");
+        add(Skulkin.Variant.BONE, "Bone");
 
         ItemStack uncraftableTea = new ItemStack(MinejagoItems.FILLED_TEACUP.get());
         uncraftableTea.set(DataComponents.POTION_CONTENTS, PotionContents.EMPTY);
@@ -356,5 +351,9 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
     protected <T extends AbstractSpinjitzuCourseElement<T>> void addSpinjitzuCourseElement(DeferredHolder<EntityType<?>, EntityType<T>> entity, DeferredItem<? extends SpinjitzuCourseElementItem> item, String name) {
         add(entity.get(), name + " Spinjitzu Course Element");
         add(item.get(), name + " Spinjitzu Course Element");
+    }
+
+    protected void add(Skulkin.Variant variant, String name) {
+        add(variant.getDescriptionId(), name);
     }
 }

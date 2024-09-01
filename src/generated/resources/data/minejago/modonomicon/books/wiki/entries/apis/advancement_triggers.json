@@ -5,6 +5,11 @@
   "description": "book.minejago.wiki.apis.advancement_triggers.description",
   "hide_while_locked": false,
   "icon": {
+    "components": {
+      "minecraft:potion_contents": {
+        "potion": "minejago:acacia_tea"
+      }
+    },
     "item": "minejago:filled_teacup"
   },
   "name": "book.minejago.wiki.apis.advancement_triggers.name",

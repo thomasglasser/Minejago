@@ -21,7 +21,7 @@ public class MinejagoArmors {
     private static final Item.Properties DEFAULT_PROPERTIES = new Item.Properties().stacksTo(1);
 
     public static final SkeletalChestplateSet SKELETAL_CHESTPLATE_SET = new SkeletalChestplateSet();
-    public static final DeferredItem<SamukaisChestplateItem> SAMUKAIS_CHESTPLATE = register("samukais_chestplate", () -> new SamukaisChestplateItem(MinejagoArmorMaterials.SKELETAL, DEFAULT_PROPERTIES));
+    public static final DeferredItem<SamukaisChestplateItem> SAMUKAIS_CHESTPLATE = register("samukais_chestplate", () -> new SamukaisChestplateItem(MinejagoArmorMaterials.SAMUKAI, DEFAULT_PROPERTIES));
 
     public static final ArmorSet BLACK_GI_SET = create("black_gi", "Black Gi", false, BlackGiItem::new, DEFAULT_PROPERTIES);
     public static final ArmorSet TRAINING_GI_SET = create("training_gi", "Training Gi", true, TrainingGiItem::new, DEFAULT_PROPERTIES);

@@ -5,6 +5,11 @@
   "description": "book.minejago.wiki.tea.regular.description",
   "hide_while_locked": false,
   "icon": {
+    "components": {
+      "minecraft:potion_contents": {
+        "potion": "minejago:oak_tea"
+      }
+    },
     "item": "minejago:filled_teacup"
   },
   "name": "book.minejago.wiki.tea.regular.name",

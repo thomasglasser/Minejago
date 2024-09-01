@@ -25,6 +25,7 @@ public record ClientboundStartMeditationPayload(UUID uuid) implements ExtendedPa
     public void handle(Player player) {
         player = ClientUtils.getPlayerByUUID(uuid);
         player.getData(MinejagoAttachmentTypes.FOCUS).startMeditating();
+        player.refreshDimensions();
 
         if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled())
             AnimationUtils.startAnimation(PlayerAnimations.Meditation.START.getAnimation(), player, FirstPersonMode.VANILLA);

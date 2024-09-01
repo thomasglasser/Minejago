@@ -2,6 +2,7 @@ package dev.thomasglasser.minejago.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 import dev.thomasglasser.minejago.Minejago;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -96,8 +97,10 @@ public class SpinjitzuModel<T extends Entity> extends EntityModel<T> {
 
     public void render(PoseStack poseStack, MultiBufferSource source, int tickCount, float partialTick, int color) {
         float f = (float) tickCount + partialTick;
+        poseStack.mulPose(Axis.XP.rotationDegrees(180.0F));
         inner.render(poseStack, source.getBuffer(RenderType.entityTranslucent(BASE)), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0xFF000000 | color);
         outer.render(poseStack, source.getBuffer(RenderType.breezeWind(SWIRL, xOffset(f) % 1.0F, 0.0F)), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0xFF000000 | color);
+        poseStack.mulPose(Axis.XP.rotationDegrees(180.0F));
     }
 
     private static float xOffset(float tickCount) {

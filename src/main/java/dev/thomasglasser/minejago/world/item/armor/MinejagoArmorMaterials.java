@@ -27,6 +27,14 @@ public class MinejagoArmorMaterials {
         defense.put(ArmorItem.Type.BODY, 6);
     }), 6, SoundEvents.ARMOR_EQUIP_GENERIC, 0.0F, 0.0F, () -> Ingredient.of(Items.BONE));
 
+    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> SAMUKAI = register("samukai", Util.make(new EnumMap<>(ArmorItem.Type.class), defense -> {
+        defense.put(ArmorItem.Type.BOOTS, 4);
+        defense.put(ArmorItem.Type.LEGGINGS, 6);
+        defense.put(ArmorItem.Type.CHESTPLATE, 8);
+        defense.put(ArmorItem.Type.HELMET, 4);
+        defense.put(ArmorItem.Type.BODY, 12);
+    }), 12, SoundEvents.ARMOR_EQUIP_GENERIC, 1.0F, 0.3F, () -> Ingredient.EMPTY);
+
     public static final DeferredHolder<ArmorMaterial, ArmorMaterial> BLACK_GI = register("black_gi", Util.make(new EnumMap<>(ArmorItem.Type.class), defense -> {
         defense.put(ArmorItem.Type.BOOTS, 1);
         defense.put(ArmorItem.Type.LEGGINGS, 2);

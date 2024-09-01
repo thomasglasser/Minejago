@@ -1,9 +1,11 @@
 package dev.thomasglasser.minejago.world.entity.skulkin;
 
+import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaider;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -58,6 +60,7 @@ public class Skulkin extends SkulkinRaider {
         BONE(ChatFormatting.GRAY);
 
         private final ChatFormatting color;
+        private String descriptionId;
 
         Variant(ChatFormatting color) {
             if (color.isColor())
@@ -68,6 +71,13 @@ public class Skulkin extends SkulkinRaider {
 
         public ChatFormatting getColor() {
             return color;
+        }
+
+        public String getDescriptionId() {
+            if (descriptionId == null) {
+                descriptionId = Util.makeDescriptionId("skulkin_variant", Minejago.modLoc(this.name().toLowerCase()));
+            }
+            return descriptionId;
         }
     }
 }

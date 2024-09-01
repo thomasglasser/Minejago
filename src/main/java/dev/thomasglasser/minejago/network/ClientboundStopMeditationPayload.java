@@ -28,6 +28,7 @@ public record ClientboundStopMeditationPayload(UUID uuid, boolean fail) implemen
         Player clientPlayer = ClientUtils.getPlayerByUUID(uuid);
         FocusData focusData = clientPlayer.getData(MinejagoAttachmentTypes.FOCUS);
         focusData.stopMeditating();
+        player.refreshDimensions();
         if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled()) {
             if (fail)
                 AnimationUtils.stopAnimation(clientPlayer);

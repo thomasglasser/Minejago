@@ -22,6 +22,7 @@ public record ServerboundStartMeditationPayload() implements ExtendedPacketPaylo
     public void handle(@Nullable Player player) {
         if (player instanceof ServerPlayer serverPlayer) {
             player.getData(MinejagoAttachmentTypes.FOCUS).startMeditating();
+            player.refreshDimensions();
             CompoundTag persistentData = TommyLibServices.ENTITY.getPersistentData(serverPlayer);
             persistentData.putString("StartPos", serverPlayer.blockPosition().toString());
             TommyLibServices.ENTITY.setPersistentData(serverPlayer, persistentData, false);

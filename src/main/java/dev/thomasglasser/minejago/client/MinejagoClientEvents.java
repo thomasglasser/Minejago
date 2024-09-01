@@ -1,6 +1,5 @@
 package dev.thomasglasser.minejago.client;
 
-import com.mojang.math.Axis;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.gui.MinejagoGuis;
 import dev.thomasglasser.minejago.client.model.BambooStaffModel;
@@ -324,7 +323,6 @@ public class MinejagoClientEvents {
         if (player.getData(MinejagoAttachmentTypes.SPINJITZU).active() && TommyLibServices.ENTITY.getPersistentData(player).getInt(ClientboundStartSpinjitzuPayload.KEY_SPINJITZUSTARTTICKS) <= 0) {
             model.setupAnim(player, 0, 0, player.tickCount + event.getPartialTick(), 0, 0);
             model.getBody().copyFrom(event.getRenderer().getModel().body);
-            event.getPoseStack().mulPose(Axis.XP.rotationDegrees(180.0F));
             float scale = (float) player.getAttributeValue(Attributes.SCALE);
             event.getPoseStack().scale(scale, scale, scale);
             int color = player.level().holderOrThrow(player.getData(MinejagoAttachmentTypes.POWER).power()).value().getColor().getValue();
