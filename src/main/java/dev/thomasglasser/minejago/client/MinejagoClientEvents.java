@@ -65,11 +65,6 @@ import dev.thomasglasser.tommylib.api.client.ClientUtils;
 import dev.thomasglasser.tommylib.api.client.renderer.entity.ThrownSwordRenderer;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import dev.thomasglasser.tommylib.api.world.entity.PlayerRideableFlying;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -123,6 +118,12 @@ import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.tslat.tes.api.util.TESClientUtil;
 import org.lwjgl.glfw.GLFW;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
 public class MinejagoClientEvents {
     private static final List<UUID> skulkinRaids = new ArrayList<>();
@@ -335,13 +336,15 @@ public class MinejagoClientEvents {
 
     public static void onSelectMusic(SelectMusicEvent event) {
         Player player = ClientUtils.getMainClientPlayer();
-        BossHealthOverlay bossOverlay = ClientUtils.getMinecraft().gui.getBossOverlay();
-        if (bossOverlay.shouldPlayMusic() && skulkinRaids.stream().anyMatch(bossOverlay.events::containsKey)) {
-            event.setMusic(MinejagoMusics.SKULKIN_RAID);
-        } else if (!player.level().getEntities(player, player.getBoundingBox().inflate(128), entity -> entity instanceof Wu).isEmpty() && player.level().getBiome(player.blockPosition()).is(MinejagoBiomeTags.HAS_MONASTERY_OF_SPINJITZU)) {
-            event.setMusic(MinejagoMusics.MONASTERY_OF_SPINJITZU);
-        } else if (Minecraft.getInstance().getMusicManager().isPlayingMusic(MinejagoMusics.MONASTERY_OF_SPINJITZU) || Minecraft.getInstance().getMusicManager().isPlayingMusic(MinejagoMusics.SKULKIN_RAID)) {
-            event.setMusic(null);
+        if (player != null) {
+            BossHealthOverlay bossOverlay = ClientUtils.getMinecraft().gui.getBossOverlay();
+            if (bossOverlay.shouldPlayMusic() && skulkinRaids.stream().anyMatch(bossOverlay.events::containsKey)) {
+                event.setMusic(MinejagoMusics.SKULKIN_RAID);
+            } else if (!player.level().getEntities(player, player.getBoundingBox().inflate(128), entity -> entity instanceof Wu).isEmpty() && player.level().getBiome(player.blockPosition()).is(MinejagoBiomeTags.HAS_MONASTERY_OF_SPINJITZU)) {
+                event.setMusic(MinejagoMusics.MONASTERY_OF_SPINJITZU);
+            } else if (Minecraft.getInstance().getMusicManager().isPlayingMusic(MinejagoMusics.MONASTERY_OF_SPINJITZU) || Minecraft.getInstance().getMusicManager().isPlayingMusic(MinejagoMusics.SKULKIN_RAID)) {
+                event.setMusic(null);
+            }
         }
     }
 
