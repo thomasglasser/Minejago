@@ -35,6 +35,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -81,6 +82,8 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
     protected boolean givingPower;
     protected boolean lifting;
     protected boolean interrupted;
+    protected int maxTime;
+    protected int timeLeft;
 
     public Wu(EntityType<? extends Wu> entityType, Level level) {
         super(entityType, level);
@@ -146,8 +149,7 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
                 if (courseData.get(player).equals(trackedCourseElements)) {
                     new SpinjitzuData(true, false).save(player, true);
                     player.getData(MinejagoAttachmentTypes.FOCUS).addExhaustion(FocusConstants.EXHAUSTION_LEARN_SPINJITZU);
-                    // TODO: Make happy noise (particles?)
-                    player.sendSystemMessage(Component.literal("Success"));
+                    playSound(SoundEvents.VILLAGER_CELEBRATE, 1.0f, 0.9f);
                     stopTracking(player);
                     setLifting(false);
                     setInterrupted(false);
@@ -156,8 +158,7 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
                 List<LivingEntity> cooldownList = new ArrayList<>();
                 entitiesOnCooldown.values().forEach(cooldownList::addAll);
                 if (cooldownList.contains(player)) {
-                    // TODO: Make sad noise (particles?)
-                    player.sendSystemMessage(Component.literal("Cooldown"));
+                    playSound(SoundEvents.VILLAGER_NO, 1.0f, 0.9f);
                 } else {
                     Optional<BlockPos> teapotPos = serverLevel.getPoiManager().findClosest(poi -> poi.is(MinejagoPoiTypes.TEAPOTS), blockPosition(), MinejagoServerConfig.INSTANCE.courseRadius.get(), PoiManager.Occupancy.ANY);
                     if (teapotPos.isPresent()) {
@@ -169,16 +170,14 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
                             }
                         }
                         if (trackedCourseElements.isEmpty()) {
-                            // TODO: Make sad noise (particles?)
-                            player.sendSystemMessage(Component.literal("No course"));
+                            playSound(SoundEvents.VILLAGER_NO, 1.0f, 0.9f);
                         } else {
                             courseData.put(player, new HashSet<>());
                             BlockPos pos = teapotPos.get();
                             BrainUtils.setMemory(this, MemoryModuleType.WALK_TARGET, new WalkTarget(pos.relative(Direction.getRandom(random)), 1f, 0));
                         }
                     } else {
-                        // TODO: Make sad noise (particles?)
-                        player.sendSystemMessage(Component.literal("No teapots"));
+                        playSound(SoundEvents.VILLAGER_NO, 1.0f, 0.9f);
                     }
                 }
             }
@@ -303,5 +302,21 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
     @Override
     public boolean shouldSetRandomWalkTarget(Character character) {
         return courseData.isEmpty();
+    }
+
+    public void setMaxTime(int maxTime) {
+        this.maxTime = maxTime;
+    }
+
+    public void setTimeLeft(int timeLeft) {
+        this.timeLeft = timeLeft;
+    }
+
+    public int getMaxTime() {
+        return maxTime;
+    }
+
+    public int tickTimeLeft() {
+        return --timeLeft;
     }
 }

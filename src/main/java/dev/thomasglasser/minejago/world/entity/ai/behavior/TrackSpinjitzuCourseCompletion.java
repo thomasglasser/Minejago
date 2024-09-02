@@ -12,6 +12,7 @@ import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.ai.memory.WalkTarget;
@@ -31,9 +32,6 @@ public class TrackSpinjitzuCourseCompletion<T extends Wu> extends ExtendedBehavi
     protected static final int INTERRUPTED_DURATION = 20;
     protected static final int PUT_DOWN_DURATION = 20;
 
-    protected int maxTime;
-    protected int timeLeft;
-
     public TrackSpinjitzuCourseCompletion() {
         super();
         runFor(wu -> Integer.MAX_VALUE);
@@ -42,7 +40,7 @@ public class TrackSpinjitzuCourseCompletion<T extends Wu> extends ExtendedBehavi
     @Override
     protected boolean checkExtraStartConditions(ServerLevel level, T entity) {
         if (level.getPoiManager().findClosest(poi -> poi.is(MinejagoPoiTypes.TEAPOTS), entity.blockPosition(), 2, PoiManager.Occupancy.ANY).isPresent()) {
-            return super.checkExtraStartConditions(level, entity);
+            return super.checkExtraStartConditions(level, entity) && !entity.getCourseData().isEmpty();
         } else if (BrainUtils.getMemory(entity, MemoryModuleType.WALK_TARGET) == null && !entity.getCourseData().isEmpty()) {
             Optional<BlockPos> potPos = level.getPoiManager().findClosest(poi -> poi.is(MinejagoPoiTypes.TEAPOTS), entity.blockPosition(), MinejagoServerConfig.INSTANCE.courseRadius.get(), PoiManager.Occupancy.ANY);
             if (potPos.isPresent())
@@ -56,16 +54,16 @@ public class TrackSpinjitzuCourseCompletion<T extends Wu> extends ExtendedBehavi
     @Override
     protected void start(T entity) {
         super.start(entity);
-        // TODO: Signal begin (sit down and make noise?)
-        this.maxTime = MinejagoServerConfig.INSTANCE.courseTimeLimit.get() * SharedConstants.TICKS_PER_SECOND;
-        this.timeLeft = maxTime;
+        entity.playSound(SoundEvents.VILLAGER_YES, 1f, 0.9f);
+        entity.setMaxTime(MinejagoServerConfig.INSTANCE.courseTimeLimit.get() * SharedConstants.TICKS_PER_SECOND);
+        entity.setTimeLeft(entity.getMaxTime());
     }
 
     @Override
     protected void tick(T entity) {
         super.tick(entity);
-        timeLeft--;
-        int timePassed = maxTime - timeLeft;
+        int timeLeft = entity.tickTimeLeft();
+        int timePassed = entity.getMaxTime() - timeLeft;
         // Sit down, then paper, then cup, then tea, then sugar, then drink until time is almost up, then put down cup
         // TODO: Ensure interruption is handled correctly visually
         List<Player> currentPlayers = new ArrayList<>(entity.getCourseData().keySet());
@@ -97,19 +95,23 @@ public class TrackSpinjitzuCourseCompletion<T extends Wu> extends ExtendedBehavi
         } else if (timeLeft == PUT_DOWN_DURATION) {
             // TODO: Put down
             currentPlayers.forEach(player -> player.sendSystemMessage(Component.literal("Putting down cup")));
+        } else if (timeLeft <= 0) {
+            stop(entity);
         }
 
         // If cup swatted away, go back for another
         if (entity.isLifting() && entity.wasInterrupted()) {
             timeLeft += INTERRUPTED_DURATION + CUP_DURATION + TEA_DURATION + SUGAR_DURATION;
+            entity.setTimeLeft(timeLeft);
             entity.setLifting(false);
-            // TODO: Play sad noise and interrupt animation
+            entity.playSound(SoundEvents.VILLAGER_HURT, 1f, 0.8f);
+            // TODO: Play interrupt animation
         }
     }
 
     @Override
     protected boolean shouldKeepRunning(T entity) {
-        return timeLeft > 0;
+        return entity.getMaxTime() > 0;
     }
 
     @Override
@@ -117,11 +119,10 @@ public class TrackSpinjitzuCourseCompletion<T extends Wu> extends ExtendedBehavi
         super.stop(entity);
         entity.setLifting(false);
         entity.setInterrupted(false);
-        // TODO: Signal end (stand up and make noise?)
-        // TODO: Make sad noise (particles?)
+        // TODO: Stand up
         Set<Player> currentPlayers = Set.copyOf(entity.getCourseData().keySet());
         currentPlayers.forEach((player) -> {
-            player.sendSystemMessage(Component.literal("Time's up"));
+            entity.level().playSound(null, player.blockPosition(), SoundEvents.VILLAGER_NO, entity.getSoundSource(), 1f, 0.9f);
             entity.stopTracking(player);
             entity.getEntitiesOnCooldown().computeIfAbsent((int) (entity.level().getGameTime() + SharedConstants.TICKS_PER_GAME_DAY), k -> new ArrayList<>()).add(player);
         });
