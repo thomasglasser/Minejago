@@ -120,9 +120,8 @@ public class MinejagoBlockStateProvider extends ExtendedBlockStateProvider {
         doorBlockWithRenderType(set.door().get(), blockLoc(set.door()).withSuffix("_bottom"), blockLoc(set.door()).withSuffix("_top"), RenderType.cutout().name);
         trapdoorBlockWithRenderType(set.trapdoor().get(), blockLoc(set.trapdoor()), true, RenderType.cutout().name);
         // TODO: Sign block textures
-//        signBlock(set.sign().get(), set.wallSign().get(), blockLoc(set.log()));
-        // TODO: Hanging sign block textures
-//        hangingSignBlock(set.hangingSign().get(), set.wallHangingSign().get(), blockLoc(set.log()));
+//        signBlock(set.sign().get(), set.wallSign().get(), blockLoc(set.planks()));
+        hangingSignBlock(set.hangingSign().get(), set.wallHangingSign().get(), blockLoc(set.strippedLog()));
 
         leavesSet(MinejagoBlocks.FOCUS_LEAVES_SET);
 

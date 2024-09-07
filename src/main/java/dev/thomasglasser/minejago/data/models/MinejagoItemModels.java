@@ -108,8 +108,7 @@ public class MinejagoItemModels extends ExtendedItemModelProvider {
         withExistingParent(set.trapdoor().getId().getPath(), blockLoc(set.trapdoor()).withSuffix("_bottom"));
         // TODO: Sign item texture
 //        basicItem(set.sign().asItem());
-        // TODO: Wall sign item texture
-//        basicItem(set.hangingSign().asItem());
+        basicItem(set.hangingSign().asItem());
         basicItem(set.boatItem());
         basicItem(set.chestBoatItem());
 
