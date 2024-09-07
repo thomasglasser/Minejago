@@ -14,6 +14,7 @@ import java.util.TreeMap;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
@@ -38,8 +39,8 @@ import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.apache.commons.lang3.function.TriFunction;
 
-public class MinejagoBlockStates extends ExtendedBlockStateProvider {
-    public MinejagoBlockStates(PackOutput output, ExistingFileHelper exFileHelper) {
+public class MinejagoBlockStateProvider extends ExtendedBlockStateProvider {
+    public MinejagoBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
         super(output, Minejago.MOD_ID, exFileHelper);
     }
 
@@ -116,10 +117,8 @@ public class MinejagoBlockStates extends ExtendedBlockStateProvider {
         buttonBlock(set.button().get(), blockLoc(set.planks()));
         fenceBlock(set.fence().get(), blockLoc(set.planks()));
         fenceGateBlock(set.fenceGate().get(), blockLoc(set.planks()));
-        // TODO: Door block textures
-//        doorBlock(set.door().get(), blockLoc(set.door()).withSuffix("_bottom"), blockLoc(set.door()).withSuffix("_top"));
-        // TODO: Trapdoor block textures
-//        trapdoorBlock(set.trapdoor().get(), blockLoc(set.trapdoor()), true);
+        doorBlockWithRenderType(set.door().get(), blockLoc(set.door()).withSuffix("_bottom"), blockLoc(set.door()).withSuffix("_top"), RenderType.cutout().name);
+        trapdoorBlockWithRenderType(set.trapdoor().get(), blockLoc(set.trapdoor()), true, RenderType.cutout().name);
         // TODO: Sign block textures
 //        signBlock(set.sign().get(), set.wallSign().get(), blockLoc(set.log()));
         // TODO: Hanging sign block textures

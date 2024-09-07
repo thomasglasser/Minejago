@@ -2,7 +2,7 @@ package dev.thomasglasser.minejago.data;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.data.advancements.MinejagoAdvancementProvider;
-import dev.thomasglasser.minejago.data.blockstates.MinejagoBlockStates;
+import dev.thomasglasser.minejago.data.blockstates.MinejagoBlockStateProvider;
 import dev.thomasglasser.minejago.data.datamaps.MinejagoDataMaps;
 import dev.thomasglasser.minejago.data.focus.modifier.MinejagoFocusModifierProvider;
 import dev.thomasglasser.minejago.data.lang.MinejagoEnUsLanguageProvider;
@@ -125,7 +125,7 @@ public class MinejagoDataGenerators {
         generator.addProvider(includeServer, new MinejagoDataPatchProvider(generator));
 
         //Client
-        generator.addProvider(includeClient, new MinejagoBlockStates(packOutput, existingFileHelper));
+        generator.addProvider(includeClient, new MinejagoBlockStateProvider(packOutput, existingFileHelper));
         generator.addProvider(includeClient, new MinejagoItemModels(packOutput, existingFileHelper));
         generator.addProvider(includeClient, new MinejagoSoundDefinitions(packOutput, existingFileHelper));
         generator.addProvider(includeClient, new MinejagoParticleDescriptionProvider(packOutput, existingFileHelper));

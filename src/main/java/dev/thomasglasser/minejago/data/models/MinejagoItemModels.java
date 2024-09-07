@@ -104,18 +104,14 @@ public class MinejagoItemModels extends ExtendedItemModelProvider {
         buttonInventory(set.button().getId().getPath(), blockLoc(set.planks()));
         fenceInventory(set.fence().getId().getPath(), blockLoc(set.planks()));
         withExistingParent(set.fenceGate().getId().getPath(), blockLoc(set.fenceGate()));
-        // TODO: Door item texture
-//        basicItem(set.door().asItem());
-        // TODO: Trapdoor block textures
-//        withExistingParent(set.trapdoor().getId().getPath(), blockLoc(set.trapdoor()));
+        basicItem(set.door().asItem());
+        withExistingParent(set.trapdoor().getId().getPath(), blockLoc(set.trapdoor()).withSuffix("_bottom"));
         // TODO: Sign item texture
 //        basicItem(set.sign().asItem());
         // TODO: Wall sign item texture
 //        basicItem(set.hangingSign().asItem());
-        // TODO: Boat item texture
-//        basicItem(set.boatItem());
-        // TODO: Chest boat item texture
-//        basicItem(set.chestBoatItem());
+        basicItem(set.boatItem());
+        basicItem(set.chestBoatItem());
 
         leavesSet(MinejagoBlocks.FOCUS_LEAVES_SET);
 
