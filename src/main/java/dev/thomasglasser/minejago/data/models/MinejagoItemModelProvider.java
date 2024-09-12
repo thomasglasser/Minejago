@@ -12,8 +12,8 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
-public class MinejagoItemModels extends ExtendedItemModelProvider {
-    public MinejagoItemModels(PackOutput output, ExistingFileHelper helper) {
+public class MinejagoItemModelProvider extends ExtendedItemModelProvider {
+    public MinejagoItemModelProvider(PackOutput output, ExistingFileHelper helper) {
         super(output, Minejago.MOD_ID, helper);
     }
 

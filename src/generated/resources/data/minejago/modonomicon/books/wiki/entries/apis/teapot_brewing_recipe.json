@@ -1,7 +1,7 @@
 {
   "background_u_index": 0,
   "background_v_index": 0,
-  "category": "minejago:apis",
+  "category": "apis",
   "description": "book.minejago.wiki.apis.teapot_brewing_recipe.description",
   "hide_while_locked": false,
   "icon": {

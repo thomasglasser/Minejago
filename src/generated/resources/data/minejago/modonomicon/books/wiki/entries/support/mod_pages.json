@@ -1,7 +1,7 @@
 {
   "background_u_index": 0,
   "background_v_index": 0,
-  "category": "minejago:support",
+  "category": "support",
   "description": "book.minejago.wiki.support.mod_pages.description",
   "hide_while_locked": false,
   "icon": {

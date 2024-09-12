@@ -33,7 +33,7 @@ public record SpinjitzuData(boolean unlocked, boolean active) {
     }
 
     public boolean canDoSpinjitzu() {
-        return !MinejagoServerConfig.INSTANCE.requireCourseCompletion.get() || unlocked;
+        return !MinejagoServerConfig.get().requireCourseCompletion.get() || unlocked;
     }
 
     public void save(LivingEntity entity, boolean syncToClient) {

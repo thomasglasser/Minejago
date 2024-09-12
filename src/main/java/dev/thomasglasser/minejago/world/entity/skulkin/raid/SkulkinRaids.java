@@ -41,7 +41,7 @@ public class SkulkinRaids extends SavedData {
 
         while (iterator.hasNext()) {
             SkulkinRaid raid = iterator.next();
-            if (!MinejagoServerConfig.INSTANCE.enableSkulkinRaids.get()) {
+            if (!MinejagoServerConfig.get().enableSkulkinRaids.get()) {
                 raid.stop();
             }
 
@@ -70,7 +70,7 @@ public class SkulkinRaids extends SavedData {
     public SkulkinRaid createOrExtendSkulkinRaid(ServerPlayer serverPlayer) {
         if (serverPlayer.isSpectator()) {
             return null;
-        } else if (!MinejagoServerConfig.INSTANCE.enableSkulkinRaids.get()) {
+        } else if (!MinejagoServerConfig.get().enableSkulkinRaids.get()) {
             return null;
         } else {
             if (!serverPlayer.level().dimensionTypeRegistration().is(MinejagoDimensionTypeTags.HAS_SKULKIN_RAIDS)) {

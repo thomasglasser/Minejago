@@ -59,9 +59,9 @@ public abstract class GoldenWeaponItem extends BaseModeledItem {
 
     @Override
     public final InteractionResult useOn(UseOnContext pContext) {
-        if (MinejagoServerConfig.INSTANCE.requireCompatiblePower.get()) {
+        if (MinejagoServerConfig.get().requireCompatiblePower.get()) {
             if (!canPowerHandle(pContext.getPlayer().getData(MinejagoAttachmentTypes.POWER).power(), pContext.getLevel())) {
-                if (MinejagoServerConfig.INSTANCE.enableMalfunction.get()) {
+                if (MinejagoServerConfig.get().enableMalfunction.get()) {
                     goCrazy(pContext.getPlayer());
                 }
                 if (this.getFailSound() != null) {
@@ -88,9 +88,9 @@ public abstract class GoldenWeaponItem extends BaseModeledItem {
 
     @Override
     public final void releaseUsing(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity, int pTimeCharged) {
-        if (pLivingEntity instanceof Player && MinejagoServerConfig.INSTANCE.requireCompatiblePower.get()) {
+        if (pLivingEntity instanceof Player && MinejagoServerConfig.get().requireCompatiblePower.get()) {
             if (!canPowerHandle(pLivingEntity.getData(MinejagoAttachmentTypes.POWER).power(), pLevel)) {
-                if (MinejagoServerConfig.INSTANCE.enableMalfunction.get()) {
+                if (MinejagoServerConfig.get().enableMalfunction.get()) {
                     goCrazy((Player) pLivingEntity);
                 }
                 if (this.getFailSound() != null) {
@@ -112,9 +112,9 @@ public abstract class GoldenWeaponItem extends BaseModeledItem {
 
     @Override
     public final void onUseTick(Level level, LivingEntity livingEntity, ItemStack stack, int remainingUseDuration) {
-        if (livingEntity instanceof Player && MinejagoServerConfig.INSTANCE.requireCompatiblePower.get()) {
+        if (livingEntity instanceof Player && MinejagoServerConfig.get().requireCompatiblePower.get()) {
             if (!canPowerHandle(livingEntity.getData(MinejagoAttachmentTypes.POWER).power(), level)) {
-                if (MinejagoServerConfig.INSTANCE.enableMalfunction.get()) {
+                if (MinejagoServerConfig.get().enableMalfunction.get()) {
                     goCrazy((Player) livingEntity);
                 }
                 if (this.getFailSound() != null) {

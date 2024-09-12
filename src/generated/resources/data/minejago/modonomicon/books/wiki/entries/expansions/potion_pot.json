@@ -1,7 +1,7 @@
 {
   "background_u_index": 0,
   "background_v_index": 0,
-  "category": "minejago:expansions",
+  "category": "expansions",
   "description": "book.minejago.wiki.expansions.potion_pot.description",
   "hide_while_locked": false,
   "icon": {

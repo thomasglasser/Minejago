@@ -28,7 +28,7 @@ public class SkulkinArmySpawner implements CustomSpawner {
             return 0;
         } else if (!((SkulkinRaidsHolder) level).getSkulkinRaids().isMapTaken()) {
             return 0;
-        } else if (!MinejagoServerConfig.INSTANCE.enableSkulkinRaids.get()) {
+        } else if (!MinejagoServerConfig.get().enableSkulkinRaids.get()) {
             return 0;
         } else {
             RandomSource randomSource = level.random;

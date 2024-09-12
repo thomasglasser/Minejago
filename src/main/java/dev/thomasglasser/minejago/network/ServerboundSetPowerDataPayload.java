@@ -40,7 +40,7 @@ public record ServerboundSetPowerDataPayload(ResourceKey<Power> power, boolean m
                 wu = (Wu) serverPlayer.level().getEntity(wuId.get());
             }
             ResourceKey<Power> oldPower = serverPlayer.getData(MinejagoAttachmentTypes.POWER).power();
-            if (serverPlayer.getData(MinejagoAttachmentTypes.POWER).given() && oldPower != MinejagoPowers.NONE && MinejagoServerConfig.INSTANCE.drainPool.get() && wu != null) {
+            if (serverPlayer.getData(MinejagoAttachmentTypes.POWER).given() && oldPower != MinejagoPowers.NONE && MinejagoServerConfig.get().drainPool.get() && wu != null) {
                 wu.addPowersToGive(oldPower);
             }
             if (power != MinejagoPowers.NONE && wu != null) wu.removePowersToGive(power);

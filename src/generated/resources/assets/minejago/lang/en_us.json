@@ -690,6 +690,8 @@
   "minejago.configuration.cosmetics.tooltip": "Settings for player cosmetics",
   "minejago.configuration.course_radius": "Course Radius",
   "minejago.configuration.course_radius.tooltip": "The radius that the center Spinjitzu element will search for other course elements",
+  "minejago.configuration.course_speed": "Course Speed",
+  "minejago.configuration.course_speed.tooltip": "The speed at which spinjitzu course elements will spin",
   "minejago.configuration.course_time_limit": "Course Time Limit",
   "minejago.configuration.course_time_limit.tooltip": "The amount of time (in seconds) a player has to complete the Spinjitzu course to unlock Spinjitzu",
   "minejago.configuration.display_dev_team_cosmetic": "Display Dev Team Cosmetic",

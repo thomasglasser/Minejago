@@ -111,24 +111,24 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
 
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
-        boolean canGivePower = !player.getData(MinejagoAttachmentTypes.POWER).given() || MinejagoServerConfig.INSTANCE.allowChange.get();
+        boolean canGivePower = !player.getData(MinejagoAttachmentTypes.POWER).given() || MinejagoServerConfig.get().allowChange.get();
         if (canGivePower && player.getInventory().hasAnyMatching(itemStack -> itemStack.has(MinejagoDataComponents.GOLDEN_WEAPONS_MAP.get()))) {
             Registry<Power> registry = level().registryAccess().registryOrThrow(MinejagoRegistries.POWER);
 
-            if (!MinejagoServerConfig.INSTANCE.drainPool.get() || (powersToGive.size() <= 1)) {
+            if (!MinejagoServerConfig.get().drainPool.get() || (powersToGive.size() <= 1)) {
                 powersToGive = new ArrayList<>(registry.registryKeySet());
-                if (!MinejagoServerConfig.INSTANCE.enableNoPower.get())
+                if (!MinejagoServerConfig.get().enableNoPower.get())
                     removePowersToGive(MinejagoPowers.NONE);
                 powersToGive.removeIf(key -> registry.get(key).isSpecial());
             }
 
             if (player instanceof ServerPlayer serverPlayer && hand == InteractionHand.MAIN_HAND) {
                 givingPower = true;
-                if (MinejagoServerConfig.INSTANCE.allowChoose.get()) {
+                if (MinejagoServerConfig.get().allowChoose.get()) {
                     TommyLibServices.NETWORK.sendToClient(new ClientboundOpenPowerSelectionScreenPayload(powersToGive, Optional.of(this.getId())), serverPlayer);
                 } else if (this.distanceTo(serverPlayer) > 1.0f) {
                     ResourceKey<Power> oldPower = serverPlayer.getData(MinejagoAttachmentTypes.POWER).power();
-                    if (serverPlayer.getData(MinejagoAttachmentTypes.POWER).given() && oldPower != MinejagoPowers.NONE && MinejagoServerConfig.INSTANCE.drainPool.get())
+                    if (serverPlayer.getData(MinejagoAttachmentTypes.POWER).given() && oldPower != MinejagoPowers.NONE && MinejagoServerConfig.get().drainPool.get())
                         addPowersToGive(oldPower);
                     ResourceKey<Power> newPower = powersToGive.get(random.nextInt(powersToGive.size()));
                     if (newPower != MinejagoPowers.NONE) removePowersToGive(newPower);
@@ -160,10 +160,10 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
                 if (cooldownList.contains(player)) {
                     playSound(SoundEvents.VILLAGER_NO, 1.0f, 0.9f);
                 } else {
-                    Optional<BlockPos> teapotPos = serverLevel.getPoiManager().findClosest(poi -> poi.is(MinejagoPoiTypes.TEAPOTS), blockPosition(), MinejagoServerConfig.INSTANCE.courseRadius.get(), PoiManager.Occupancy.ANY);
+                    Optional<BlockPos> teapotPos = serverLevel.getPoiManager().findClosest(poi -> poi.is(MinejagoPoiTypes.TEAPOTS), blockPosition(), MinejagoServerConfig.get().courseRadius.get(), PoiManager.Occupancy.ANY);
                     if (teapotPos.isPresent()) {
                         if (trackedCourseElements.isEmpty()) {
-                            List<? extends AbstractSpinjitzuCourseElement<?>> nearbyElements = level().getEntities(this, getBoundingBox().inflate(MinejagoServerConfig.INSTANCE.courseRadius.get()), entity -> entity instanceof AbstractSpinjitzuCourseElement<?> element && element.isActive()).stream().map(entity -> (AbstractSpinjitzuCourseElement<?>) entity).toList();
+                            List<? extends AbstractSpinjitzuCourseElement<?>> nearbyElements = level().getEntities(this, getBoundingBox().inflate(MinejagoServerConfig.get().courseRadius.get()), entity -> entity instanceof AbstractSpinjitzuCourseElement<?> element && element.isActive()).stream().map(entity -> (AbstractSpinjitzuCourseElement<?>) entity).toList();
                             if (!nearbyElements.isEmpty()) {
                                 trackedCourseElements.addAll(nearbyElements);
                                 nearbyElements.forEach(element -> element.beginTracking(this));

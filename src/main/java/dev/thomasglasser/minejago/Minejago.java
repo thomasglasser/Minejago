@@ -118,9 +118,9 @@ public class Minejago {
     }
 
     private static void registerConfigs(ModContainer modContainer) {
-        modContainer.registerConfig(ModConfig.Type.SERVER, MinejagoServerConfig.INSTANCE.getConfigSpec());
+        modContainer.registerConfig(ModConfig.Type.SERVER, MinejagoServerConfig.get().getConfigSpec());
         if (FMLEnvironment.dist.isClient()) {
-            modContainer.registerConfig(ModConfig.Type.CLIENT, MinejagoClientConfig.INSTANCE.getConfigSpec());
+            modContainer.registerConfig(ModConfig.Type.CLIENT, MinejagoClientConfig.get().getConfigSpec());
             modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
         }
     }

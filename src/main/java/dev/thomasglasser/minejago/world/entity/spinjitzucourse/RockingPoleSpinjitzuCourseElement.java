@@ -1,5 +1,6 @@
 package dev.thomasglasser.minejago.world.entity.spinjitzucourse;
 
+import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -35,7 +36,7 @@ public class RockingPoleSpinjitzuCourseElement extends AbstractSpinjitzuCourseEl
         @Override
         public void calculatePosition() {
             float maxAngle = 1f;
-            float speedMultiplier = 0.5f;
+            float speedMultiplier = MinejagoServerConfig.get().courseSpeed.get().floatValue();
             float poleOffset = Mth.sin(speedMultiplier * getParent().tickCount) * maxAngle;
             float yOffset = (poleOffset < 0 ? poleOffset : -poleOffset) + 0.3f;
             float xOffset = 0;

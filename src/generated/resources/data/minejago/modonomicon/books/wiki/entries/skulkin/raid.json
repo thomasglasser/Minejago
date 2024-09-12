@@ -1,7 +1,7 @@
 {
   "background_u_index": 0,
   "background_v_index": 0,
-  "category": "minejago:skulkin",
+  "category": "skulkin",
   "description": "book.minejago.wiki.skulkin.raid.description",
   "hide_while_locked": false,
   "icon": {

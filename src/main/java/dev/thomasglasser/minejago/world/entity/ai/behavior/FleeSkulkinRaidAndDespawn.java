@@ -47,7 +47,7 @@ public class FleeSkulkinRaidAndDespawn<T extends SkulkinRaider> extends Extended
                 entity.remove(Entity.RemovalReason.CHANGED_DIMENSION);
                 raid.updateBossbar();
                 return;
-            } else if (MinejagoServerConfig.INSTANCE.enableTech.get()) {
+            } else if (MinejagoServerConfig.get().enableTech.get()) {
                 if (entity.getType().is(MinejagoEntityTypeTags.SKULL_TRUCK_RIDERS)) {
                     List<SkullTruck> trucks = entity.level().getEntitiesOfClass(SkullTruck.class, entity.getBoundingBox().inflate(8), truck -> truck.getPassengers().size() < 3);
                     if (!trucks.isEmpty()) entity.startRiding(trucks.get(0));

@@ -1,7 +1,7 @@
 {
   "background_u_index": 0,
   "background_v_index": 0,
-  "category": "minejago:characters",
+  "category": "characters",
   "description": "book.minejago.wiki.characters.ninja_team.description",
   "hide_while_locked": false,
   "icon": {

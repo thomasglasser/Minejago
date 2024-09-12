@@ -42,7 +42,7 @@ public class TrackSpinjitzuCourseCompletion<T extends Wu> extends ExtendedBehavi
         if (level.getPoiManager().findClosest(poi -> poi.is(MinejagoPoiTypes.TEAPOTS), entity.blockPosition(), 2, PoiManager.Occupancy.ANY).isPresent()) {
             return super.checkExtraStartConditions(level, entity) && !entity.getCourseData().isEmpty();
         } else if (BrainUtils.getMemory(entity, MemoryModuleType.WALK_TARGET) == null && !entity.getCourseData().isEmpty()) {
-            Optional<BlockPos> potPos = level.getPoiManager().findClosest(poi -> poi.is(MinejagoPoiTypes.TEAPOTS), entity.blockPosition(), MinejagoServerConfig.INSTANCE.courseRadius.get(), PoiManager.Occupancy.ANY);
+            Optional<BlockPos> potPos = level.getPoiManager().findClosest(poi -> poi.is(MinejagoPoiTypes.TEAPOTS), entity.blockPosition(), MinejagoServerConfig.get().courseRadius.get(), PoiManager.Occupancy.ANY);
             if (potPos.isPresent())
                 BrainUtils.setMemory(entity, MemoryModuleType.WALK_TARGET, new WalkTarget(potPos.get(), 1f, 0));
             else
@@ -55,7 +55,7 @@ public class TrackSpinjitzuCourseCompletion<T extends Wu> extends ExtendedBehavi
     protected void start(T entity) {
         super.start(entity);
         entity.playSound(SoundEvents.VILLAGER_YES, 1f, 0.9f);
-        entity.setMaxTime(MinejagoServerConfig.INSTANCE.courseTimeLimit.get() * SharedConstants.TICKS_PER_SECOND);
+        entity.setMaxTime(MinejagoServerConfig.get().courseTimeLimit.get() * SharedConstants.TICKS_PER_SECOND);
         entity.setTimeLeft(entity.getMaxTime());
     }
 

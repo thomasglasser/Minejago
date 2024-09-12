@@ -1,7 +1,7 @@
 {
   "background_u_index": 0,
   "background_v_index": 0,
-  "category": "minejago:spinjitzu",
+  "category": "spinjitzu",
   "description": "book.minejago.wiki.spinjitzu.abilities.description",
   "hide_while_locked": false,
   "icon": {

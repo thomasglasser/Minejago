@@ -1,5 +1,7 @@
 package dev.thomasglasser.minejago.world.entity.spinjitzucourse;
 
+import dev.thomasglasser.minejago.server.MinejagoServerConfig;
+
 public class SpinningSpinjitzuCourseElementPart<T extends AbstractSpinjitzuCourseElement<T>> extends AbstractSpinjitzuCourseElementPart<T> {
     public SpinningSpinjitzuCourseElementPart(T parent, String name, float width, float height, float offsetX, float offsetY, float offsetZ) {
         super(parent, name, width, height, offsetX, offsetY, offsetZ);
@@ -7,7 +9,7 @@ public class SpinningSpinjitzuCourseElementPart<T extends AbstractSpinjitzuCours
 
     @Override
     public void calculatePosition() {
-        double angleRadians = getParent().tickCount * 0.5f;
+        double angleRadians = getParent().tickCount * MinejagoServerConfig.get().courseSpeed.get();
         angleRadians += switch (getParent().getDirection().getClockWise()) {
             case DOWN, UP, NORTH -> 0;
             case EAST -> Math.PI * 1.5;

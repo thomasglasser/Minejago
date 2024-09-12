@@ -4,7 +4,7 @@ import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterCo
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class MinejagoClientConfig {
-    public static final MinejagoClientConfig INSTANCE = new MinejagoClientConfig();
+    private static final MinejagoClientConfig INSTANCE = new MinejagoClientConfig();
 
     public final ModConfigSpec configSpec;
 
@@ -46,5 +46,9 @@ public class MinejagoClientConfig {
 
     public ModConfigSpec getConfigSpec() {
         return configSpec;
+    }
+
+    public static MinejagoClientConfig get() {
+        return INSTANCE;
     }
 }

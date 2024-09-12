@@ -52,8 +52,8 @@ public class MinejagoGuis {
 
                     int x = startX - i * 8 - 9;
 
-                    int xOff = MinejagoClientConfig.INSTANCE.xOffset.get();
-                    int yOff = MinejagoClientConfig.INSTANCE.yOffset.get();
+                    int xOff = MinejagoClientConfig.get().xOffset.get();
+                    int yOff = MinejagoClientConfig.get().yOffset.get();
 
                     x += xOff;
                     y -= yOff;

@@ -3,7 +3,7 @@ package dev.thomasglasser.minejago.server;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class MinejagoServerConfig {
-    public static final MinejagoServerConfig INSTANCE = new MinejagoServerConfig();
+    private static final MinejagoServerConfig INSTANCE = new MinejagoServerConfig();
 
     public final ModConfigSpec configSpec;
 
@@ -24,6 +24,7 @@ public class MinejagoServerConfig {
     public final ModConfigSpec.BooleanValue requireCourseCompletion;
     public final ModConfigSpec.IntValue courseTimeLimit;
     public final ModConfigSpec.IntValue courseRadius;
+    public final ModConfigSpec.DoubleValue courseSpeed;
 
     // Golden Weapons
     public static final String GOLDEN_WEAPONS = "golden_weapons";
@@ -59,6 +60,8 @@ public class MinejagoServerConfig {
                 .defineInRange("course_time_limit", 30, 5, 300);
         courseRadius = builder
                 .defineInRange("course_radius", 64, 1, 128);
+        courseSpeed = builder
+                .defineInRange("course_speed", 0.5, 0.1, 1);
         builder.pop();
 
         builder.push(GOLDEN_WEAPONS);
@@ -73,5 +76,9 @@ public class MinejagoServerConfig {
 
     public ModConfigSpec getConfigSpec() {
         return configSpec;
+    }
+
+    public static MinejagoServerConfig get() {
+        return INSTANCE;
     }
 }

@@ -1,5 +1,6 @@
 package dev.thomasglasser.minejago.client.model;
 
+import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.spinjitzucourse.RockingPoleSpinjitzuCourseElement;
 import net.minecraft.util.Mth;
@@ -19,7 +20,7 @@ public class RockingPoleSpinjitzuCourseElementModel extends DefaultedEntityGeoMo
             GeoBone pole = this.getBone("pole").orElse(null);
             if (pole != null) {
                 float maxAngle = 1f;
-                float speedMultiplier = 0.5f;
+                float speedMultiplier = MinejagoServerConfig.get().courseSpeed.get().floatValue();
                 float angleX = Mth.sin(speedMultiplier * (animatable.tickCount + animationState.getPartialTick())) * maxAngle;
                 pole.setRotX(angleX);
             }

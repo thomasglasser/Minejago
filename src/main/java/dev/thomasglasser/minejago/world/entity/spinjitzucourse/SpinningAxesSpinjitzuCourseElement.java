@@ -1,5 +1,6 @@
 package dev.thomasglasser.minejago.world.entity.spinjitzucourse;
 
+import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -39,7 +40,7 @@ public class SpinningAxesSpinjitzuCourseElement extends PlatformedSpinjitzuCours
         public void calculatePosition() {
             super.calculatePosition();
             float maxAngle = 1f;
-            float speedMultiplier = 0.5f;
+            float speedMultiplier = MinejagoServerConfig.get().courseSpeed.get().floatValue();
             float yOffset = Mth.sin(speedMultiplier * getParent().tickCount) * maxAngle;
             if (reverse) {
                 yOffset = -yOffset;

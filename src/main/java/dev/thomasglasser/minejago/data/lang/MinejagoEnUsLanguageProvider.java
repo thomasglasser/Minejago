@@ -314,34 +314,35 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
 
         // Server
         addConfigSection(MinejagoServerConfig.FEATURES, "Feature Toggles", "Optional features that enhance the mod, but may not match the desired experience of some players");
-        addConfig(MinejagoServerConfig.INSTANCE.enableTech, "Enable Technology", "Enable the technology of the mod, such as vehicles and computers");
-        addConfig(MinejagoServerConfig.INSTANCE.enableSkulkinRaids, "Enable Skulkin Raids", "Enable Skulkin Raids on Four Weapons structures");
+        addConfig(MinejagoServerConfig.get().enableTech, "Enable Technology", "Enable the technology of the mod, such as vehicles and computers");
+        addConfig(MinejagoServerConfig.get().enableSkulkinRaids, "Enable Skulkin Raids", "Enable Skulkin Raids on Four Weapons structures");
 
         addConfigSection(MinejagoServerConfig.POWERS, "Powers", "Settings for powers (elemental or otherwise)");
-        addConfig(MinejagoServerConfig.INSTANCE.allowChoose, "Allow Choosing Power", "Allow players to choose the power given to them by interacting with Master Wu");
-        addConfig(MinejagoServerConfig.INSTANCE.allowChange, "Allow Changing Power", "Allow players to get a new power by interacting with Master Wu again");
-        addConfig(MinejagoServerConfig.INSTANCE.drainPool, "Drain Power Pool", "Remove a power from the option list once given and reset when all powers have been given");
-        addConfig(MinejagoServerConfig.INSTANCE.enableNoPower, "Enable No Power", "Enable players to receive no power from Master Wu");
+        addConfig(MinejagoServerConfig.get().allowChoose, "Allow Choosing Power", "Allow players to choose the power given to them by interacting with Master Wu");
+        addConfig(MinejagoServerConfig.get().allowChange, "Allow Changing Power", "Allow players to get a new power by interacting with Master Wu again");
+        addConfig(MinejagoServerConfig.get().drainPool, "Drain Power Pool", "Remove a power from the option list once given and reset when all powers have been given");
+        addConfig(MinejagoServerConfig.get().enableNoPower, "Enable No Power", "Enable players to receive no power from Master Wu");
 
         addConfigSection(MinejagoServerConfig.SPINJITZU, "Spinjitzu", "Settings for Spinjitzu");
-        addConfig(MinejagoServerConfig.INSTANCE.requireCourseCompletion, "Require Course Completion", "Require players to complete the Spinjitzu course to use Spinjitzu");
-        addConfig(MinejagoServerConfig.INSTANCE.courseTimeLimit, "Course Time Limit", "The amount of time (in seconds) a player has to complete the Spinjitzu course to unlock Spinjitzu");
-        addConfig(MinejagoServerConfig.INSTANCE.courseRadius, "Course Radius", "The radius that the center Spinjitzu element will search for other course elements");
+        addConfig(MinejagoServerConfig.get().requireCourseCompletion, "Require Course Completion", "Require players to complete the Spinjitzu course to use Spinjitzu");
+        addConfig(MinejagoServerConfig.get().courseTimeLimit, "Course Time Limit", "The amount of time (in seconds) a player has to complete the Spinjitzu course to unlock Spinjitzu");
+        addConfig(MinejagoServerConfig.get().courseRadius, "Course Radius", "The radius that the center Spinjitzu element will search for other course elements");
+        addConfig(MinejagoServerConfig.get().courseSpeed, "Course Speed", "The speed at which spinjitzu course elements will spin");
 
         addConfigSection(MinejagoServerConfig.GOLDEN_WEAPONS, "Golden Weapons", "Settings for the four Golden Weapons");
-        addConfig(MinejagoServerConfig.INSTANCE.requireCompatiblePower, "Require Compatible Power", "Require users to have a compatible power");
-        addConfig(MinejagoServerConfig.INSTANCE.enableMalfunction, "Enable Malfunction", "Enable an abnormal reaction when handled by someone without a compatible power");
+        addConfig(MinejagoServerConfig.get().requireCompatiblePower, "Require Compatible Power", "Require users to have a compatible power");
+        addConfig(MinejagoServerConfig.get().enableMalfunction, "Enable Malfunction", "Enable an abnormal reaction when handled by someone without a compatible power");
 
         // Client
         addConfigSection(MinejagoClientConfig.COSMETICS, "Player Cosmetics", "Settings for player cosmetics");
-        addConfig(MinejagoClientConfig.INSTANCE.displaySnapshotTesterCosmetic, "Display Snapshot Tester Cosmetic", "Display your preferred Snapshot Tester Cosmetic (if eligible)");
-        addConfig(MinejagoClientConfig.INSTANCE.snapshotTesterCosmeticChoice, "Snapshot Tester Cosmetic Choice", "The Snapshot Tester Cosmetic to be displayed (if eligible)");
-        addConfig(MinejagoClientConfig.INSTANCE.displayDevTeamCosmetic, "Display Dev Team Cosmetic", "Display the Dev Team cosmetic (if eligible)");
-        addConfig(MinejagoClientConfig.INSTANCE.displayLegacyDevTeamCosmetic, "Display Legacy Dev Team Cosmetic", "Display the Legacy Dev Team cosmetic (if eligible)");
+        addConfig(MinejagoClientConfig.get().displaySnapshotTesterCosmetic, "Display Snapshot Tester Cosmetic", "Display your preferred Snapshot Tester Cosmetic (if eligible)");
+        addConfig(MinejagoClientConfig.get().snapshotTesterCosmeticChoice, "Snapshot Tester Cosmetic Choice", "The Snapshot Tester Cosmetic to be displayed (if eligible)");
+        addConfig(MinejagoClientConfig.get().displayDevTeamCosmetic, "Display Dev Team Cosmetic", "Display the Dev Team cosmetic (if eligible)");
+        addConfig(MinejagoClientConfig.get().displayLegacyDevTeamCosmetic, "Display Legacy Dev Team Cosmetic", "Display the Legacy Dev Team cosmetic (if eligible)");
 
         addConfigSection(MinejagoClientConfig.FOCUS_BAR, "Focus Bar", "Settings for focus bar");
-        addConfig(MinejagoClientConfig.INSTANCE.xOffset, "Horizontal Offset", "Horizontal pixels off from the normal position");
-        addConfig(MinejagoClientConfig.INSTANCE.yOffset, "Vertical Offset", "Vertical pixels off from the normal position");
+        addConfig(MinejagoClientConfig.get().xOffset, "Horizontal Offset", "Horizontal pixels off from the normal position");
+        addConfig(MinejagoClientConfig.get().yOffset, "Vertical Offset", "Vertical pixels off from the normal position");
     }
 
     protected void addPluginConfig(ResourceLocation location, String name) {

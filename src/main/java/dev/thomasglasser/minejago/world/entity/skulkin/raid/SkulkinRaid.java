@@ -476,7 +476,7 @@ public class SkulkinRaid {
             this.joinSkulkinRaid(i, raider, pos, false);
             if (random.nextInt(10) + difficultyInstance.getDifficulty().getId() > 5) {
                 Mob raider2;
-                if (MinejagoServerConfig.INSTANCE.enableTech.get())
+                if (MinejagoServerConfig.get().enableTech.get())
                     raider2 = MinejagoEntityTypes.SKULL_MOTORBIKE.get().create(level);
                 else
                     raider2 = MinejagoEntityTypes.SKULKIN_HORSE.get().create(level);
@@ -739,7 +739,7 @@ public class SkulkinRaid {
         if (kruncha != null)
             this.joinSkulkinRaid(i, kruncha, pos, false);
 
-        if (MinejagoServerConfig.INSTANCE.enableTech.get()) {
+        if (MinejagoServerConfig.get().enableTech.get()) {
             List<SkulkinRaider> raiders = new ArrayList<>();
             if (nuckal != null) raiders.add(nuckal);
             if (kruncha != null) raiders.add(kruncha);
