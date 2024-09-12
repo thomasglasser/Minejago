@@ -5,7 +5,6 @@ import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.tommylib.api.data.models.ExtendedItemModelProvider;
-import dev.thomasglasser.tommylib.api.world.level.block.WoodSet;
 import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.data.PackOutput;
 import net.minecraft.server.packs.PackType;
@@ -91,27 +90,7 @@ public class MinejagoItemModelProvider extends ExtendedItemModelProvider {
         spawnEgg(MinejagoItems.SKULL_TRUCK_SPAWN_EGG);
         spawnEgg(MinejagoItems.SKULL_MOTORBIKE_SPAWN_EGG);
 
-//        woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET);
-        WoodSet set = MinejagoBlocks.ENCHANTED_WOOD_SET;
-        withExistingParent(set.log().getId().getPath(), blockLoc(set.log()));
-        withExistingParent(set.strippedLog().getId().getPath(), blockLoc(set.strippedLog()));
-        withExistingParent(set.wood().getId().getPath(), blockLoc(set.wood()));
-        withExistingParent(set.strippedWood().getId().getPath(), blockLoc(set.strippedWood()));
-        withExistingParent(set.planks().getId().getPath(), blockLoc(set.planks()));
-        withExistingParent(set.slab().getId().getPath(), blockLoc(set.slab()));
-        withExistingParent(set.stairs().getId().getPath(), blockLoc(set.stairs()));
-        withExistingParent(set.pressurePlate().getId().getPath(), blockLoc(set.pressurePlate()));
-        buttonInventory(set.button().getId().getPath(), blockLoc(set.planks()));
-        fenceInventory(set.fence().getId().getPath(), blockLoc(set.planks()));
-        withExistingParent(set.fenceGate().getId().getPath(), blockLoc(set.fenceGate()));
-        basicItem(set.door().asItem());
-        withExistingParent(set.trapdoor().getId().getPath(), blockLoc(set.trapdoor()).withSuffix("_bottom"));
-        // TODO: Sign item texture
-//        basicItem(set.sign().asItem());
-        basicItem(set.hangingSign().asItem());
-        basicItem(set.boatItem());
-        basicItem(set.chestBoatItem());
-
+        woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET);
         leavesSet(MinejagoBlocks.FOCUS_LEAVES_SET);
 
         MinejagoArmors.TRAINING_GI_SET.getAll().forEach(item -> withEntityModel(item).guiLight(BlockModel.GuiLight.FRONT));

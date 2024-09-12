@@ -1,5 +1,6 @@
 package dev.thomasglasser.minejago.world.entity.spinjitzucourse;
 
+import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import java.util.Arrays;
 import java.util.List;
 import net.minecraft.core.Direction;
@@ -7,6 +8,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
@@ -50,6 +52,8 @@ public abstract class AbstractSpinjitzuCourseElement<T extends AbstractSpinjitzu
     protected int activeAnimationTicks = 0;
 
     protected AbstractSpinjitzuCourseElementPart<T>[] subEntities = new AbstractSpinjitzuCourseElementPart[0];
+
+    private int ambientSoundTime;
 
     public AbstractSpinjitzuCourseElement(EntityType<?> entityType, Level level, Vec3 visitBox) {
         super(entityType, level);
@@ -291,10 +295,13 @@ public abstract class AbstractSpinjitzuCourseElement<T extends AbstractSpinjitzu
             part.setActive(active);
         }
         refreshDimensions();
-        if (active)
+        if (active) {
             triggerAnim("base_controller", DEPLOY_KEY);
-        else
+            playSound(MinejagoSoundEvents.SPINJITZU_COURSE_RISE.get());
+        } else {
             triggerAnim("base_controller", REST_KEY);
+            playSound(MinejagoSoundEvents.SPINJITZU_COURSE_FALL.get());
+        }
     }
 
     public boolean isActive() {
@@ -336,5 +343,33 @@ public abstract class AbstractSpinjitzuCourseElement<T extends AbstractSpinjitzu
     public void moveTo(double x, double y, double z, float yRot, float xRot) {
         setYRotSynced(yRot);
         super.moveTo(x, y, z, yRot, xRot);
+    }
+
+    public SoundEvent getAmbientSound() {
+        return null;
+    }
+
+    public int getAmbientSoundInterval() {
+        return 80;
+    }
+
+    public void playAmbientSound() {
+        this.playSound(getAmbientSound());
+    }
+
+    @Override
+    public void baseTick() {
+        super.baseTick();
+        this.level().getProfiler().push("spinjitzuCourseBaseTick");
+        if (this.isAlive() && this.isActive() && this.random.nextInt(1000) < this.ambientSoundTime++) {
+            this.resetAmbientSoundTime();
+            this.playAmbientSound();
+        }
+
+        this.level().getProfiler().pop();
+    }
+
+    private void resetAmbientSoundTime() {
+        this.ambientSoundTime = -this.getAmbientSoundInterval();
     }
 }

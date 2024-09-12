@@ -408,7 +408,7 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
                         for (int i = 0; i < 5; i++) {
                             serverLevel.sendParticles(ParticleTypes.HEART, this.getRandomX(1.0D), this.getRandomY(), this.getRandomZ(1.0D), 1, d0, d1, d2, 1);
                         }
-                        serverLevel.playSound(null, this.blockPosition(), SoundEvents.PLAYER_LEVELUP/*TODO:Tame,purr?*/, SoundSource.AMBIENT);
+                        serverLevel.playSound(null, this.blockPosition(), MinejagoSoundEvents.EARTH_DRAGON_TAME.get(), SoundSource.AMBIENT);
                     }
                 }
                 return InteractionResult.SUCCESS;

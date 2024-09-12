@@ -1,6 +1,8 @@
 package dev.thomasglasser.minejago.world.entity.spinjitzucourse;
 
+import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
@@ -16,5 +18,10 @@ public class SpinningMacesSpinjitzuCourseElement extends PlatformedSpinjitzuCour
     @Override
     protected Item getDropItem() {
         return MinejagoItems.SPINNING_MACES_SPINJITZU_COURSE_ELEMENT.get();
+    }
+
+    @Override
+    public SoundEvent getAmbientSound() {
+        return MinejagoSoundEvents.SPINNING_MACES_ACTIVE.get();
     }
 }

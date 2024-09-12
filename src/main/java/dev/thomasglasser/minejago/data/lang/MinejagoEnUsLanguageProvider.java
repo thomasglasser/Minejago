@@ -203,6 +203,7 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(MinejagoSoundEvents.EARTH_DRAGON_STEP.get(), "Earth Dragon steps");
         add(MinejagoSoundEvents.EARTH_DRAGON_BOND_UP.get(), "Earth Dragon growls happily");
         add(MinejagoSoundEvents.EARTH_DRAGON_BOND_DOWN.get(), "Earth Dragon grumbles");
+        add(MinejagoSoundEvents.EARTH_DRAGON_TAME.get(), "Earth Dragon purrs");
         add(MinejagoSoundEvents.SKULL_TRUCK_AMBIENT_ACTIVE.get(), "Skull Truck revs");
         add(MinejagoSoundEvents.SKULL_TRUCK_AMBIENT_IDLE.get(), "Skull Truck idles");
         add(MinejagoSoundEvents.SKULL_TRUCK_DEATH.get(), "Skull Truck breaks");
@@ -214,6 +215,17 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(MinejagoSoundEvents.SKULL_MOTORBIKE_HURT.get(), "Skull Motorbike dents");
         add(MinejagoSoundEvents.SKULL_MOTORBIKE_IGNITION.get(), "Skull Motorbike starts");
         add(MinejagoSoundEvents.SKULKIN_RAID_HORN.get(), "Skeletal horn blares");
+        add(MinejagoSoundEvents.SPINJITZU_COURSE_RISE.get(), "Machine rises");
+        add(MinejagoSoundEvents.SPINJITZU_COURSE_FALL.get(), "Machine falls");
+        add(MinejagoSoundEvents.BOUNCING_POLE_ACTIVE.get(), "Pole bounces");
+        add(MinejagoSoundEvents.CENTER_ACTIVE.get(), "Center spins");
+        add(MinejagoSoundEvents.ROCKING_POLE_ACTIVE.get(), "Pole rocks");
+        add(MinejagoSoundEvents.SPINNING_AXES_ACTIVE.get(), "Axes spin");
+        add(MinejagoSoundEvents.SPINNING_DUMMIES_ACTIVE.get(), "Dummies spin");
+        add(MinejagoSoundEvents.SPINNING_DUMMIES_HIT.get(), "Dummy falls");
+        add(MinejagoSoundEvents.SPINNING_MACES_ACTIVE.get(), "Maces spin");
+        add(MinejagoSoundEvents.SPINNING_POLE_ACTIVE.get(), "Pole spins");
+        add(MinejagoSoundEvents.SWIRLING_KNIVES_ACTIVE.get(), "Knives swirl");
 
         add(MinejagoMobEffects.CURE.get(), "Instant Cure");
         add(MinejagoMobEffects.HYPERFOCUS.get(), "Hyperfocus");

@@ -7,14 +7,12 @@ import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.minejago.world.level.block.TopPostBlock;
 import dev.thomasglasser.tommylib.api.data.blockstates.ExtendedBlockStateProvider;
-import dev.thomasglasser.tommylib.api.world.level.block.WoodSet;
 import java.util.LinkedHashMap;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
@@ -104,25 +102,7 @@ public class MinejagoBlockStateProvider extends ExtendedBlockStateProvider {
                     .build();
         });
 
-//        woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET);
-        WoodSet set = MinejagoBlocks.ENCHANTED_WOOD_SET;
-        logBlock(set.log().get());
-        logBlock(set.strippedLog().get());
-        simpleBlock(set.wood().get(), models().cubeAll(set.wood().getId().getPath(), blockLoc(set.log())));
-        simpleBlock(set.strippedWood().get(), models().cubeAll(set.strippedWood().getId().getPath(), blockLoc(set.strippedLog())));
-        simpleBlock(set.planks().get());
-        slabBlock(set.slab().get(), blockLoc(set.planks()));
-        stairsBlock(set.stairs().get(), blockLoc(set.planks()));
-        pressurePlateBlock(set.pressurePlate().get(), blockLoc(set.planks()));
-        buttonBlock(set.button().get(), blockLoc(set.planks()));
-        fenceBlock(set.fence().get(), blockLoc(set.planks()));
-        fenceGateBlock(set.fenceGate().get(), blockLoc(set.planks()));
-        doorBlockWithRenderType(set.door().get(), blockLoc(set.door()).withSuffix("_bottom"), blockLoc(set.door()).withSuffix("_top"), RenderType.cutout().name);
-        trapdoorBlockWithRenderType(set.trapdoor().get(), blockLoc(set.trapdoor()), true, RenderType.cutout().name);
-        // TODO: Sign block textures
-//        signBlock(set.sign().get(), set.wallSign().get(), blockLoc(set.planks()));
-        hangingSignBlock(set.hangingSign().get(), set.wallHangingSign().get(), blockLoc(set.strippedLog()));
-
+        woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET);
         leavesSet(MinejagoBlocks.FOCUS_LEAVES_SET);
 
         models().withExistingParent(BuiltInRegistries.BLOCK.getKey(MinejagoBlocks.CHISELED_SCROLL_SHELF.get()).getPath(), BuiltInRegistries.BLOCK.getKey(Blocks.CHISELED_BOOKSHELF).withPrefix("block/"));

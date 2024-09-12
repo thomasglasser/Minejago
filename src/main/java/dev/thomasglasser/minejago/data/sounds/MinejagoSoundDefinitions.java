@@ -43,6 +43,7 @@ public class MinejagoSoundDefinitions extends ExtendedSoundDefinitionsProvider {
         add(MinejagoSoundEvents.EARTH_DRAGON_STEP);
         add(MinejagoSoundEvents.EARTH_DRAGON_BOND_UP);
         add(MinejagoSoundEvents.EARTH_DRAGON_BOND_DOWN);
+        add(MinejagoSoundEvents.EARTH_DRAGON_TAME);
 
         add(MinejagoSoundEvents.SKULL_TRUCK_AMBIENT_ACTIVE);
         add(MinejagoSoundEvents.SKULL_TRUCK_AMBIENT_IDLE);
@@ -55,6 +56,18 @@ public class MinejagoSoundDefinitions extends ExtendedSoundDefinitionsProvider {
         add(MinejagoSoundEvents.SKULL_MOTORBIKE_DEATH);
         add(MinejagoSoundEvents.SKULL_MOTORBIKE_HURT, 3);
         add(MinejagoSoundEvents.SKULL_MOTORBIKE_IGNITION);
+
+        add(MinejagoSoundEvents.SPINJITZU_COURSE_RISE);
+        add(MinejagoSoundEvents.SPINJITZU_COURSE_FALL);
+        add(MinejagoSoundEvents.BOUNCING_POLE_ACTIVE);
+        add(MinejagoSoundEvents.CENTER_ACTIVE);
+        add(MinejagoSoundEvents.ROCKING_POLE_ACTIVE);
+        add(MinejagoSoundEvents.SPINNING_AXES_ACTIVE);
+        add(MinejagoSoundEvents.SPINNING_DUMMIES_ACTIVE);
+        add(MinejagoSoundEvents.SPINNING_DUMMIES_HIT);
+        add(MinejagoSoundEvents.SPINNING_MACES_ACTIVE);
+        add(MinejagoSoundEvents.SPINNING_POLE_ACTIVE);
+        add(MinejagoSoundEvents.SWIRLING_KNIVES_ACTIVE);
 
         add(MinejagoSoundEvents.SKULKIN_RAID_HORN);
 

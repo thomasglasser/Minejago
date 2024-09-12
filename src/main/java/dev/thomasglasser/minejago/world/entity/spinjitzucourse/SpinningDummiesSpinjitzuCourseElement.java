@@ -1,6 +1,8 @@
 package dev.thomasglasser.minejago.world.entity.spinjitzucourse;
 
+import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -31,6 +33,11 @@ public class SpinningDummiesSpinjitzuCourseElement extends PlatformedSpinjitzuCo
     }
 
     @Override
+    public SoundEvent getAmbientSound() {
+        return MinejagoSoundEvents.SPINNING_DUMMIES_ACTIVE.get();
+    }
+
+    @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         super.registerControllers(controllers);
         controllers.add(new AnimationController<>(this, "dummy_1_controller", 0, state -> PlayState.CONTINUE)
@@ -55,6 +62,7 @@ public class SpinningDummiesSpinjitzuCourseElement extends PlatformedSpinjitzuCo
             hitTimer = 40;
             refreshDimensions();
             getParent().triggerAnim(name + "_controller", name + "_hit");
+            playSound(MinejagoSoundEvents.SPINNING_DUMMIES_HIT.get());
             return !this.isInvulnerableTo(source);
         }
 

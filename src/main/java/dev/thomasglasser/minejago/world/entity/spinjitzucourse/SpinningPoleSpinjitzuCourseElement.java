@@ -1,7 +1,9 @@
 package dev.thomasglasser.minejago.world.entity.spinjitzucourse;
 
+import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import java.util.List;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
@@ -20,6 +22,11 @@ public class SpinningPoleSpinjitzuCourseElement extends AbstractSpinjitzuCourseE
     @Override
     protected Item getDropItem() {
         return MinejagoItems.SPINNING_POLE_SPINJITZU_COURSE_ELEMENT.get();
+    }
+
+    @Override
+    public SoundEvent getAmbientSound() {
+        return MinejagoSoundEvents.SPINNING_POLE_ACTIVE.get();
     }
 
     @Override

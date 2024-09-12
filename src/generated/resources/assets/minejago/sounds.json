@@ -81,6 +81,12 @@
     ],
     "subtitle": "subtitles.entity.earth_dragon.step"
   },
+  "entity.earth_dragon.tame": {
+    "sounds": [
+      "minejago:entity/earth_dragon/tame"
+    ],
+    "subtitle": "subtitles.entity.earth_dragon.tame"
+  },
   "entity.skull_motorbike.ambient_active": {
     "sounds": [
       "minejago:entity/skull_motorbike/ambient_active"
@@ -144,6 +150,72 @@
       "minejago:entity/skull_truck/ignition"
     ],
     "subtitle": "subtitles.entity.skull_truck.ignition"
+  },
+  "entity.spinjitzu_course.bouncing_pole.active": {
+    "sounds": [
+      "minejago:entity/spinjitzu_course/bouncing_pole/active"
+    ],
+    "subtitle": "subtitles.entity.spinjitzu_course.bouncing_pole.active"
+  },
+  "entity.spinjitzu_course.center.active": {
+    "sounds": [
+      "minejago:entity/spinjitzu_course/center/active"
+    ],
+    "subtitle": "subtitles.entity.spinjitzu_course.center.active"
+  },
+  "entity.spinjitzu_course.fall": {
+    "sounds": [
+      "minejago:entity/spinjitzu_course/fall"
+    ],
+    "subtitle": "subtitles.entity.spinjitzu_course.fall"
+  },
+  "entity.spinjitzu_course.rise": {
+    "sounds": [
+      "minejago:entity/spinjitzu_course/rise"
+    ],
+    "subtitle": "subtitles.entity.spinjitzu_course.rise"
+  },
+  "entity.spinjitzu_course.rocking_pole.active": {
+    "sounds": [
+      "minejago:entity/spinjitzu_course/rocking_pole/active"
+    ],
+    "subtitle": "subtitles.entity.spinjitzu_course.rocking_pole.active"
+  },
+  "entity.spinjitzu_course.spinning_axes.active": {
+    "sounds": [
+      "minejago:entity/spinjitzu_course/spinning_axes/active"
+    ],
+    "subtitle": "subtitles.entity.spinjitzu_course.spinning_axes.active"
+  },
+  "entity.spinjitzu_course.spinning_dummies.active": {
+    "sounds": [
+      "minejago:entity/spinjitzu_course/spinning_dummies/active"
+    ],
+    "subtitle": "subtitles.entity.spinjitzu_course.spinning_dummies.active"
+  },
+  "entity.spinjitzu_course.spinning_dummies.hit": {
+    "sounds": [
+      "minejago:entity/spinjitzu_course/spinning_dummies/hit"
+    ],
+    "subtitle": "subtitles.entity.spinjitzu_course.spinning_dummies.hit"
+  },
+  "entity.spinjitzu_course.spinning_maces.active": {
+    "sounds": [
+      "minejago:entity/spinjitzu_course/spinning_maces/active"
+    ],
+    "subtitle": "subtitles.entity.spinjitzu_course.spinning_maces.active"
+  },
+  "entity.spinjitzu_course.spinning_pole.active": {
+    "sounds": [
+      "minejago:entity/spinjitzu_course/spinning_pole/active"
+    ],
+    "subtitle": "subtitles.entity.spinjitzu_course.spinning_pole.active"
+  },
+  "entity.spinjitzu_course.swirling_knives.active": {
+    "sounds": [
+      "minejago:entity/spinjitzu_course/swirling_knives/active"
+    ],
+    "subtitle": "subtitles.entity.spinjitzu_course.swirling_knives.active"
   },
   "event.skulkin_raid.horn": {
     "sounds": [

@@ -1,6 +1,8 @@
 package dev.thomasglasser.minejago.world.entity.spinjitzucourse;
 
+import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
@@ -23,6 +25,11 @@ public class CenterSpinjitzuCourseElement extends AbstractSpinjitzuCourseElement
     @Override
     protected Item getDropItem() {
         return MinejagoItems.CENTER_SPINJITZU_COURSE_ELEMENT.get();
+    }
+
+    @Override
+    public SoundEvent getAmbientSound() {
+        return MinejagoSoundEvents.CENTER_ACTIVE.get();
     }
 
     @Override
