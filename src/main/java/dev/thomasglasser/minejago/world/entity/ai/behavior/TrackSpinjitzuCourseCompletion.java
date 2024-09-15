@@ -4,10 +4,6 @@ import com.mojang.datafixers.util.Pair;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.world.entity.ai.poi.MinejagoPoiTypes;
 import dev.thomasglasser.minejago.world.entity.character.Wu;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -20,6 +16,11 @@ import net.minecraft.world.entity.ai.village.poi.PoiManager;
 import net.minecraft.world.entity.player.Player;
 import net.tslat.smartbrainlib.api.core.behaviour.ExtendedBehaviour;
 import net.tslat.smartbrainlib.util.BrainUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 public class TrackSpinjitzuCourseCompletion<T extends Wu> extends ExtendedBehaviour<T> {
     // TODO: Animation times
@@ -65,7 +66,7 @@ public class TrackSpinjitzuCourseCompletion<T extends Wu> extends ExtendedBehavi
         int timeLeft = entity.tickTimeLeft();
         int timePassed = entity.getMaxTime() - timeLeft;
         // Sit down, then paper, then cup, then tea, then sugar, then drink until time is almost up, then put down cup
-        // TODO: Ensure interruption is handled correctly visually
+        // TODO: Convert to use animation controller in Wu
         List<Player> currentPlayers = new ArrayList<>(entity.getCourseData().keySet());
         if (timePassed == 1) {
             // TODO: Sit down
