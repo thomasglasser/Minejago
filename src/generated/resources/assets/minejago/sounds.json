@@ -271,6 +271,14 @@
     ],
     "subtitle": "subtitles.item.scythe_of_quakes.path"
   },
+  "music.cave_of_despair": {
+    "sounds": [
+      {
+        "name": "minejago:music/cave_of_despair",
+        "stream": true
+      }
+    ]
+  },
   "music.monastery_of_spinjitzu": {
     "sounds": [
       {

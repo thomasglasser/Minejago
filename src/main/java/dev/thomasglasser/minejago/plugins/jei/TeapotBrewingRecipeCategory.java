@@ -8,92 +8,95 @@ import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
-import mezz.jei.api.gui.drawable.IDrawableAnimated;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
+import mezz.jei.api.gui.placement.HorizontalAlignment;
+import mezz.jei.api.gui.placement.VerticalAlignment;
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
-import mezz.jei.api.gui.widgets.IRecipeWidget;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
-import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
-import mezz.jei.common.Constants;
-import mezz.jei.library.plugins.vanilla.cooking.FurnaceVariantCategory;
+import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.library.util.RecipeUtil;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.navigation.ScreenPosition;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
-import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.Nullable;
 
-public class TeapotBrewingRecipeCategory extends FurnaceVariantCategory<TeapotBrewingRecipe> {
+public class TeapotBrewingRecipeCategory implements IRecipeCategory<TeapotBrewingRecipe> {
     public static final RecipeType<TeapotBrewingRecipe> RECIPE_TYPE = RecipeType.create(MinejagoRecipeTypes.TEAPOT_BREWING.getId().getNamespace(), MinejagoRecipeTypes.TEAPOT_BREWING.getId().getPath(), TeapotBrewingRecipe.class);
     public static final String RECIPE_KEY = MinejagoRecipeTypes.TEAPOT_BREWING.getId().toLanguageKey("recipe");
 
     private static final ResourceLocation TEXTURE = Minejago.modLoc("textures/gui/jei/teapot_brewing.png");
 
-    private final IGuiHelper guiHelper;
     private final Component title = Component.translatable(RECIPE_KEY);
-    private final IDrawable background;
     private final IDrawable icon;
+    private final IDrawable background;
 
     public TeapotBrewingRecipeCategory(IGuiHelper guiHelper) {
-        super(guiHelper);
-        this.guiHelper = guiHelper;
-        this.background = guiHelper.drawableBuilder(TEXTURE, 0, 0, 137, 87)
-                .setTextureSize(137, 87)
-                .build();
         this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, MinejagoBlocks.TEAPOT.toStack());
+        this.background = guiHelper.createDrawable(TEXTURE, 0, 0, 137, 87);
+    }
+
+    @Override
+    public void setRecipe(IRecipeLayoutBuilder builder, TeapotBrewingRecipe recipe, IFocusGroup focuses) {
+        builder.addInputSlot(7, 41)
+                .setStandardSlotBackground()
+                .addIngredients(Ingredient.of(MinejagoItemUtils.fillTeacup(recipe.base())));
+        builder.addInputSlot(39, 7)
+                .setStandardSlotBackground()
+                .addIngredients(recipe.ingredient());
+        builder.addOutputSlot(108, 41)
+                .setOutputSlotBackground()
+                .addItemStack(RecipeUtil.getResultItem(recipe));
+    }
+
+    @Override
+    public void createRecipeExtras(IRecipeExtrasBuilder builder, TeapotBrewingRecipe recipe, IFocusGroup focuses) {
+        int brewTime = (recipe.brewingTime().getMinValue() + recipe.brewingTime().getMaxValue()) / 2;
+        builder.addAnimatedRecipeArrow(brewTime)
+                .setPosition(70, 40);
+        builder.addAnimatedRecipeFlame(300)
+                .setPosition(1, 20);
+
+        addExperience(builder, recipe);
+        addCookTime(builder, recipe);
     }
 
     @Override
     public void draw(TeapotBrewingRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
-        animatedFlame.draw(guiGraphics, 39, 63);
-
-        drawExperience(recipe, guiGraphics, 0);
-        drawCookTime(recipe, guiGraphics, 80);
+        background.draw(guiGraphics, 0, 0);
     }
 
-    protected void drawExperience(TeapotBrewingRecipe recipe, GuiGraphics guiGraphics, int y) {
+    protected void addExperience(IRecipeExtrasBuilder builder, TeapotBrewingRecipe recipe) {
         float experience = recipe.experience();
         if (experience > 0) {
             Component experienceString = Component.translatable("gui.jei.category.smelting.experience", experience);
-            Minecraft minecraft = Minecraft.getInstance();
-            Font fontRenderer = minecraft.font;
-            int stringWidth = fontRenderer.width(experienceString);
-            guiGraphics.drawString(fontRenderer, experienceString, getWidth() - stringWidth, y, 0xFF808080, false);
+            builder.addText(experienceString, getWidth() - 20, 10)
+                    .setPosition(0, 0, getWidth(), getHeight(), HorizontalAlignment.RIGHT, VerticalAlignment.TOP)
+                    .setTextAlignment(HorizontalAlignment.RIGHT)
+                    .setColor(0xFF808080);
         }
     }
 
-    protected void drawCookTime(TeapotBrewingRecipe recipe, GuiGraphics guiGraphics, int y) {
-        IntProvider time = recipe.brewingTime();
+    protected void addCookTime(IRecipeExtrasBuilder builder, TeapotBrewingRecipe recipe) {
+        IntProvider brewTime = recipe.brewingTime();
         String value;
-        if (time instanceof ConstantInt constantInt) {
+        if (brewTime instanceof ConstantInt constantInt) {
             value = String.valueOf(constantInt.getValue() / 20);
         } else {
-            int minTimeSeconds = time.getMinValue() / 20;
-            int maxTimeSeconds = time.getMaxValue() / 20;
+            int minTimeSeconds = brewTime.getMinValue() / 20;
+            int maxTimeSeconds = brewTime.getMaxValue() / 20;
             value = minTimeSeconds + "-" + maxTimeSeconds;
         }
         Component timeString = Component.translatable("gui.jei.category.smelting.time.seconds", value);
-        Minecraft minecraft = Minecraft.getInstance();
-        Font fontRenderer = minecraft.font;
-        int stringWidth = fontRenderer.width(timeString);
-        guiGraphics.drawString(fontRenderer, timeString, getWidth() - stringWidth, y, 0xFF808080, false);
-    }
-
-    @Override
-    public void createRecipeExtras(IRecipeExtrasBuilder acceptor, TeapotBrewingRecipe recipe, IFocusGroup focuses) {
-        acceptor.addWidget(createCookingArrowWidget(recipe, new ScreenPosition(70, 40)));
-    }
-
-    protected IRecipeWidget createCookingArrowWidget(TeapotBrewingRecipe recipe, ScreenPosition position) {
-        return new CookingArrowRecipeWidget<>(guiHelper, recipe, position);
+        builder.addText(timeString, getWidth() - 20, 10)
+                .setPosition(0, 0, getWidth(), getHeight(), HorizontalAlignment.RIGHT, VerticalAlignment.BOTTOM)
+                .setTextAlignment(HorizontalAlignment.RIGHT)
+                .setTextAlignment(VerticalAlignment.BOTTOM)
+                .setColor(0xFF808080);
     }
 
     @Override
@@ -107,44 +110,17 @@ public class TeapotBrewingRecipeCategory extends FurnaceVariantCategory<TeapotBr
     }
 
     @Override
-    public IDrawable getBackground() {
-        return background;
-    }
-
-    @Override
     public @Nullable IDrawable getIcon() {
         return icon;
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, TeapotBrewingRecipe recipe, IFocusGroup focuses) {
-        builder.addSlot(RecipeIngredientRole.INPUT, 7, 41)
-                .addIngredients(Ingredient.of(MinejagoItemUtils.fillTeacup(recipe.base())));
-        builder.addSlot(RecipeIngredientRole.INPUT, 39, 7)
-                .addIngredients(recipe.ingredient());
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 108, 41)
-                .addItemStack(RecipeUtil.getResultItem(recipe));
+    public int getWidth() {
+        return 137;
     }
 
-    private static class CookingArrowRecipeWidget<T extends AbstractCookingRecipe> implements IRecipeWidget {
-        private final IDrawableAnimated arrow;
-        private final ScreenPosition position;
-
-        public CookingArrowRecipeWidget(IGuiHelper guiHelper, TeapotBrewingRecipe recipe, ScreenPosition position) {
-            int time = (recipe.brewingTime().getMinValue() + recipe.brewingTime().getMaxValue()) / 2;
-            this.arrow = guiHelper.drawableBuilder(Constants.RECIPE_GUI_VANILLA, 82, 128, 24, 17)
-                    .buildAnimated(time, IDrawableAnimated.StartDirection.LEFT, false);
-            this.position = position;
-        }
-
-        @Override
-        public ScreenPosition getPosition() {
-            return position;
-        }
-
-        @Override
-        public void draw(GuiGraphics guiGraphics, double mouseX, double mouseY) {
-            arrow.draw(guiGraphics);
-        }
+    @Override
+    public int getHeight() {
+        return 87;
     }
 }

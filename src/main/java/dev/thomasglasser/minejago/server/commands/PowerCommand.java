@@ -3,6 +3,7 @@ package dev.thomasglasser.minejago.server.commands;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
+import dev.thomasglasser.minejago.commands.MinejagoCommandEvents;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
@@ -30,7 +31,6 @@ public class PowerCommand {
     public static final String SUCCESS_CLEARED_OTHER = "commands.power.success_cleared.other";
     public static final String QUERY = "commands.power.query";
     public static final String INVALID = "commands.power.power.invalid";
-    public static final String NOT_LIVING_ENTITY = "commands.power.failure.not_living_entity";
 
     private static final DynamicCommandExceptionType ERROR_INVALID_POWER = new DynamicCommandExceptionType(
             object -> Component.translatable(INVALID, object));
@@ -65,7 +65,7 @@ public class PowerCommand {
                 pSource.sendSuccess(() -> Component.translatable(clear ? SUCCESS_CLEARED_OTHER : SUCCESS_OTHER, livingEntity.getDisplayName(), pSource.registryAccess().holderOrThrow(power).value().getFormattedName()), true);
             }
         } else {
-            pSource.sendFailure(Component.translatable(NOT_LIVING_ENTITY, entity.getDisplayName(), entity.getStringUUID()));
+            pSource.sendFailure(Component.translatable(MinejagoCommandEvents.NOT_LIVING_ENTITY, entity.getDisplayName(), entity.getStringUUID()));
         }
     }
 

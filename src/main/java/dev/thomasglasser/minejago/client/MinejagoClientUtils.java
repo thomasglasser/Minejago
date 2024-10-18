@@ -27,6 +27,7 @@ import net.minecraft.client.gui.screens.inventory.BookViewScreen;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.Nullable;
@@ -35,8 +36,12 @@ public class MinejagoClientUtils {
     private static final HashMap<Player, VipData> vipData = new HashMap<>();
     private static final MinejagoBlockEntityWithoutLevelRenderer bewlr = new MinejagoBlockEntityWithoutLevelRenderer();
 
-    public static boolean renderSnapshotTesterLayer(AbstractClientPlayer player) {
-        return vipData.get(player) != null && vipData.get(player).displaySnapshot() && snapshotChoice(player) != null;
+    public static boolean renderCosmeticLayerInSlot(AbstractClientPlayer player, EquipmentSlot slot) {
+        return slot == null || !player.hasItemInSlot(slot);
+    }
+
+    public static boolean renderSnapshotTesterLayer(AbstractClientPlayer player, EquipmentSlot slot) {
+        return vipData.get(player) != null && renderCosmeticLayerInSlot(player, slot) && vipData.get(player).displaySnapshot() && snapshotChoice(player) != null;
     }
 
     @Nullable
@@ -44,12 +49,12 @@ public class MinejagoClientUtils {
         return vipData.get(player) != null && vipData.get(player).choice() != null ? vipData.get(player).choice() : null;
     }
 
-    public static boolean renderDevLayer(AbstractClientPlayer player) {
-        return vipData.get(player) != null && vipData.get(player).displayDev();
+    public static boolean renderDevLayer(AbstractClientPlayer player, EquipmentSlot slot) {
+        return vipData.get(player) != null && renderCosmeticLayerInSlot(player, slot) && vipData.get(player).displayDev();
     }
 
-    public static boolean renderLegacyDevLayer(AbstractClientPlayer player) {
-        return vipData.get(player) != null && vipData.get(player).displayLegacyDev();
+    public static boolean renderLegacyDevLayer(AbstractClientPlayer player, EquipmentSlot slot) {
+        return vipData.get(player) != null && renderCosmeticLayerInSlot(player, slot) && vipData.get(player).displayLegacyDev();
     }
 
     public static void refreshVip() {

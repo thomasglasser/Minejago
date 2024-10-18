@@ -18,7 +18,7 @@ public class MinejagoItemModelProvider extends ExtendedItemModelProvider {
 
     @Override
     protected void registerModels() {
-        basicItemHandheld(MinejagoItems.BONE_KNIFE);
+        handheldItem(MinejagoItems.BONE_KNIFE);
         MinejagoArmors.ARMOR_SETS.forEach(armorSet -> armorSet.getAll().forEach(item -> {
             String nameForSlot = switch (armorSet.getForItem(item.get())) {
                 case FEET -> "boots";
@@ -75,20 +75,20 @@ public class MinejagoItemModelProvider extends ExtendedItemModelProvider {
                 basicItem(itemRegistryObject.get().asItem());
         });
 
-        spawnEgg(MinejagoItems.WU_SPAWN_EGG);
-        spawnEgg(MinejagoItems.KAI_SPAWN_EGG);
-        spawnEgg(MinejagoItems.NYA_SPAWN_EGG);
-        spawnEgg(MinejagoItems.COLE_SPAWN_EGG);
-        spawnEgg(MinejagoItems.JAY_SPAWN_EGG);
-        spawnEgg(MinejagoItems.ZANE_SPAWN_EGG);
-        spawnEgg(MinejagoItems.SKULKIN_SPAWN_EGG);
-        spawnEgg(MinejagoItems.KRUNCHA_SPAWN_EGG);
-        spawnEgg(MinejagoItems.NUCKAL_SPAWN_EGG);
-        spawnEgg(MinejagoItems.SKULKIN_HORSE_SPAWN_EGG);
-        spawnEgg(MinejagoItems.EARTH_DRAGON_SPAWN_EGG);
-        spawnEgg(MinejagoItems.SAMUKAI_SPAWN_EGG);
-        spawnEgg(MinejagoItems.SKULL_TRUCK_SPAWN_EGG);
-        spawnEgg(MinejagoItems.SKULL_MOTORBIKE_SPAWN_EGG);
+        spawnEggItem(MinejagoItems.WU_SPAWN_EGG);
+        spawnEggItem(MinejagoItems.KAI_SPAWN_EGG);
+        spawnEggItem(MinejagoItems.NYA_SPAWN_EGG);
+        spawnEggItem(MinejagoItems.COLE_SPAWN_EGG);
+        spawnEggItem(MinejagoItems.JAY_SPAWN_EGG);
+        spawnEggItem(MinejagoItems.ZANE_SPAWN_EGG);
+        spawnEggItem(MinejagoItems.SKULKIN_SPAWN_EGG);
+        spawnEggItem(MinejagoItems.KRUNCHA_SPAWN_EGG);
+        spawnEggItem(MinejagoItems.NUCKAL_SPAWN_EGG);
+        spawnEggItem(MinejagoItems.SKULKIN_HORSE_SPAWN_EGG);
+        spawnEggItem(MinejagoItems.EARTH_DRAGON_SPAWN_EGG);
+        spawnEggItem(MinejagoItems.SAMUKAI_SPAWN_EGG);
+        spawnEggItem(MinejagoItems.SKULL_TRUCK_SPAWN_EGG);
+        spawnEggItem(MinejagoItems.SKULL_MOTORBIKE_SPAWN_EGG);
 
         woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET);
         leavesSet(MinejagoBlocks.FOCUS_LEAVES_SET);

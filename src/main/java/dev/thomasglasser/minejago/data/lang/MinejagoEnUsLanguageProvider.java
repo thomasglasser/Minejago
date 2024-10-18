@@ -6,11 +6,13 @@ import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.PowerSelectionScreen;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.ScrollEditScreen;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.ScrollViewScreen;
+import dev.thomasglasser.minejago.commands.MinejagoCommandEvents;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import dev.thomasglasser.minejago.plugins.MinejagoWailaPlugin;
 import dev.thomasglasser.minejago.plugins.jei.TeapotBrewingRecipeCategory;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.server.commands.PowerCommand;
+import dev.thomasglasser.minejago.server.commands.SpinjitzuCommand;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
@@ -235,6 +237,8 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(MinejagoKeyMappings.ASCEND, "Ascend");
         add(MinejagoKeyMappings.DESCEND, "Descend");
 
+        add(MinejagoCommandEvents.NOT_LIVING_ENTITY, "Target %s (%s) is not a LivingEntity");
+
         add(PowerCommand.SUCCESS_SELF, "Set own power to %s");
         add(PowerCommand.CHANGED, "Your power has been updated to %s");
         add(PowerCommand.SUCCESS_OTHER, "Set %s's power to %s");
@@ -243,7 +247,12 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(PowerCommand.SUCCESS_CLEARED_OTHER, "Reset %s's power to %s and enabled power discovery");
         add(PowerCommand.QUERY, "Your power is currently set to: %s");
         add(PowerCommand.INVALID, "Power not found in world. Check enabled data packs.");
-        add(PowerCommand.NOT_LIVING_ENTITY, "Target %s (%s) is not a LivingEntity");
+
+        add(SpinjitzuCommand.LOCKED, "Locked");
+        add(SpinjitzuCommand.UNLOCKED, "Unlocked");
+        add(SpinjitzuCommand.SUCCESS_SELF, "Set own Spinjitzu to %s");
+        add(SpinjitzuCommand.CHANGED, "Your Spinjitzu has been updated to %s");
+        add(SpinjitzuCommand.SUCCESS_OTHER, "Set %s's Spinjitzu to %s");
 
         addCreativeTab(MinejagoCreativeModeTabs.GI, "Gi");
         addCreativeTab(MinejagoCreativeModeTabs.MINEJAGO, "Minejago");

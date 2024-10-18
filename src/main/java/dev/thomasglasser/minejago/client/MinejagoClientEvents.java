@@ -57,6 +57,7 @@ import dev.thomasglasser.minejago.world.focus.FocusData;
 import dev.thomasglasser.minejago.world.item.MinejagoItemUtils;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
+import dev.thomasglasser.minejago.world.level.MinejagoLevelUtils;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
@@ -333,16 +334,25 @@ public class MinejagoClientEvents {
         }
     }
 
+    private static int musicCooldown = 0;
+
     public static void onSelectMusic(SelectMusicEvent event) {
         Player player = ClientUtils.getMainClientPlayer();
         if (player != null) {
-            BossHealthOverlay bossOverlay = ClientUtils.getMinecraft().gui.getBossOverlay();
-            if (bossOverlay.shouldPlayMusic() && skulkinRaids.stream().anyMatch(bossOverlay.events::containsKey)) {
-                event.setMusic(MinejagoMusics.SKULKIN_RAID);
-            } else if (!player.level().getEntities(player, player.getBoundingBox().inflate(128), entity -> entity instanceof Wu).isEmpty() && player.level().getBiome(player.blockPosition()).is(MinejagoBiomeTags.HAS_MONASTERY_OF_SPINJITZU)) {
-                event.setMusic(MinejagoMusics.MONASTERY_OF_SPINJITZU);
-            } else if (Minecraft.getInstance().getMusicManager().isPlayingMusic(MinejagoMusics.MONASTERY_OF_SPINJITZU) || Minecraft.getInstance().getMusicManager().isPlayingMusic(MinejagoMusics.SKULKIN_RAID)) {
-                event.setMusic(null);
+            if (musicCooldown <= 0) {
+                BossHealthOverlay bossOverlay = ClientUtils.getMinecraft().gui.getBossOverlay();
+                if (bossOverlay.shouldPlayMusic() && skulkinRaids.stream().anyMatch(bossOverlay.events::containsKey)) {
+                    event.setMusic(MinejagoMusics.SKULKIN_RAID);
+                } else if (!player.level().getEntities(player, player.getBoundingBox().inflate(128), entity -> entity instanceof Wu).isEmpty() && player.level().getBiome(player.blockPosition()).is(MinejagoBiomeTags.HAS_MONASTERY_OF_SPINJITZU)) {
+                    event.setMusic(MinejagoMusics.MONASTERY_OF_SPINJITZU);
+                } else if (player.level().getBiome(player.blockPosition()).is(MinejagoBiomeTags.HAS_CAVE_OF_DESPAIR) && MinejagoLevelUtils.isBlockInRange(MinejagoBlocks.EARTH_DRAGON_HEAD.get(), player.level(), player.blockPosition(), 64)) {
+                    event.setMusic(MinejagoMusics.CAVE_OF_DESPAIR);
+                } else if (MinejagoMusics.getAll().stream().anyMatch(music -> Minecraft.getInstance().getMusicManager().isPlayingMusic(music))) {
+                    event.setMusic(null);
+                }
+                musicCooldown = 20;
+            } else {
+                musicCooldown--;
             }
         }
     }

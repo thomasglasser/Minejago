@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 
 public class LegacyDevTeamLayer<T extends LivingEntity> extends RenderLayer<T, PlayerModel<T>> {
@@ -37,7 +38,7 @@ public class LegacyDevTeamLayer<T extends LivingEntity> extends RenderLayer<T, P
         VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityCutout(getTextureLocation(entity)));
 
         poseStack.translate(0, -0.055, 0);
-        if (!(entity instanceof AbstractClientPlayer) || MinejagoClientUtils.renderLegacyDevLayer((AbstractClientPlayer) entity))
+        if (!(entity instanceof AbstractClientPlayer) || MinejagoClientUtils.renderLegacyDevLayer((AbstractClientPlayer) entity, EquipmentSlot.HEAD))
             model.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
     }
 }

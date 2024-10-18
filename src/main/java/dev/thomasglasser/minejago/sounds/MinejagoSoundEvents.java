@@ -80,6 +80,7 @@ public class MinejagoSoundEvents {
 
     // Music
     public static final DeferredHolder<SoundEvent, SoundEvent> MUSIC_MONASTERY_OF_SPINJITZU = register("music", "monastery_of_spinjitzu");
+    public static final DeferredHolder<SoundEvent, SoundEvent> MUSIC_CAVE_OF_DESPAIR = register("music", "cave_of_despair");
     public static final DeferredHolder<SoundEvent, SoundEvent> MUSIC_SKULKIN_RAID = register("music", "skulkin_raid");
 
     private static DeferredHolder<SoundEvent, SoundEvent> register(String subject, String type, String name) {
