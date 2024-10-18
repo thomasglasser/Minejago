@@ -20,14 +20,6 @@ import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.level.storage.PowerData;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
@@ -66,6 +58,15 @@ import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.constant.DefaultAnimations;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 public class Wu extends Character implements SpinjitzuCourseTracker {
     public static final String POWER_GIVEN_KEY = "gui.power_selection.power_given";
@@ -163,7 +164,7 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
                     Optional<BlockPos> teapotPos = serverLevel.getPoiManager().findClosest(poi -> poi.is(MinejagoPoiTypes.TEAPOTS), blockPosition(), MinejagoServerConfig.get().courseRadius.get(), PoiManager.Occupancy.ANY);
                     if (teapotPos.isPresent()) {
                         if (trackedCourseElements.isEmpty()) {
-                            List<? extends AbstractSpinjitzuCourseElement<?>> nearbyElements = level().getEntities(this, getBoundingBox().inflate(MinejagoServerConfig.get().courseRadius.get()), entity -> entity instanceof AbstractSpinjitzuCourseElement<?> element && element.isActive()).stream().map(entity -> (AbstractSpinjitzuCourseElement<?>) entity).toList();
+                            List<? extends AbstractSpinjitzuCourseElement<?>> nearbyElements = level().getEntities(this, getBoundingBox().inflate(MinejagoServerConfig.get().courseRadius.get()), entity -> entity instanceof AbstractSpinjitzuCourseElement<?> element && element.isActive() && element.shouldIncludeInTracking()).stream().map(entity -> (AbstractSpinjitzuCourseElement<?>) entity).toList();
                             if (!nearbyElements.isEmpty()) {
                                 trackedCourseElements.addAll(nearbyElements);
                                 nearbyElements.forEach(element -> element.beginTracking(this));

@@ -39,4 +39,9 @@ public class CenterSpinjitzuCourseElement extends AbstractSpinjitzuCourseElement
         else
             return IDLE_DIMENSIONS;
     }
+
+    @Override
+    public boolean shouldIncludeInTracking() {
+        return false;
+    }
 }

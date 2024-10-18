@@ -37,7 +37,10 @@ public class TeapotBrewingRecipeCategory implements IRecipeCategory<TeapotBrewin
 
     public TeapotBrewingRecipeCategory(IGuiHelper guiHelper) {
         this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, MinejagoBlocks.TEAPOT.toStack());
-        this.background = guiHelper.createDrawable(TEXTURE, 0, 0, 137, 87);
+        this.background = guiHelper
+                .drawableBuilder(TEXTURE, 0, 0, 137, 87)
+                .setTextureSize(137, 87)
+                .build();
     }
 
     @Override
@@ -57,9 +60,9 @@ public class TeapotBrewingRecipeCategory implements IRecipeCategory<TeapotBrewin
     public void createRecipeExtras(IRecipeExtrasBuilder builder, TeapotBrewingRecipe recipe, IFocusGroup focuses) {
         int brewTime = (recipe.brewingTime().getMinValue() + recipe.brewingTime().getMaxValue()) / 2;
         builder.addAnimatedRecipeArrow(brewTime)
-                .setPosition(70, 40);
+                .setPosition(72, 40);
         builder.addAnimatedRecipeFlame(300)
-                .setPosition(1, 20);
+                .setPosition(39, 63);
 
         addExperience(builder, recipe);
         addCookTime(builder, recipe);

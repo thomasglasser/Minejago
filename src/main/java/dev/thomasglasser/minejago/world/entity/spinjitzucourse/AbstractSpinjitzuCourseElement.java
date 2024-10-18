@@ -372,4 +372,8 @@ public abstract class AbstractSpinjitzuCourseElement<T extends AbstractSpinjitzu
     private void resetAmbientSoundTime() {
         this.ambientSoundTime = -this.getAmbientSoundInterval();
     }
+
+    public boolean shouldIncludeInTracking() {
+        return true;
+    }
 }
