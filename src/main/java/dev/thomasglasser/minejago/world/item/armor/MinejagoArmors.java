@@ -9,8 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 public class MinejagoArmors {
     public static final DeferredRegister.Items ARMORS = DeferredRegister.createItems(Minejago.MOD_ID);
@@ -86,6 +88,15 @@ public class MinejagoArmors {
 
     private static <T extends ArmorItem> DeferredItem<T> register(String name, Supplier<T> item) {
         return ARMORS.register(name, item);
+    }
+
+    public static boolean isWearingFullGi(LivingEntity entity) {
+        for (ItemStack stack : entity.getArmorSlots()) {
+            if (!(stack.getItem() instanceof GiGeoArmorItem)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public static void init() {}

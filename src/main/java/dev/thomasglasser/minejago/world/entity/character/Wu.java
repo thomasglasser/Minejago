@@ -6,6 +6,7 @@ import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.network.ClientboundOpenPowerSelectionScreenPayload;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
+import dev.thomasglasser.minejago.world.entity.MinejagoEntitySerializers;
 import dev.thomasglasser.minejago.world.entity.ai.behavior.GivePowerAndGi;
 import dev.thomasglasser.minejago.world.entity.ai.behavior.TrackSpinjitzuCourseCompletion;
 import dev.thomasglasser.minejago.world.entity.ai.memory.MinejagoMemoryModuleTypes;
@@ -20,10 +21,21 @@ import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.level.storage.PowerData;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -46,27 +58,18 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.WalkTarget;
 import net.minecraft.world.entity.ai.village.poi.PoiManager;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
 import net.tslat.smartbrainlib.api.core.behaviour.FirstApplicableBehaviour;
 import net.tslat.smartbrainlib.util.BrainUtils;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.constant.DefaultAnimations;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
 
 public class Wu extends Character implements SpinjitzuCourseTracker {
     public static final String POWER_GIVEN_KEY = "gui.power_selection.power_given";
@@ -74,6 +77,15 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
 
     public static final RawAnimation ATTACK_SWING_WITH_STICK = RawAnimation.begin().thenPlay("attack.swing_with_stick");
     public static final RawAnimation MOVE_WALK_WITH_STICK = RawAnimation.begin().thenPlay("move.walk_with_stick");
+    public static final RawAnimation MISC_PLACE_IN_LAP = RawAnimation.begin().thenPlay("misc.place_in_lap");
+    public static final RawAnimation MISC_PREPARE_TEA = RawAnimation.begin().thenPlay("misc.prepare_tea");
+    public static final RawAnimation MISC_KNOCK_CUP = RawAnimation.begin().thenPlay("misc.knock_cup");
+    public static final RawAnimation MISC_DRINK = RawAnimation.begin().thenPlay("misc.drink");
+    public static final RawAnimation MISC_LOWER_CUP = RawAnimation.begin().thenPlay("misc.lower_cup");
+
+    private static final EntityDataAccessor<TrackSpinjitzuCourseCompletion.Stage> DATA_STAGE = SynchedEntityData.defineId(Wu.class, MinejagoEntitySerializers.STAGE.get());
+    private static final EntityDataAccessor<Boolean> DATA_INTERRUPTED = SynchedEntityData.defineId(Wu.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> DATA_INTERRUPTED_TICKS = SynchedEntityData.defineId(Wu.class, EntityDataSerializers.INT);
 
     protected final Map<Player, Set<AbstractSpinjitzuCourseElement<?>>> courseData = new HashMap<>();
     protected final Map<Integer, List<Player>> entitiesOnCooldown = new HashMap<>();
@@ -82,7 +94,6 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
     protected List<ResourceKey<Power>> powersToGive = new ArrayList<>();
     protected boolean givingPower;
     protected boolean lifting;
-    protected boolean interrupted;
     protected int maxTime;
     protected int timeLeft;
 
@@ -96,6 +107,14 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
                 .add(Attributes.MAX_HEALTH, ((RangedAttribute) Attributes.MAX_HEALTH.value()).getMaxValue())
                 .add(Attributes.ATTACK_KNOCKBACK, ((RangedAttribute) Attributes.ATTACK_KNOCKBACK.value()).getMaxValue())
                 .add(Attributes.ATTACK_DAMAGE, ((RangedAttribute) Attributes.ATTACK_DAMAGE.value()).getMaxValue());
+    }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_STAGE, TrackSpinjitzuCourseCompletion.Stage.STAND_UP);
+        builder.define(DATA_INTERRUPTED, false);
+        builder.define(DATA_INTERRUPTED_TICKS, 0);
     }
 
     @Override
@@ -153,7 +172,7 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
                     playSound(SoundEvents.VILLAGER_CELEBRATE, 1.0f, 0.9f);
                     stopTracking(player);
                     setLifting(false);
-                    setInterrupted(false);
+                    entityData.set(DATA_INTERRUPTED, false);
                 }
             } else {
                 List<LivingEntity> cooldownList = new ArrayList<>();
@@ -234,6 +253,23 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+        controllerRegistrar.add(new AnimationController<>(this, "Tea", animationState -> {
+            if (isInterrupted())
+                return animationState.setAndContinue(MISC_KNOCK_CUP);
+            else if (getCurrentStage() == TrackSpinjitzuCourseCompletion.Stage.SIT_DOWN)
+                return animationState.setAndContinue(Character.MEDITATION_START);
+            else if (getCurrentStage() == TrackSpinjitzuCourseCompletion.Stage.PAPER)
+                return animationState.setAndContinue(MISC_PLACE_IN_LAP);
+            else if (getCurrentStage() == TrackSpinjitzuCourseCompletion.Stage.PREPARE)
+                return animationState.setAndContinue(MISC_PREPARE_TEA);
+            else if (getCurrentStage() == TrackSpinjitzuCourseCompletion.Stage.DRINK)
+                return animationState.setAndContinue(MISC_DRINK);
+            else if (getCurrentStage() == TrackSpinjitzuCourseCompletion.Stage.PUT_DOWN)
+                return animationState.setAndContinue(MISC_LOWER_CUP);
+            else if (getCurrentStage() == TrackSpinjitzuCourseCompletion.Stage.STAND_UP)
+                return animationState.setAndContinue(Character.MEDITATION_FINISH);
+            return PlayState.STOP;
+        }));
         controllerRegistrar.add(new AnimationController<>(this, "StickAttack", 5, state -> {
             if (this.swinging)
                 return getMainHandItem().getItem() == MinejagoItems.BAMBOO_STAFF.get() ? state.setAndContinue(ATTACK_SWING_WITH_STICK) : state.setAndContinue(DefaultAnimations.ATTACK_SWING);
@@ -248,7 +284,7 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
 
             return PlayState.STOP;
         }));
-        controllerRegistrar.add(new AnimationController<GeoAnimatable>(this, "spinjitzu", animationState -> {
+        controllerRegistrar.add(new AnimationController<>(this, "Spinjitzu", animationState -> {
             if (isDoingSpinjitzu())
                 return animationState.setAndContinue(SPINJITZU);
 
@@ -269,7 +305,7 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
     public boolean hurt(DamageSource source, float amount) {
         if (!courseData.isEmpty() && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             if (isLifting()) {
-                interrupted = true;
+                markInterrupted();
             }
             return false;
         }
@@ -282,14 +318,6 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
 
     public Map<Integer, List<Player>> getEntitiesOnCooldown() {
         return entitiesOnCooldown;
-    }
-
-    public boolean wasInterrupted() {
-        return interrupted;
-    }
-
-    public void setInterrupted(boolean interrupted) {
-        this.interrupted = interrupted;
     }
 
     public boolean isLifting() {
@@ -319,5 +347,37 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
 
     public int tickTimeLeft() {
         return --timeLeft;
+    }
+
+    public void setCurrentStage(TrackSpinjitzuCourseCompletion.Stage currentStage) {
+        this.entityData.set(DATA_STAGE, currentStage);
+    }
+
+    public TrackSpinjitzuCourseCompletion.Stage getCurrentStage() {
+        return this.entityData.get(DATA_STAGE);
+    }
+
+    public void markInterrupted() {
+        entityData.set(DATA_INTERRUPTED, true);
+        entityData.set(DATA_INTERRUPTED_TICKS, TrackSpinjitzuCourseCompletion.INTERRUPTED_DURATION);
+        setLifting(false);
+        setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+    }
+
+    public boolean isInterrupted() {
+        return entityData.get(DATA_INTERRUPTED);
+    }
+
+    public boolean tickInterrupted() {
+        if (isInterrupted()) {
+            int interruptedTicks = entityData.get(DATA_INTERRUPTED_TICKS) - 1;
+            entityData.set(DATA_INTERRUPTED_TICKS, interruptedTicks);
+            if (interruptedTicks <= 0) {
+                entityData.set(DATA_INTERRUPTED, false);
+                setTimeLeft(getMaxTime() - (TrackSpinjitzuCourseCompletion.SIT_DOWN_DURATION + TrackSpinjitzuCourseCompletion.PAPER_DURATION));
+                setItemInHand(InteractionHand.MAIN_HAND, MinejagoItems.TEACUP.toStack());
+            }
+        }
+        return isInterrupted();
     }
 }

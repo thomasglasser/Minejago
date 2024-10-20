@@ -3,9 +3,8 @@ package dev.thomasglasser.minejago.mixin.minecraft.world.entity;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityEvents;
-import dev.thomasglasser.minejago.world.item.armor.GiGeoArmorItem;
+import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
-import java.util.concurrent.atomic.AtomicBoolean;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -36,17 +35,8 @@ public class EntityMixin {
 
     @ModifyReturnValue(method = "dampensVibrations", at = @At("TAIL"))
     private boolean minejago_dampensVibrations(boolean original) {
-        if (INSTANCE instanceof LivingEntity livingEntity) {
-            AtomicBoolean flag = new AtomicBoolean(true);
-
-            livingEntity.getArmorSlots().forEach(stack -> {
-                if (!(stack.getItem() instanceof GiGeoArmorItem)) {
-                    flag.set(false);
-                }
-            });
-
-            return flag.get() || original;
-        }
+        if (INSTANCE instanceof LivingEntity livingEntity)
+            return MinejagoArmors.isWearingFullGi(livingEntity) || original;
         return original;
     }
 
