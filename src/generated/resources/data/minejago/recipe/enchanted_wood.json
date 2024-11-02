@@ -3,9 +3,7 @@
   "category": "building",
   "group": "bark",
   "key": {
-    "#": {
-      "item": "minejago:enchanted_log"
-    }
+    "#": "minejago:enchanted_log"
   },
   "pattern": [
     "##",

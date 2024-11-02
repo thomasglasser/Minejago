@@ -4,22 +4,19 @@
   "package": "dev.thomasglasser.minejago.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "minecraft.data.recipes.RecipeProviderMixin",
     "minecraft.server.level.ServerLevelMixin",
     "minecraft.server.network.ServerGamePacketListenerImplMixin",
     "minecraft.world.entity.EntityMixin",
     "minecraft.world.entity.ServerPlayerMixin",
     "minecraft.world.entity.player.PlayerMixin",
-    "minecraft.world.item.MinejagoBottleItemMixin",
-    "minecraft.world.item.MinejagoBucketItemMixin",
-    "minecraft.world.item.MinejagoMilkBucketItemMixin",
-    "minecraft.world.item.MinejagoPotionItemMixin",
     "minecraft.world.level.block.entity.LecternBlockEntityMixin"
   ],
   "client": [
     "minecraft.client.gui.screens.inventory.LecternScreenMixin",
     "minecraft.client.player.LocalPlayerMixin",
-    "minecraft.client.renderer.blockentity.LecternRendererMixin"
+    "minecraft.client.renderer.blockentity.LecternRendererMixin",
+    "minecraft.client.renderer.entity.player.PlayerRendererMixin",
+    "minecraft.client.renderer.entity.state.PlayerRenderStateMixin"
   ],
   "server": [
   ],

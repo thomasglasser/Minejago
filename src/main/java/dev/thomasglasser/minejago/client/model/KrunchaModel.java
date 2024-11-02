@@ -2,7 +2,6 @@ package dev.thomasglasser.minejago.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.world.entity.skulkin.Kruncha;
 import net.minecraft.client.model.AnimationUtils;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -13,12 +12,13 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.renderer.entity.state.SkeletonRenderState;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
-public class KrunchaModel<T extends Kruncha> extends HumanoidModel<T> {
+public class KrunchaModel<S extends SkeletonRenderState> extends HumanoidModel<S> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Minejago.modLoc("kruncha"), "main");
 
     public KrunchaModel(ModelPart pRoot) {
@@ -29,16 +29,16 @@ public class KrunchaModel<T extends Kruncha> extends HumanoidModel<T> {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition hat = partdefinition.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
-
-        PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create().texOffs(16, 16).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
-
         PartDefinition head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 0).addBox(-3.0F, -7.0F, -4.0F, 6.0F, 7.0F, 8.0F, new CubeDeformation(0.0F))
                 .texOffs(45, 1).addBox(-2.0F, -2.0F, -5.0F, 4.0F, 4.0F, 2.0F, new CubeDeformation(0.0F))
                 .texOffs(24, 1).addBox(-4.0F, -6.0F, -5.0F, 8.0F, 4.0F, 2.0F, new CubeDeformation(0.0F))
                 .texOffs(0, 35).addBox(-4.0F, -8.0F, -3.0F, 8.0F, 5.0F, 8.0F, new CubeDeformation(0.0F))
                 .texOffs(24, 33).addBox(-3.0F, -10.0F, -2.0F, 6.0F, 2.0F, 6.0F, new CubeDeformation(0.0F))
                 .texOffs(39, 41).addBox(-2.0F, -8.0F, -5.0F, 4.0F, 1.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+        PartDefinition hat = head.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
+
+        PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create().texOffs(16, 16).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
         PartDefinition right_arm = partdefinition.addOrReplaceChild("right_arm", CubeListBuilder.create().texOffs(40, 16).addBox(-1.0F, -2.0F, -1.0F, 2.0F, 12.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(-5.0F, 2.0F, 0.0F));
 
@@ -51,22 +51,13 @@ public class KrunchaModel<T extends Kruncha> extends HumanoidModel<T> {
         return LayerDefinition.create(meshdefinition, 64, 64);
     }
 
-    public void prepareMobModel(T pEntity, float pLimbSwing, float pLimbSwingAmount, float pPartialTick) {
-        this.rightArmPose = ArmPose.EMPTY;
-        this.leftArmPose = ArmPose.EMPTY;
-
-        super.prepareMobModel(pEntity, pLimbSwing, pLimbSwingAmount, pPartialTick);
-    }
-
-    /**
-     * Sets this entity's model rotation angles
-     */
-    public void setupAnim(T pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
-        super.setupAnim(pEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
-        ItemStack itemstack = pEntity.getMainHandItem();
-        if (pEntity.isAggressive() && (itemstack.isEmpty() || !itemstack.is(Items.BOW))) {
-            float f = Mth.sin(this.attackTime * (float) Math.PI);
-            float f1 = Mth.sin((1.0F - (1.0F - this.attackTime) * (1.0F - this.attackTime)) * (float) Math.PI);
+    @Override
+    public void setupAnim(S renderState) {
+        super.setupAnim(renderState);
+        ItemStack itemstack = renderState.getMainHandItem();
+        if (renderState.isAggressive && (itemstack.isEmpty() || !itemstack.is(Items.BOW))) {
+            float f = Mth.sin(renderState.attackTime * (float) Math.PI);
+            float f1 = Mth.sin((1.0F - (1.0F - renderState.attackTime) * (1.0F - renderState.attackTime)) * (float) Math.PI);
             this.rightArm.zRot = 0.0F;
             this.leftArm.zRot = 0.0F;
             this.rightArm.yRot = -(0.1F - f * 0.6F);
@@ -75,7 +66,7 @@ public class KrunchaModel<T extends Kruncha> extends HumanoidModel<T> {
             this.leftArm.xRot = (-(float) Math.PI / 2F);
             this.rightArm.xRot -= f * 1.2F - f1 * 0.4F;
             this.leftArm.xRot -= f * 1.2F - f1 * 0.4F;
-            AnimationUtils.bobArms(this.rightArm, this.leftArm, pAgeInTicks);
+            AnimationUtils.bobArms(this.rightArm, this.leftArm, renderState.ageInTicks);
         }
     }
 

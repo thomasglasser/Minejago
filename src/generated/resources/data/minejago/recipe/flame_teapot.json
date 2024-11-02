@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "teapot",
   "ingredients": [
-    {
-      "item": "minejago:gray_teapot"
-    },
-    {
-      "tag": "c:dyes/orange"
-    }
+    "minejago:gray_teapot",
+    "#c:dyes/orange"
   ],
   "result": {
     "count": 1,

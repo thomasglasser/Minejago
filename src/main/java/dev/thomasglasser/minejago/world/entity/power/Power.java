@@ -125,7 +125,7 @@ public class Power {
     }
 
     public boolean is(TagKey<Power> tag, Registry<Power> registry) {
-        return registry.getTag(tag).get().contains(registry.getHolderOrThrow(ResourceKey.create(registry.key(), getId())));
+        return registry.getOrThrow(tag).contains(registry.getOrThrow(ResourceKey.create(registry.key(), getId())));
     }
 
     public boolean is(Power power) {

@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "boat",
   "key": {
-    "#": {
-      "item": "minejago:enchanted_planks"
-    }
+    "#": "minejago:enchanted_planks"
   },
   "pattern": [
     "# #",

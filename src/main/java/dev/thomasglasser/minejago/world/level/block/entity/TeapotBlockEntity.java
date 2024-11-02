@@ -81,7 +81,7 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
             pLevel.setBlock(pPos, pState.setValue(TeapotBlock.FILLED, true), Block.UPDATE_ALL);
 
         if (pBlockEntity.cups > 0) {
-            Optional<RecipeHolder<TeapotBrewingRecipe>> recipe = pBlockEntity.quickCheck.getRecipeFor(new TeapotBrewingRecipe.TeapotBrewingRecipeInput(pBlockEntity.potion, pBlockEntity.item), pLevel);
+            Optional<RecipeHolder<TeapotBrewingRecipe>> recipe = pBlockEntity.quickCheck.getRecipeFor(new TeapotBrewingRecipe.TeapotBrewingRecipeInput(pBlockEntity.potion, pBlockEntity.item), (ServerLevel) pLevel);
 
             pBlockEntity.cups = Math.min(pBlockEntity.cups, MAX_CUPS);
 
@@ -93,7 +93,7 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
                     pLevel.playSound(null, pPos, MinejagoSoundEvents.TEAPOT_WHISTLE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 
                     if (recipe.isPresent()) {
-                        pBlockEntity.potion = recipe.get().value().getResultItem(pLevel.registryAccess()).get(DataComponents.POTION_CONTENTS).potion().orElse(null);
+                        pBlockEntity.potion = recipe.get().value().result();
                         pBlockEntity.experiencePerCup = recipe.get().value().experience() / pBlockEntity.cups;
                         pBlockEntity.experienceCups = pBlockEntity.cups;
                     }
@@ -165,7 +165,7 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
         NonNullList<ItemStack> itemList = NonNullList.withSize(1, ItemStack.EMPTY);
         ContainerHelper.loadAllItems(compoundTag, itemList, provider);
         item = itemList.getFirst();
-        Holder<Potion> newPotion = BuiltInRegistries.POTION.getHolder(ResourceLocation.parse(compoundTag.getString("Potion"))).orElse(null);
+        Holder<Potion> newPotion = BuiltInRegistries.POTION.get(ResourceLocation.parse(compoundTag.getString("Potion"))).orElse(null);
         if (newPotion != potion) {
             potion = newPotion;
             if (this.level != null && this.level.isClientSide)
@@ -313,7 +313,7 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
     }
 
     public boolean hasRecipe(ItemStack item, Level level) {
-        return quickCheck.getRecipeFor(new TeapotBrewingRecipe.TeapotBrewingRecipeInput(potion, item), level).isPresent();
+        return quickCheck.getRecipeFor(new TeapotBrewingRecipe.TeapotBrewingRecipeInput(potion, item), (ServerLevel) level).isPresent();
     }
 
     public void giveExperienceForCup(ServerLevel serverLevel, Vec3 pos) {

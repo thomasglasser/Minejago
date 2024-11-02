@@ -1,5 +1,13 @@
 {
   "asset_id": "minejago:creation",
+  "author": {
+    "color": "gray",
+    "translate": "painting.minejago.creation.author"
+  },
   "height": 3,
+  "title": {
+    "color": "yellow",
+    "translate": "painting.minejago.creation.title"
+  },
   "width": 4
 }

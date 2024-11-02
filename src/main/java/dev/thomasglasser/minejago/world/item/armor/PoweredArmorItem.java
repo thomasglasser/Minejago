@@ -6,6 +6,7 @@ import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.tommylib.api.client.renderer.BewlrProvider;
 import dev.thomasglasser.tommylib.api.world.item.ModeledItem;
+import dev.thomasglasser.tommylib.api.world.item.equipment.ExtendedArmorMaterial;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -16,12 +17,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.equipment.ArmorType;
 
 public abstract class PoweredArmorItem extends GiGeoArmorItem implements ModeledItem {
-    public PoweredArmorItem(Holder<ArmorMaterial> pMaterial, Type type, Properties pProperties) {
+    public PoweredArmorItem(ExtendedArmorMaterial pMaterial, ArmorType type, Properties pProperties) {
         super(pMaterial, type, pProperties);
     }
 

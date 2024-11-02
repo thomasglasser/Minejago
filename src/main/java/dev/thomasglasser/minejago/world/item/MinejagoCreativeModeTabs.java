@@ -39,13 +39,13 @@ public class MinejagoCreativeModeTabs {
                 itemsToAdd.add(rl);
         }));
 
-        output.acceptAll(itemsToAdd.stream().map(rl -> BuiltInRegistries.ITEM.get(rl).getDefaultInstance()).toList());
+        output.acceptAll(itemsToAdd.stream().map(rl -> BuiltInRegistries.ITEM.getValue(rl).getDefaultInstance()).toList());
 
         MinejagoArmors.ARMOR_SETS.forEach(armorSet -> output.acceptAll(armorSet.getAll().stream().map(ro -> ro.get().getDefaultInstance()).toList()));
         MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(chestplate -> output.accept(chestplate.get()));
         output.accept(MinejagoArmors.SAMUKAIS_CHESTPLATE.get());
 
-        output.accept(SkulkinRaid.getLeaderBannerInstance(parameters.holders().lookupOrThrow(Registries.BANNER_PATTERN)));
+        output.accept(SkulkinRaid.getCursedBannerInstance(parameters.holders().lookupOrThrow(Registries.BANNER_PATTERN)));
     }));
 
     private static DeferredHolder<CreativeModeTab, CreativeModeTab> register(String name, Supplier<CreativeModeTab> tab) {

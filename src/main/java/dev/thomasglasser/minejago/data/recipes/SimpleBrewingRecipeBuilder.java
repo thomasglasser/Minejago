@@ -12,9 +12,11 @@ import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.item.Item;
@@ -70,17 +72,17 @@ public class SimpleBrewingRecipeBuilder implements RecipeBuilder {
     }
 
     @Override
-    public void save(RecipeOutput recipeOutput, ResourceLocation id) {
+    public void save(RecipeOutput recipeOutput, ResourceKey<Recipe<?>> id) {
         this.ensureValid(id);
         Advancement.Builder builder = recipeOutput.advancement().addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id)).rewards(AdvancementRewards.Builder.recipe(id)).requirements(AdvancementRequirements.Strategy.OR);
         this.criteria.forEach(builder::addCriterion);
         Recipe<?> abstractCookingRecipe = new TeapotBrewingRecipe(Objects.requireNonNullElse(this.group, ""), base, ingredient, result, this.experience, this.brewingTime);
-        recipeOutput.accept(id, abstractCookingRecipe, builder.build(id.withPrefix("recipes/" + this.category.getFolderName() + "/")));
+        recipeOutput.accept(id, abstractCookingRecipe, builder.build(id.location().withPrefix("recipes/" + this.category.getFolderName() + "/")));
     }
 
     @Override
     public void save(RecipeOutput recipeOutput) {
-        this.save(recipeOutput, getDefaultRecipeId(base, result));
+        this.save(recipeOutput, ResourceKey.create(Registries.RECIPE, getDefaultRecipeId(base, result)));
     }
 
     static ResourceLocation getDefaultRecipeId(Holder<Potion> from, Holder<Potion> to) {
@@ -91,7 +93,7 @@ public class SimpleBrewingRecipeBuilder implements RecipeBuilder {
     /**
      * Makes sure that this obtainable.
      */
-    private void ensureValid(ResourceLocation id) {
+    private void ensureValid(ResourceKey<Recipe<?>> id) {
         if (this.criteria.isEmpty()) {
             throw new IllegalStateException("No way of obtaining recipe " + id);
         }

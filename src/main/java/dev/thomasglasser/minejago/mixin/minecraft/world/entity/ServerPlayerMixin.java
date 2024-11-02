@@ -33,14 +33,14 @@ public abstract class ServerPlayerMixin {
     public abstract ServerLevel serverLevel();
 
     @Unique
-    private final ServerPlayer INSTANCE = (ServerPlayer) (Object) this;
+    private final ServerPlayer minejago$INSTANCE = (ServerPlayer) (Object) this;
 
     @Unique
-    private FocusData focusData;
+    private FocusData minejago$focusData;
     @Unique
-    private int lastSentFocus;
+    private int minejago$lastSentFocus;
     @Unique
-    private boolean lastFoodSaturationZero;
+    private boolean minejago$lastFoodSaturationZero;
 
     @Inject(method = "crit", at = @At("HEAD"))
     private void minejago_crit(Entity entityHit, CallbackInfo ci) {
@@ -54,14 +54,15 @@ public abstract class ServerPlayerMixin {
             MinejagoEntityEvents.stopSpinjitzu(sp.getData(MinejagoAttachmentTypes.SPINJITZU), sp, true);
     }
 
-    @Inject(method = "openItemGui", at = @At("HEAD"))
+    @Inject(method = "openItemGui", at = @At("HEAD"), cancellable = true)
     private void minejago_openItemGui(ItemStack stack, InteractionHand hand, CallbackInfo ci) {
         if (stack.is(MinejagoItems.WRITTEN_SCROLL.get())) {
-            if (WrittenBookItem.resolveBookComponents(stack, INSTANCE.createCommandSourceStack(), INSTANCE)) {
-                INSTANCE.containerMenu.broadcastChanges();
+            if (WrittenBookItem.resolveBookComponents(stack, minejago$INSTANCE.createCommandSourceStack(), minejago$INSTANCE)) {
+                minejago$INSTANCE.containerMenu.broadcastChanges();
             }
 
-            TommyLibServices.NETWORK.sendToClient(new ClientboundOpenScrollPayload(hand), INSTANCE);
+            TommyLibServices.NETWORK.sendToClient(new ClientboundOpenScrollPayload(hand), minejago$INSTANCE);
+            ci.cancel();
         }
     }
 
@@ -74,12 +75,12 @@ public abstract class ServerPlayerMixin {
 
     @Inject(method = "doTick", at = @At("TAIL"))
     private void minejago_doTick(CallbackInfo ci) {
-        if (focusData == null)
-            focusData = INSTANCE.getData(MinejagoAttachmentTypes.FOCUS);
-        if (this.lastSentFocus != focusData.getFocusLevel() || this.focusData.getSaturationLevel() == 0.0F != this.lastFoodSaturationZero) {
-            TommyLibServices.NETWORK.sendToClient(new ClientboundSetFocusPayload(focusData.getFocusLevel(), focusData.getSaturationLevel()), INSTANCE);
-            this.lastSentFocus = this.focusData.getFocusLevel();
-            this.lastFoodSaturationZero = this.focusData.getSaturationLevel() == 0.0F;
+        if (minejago$focusData == null)
+            minejago$focusData = minejago$INSTANCE.getData(MinejagoAttachmentTypes.FOCUS);
+        if (this.minejago$lastSentFocus != minejago$focusData.getFocusLevel() || this.minejago$focusData.getSaturationLevel() == 0.0F != this.minejago$lastFoodSaturationZero) {
+            TommyLibServices.NETWORK.sendToClient(new ClientboundSetFocusPayload(minejago$focusData.getFocusLevel(), minejago$focusData.getSaturationLevel()), minejago$INSTANCE);
+            this.minejago$lastSentFocus = this.minejago$focusData.getFocusLevel();
+            this.minejago$lastFoodSaturationZero = this.minejago$focusData.getSaturationLevel() == 0.0F;
         }
     }
 }

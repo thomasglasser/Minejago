@@ -13,7 +13,7 @@ import net.minecraft.world.entity.monster.PatrollingMonster;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 import net.tslat.smartbrainlib.api.core.behaviour.ExtendedBehaviour;
-import net.tslat.smartbrainlib.util.BrainUtils;
+import net.tslat.smartbrainlib.util.BrainUtil;
 
 public class LongDistanceRaiderPatrol<T extends SkulkinRaider> extends ExtendedBehaviour<T> {
     private static final List<Pair<MemoryModuleType<?>, MemoryStatus>> MEMORY_REQUIREMENTS = List.of(Pair.of(MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT), Pair.of(MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryStatus.REGISTERED));
@@ -47,7 +47,7 @@ public class LongDistanceRaiderPatrol<T extends SkulkinRaider> extends ExtendedB
     @Override
     protected void tick(T entity) {
         boolean bl = entity.isPatrolLeader();
-        if (!BrainUtils.hasMemory(entity, MemoryModuleType.WALK_TARGET)) {
+        if (!BrainUtil.hasMemory(entity, MemoryModuleType.WALK_TARGET)) {
             List<PatrollingMonster> list = this.findPatrolCompanions(entity);
             if (entity.isPatrolling() && list.isEmpty()) {
                 entity.setPatrolling(false);
@@ -61,10 +61,10 @@ public class LongDistanceRaiderPatrol<T extends SkulkinRaider> extends ExtendedB
                 Vec3 vec34 = vec3.subtract(vec32).normalize().scale(10.0).add(vec32);
                 BlockPos blockPos = BlockPos.containing(vec34);
                 blockPos = entity.level().getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, blockPos);
-                BrainUtils.setMemory(entity, MemoryModuleType.WALK_TARGET, new WalkTarget(blockPos, bl ? leaderSpeedModifier : speedModifier, 1));
-                if (BrainUtils.hasMemory(entity, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE)) {
+                BrainUtil.setMemory(entity, MemoryModuleType.WALK_TARGET, new WalkTarget(blockPos, bl ? leaderSpeedModifier : speedModifier, 1));
+                if (BrainUtil.hasMemory(entity, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE)) {
                     this.moveRandomly(entity);
-                    this.cooldownUntil = entity.level().getGameTime() + cooldownProvider.apply(entity);
+                    this.cooldownUntil = entity.level().getGameTime() + cooldownProvider.applyAsInt(entity);
                 } else if (bl) {
                     for (PatrollingMonster patrollingMonster : list) {
                         patrollingMonster.setPatrolTarget(blockPos);
@@ -86,6 +86,6 @@ public class LongDistanceRaiderPatrol<T extends SkulkinRaider> extends ExtendedB
     private void moveRandomly(T entity) {
         RandomSource randomSource = entity.getRandom();
         BlockPos blockPos = entity.level().getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, entity.blockPosition().offset(-8 + randomSource.nextInt(16), 0, -8 + randomSource.nextInt(16)));
-        BrainUtils.setMemory(entity, MemoryModuleType.WALK_TARGET, new WalkTarget(blockPos, speedModifier, 1));
+        BrainUtil.setMemory(entity, MemoryModuleType.WALK_TARGET, new WalkTarget(blockPos, speedModifier, 1));
     }
 }

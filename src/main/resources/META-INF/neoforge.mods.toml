@@ -14,7 +14,6 @@ authors="${mod_author}"
 description='''
 ${description}
 '''
-enumExtensions="META-INF/enum_extensions.json"
 [[mixins]]
 config = "${mod_id}.mixins.json"
 [mc-publish]
@@ -59,18 +58,27 @@ type="required"
 versionRange="[${sherdsapi_version},)"
 ordering="NONE"
 side="BOTH"
-[[dependencies.${mod_id}]]
-modId="trimmed"
-type="required"
-versionRange="[${trimmed_version},)"
-ordering="NONE"
-side="BOTH"
-[[dependencies.${mod_id}]]
-modId="tslateffectslib"
-type="required"
-versionRange="[${tslateffectslib_version},)"
-ordering="NONE"
-side="BOTH"
+# TODO: Update trimmed
+#[[dependencies.${mod_id}]]
+#modId="trimmed"
+#type="required"
+#versionRange="[${trimmed_version},)"
+#ordering="NONE"
+#side="BOTH"
+# TODO: Update tslateffectslib
+#[[dependencies.${mod_id}]]
+#modId="tslateffectslib"
+#type="required"
+#versionRange="[${tslateffectslib_version},)"
+#ordering="NONE"
+#side="BOTH"
+# TODO: Update playeranimator
+#[[dependencies.${mod_id}]]
+#modId="playeranimator"
+#type="required"
+#versionRange="[${playeranimator_version},)"
+#ordering="NONE"
+#side="CLIENT"
 
 # Optional Dependencies
 [[dependencies.${mod_id}]]
@@ -97,12 +105,6 @@ type="optional"
 versionRange="[${patched_version},)"
 ordering="NONE"
 side="BOTH"
-[[dependencies.${mod_id}]]
-modId="playeranimator"
-type="optional"
-versionRange="[${playeranimator_version},)"
-ordering="NONE"
-side="CLIENT"
 [[dependencies.${mod_id}]]
 modId="ryoamiclights"
 type="optional"

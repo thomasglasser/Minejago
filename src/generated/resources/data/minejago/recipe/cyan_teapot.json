@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "teapot",
   "key": {
-    "o": {
-      "item": "minecraft:cyan_terracotta"
-    },
-    "x": {
-      "tag": "c:rods/wooden"
-    }
+    "o": "minecraft:cyan_terracotta",
+    "x": "#c:rods/wooden"
   },
   "pattern": [
     "x",

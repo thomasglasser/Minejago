@@ -51,7 +51,7 @@ public class EntityFocusModifier extends FocusModifier {
                 }
                 JsonPrimitive modifierElement = json.get("modifier").getAsJsonPrimitive();
                 if (modifierElement.isNumber()) {
-                    return Optional.of(new EntityFocusModifier(id, BuiltInRegistries.ENTITY_TYPE.get(entityTypeLoc), nbt, modifierElement.getAsDouble(), operation));
+                    return Optional.of(new EntityFocusModifier(id, BuiltInRegistries.ENTITY_TYPE.getValue(entityTypeLoc), nbt, modifierElement.getAsDouble(), operation));
                 } else {
                     Minejago.LOGGER.warn("Failed to parse entity focus modifier \"" + id + "\", invalid format: \"modifier\" field value isn't number.");
                     return Optional.empty();

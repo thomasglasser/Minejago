@@ -25,7 +25,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
@@ -84,7 +83,7 @@ public class DragonButtonBlock extends HorizontalDirectionalBlock implements Ent
             Direction.WEST, BUTTON_SHAPE_WEST);
 
     public static final EnumProperty<Part> PART = EnumProperty.create("part", Part.class);
-    public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+    public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty OPEN = BooleanProperty.create("open");
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
@@ -122,11 +121,6 @@ public class DragonButtonBlock extends HorizontalDirectionalBlock implements Ent
                 default -> throw new IllegalStateException("Unexpected value: " + facing);
             };
         }
-    }
-
-    @Override
-    protected VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
-        return state.getShape(level, pos);
     }
 
     @Override

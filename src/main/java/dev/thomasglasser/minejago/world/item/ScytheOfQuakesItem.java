@@ -2,9 +2,7 @@ package dev.thomasglasser.minejago.world.item;
 
 import com.google.common.collect.ImmutableMultimap;
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.client.animation.definitions.ItemAnimations;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
-import dev.thomasglasser.minejago.network.ClientboundStartScytheAnimationPayload;
 import dev.thomasglasser.minejago.network.ClientboundStopAnimationPayload;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.tags.MinejagoPowerTags;
@@ -12,7 +10,6 @@ import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import dev.thomasglasser.tommylib.api.tags.ConventionalBlockTags;
 import dev.thomasglasser.tommylib.api.world.level.LevelUtils;
-import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
@@ -88,20 +85,22 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem {
                     }
                 }
             }
-            if (!pContext.getPlayer().getAbilities().instabuild) pContext.getPlayer().getCooldowns().addCooldown(pContext.getItemInHand().getItem(), 600);
+            if (!pContext.getPlayer().getAbilities().instabuild) pContext.getPlayer().getCooldowns().addCooldown(pContext.getItemInHand(), 600);
             pContext.getLevel().playSound(null, pContext.getPlayer().blockPosition(), MinejagoSoundEvents.SCYTHE_OF_QUAKES_CASCADE.get(), SoundSource.PLAYERS);
         } else if (player.isShiftKeyDown()) {
-            if (!level.isClientSide) TommyLibServices.NETWORK.sendToAllClients(new ClientboundStartScytheAnimationPayload(player.getUUID(), ItemAnimations.ScytheOfQuakes.SLAM_START, Optional.of(ItemAnimations.ScytheOfQuakes.SLAM_RUMBLE)), player.getServer());
+            // TODO: Update playerAnimator
+//            if (!level.isClientSide) TommyLibServices.NETWORK.sendToAllClients(new ClientboundStartScytheAnimationPayload(player.getUUID(), ItemAnimations.ScytheOfQuakes.SLAM_START, Optional.of(ItemAnimations.ScytheOfQuakes.SLAM_RUMBLE)), player.getServer());
             BlockPos[] places = new BlockPos[] { pos.north(6), pos.north(4).east(4), pos.east(6), pos.east(4).south(4), pos.south(6), pos.south(4).west(4), pos.west(6), pos.west(4).north(4) };
             for (BlockPos place : places) {
                 if (!level.isClientSide)
                     level.explode(null, place.getX(), place.getY() + 1, place.getZ(), 4, false, Level.ExplosionInteraction.BLOCK);
             }
-            if (!pContext.getPlayer().getAbilities().instabuild) pContext.getPlayer().getCooldowns().addCooldown(pContext.getItemInHand().getItem(), 1200);
+            if (!pContext.getPlayer().getAbilities().instabuild) pContext.getPlayer().getCooldowns().addCooldown(pContext.getItemInHand(), 1200);
             pContext.getLevel().playSound(null, pContext.getPlayer().blockPosition(), MinejagoSoundEvents.SCYTHE_OF_QUAKES_EXPLOSION.get(), SoundSource.PLAYERS);
         } else {
             player.startUsingItem(pContext.getHand());
-            if (!level.isClientSide) TommyLibServices.NETWORK.sendToAllClients(new ClientboundStartScytheAnimationPayload(player.getUUID(), ItemAnimations.ScytheOfQuakes.BEAM_START, Optional.of(ItemAnimations.ScytheOfQuakes.BEAM_ACTIVE)), player.getServer());
+            // TODO: Update playerAnimator
+//            if (!level.isClientSide) TommyLibServices.NETWORK.sendToAllClients(new ClientboundStartScytheAnimationPayload(player.getUUID(), ItemAnimations.ScytheOfQuakes.BEAM_START, Optional.of(ItemAnimations.ScytheOfQuakes.BEAM_ACTIVE)), player.getServer());
         }
         return InteractionResult.SUCCESS;
     }
@@ -111,7 +110,7 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem {
     @Override
     public void doReleaseUsing(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity, int pTimeCharged) {
         if (pLivingEntity instanceof Player player1) {
-            if (!player1.getAbilities().instabuild) player1.getCooldowns().addCooldown(pStack.getItem(), 20 * (pTimeCharged > 10 ? (pStack.getUseDuration(pLivingEntity) - pTimeCharged) : 1));
+            if (!player1.getAbilities().instabuild) player1.getCooldowns().addCooldown(pStack, 20 * (pTimeCharged > 10 ? (pStack.getUseDuration(pLivingEntity) - pTimeCharged) : 1));
             if (!pLevel.isClientSide) TommyLibServices.NETWORK.sendToAllClients(new ClientboundStopAnimationPayload(pLivingEntity.getUUID()), pLevel.getServer());
             ItemAttributeModifiers original = pStack.get(DataComponents.ATTRIBUTE_MODIFIERS);
             ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder();
@@ -276,7 +275,8 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem {
     protected void goCrazy(Player player) {
         if (!player.level().isClientSide && !player.getAbilities().instabuild) {
             player.level().explode(null, player.getX(), player.getY() + 1, player.getZ(), 8.0F, Level.ExplosionInteraction.TNT);
-            TommyLibServices.NETWORK.sendToAllClients(new ClientboundStartScytheAnimationPayload(player.getUUID(), ItemAnimations.ScytheOfQuakes.SLAM_START, Optional.empty()), player.getServer());
+            // TODO: Update playerAnimator
+//            TommyLibServices.NETWORK.sendToAllClients(new ClientboundStartScytheAnimationPayload(player.getUUID(), ItemAnimations.ScytheOfQuakes.SLAM_START, Optional.empty()), player.getServer());
         }
     }
 

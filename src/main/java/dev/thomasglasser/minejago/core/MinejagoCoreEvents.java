@@ -2,6 +2,7 @@ package dev.thomasglasser.minejago.core;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
+import dev.thomasglasser.minejago.datamaps.MinejagoDataMaps;
 import dev.thomasglasser.minejago.network.MinejagoPayloads;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import dev.thomasglasser.minejago.world.entity.power.Power;
@@ -25,6 +26,7 @@ import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
+import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 
 public class MinejagoCoreEvents {
     public static void onAddPackFinders(AddPackFindersEvent event) {
@@ -64,5 +66,10 @@ public class MinejagoCoreEvents {
     public static void onRegisterPackets(RegisterPayloadHandlersEvent event) {
         PayloadRegistrar registrar = event.registrar(Minejago.MOD_ID);
         MinejagoPayloads.PAYLOADS.forEach((info) -> NeoForgeNetworkUtils.register(registrar, info));
+    }
+
+    public static void onRegisterDataMapTypes(RegisterDataMapTypesEvent event) {
+        event.register(MinejagoDataMaps.POTION_FILLABLES);
+        event.register(MinejagoDataMaps.POTION_DRAINABLES);
     }
 }

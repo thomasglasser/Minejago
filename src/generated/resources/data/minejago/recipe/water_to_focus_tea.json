@@ -8,8 +8,6 @@
   },
   "experience": 0.5,
   "group": "focus_tea",
-  "ingredient": {
-    "item": "minejago:focus_leaves"
-  },
+  "ingredient": "minejago:focus_leaves",
   "result": "minejago:focus_tea"
 }

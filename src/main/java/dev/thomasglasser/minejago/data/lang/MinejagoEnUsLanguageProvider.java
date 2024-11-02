@@ -9,7 +9,6 @@ import dev.thomasglasser.minejago.client.gui.screens.inventory.ScrollViewScreen;
 import dev.thomasglasser.minejago.commands.MinejagoCommandEvents;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import dev.thomasglasser.minejago.plugins.MinejagoWailaPlugin;
-import dev.thomasglasser.minejago.plugins.jei.TeapotBrewingRecipeCategory;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.server.commands.PowerCommand;
 import dev.thomasglasser.minejago.server.commands.SpinjitzuCommand;
@@ -103,7 +102,7 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
 
         add(MinejagoBlocks.FOCUS_LEAVES_SET, "Focus");
 
-        add(SkulkinRaid.SKULKINS_BANNER_PATTERN_NAME, "Cursed Banner");
+        add(SkulkinRaid.CURSED_BANNER_PATTERN_NAME, "Cursed Banner");
 
         add(Skulkin.Variant.STRENGTH, "Strength");
         add(Skulkin.Variant.SPEED, "Speed");
@@ -117,15 +116,15 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(MinejagoItems.FILLED_TEACUP.get(), Potions.WATER, "Cup of Water");
         add(MinejagoItems.FILLED_TEACUP.get(), MinejagoPotions.MILK, "Cup of Milk");
 
-        for (Holder<Potion> potion : BuiltInRegistries.POTION.holders().filter(ref -> ref.key().location().getNamespace().equals(ResourceLocation.DEFAULT_NAMESPACE)).toList()) {
+        for (Holder<Potion> potion : BuiltInRegistries.POTION.listElements().filter(ref -> ref.key().location().getNamespace().equals(ResourceLocation.DEFAULT_NAMESPACE)).toList()) {
             ResourceLocation location = potion.unwrapKey().orElseThrow().location();
             if (!(potion == Potions.WATER) && !(location.getPath().contains("long") || location.getPath().contains("strong")))
                 add(MinejagoItems.FILLED_TEACUP.get(), potion, Items.POTION.getName(PotionContents.createItemStack(Items.POTION, potion)).getString().replace("Potion", "Tea"));
         }
 
-        addSmithingTemplate(MinejagoItems.FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE.get());
-        addSmithingTemplate(MinejagoItems.TERRAIN_ARMOR_TRIM_SMITHING_TEMPLATE.get());
-        addSmithingTemplate(MinejagoItems.LOTUS_ARMOR_TRIM_SMITHING_TEMPLATE.get());
+        addArmorTrim(MinejagoItems.FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE.get(), "Four Weapons");
+        addArmorTrim(MinejagoItems.TERRAIN_ARMOR_TRIM_SMITHING_TEMPLATE.get(), "Terrain");
+        addArmorTrim(MinejagoItems.LOTUS_ARMOR_TRIM_SMITHING_TEMPLATE.get(), "Lotus");
 
         add(MinejagoEntityTypes.THROWN_BONE_KNIFE.get(), "Bone Knife");
         add(MinejagoEntityTypes.THROWN_BAMBOO_STAFF.get(), "Bamboo Staff");
@@ -158,7 +157,7 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
 
         addPattern(MinejagoBannerPatterns.FOUR_WEAPONS_LEFT, "Four Weapons Left");
         addPattern(MinejagoBannerPatterns.FOUR_WEAPONS_RIGHT, "Four Weapons Right");
-        addPatternItem(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN, "Four Weapons");
+        add(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get(), "Four Weapons Banner Pattern");
 
         addPatternAndItem(MinejagoBannerPatterns.NINJA, MinejagoItems.NINJA_BANNER_PATTERN, "Ninja");
 
@@ -314,8 +313,11 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(ScrollViewScreen.TAKE_SCROLL, "Take Scroll");
 
         add(SkulkinRaid.RAID_NAME_COMPONENT, "Skulkin Raid");
+        add(SkulkinRaid.RAID_BAR_VICTORY_COMPONENT, "Skulkin Raid - Victory");
+        add(SkulkinRaid.RAID_BAR_DEFEAT_COMPONENT, "Skulkin Raid - Defeat");
+        add(SkulkinRaid.SKULKIN_REMAINING, "Skulkin Remaining: %s");
 
-        add(TeapotBrewingRecipeCategory.RECIPE_KEY, "Teapot Brewing");
+//        add(TeapotBrewingRecipeCategory.RECIPE_KEY, "Teapot Brewing");
 
         add(TeapotBlock.POTION, "%s");
         add(TeapotBlock.POTION_AND_ITEM, "%s with %s");

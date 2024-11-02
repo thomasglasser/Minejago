@@ -3,7 +3,9 @@ package dev.thomasglasser.minejago.world.entity.skulkin.raid;
 import com.google.common.collect.Maps;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.tags.MinejagoDimensionTypeTags;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -13,11 +15,13 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.level.saveddata.SavedData;
+import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 
 public class SkulkinRaids extends SavedData {
     private static final String FILE_ID = "skulkin_raids";
     private final Map<Integer, SkulkinRaid> raidMap = Maps.newHashMap();
+    private final List<AABB> raidedAreas = new ArrayList<>();
     private int nextAvailableID;
     private int tick;
     private boolean mapTaken;
@@ -73,14 +77,14 @@ public class SkulkinRaids extends SavedData {
         } else if (!MinejagoServerConfig.get().enableSkulkinRaids.get()) {
             return null;
         } else {
-            if (!serverPlayer.level().dimensionTypeRegistration().is(MinejagoDimensionTypeTags.HAS_SKULKIN_RAIDS)) {
+            if (!serverPlayer.level().dimensionTypeRegistration().is(MinejagoDimensionTypeTags.HAS_SKULKIN_RAIDS) || isRaidedChunk(serverPlayer.blockPosition())) {
                 return null;
             } else {
                 SkulkinRaid raid = this.getOrCreateSkulkinRaid(serverPlayer.serverLevel(), serverPlayer.blockPosition());
                 if (!raid.isStarted()) {
                     if (!this.raidMap.containsKey(raid.getId())) {
                         this.raidMap.put(raid.getId(), raid);
-                        raid.setDifficultyLevel(raid.random.nextInt(raid.getMaxSkulkinsCurseLevel() + 1));
+                        raidedAreas.add(AABB.ofSize(serverPlayer.blockPosition().getCenter(), SkulkinRaid.VALID_RAID_RADIUS, SkulkinRaid.VALID_RAID_RADIUS, SkulkinRaid.VALID_RAID_RADIUS));
                     }
                 }
                 this.setDirty();
@@ -157,5 +161,9 @@ public class SkulkinRaids extends SavedData {
 
     public boolean isMapTaken() {
         return mapTaken;
+    }
+
+    public boolean isRaidedChunk(BlockPos pos) {
+        return raidedAreas.stream().anyMatch(aabb -> aabb.contains(pos.getX(), pos.getY(), pos.getZ()));
     }
 }

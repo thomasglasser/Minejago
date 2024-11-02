@@ -8,6 +8,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -58,41 +59,37 @@ public abstract class AbstractSpinjitzuCourseElement<T extends AbstractSpinjitzu
     public AbstractSpinjitzuCourseElement(EntityType<?> entityType, Level level, Vec3 visitBox) {
         super(entityType, level);
         this.visitBox = visitBox;
-        noCulling = true;
     }
 
     @Override
-    public boolean hurt(DamageSource source, float amount) {
-        if (this.level().isClientSide || this.isRemoved()) {
-            return true;
-        } else if (this.isInvulnerableTo(source)) {
+    public boolean hurtServer(ServerLevel serverLevel, DamageSource damageSource, float v) {
+        if (isInvulnerableTo(damageSource)) {
             return false;
         } else {
             this.markHurt();
-            this.setDamage(this.getDamage() + amount * 10.0F);
-            this.gameEvent(GameEvent.ENTITY_DAMAGE, source.getEntity());
-            boolean flag = source.getEntity() instanceof Player && ((Player) source.getEntity()).getAbilities().instabuild;
+            this.setDamage(this.getDamage() + v * 10.0F);
+            this.gameEvent(GameEvent.ENTITY_DAMAGE, damageSource.getEntity());
+            boolean flag = damageSource.getEntity() instanceof Player && ((Player) damageSource.getEntity()).getAbilities().instabuild;
             if ((flag || !(this.getDamage() > 40.0F))) {
                 if (flag) {
                     this.discard();
                 }
             } else {
-                this.destroy();
+                this.destroy(serverLevel);
             }
 
             return true;
         }
     }
 
-    @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source.getDirectEntity() instanceof AbstractSpinjitzuCourseElement<?> || source.getDirectEntity() instanceof AbstractSpinjitzuCourseElementPart<?> || super.isInvulnerableTo(source);
+        return source.getDirectEntity() instanceof AbstractSpinjitzuCourseElement<?> || source.getDirectEntity() instanceof AbstractSpinjitzuCourseElementPart<?> || isInvulnerableToBase(source);
     }
 
-    public void destroy(Item dropItem) {
-        this.kill();
-        if (this.level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
-            this.spawnAtLocation(dropItem.getDefaultInstance());
+    public void destroy(ServerLevel serverLevel, Item dropItem) {
+        this.kill(serverLevel);
+        if (serverLevel.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
+            this.spawnAtLocation(serverLevel, dropItem.getDefaultInstance());
         }
     }
 
@@ -137,8 +134,8 @@ public abstract class AbstractSpinjitzuCourseElement<T extends AbstractSpinjitzu
         return this.entityData.get(DATA_ID_ACTIVE_TICKS);
     }
 
-    protected void destroy() {
-        this.destroy(this.getDropItem());
+    protected void destroy(ServerLevel serverLevel) {
+        this.destroy(serverLevel, this.getDropItem());
     }
 
     protected abstract Item getDropItem();
@@ -360,13 +357,10 @@ public abstract class AbstractSpinjitzuCourseElement<T extends AbstractSpinjitzu
     @Override
     public void baseTick() {
         super.baseTick();
-        this.level().getProfiler().push("spinjitzuCourseBaseTick");
         if (this.isAlive() && this.isActive() && this.random.nextInt(1000) < this.ambientSoundTime++) {
             this.resetAmbientSoundTime();
             this.playAmbientSound();
         }
-
-        this.level().getProfiler().pop();
     }
 
     private void resetAmbientSoundTime() {

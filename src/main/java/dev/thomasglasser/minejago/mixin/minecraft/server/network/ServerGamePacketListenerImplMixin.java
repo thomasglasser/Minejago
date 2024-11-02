@@ -13,6 +13,7 @@ import net.minecraft.world.item.component.WritableBookContent;
 import net.minecraft.world.item.component.WrittenBookContent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -25,11 +26,12 @@ public abstract class ServerGamePacketListenerImplMixin {
     @Shadow
     protected abstract Filterable<String> filterableFromOutgoing(FilteredText p_332041_);
 
-    private final ServerGamePacketListenerImpl INSTANCE = ((ServerGamePacketListenerImpl) (Object) this);
+    @Unique
+    private final ServerGamePacketListenerImpl minejago$INSTANCE = ((ServerGamePacketListenerImpl) (Object) this);
 
     @Inject(method = "signBook", at = @At("HEAD"))
     private void minejago_signBook(FilteredText title, List<FilteredText> pages, int index, CallbackInfo ci) {
-        ItemStack itemStack = INSTANCE.player.getInventory().getItem(index);
+        ItemStack itemStack = minejago$INSTANCE.player.getInventory().getItem(index);
         if (itemStack.is(MinejagoItems.WRITABLE_SCROLL.get())) {
             ItemStack itemStack2 = itemStack.transmuteCopy(MinejagoItems.WRITTEN_SCROLL.get(), 1);
             itemStack2.remove(DataComponents.WRITABLE_BOOK_CONTENT);
@@ -41,7 +43,7 @@ public abstract class ServerGamePacketListenerImplMixin {
 
     @Inject(method = "updateBookContents", at = @At("HEAD"))
     private void minejago_updateBookContents(List<FilteredText> pages, int index, CallbackInfo ci) {
-        ItemStack itemStack = INSTANCE.player.getInventory().getItem(index);
+        ItemStack itemStack = minejago$INSTANCE.player.getInventory().getItem(index);
         if (itemStack.is(MinejagoItems.WRITABLE_SCROLL.get())) {
             List<Filterable<String>> list = pages.stream().map(this::filterableFromOutgoing).toList();
             itemStack.set(DataComponents.WRITABLE_BOOK_CONTENT, new WritableBookContent(list));

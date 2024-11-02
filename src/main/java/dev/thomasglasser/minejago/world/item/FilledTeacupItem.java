@@ -3,7 +3,6 @@ package dev.thomasglasser.minejago.world.item;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -19,7 +18,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.PotionItem;
-import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.context.UseOnContext;
@@ -28,7 +26,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 
-public class FilledTeacupItem extends PotionItem implements PotionCupHolder {
+public class FilledTeacupItem extends PotionItem {
     public FilledTeacupItem(Properties pProperties) {
         super(pProperties);
     }
@@ -94,34 +92,9 @@ public class FilledTeacupItem extends PotionItem implements PotionCupHolder {
             level.playSound(null, blockpos, SoundEvents.BOTTLE_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
             level.gameEvent(null, GameEvent.FLUID_PLACE, blockpos);
             level.setBlockAndUpdate(blockpos, Blocks.MUD.defaultBlockState());
-            return InteractionResult.sidedSuccess(level.isClientSide);
+            return InteractionResult.SUCCESS;
         } else {
             return InteractionResult.PASS;
         }
-    }
-
-    @Override
-    public int getCups() {
-        return 1;
-    }
-
-    @Override
-    public boolean canBeDrained(ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public ItemStack getDrained(ItemStack stack) {
-        return new ItemStack(MinejagoItems.TEACUP.get());
-    }
-
-    @Override
-    public ItemStack getFilled(Holder<Potion> potion) {
-        return null;
-    }
-
-    @Override
-    public boolean canBeFilled(ItemStack stack, Holder<Potion> potion, int cups) {
-        return false;
     }
 }

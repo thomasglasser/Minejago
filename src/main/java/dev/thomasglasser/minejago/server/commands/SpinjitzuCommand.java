@@ -14,6 +14,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
 
 public class SpinjitzuCommand {
@@ -40,8 +41,8 @@ public class SpinjitzuCommand {
             if (pSource.getEntity() == entity) {
                 pSource.sendSuccess(() -> Component.translatable(SUCCESS_SELF, Component.translatable(unlocked ? UNLOCKED : LOCKED)), true);
             } else {
-                if (pSource.getLevel().getGameRules().getBoolean(GameRules.RULE_SENDCOMMANDFEEDBACK)) {
-                    livingEntity.sendSystemMessage(Component.translatable(CHANGED, Component.translatable(unlocked ? UNLOCKED : LOCKED)));
+                if (pSource.getLevel().getGameRules().getBoolean(GameRules.RULE_SENDCOMMANDFEEDBACK) && livingEntity instanceof Player player) {
+                    player.displayClientMessage(Component.translatable(CHANGED, Component.translatable(unlocked ? UNLOCKED : LOCKED)), false);
                 }
 
                 pSource.sendSuccess(() -> Component.translatable(SUCCESS_OTHER, livingEntity.getDisplayName(), Component.translatable(unlocked ? UNLOCKED : LOCKED)), true);

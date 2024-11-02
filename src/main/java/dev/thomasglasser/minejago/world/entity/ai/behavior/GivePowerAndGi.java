@@ -23,8 +23,9 @@ import net.minecraft.world.entity.ai.memory.WalkTarget;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.equipment.ArmorType;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.move.MoveToWalkTarget;
-import net.tslat.smartbrainlib.util.BrainUtils;
+import net.tslat.smartbrainlib.util.BrainUtil;
 
 public class GivePowerAndGi<E extends PathfinderMob> extends MoveToWalkTarget<E> {
     private static List<Pair<MemoryModuleType<?>, MemoryStatus>> MEMORY_REQUIREMENTS;
@@ -46,11 +47,11 @@ public class GivePowerAndGi<E extends PathfinderMob> extends MoveToWalkTarget<E>
 
     @Override
     protected boolean checkExtraStartConditions(ServerLevel level, E entity) {
-        this.target = BrainUtils.getMemory(entity, MemoryModuleType.INTERACTION_TARGET);
+        this.target = BrainUtil.getMemory(entity, MemoryModuleType.INTERACTION_TARGET);
         this.originalPos = entity.blockPosition();
-        this.power = BrainUtils.getMemory(entity, MinejagoMemoryModuleTypes.SELECTED_POWER.get());
+        this.power = BrainUtil.getMemory(entity, MinejagoMemoryModuleTypes.SELECTED_POWER.get());
 
-        BrainUtils.setMemory(entity, MemoryModuleType.WALK_TARGET, new WalkTarget(target, 1.2f, 1));
+        BrainUtil.setMemory(entity, MemoryModuleType.WALK_TARGET, new WalkTarget(target, 1.2f, 1));
 
         return entity.getSensing().hasLineOfSight(this.target) && super.checkExtraStartConditions(level, entity);
     }
@@ -60,20 +61,22 @@ public class GivePowerAndGi<E extends PathfinderMob> extends MoveToWalkTarget<E>
         super.stop(entity);
         new PowerData(power, true).save(target, true);
         Power power1 = entity.level().holderOrThrow(power).value();
-        if (power1.hasSets()) equipGi();
-        target.sendSystemMessage(Component.translatable(Wu.POWER_GIVEN_KEY, entity.getDisplayName(), target.getDisplayName(), power1.getFormattedName(), power1.getTagline()));
+        if (power1.hasSets())
+            equipGi();
+        if (target instanceof Player player)
+            player.displayClientMessage(Component.translatable(Wu.POWER_GIVEN_KEY, entity.getDisplayName(), target.getDisplayName(), power1.getFormattedName(), power1.getTagline()), false);
 
         this.target = null;
-        BrainUtils.setMemory(entity, MemoryModuleType.WALK_TARGET, new WalkTarget(originalPos, 1.2f, 1));
+        BrainUtil.setMemory(entity, MemoryModuleType.WALK_TARGET, new WalkTarget(originalPos, 1.2f, 1));
 
-        BrainUtils.clearMemory(entity, MemoryModuleType.INTERACTION_TARGET);
-        BrainUtils.clearMemory(entity, MemoryModuleType.LOOK_TARGET);
-        BrainUtils.clearMemory(entity, MinejagoMemoryModuleTypes.SELECTED_POWER.get());
+        BrainUtil.clearMemory(entity, MemoryModuleType.INTERACTION_TARGET);
+        BrainUtil.clearMemory(entity, MemoryModuleType.LOOK_TARGET);
+        BrainUtil.clearMemory(entity, MinejagoMemoryModuleTypes.SELECTED_POWER.get());
     }
 
     protected void equipGi() {
         ArmorSet set = MinejagoArmors.TRAINING_GI_SET;
-        for (ArmorItem.Type value : ArmorItem.Type.values()) {
+        for (ArmorType value : ArmorType.values()) {
             DeferredItem<ArmorItem> ro = set.getForSlot(value.getSlot());
             if (ro != null) {
                 ArmorItem armor = ro.get();
@@ -85,7 +88,7 @@ public class GivePowerAndGi<E extends PathfinderMob> extends MoveToWalkTarget<E>
                     player.setItemSlot(value.getSlot(), armorStack);
                 } else {
                     ItemStack oldStack = target.getItemBySlot(value.getSlot());
-                    target.spawnAtLocation(oldStack);
+                    target.spawnAtLocation((ServerLevel) target.level(), oldStack);
                     target.setItemSlot(value.getSlot(), armorStack);
                 }
             }

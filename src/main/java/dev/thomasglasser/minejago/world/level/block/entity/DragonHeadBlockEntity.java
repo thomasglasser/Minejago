@@ -6,7 +6,7 @@ import dev.thomasglasser.minejago.world.level.block.DragonHeadBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -51,7 +51,7 @@ public class DragonHeadBlockEntity extends BlockEntity implements GeoBlockEntity
             if (dragonHeadBlockEntity.activatedTicks > 100) {
                 level.destroyBlock(pos, false);
                 if (state.getBlock() instanceof DragonHeadBlock dragonHeadBlock && level instanceof ServerLevel serverLevel) {
-                    dragonHeadBlock.getEntityType().spawn(serverLevel, pos, MobSpawnType.TRIGGERED);
+                    dragonHeadBlock.getEntityType().spawn(serverLevel, pos, EntitySpawnReason.TRIGGERED);
                     serverLevel.playSound(null, pos, MinejagoSoundEvents.EARTH_DRAGON_AWAKEN.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
                 }
             } else if (dragonHeadBlockEntity.activatedTicks > 35 && dragonHeadBlockEntity.hasScythe) {

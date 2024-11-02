@@ -6,8 +6,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.level.Level;
@@ -15,7 +15,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.pathfinder.PathType;
-import net.tslat.smartbrainlib.util.BrainUtils;
+import net.tslat.smartbrainlib.util.BrainUtil;
 import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
@@ -45,7 +45,7 @@ public class Zane extends Character {
 
     @Override
     public void onStopFloatingToSurfaceOfFluid(Character character) {
-        if (character.onGround() || character.getAirSupply() < character.getMaxAirSupply() - 60 || BrainUtils.hasMemory(character, MemoryModuleType.ATTACK_TARGET))
+        if (character.onGround() || character.getAirSupply() < character.getMaxAirSupply() - 60 || BrainUtil.hasMemory(character, MemoryModuleType.ATTACK_TARGET))
             setMeditationStatus(MeditationStatus.NONE);
         else
             setMeditationStatus(MeditationStatus.STARTING);
@@ -72,8 +72,8 @@ public class Zane extends Character {
         return super.getMaxAirSupply() * 2;
     }
 
-    public static boolean checkZaneSpawnRules(EntityType<Zane> animal, LevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return Character.checkCharacterSpawnRules(animal, level, spawnType, pos, random) && level.getFluidState(pos).is(FluidTags.WATER) && level.getBlockState(pos.above()).is(Blocks.WATER);
+    public static boolean checkZaneSpawnRules(EntityType<Zane> animal, LevelAccessor level, EntitySpawnReason spawnReason, BlockPos pos, RandomSource random) {
+        return Character.checkCharacterSpawnRules(animal, level, spawnReason, pos, random) && level.getFluidState(pos).is(FluidTags.WATER) && level.getBlockState(pos.above()).is(Blocks.WATER);
     }
 
     @Override

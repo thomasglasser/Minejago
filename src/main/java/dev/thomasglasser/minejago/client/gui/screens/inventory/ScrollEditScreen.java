@@ -4,25 +4,27 @@ import java.util.Iterator;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.inventory.BookEditScreen;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.WritableBookContent;
 
 public class ScrollEditScreen extends BookEditScreen {
     public static final Component EDIT_TITLE_LABEL = Component.translatable("scroll.edit_title");
     public static final Component FINALIZE_WARNING_LABEL = Component.translatable("scroll.finalize_warning");
 
-    public ScrollEditScreen(Player owner, ItemStack book, InteractionHand hand) {
-        super(owner, book, hand);
+    public ScrollEditScreen(Player owner, ItemStack book, InteractionHand hand, WritableBookContent writableBookContent) {
+        super(owner, book, hand, writableBookContent);
     }
 
     @Override
     public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         this.renderTransparentBackground(guiGraphics);
-        guiGraphics.blit(ScrollViewScreen.BACKGROUND, (this.width - 192) / 2, 2, 0, 0, 192, 192);
+        guiGraphics.blit(RenderType::guiTextured, ScrollViewScreen.BACKGROUND, (this.width - 192) / 2, 2, 0, 0, 192, 192, 256, 256);
     }
 
     @Override

@@ -5,12 +5,19 @@ import dev.thomasglasser.minejago.world.entity.character.Character;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
+import software.bernie.geckolib.renderer.GeoRenderer;
 
 public class CharacterModel<T extends Character> extends DefaultedEntityGeoModel<T> {
+    public static final ResourceLocation ANIMATIONS = Minejago.modLoc("animations/entity/character/character.animation.json");
+
+    private final ResourceLocation slimModel;
     private final boolean slim;
+
+    private ResourceLocation texture;
 
     public CharacterModel(boolean slim) {
         super(Minejago.modLoc("layered_biped"), true);
+        this.slimModel = buildFormattedModelPath(Minejago.modLoc("layered_biped_slim"));
         this.slim = slim;
     }
 
@@ -19,21 +26,20 @@ public class CharacterModel<T extends Character> extends DefaultedEntityGeoModel
     }
 
     @Override
-    public ResourceLocation getModelResource(T animatable) {
-        return slim ? buildFormattedModelPath(Minejago.modLoc("layered_biped_slim")) : super.getModelResource(animatable);
+    public ResourceLocation getModelResource(T animatable, GeoRenderer<T> renderer) {
+        return slim ? slimModel : super.getModelResource(animatable, renderer);
     }
 
     @Override
-    public ResourceLocation getTextureResource(T animatable) {
-        return Minejago.modLoc("textures/entity/character/" + BuiltInRegistries.ENTITY_TYPE.getKey(animatable.getType()).getPath() + ".png");
+    public ResourceLocation getTextureResource(T animatable, GeoRenderer<T> renderer) {
+        if (texture == null) {
+            texture = Minejago.modLoc("textures/entity/character/" + BuiltInRegistries.ENTITY_TYPE.getKey(animatable.getType()).getPath() + ".png");
+        }
+        return texture;
     }
 
     @Override
     public ResourceLocation getAnimationResource(T animatable) {
-        return Minejago.modLoc("animations/entity/character.animation.json");
-    }
-
-    public boolean isSlim() {
-        return slim;
+        return ANIMATIONS;
     }
 }

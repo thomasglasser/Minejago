@@ -5,6 +5,7 @@ import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -37,7 +38,7 @@ public enum LivingEntityComponentProvider implements IEntityComponentProvider {
 
                     @Override
                     public void render(GuiGraphics guiGraphics, float x, float y, float maxX, float maxY) {
-                        guiGraphics.blit(power.getIcon(), (int) x, (int) y, 16, 16, 0, 0, 32, 32, 32, 32);
+                        guiGraphics.blit(RenderType::guiTextured, power.getIcon(), (int) x, (int) y, 16, 16, 0, 0, 32, 32, 32, 32);
                     }
                 };
                 iTooltip.add(icon);

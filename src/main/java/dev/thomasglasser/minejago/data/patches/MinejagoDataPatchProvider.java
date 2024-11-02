@@ -11,8 +11,10 @@ import net.enderturret.patchedmod.data.PatchProvider;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.KilledTrigger;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.registries.VanillaRegistries;
@@ -36,7 +38,8 @@ public class MinejagoDataPatchProvider extends PatchProvider {
     @Override
     public void registerPatches() {
         HolderLookup.Provider provider = VanillaRegistries.createLookup();
-        Map<String, Criterion<?>> mobsToKill = getMobsToKill(MOD_MOBS_TO_KILL);
+        HolderGetter<EntityType<?>> entities = provider.lookupOrThrow(Registries.ENTITY_TYPE);
+        Map<String, Criterion<?>> mobsToKill = getMobsToKill(entities, MOD_MOBS_TO_KILL);
         OperationBuilder killAMob = patch(mcLoc("advancement/adventure/kill_a_mob"))
                 .compound();
         OperationBuilder killAllMobs = patch(mcLoc("advancement/adventure/kill_all_mobs"))
@@ -68,12 +71,12 @@ public class MinejagoDataPatchProvider extends PatchProvider {
         return ResourceLocation.withDefaultNamespace(path);
     }
 
-    private static Map<String, Criterion<?>> getMobsToKill(List<EntityType<?>> mobs) {
+    private static Map<String, Criterion<?>> getMobsToKill(HolderGetter<EntityType<?>> entities, List<EntityType<?>> mobs) {
         HashMap<String, Criterion<?>> criterion = new HashMap<>();
         mobs.forEach(
                 p_314409_ -> criterion.put(
                         BuiltInRegistries.ENTITY_TYPE.getKey(p_314409_).toString(),
-                        KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(p_314409_))));
+                        KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(entities, p_314409_))));
         return criterion;
     }
 }

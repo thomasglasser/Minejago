@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "minejago:scroll"
-    },
-    {
-      "item": "minecraft:feather"
-    },
-    {
-      "item": "minecraft:ink_sac"
-    }
+    "minejago:scroll",
+    "minecraft:feather",
+    "minecraft:ink_sac"
   ],
   "result": {
     "count": 1,

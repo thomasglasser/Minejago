@@ -17,17 +17,17 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.ai.memory.WalkTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.ExtendedBehaviour;
-import net.tslat.smartbrainlib.util.BrainUtils;
+import net.tslat.smartbrainlib.util.BrainUtil;
 
 public class FleeSkulkinRaidAndDespawn<T extends SkulkinRaider> extends ExtendedBehaviour<T> {
     public static final List<Pair<MemoryModuleType<?>, MemoryStatus>> MEMORY_REQUIREMENTS = List.of(Pair.of(MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT));
 
     @Override
     protected boolean checkExtraStartConditions(ServerLevel level, T entity) {
-        return !BrainUtils.hasMemory(entity, MemoryModuleType.ATTACK_TARGET)
+        return !BrainUtil.hasMemory(entity, MemoryModuleType.ATTACK_TARGET)
                 && !entity.isVehicle()
-                && entity.getCurrentSkulkinRaid() != null
-                && entity.getCurrentSkulkinRaid().getEscapePos() != null
+                && entity.getCurrentRaid() != null
+                && entity.getCurrentRaid().getEscapePos() != null
                 && !MinejagoLevelUtils.isGoldenWeaponsMapHolderNearby(entity, 32);
     }
 
@@ -38,7 +38,7 @@ public class FleeSkulkinRaidAndDespawn<T extends SkulkinRaider> extends Extended
 
     @Override
     protected void tick(T entity) {
-        SkulkinRaid raid = entity.getCurrentSkulkinRaid();
+        SkulkinRaid raid = entity.getCurrentRaid();
         if (raid != null && raid.getEscapePos() != null) {
             if (entity.position().closerThan(raid.getEscapePos(), 5)) {
                 // TODO: Place underworld portal blocks
@@ -59,7 +59,7 @@ public class FleeSkulkinRaidAndDespawn<T extends SkulkinRaider> extends Extended
                 List<SkulkinHorse> horses = entity.level().getEntitiesOfClass(SkulkinHorse.class, entity.getBoundingBox().inflate(8), skulkinHorse -> !skulkinHorse.hasControllingPassenger());
                 if (!horses.isEmpty()) entity.startRiding(horses.get(0));
             }
-            BrainUtils.setMemory(entity, MemoryModuleType.WALK_TARGET, new WalkTarget(raid.getEscapePos(), 1.4f, 4));
+            BrainUtil.setMemory(entity, MemoryModuleType.WALK_TARGET, new WalkTarget(raid.getEscapePos(), 1.4f, 4));
         }
     }
 

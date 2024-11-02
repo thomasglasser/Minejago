@@ -4,8 +4,6 @@
   "brewing_time": 800,
   "experience": 0.35,
   "group": "potion",
-  "ingredient": {
-    "item": "minecraft:slime_block"
-  },
+  "ingredient": "minecraft:slime_block",
   "result": "minecraft:oozing"
 }

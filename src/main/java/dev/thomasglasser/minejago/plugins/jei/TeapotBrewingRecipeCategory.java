@@ -22,7 +22,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
-import net.minecraft.world.item.crafting.Ingredient;
+import net.neoforged.neoforge.common.crafting.DataComponentIngredient;
 import org.jetbrains.annotations.Nullable;
 
 public class TeapotBrewingRecipeCategory implements IRecipeCategory<TeapotBrewingRecipe> {
@@ -47,7 +47,7 @@ public class TeapotBrewingRecipeCategory implements IRecipeCategory<TeapotBrewin
     public void setRecipe(IRecipeLayoutBuilder builder, TeapotBrewingRecipe recipe, IFocusGroup focuses) {
         builder.addInputSlot(7, 41)
                 .setStandardSlotBackground()
-                .addIngredients(Ingredient.of(MinejagoItemUtils.fillTeacup(recipe.base())));
+                .addIngredients(DataComponentIngredient.of(false, MinejagoItemUtils.fillTeacup(recipe.base())));
         builder.addInputSlot(39, 7)
                 .setStandardSlotBackground()
                 .addIngredients(recipe.ingredient());

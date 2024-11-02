@@ -2,14 +2,19 @@ package dev.thomasglasser.minejago.client.gui.screens.inventory;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.PageButton;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 
 public class CustomPageButton extends PageButton {
     protected ResourceLocation location;
+    protected int pngWidth;
+    protected int pngHeight;
 
-    public CustomPageButton(int i, int j, boolean bl, OnPress onPress, boolean bl2, ResourceLocation rl) {
+    public CustomPageButton(int i, int j, boolean bl, OnPress onPress, boolean bl2, ResourceLocation rl, int pngWidth, int pngHeight) {
         super(i, j, bl, onPress, bl2);
         location = rl;
+        this.pngWidth = pngWidth;
+        this.pngHeight = pngHeight;
     }
 
     @Override
@@ -24,6 +29,6 @@ public class CustomPageButton extends PageButton {
             l += 13;
         }
 
-        guiGraphics.blit(location, this.getX(), this.getY(), k, l, 23, 13);
+        guiGraphics.blit(RenderType::guiTextured, location, this.getX(), this.getY(), k, l, 23, 13, pngWidth, pngHeight);
     }
 }

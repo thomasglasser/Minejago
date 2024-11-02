@@ -15,7 +15,7 @@ import net.minecraft.world.entity.ai.memory.WalkTarget;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.phys.Vec3;
 import net.tslat.smartbrainlib.api.core.behaviour.ExtendedBehaviour;
-import net.tslat.smartbrainlib.util.BrainUtils;
+import net.tslat.smartbrainlib.util.BrainUtil;
 
 public class PathfindToSkulkinRaid<T extends SkulkinRaider> extends ExtendedBehaviour<T> {
     private static final List<Pair<MemoryModuleType<?>, MemoryStatus>> MEMORY_REQUIREMENTS = List.of(Pair.of(MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT));
@@ -24,34 +24,34 @@ public class PathfindToSkulkinRaid<T extends SkulkinRaider> extends ExtendedBeha
 
     @Override
     protected boolean checkExtraStartConditions(ServerLevel level, T entity) {
-        return !BrainUtils.hasMemory(entity, MemoryModuleType.ATTACK_TARGET)
+        return !BrainUtil.hasMemory(entity, MemoryModuleType.ATTACK_TARGET)
                 && !entity.isVehicle()
-                && entity.hasActiveSkulkinRaid()
-                && !entity.getCurrentSkulkinRaid().isOver()
+                && entity.hasActiveRaid()
+                && !entity.getCurrentRaid().isOver()
                 && !MinejagoLevelUtils.isGoldenWeaponsMapHolderNearby(entity, 32);
     }
 
     @Override
     protected boolean canStillUse(ServerLevel level, T entity, long gameTime) {
-        return entity.hasActiveSkulkinRaid()
-                && !entity.getCurrentSkulkinRaid().isOver()
+        return entity.hasActiveRaid()
+                && !entity.getCurrentRaid().isOver()
                 && entity.level() instanceof ServerLevel
                 && !MinejagoLevelUtils.isGoldenWeaponsMapHolderNearby(entity, 8);
     }
 
     @Override
     protected void tick(T entity) {
-        if (entity.hasActiveSkulkinRaid()) {
-            SkulkinRaid raid = entity.getCurrentSkulkinRaid();
+        if (entity.hasActiveRaid()) {
+            SkulkinRaid raid = entity.getCurrentRaid();
             if (entity.tickCount > this.recruitmentTick) {
                 this.recruitmentTick = entity.tickCount + 20;
                 this.recruitNearby(raid, entity);
             }
 
-            if (!BrainUtils.hasMemory(entity, MemoryModuleType.WALK_TARGET)) {
+            if (!BrainUtil.hasMemory(entity, MemoryModuleType.WALK_TARGET)) {
                 Vec3 vec3 = DefaultRandomPos.getPosTowards(entity, 15, 4, Vec3.atBottomCenterOf(raid.getCenter()), (float) (Math.PI / 2));
                 if (vec3 != null) {
-                    BrainUtils.setMemory(entity, MemoryModuleType.WALK_TARGET, new WalkTarget(vec3, 1.0f, 8));
+                    BrainUtil.setMemory(entity, MemoryModuleType.WALK_TARGET, new WalkTarget(vec3, 1.0f, 8));
                 }
             }
         }
@@ -62,11 +62,11 @@ public class PathfindToSkulkinRaid<T extends SkulkinRaider> extends ExtendedBeha
             Set<SkulkinRaider> set = Sets.newHashSet();
             List<SkulkinRaider> list = entity
                     .level()
-                    .getEntitiesOfClass(SkulkinRaider.class, entity.getBoundingBox().inflate(16.0), raiderx -> !raiderx.hasActiveSkulkinRaid() && SkulkinRaids.canJoinSkulkinRaid(raiderx, raid));
+                    .getEntitiesOfClass(SkulkinRaider.class, entity.getBoundingBox().inflate(16.0), raiderx -> !raiderx.hasActiveRaid() && SkulkinRaids.canJoinSkulkinRaid(raiderx, raid));
             set.addAll(list);
 
             for (SkulkinRaider raider : set) {
-                raid.joinSkulkinRaid(raid.getGroupsSpawned(), raider, null, true);
+                raid.joinRaid(raid.getGroupsSpawned(), raider, null, true);
             }
         }
     }

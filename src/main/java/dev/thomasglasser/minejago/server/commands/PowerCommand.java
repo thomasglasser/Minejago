@@ -20,6 +20,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
 
 public class PowerCommand {
@@ -58,8 +59,8 @@ public class PowerCommand {
             if (pSource.getEntity() == entity) {
                 pSource.sendSuccess(() -> Component.translatable(clear ? SUCCESS_CLEARED_SELF : SUCCESS_SELF, pSource.registryAccess().holderOrThrow(power).value().getFormattedName()), true);
             } else {
-                if (pSource.getLevel().getGameRules().getBoolean(GameRules.RULE_SENDCOMMANDFEEDBACK)) {
-                    livingEntity.sendSystemMessage(Component.translatable(clear ? CLEARED : CHANGED, pSource.registryAccess().holderOrThrow(power).value().getFormattedName()));
+                if (pSource.getLevel().getGameRules().getBoolean(GameRules.RULE_SENDCOMMANDFEEDBACK) && livingEntity instanceof Player player) {
+                    player.displayClientMessage(Component.translatable(clear ? CLEARED : CHANGED, pSource.registryAccess().holderOrThrow(power).value().getFormattedName()), false);
                 }
 
                 pSource.sendSuccess(() -> Component.translatable(clear ? SUCCESS_CLEARED_OTHER : SUCCESS_OTHER, livingEntity.getDisplayName(), pSource.registryAccess().holderOrThrow(power).value().getFormattedName()), true);

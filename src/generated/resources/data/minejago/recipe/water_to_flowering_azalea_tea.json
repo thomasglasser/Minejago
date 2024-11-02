@@ -8,8 +8,6 @@
   },
   "experience": 0.5,
   "group": "flowering_azalea_tea",
-  "ingredient": {
-    "item": "minecraft:flowering_azalea_leaves"
-  },
+  "ingredient": "minecraft:flowering_azalea_leaves",
   "result": "minejago:flowering_azalea_tea"
 }

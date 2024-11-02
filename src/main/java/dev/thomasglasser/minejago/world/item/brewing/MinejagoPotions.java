@@ -33,11 +33,11 @@ public class MinejagoPotions {
     }
 
     private static DeferredHolder<Potion, Potion> register(String name, DeferredHolder<MobEffect, MobEffect> effect) {
-        return POTIONS.register(name, () -> new Potion(new MobEffectInstance(effect)));
+        return POTIONS.register(name, () -> new Potion(name, new MobEffectInstance(effect)));
     }
 
     private static DeferredHolder<Potion, Potion> register(String name, int duration, DeferredHolder<MobEffect, MobEffect> effect) {
-        return POTIONS.register(name, () -> new Potion(new MobEffectInstance(effect, duration)));
+        return POTIONS.register(name, () -> new Potion(name, new MobEffectInstance(effect, duration)));
     }
 
     public static void init() {}

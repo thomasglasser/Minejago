@@ -1,5 +1,13 @@
 {
   "asset_id": "minejago:ambushed",
+  "author": {
+    "color": "gray",
+    "translate": "painting.minejago.ambushed.author"
+  },
   "height": 1,
+  "title": {
+    "color": "yellow",
+    "translate": "painting.minejago.ambushed.title"
+  },
   "width": 2
 }

@@ -5,6 +5,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.decoration.PaintingVariant;
+import net.minecraft.world.entity.decoration.PaintingVariants;
 
 public class MinejagoPaintingVariants {
     public static final ResourceKey<PaintingVariant> A_MORNING_BREW = create("a_morning_brew");
@@ -24,25 +25,21 @@ public class MinejagoPaintingVariants {
     public static final ResourceKey<PaintingVariant> IT_TAKES_A_VILLAGE_WRECKED = create("it_takes_a_village_wrecked");
 
     public static void boostrap(BootstrapContext<PaintingVariant> context) {
-        register(context, A_MORNING_BREW, 2, 2);
-        register(context, AMBUSHED, 2, 1);
-        register(context, BEFORE_THE_STORM, 2, 1);
-        register(context, CREATION, 4, 3);
-        register(context, EARTH, 1, 1);
-        register(context, FIRE, 1, 1);
-        register(context, FOUR_WEAPONS, 2, 1);
-        register(context, FRUIT_COLORED_NINJA, 4, 3);
-        register(context, ICE, 1, 1);
-        register(context, LIGHTNING, 1, 1);
-        register(context, NEEDS_HAIR_GEL, 1, 2);
-        register(context, THE_FOURTH_MOUNTAIN, 2, 2);
-        register(context, NOT_FOR_FURNITURE, 1, 2);
-        register(context, IT_TAKES_A_VILLAGE, 8, 4);
-        register(context, IT_TAKES_A_VILLAGE_WRECKED, 8, 4);
-    }
-
-    private static void register(BootstrapContext<PaintingVariant> context, ResourceKey<PaintingVariant> key, int width, int height) {
-        context.register(key, new PaintingVariant(width, height, key.location()));
+        PaintingVariants.register(context, A_MORNING_BREW, 2, 2);
+        PaintingVariants.register(context, AMBUSHED, 2, 1);
+        PaintingVariants.register(context, BEFORE_THE_STORM, 2, 1);
+        PaintingVariants.register(context, CREATION, 4, 3);
+        PaintingVariants.register(context, EARTH, 1, 1);
+        PaintingVariants.register(context, FIRE, 1, 1);
+        PaintingVariants.register(context, FOUR_WEAPONS, 2, 1);
+        PaintingVariants.register(context, FRUIT_COLORED_NINJA, 4, 3);
+        PaintingVariants.register(context, ICE, 1, 1);
+        PaintingVariants.register(context, LIGHTNING, 1, 1);
+        PaintingVariants.register(context, NEEDS_HAIR_GEL, 1, 2);
+        PaintingVariants.register(context, THE_FOURTH_MOUNTAIN, 2, 2);
+        PaintingVariants.register(context, NOT_FOR_FURNITURE, 1, 2);
+        PaintingVariants.register(context, IT_TAKES_A_VILLAGE, 8, 4);
+        PaintingVariants.register(context, IT_TAKES_A_VILLAGE_WRECKED, 8, 4);
     }
 
     private static ResourceKey<PaintingVariant> create(String pName) {

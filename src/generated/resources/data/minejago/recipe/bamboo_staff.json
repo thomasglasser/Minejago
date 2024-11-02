@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "o": {
-      "item": "minecraft:bamboo"
-    }
+    "o": "minecraft:bamboo"
   },
   "pattern": [
     " o ",

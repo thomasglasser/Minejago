@@ -1,8 +1,6 @@
 package dev.thomasglasser.minejago.network;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.tommylib.api.client.ClientUtils;
-import dev.thomasglasser.tommylib.api.client.animation.AnimationUtils;
 import dev.thomasglasser.tommylib.api.network.ExtendedPacketPayload;
 import io.netty.buffer.ByteBuf;
 import java.util.UUID;
@@ -20,7 +18,8 @@ public record ClientboundStopAnimationPayload(UUID uuid) implements ExtendedPack
 
     // ON CLIENT
     public void handle(@Nullable Player player) {
-        AnimationUtils.stopAnimation(ClientUtils.getPlayerByUUID(uuid));
+        // TODO: Update playerAnimator
+//        AnimationUtils.stopAnimation(ClientUtils.getPlayerByUUID(uuid));
     }
 
     @Override

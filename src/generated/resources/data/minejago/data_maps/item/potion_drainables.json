@@ -1,0 +1,34 @@
+{
+  "values": {
+    "minecraft:milk_bucket": {
+      "cups": 6,
+      "potion": "minejago:milk",
+      "remainder": {
+        "count": 1,
+        "id": "minecraft:bucket"
+      }
+    },
+    "minecraft:potion": {
+      "cups": 2,
+      "remainder": {
+        "count": 1,
+        "id": "minecraft:glass_bottle"
+      }
+    },
+    "minecraft:water_bucket": {
+      "cups": 6,
+      "potion": "minecraft:water",
+      "remainder": {
+        "count": 1,
+        "id": "minecraft:bucket"
+      }
+    },
+    "minejago:filled_teacup": {
+      "cups": 1,
+      "remainder": {
+        "count": 1,
+        "id": "minejago:teacup"
+      }
+    }
+  }
+}

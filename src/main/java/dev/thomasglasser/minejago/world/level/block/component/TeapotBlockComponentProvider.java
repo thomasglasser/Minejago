@@ -4,6 +4,7 @@ import dev.thomasglasser.minejago.plugins.MinejagoWailaPlugin;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.minejago.world.level.block.entity.TeapotBlockEntity;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -32,14 +33,14 @@ public enum TeapotBlockComponentProvider implements IBlockComponentProvider {
                 ItemStack potionStack = PotionContents.createItemStack(MinejagoItems.FILLED_TEACUP.get(), potion);
                 IElement icon = ElementHelper.INSTANCE.item(potionStack, 0.5f).translate(new Vec2(0, -2));
                 iTooltip.add(icon);
-                iTooltip.append(Component.translatable("block.minejago.teapot.waila.potion", be.getPotion() == Potions.WATER ? Blocks.WATER.getName() : Component.translatable(PotionContents.createItemStack(Items.POTION, be.getPotion()).getDescriptionId())));
+                iTooltip.append(Component.translatable("block.minejago.teapot.waila.potion", be.getPotion() == Potions.WATER ? Blocks.WATER.getName() : PotionContents.createItemStack(Items.POTION, be.getPotion()).getItemName()).withStyle(ChatFormatting.GRAY));
             }
 
             ItemStack item = be.getInSlot(0);
             if (!item.isEmpty()) {
                 IElement icon = ElementHelper.INSTANCE.item(item, 0.5f).translate(new Vec2(0, -2));
                 iTooltip.add(icon);
-                iTooltip.append(Component.translatable("block.minejago.teapot.waila.item", Component.translatable(item.getDescriptionId())));
+                iTooltip.append(Component.translatable("block.minejago.teapot.waila.item", item.getItemName()).withStyle(ChatFormatting.GRAY));
             }
 
             int cups = be.getCups();

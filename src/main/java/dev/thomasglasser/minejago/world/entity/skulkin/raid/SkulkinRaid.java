@@ -2,7 +2,6 @@ package dev.thomasglasser.minejago.world.entity.skulkin.raid;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
 import dev.thomasglasser.minejago.advancements.criterion.SkulkinRaidTrigger;
 import dev.thomasglasser.minejago.network.ClientboundAddSkulkinRaidPayload;
@@ -17,6 +16,7 @@ import dev.thomasglasser.minejago.world.level.MinejagoLevelUtils;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -24,9 +24,11 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderGetter;
+import net.minecraft.core.SectionPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -42,50 +44,44 @@ import net.minecraft.util.Unit;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnPlacementType;
-import net.minecraft.world.entity.SpawnPlacements;
-import net.minecraft.world.entity.decoration.Painting;
+import net.minecraft.world.entity.raid.Raid;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraft.world.level.block.entity.BannerPatternLayers;
 import net.minecraft.world.level.block.entity.BannerPatterns;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class SkulkinRaid {
-    private static final int SECTION_RADIUS_FOR_FINDING_NEW_VILLAGE_CENTER = 2;
-    private static final int ATTEMPT_RAID_FARTHEST = 0;
-    private static final int ATTEMPT_RAID_CLOSE = 1;
-    private static final int ATTEMPT_RAID_INSIDE = 2;
-    private static final int VILLAGE_SEARCH_RADIUS = 32;
+    private static final int ALLOW_SPAWNING_WITHIN_PAINTING_SECONDS_THRESHOLD = 7;
+    private static final int SECTION_RADIUS_FOR_FINDING_NEW_PAINTING = 2;
+    private static final int PAINTING_SEARCH_RADIUS = 32;
     private static final int RAID_TIMEOUT_TICKS = 48000;
-    private static final int NUM_SPAWN_ATTEMPTS = 3;
-    public static final Component SKULKINS_BANNER_PATTERN_NAME = Component.translatable("block.minejago.skulkins_banner").withStyle(ChatFormatting.GOLD);
-    public static final int RADIUS_BUFFER = 16;
+    private static final int NUM_SPAWN_ATTEMPTS = 5;
+    public static final Component CURSED_BANNER_PATTERN_NAME = Component.translatable("block.minejago.cursed_banner").withStyle(ChatFormatting.GOLD);
+    public static final String SKULKIN_REMAINING = "event.minejago.skulkin_raid.skulkin_remaining";
+    public static final int PAINTING_RADIUS_BUFFER = 16;
     private static final int POST_RAID_TICK_LIMIT = 40;
     private static final int DEFAULT_PRE_RAID_TICKS = 300;
     public static final int MAX_NO_ACTION_TIME = 2400;
     public static final int MAX_CELEBRATION_TICKS = 600;
     private static final int OUTSIDE_RAID_BOUNDS_TIMEOUT = 30;
     public static final int TICKS_PER_DAY = 24000;
-    public static final int DEFAULT_MAX_SKULKINS_CURSE_LEVEL = 5;
     private static final int LOW_MOB_THRESHOLD = 2;
     public static final Component RAID_NAME_COMPONENT = Component.translatable("event.minejago.skulkin_raid");
-    private static final Component VICTORY = Component.translatable("event.minecraft.raid.victory");
-    private static final Component DEFEAT = Component.translatable("event.minecraft.raid.defeat");
-    private static final Component RAID_BAR_VICTORY_COMPONENT = RAID_NAME_COMPONENT.copy().append(" - ").append(VICTORY);
-    private static final Component RAID_BAR_DEFEAT_COMPONENT = RAID_NAME_COMPONENT.copy().append(" - ").append(DEFEAT);
-    private static final int HERO_OF_THE_VILLAGE_DURATION = 48000;
+    public static final Component RAID_BAR_VICTORY_COMPONENT = Component.translatable("event.minejago.skulkin_raid.victory.full");
+    public static final Component RAID_BAR_DEFEAT_COMPONENT = Component.translatable("event.minejago.skulkin_raid.defeat.full");
+    public static final int VALID_RAID_RADIUS = 96;
     public static final int VALID_RAID_RADIUS_SQR = 9216;
     public static final int RAID_REMOVAL_THRESHOLD_SQR = 12544;
     private final Map<Integer, SkulkinRaider> groupToLeaderMap = Maps.newHashMap();
@@ -96,47 +92,47 @@ public class SkulkinRaid {
     private boolean started;
     private final int id;
     private float totalHealth;
-    private int difficultyLevel;
     private boolean active;
     private int groupsSpawned;
     private final ServerBossEvent raidEvent = new ServerBossEvent(RAID_NAME_COMPONENT, BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.NOTCHED_10);
-    private int postSkulkinRaidTicks;
+    private int postRaidTicks;
     private int raidCooldownTicks;
     protected final RandomSource random = RandomSource.create();
     private final int numGroups;
-    private SkulkinRaid.SkulkinRaidStatus status;
+    private SkulkinRaidStatus status;
     private int celebrationTicks;
     private Optional<BlockPos> waveSpawnPos = Optional.empty();
     private long time;
     private Vec3 escapePos;
 
-    public SkulkinRaid(int i, ServerLevel serverLevel, BlockPos blockPos) {
-        this.id = i;
-        this.level = serverLevel;
+    public SkulkinRaid(int id, ServerLevel level, BlockPos center) {
+        this.id = id;
+        this.level = level;
         this.active = true;
         this.raidCooldownTicks = DEFAULT_PRE_RAID_TICKS;
         this.raidEvent.setProgress(0.0F);
-        this.center = blockPos;
-        this.numGroups = this.getNumGroups(serverLevel.getDifficulty());
-        this.status = SkulkinRaid.SkulkinRaidStatus.ONGOING;
+        this.center = center;
+        this.numGroups = this.getNumGroups(level.getDifficulty());
+        this.status = SkulkinRaidStatus.ONGOING;
         this.raidEvent.setPlayBossMusic(this.active);
-        TommyLibServices.NETWORK.sendToAllClients(new ClientboundAddSkulkinRaidPayload(raidEvent.getId()), serverLevel.getServer());
+        TommyLibServices.NETWORK.sendToAllClients(new ClientboundAddSkulkinRaidPayload(raidEvent.getId()), level.getServer());
     }
 
-    public SkulkinRaid(ServerLevel serverLevel, CompoundTag compoundTag) {
-        this.level = serverLevel;
-        this.id = compoundTag.getInt("Id");
-        this.started = compoundTag.getBoolean("Started");
-        this.active = compoundTag.getBoolean("Active");
-        this.ticksActive = compoundTag.getLong("TicksActive");
-        this.difficultyLevel = compoundTag.getInt("DifficultyLevel");
-        this.groupsSpawned = compoundTag.getInt("GroupsSpawned");
-        this.raidCooldownTicks = compoundTag.getInt("PreSkulkinRaidTicks");
-        this.postSkulkinRaidTicks = compoundTag.getInt("PostSkulkinRaidTicks");
-        this.totalHealth = compoundTag.getFloat("TotalHealth");
-        this.center = new BlockPos(compoundTag.getInt("CX"), compoundTag.getInt("CY"), compoundTag.getInt("CZ"));
-        this.numGroups = compoundTag.getInt("NumGroups");
-        this.status = SkulkinRaid.SkulkinRaidStatus.getByName(compoundTag.getString("Status"));
+    public SkulkinRaid(ServerLevel level, CompoundTag compound) {
+        this.level = level;
+        this.id = compound.getInt("Id");
+        this.started = compound.getBoolean("Started");
+        this.active = compound.getBoolean("Active");
+        this.ticksActive = compound.getLong("TicksActive");
+        this.groupsSpawned = compound.getInt("GroupsSpawned");
+        this.raidCooldownTicks = compound.getInt("PreRaidTicks");
+        this.postRaidTicks = compound.getInt("PostRaidTicks");
+        this.totalHealth = compound.getFloat("TotalHealth");
+        this.center = new BlockPos(compound.getInt("CX"), compound.getInt("CY"), compound.getInt("CZ"));
+        this.numGroups = compound.getInt("NumGroups");
+        this.status = SkulkinRaidStatus.getByName(compound.getString("Status"));
+        this.raidEvent.setPlayBossMusic(this.active);
+        TommyLibServices.NETWORK.sendToAllClients(new ClientboundAddSkulkinRaidPayload(raidEvent.getId()), level.getServer());
     }
 
     public boolean isOver() {
@@ -152,15 +148,29 @@ public class SkulkinRaid {
     }
 
     public boolean isStopped() {
-        return this.status == SkulkinRaid.SkulkinRaidStatus.STOPPED;
+        return this.status == SkulkinRaidStatus.STOPPED;
     }
 
     public boolean isVictory() {
-        return this.status == SkulkinRaid.SkulkinRaidStatus.VICTORY;
+        return this.status == SkulkinRaidStatus.VICTORY;
     }
 
     public boolean isLoss() {
-        return this.status == SkulkinRaid.SkulkinRaidStatus.LOSS;
+        return this.status == SkulkinRaidStatus.LOSS;
+    }
+
+    public float getTotalHealth() {
+        return this.totalHealth;
+    }
+
+    public Set<SkulkinRaider> getAllRaiders() {
+        Set<SkulkinRaider> set = Sets.newHashSet();
+
+        for (Set<SkulkinRaider> set1 : this.groupRaiderMap.values()) {
+            set.addAll(set1);
+        }
+
+        return set;
     }
 
     public Level getLevel() {
@@ -178,7 +188,7 @@ public class SkulkinRaid {
     private Predicate<ServerPlayer> validPlayer() {
         return serverPlayer -> {
             BlockPos blockPos = serverPlayer.blockPosition();
-            return serverPlayer.isAlive() && ((SkulkinRaidsHolder) level).getSkulkinRaids().getNearbySkulkinRaid(blockPos, VALID_RAID_RADIUS_SQR) == this;
+            return serverPlayer.isAlive() && ((SkulkinRaidsHolder) this.level).getSkulkinRaidAt(blockPos) == this;
         };
     }
 
@@ -199,36 +209,24 @@ public class SkulkinRaid {
         }
     }
 
-    public int getMaxSkulkinsCurseLevel() {
-        return DEFAULT_MAX_SKULKINS_CURSE_LEVEL;
-    }
-
-    public int getDifficultyLevel() {
-        return this.difficultyLevel;
-    }
-
-    public void setDifficultyLevel(int difficultyLevel) {
-        this.difficultyLevel = difficultyLevel;
-    }
-
     public void stop() {
         this.active = false;
         this.raidEvent.removeAllPlayers();
-        this.status = SkulkinRaid.SkulkinRaidStatus.STOPPED;
+        this.status = SkulkinRaidStatus.STOPPED;
         this.time = 0;
     }
 
     public void tick() {
         if (!this.isStopped()) {
-            if (this.status == SkulkinRaid.SkulkinRaidStatus.ONGOING) {
-                boolean bl = this.active;
+            if (this.status == SkulkinRaidStatus.ONGOING) {
+                boolean flag = this.active;
                 this.active = this.level.hasChunkAt(this.center);
                 if (this.level.getDifficulty() == Difficulty.PEACEFUL) {
                     this.stop();
                     return;
                 }
 
-                if (bl != this.active) {
+                if (flag != this.active) {
                     this.raidEvent.setVisible(this.active);
                 }
 
@@ -237,25 +235,26 @@ public class SkulkinRaid {
                 }
 
                 if (!level.isNight()) {
-                    time = level.getDayTime() + 16000L;
+                    this.time = this.level.getDayTime() + 16000L;
                 } else if (time == 0) {
-                    time = level.getDayTime();
+                    this.time = this.level.getDayTime();
                 }
 
-                level.setDayTime(time);
+                this.level.setDayTime(this.time);
 
-                if (!MinejagoLevelUtils.isGoldenWeaponsMapHolderNearby(level, center, 64)) {
+                if (!MinejagoLevelUtils.isGoldenWeaponsMapHolderNearby(this.level, this.center, VALID_RAID_RADIUS)) {
+                    this.moveRaidCenterToNearbyPainting();
+                }
+
+                if (!MinejagoLevelUtils.isGoldenWeaponsMapHolderNearby(this.level, this.center, VALID_RAID_RADIUS)) {
                     if (this.groupsSpawned > 0) {
-                        if (level.getEntitiesOfClass(Painting.class, AABB.ofSize(center.getCenter(), 32, 32, 32), painting -> painting.getVariant().is(Minejago.modLoc("four_weapons")) && TommyLibServices.ENTITY.getPersistentData(painting).getBoolean("MapTakenByPlayer")).isEmpty())
-                            this.status = SkulkinRaid.SkulkinRaidStatus.LOSS;
-                        else
-                            this.status = SkulkinRaidStatus.VICTORY;
+                        this.status = SkulkinRaidStatus.LOSS;
                     } else {
                         this.stop();
                     }
                 }
 
-                ++this.ticksActive;
+                this.ticksActive++;
                 if (this.ticksActive >= RAID_TIMEOUT_TICKS) {
                     this.stop();
                     return;
@@ -265,34 +264,27 @@ public class SkulkinRaid {
                 if (i == 0 && this.hasMoreWaves()) {
                     if (this.raidCooldownTicks <= 0) {
                         if (this.raidCooldownTicks == 0 && this.groupsSpawned > 0) {
-                            this.raidCooldownTicks = 300;
+                            this.raidCooldownTicks = DEFAULT_PRE_RAID_TICKS;
                             this.raidEvent.setName(RAID_NAME_COMPONENT);
                             return;
                         }
                     } else {
-                        boolean bl2 = this.waveSpawnPos.isPresent();
-                        boolean bl3 = !bl2 && this.raidCooldownTicks % 5 == 0;
-                        if (bl2 && !this.level.isPositionEntityTicking(this.waveSpawnPos.get())) {
-                            bl3 = true;
+                        boolean flag1 = this.waveSpawnPos.isPresent();
+                        boolean flag2 = !flag1 && this.raidCooldownTicks % 5 == 0;
+                        if (flag1 && !this.level.isPositionEntityTicking(this.waveSpawnPos.get())) {
+                            flag2 = true;
                         }
 
-                        if (bl3) {
-                            int j = 0;
-                            if (this.raidCooldownTicks < 100) {
-                                j = 1;
-                            } else if (this.raidCooldownTicks < 40) {
-                                j = 2;
-                            }
-
-                            this.waveSpawnPos = this.getValidSpawnPos(j);
+                        if (flag2) {
+                            this.waveSpawnPos = this.getValidSpawnPos();
                         }
 
-                        if (this.raidCooldownTicks == 300 || this.raidCooldownTicks % 20 == 0) {
+                        if (this.raidCooldownTicks == DEFAULT_PRE_RAID_TICKS || this.raidCooldownTicks % 20 == 0) {
                             this.updatePlayers();
                         }
 
-                        --this.raidCooldownTicks;
-                        this.raidEvent.setProgress(Mth.clamp((float) (300 - this.raidCooldownTicks) / 300.0F, 0.0F, 1.0F));
+                        this.raidCooldownTicks--;
+                        this.raidEvent.setProgress(Mth.clamp((float) (DEFAULT_PRE_RAID_TICKS - this.raidCooldownTicks) / DEFAULT_PRE_RAID_TICKS, 0.0F, 1.0F));
                     }
                 }
 
@@ -300,8 +292,9 @@ public class SkulkinRaid {
                     this.updatePlayers();
                     this.updateRaiders();
                     if (i > 0) {
-                        if (i <= 2) {
-                            this.raidEvent.setName(RAID_NAME_COMPONENT.copy().append(" - ").append(Component.translatable("event.minecraft.raid.raiders_remaining", i)));
+                        if (i <= LOW_MOB_THRESHOLD) {
+                            this.raidEvent
+                                    .setName(RAID_NAME_COMPONENT.copy().append(" - ").append(Component.translatable(SKULKIN_REMAINING, i)));
                         } else {
                             this.raidEvent.setName(RAID_NAME_COMPONENT);
                         }
@@ -310,43 +303,42 @@ public class SkulkinRaid {
                     }
                 }
 
-                boolean bl2 = false;
-                int k = 0;
+                boolean flag3 = false;
+                int j = 0;
 
                 while (this.shouldSpawnGroup()) {
-                    BlockPos blockPos = this.waveSpawnPos.isPresent() ? this.waveSpawnPos.get() : this.findRandomSpawnPos(k, 20);
+                    BlockPos blockPos = this.waveSpawnPos.orElseGet(() -> this.findRandomSpawnPos(20));
                     if (blockPos != null) {
                         this.started = true;
                         raidEvent.getPlayers().forEach(serverPlayer -> MinejagoCriteriaTriggers.SKULKIN_RAID_STATUS_CHANGED.get().trigger(serverPlayer, SkulkinRaidTrigger.Status.STARTED));
                         this.spawnGroup(blockPos);
-                        if (!bl2) {
+                        if (!flag3) {
                             this.playSound(blockPos);
-                            bl2 = true;
+                            flag3 = true;
                         }
                     } else {
-                        ++k;
+                        j++;
                     }
 
-                    if (k > 3) {
+                    if (j > NUM_SPAWN_ATTEMPTS) {
                         this.stop();
                         break;
                     }
                 }
 
                 if (this.isStarted() && !this.hasMoreWaves() && i == 0) {
-                    if (this.postSkulkinRaidTicks < 40) {
-                        ++this.postSkulkinRaidTicks;
+                    if (this.postRaidTicks < POST_RAID_TICK_LIMIT) {
+                        this.postRaidTicks++;
                     } else {
-                        this.status = SkulkinRaid.SkulkinRaidStatus.VICTORY;
-
+                        this.status = SkulkinRaidStatus.VICTORY;
                         raidEvent.getPlayers().forEach(serverPlayer -> MinejagoCriteriaTriggers.SKULKIN_RAID_STATUS_CHANGED.get().trigger(serverPlayer, SkulkinRaidTrigger.Status.WON));
                     }
                 }
 
                 this.setDirty();
             } else if (this.isOver()) {
-                ++this.celebrationTicks;
-                if (this.celebrationTicks >= 600) {
+                this.celebrationTicks++;
+                if (this.celebrationTicks >= MAX_CELEBRATION_TICKS) {
                     this.stop();
                     return;
                 }
@@ -365,70 +357,59 @@ public class SkulkinRaid {
         }
     }
 
-    private Optional<BlockPos> getValidSpawnPos(int offsetMultiplier) {
-        for (int i = 0; i < 3; ++i) {
-            BlockPos blockPos = this.findRandomSpawnPos(offsetMultiplier, 1);
-            if (blockPos != null) {
-                return Optional.of(blockPos);
-            }
-        }
+    private void moveRaidCenterToNearbyPainting() {
+        Stream<SectionPos> stream = SectionPos.cube(SectionPos.of(this.center), SECTION_RADIUS_FOR_FINDING_NEW_PAINTING);
+        stream.filter(sectionPos -> MinejagoLevelUtils.isGoldenWeaponsMapHolderNearby(this.level, sectionPos.center(), VALID_RAID_RADIUS))
+                .map(SectionPos::center)
+                .min(Comparator.comparingDouble(p_37766_ -> p_37766_.distSqr(this.center)))
+                .ifPresent(this::setCenter);
+    }
 
-        return Optional.empty();
+    private Optional<BlockPos> getValidSpawnPos() {
+        BlockPos blockpos = this.findRandomSpawnPos(8);
+        return blockpos != null ? Optional.of(blockpos) : Optional.empty();
     }
 
     private boolean hasMoreWaves() {
-        if (this.hasBonusWave()) {
-            return !this.hasSpawnedBonusWave();
-        } else {
-            return !this.isFinalWave();
-        }
+        return !this.isFinalWave();
     }
 
     private boolean isFinalWave() {
         return this.getGroupsSpawned() == this.numGroups;
     }
 
-    private boolean hasBonusWave() {
-        return this.difficultyLevel > 1;
-    }
-
-    private boolean hasSpawnedBonusWave() {
-        return this.getGroupsSpawned() > this.numGroups;
-    }
-
-    private boolean shouldSpawnBonusGroup() {
-        return this.isFinalWave() && this.getTotalRaidersAlive() == 0 && this.hasBonusWave();
-    }
-
     private void updateRaiders() {
         Iterator<Set<SkulkinRaider>> iterator = this.groupRaiderMap.values().iterator();
-        Set<SkulkinRaider> set = Sets.<SkulkinRaider>newHashSet();
+        Set<SkulkinRaider> set = Sets.newHashSet();
 
         while (iterator.hasNext()) {
-            Set<SkulkinRaider> set2 = iterator.next();
+            Set<SkulkinRaider> set1 = iterator.next();
 
-            for (SkulkinRaider raider : set2) {
-                BlockPos blockPos = raider.blockPosition();
-                if (raider.isRemoved() || raider.level().dimension() != this.level.dimension() || this.center.distSqr(blockPos) >= 12544.0) {
+            for (SkulkinRaider raider : set1) {
+                BlockPos blockpos = raider.blockPosition();
+                if (raider.isRemoved() || raider.level().dimension() != this.level.dimension() || this.center.distSqr(blockpos) >= RAID_REMOVAL_THRESHOLD_SQR) {
                     set.add(raider);
-                } else if (raider.tickCount > 600) {
+                } else if (raider.tickCount > MAX_CELEBRATION_TICKS) {
                     if (this.level.getEntity(raider.getUUID()) == null) {
                         set.add(raider);
                     }
 
-                    if (!MinejagoLevelUtils.isGoldenWeaponsMapHolderNearby(level, center, 32) && raider.getNoActionTime() > 2400) {
-                        raider.setTicksOutsideSkulkinRaid(raider.getTicksOutsideSkulkinRaid() + 1);
+                    if (!MinejagoLevelUtils.isGoldenWeaponsMapHolderNearby(this.level, blockpos, VALID_RAID_RADIUS) && raider.getNoActionTime() > MAX_NO_ACTION_TIME) {
+                        raider.setTicksOutsideRaid(raider.getTicksOutsideRaid() + 1);
                     }
 
-                    if (raider.getTicksOutsideSkulkinRaid() >= 30) {
+                    if (raider.getTicksOutsideRaid() >= OUTSIDE_RAID_BOUNDS_TIMEOUT) {
                         set.add(raider);
                     }
                 }
             }
         }
 
-        for (SkulkinRaider raider2 : set) {
-            this.removeFromSkulkinRaid(raider2, true);
+        for (SkulkinRaider raider1 : set) {
+            this.removeFromRaid(raider1, true);
+            if (raider1.isPatrolLeader()) {
+                this.removeLeader(raider1.getWave());
+            }
         }
     }
 
@@ -436,77 +417,81 @@ public class SkulkinRaid {
         float f = 13.0F;
         int i = 64;
         Collection<ServerPlayer> collection = this.raidEvent.getPlayers();
-        long l = this.random.nextLong();
+        long j = random.nextLong();
 
-        for (ServerPlayer serverPlayer : this.level.players()) {
-            Vec3 vec3 = serverPlayer.position();
-            Vec3 vec32 = Vec3.atCenterOf(pos);
-            double d = Math.sqrt((vec32.x - vec3.x) * (vec32.x - vec3.x) + (vec32.z - vec3.z) * (vec32.z - vec3.z));
-            double e = vec3.x + 13.0 / d * (vec32.x - vec3.x);
-            double g = vec3.z + 13.0 / d * (vec32.z - vec3.z);
-            if (d <= 64.0 || collection.contains(serverPlayer)) {
-                serverPlayer.connection.send(new ClientboundSoundPacket(MinejagoSoundEvents.SKULKIN_RAID_HORN, SoundSource.NEUTRAL, e, serverPlayer.getY(), g, 64.0F, 1.0F, l));
+        for (ServerPlayer serverplayer : this.level.players()) {
+            Vec3 vec3 = serverplayer.position();
+            Vec3 vec31 = Vec3.atCenterOf(pos);
+            double d0 = Math.sqrt((vec31.x - vec3.x) * (vec31.x - vec3.x) + (vec31.z - vec3.z) * (vec31.z - vec3.z));
+            double d1 = vec3.x + f / d0 * (vec31.x - vec3.x);
+            double d2 = vec3.z + f / d0 * (vec31.z - vec3.z);
+            if (d0 <= i || collection.contains(serverplayer)) {
+                serverplayer.connection
+                        .send(new ClientboundSoundPacket(MinejagoSoundEvents.SKULKIN_RAID_HORN, SoundSource.NEUTRAL, d1, serverplayer.getY(), d2, i, 1.0F, j));
             }
         }
     }
 
     private void spawnGroup(BlockPos pos) {
-        boolean bl = false;
+        boolean flag = false;
         int i = this.groupsSpawned + 1;
         this.totalHealth = 0.0F;
         DifficultyInstance difficultyInstance = this.level.getCurrentDifficultyAt(pos);
-        boolean bl2 = this.shouldSpawnBonusGroup();
 
-        int j = this.getDefaultNumSpawns(i, bl2) + this.getPotentialBonusSpawns(this.random, i, difficultyInstance, bl2);
+        int j = this.getDefaultNumSpawns(i)
+                + this.getPotentialBonusSpawns(this.random, difficultyInstance);
+        int k = 0;
 
-        if (this.groupsSpawned >= this.numGroups - 1) bl = spawnBosses(i, pos);
+        if (this.groupsSpawned == this.numGroups - 1)
+            flag = spawnBosses(i, pos);
 
-        for (int l = 0; l < j; ++l) {
-            SkulkinRaider raider = MinejagoEntityTypes.SKULKIN.get().create(this.level);
+        for (int l = 0; l < j; l++) {
+            SkulkinRaider raider = MinejagoEntityTypes.SKULKIN.get().create(this.level, EntitySpawnReason.EVENT);
             if (raider == null) {
                 break;
             }
 
-            if (!bl && raider.canBeLeader()) {
+            if (!flag && raider.canBeLeader()) {
                 raider.setPatrolLeader(true);
                 this.setLeader(i, raider);
-                bl = true;
+                flag = true;
             }
 
-            this.joinSkulkinRaid(i, raider, pos, false);
+            this.joinRaid(i, raider, pos, false);
+
             if (random.nextInt(10) + difficultyInstance.getDifficulty().getId() > 5) {
-                Mob raider2;
+                Mob ride;
                 if (MinejagoServerConfig.get().enableTech.get())
-                    raider2 = MinejagoEntityTypes.SKULL_MOTORBIKE.get().create(level);
+                    ride = MinejagoEntityTypes.SKULL_MOTORBIKE.get().create(level, EntitySpawnReason.EVENT);
                 else
-                    raider2 = MinejagoEntityTypes.SKULKIN_HORSE.get().create(level);
-                if (raider2 == null)
+                    ride = MinejagoEntityTypes.SKULKIN_HORSE.get().create(level, EntitySpawnReason.EVENT);
+                if (ride == null)
                     break;
-                raider2.setPos((double) pos.getX() + 0.5, (double) pos.getY() + 1.0, (double) pos.getZ() + 0.5);
-                raider2.finalizeSpawn(this.level, this.level.getCurrentDifficultyAt(pos), MobSpawnType.EVENT, null);
-                raider2.setOnGround(true);
-                this.level.addFreshEntityWithPassengers(raider2);
-                raider2.moveTo(pos, 0.0F, 0.0F);
-                raider.startRiding(raider2);
+                ride.setPos((double) pos.getX() + 0.5, (double) pos.getY() + 1.0, (double) pos.getZ() + 0.5);
+                ride.finalizeSpawn(this.level, this.level.getCurrentDifficultyAt(pos), EntitySpawnReason.EVENT, null);
+                ride.setOnGround(true);
+                this.level.addFreshEntityWithPassengers(ride);
+                ride.moveTo(pos, 0.0F, 0.0F);
+                raider.startRiding(ride);
             }
         }
 
         this.waveSpawnPos = Optional.empty();
-        ++this.groupsSpawned;
+        this.groupsSpawned++;
         this.updateBossbar();
         this.setDirty();
     }
 
-    public void joinSkulkinRaid(int wave, SkulkinRaider raider, @Nullable BlockPos pos, boolean isRecruited) {
-        boolean bl = this.addWaveMob(wave, raider);
-        if (bl) {
-            raider.setCurrentSkulkinRaid(this);
+    public void joinRaid(int wave, SkulkinRaider raider, @Nullable BlockPos pos, boolean isRecruited) {
+        boolean flag = this.addWaveMob(wave, raider);
+        if (flag) {
+            raider.setCurrentRaid(this);
             raider.setWave(wave);
-            raider.setCanJoinSkulkinRaid(true);
-            raider.setTicksOutsideSkulkinRaid(0);
+            raider.setCanJoinRaid(true);
+            raider.setTicksOutsideRaid(0);
             if (!isRecruited && pos != null) {
                 raider.setPos((double) pos.getX() + 0.5, (double) pos.getY() + 1.0, (double) pos.getZ() + 0.5);
-                raider.finalizeSpawn(this.level, this.level.getCurrentDifficultyAt(pos), MobSpawnType.EVENT, null);
+                raider.finalizeSpawn(this.level, this.level.getCurrentDifficultyAt(pos), EntitySpawnReason.EVENT, null);
                 raider.setOnGround(true);
                 this.level.addFreshEntityWithPassengers(raider);
             }
@@ -514,10 +499,10 @@ public class SkulkinRaid {
     }
 
     public void updateBossbar() {
-        this.raidEvent.setProgress(Mth.clamp(this.getHealthOfLivingMeleeCompatibleSkeletonRaiders() / this.totalHealth, 0.0F, 1.0F));
+        this.raidEvent.setProgress(Mth.clamp(this.getHealthOfLivingRaiders() / this.totalHealth, 0.0F, 1.0F));
     }
 
-    public float getHealthOfLivingMeleeCompatibleSkeletonRaiders() {
+    public float getHealthOfLivingRaiders() {
         float f = 0.0F;
 
         for (Set<SkulkinRaider> set : this.groupRaiderMap.values()) {
@@ -530,23 +515,23 @@ public class SkulkinRaid {
     }
 
     private boolean shouldSpawnGroup() {
-        return this.raidCooldownTicks == 0 && (this.groupsSpawned < this.numGroups || this.shouldSpawnBonusGroup()) && this.getTotalRaidersAlive() == 0;
+        return this.raidCooldownTicks == 0 && (this.groupsSpawned < this.numGroups) && this.getTotalRaidersAlive() == 0;
     }
 
     public int getTotalRaidersAlive() {
         return this.groupRaiderMap.values().stream().mapToInt(Set::size).sum();
     }
 
-    public void removeFromSkulkinRaid(SkulkinRaider raider, boolean wanderedOutOfSkulkinRaid) {
-        Set<SkulkinRaider> set = (Set) this.groupRaiderMap.get(raider.getWave());
+    public void removeFromRaid(SkulkinRaider raider, boolean wanderedOutOfRaid) {
+        Set<SkulkinRaider> set = this.groupRaiderMap.get(raider.getWave());
         if (set != null) {
-            boolean bl = set.remove(raider);
-            if (bl) {
-                if (wanderedOutOfSkulkinRaid) {
-                    this.totalHealth -= raider.getHealth();
+            boolean flag = set.remove(raider);
+            if (flag) {
+                if (wanderedOutOfRaid) {
+                    this.totalHealth = this.totalHealth - raider.getHealth();
                 }
 
-                raider.setCurrentSkulkinRaid(null);
+                raider.setCurrentRaid(null);
                 this.updateBossbar();
                 this.setDirty();
             }
@@ -554,19 +539,20 @@ public class SkulkinRaid {
     }
 
     private void setDirty() {
-        ((SkulkinRaidsHolder) this.level).getSkulkinRaids().setDirty();
+        this.level.getRaids().setDirty();
     }
 
-    public static ItemStack getLeaderBannerInstance(HolderGetter<BannerPattern> holderGetter) {
+    public static ItemStack getCursedBannerInstance(HolderGetter<BannerPattern> holderGetter) {
         ItemStack itemStack = new ItemStack(Items.BLACK_BANNER);
-        BannerPatternLayers layers = new BannerPatternLayers.Builder()
-                .add(holderGetter.getOrThrow(BannerPatterns.CROSS), DyeColor.RED)
-                .add(holderGetter.getOrThrow(BannerPatterns.RHOMBUS_MIDDLE), DyeColor.BROWN)
-                .add(holderGetter.getOrThrow(BannerPatterns.SKULL), DyeColor.WHITE)
+        BannerPatternLayers bannerPatternLayers = new BannerPatternLayers.Builder()
+                .addIfRegistered(holderGetter, BannerPatterns.CROSS, DyeColor.RED)
+                .addIfRegistered(holderGetter, BannerPatterns.RHOMBUS_MIDDLE, DyeColor.BROWN)
+                .addIfRegistered(holderGetter, BannerPatterns.SKULL, DyeColor.WHITE)
                 .build();
-        itemStack.set(DataComponents.BANNER_PATTERNS, layers);
+        itemStack.set(DataComponents.BANNER_PATTERNS, bannerPatternLayers);
         itemStack.set(DataComponents.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE);
-        itemStack.set(DataComponents.ITEM_NAME, SKULKINS_BANNER_PATTERN_NAME);
+        itemStack.set(DataComponents.ITEM_NAME, CURSED_BANNER_PATTERN_NAME);
+        itemStack.set(DataComponents.RARITY, Rarity.UNCOMMON);
         return itemStack;
     }
 
@@ -576,20 +562,33 @@ public class SkulkinRaid {
     }
 
     @Nullable
-    private BlockPos findRandomSpawnPos(int offsetMultiplier, int maxTry) {
-        int i = offsetMultiplier == 0 ? 2 : 2 - offsetMultiplier;
-        BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();
-        SpawnPlacementType spawnPlacementType = SpawnPlacements.getPlacementType(MinejagoEntityTypes.SKULL_TRUCK.get());
+    private BlockPos findRandomSpawnPos(int p_37708_) {
+        int i = this.raidCooldownTicks / 20;
+        float f = 0.22F * (float) i - 0.24F;
+        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
+        float f1 = this.level.random.nextFloat() * (float) (Math.PI * 2);
 
-        for (int j = 0; j < maxTry; ++j) {
-            float f = this.level.random.nextFloat() * 6.2831855F;
-            int k = this.center.getX() + Mth.floor(Mth.cos(f) * 32.0F * (float) i) + this.level.random.nextInt(5);
-            int l = this.center.getZ() + Mth.floor(Mth.sin(f) * 32.0F * (float) i) + this.level.random.nextInt(5);
-            int m = this.level.getHeight(Heightmap.Types.WORLD_SURFACE, k, l);
-            mutableBlockPos.set(k, m, l);
-            if (!this.level.isVillage(mutableBlockPos) || offsetMultiplier >= 2) {
-                if (this.level.hasChunksAt(mutableBlockPos.getX() - 10, mutableBlockPos.getZ() - 10, mutableBlockPos.getX() + 10, mutableBlockPos.getZ() + 10) && this.level.isPositionEntityTicking(mutableBlockPos) && (spawnPlacementType.isSpawnPositionOk(this.level, mutableBlockPos, EntityType.RAVAGER) || this.level.getBlockState(mutableBlockPos.below()).is(Blocks.SNOW) && this.level.getBlockState(mutableBlockPos).isAir())) {
-                    return mutableBlockPos;
+        for (int i1 = 0; i1 < p_37708_; i1++) {
+            float f2 = f1 + (float) Math.PI * (float) i1 / 8.0F;
+            int j = this.center.getX() + Mth.floor(Mth.cos(f2) * PAINTING_SEARCH_RADIUS * f) + this.level.random.nextInt(3) * Mth.floor(f);
+            int l = this.center.getZ() + Mth.floor(Mth.sin(f2) * PAINTING_SEARCH_RADIUS * f) + this.level.random.nextInt(3) * Mth.floor(f);
+            int k = this.level.getHeight(Heightmap.Types.WORLD_SURFACE, j, l);
+            if (Mth.abs(k - this.center.getY()) <= VALID_RAID_RADIUS) {
+                blockpos$mutableblockpos.set(j, k, l);
+                if (!MinejagoLevelUtils.isGoldenWeaponsMapHolderNearby(this.level, blockpos$mutableblockpos, VALID_RAID_RADIUS) || i <= ALLOW_SPAWNING_WITHIN_PAINTING_SECONDS_THRESHOLD) {
+                    int j1 = 10;
+                    if (this.level
+                            .hasChunksAt(
+                                    blockpos$mutableblockpos.getX() - j1,
+                                    blockpos$mutableblockpos.getZ() - j1,
+                                    blockpos$mutableblockpos.getX() + j1,
+                                    blockpos$mutableblockpos.getZ() + j1)
+                            && this.level.isPositionEntityTicking(blockpos$mutableblockpos)
+                            && (Raid.RAVAGER_SPAWN_PLACEMENT_TYPE.isSpawnPositionOk(this.level, blockpos$mutableblockpos, EntityType.RAVAGER)
+                                    || this.level.getBlockState(blockpos$mutableblockpos.below()).is(Blocks.SNOW)
+                                            && this.level.getBlockState(blockpos$mutableblockpos).isAir())) {
+                        return blockpos$mutableblockpos;
+                    }
                 }
             }
         }
@@ -601,26 +600,26 @@ public class SkulkinRaid {
         return this.addWaveMob(wave, raider, true);
     }
 
-    public boolean addWaveMob(int wave, SkulkinRaider raider, boolean isRecruited) {
-        this.groupRaiderMap.computeIfAbsent(wave, integer -> Sets.newHashSet());
+    public boolean addWaveMob(int wave, SkulkinRaider p_raider, boolean isRecruited) {
+        this.groupRaiderMap.computeIfAbsent(wave, p_37746_ -> Sets.newHashSet());
         Set<SkulkinRaider> set = this.groupRaiderMap.get(wave);
-        SkulkinRaider raider2 = null;
+        SkulkinRaider raider = null;
 
-        for (SkulkinRaider raider3 : set) {
-            if (raider3.getUUID().equals(raider.getUUID())) {
-                raider2 = raider3;
+        for (SkulkinRaider raider1 : set) {
+            if (raider1.getUUID().equals(p_raider.getUUID())) {
+                raider = raider1;
                 break;
             }
         }
 
-        if (raider2 != null) {
-            set.remove(raider2);
-            set.add(raider);
+        if (raider != null) {
+            set.remove(raider);
+            set.add(p_raider);
         }
 
-        set.add(raider);
+        set.add(p_raider);
         if (isRecruited) {
-            this.totalHealth += raider.getHealth();
+            this.totalHealth = this.totalHealth + p_raider.getHealth();
         }
 
         this.updateBossbar();
@@ -630,7 +629,7 @@ public class SkulkinRaid {
 
     public void setLeader(int wave, SkulkinRaider raider) {
         this.groupToLeaderMap.put(wave, raider);
-        raider.setItemSlot(EquipmentSlot.HEAD, getLeaderBannerInstance(raider.registryAccess().lookupOrThrow(Registries.BANNER_PATTERN)));
+        raider.setItemSlot(EquipmentSlot.HEAD, getCursedBannerInstance(raider.registryAccess().lookupOrThrow(Registries.BANNER_PATTERN)));
         raider.setDropChance(EquipmentSlot.HEAD, 2.0F);
     }
 
@@ -650,23 +649,28 @@ public class SkulkinRaid {
         return this.id;
     }
 
-    private int getDefaultNumSpawns(int wave, boolean shouldSpawnBonusGroup) {
-        int[] spawns = new int[] { 0, 4, 3, 3, 4, 4, 4, 2 };
-        return shouldSpawnBonusGroup ? spawns[this.numGroups] : spawns[wave];
+    private int getDefaultNumSpawns(int wave) {
+        return switch (wave) {
+            case 1, 4, 5, 6 -> 4;
+            case 2, 3 -> 3;
+            case 7 -> 2;
+            default -> 0;
+        };
     }
 
-    private int getPotentialBonusSpawns(RandomSource random, int wave, DifficultyInstance difficulty, boolean shouldSpawnBonusGroup) {
-        Difficulty difficulty2 = difficulty.getDifficulty();
-        boolean bl = difficulty2 == Difficulty.EASY;
-        boolean bl2 = difficulty2 == Difficulty.NORMAL;
+    private int getPotentialBonusSpawns(RandomSource random, DifficultyInstance difficultyInstance) {
+        Difficulty difficulty = difficultyInstance.getDifficulty();
+        boolean flag = difficulty == Difficulty.EASY;
+        boolean flag1 = difficulty == Difficulty.NORMAL;
         int i;
-        if (bl) {
+        if (flag) {
             i = random.nextInt(2);
-        } else if (bl2) {
+        } else if (flag1) {
             i = 1;
         } else {
             i = 2;
         }
+
         return i > 0 ? random.nextInt(i + 1) : 0;
     }
 
@@ -679,10 +683,9 @@ public class SkulkinRaid {
         compound.putBoolean("Started", this.started);
         compound.putBoolean("Active", this.active);
         compound.putLong("TicksActive", this.ticksActive);
-        compound.putInt("DifficultyLevel", this.difficultyLevel);
         compound.putInt("GroupsSpawned", this.groupsSpawned);
-        compound.putInt("PreSkulkinRaidTicks", this.raidCooldownTicks);
-        compound.putInt("PostSkulkinRaidTicks", this.postSkulkinRaidTicks);
+        compound.putInt("PreRaidTicks", this.raidCooldownTicks);
+        compound.putInt("PostRaidTicks", this.postRaidTicks);
         compound.putFloat("TotalHealth", this.totalHealth);
         compound.putInt("NumGroups", this.numGroups);
         compound.putString("Status", this.status.getName());
@@ -693,34 +696,17 @@ public class SkulkinRaid {
     }
 
     public int getNumGroups(Difficulty difficulty) {
-        switch (difficulty) {
-            case EASY:
-                return 3;
-            case NORMAL:
-                return 5;
-            case HARD:
-                return 7;
-            default:
-                return 0;
-        }
-    }
-
-    public float getEnchantOdds() {
-        int i = this.getDifficultyLevel();
-        if (i == 2) {
-            return 0.1F;
-        } else if (i == 3) {
-            return 0.25F;
-        } else if (i == 4) {
-            return 0.5F;
-        } else {
-            return i == 5 ? 0.75F : 0.0F;
-        }
+        return switch (difficulty) {
+            case EASY -> 3;
+            case NORMAL -> 5;
+            case HARD -> 7;
+            default -> 0;
+        };
     }
 
     private boolean spawnBosses(int i, BlockPos pos) {
         boolean bl = false;
-        Samukai samukai = MinejagoEntityTypes.SAMUKAI.get().create(this.level);
+        Samukai samukai = MinejagoEntityTypes.SAMUKAI.get().create(this.level, EntitySpawnReason.EVENT);
         if (samukai == null) {
             return false;
         }
@@ -729,26 +715,26 @@ public class SkulkinRaid {
             this.setLeader(i, samukai);
             bl = true;
         }
-        this.joinSkulkinRaid(i, samukai, pos, false);
+        this.joinRaid(i, samukai, pos, false);
 
-        Nuckal nuckal = MinejagoEntityTypes.NUCKAL.get().create(this.level);
+        Nuckal nuckal = MinejagoEntityTypes.NUCKAL.get().create(this.level, EntitySpawnReason.EVENT);
         if (nuckal != null)
-            this.joinSkulkinRaid(i, nuckal, pos, false);
+            this.joinRaid(i, nuckal, pos, false);
 
-        Kruncha kruncha = MinejagoEntityTypes.KRUNCHA.get().create(this.level);
+        Kruncha kruncha = MinejagoEntityTypes.KRUNCHA.get().create(this.level, EntitySpawnReason.EVENT);
         if (kruncha != null)
-            this.joinSkulkinRaid(i, kruncha, pos, false);
+            this.joinRaid(i, kruncha, pos, false);
 
         if (MinejagoServerConfig.get().enableTech.get()) {
             List<SkulkinRaider> raiders = new ArrayList<>();
             if (nuckal != null) raiders.add(nuckal);
             if (kruncha != null) raiders.add(kruncha);
 
-            SkullTruck truck = MinejagoEntityTypes.SKULL_TRUCK.get().create(level);
+            SkullTruck truck = MinejagoEntityTypes.SKULL_TRUCK.get().create(level, EntitySpawnReason.EVENT);
             if (truck == null)
                 return false;
             truck.setPos((double) pos.getX() + 0.5, (double) pos.getY() + 1.0, (double) pos.getZ() + 0.5);
-            truck.finalizeSpawn(this.level, this.level.getCurrentDifficultyAt(pos), MobSpawnType.EVENT, null);
+            truck.finalizeSpawn(this.level, this.level.getCurrentDifficultyAt(pos), EntitySpawnReason.EVENT, null);
             truck.setOnGround(true);
             this.level.addFreshEntityWithPassengers(truck);
             truck.moveTo(pos, 0.0F, 0.0F);
@@ -765,11 +751,11 @@ public class SkulkinRaid {
             if (kruncha != null) raiders.add(kruncha);
 
             for (SkulkinRaider raider : raiders) {
-                Mob horse = MinejagoEntityTypes.SKULKIN_HORSE.get().create(level);
+                Mob horse = MinejagoEntityTypes.SKULKIN_HORSE.get().create(level, EntitySpawnReason.EVENT);
                 if (horse == null)
                     break;
                 horse.setPos((double) pos.getX() + 0.5, (double) pos.getY() + 1.0, (double) pos.getZ() + 0.5);
-                horse.finalizeSpawn(this.level, this.level.getCurrentDifficultyAt(pos), MobSpawnType.EVENT, null);
+                horse.finalizeSpawn(this.level, this.level.getCurrentDifficultyAt(pos), EntitySpawnReason.EVENT, null);
                 horse.setOnGround(true);
                 this.level.addFreshEntityWithPassengers(horse);
                 horse.moveTo(pos, 0.0F, 0.0F);
@@ -793,12 +779,10 @@ public class SkulkinRaid {
         LOSS,
         STOPPED;
 
-        private static final SkulkinRaid.SkulkinRaidStatus[] VALUES = values();
-
-        static SkulkinRaid.SkulkinRaidStatus getByName(String name) {
-            for (SkulkinRaid.SkulkinRaidStatus raidStatus : VALUES) {
-                if (name.equalsIgnoreCase(raidStatus.name())) {
-                    return raidStatus;
+        static SkulkinRaidStatus getByName(String name) {
+            for (SkulkinRaidStatus status : values()) {
+                if (name.equalsIgnoreCase(status.name())) {
+                    return status;
                 }
             }
 

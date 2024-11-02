@@ -14,6 +14,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
@@ -40,7 +41,7 @@ public class CharacterRenderer<T extends Character> extends DynamicGeoEntityRend
     protected ItemStack mainHandItem;
     protected ItemStack offhandItem;
 
-    private SpinjitzuModel<T> spinjitzuModel;
+    private SpinjitzuModel<EntityRenderState> spinjitzuModel;
 
     public CharacterRenderer(EntityRendererProvider.Context context, CharacterModel<T> model) {
         super(context, model);
@@ -131,18 +132,20 @@ public class CharacterRenderer<T extends Character> extends DynamicGeoEntityRend
     }
 
     @Override
-    public void render(T entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-        setModelProperties(entity);
-        super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
-        if (entity.isDoingSpinjitzu()) {
-            if (spinjitzuModel == null) {
-                spinjitzuModel = new SpinjitzuModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(SpinjitzuModel.LAYER_LOCATION));
+    public void render(EntityRenderState entityRenderState, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+        super.render(entityRenderState, poseStack, bufferSource, packedLight);
+        if (animatable != null) {
+            setModelProperties(animatable);
+            if (animatable.isDoingSpinjitzu()) {
+                if (spinjitzuModel == null) {
+                    spinjitzuModel = new SpinjitzuModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(SpinjitzuModel.LAYER_LOCATION));
+                }
+                spinjitzuModel.setupAnim(entityRenderState);
+                copyFromBone(model.getBone(BODY).orElseThrow(), spinjitzuModel.getBody());
+                poseStack.mulPose(Axis.XP.rotationDegrees(180.0F));
+                int color = animatable.level().holderOrThrow(animatable.getData(MinejagoAttachmentTypes.POWER).power()).value().getColor().getValue();
+                spinjitzuModel.render(poseStack, bufferSource, animatable.tickCount, partialTick, color);
             }
-            spinjitzuModel.setupAnim(entity, 0, 0, entity.tickCount + partialTick, 0, 0);
-            copyFromBone(model.getBone(BODY).orElseThrow(), spinjitzuModel.getBody());
-            poseStack.mulPose(Axis.XP.rotationDegrees(180.0F));
-            int color = entity.level().holderOrThrow(entity.getData(MinejagoAttachmentTypes.POWER).power()).value().getColor().getValue();
-            spinjitzuModel.render(poseStack, bufferSource, entity.tickCount, partialTick, color);
         }
     }
 

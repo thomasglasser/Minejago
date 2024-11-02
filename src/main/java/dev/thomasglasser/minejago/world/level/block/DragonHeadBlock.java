@@ -13,7 +13,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.RenderShape;
@@ -24,7 +23,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,8 +33,8 @@ public class DragonHeadBlock extends HorizontalDirectionalBlock implements Entit
 
     public static MapCodec<DragonHeadBlock> CODEC;
 
-    public DragonHeadBlock(Supplier<EntityType<?>> entity) {
-        super(BlockBehaviour.Properties.ofFullCopy(Blocks.BARRIER).mapColor(MapColor.NONE).noLootTable().lightLevel(state -> state.getValue(ACTIVATED) ? 0 : 10));
+    public DragonHeadBlock(Supplier<EntityType<?>> entity, Properties properties) {
+        super(properties);
         this.registerDefaultState(
                 this.stateDefinition
                         .any()
@@ -54,7 +52,7 @@ public class DragonHeadBlock extends HorizontalDirectionalBlock implements Entit
     protected InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
         if (!blockState.getValue(ACTIVATED)) {
             level.setBlock(blockPos, blockState.setValue(ACTIVATED, true), Block.UPDATE_ALL);
-            return InteractionResult.SUCCESS_NO_ITEM_USED;
+            return InteractionResult.SUCCESS;
         }
         return super.useWithoutItem(blockState, level, blockPos, player, blockHitResult);
     }
@@ -93,7 +91,9 @@ public class DragonHeadBlock extends HorizontalDirectionalBlock implements Entit
     @Override
     protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
         if (CODEC == null)
-            CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(BuiltInRegistries.ENTITY_TYPE.byNameCodec().fieldOf("entity_type").forGetter(DragonHeadBlock::getEntityType)).apply(instance, type -> new DragonHeadBlock(() -> type)));
+            CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+                    BuiltInRegistries.ENTITY_TYPE.byNameCodec().fieldOf("entity_type").forGetter(DragonHeadBlock::getEntityType),
+                    Properties.CODEC.fieldOf("properties").forGetter(BlockBehaviour::properties)).apply(instance, (entityType, properties) -> new DragonHeadBlock(() -> entityType, properties)));
         return CODEC;
     }
 }

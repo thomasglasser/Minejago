@@ -5,42 +5,18 @@
   "experience": 0.35,
   "group": "potion",
   "ingredient": [
-    {
-      "item": "minecraft:redstone"
-    },
-    {
-      "item": "minecraft:breeze_rod"
-    },
-    {
-      "item": "minecraft:slime_block"
-    },
-    {
-      "item": "minecraft:stone"
-    },
-    {
-      "item": "minecraft:cobweb"
-    },
-    {
-      "item": "minecraft:magma_cream"
-    },
-    {
-      "item": "minecraft:rabbit_foot"
-    },
-    {
-      "item": "minecraft:sugar"
-    },
-    {
-      "item": "minecraft:glistering_melon_slice"
-    },
-    {
-      "item": "minecraft:spider_eye"
-    },
-    {
-      "item": "minecraft:ghast_tear"
-    },
-    {
-      "item": "minecraft:blaze_powder"
-    }
+    "minecraft:redstone",
+    "minecraft:breeze_rod",
+    "minecraft:slime_block",
+    "minecraft:stone",
+    "minecraft:cobweb",
+    "minecraft:magma_cream",
+    "minecraft:rabbit_foot",
+    "minecraft:sugar",
+    "minecraft:glistering_melon_slice",
+    "minecraft:spider_eye",
+    "minecraft:ghast_tear",
+    "minecraft:blaze_powder"
   ],
   "result": "minecraft:mundane"
 }

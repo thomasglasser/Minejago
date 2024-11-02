@@ -4,8 +4,6 @@
   "brewing_time": 800,
   "experience": 0.35,
   "group": "potion",
-  "ingredient": {
-    "item": "minecraft:sugar"
-  },
+  "ingredient": "minecraft:sugar",
   "result": "minecraft:swiftness"
 }

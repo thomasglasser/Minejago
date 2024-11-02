@@ -1,8 +1,0 @@
-{
-  "asset_id": "minejago:four_weapons",
-  "decal": false,
-  "description": {
-    "translate": "trim_pattern.minejago.four_weapons"
-  },
-  "template_item": "minejago:four_weapons_armor_trim_smithing_template"
-}

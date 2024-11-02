@@ -1,17 +1,8 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "minecraft:crafting_transmute",
   "category": "misc",
-  "group": "teapot",
-  "ingredients": [
-    {
-      "item": "minejago:teapot"
-    },
-    {
-      "tag": "c:dyes/magenta"
-    }
-  ],
-  "result": {
-    "count": 1,
-    "id": "minejago:magenta_teapot"
-  }
+  "group": "teapot_dye",
+  "input": "#minejago:teapots",
+  "material": "#c:dyes/magenta",
+  "result": "minejago:magenta_teapot"
 }

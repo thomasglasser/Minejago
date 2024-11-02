@@ -1,5 +1,13 @@
 {
   "asset_id": "minejago:a_morning_brew",
+  "author": {
+    "color": "gray",
+    "translate": "painting.minejago.a_morning_brew.author"
+  },
   "height": 2,
+  "title": {
+    "color": "yellow",
+    "translate": "painting.minejago.a_morning_brew.title"
+  },
   "width": 2
 }

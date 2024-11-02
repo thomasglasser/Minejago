@@ -10,7 +10,7 @@ import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.CustomSpawner;
 import net.minecraft.world.level.NaturalSpawner;
@@ -92,13 +92,13 @@ public class SkulkinArmySpawner implements CustomSpawner {
         BlockState blockState = level.getBlockState(pos);
         if (!NaturalSpawner.isValidEmptySpawnBlock(level, pos, blockState, blockState.getFluidState(), MinejagoEntityTypes.SKULKIN.get())) {
             return false;
-        } else if (!SkulkinRaider.checkSpawnRules(MinejagoEntityTypes.SKULKIN.get(), level, MobSpawnType.PATROL, pos, random)) {
+        } else if (!SkulkinRaider.checkSpawnRules(MinejagoEntityTypes.SKULKIN.get(), level, EntitySpawnReason.PATROL, pos, random)) {
             return false;
         } else {
-            SkulkinRaider raider = MinejagoEntityTypes.SKULKIN.get().create(level);
+            SkulkinRaider raider = MinejagoEntityTypes.SKULKIN.get().create(level, EntitySpawnReason.PATROL);
             if (raider != null) {
                 raider.setPos(pos.getX(), pos.getY(), pos.getZ());
-                raider.finalizeSpawn(level, level.getCurrentDifficultyAt(pos), MobSpawnType.PATROL, null);
+                raider.finalizeSpawn(level, level.getCurrentDifficultyAt(pos), EntitySpawnReason.PATROL, null);
                 level.addFreshEntityWithPassengers(raider);
                 return true;
             } else {

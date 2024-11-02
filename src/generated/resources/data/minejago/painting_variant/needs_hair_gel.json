@@ -1,5 +1,13 @@
 {
   "asset_id": "minejago:needs_hair_gel",
+  "author": {
+    "color": "gray",
+    "translate": "painting.minejago.needs_hair_gel.author"
+  },
   "height": 2,
+  "title": {
+    "color": "yellow",
+    "translate": "painting.minejago.needs_hair_gel.title"
+  },
   "width": 1
 }

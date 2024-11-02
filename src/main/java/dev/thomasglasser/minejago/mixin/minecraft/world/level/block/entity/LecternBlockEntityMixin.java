@@ -31,10 +31,10 @@ public abstract class LecternBlockEntityMixin extends BlockEntity {
     ItemStack book;
 
     @Shadow
-    public abstract CommandSourceStack createCommandSourceStack(@Nullable Player pPlayer);
+    protected abstract void saveAdditional(CompoundTag pTag, HolderLookup.Provider provider);
 
     @Shadow
-    protected abstract void saveAdditional(CompoundTag pTag, HolderLookup.Provider provider);
+    protected abstract CommandSourceStack createCommandSourceStack(@Nullable Player player, ServerLevel p_373006_);
 
     private LecternBlockEntityMixin(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
@@ -47,8 +47,8 @@ public abstract class LecternBlockEntityMixin extends BlockEntity {
 
     @Inject(method = "resolveBook", at = @At("HEAD"), cancellable = true)
     private void minejago_resolveBook(ItemStack stack, Player player, CallbackInfoReturnable<ItemStack> cir) {
-        if (level instanceof ServerLevel && (stack.is(MinejagoItems.WRITTEN_SCROLL.get()) || stack.is(MinejagoItems.WRITABLE_SCROLL.get()))) {
-            WrittenBookItem.resolveBookComponents(stack, createCommandSourceStack(player), player);
+        if (level instanceof ServerLevel serverLevel && (stack.is(MinejagoItems.WRITTEN_SCROLL.get()) || stack.is(MinejagoItems.WRITABLE_SCROLL.get()))) {
+            WrittenBookItem.resolveBookComponents(stack, createCommandSourceStack(player, serverLevel), player);
 
             cir.setReturnValue(stack);
         }

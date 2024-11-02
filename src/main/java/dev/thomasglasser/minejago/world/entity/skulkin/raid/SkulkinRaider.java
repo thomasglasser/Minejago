@@ -23,10 +23,10 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.behavior.Swim;
@@ -48,7 +48,7 @@ import org.jetbrains.annotations.Nullable;
 
 public abstract class SkulkinRaider extends SBLSkeleton {
     protected static final EntityDataAccessor<Boolean> IS_CELEBRATING = SynchedEntityData.defineId(SkulkinRaider.class, EntityDataSerializers.BOOLEAN);
-    private static final BiPredicate<ItemStack, HolderLookup<BannerPattern>> ALLOWED_STACKS = (stack, lookup) -> ItemStack.matches(stack, SkulkinRaid.getLeaderBannerInstance(lookup));
+    private static final BiPredicate<ItemStack, HolderLookup<BannerPattern>> ALLOWED_STACKS = (stack, lookup) -> ItemStack.matches(stack, SkulkinRaid.getCursedBannerInstance(lookup));
     private static final Predicate<ItemEntity> ALLOWED_ITEMS = itemEntity -> !itemEntity.hasPickUpDelay()
             && itemEntity.isAlive()
             && ALLOWED_STACKS.test(itemEntity.getItem(), itemEntity.registryAccess().lookupOrThrow(Registries.BANNER_PATTERN));
@@ -59,8 +59,8 @@ public abstract class SkulkinRaider extends SBLSkeleton {
     @Nullable
     protected SkulkinRaid raid;
     private int wave;
-    private boolean canJoinSkulkinRaid;
-    private int ticksOutsideSkulkinRaid;
+    private boolean canJoinRaid;
+    private int ticksOutsideRaid;
 
     public SkulkinRaider(EntityType<? extends SkulkinRaider> entityType, Level level) {
         super(entityType, level);
@@ -100,7 +100,7 @@ public abstract class SkulkinRaider extends SBLSkeleton {
         pCompound.putBoolean("PatrolLeader", this.patrolLeader);
         pCompound.putBoolean("Patrolling", this.patrolling);
         pCompound.putInt("Wave", this.wave);
-        pCompound.putBoolean("CanJoinSkulkinRaid", this.canJoinSkulkinRaid);
+        pCompound.putBoolean("CanJoinSkulkinRaid", this.canJoinRaid);
         if (this.raid != null) {
             pCompound.putInt("SkulkinRaidId", this.raid.getId());
         }
@@ -118,7 +118,7 @@ public abstract class SkulkinRaider extends SBLSkeleton {
         this.patrolLeader = pCompound.getBoolean("PatrolLeader");
         this.patrolling = pCompound.getBoolean("Patrolling");
         this.wave = pCompound.getInt("Wave");
-        this.canJoinSkulkinRaid = pCompound.getBoolean("CanJoinSkulkinRaid");
+        this.canJoinRaid = pCompound.getBoolean("CanJoinSkulkinRaid");
         if (pCompound.contains("SkulkinRaidId", 3)) {
             if (this.level() instanceof ServerLevel) {
                 this.raid = ((SkulkinRaidsHolder) this.level()).getSkulkinRaids().get(pCompound.getInt("SkulkinRaidId"));
@@ -138,30 +138,30 @@ public abstract class SkulkinRaider extends SBLSkeleton {
     }
 
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData) {
-        this.setCanJoinSkulkinRaid(mobSpawnType != MobSpawnType.NATURAL);
+    public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, EntitySpawnReason spawnReason, @Nullable SpawnGroupData spawnGroupData) {
+        this.setCanJoinRaid(spawnReason != EntitySpawnReason.NATURAL);
 
-        if (mobSpawnType != MobSpawnType.PATROL && mobSpawnType != MobSpawnType.EVENT && mobSpawnType != MobSpawnType.STRUCTURE && level().getRandom().nextFloat() < 0.06F && this.canBeLeader()) {
+        if (spawnReason != EntitySpawnReason.PATROL && spawnReason != EntitySpawnReason.EVENT && spawnReason != EntitySpawnReason.STRUCTURE && level().getRandom().nextFloat() < 0.06F && this.canBeLeader()) {
             this.patrolLeader = true;
         }
 
         if (this.isPatrolLeader()) {
-            this.setItemSlot(EquipmentSlot.HEAD, SkulkinRaid.getLeaderBannerInstance(serverLevelAccessor.holderLookup(Registries.BANNER_PATTERN)));
+            this.setItemSlot(EquipmentSlot.HEAD, SkulkinRaid.getCursedBannerInstance(level.holderLookup(Registries.BANNER_PATTERN)));
             this.setDropChance(EquipmentSlot.HEAD, 2.0F);
         }
 
-        if (mobSpawnType == MobSpawnType.PATROL) {
+        if (spawnReason == EntitySpawnReason.PATROL) {
             this.patrolling = true;
         }
-        return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData);
+        return super.finalizeSpawn(level, difficulty, spawnReason, spawnGroupData);
     }
 
-    public static boolean checkSpawnRules(EntityType<? extends SkulkinRaider> pPatrollingMonster, LevelAccessor pLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) {
-        return pLevel.getBrightness(LightLayer.BLOCK, pPos) <= 8 && checkAnyLightMonsterSpawnRules(pPatrollingMonster, pLevel, pSpawnType, pPos, pRandom);
+    public static boolean checkSpawnRules(EntityType<? extends SkulkinRaider> pPatrollingMonster, LevelAccessor pLevel, EntitySpawnReason spawnReason, BlockPos pPos, RandomSource pRandom) {
+        return pLevel.getBrightness(LightLayer.BLOCK, pPos) <= 8 && checkAnyLightMonsterSpawnRules(pPatrollingMonster, pLevel, spawnReason, pPos, pRandom);
     }
 
     public boolean removeWhenFarAway(double pDistanceToClosestPlayer) {
-        return this.getCurrentSkulkinRaid() == null && (!this.patrolling || pDistanceToClosestPlayer > 16384.0D);
+        return this.getCurrentRaid() == null && (!this.patrolling || pDistanceToClosestPlayer > 16384.0D);
     }
 
     public void setPatrolTarget(BlockPos pPatrolTarget) {
@@ -206,23 +206,23 @@ public abstract class SkulkinRaider extends SBLSkeleton {
     }
 
     public boolean canJoinSkulkinRaid() {
-        return this.canJoinSkulkinRaid;
+        return this.canJoinRaid;
     }
 
-    public void setCanJoinSkulkinRaid(boolean canJoinSkulkinRaid) {
-        this.canJoinSkulkinRaid = canJoinSkulkinRaid;
+    public void setCanJoinRaid(boolean canJoinRaid) {
+        this.canJoinRaid = canJoinRaid;
     }
 
     @Override
     public void aiStep() {
         if (this.level() instanceof ServerLevel && this.isAlive()) {
-            SkulkinRaid raid = this.getCurrentSkulkinRaid();
+            SkulkinRaid raid = this.getCurrentRaid();
             if (this.canJoinSkulkinRaid()) {
                 if (raid == null) {
                     if (this.level().getGameTime() % 20L == 0L) {
                         SkulkinRaid raid2 = ((SkulkinRaidsHolder) this.level()).getSkulkinRaidAt(this.blockPosition());
                         if (raid2 != null && SkulkinRaids.canJoinSkulkinRaid(this, raid2)) {
-                            raid2.joinSkulkinRaid(raid2.getGroupsSpawned(), this, null, true);
+                            raid2.joinRaid(raid2.getGroupsSpawned(), this, null, true);
                         }
                     }
                 } else {
@@ -246,13 +246,13 @@ public abstract class SkulkinRaider extends SBLSkeleton {
     public void die(DamageSource damageSource) {
         if (this.level() instanceof ServerLevel) {
             Entity entity = damageSource.getEntity();
-            SkulkinRaid raid = this.getCurrentSkulkinRaid();
+            SkulkinRaid raid = this.getCurrentRaid();
             if (raid != null) {
                 if (this.isPatrolLeader()) {
                     raid.removeLeader(this.getWave());
                 }
 
-                raid.removeFromSkulkinRaid(this, false);
+                raid.removeFromRaid(this, false);
             }
         }
 
@@ -260,20 +260,20 @@ public abstract class SkulkinRaider extends SBLSkeleton {
     }
 
     public boolean canJoinPatrol() {
-        return !this.hasActiveSkulkinRaid();
+        return !this.hasActiveRaid();
     }
 
-    public void setCurrentSkulkinRaid(@Nullable SkulkinRaid raid) {
+    public void setCurrentRaid(@Nullable SkulkinRaid raid) {
         this.raid = raid;
     }
 
     @Nullable
-    public SkulkinRaid getCurrentSkulkinRaid() {
+    public SkulkinRaid getCurrentRaid() {
         return this.raid;
     }
 
-    public boolean hasActiveSkulkinRaid() {
-        return this.getCurrentSkulkinRaid() != null && this.getCurrentSkulkinRaid().isActive();
+    public boolean hasActiveRaid() {
+        return this.getCurrentRaid() != null && this.getCurrentRaid().isActive();
     }
 
     public void setWave(int wave) {
@@ -293,47 +293,47 @@ public abstract class SkulkinRaider extends SBLSkeleton {
     }
 
     @Override
-    public void pickUpItem(ItemEntity itemEntity) {
+    public void pickUpItem(ServerLevel serverLevel, ItemEntity itemEntity) {
         ItemStack itemStack = itemEntity.getItem();
-        boolean bl = this.hasActiveSkulkinRaid() && this.getCurrentSkulkinRaid().getLeader(this.getWave()) != null;
-        if (this.hasActiveSkulkinRaid() && !bl && ItemStack.matches(itemStack, SkulkinRaid.getLeaderBannerInstance(itemEntity.registryAccess().lookupOrThrow(Registries.BANNER_PATTERN)))) {
+        boolean bl = this.hasActiveRaid() && this.getCurrentRaid().getLeader(this.getWave()) != null;
+        if (this.hasActiveRaid() && !bl && ItemStack.matches(itemStack, SkulkinRaid.getCursedBannerInstance(itemEntity.registryAccess().lookupOrThrow(Registries.BANNER_PATTERN)))) {
             EquipmentSlot equipmentSlot = EquipmentSlot.HEAD;
             ItemStack itemStack2 = this.getItemBySlot(equipmentSlot);
             double d = (double) this.getEquipmentDropChance(equipmentSlot);
             if (!itemStack2.isEmpty() && (double) Math.max(this.random.nextFloat() - 0.1F, 0.0F) < d) {
-                this.spawnAtLocation(itemStack2);
+                this.spawnAtLocation(serverLevel, itemStack2);
             }
 
             this.onItemPickup(itemEntity);
             this.setItemSlot(equipmentSlot, itemStack);
             this.take(itemEntity, itemStack.getCount());
             itemEntity.discard();
-            this.getCurrentSkulkinRaid().setLeader(this.getWave(), this);
+            this.getCurrentRaid().setLeader(this.getWave(), this);
             this.setPatrolLeader(true);
         } else {
-            super.pickUpItem(itemEntity);
+            super.pickUpItem(serverLevel, itemEntity);
         }
     }
 
     @Override
     public boolean requiresCustomPersistence() {
-        return super.requiresCustomPersistence() || this.getCurrentSkulkinRaid() != null;
+        return super.requiresCustomPersistence() || this.getCurrentRaid() != null;
     }
 
-    public int getTicksOutsideSkulkinRaid() {
-        return this.ticksOutsideSkulkinRaid;
+    public int getTicksOutsideRaid() {
+        return this.ticksOutsideRaid;
     }
 
-    public void setTicksOutsideSkulkinRaid(int ticksOutsideSkulkinRaid) {
-        this.ticksOutsideSkulkinRaid = ticksOutsideSkulkinRaid;
+    public void setTicksOutsideRaid(int ticksOutsideSkulkinRaid) {
+        this.ticksOutsideRaid = ticksOutsideSkulkinRaid;
     }
 
     @Override
-    public boolean hurt(DamageSource source, float amount) {
-        if (this.hasActiveSkulkinRaid()) {
-            this.getCurrentSkulkinRaid().updateBossbar();
+    public boolean hurtServer(ServerLevel p_376221_, DamageSource p_376460_, float p_376610_) {
+        if (this.hasActiveRaid()) {
+            this.getCurrentRaid().updateBossbar();
         }
 
-        return super.hurt(source, amount);
+        return super.hurtServer(p_376221_, p_376460_, p_376610_);
     }
 }

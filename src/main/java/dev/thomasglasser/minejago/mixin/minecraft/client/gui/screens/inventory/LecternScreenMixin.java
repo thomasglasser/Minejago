@@ -7,6 +7,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.BookViewScreen;
 import net.minecraft.client.gui.screens.inventory.LecternScreen;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.inventory.LecternMenu;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -26,7 +27,7 @@ public abstract class LecternScreenMixin extends BookViewScreen {
     public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         if (menu.getBook().is(MinejagoItemTags.LECTERN_SCROLLS)) {
             this.renderTransparentBackground(guiGraphics);
-            guiGraphics.blit(ScrollViewScreen.BACKGROUND, (this.width - 192) / 2, 2, 0, 0, 192, 192);
+            guiGraphics.blit(RenderType::guiTextured, ScrollViewScreen.BACKGROUND, (this.width - 192) / 2, 2, 0, 0, 192, 192, 256, 256);
         } else {
             super.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
         }

@@ -1,24 +1,27 @@
 package dev.thomasglasser.minejago.world.item.armor;
 
 import dev.thomasglasser.minejago.client.renderer.armor.SamukaisChestplateRenderer;
-import dev.thomasglasser.tommylib.api.world.item.armor.BaseGeoArmorItem;
+import dev.thomasglasser.tommylib.api.world.item.armor.ExtendedArmorItem;
+import dev.thomasglasser.tommylib.api.world.item.armor.GeoArmorItem;
+import dev.thomasglasser.tommylib.api.world.item.equipment.ExtendedArmorMaterial;
 import java.util.function.Consumer;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.core.Holder;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.equipment.ArmorType;
+import net.minecraft.world.item.equipment.EquipmentModel;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class SamukaisChestplateItem extends BaseGeoArmorItem {
+public class SamukaisChestplateItem extends ExtendedArmorItem implements GeoArmorItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public SamukaisChestplateItem(Holder<ArmorMaterial> armorMaterial, Properties properties) {
-        super(armorMaterial, Type.CHESTPLATE, properties);
+    public SamukaisChestplateItem(ExtendedArmorMaterial armorMaterial, Properties properties) {
+        super(armorMaterial, ArmorType.CHESTPLATE, properties);
     }
 
     @Override
@@ -27,10 +30,9 @@ public class SamukaisChestplateItem extends BaseGeoArmorItem {
             private SamukaisChestplateRenderer renderer;
 
             @Override
-            public <T extends LivingEntity> HumanoidModel<?> getGeoArmorRenderer(@Nullable T livingEntity, ItemStack itemStack, @Nullable EquipmentSlot equipmentSlot, @Nullable HumanoidModel<T> original) {
+            public @Nullable <E extends LivingEntity, S extends HumanoidRenderState> HumanoidModel<?> getGeoArmorRenderer(@Nullable E livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, EquipmentModel.LayerType type, HumanoidModel<S> original) {
                 if (this.renderer == null)
                     this.renderer = new SamukaisChestplateRenderer();
-                // Defer creation of our renderer then cache it so that it doesn't get instantiated too early
 
                 return this.renderer;
             }

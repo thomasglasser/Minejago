@@ -15,8 +15,8 @@ public class DragonHeadRenderer extends GeoBlockRenderer<DragonHeadBlockEntity> 
     }
 
     @Override
-    public void defaultRender(PoseStack poseStack, DragonHeadBlockEntity animatable, MultiBufferSource bufferSource, @Nullable RenderType renderType, @Nullable VertexConsumer buffer, float yaw, float partialTick, int packedLight) {
+    public void defaultRender(PoseStack poseStack, DragonHeadBlockEntity animatable, MultiBufferSource bufferSource, @Nullable RenderType renderType, @Nullable VertexConsumer buffer, float partialTick, int packedLight) {
         model.getBone("scythe").ifPresent(geoBone -> geoBone.setHidden(!animatable.hasScythe));
-        super.defaultRender(poseStack, animatable, bufferSource, renderType, buffer, yaw, partialTick, packedLight);
+        super.defaultRender(poseStack, animatable, bufferSource, renderType, buffer, partialTick, packedLight);
     }
 }

@@ -40,8 +40,8 @@ public class MinejagoClientUtils {
         return slot == null || !player.hasItemInSlot(slot);
     }
 
-    public static boolean renderSnapshotTesterLayer(AbstractClientPlayer player, EquipmentSlot slot) {
-        return vipData.get(player) != null && renderCosmeticLayerInSlot(player, slot) && vipData.get(player).displaySnapshot() && snapshotChoice(player) != null;
+    public static boolean renderSnapshotTesterLayer(AbstractClientPlayer player) {
+        return vipData.get(player) != null && snapshotChoice(player) != null && renderCosmeticLayerInSlot(player, snapshotChoice(player).slot()) && vipData.get(player).displaySnapshot();
     }
 
     @Nullable
@@ -49,12 +49,12 @@ public class MinejagoClientUtils {
         return vipData.get(player) != null && vipData.get(player).choice() != null ? vipData.get(player).choice() : null;
     }
 
-    public static boolean renderDevLayer(AbstractClientPlayer player, EquipmentSlot slot) {
-        return vipData.get(player) != null && renderCosmeticLayerInSlot(player, slot) && vipData.get(player).displayDev();
+    public static boolean renderDevLayer(AbstractClientPlayer player) {
+        return vipData.get(player) != null && renderCosmeticLayerInSlot(player, EquipmentSlot.HEAD/*TODO:Figure out slot*/) && vipData.get(player).displayDev();
     }
 
-    public static boolean renderLegacyDevLayer(AbstractClientPlayer player, EquipmentSlot slot) {
-        return vipData.get(player) != null && renderCosmeticLayerInSlot(player, slot) && vipData.get(player).displayLegacyDev();
+    public static boolean renderLegacyDevLayer(AbstractClientPlayer player) {
+        return vipData.get(player) != null && renderCosmeticLayerInSlot(player, EquipmentSlot.HEAD) && vipData.get(player).displayLegacyDev();
     }
 
     public static void refreshVip() {

@@ -8,8 +8,6 @@
   },
   "experience": 0.5,
   "group": "dark_oak_tea",
-  "ingredient": {
-    "item": "minecraft:dark_oak_leaves"
-  },
+  "ingredient": "minecraft:dark_oak_leaves",
   "result": "minejago:dark_oak_tea"
 }

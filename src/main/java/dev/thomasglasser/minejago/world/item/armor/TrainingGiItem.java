@@ -1,11 +1,15 @@
 package dev.thomasglasser.minejago.world.item.armor;
 
 import dev.thomasglasser.minejago.client.renderer.armor.TrainingGiRenderer;
+import dev.thomasglasser.minejago.world.item.equipment.MinejagoArmorMaterials;
 import java.util.function.Consumer;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.equipment.ArmorType;
+import net.minecraft.world.item.equipment.EquipmentModel;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -14,7 +18,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 public class TrainingGiItem extends PoweredArmorItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public TrainingGiItem(Type type, Properties pProperties) {
+    public TrainingGiItem(ArmorType type, Properties pProperties) {
         super(MinejagoArmorMaterials.TRAINING_GI, type, pProperties);
     }
 
@@ -24,10 +28,9 @@ public class TrainingGiItem extends PoweredArmorItem {
             private TrainingGiRenderer renderer;
 
             @Override
-            public <T extends LivingEntity> HumanoidModel<?> getGeoArmorRenderer(@Nullable T livingEntity, ItemStack itemStack, @Nullable EquipmentSlot equipmentSlot, @Nullable HumanoidModel<T> original) {
+            public @Nullable <E extends LivingEntity, S extends HumanoidRenderState> HumanoidModel<?> getGeoArmorRenderer(@Nullable E livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, EquipmentModel.LayerType type, HumanoidModel<S> original) {
                 if (this.renderer == null)
                     this.renderer = new TrainingGiRenderer();
-                // Defer creation of our renderer then cache it so that it doesn't get instantiated too early
 
                 return this.renderer;
             }

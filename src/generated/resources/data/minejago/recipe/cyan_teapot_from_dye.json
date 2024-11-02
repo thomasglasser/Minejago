@@ -1,17 +1,8 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "minecraft:crafting_transmute",
   "category": "misc",
-  "group": "teapot",
-  "ingredients": [
-    {
-      "item": "minejago:teapot"
-    },
-    {
-      "tag": "c:dyes/cyan"
-    }
-  ],
-  "result": {
-    "count": 1,
-    "id": "minejago:cyan_teapot"
-  }
+  "group": "teapot_dye",
+  "input": "#minejago:teapots",
+  "material": "#c:dyes/cyan",
+  "result": "minejago:cyan_teapot"
 }

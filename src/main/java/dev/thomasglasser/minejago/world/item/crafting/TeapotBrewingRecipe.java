@@ -4,8 +4,14 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.thomasglasser.minejago.world.item.MinejagoItemUtils;
+import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import dev.thomasglasser.minejago.world.item.crafting.display.PotionSlotDisplay;
+import dev.thomasglasser.minejago.world.item.crafting.display.TeapotRecipeDisplay;
+import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
+import java.util.List;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -13,68 +19,138 @@ import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.PlacementInfo;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeBookCategory;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.display.RecipeDisplay;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
-public record TeapotBrewingRecipe(String group, Holder<Potion> base, Ingredient ingredient, Holder<Potion> result, float experience, IntProvider brewingTime) implements Recipe<TeapotBrewingRecipe.TeapotBrewingRecipeInput> {
+public class TeapotBrewingRecipe implements Recipe<TeapotBrewingRecipe.TeapotBrewingRecipeInput> {
+    private final String group;
+    private final Holder<Potion> base;
+    private final Ingredient ingredient;
+    private final Holder<Potion> result;
+    private final float experience;
+    private final IntProvider brewingTime;
+    @Nullable
+    private PlacementInfo placementInfo;
+
+    public TeapotBrewingRecipe(String group, Holder<Potion> base, Ingredient ingredient, Holder<Potion> result, float experience, IntProvider brewingTime) {
+        this.group = group;
+        this.base = base;
+        this.ingredient = ingredient;
+        this.result = result;
+        this.experience = experience;
+        this.brewingTime = brewingTime;
+    }
 
     @Override
     public boolean matches(TeapotBrewingRecipeInput input, Level level) {
-        return ingredient().test(input.ingredient()) && base().equals(input.base());
+        return base == input.base && ingredient.test(input.ingredient);
     }
 
     @Override
     public ItemStack assemble(TeapotBrewingRecipeInput input, HolderLookup.Provider registries) {
-        return getResultItem(registries);
+        return MinejagoItemUtils.fillTeacup(result);
+    }
+
+    public String group() {
+        return group;
+    }
+
+    public Holder<Potion> base() {
+        return base;
+    }
+
+    public Ingredient ingredient() {
+        return ingredient;
+    }
+
+    public Holder<Potion> result() {
+        return result;
+    }
+
+    public float experience() {
+        return experience;
+    }
+
+    public IntProvider brewingTime() {
+        return brewingTime;
     }
 
     @Override
-    public boolean canCraftInDimensions(int width, int height) {
-        return true;
+    public PlacementInfo placementInfo() {
+        if (this.placementInfo == null) {
+            this.placementInfo = PlacementInfo.create(this.ingredient);
+        }
+
+        return this.placementInfo;
     }
 
     @Override
-    public ItemStack getResultItem(HolderLookup.Provider registries) {
-        return MinejagoItemUtils.fillTeacup(result());
+    public List<RecipeDisplay> display() {
+        return List.of(
+                new TeapotRecipeDisplay(
+                        new PotionSlotDisplay(this.base(), MinejagoItems.FILLED_TEACUP),
+                        this.ingredient().display(),
+                        new PotionSlotDisplay(this.result(), MinejagoItems.FILLED_TEACUP),
+                        new SlotDisplay.ItemSlotDisplay(MinejagoBlocks.TEAPOT.asItem()),
+                        this.experience,
+                        this.brewingTime));
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {
-        return MinejagoRecipeSerializers.TEAPOT_BREWING_RECIPE.get();
-    }
-
-    @Override
-    public RecipeType<?> getType() {
+    public RecipeType<? extends Recipe<TeapotBrewingRecipeInput>> getType() {
         return MinejagoRecipeTypes.TEAPOT_BREWING.get();
     }
-    public static class Factory implements RecipeSerializer<TeapotBrewingRecipe> {
-        public static final MapCodec<TeapotBrewingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-                Codec.STRING.fieldOf("group").forGetter(TeapotBrewingRecipe::group),
-                Potion.CODEC.fieldOf("base").forGetter(TeapotBrewingRecipe::base),
-                Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter(TeapotBrewingRecipe::ingredient),
-                Potion.CODEC.fieldOf("result").forGetter(TeapotBrewingRecipe::result),
-                Codec.FLOAT.fieldOf("experience").forGetter(TeapotBrewingRecipe::experience),
-                IntProvider.POSITIVE_CODEC.fieldOf("brewing_time").forGetter(TeapotBrewingRecipe::brewingTime)).apply(instance, TeapotBrewingRecipe::new));
-        public static final StreamCodec<RegistryFriendlyByteBuf, TeapotBrewingRecipe> STREAM_CODEC = StreamCodec.composite(
-                ByteBufCodecs.STRING_UTF8, TeapotBrewingRecipe::group,
-                Potion.STREAM_CODEC, TeapotBrewingRecipe::base,
-                Ingredient.CONTENTS_STREAM_CODEC, TeapotBrewingRecipe::ingredient,
-                Potion.STREAM_CODEC, TeapotBrewingRecipe::result,
-                ByteBufCodecs.FLOAT, TeapotBrewingRecipe::experience,
-                ByteBufCodecs.fromCodec(IntProvider.POSITIVE_CODEC), TeapotBrewingRecipe::brewingTime,
-                TeapotBrewingRecipe::new);
+
+    @Override
+    public RecipeSerializer<? extends Recipe<TeapotBrewingRecipeInput>> getSerializer() {
+        return MinejagoRecipeSerializers.TEAPOT_BREWING.get();
+    }
+
+    @Override
+    public RecipeBookCategory recipeBookCategory() {
+        return MinejagoRecipeBookCategories.TEAPOT_BREWING.get();
+    }
+
+    public static class Serializer implements RecipeSerializer<TeapotBrewingRecipe> {
+        private final MapCodec<TeapotBrewingRecipe> codec;
+        private final StreamCodec<RegistryFriendlyByteBuf, TeapotBrewingRecipe> streamCodec;
+
+        protected Serializer() {
+            this.codec = RecordCodecBuilder.mapCodec(
+                    p_360076_ -> p_360076_.group(
+                            Codec.STRING.optionalFieldOf("group", "").forGetter(TeapotBrewingRecipe::group),
+                            BuiltInRegistries.POTION.holderByNameCodec().fieldOf("base").forGetter(TeapotBrewingRecipe::base),
+                            Ingredient.CODEC.fieldOf("ingredient").forGetter(TeapotBrewingRecipe::ingredient),
+                            BuiltInRegistries.POTION.holderByNameCodec().fieldOf("result").forGetter(TeapotBrewingRecipe::result),
+                            Codec.FLOAT.fieldOf("experience").forGetter(TeapotBrewingRecipe::experience),
+                            IntProvider.CODEC.fieldOf("brewing_time").forGetter(TeapotBrewingRecipe::brewingTime))
+                            .apply(p_360076_, TeapotBrewingRecipe::new));
+            this.streamCodec = StreamCodec.composite(
+                    ByteBufCodecs.STRING_UTF8, TeapotBrewingRecipe::group,
+                    Potion.STREAM_CODEC, TeapotBrewingRecipe::base,
+                    Ingredient.CONTENTS_STREAM_CODEC, TeapotBrewingRecipe::ingredient,
+                    Potion.STREAM_CODEC, TeapotBrewingRecipe::result,
+                    ByteBufCodecs.FLOAT, TeapotBrewingRecipe::experience,
+                    ByteBufCodecs.fromCodec(IntProvider.POSITIVE_CODEC), TeapotBrewingRecipe::brewingTime,
+                    TeapotBrewingRecipe::new);
+        }
 
         @Override
         public MapCodec<TeapotBrewingRecipe> codec() {
-            return CODEC;
+            return this.codec;
         }
 
         @Override
         public StreamCodec<RegistryFriendlyByteBuf, TeapotBrewingRecipe> streamCodec() {
-            return STREAM_CODEC;
+            return this.streamCodec;
         }
     }
 
@@ -84,13 +160,18 @@ public record TeapotBrewingRecipe(String group, Holder<Potion> base, Ingredient 
             return switch (index) {
                 case 0 -> MinejagoItemUtils.fillTeacup(base);
                 case 1 -> ingredient;
-                default -> ItemStack.EMPTY;
+                default -> throw new IllegalArgumentException("Recipe does not contain slot " + index);
             };
         }
 
         @Override
         public int size() {
             return 2;
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return base == null && ingredient.isEmpty();
         }
     }
 }

@@ -10,7 +10,6 @@ import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.armor.PoweredArmorItem;
 import dev.thomasglasser.tommylib.api.client.ClientUtils;
-import dev.thomasglasser.tommylib.api.client.renderer.entity.ThrownSwordRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -39,11 +38,11 @@ public class MinejagoBlockEntityWithoutLevelRenderer extends BlockEntityWithoutL
         if (stack.is(MinejagoItems.BAMBOO_STAFF.get())) {
             poseStack.scale(1.0F, -1.0F, -1.0F);
             poseStack.translate(0.0D, -0.7D, 0.0D);
-            VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, this.bambooStaffModel.renderType(ThrownSwordRenderer.TEXTURE.apply(MinejagoItems.BAMBOO_STAFF.getId())), false, stack.hasFoil());
+            VertexConsumer vertexConsumer = ItemRenderer.getFoilBuffer(buffer, this.bambooStaffModel.renderType(BambooStaffModel.TEXTURE), false, stack.hasFoil());
             this.bambooStaffModel.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay, -1);
         } else if (stack.is(MinejagoItems.SCYTHE_OF_QUAKES.get())) {
             poseStack.scale(1.0F, -1.0F, -1.0F);
-            VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, this.scytheModel.renderType(ThrownSwordRenderer.TEXTURE.apply(MinejagoItems.SCYTHE_OF_QUAKES.getId())), false, stack.hasFoil());
+            VertexConsumer vertexConsumer = ItemRenderer.getFoilBuffer(buffer, this.scytheModel.renderType(ScytheModel.TEXTURE), false, stack.hasFoil());
             this.scytheModel.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
         } else if (stack.getItem() instanceof PoweredArmorItem) {
             poseStack.translate(0.5D, 0.5D, 0.5D);

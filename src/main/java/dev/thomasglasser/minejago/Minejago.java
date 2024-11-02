@@ -24,12 +24,15 @@ import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.focus.modifier.resourcekey.ResourceKeyFocusModifiers;
 import dev.thomasglasser.minejago.world.item.MinejagoCreativeModeTabs;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
-import dev.thomasglasser.minejago.world.item.MinejagoTiers;
-import dev.thomasglasser.minejago.world.item.armor.MinejagoArmorMaterials;
+import dev.thomasglasser.minejago.world.item.MinejagoToolMaterials;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
+import dev.thomasglasser.minejago.world.item.crafting.MinejagoRecipeBookCategories;
 import dev.thomasglasser.minejago.world.item.crafting.MinejagoRecipeSerializers;
 import dev.thomasglasser.minejago.world.item.crafting.MinejagoRecipeTypes;
+import dev.thomasglasser.minejago.world.item.crafting.display.MinejagoRecipeDisplays;
+import dev.thomasglasser.minejago.world.item.crafting.display.MinejagoSlotDisplays;
+import dev.thomasglasser.minejago.world.item.equipment.MinejagoArmorMaterials;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
 import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
@@ -93,7 +96,7 @@ public class Minejago {
         MinejagoRecipeTypes.init();
         MinejagoRecipeSerializers.init();
         MinejagoArmors.init();
-        MinejagoTiers.init();
+        MinejagoToolMaterials.init();
         MinejagoPowers.init();
         MinejagoEntityTypes.init();
         MinejagoParticleTypes.init();
@@ -112,6 +115,9 @@ public class Minejago {
         MinejagoEntitySerializers.init();
         MinejagoMapDecorationTypes.init();
         MinejagoPoiTypes.init();
+        MinejagoSlotDisplays.init();
+        MinejagoRecipeDisplays.init();
+        MinejagoRecipeBookCategories.init();
 
         if (FMLEnvironment.dist.isClient())
             MinejagoKeyMappings.init();
@@ -132,6 +138,7 @@ public class Minejago {
         bus.addListener(MinejagoCoreEvents::onNewDataPackRegistry);
         bus.addListener(MinejagoCoreEvents::onRegisterPackets);
         bus.addListener(MinejagoEntityEvents::onAddBlocksToBlockEntityType);
+        bus.addListener(MinejagoCoreEvents::onRegisterDataMapTypes);
     }
 
     private void addModClientListeners(IEventBus bus) {
@@ -174,7 +181,6 @@ public class Minejago {
         MOONLIGHT_LIB("moonlight"),
         RYOAMIC_LIGHTS("ryoamiclights"),
         TRIMMED("trimmed"),
-        PLAYER_ANIMATOR("playeranimator"),
         MODONOMICON("modonomicon"),
         TSLAT_ENTITY_STATUS("tslatentitystatus");
 
@@ -198,7 +204,8 @@ public class Minejago {
     }
 
     public enum Expansions {
-        IMMERSION_PACK("immersion");
+        IMMERSION_PACK("immersion"),
+        POTION_POT_PACK("potion_pot");
 
         private final String id;
 

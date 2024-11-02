@@ -12,6 +12,8 @@ import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
@@ -38,6 +40,12 @@ public class MinejagoItemTagsProvider extends ExtendedItemTagsProvider {
                 .add(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.BOW).value())
                 .add(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.KNIFE).value())
                 .add(MinejagoArmors.SAMUKAIS_CHESTPLATE.get());
+        tag(ItemTags.TRIM_TEMPLATES)
+                .add(MinejagoItems.FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE.get())
+                .add(MinejagoItems.TERRAIN_ARMOR_TRIM_SMITHING_TEMPLATE.get())
+                .add(MinejagoItems.LOTUS_ARMOR_TRIM_SMITHING_TEMPLATE.get());
+        tag(ItemTags.MAP_INVISIBILITY_EQUIPMENT)
+                .addTag(MinejagoItemTags.GI);
 
         copy(MinejagoBlockTags.TEAPOTS, MinejagoItemTags.TEAPOTS);
 
@@ -61,6 +69,15 @@ public class MinejagoItemTagsProvider extends ExtendedItemTagsProvider {
 
         tag(MinejagoItemTags.DRAGON_TREATS)
                 .add(Items.COOKED_SALMON);
+
+        tag(MinejagoItemTags.REPAIRS_SKELETAL_ARMOR)
+                .add(Items.BONE);
+
+        tag(MinejagoItemTags.BONE_TOOL_MATERIALS)
+                .add(Items.BONE);
+
+        IntrinsicTagAppender<Item> gi = tag(MinejagoItemTags.GI);
+        MinejagoArmors.GI_SETS.forEach(set -> gi.add(set.getAllAsItems().toArray(new ArmorItem[0])));
 
         // Wood sets
         woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET);

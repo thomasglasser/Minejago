@@ -24,11 +24,14 @@ import net.minecraft.advancements.critereon.ItemUsedOnLocationTrigger;
 import net.minecraft.advancements.critereon.LocationPredicate;
 import net.minecraft.advancements.critereon.PlayerTrigger;
 import net.minecraft.advancements.critereon.TameAnimalTrigger;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentPredicate;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Unit;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
@@ -43,6 +46,9 @@ public class MinejagoStoryAdvancements extends ExtendedAdvancementGenerator {
 
     @Override
     public void generate(HolderLookup.Provider registries) {
+        HolderGetter<EntityType<?>> entities = registries.lookupOrThrow(Registries.ENTITY_TYPE);
+        HolderGetter<Item> items = registries.lookupOrThrow(Registries.ITEM);
+
         AdvancementHolder root = root(MinejagoItems.SCYTHE_OF_QUAKES.get(), "root", ResourceLocation.withDefaultNamespace("textures/gui/advancements/backgrounds/stone.png"), AdvancementType.TASK, false, false, false, null,
                 "get_crafting_table", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.CRAFTING_TABLE), "Minejago", "Long before time had a name...");
 
@@ -56,7 +62,7 @@ public class MinejagoStoryAdvancements extends ExtendedAdvancementGenerator {
                 "do_spinjitzu", DidSpinjitzuTrigger.TriggerInstance.didSpinjitzu(), "Twistitzu? Tornadzu?", "Do spinjitzu for the first time");
 
         AdvancementHolder getFourWeaponsMap = create(getBlackGi, Items.FILLED_MAP, "get_four_weapons_map", AdvancementType.TASK, true, true, false, null,
-                "get_four_weapons_map", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(Items.FILLED_MAP).hasComponents(DataComponentPredicate.builder().expect(MinejagoDataComponents.GOLDEN_WEAPONS_MAP.get(), Unit.INSTANCE).build()).build()), "The Journey Begins", "Obtain a Four Weapons Map");
+                "get_four_weapons_map", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(items, Items.FILLED_MAP).hasComponents(DataComponentPredicate.builder().expect(MinejagoDataComponents.GOLDEN_WEAPONS_MAP.get(), Unit.INSTANCE).build()).build()), "The Journey Begins", "Obtain a Four Weapons Map");
 
         ItemStack fireHead = MinejagoArmors.TRAINING_GI_SET.HEAD.get().getDefaultInstance();
         fireHead.set(MinejagoDataComponents.POWER.get(), MinejagoPowers.FIRE);
@@ -73,9 +79,9 @@ public class MinejagoStoryAdvancements extends ExtendedAdvancementGenerator {
         AdvancementHolder enterAllGoldenWeaponsStructures = create(enterGoldenWeaponsStructure, MinejagoItems.SCYTHE_OF_QUAKES.get()/*TODO: Replace with sword of fire*/, "enter_all_golden_weapons_structures", AdvancementType.GOAL, true, true, false, AdvancementRewards.Builder.experience(50).build(), AdvancementRequirements.Strategy.AND, goldenWeaponsStructures, "The Homes of Creation", "Find all structures containing Golden Weapons");
 
         AdvancementHolder tameDragon = create(enterGoldenWeaponsStructure, Items.SADDLE, "tame_dragon", AdvancementType.CHALLENGE, true, true, false, AdvancementRewards.Builder.experience(15).build(),
-                "tame_dragon", TameAnimalTrigger.TriggerInstance.tamedAnimal(EntityPredicate.Builder.entity().of(MinejagoEntityTypeTags.DRAGONS)), "Out of this World", "Tame a dragon");
+                "tame_dragon", TameAnimalTrigger.TriggerInstance.tamedAnimal(EntityPredicate.Builder.entity().of(entities, MinejagoEntityTypeTags.DRAGONS)), "Out of this World", "Tame a dragon");
 
         AdvancementHolder useScytheOfQuakes = create(enterGoldenWeaponsStructure, MinejagoItems.SCYTHE_OF_QUAKES.get(), "use_scythe_of_quakes", AdvancementType.TASK, true, true, false, null,
-                "use_scythe_of_quakes", ItemUsedOnLocationTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location(), ItemPredicate.Builder.item().of(MinejagoItems.SCYTHE_OF_QUAKES.get())), "A Groundbreaking Discovery", "Perform an ability using the Scythe of Quakes");
+                "use_scythe_of_quakes", ItemUsedOnLocationTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location(), ItemPredicate.Builder.item().of(items, MinejagoItems.SCYTHE_OF_QUAKES.get())), "A Groundbreaking Discovery", "Perform an ability using the Scythe of Quakes");
     }
 }

@@ -8,6 +8,6 @@ public interface SkulkinRaidsHolder {
 
     @Nullable
     default SkulkinRaid getSkulkinRaidAt(BlockPos pos) {
-        return this.getSkulkinRaids().getNearbySkulkinRaid(pos, 9216);
+        return this.getSkulkinRaids().getNearbySkulkinRaid(pos, SkulkinRaid.VALID_RAID_RADIUS_SQR);
     }
 }

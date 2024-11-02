@@ -5,10 +5,10 @@ import dev.thomasglasser.minejago.world.entity.character.Character;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FleeSunGoal;
@@ -51,7 +51,7 @@ public class SkulkinHorse extends SkeletonHorse implements Enemy {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob otherParent) {
-        return MinejagoEntityTypes.SKULKIN_HORSE.get().create(level);
+        return MinejagoEntityTypes.SKULKIN_HORSE.get().create(level, EntitySpawnReason.BREEDING);
     }
 
     @Override
@@ -108,9 +108,9 @@ public class SkulkinHorse extends SkeletonHorse implements Enemy {
 
         @Override
         public AbstractHorse createHorse(DifficultyInstance difficulty) {
-            SkulkinHorse skeletonHorse = MinejagoEntityTypes.SKULKIN_HORSE.get().create(this.horse.level());
+            SkulkinHorse skeletonHorse = MinejagoEntityTypes.SKULKIN_HORSE.get().create(this.horse.level(), EntitySpawnReason.TRIGGERED);
             if (skeletonHorse != null) {
-                skeletonHorse.finalizeSpawn((ServerLevel) this.horse.level(), difficulty, MobSpawnType.TRIGGERED, null);
+                skeletonHorse.finalizeSpawn((ServerLevel) this.horse.level(), difficulty, EntitySpawnReason.TRIGGERED, null);
                 skeletonHorse.setPos(this.horse.getX(), this.horse.getY(), this.horse.getZ());
                 skeletonHorse.invulnerableTime = 60;
                 skeletonHorse.setPersistenceRequired();
@@ -126,9 +126,9 @@ public class SkulkinHorse extends SkeletonHorse implements Enemy {
 
         @Override
         public Skeleton createSkeleton(DifficultyInstance difficulty, AbstractHorse horse) {
-            Skulkin skeleton = MinejagoEntityTypes.SKULKIN.get().create(horse.level());
+            Skulkin skeleton = MinejagoEntityTypes.SKULKIN.get().create(horse.level(), EntitySpawnReason.TRIGGERED);
             if (skeleton != null) {
-                skeleton.finalizeSpawn((ServerLevel) horse.level(), difficulty, MobSpawnType.TRIGGERED, null);
+                skeleton.finalizeSpawn((ServerLevel) horse.level(), difficulty, EntitySpawnReason.TRIGGERED, null);
                 skeleton.setPos(horse.getX(), horse.getY(), horse.getZ());
                 skeleton.invulnerableTime = 60;
                 skeleton.setPersistenceRequired();

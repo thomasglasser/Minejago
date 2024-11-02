@@ -1,7 +1,6 @@
 package dev.thomasglasser.minejago.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import dev.thomasglasser.minejago.Minejago;
 import net.minecraft.client.model.EntityModel;
@@ -16,14 +15,14 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 
-public class SpinjitzuModel<T extends Entity> extends EntityModel<T> {
-    public static final ResourceLocation BASE = Minejago.modLoc("textures/entity/player/spinjitzu.png");
-    public static final ResourceLocation SWIRL = Minejago.modLoc("textures/entity/player/spinjitzu_swirl.png");
+public class SpinjitzuModel<T extends EntityRenderState> extends EntityModel<T> {
+    public static final ResourceLocation BASE_TEXTURE = Minejago.modLoc("textures/entity/player/spinjitzu.png");
+    public static final ResourceLocation SWIRL_TEXTURE = Minejago.modLoc("textures/entity/player/spinjitzu_swirl.png");
 
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Minejago.modLoc("spinjitzu"), "main");
 
@@ -42,6 +41,7 @@ public class SpinjitzuModel<T extends Entity> extends EntityModel<T> {
     private final ModelPart outerBottom;
 
     public SpinjitzuModel(ModelPart root) {
+        super(root, RenderType::entityTranslucent);
         this.body = root.getChild("body");
         this.inner = body.getChild("inner");
         this.innerTop = inner.getChild("inner_top");
@@ -90,16 +90,11 @@ public class SpinjitzuModel<T extends Entity> extends EntityModel<T> {
         return LayerDefinition.create(meshdefinition, 256, 256);
     }
 
-    @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
-        body.render(poseStack, buffer, packedLight, packedOverlay, color);
-    }
-
     public void render(PoseStack poseStack, MultiBufferSource source, int tickCount, float partialTick, int color) {
         float f = (float) tickCount + partialTick;
         poseStack.mulPose(Axis.XP.rotationDegrees(180.0F));
-        inner.render(poseStack, source.getBuffer(RenderType.entityTranslucent(BASE)), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0xFF000000 | color);
-        outer.render(poseStack, source.getBuffer(RenderType.breezeWind(SWIRL, xOffset(f) % 1.0F, 0.0F)), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0xFF000000 | color);
+        inner.render(poseStack, source.getBuffer(RenderType.entityTranslucent(BASE_TEXTURE)), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0xFF000000 | color);
+        outer.render(poseStack, source.getBuffer(RenderType.breezeWind(SWIRL_TEXTURE, xOffset(f) % 1.0F, 0.0F)), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0xFF000000 | color);
         poseStack.mulPose(Axis.XP.rotationDegrees(180.0F));
     }
 
@@ -107,11 +102,10 @@ public class SpinjitzuModel<T extends Entity> extends EntityModel<T> {
         return tickCount * 0.02F;
     }
 
-    /**
-     * Sets this entity's model rotation angles
-     */
-    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        float f = ageInTicks * (float) Math.PI * -0.1F;
+    @Override
+    public void setupAnim(T renderState) {
+        super.setupAnim(renderState);
+        float f = renderState.ageInTicks * (float) Math.PI * -0.1F;
         this.outerBottom.x = Mth.cos(f) * 1.0F * 0.6F;
         this.outerBottom.z = Mth.sin(f) * 1.0F * 0.6F;
         this.innerBottom.x = Mth.cos(f) * 1.0F * 0.6F;

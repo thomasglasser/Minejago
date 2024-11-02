@@ -8,8 +8,6 @@
   },
   "experience": 0.5,
   "group": "azalea_tea",
-  "ingredient": {
-    "item": "minecraft:azalea_leaves"
-  },
+  "ingredient": "minecraft:azalea_leaves",
   "result": "minejago:azalea_tea"
 }

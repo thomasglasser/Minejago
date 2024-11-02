@@ -128,6 +128,10 @@ public abstract class FocusModifierProvider implements DataProvider {
         add(BuiltInRegistries.ENTITY_TYPE.getKey(type), type, nbt, modifier, operation);
     }
 
+    protected void add(EntityType<?> type, double modifier, Operation operation) {
+        add(BuiltInRegistries.ENTITY_TYPE.getKey(type), type, new CompoundTag(), modifier, operation);
+    }
+
     protected void add(double modifier, Operation operation, EntityType<?>... types) {
         for (EntityType<?> type : types) {
             add(type, null, modifier, operation);

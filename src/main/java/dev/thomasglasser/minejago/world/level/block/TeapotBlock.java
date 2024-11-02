@@ -4,7 +4,9 @@ import com.mojang.serialization.MapCodec;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
-import dev.thomasglasser.minejago.world.item.PotionCupHolder;
+import dev.thomasglasser.minejago.datamaps.MinejagoDataMaps;
+import dev.thomasglasser.minejago.datamaps.PotionDrainable;
+import dev.thomasglasser.minejago.datamaps.PotionFillable;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
 import dev.thomasglasser.minejago.world.level.block.entity.TeapotBlockEntity;
 import dev.thomasglasser.tommylib.api.world.item.ItemUtils;
@@ -22,19 +24,20 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -49,7 +52,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -64,7 +67,7 @@ public class TeapotBlock extends BaseEntityBlock {
     public static final VoxelShape SHAPE = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 10.0D, 13.0D);
     public static final ResourceLocation CONTENTS = Minejago.modLoc("teapot_contents");
     public static final BooleanProperty FILLED = BooleanProperty.create("filled");
-    public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+    public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
 
     public TeapotBlock(Properties pProperties) {
         super(pProperties);
@@ -106,24 +109,29 @@ public class TeapotBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
+    protected InteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
         if (pLevel.isClientSide) {
-            return ItemInteractionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         } else {
             if (pLevel.getBlockEntity(pPos) instanceof TeapotBlockEntity be) {
                 ItemStack inHand = pPlayer.getItemInHand(pHand);
                 if (be.getInSlot(0) == ItemStack.EMPTY) {
-                    if (inHand.getItem() instanceof PotionCupHolder holder && holder.canBeDrained(inHand)) {
-                        if (be.tryFill(holder.getCups(), holder.getPotion(inHand))) {
+                    PotionDrainable drainable = inHand.getItemHolder().getData(MinejagoDataMaps.POTION_DRAINABLES);
+                    if (drainable != null) {
+                        if (be.tryFill(drainable.cups(), drainable.potion().orElseGet(() -> inHand.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).potion().orElseThrow()))) {
                             ItemUtils.safeShrink(1, inHand, pPlayer);
-                            pPlayer.addItem(holder.getDrained(pPlayer.getItemInHand(pHand)));
+                            if (!pPlayer.getAbilities().instabuild)
+                                pPlayer.addItem(drainable.remainder());
                             pLevel.playSound(null, pPos, SoundEvents.BOTTLE_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
                         }
                     } else if (be.getCups() > 0) {
-                        if (inHand.getItem() instanceof PotionCupHolder potionCupHolder && potionCupHolder.canBeFilled(inHand, be.getPotion(), be.getCups())) {
+                        PotionFillable fillable = inHand.getItemHolder().getData(MinejagoDataMaps.POTION_FILLABLES);
+                        if (fillable != null && fillable.cups() <= be.getCups()) {
                             ItemUtils.safeShrink(1, inHand, pPlayer);
-                            pPlayer.addItem(potionCupHolder.getFilled(be.getPotion()));
-                            be.take(potionCupHolder.getCups());
+                            ItemStack filled = fillable.filled().copy();
+                            filled.set(DataComponents.POTION_CONTENTS, new PotionContents(be.getPotion()));
+                            pPlayer.addItem(filled);
+                            be.take(fillable.cups());
                             MinejagoCriteriaTriggers.BREWED_TEA.get().trigger((ServerPlayer) pPlayer, be.getPotion());
                             pLevel.playSound(null, pPos, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
                             be.giveExperienceForCup((ServerLevel) pLevel, pPos.getCenter());
@@ -132,10 +140,10 @@ public class TeapotBlock extends BaseEntityBlock {
                             ItemUtils.safeShrink(1, inHand, pPlayer);
                         }
                     }
-                    return ItemInteractionResult.SUCCESS;
+                    return InteractionResult.SUCCESS;
                 }
             }
-            return ItemInteractionResult.FAIL;
+            return InteractionResult.FAIL;
         }
     }
 
@@ -183,12 +191,11 @@ public class TeapotBlock extends BaseEntityBlock {
     }
 
     @Override
-    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos currentPos, BlockPos neighborPos) {
-        if (!state.canSurvive(level, currentPos)) {
+    protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess scheduledTickAccess, BlockPos pos, Direction direction, BlockPos offsetPos, BlockState offsetState, RandomSource random) {
+        if (!state.canSurvive(level, pos)) {
             return Blocks.AIR.defaultBlockState();
         }
-
-        return super.updateShape(state, direction, neighborState, level, currentPos, neighborPos);
+        return super.updateShape(state, level, scheduledTickAccess, pos, direction, offsetPos, offsetState, random);
     }
 
     @Nullable
