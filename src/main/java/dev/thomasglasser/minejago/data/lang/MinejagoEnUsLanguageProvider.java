@@ -17,6 +17,7 @@ import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.character.Wu;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
+import dev.thomasglasser.minejago.world.entity.skill.MinejagoSkills;
 import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
 import dev.thomasglasser.minejago.world.entity.spinjitzucourse.AbstractSpinjitzuCourseElement;
@@ -324,6 +325,11 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
 
         add(MinejagoItemUtils.NO_STRUCTURES_FOUND, "You feel the weapons are not in this area...");
 
+        addSkill(MinejagoSkills.AGILITY, "Agility");
+        addSkill(MinejagoSkills.STEALTH, "Stealth");
+        addSkill(MinejagoSkills.DEXTERITY, "Dexterity");
+        addSkill(MinejagoSkills.TOOL_PROFICIENCY, "Tool Proficiency");
+
         addConfigs();
     }
 
@@ -379,5 +385,9 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
 
     protected void add(Skulkin.Variant variant, String name) {
         add(variant.getDescriptionId(), name);
+    }
+
+    protected void addSkill(ResourceLocation key, String name) {
+        add(key.toLanguageKey("skill"), name);
     }
 }

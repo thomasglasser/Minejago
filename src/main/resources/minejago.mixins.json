@@ -9,7 +9,8 @@
     "minecraft.world.entity.EntityMixin",
     "minecraft.world.entity.ServerPlayerMixin",
     "minecraft.world.entity.player.PlayerMixin",
-    "minecraft.world.level.block.entity.LecternBlockEntityMixin"
+    "minecraft.world.level.block.entity.LecternBlockEntityMixin",
+    "minecraft.world.level.gameevent.vibrations.VibrationSystemUserMixin"
   ],
   "client": [
     "minecraft.client.gui.screens.inventory.LecternScreenMixin",

@@ -3,6 +3,7 @@ package dev.thomasglasser.minejago.mixin.minecraft.world.entity;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityEvents;
+import dev.thomasglasser.minejago.world.entity.skill.MinejagoSkills;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
 import net.minecraft.server.level.ServerPlayer;
@@ -38,7 +39,7 @@ public class EntityMixin {
     @ModifyReturnValue(method = "dampensVibrations", at = @At("TAIL"))
     private boolean minejago_dampensVibrations(boolean original) {
         if (minejago$INSTANCE instanceof LivingEntity livingEntity)
-            return MinejagoArmors.isWearingFullGi(livingEntity) || original;
+            return MinejagoArmors.isWearingFullGi(livingEntity) || livingEntity.getData(MinejagoAttachmentTypes.SKILL).get(MinejagoSkills.STEALTH).level() > 10 || original;
         return original;
     }
 

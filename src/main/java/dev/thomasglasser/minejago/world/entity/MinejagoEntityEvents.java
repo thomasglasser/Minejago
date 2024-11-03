@@ -1,6 +1,8 @@
 package dev.thomasglasser.minejago.world.entity;
 
+import com.google.common.collect.HashMultimap;
 import com.google.common.util.concurrent.AtomicDouble;
+import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleUtils;
 import dev.thomasglasser.minejago.network.ClientboundRefreshVipDataPayload;
@@ -20,6 +22,7 @@ import dev.thomasglasser.minejago.world.entity.character.Character;
 import dev.thomasglasser.minejago.world.entity.character.Zane;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
 import dev.thomasglasser.minejago.world.entity.power.Power;
+import dev.thomasglasser.minejago.world.entity.skill.MinejagoSkills;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaidsHolder;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
@@ -38,13 +41,17 @@ import dev.thomasglasser.minejago.world.level.MinejagoLevelUtils;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
+import dev.thomasglasser.minejago.world.level.storage.SkillData;
+import dev.thomasglasser.minejago.world.level.storage.SkillDataSet;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
+import dev.thomasglasser.tommylib.api.tags.ConventionalItemTags;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -60,7 +67,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SpawnPlacementTypes;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.entity.decoration.Painting;
@@ -81,9 +90,11 @@ import net.neoforged.neoforge.event.entity.EntityEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingKnockBackEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
@@ -274,6 +285,53 @@ public class MinejagoEntityEvents {
     public static void onLivingTick(EntityTickEvent.Post event) {
         Entity entity = event.getEntity();
         if (entity instanceof LivingEntity livingEntity) {
+            if (!livingEntity.level().isClientSide) {
+                int offGroundTicks = TommyLibServices.ENTITY.getPersistentData(livingEntity).getInt("OffGroundTicks");
+                SkillDataSet data = livingEntity.getData(MinejagoAttachmentTypes.SKILL);
+                if (livingEntity.isSprinting()) {
+                    data.addPractice(livingEntity, MinejagoSkills.AGILITY, 1 / 20f);
+                }
+                if (offGroundTicks > 0 && offGroundTicks <= 30) {
+                    data.addPractice(livingEntity, MinejagoSkills.AGILITY, 1 / 20f);
+                }
+                if (livingEntity.isSteppingCarefully() && !livingEntity.level().getEntities(livingEntity, livingEntity.getBoundingBox().inflate(16)).isEmpty()) {
+                    data.addPractice(livingEntity, MinejagoSkills.STEALTH, 1 / 20f);
+                }
+
+                boolean dirty = data.isDirty();
+
+                if (dirty) {
+                    HashMultimap<Holder<Attribute>, AttributeModifier> modifiers = HashMultimap.create();
+                    modifiers.put(Attributes.MOVEMENT_SPEED, new AttributeModifier(Minejago.modLoc("agility_modifier"), 0.1 * (data.get(MinejagoSkills.AGILITY).level()), AttributeModifier.Operation.ADD_VALUE));
+                    modifiers.put(Attributes.JUMP_STRENGTH, new AttributeModifier(Minejago.modLoc("agility_modifier"), 0.1 * (data.get(MinejagoSkills.AGILITY).level()), AttributeModifier.Operation.ADD_VALUE));
+                    modifiers.put(Attributes.SNEAKING_SPEED, new AttributeModifier(Minejago.modLoc("stealth_modifier"), 0.1 * (data.get(MinejagoSkills.STEALTH).level()), AttributeModifier.Operation.ADD_VALUE));
+                    livingEntity.getAttributes().addTransientAttributeModifiers(modifiers);
+                    data.setDirty(false);
+                }
+
+                boolean emptyHanded = livingEntity.getMainHandItem().isEmpty();
+                boolean toolHanded = livingEntity.getMainHandItem().is(ConventionalItemTags.TOOLS);
+                if (dirty || emptyHanded && !livingEntity.getAttributes().hasModifier(Attributes.MINING_EFFICIENCY, Minejago.modLoc("dexterity_modifier")) || toolHanded && !livingEntity.getAttributes().hasModifier(Attributes.MINING_EFFICIENCY, Minejago.modLoc("tool_proficiency_modifier"))) {
+                    HashMultimap<Holder<Attribute>, AttributeModifier> emptyHandModifiers = HashMultimap.create();
+                    emptyHandModifiers.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(Minejago.modLoc("dexterity_modifier"), 0.1 * (data.get(MinejagoSkills.DEXTERITY).level()), AttributeModifier.Operation.ADD_VALUE));
+                    emptyHandModifiers.put(Attributes.ATTACK_SPEED, new AttributeModifier(Minejago.modLoc("dexterity_modifier"), 0.1 * (data.get(MinejagoSkills.DEXTERITY).level()), AttributeModifier.Operation.ADD_VALUE));
+                    emptyHandModifiers.put(Attributes.MINING_EFFICIENCY, new AttributeModifier(Minejago.modLoc("dexterity_modifier"), 0.1 * (data.get(MinejagoSkills.DEXTERITY).level()), AttributeModifier.Operation.ADD_VALUE));
+
+                    HashMultimap<Holder<Attribute>, AttributeModifier> toolModifiers = HashMultimap.create();
+                    toolModifiers.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(Minejago.modLoc("tool_proficiency_modifier"), 0.1 * (data.get(MinejagoSkills.TOOL_PROFICIENCY).level()), AttributeModifier.Operation.ADD_VALUE));
+                    toolModifiers.put(Attributes.ATTACK_SPEED, new AttributeModifier(Minejago.modLoc("tool_proficiency_modifier"), 0.1 * (data.get(MinejagoSkills.TOOL_PROFICIENCY).level()), AttributeModifier.Operation.ADD_VALUE));
+                    toolModifiers.put(Attributes.MINING_EFFICIENCY, new AttributeModifier(Minejago.modLoc("tool_proficiency_modifier"), 0.1 * (data.get(MinejagoSkills.TOOL_PROFICIENCY).level()), AttributeModifier.Operation.ADD_VALUE));
+
+                    if (emptyHanded) {
+                        livingEntity.getAttributes().addTransientAttributeModifiers(emptyHandModifiers);
+                        livingEntity.getAttributes().removeAttributeModifiers(toolModifiers);
+                    } else {
+                        livingEntity.getAttributes().addTransientAttributeModifiers(toolModifiers);
+                        livingEntity.getAttributes().removeAttributeModifiers(emptyHandModifiers);
+                    }
+                }
+            }
+
             if (livingEntity instanceof Player player) {
                 Inventory i = player.getInventory();
 
@@ -411,5 +469,25 @@ public class MinejagoEntityEvents {
     public static void onLivingVisibility(LivingEvent.LivingVisibilityEvent event) {
         if (MinejagoArmors.isWearingFullGi(event.getEntity()))
             event.modifyVisibility(0.8);
+        SkillData data = event.getEntity().getData(MinejagoAttachmentTypes.SKILL).get(MinejagoSkills.STEALTH);
+        if (data.level() > 0)
+            event.modifyVisibility(0.1 * data.level());
+    }
+
+    public static void onBlockBreak(BlockEvent.BreakEvent event) {
+        if (event.getPlayer().getMainHandItem().isEmpty())
+            event.getPlayer().getData(MinejagoAttachmentTypes.SKILL).addPractice(event.getPlayer(), MinejagoSkills.DEXTERITY, event.getState().getBlock().defaultDestroyTime());
+        else if (event.getPlayer().getMainHandItem().isCorrectToolForDrops(event.getState()))
+            event.getPlayer().getData(MinejagoAttachmentTypes.SKILL).addPractice(event.getPlayer(), MinejagoSkills.TOOL_PROFICIENCY, event.getState().getBlock().defaultDestroyTime());
+    }
+
+    public static void onIncomingDamage(LivingIncomingDamageEvent event) {
+        if (event.getSource().getDirectEntity() instanceof LivingEntity attacker) {
+            SkillDataSet data = attacker.getData(MinejagoAttachmentTypes.SKILL);
+            if (attacker.getMainHandItem().isEmpty())
+                data.addPractice(attacker, MinejagoSkills.DEXTERITY, event.getAmount() / (data.get(MinejagoSkills.DEXTERITY).level() + 1));
+            else if (attacker.getMainHandItem().is(ConventionalItemTags.MELEE_WEAPON_TOOLS))
+                data.addPractice(attacker, MinejagoSkills.TOOL_PROFICIENCY, event.getAmount() / (data.get(MinejagoSkills.TOOL_PROFICIENCY).level() + 1));
+        }
     }
 }

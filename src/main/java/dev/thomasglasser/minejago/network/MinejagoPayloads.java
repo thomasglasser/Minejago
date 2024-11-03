@@ -27,6 +27,8 @@ public class MinejagoPayloads {
         PAYLOADS.add(new PayloadInfo<>(ClientboundSyncPowerDataPayload.TYPE, ExtendedPacketPayload.Direction.SERVER_TO_CLIENT, ClientboundSyncPowerDataPayload.CODEC));
         PAYLOADS.add(new PayloadInfo<>(ClientboundSyncSpinjitzuDataPayload.TYPE, ExtendedPacketPayload.Direction.SERVER_TO_CLIENT, ClientboundSyncSpinjitzuDataPayload.CODEC));
         PAYLOADS.add(new PayloadInfo<>(ClientboundAddSkulkinRaidPayload.TYPE, ExtendedPacketPayload.Direction.SERVER_TO_CLIENT, ClientboundAddSkulkinRaidPayload.CODEC));
+        PAYLOADS.add(new PayloadInfo<>(ClientboundSyncSkillDataSetPayload.TYPE, ExtendedPacketPayload.Direction.SERVER_TO_CLIENT, ClientboundSyncSkillDataSetPayload.CODEC));
+        PAYLOADS.add(new PayloadInfo<>(ClientboundSkillLevelUpPacket.TYPE, ExtendedPacketPayload.Direction.SERVER_TO_CLIENT, ClientboundSkillLevelUpPacket.CODEC));
 
         // Serverbound
         PAYLOADS.add(new PayloadInfo<>(ServerboundChangeVipDataPayload.TYPE, ExtendedPacketPayload.Direction.CLIENT_TO_SERVER, ServerboundChangeVipDataPayload.CODEC));

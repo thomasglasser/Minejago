@@ -32,7 +32,7 @@ public class PowerSelectionScreen extends Screen {
     public static final ResourceLocation SCROLLER_SPRITE = ResourceLocation.withDefaultNamespace("container/creative_inventory/scroller");
     public static final ResourceLocation SCROLLER_DISABLED_SPRITE = ResourceLocation.withDefaultNamespace("container/creative_inventory/scroller_disabled");
 
-    private static final ResourceLocation BACKGROUND = Minejago.modLoc("textures/gui/power_selection_screen.png");
+    private static final ResourceLocation BACKGROUND = Minejago.modLoc("textures/gui/power_selection.png");
     private final List<ResourceKey<Power>> powers;
     private final List<PowerButton> shownPowerButtons = new ArrayList<>();
     private final List<PowerButton> allPowerButtons = new ArrayList<>();
