@@ -14,7 +14,9 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
@@ -47,7 +49,7 @@ public class CharacterRenderer<T extends Character> extends DynamicGeoEntityRend
         super(context, model);
 
         // Add some armor rendering
-        addRenderLayer(new ElytraAndItemArmorGeoLayer<>(this) {
+        addRenderLayer(new ElytraAndItemArmorGeoLayer<>(this, CHESTPLATE) {
             @Nullable
             @Override
             protected ItemStack getArmorItemForBone(GeoBone bone, T animatable) {
@@ -182,5 +184,15 @@ public class CharacterRenderer<T extends Character> extends DynamicGeoEntityRend
                 characterModel.getBone(LEFT_ARMOR_LEG).orElseThrow().setHidden(false);
             }
         }
+    }
+
+    @Override
+    public @Nullable EntityRenderState createRenderState() {
+        return new HumanoidRenderState();
+    }
+
+    @Override
+    public void extractRenderState(T entity, @Nullable EntityRenderState entityRenderState, float partialTick) {
+        HumanoidMobRenderer.extractHumanoidRenderState(entity, (HumanoidRenderState) entityRenderState, partialTick);
     }
 }
