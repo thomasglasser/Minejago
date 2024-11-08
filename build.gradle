@@ -181,7 +181,7 @@ dependencies {
 	implementation "net.tslat.smartbrainlib:SmartBrainLib-neoforge-${minecraft_version}:${smartbrainlib_version}"
 	implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
 	implementation "net.tslat.tes:TslatEntityStatus-neoforge-${minecraft_version}:${tslatentitystatus_version}"
-//	implementation "net.tslat.effectslib:TslatEffectsLib-neoforge-${minecraft_version}:${tslateffectslib_version}"
+	implementation "net.tslat.effectslib:TslatEffectsLib-neoforge-${minecraft_version}:${tslateffectslib_version}"
 	compileOnly "maven.modrinth:ryoamiclights:${ryoamiclights_version}-neoforge"
 //	implementation "maven.modrinth:ryoamiclights:${ryoamiclights_version}-neoforge"
 	compileOnly "com.klikli_dev:modonomicon-${previous_minecraft_version}-neoforge:${modonomicon_version}"

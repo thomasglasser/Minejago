@@ -26,7 +26,7 @@ public class MinejagoPotions {
     public static final DeferredHolder<Potion, Potion> FLOWERING_AZALEA_TEA = register("flowering_azalea_tea", 0x592f62);
 
     public static final DeferredHolder<Potion, Potion> MILK = register("milk", MinejagoMobEffects.CURE);
-    public static final DeferredHolder<Potion, Potion> FOCUS_TEA = register("focus_tea", 4, MinejagoMobEffects.HYPERFOCUS);
+    public static final DeferredHolder<Potion, Potion> FOCUS_TEA = register("focus_tea", 5, MinejagoMobEffects.HYPERFOCUS);
 
     private static DeferredHolder<Potion, Potion> register(String name, int color) {
         return POTIONS.register(name, () -> new EmptyColoredPotion(name, color));
