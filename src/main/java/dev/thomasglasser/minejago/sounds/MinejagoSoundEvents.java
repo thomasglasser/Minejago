@@ -17,6 +17,28 @@ public class MinejagoSoundEvents {
     public static final DeferredHolder<SoundEvent, SoundEvent> DRAGON_BUTTON_CLICK = register("dragon_button", "block", "click");
     public static final DeferredHolder<SoundEvent, SoundEvent> DRAGON_BUTTON_CLOSE = register("dragon_button", "block", "close");
 
+    // Enchanted Wood Set
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENCHANTED_WOOD_BREAK = register("enchanted_wood", "block", "break");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENCHANTED_WOOD_FALL = register("enchanted_wood", "block", "fall");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENCHANTED_WOOD_HIT = register("enchanted_wood", "block", "hit");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENCHANTED_WOOD_PLACE = register("enchanted_wood", "block", "place");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENCHANTED_WOOD_STEP = register("enchanted_wood", "block", "step");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENCHANTED_WOOD_HANGING_SIGN_STEP = register("enchanted_wood_hanging_sign", "block", "step");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENCHANTED_WOOD_HANGING_SIGN_BREAK = register("enchanted_wood_hanging_sign", "block", "break");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENCHANTED_WOOD_HANGING_SIGN_FALL = register("enchanted_wood_hanging_sign", "block", "fall");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENCHANTED_WOOD_HANGING_SIGN_HIT = register("enchanted_wood_hanging_sign", "block", "hit");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENCHANTED_WOOD_HANGING_SIGN_PLACE = register("enchanted_wood_hanging_sign", "block", "place");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENCHANTED_WOOD_DOOR_CLOSE = register("enchanted_wood_door", "block", "close");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENCHANTED_WOOD_DOOR_OPEN = register("enchanted_wood_door", "block", "open");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENCHANTED_WOOD_TRAPDOOR_CLOSE = register("enchanted_wood_trapdoor", "block", "close");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENCHANTED_WOOD_TRAPDOOR_OPEN = register("enchanted_wood_trapdoor", "block", "open");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENCHANTED_WOOD_BUTTON_CLICK_OFF = register("enchanted_wood_button", "block", "click_off");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENCHANTED_WOOD_BUTTON_CLICK_ON = register("enchanted_wood_button", "block", "click_on");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENCHANTED_WOOD_PRESSURE_PLATE_CLICK_OFF = register("enchanted_wood_pressure_plate", "block", "click_off");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENCHANTED_WOOD_PRESSURE_PLATE_CLICK_ON = register("enchanted_wood_pressure_plate", "block", "click_on");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENCHANTED_WOOD_FENCE_GATE_CLOSE = register("enchanted_wood_fence_gate", "block", "close");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENCHANTED_WOOD_FENCE_GATE_OPEN = register("enchanted_wood_fence_gate", "block", "open");
+
     // Spinjitzu
     public static final DeferredHolder<SoundEvent, SoundEvent> SPINJITZU_START = register("spinjitzu", "start");
     public static final DeferredHolder<SoundEvent, SoundEvent> SPINJITZU_ACTIVE = register("spinjitzu", "active");
@@ -77,6 +99,12 @@ public class MinejagoSoundEvents {
 
     // Skulkin Raid
     public static final DeferredHolder<SoundEvent, SoundEvent> SKULKIN_RAID_HORN = register("skulkin_raid", "event", "horn");
+
+    // Armor
+    public static final DeferredHolder<SoundEvent, SoundEvent> ARMOR_EQUIP_SKELETAL = register("armor", "item", "equip_skeletal");
+
+    // Player
+    public static final DeferredHolder<SoundEvent, SoundEvent> PLAYER_SKILL_LEVELUP = register("player", "entity", "skill_levelup");
 
     // Music
     public static final DeferredHolder<SoundEvent, SoundEvent> MUSIC_MONASTERY_OF_SPINJITZU = register("music", "monastery_of_spinjitzu");

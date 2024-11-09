@@ -2,6 +2,7 @@ package dev.thomasglasser.minejago.data.sounds;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
+import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.tommylib.api.data.sounds.ExtendedSoundDefinitionsProvider;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
@@ -18,6 +19,8 @@ public class MinejagoSoundDefinitions extends ExtendedSoundDefinitionsProvider {
         add(MinejagoSoundEvents.DRAGON_BUTTON_OPEN);
         add(MinejagoSoundEvents.DRAGON_BUTTON_CLICK);
         add(MinejagoSoundEvents.DRAGON_BUTTON_CLOSE);
+
+        add(MinejagoBlocks.ENCHANTED_WOOD_SET, 4, 6, 5, 4, 4, 4, 8);
 
         add(MinejagoSoundEvents.SPINJITZU_START);
         add(MinejagoSoundEvents.SPINJITZU_STOP);
@@ -70,6 +73,10 @@ public class MinejagoSoundDefinitions extends ExtendedSoundDefinitionsProvider {
         add(MinejagoSoundEvents.SWIRLING_KNIVES_ACTIVE);
 
         add(MinejagoSoundEvents.SKULKIN_RAID_HORN);
+
+        add(MinejagoSoundEvents.ARMOR_EQUIP_SKELETAL, 6);
+
+        add(MinejagoSoundEvents.PLAYER_SKILL_LEVELUP);
 
         addMusic(MinejagoSoundEvents.MUSIC_MONASTERY_OF_SPINJITZU);
         addMusic(MinejagoSoundEvents.MUSIC_CAVE_OF_DESPAIR);

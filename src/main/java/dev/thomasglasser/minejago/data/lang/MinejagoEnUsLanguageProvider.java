@@ -228,6 +228,8 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(MinejagoSoundEvents.SPINNING_MACES_ACTIVE.get(), "Maces spin");
         add(MinejagoSoundEvents.SPINNING_POLE_ACTIVE.get(), "Pole spins");
         add(MinejagoSoundEvents.SWIRLING_KNIVES_ACTIVE.get(), "Knives swirl");
+        add(MinejagoSoundEvents.ARMOR_EQUIP_SKELETAL.get(), "Skeletal armor clinks");
+        add(MinejagoSoundEvents.PLAYER_SKILL_LEVELUP.get(), "Player chimes");
 
         add(MinejagoMobEffects.CURE.get(), "Instant Cure");
         add(MinejagoMobEffects.HYPERFOCUS.get(), "Hyperfocus");

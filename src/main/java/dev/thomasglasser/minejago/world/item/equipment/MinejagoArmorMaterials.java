@@ -1,5 +1,6 @@
 package dev.thomasglasser.minejago.world.item.equipment;
 
+import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.tags.MinejagoItemTags;
 import dev.thomasglasser.tommylib.api.world.item.equipment.ExtendedArmorMaterial;
 import java.util.EnumMap;
@@ -15,7 +16,7 @@ public interface MinejagoArmorMaterials {
         defense.put(ArmorType.CHESTPLATE, 4);
         defense.put(ArmorType.HELMET, 2);
         defense.put(ArmorType.BODY, 6);
-    }), 10, SoundEvents.ARMOR_EQUIP_GENERIC/*TODO:Armor equip sound*/, 0, 0, Optional.of(MinejagoItemTags.REPAIRS_SKELETAL_ARMOR), Optional.empty());
+    }), 10, MinejagoSoundEvents.ARMOR_EQUIP_SKELETAL, 0, 0, Optional.of(MinejagoItemTags.REPAIRS_SKELETAL_ARMOR), Optional.empty());
 
     ExtendedArmorMaterial SAMUKAI = new ExtendedArmorMaterial(30, Util.make(new EnumMap<>(ArmorType.class), defense -> {
         defense.put(ArmorType.BOOTS, 4);
@@ -23,7 +24,7 @@ public interface MinejagoArmorMaterials {
         defense.put(ArmorType.CHESTPLATE, 8);
         defense.put(ArmorType.HELMET, 4);
         defense.put(ArmorType.BODY, 12);
-    }), 12, SoundEvents.ARMOR_EQUIP_GENERIC/*TODO:Armor equip sound*/, 1.0F, 0.1F, Optional.empty(), Optional.empty());
+    }), 12, MinejagoSoundEvents.ARMOR_EQUIP_SKELETAL, 1.0F, 0.1F, Optional.empty(), Optional.empty());
 
     ExtendedArmorMaterial BLACK_GI = new ExtendedArmorMaterial(20, Util.make(new EnumMap<>(ArmorType.class), defense -> {
         defense.put(ArmorType.BOOTS, 1);

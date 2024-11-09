@@ -38,7 +38,7 @@ public class MinejagoBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Minejago.MOD_ID);
 
     // Tea Trees
-    public static final WoodSet ENCHANTED_WOOD_SET = registerWoodSet("enchanted", MapColor.COLOR_PURPLE, MapColor.COLOR_GRAY, MinejagoWoodTypes.ENCHANTED);
+    public static final WoodSet ENCHANTED_WOOD_SET = registerWoodSet("enchanted", MapColor.COLOR_PURPLE, MapColor.COLOR_GRAY, MinejagoWoodTypes::getEnchanted);
     public static final LeavesSet FOCUS_LEAVES_SET = registerLeavesSet("focus", new TreeGrower("focus", 0.1F, Optional.empty(), Optional.empty(), Optional.of(MinejagoTreeFeatures.FOCUS), Optional.of(MinejagoTreeFeatures.FANCY_FOCUS), Optional.of(MinejagoTreeFeatures.FOCUS_BEES_005), Optional.of(MinejagoTreeFeatures.FANCY_FOCUS_BEES_005)));
 
     // Pots
@@ -77,7 +77,7 @@ public class MinejagoBlocks {
         return BlockUtils.register(BLOCKS, name, blockFactory, properties);
     }
 
-    private static WoodSet registerWoodSet(String name, MapColor logColor, MapColor strippedLogColor, WoodType woodType) {
+    private static WoodSet registerWoodSet(String name, MapColor logColor, MapColor strippedLogColor, Supplier<WoodType> woodType) {
         return BlockUtils.registerWoodSet(BLOCKS, name, logColor, strippedLogColor, woodType, MinejagoItems::registerBlock, MinejagoItems::register, MinejagoEntityTypes::register);
     }
 
