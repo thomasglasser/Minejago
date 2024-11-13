@@ -169,6 +169,7 @@ public class Minejago {
         NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onLivingVisibility);
         NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onBlockBreak);
         NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onIncomingDamage);
+        NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onModifyCustomSpawners);
     }
 
     private void addForgeClientListeners() {

@@ -41,6 +41,7 @@ import dev.thomasglasser.minejago.world.level.MinejagoLevelUtils;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
+import dev.thomasglasser.minejago.world.level.levelgen.SkulkinArmySpawner;
 import dev.thomasglasser.minejago.world.level.storage.SkillData;
 import dev.thomasglasser.minejago.world.level.storage.SkillDataSet;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
@@ -95,6 +96,7 @@ import net.neoforged.neoforge.event.entity.living.LivingKnockBackEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.level.ModifyCustomSpawnersEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
@@ -489,5 +491,9 @@ public class MinejagoEntityEvents {
             else if (attacker.getMainHandItem().is(ConventionalItemTags.MELEE_WEAPON_TOOLS))
                 data.addPractice(attacker, MinejagoSkills.TOOL_PROFICIENCY, event.getAmount() / (data.get(MinejagoSkills.TOOL_PROFICIENCY).level() + 1));
         }
+    }
+
+    public static void onModifyCustomSpawners(ModifyCustomSpawnersEvent event) {
+        event.addCustomSpawner(new SkulkinArmySpawner());
     }
 }

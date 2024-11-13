@@ -141,7 +141,7 @@ public class MinejagoClientUtils {
     }
 
     public static void openPowerSelectionScreen(List<ResourceKey<Power>> powers, Optional<Integer> wuId) {
-        ClientUtils.setScreen(new PowerSelectionScreen(Component.translatable("gui.power_selection.title"), powers, wuId.isPresent() && ClientUtils.getEntityById(wuId.get()) instanceof Wu wu ? wu : null));
+        ClientUtils.setScreen(new PowerSelectionScreen(Component.translatable(PowerSelectionScreen.TITLE), powers, wuId.isPresent() && ClientUtils.getEntityById(wuId.get()) instanceof Wu wu ? wu : null));
     }
 
     public static void openScrollScreen(BookViewScreen.BookAccess bookAccess) {

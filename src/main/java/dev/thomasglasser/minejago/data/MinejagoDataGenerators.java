@@ -25,6 +25,7 @@ import dev.thomasglasser.minejago.data.tags.MinejagoItemTagsProvider;
 import dev.thomasglasser.minejago.data.tags.MinejagoPaintingVariantTagsProvider;
 import dev.thomasglasser.minejago.data.tags.MinejagoStructureTagsProvider;
 import dev.thomasglasser.minejago.data.tags.PowerTagsProvider;
+import dev.thomasglasser.minejago.data.trimmed.MinejagoTrimDatagenSuite;
 import dev.thomasglasser.minejago.data.worldgen.MinejagoProcessorLists;
 import dev.thomasglasser.minejago.data.worldgen.biome.MinejagoBiomeModifiers;
 import dev.thomasglasser.minejago.data.worldgen.features.MinejagoTreeFeatures;
@@ -91,8 +92,7 @@ public class MinejagoDataGenerators {
         LanguageProvider enUs = new MinejagoEnUsLanguageProvider(packOutput);
 
         // Trims
-        // TODO: Update trimmed
-//        new MinejagoTrimDatagenSuite(event, enUs);
+        new MinejagoTrimDatagenSuite(event, enUs);
 
         // Powers
         MinejagoPowerDatagenSuite powerDatagenSuite = new MinejagoPowerDatagenSuite(event, enUs);

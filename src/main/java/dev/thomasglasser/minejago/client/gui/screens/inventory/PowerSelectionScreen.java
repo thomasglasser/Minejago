@@ -28,38 +28,33 @@ import org.lwjgl.glfw.GLFW;
 
 public class PowerSelectionScreen extends Screen {
     public static final String TITLE = "gui.power_selection.title";
-
     public static final ResourceLocation SCROLLER_SPRITE = ResourceLocation.withDefaultNamespace("container/creative_inventory/scroller");
     public static final ResourceLocation SCROLLER_DISABLED_SPRITE = ResourceLocation.withDefaultNamespace("container/creative_inventory/scroller_disabled");
 
     private static final ResourceLocation BACKGROUND = Minejago.modLoc("textures/gui/power_selection.png");
+    private static final int BACKGROUND_WIDTH = 248;
+    private static final int BACKGROUND_HEIGHT = 166;
+    private final int BACKGROUND_VERTICAL_START = BACKGROUND_HEIGHT + 50;
+
     private final List<ResourceKey<Power>> powers;
     private final List<PowerButton> shownPowerButtons = new ArrayList<>();
     private final List<PowerButton> allPowerButtons = new ArrayList<>();
-    private int shownStart = 0;
-    private boolean showLeftArrow = false;
-    private boolean showRightArrow = false;
-
-    @Nullable
-    Power selectedPower;
-    @Nullable
-    ResourceKey<Power> selectedPowerKey;
-    @Nullable
-    PowerButton selectedPowerButton;
-
-    private boolean canScroll = false;
-    private boolean scrolling = false;
-    private int descStart = 0;
-
-    private final int BACKGROUND_WIDTH = 248;
-    private final int BACKGROUND_HEIGHT = 166;
-
-    private final int BACKGROUND_VERTICAL_START = BACKGROUND_HEIGHT + 50;
-
-    private Button selectOrDone;
 
     @Nullable
     private final Wu wuForList;
+
+    private int shownStart = 0;
+    private boolean showLeftArrow = false;
+    private boolean showRightArrow = false;
+    private boolean canScroll = false;
+    private boolean scrolling = false;
+    private int descStart = 0;
+    private Button selectOrDone;
+
+    @Nullable
+    private Power selectedPower;
+    @Nullable
+    private PowerButton selectedPowerButton;
 
     public PowerSelectionScreen(Component pTitle, List<ResourceKey<Power>> powers, @Nullable Wu wu) {
         super(pTitle);
@@ -200,7 +195,6 @@ public class PowerSelectionScreen extends Screen {
                 descStart = 0;
             if (selected && power != null && minecraft != null && minecraft.level != null) {
                 selectedPower = power;
-                selectedPowerKey = minecraft.level.registryAccess().lookupOrThrow(MinejagoRegistries.POWER).getResourceKey(selectedPower).orElseThrow();
             }
             selectedPowerButton = this;
         }

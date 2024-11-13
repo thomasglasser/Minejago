@@ -531,5 +531,8 @@
   "subtitles.spinjitzu.start": "Spinjitzu activates",
   "subtitles.spinjitzu.stop": "Spinjitzu fades",
   "tag.block.minejago.enchanted_logs": "Enchanted Logs",
-  "tag.item.minejago.enchanted_logs": "Enchanted Logs"
+  "tag.item.minejago.enchanted_logs": "Enchanted Logs",
+  "trim_pattern.minejago.four_weapons": "Four Weapons Armor Trim",
+  "trim_pattern.minejago.lotus": "Lotus Armor Trim",
+  "trim_pattern.minejago.terrain": "Terrain Armor Trim"
 }

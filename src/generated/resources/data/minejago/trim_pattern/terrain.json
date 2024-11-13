@@ -1,0 +1,8 @@
+{
+  "asset_id": "minejago:terrain",
+  "decal": false,
+  "description": {
+    "translate": "trim_pattern.minejago.terrain"
+  },
+  "template_item": "minejago:terrain_armor_trim_smithing_template"
+}

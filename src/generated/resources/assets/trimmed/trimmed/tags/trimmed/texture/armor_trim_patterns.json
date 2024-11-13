@@ -1,0 +1,10 @@
+{
+  "values": [
+    "minejago:trims/models/armor/four_weapons",
+    "minejago:trims/models/armor/four_weapons_leggings",
+    "minejago:trims/models/armor/terrain",
+    "minejago:trims/models/armor/terrain_leggings",
+    "minejago:trims/models/armor/lotus",
+    "minejago:trims/models/armor/lotus_leggings"
+  ]
+}
