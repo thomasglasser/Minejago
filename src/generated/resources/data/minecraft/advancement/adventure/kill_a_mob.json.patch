@@ -1,0 +1,163 @@
+[
+  {
+    "op": "add",
+    "path": "/criteria/minejago:samukai",
+    "value": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "predicate": {
+              "type": "minejago:samukai"
+            },
+            "entity": "this",
+            "condition": "minecraft:entity_properties"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "op": "add",
+    "path": "/requirements/0/-",
+    "value": "minejago:samukai"
+  },
+  {
+    "op": "add",
+    "path": "/criteria/minejago:skulkin_horse",
+    "value": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "predicate": {
+              "type": "minejago:skulkin_horse"
+            },
+            "entity": "this",
+            "condition": "minecraft:entity_properties"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "op": "add",
+    "path": "/requirements/0/-",
+    "value": "minejago:skulkin_horse"
+  },
+  {
+    "op": "add",
+    "path": "/criteria/minejago:kruncha",
+    "value": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "predicate": {
+              "type": "minejago:kruncha"
+            },
+            "entity": "this",
+            "condition": "minecraft:entity_properties"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "op": "add",
+    "path": "/requirements/0/-",
+    "value": "minejago:kruncha"
+  },
+  {
+    "op": "add",
+    "path": "/criteria/minejago:nuckal",
+    "value": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "predicate": {
+              "type": "minejago:nuckal"
+            },
+            "entity": "this",
+            "condition": "minecraft:entity_properties"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "op": "add",
+    "path": "/requirements/0/-",
+    "value": "minejago:nuckal"
+  },
+  {
+    "op": "add",
+    "path": "/criteria/minejago:skulkin",
+    "value": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "predicate": {
+              "type": "minejago:skulkin"
+            },
+            "entity": "this",
+            "condition": "minecraft:entity_properties"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "op": "add",
+    "path": "/requirements/0/-",
+    "value": "minejago:skulkin"
+  },
+  {
+    "op": "add",
+    "path": "/criteria/minejago:skull_truck",
+    "value": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "predicate": {
+              "type": "minejago:skull_truck"
+            },
+            "entity": "this",
+            "condition": "minecraft:entity_properties"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "op": "add",
+    "path": "/requirements/0/-",
+    "value": "minejago:skull_truck"
+  },
+  {
+    "op": "add",
+    "path": "/criteria/minejago:skull_motorbike",
+    "value": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "predicate": {
+              "type": "minejago:skull_motorbike"
+            },
+            "entity": "this",
+            "condition": "minecraft:entity_properties"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "op": "add",
+    "path": "/requirements/0/-",
+    "value": "minejago:skull_motorbike"
+  }
+]

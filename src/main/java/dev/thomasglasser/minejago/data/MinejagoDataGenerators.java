@@ -10,6 +10,7 @@ import dev.thomasglasser.minejago.data.lang.expansions.MinejagoImmersionPackEnUs
 import dev.thomasglasser.minejago.data.loot.MinejagoLootTables;
 import dev.thomasglasser.minejago.data.models.MinejagoItemModelProvider;
 import dev.thomasglasser.minejago.data.particles.MinejagoParticleDescriptionProvider;
+import dev.thomasglasser.minejago.data.patches.MinejagoDataPatchProvider;
 import dev.thomasglasser.minejago.data.powers.MinejagoPowerDatagenSuite;
 import dev.thomasglasser.minejago.data.recipes.MinejagoRecipes;
 import dev.thomasglasser.minejago.data.recipes.expansions.MinejagoPotionPotPackRecipes;
@@ -39,6 +40,8 @@ import dev.thomasglasser.minejago.world.level.levelgen.structure.MinejagoStructu
 import dev.thomasglasser.minejago.world.level.levelgen.structure.placement.MinejagoStructureSets;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.pools.MinejagoPools;
 import dev.thomasglasser.tommylib.api.data.recipes.RecipeProviderRunner;
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
@@ -49,9 +52,6 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
-
-import java.util.Set;
-import java.util.concurrent.CompletableFuture;
 
 public class MinejagoDataGenerators {
     private static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
@@ -120,7 +120,7 @@ public class MinejagoDataGenerators {
         generator.addProvider(includeServer, new MinejagoAdvancementProvider(packOutput, lookupProvider, existingFileHelper, enUs));
         generator.addProvider(includeServer, new RecipeProviderRunner(packOutput, Minejago.MOD_ID, lookupProvider, MinejagoRecipes::new));
 //        generator.addProvider(includeServer, new MinejagoBookProvider(packOutput, lookupProvider, enUs::add));
-//        generator.addProvider(includeServer, new MinejagoDataPatchProvider(generator));
+        generator.addProvider(includeServer, new MinejagoDataPatchProvider(generator));
 
         //Client
         generator.addProvider(includeClient, new MinejagoBlockStateProvider(packOutput, existingFileHelper));

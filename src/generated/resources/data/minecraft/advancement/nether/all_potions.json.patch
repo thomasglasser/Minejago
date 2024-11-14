@@ -1,0 +1,7 @@
+[
+  {
+    "op": "add",
+    "path": "/criteria/all_effects/conditions/effects/minejago:hyperfocus",
+    "value": {}
+  }
+]
