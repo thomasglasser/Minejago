@@ -1,10 +1,10 @@
 {
   "values": [
-    "minejago:trims/models/armor/four_weapons",
-    "minejago:trims/models/armor/four_weapons_leggings",
-    "minejago:trims/models/armor/terrain",
-    "minejago:trims/models/armor/terrain_leggings",
-    "minejago:trims/models/armor/lotus",
-    "minejago:trims/models/armor/lotus_leggings"
+    "minejago:trims/entity/humanoid/four_weapons",
+    "minejago:trims/entity/humanoid_leggings/four_weapons",
+    "minejago:trims/entity/humanoid/terrain",
+    "minejago:trims/entity/humanoid_leggings/terrain",
+    "minejago:trims/entity/humanoid/lotus",
+    "minejago:trims/entity/humanoid_leggings/lotus"
   ]
 }

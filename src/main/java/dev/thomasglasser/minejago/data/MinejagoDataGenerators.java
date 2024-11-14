@@ -39,8 +39,6 @@ import dev.thomasglasser.minejago.world.level.levelgen.structure.MinejagoStructu
 import dev.thomasglasser.minejago.world.level.levelgen.structure.placement.MinejagoStructureSets;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.pools.MinejagoPools;
 import dev.thomasglasser.tommylib.api.data.recipes.RecipeProviderRunner;
-import java.util.Set;
-import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
@@ -51,6 +49,9 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
+
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 public class MinejagoDataGenerators {
     private static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()

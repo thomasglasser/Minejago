@@ -13,6 +13,6 @@ public class BlackGiRenderer extends GeoArmorRenderer<BlackGiItem> {
 
     @Override
     public ResourceLocation getTextureLocation(BlackGiItem animatable) {
-        return Minejago.modLoc("textures/models/armor/black_gi.png");
+        return Minejago.modLoc("textures/entity/equipment/humanoid/gi/black.png");
     }
 }

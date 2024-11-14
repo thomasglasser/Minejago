@@ -19,7 +19,7 @@ public class SkeletalArmorRenderer extends GeoArmorRenderer<SkeletalChestplateIt
     @Override
     public ResourceLocation getTextureLocation(SkeletalChestplateItem animatable) {
         if (!TEXTURE_LOCS.containsKey(animatable.getVariant()))
-            TEXTURE_LOCS.put(animatable.getVariant(), Minejago.modLoc("textures/models/armor/skeletal_" + animatable.getVariant().getColor().getName() + ".png"));
+            TEXTURE_LOCS.put(animatable.getVariant(), Minejago.modLoc("textures/entity/equipment/humanoid/skeletal/" + animatable.getVariant().name().toLowerCase() + ".png"));
         return TEXTURE_LOCS.get(animatable.getVariant());
     }
 }

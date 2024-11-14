@@ -13,6 +13,6 @@ public class SamukaisChestplateRenderer extends GeoArmorRenderer<SamukaisChestpl
 
     @Override
     public ResourceLocation getTextureLocation(SamukaisChestplateItem animatable) {
-        return Minejago.modLoc("textures/models/armor/samukais_chestplate.png");
+        return Minejago.modLoc("textures/entity/equipment/humanoid/skeletal/samukai.png");
     }
 }
