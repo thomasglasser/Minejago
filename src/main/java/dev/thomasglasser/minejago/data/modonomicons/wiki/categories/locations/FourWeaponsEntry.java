@@ -27,10 +27,10 @@ public class FourWeaponsEntry extends IndexModeEntryProvider {
         add(context().pageTitle(), "Golden Weapons Map");
         add(context().pageText(), """
                 The main purpose of the Four Weapons blacksmith is to store the Golden Weapons Map.
-                This map is a key item in the story of Minejago, as it leads to the location of the Golden Weapons.
-                It can be found in the sign above the entrance to the shop.
-                Interacting with the sign will yield an empty map,
-                which can be filled in any location and will lead to nearby Golden Weapons.
+                This map is a key item in the story of Minejago, as it leads to the locations of the Golden Weapons.
+                It can be found in the sign above the entrance.
+                Interacting with the sign will yield a filled map that leads to nearby Golden Weapons.
+                If no weapons are in a reasonable distance, no map will be generated.
                 There is one map per structure, so in order to find all four Golden Weapons,
                 you may need to find multiple Four Weapons structures.
                 """);
@@ -43,7 +43,7 @@ public class FourWeaponsEntry extends IndexModeEntryProvider {
 
         add(context().pageTitle(), "Fancy Finds");
         add(context().pageText(), """
-                The Four Weapons blacksmith is also home to a variety of unique items.
+                The Four Weapons blacksmith is home to a variety of unique items.
                 In a barrel by the entrance,
                 there is a chance to find one or more of the following items:
                 - Four Weapons Banner Pattern

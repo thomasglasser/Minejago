@@ -1,0 +1,112 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "characters",
+  "description": "book.minejago.wiki.characters.ninja_team.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "minejago:bamboo_staff"
+  },
+  "name": "book.minejago.wiki.characters.ninja_team.name",
+  "pages": [
+    {
+      "type": "modonomicon:image",
+      "anchor": "wu_image",
+      "border": true,
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "images": [
+        "minejago:textures/modonomicon/wiki/characters/ninja_team/wu.png"
+      ],
+      "text": "",
+      "title": "book.minejago.wiki.characters.ninja_team.wu_image.title",
+      "use_legacy_rendering": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "wu",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.minejago.wiki.characters.ninja_team.wu.text",
+      "title": "book.minejago.wiki.characters.ninja_team.wu.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:image",
+      "anchor": "kai",
+      "border": true,
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "images": [
+        "minejago:textures/modonomicon/wiki/characters/ninja_team/kai.png"
+      ],
+      "text": "book.minejago.wiki.characters.ninja_team.kai.text",
+      "title": "book.minejago.wiki.characters.ninja_team.kai.title",
+      "use_legacy_rendering": false
+    },
+    {
+      "type": "modonomicon:image",
+      "anchor": "nya",
+      "border": true,
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "images": [
+        "minejago:textures/modonomicon/wiki/characters/ninja_team/nya.png"
+      ],
+      "text": "book.minejago.wiki.characters.ninja_team.nya.text",
+      "title": "book.minejago.wiki.characters.ninja_team.nya.title",
+      "use_legacy_rendering": false
+    },
+    {
+      "type": "modonomicon:image",
+      "anchor": "jay",
+      "border": true,
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "images": [
+        "minejago:textures/modonomicon/wiki/characters/ninja_team/jay.png"
+      ],
+      "text": "book.minejago.wiki.characters.ninja_team.jay.text",
+      "title": "book.minejago.wiki.characters.ninja_team.jay.title",
+      "use_legacy_rendering": false
+    },
+    {
+      "type": "modonomicon:image",
+      "anchor": "cole",
+      "border": true,
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "images": [
+        "minejago:textures/modonomicon/wiki/characters/ninja_team/cole.png"
+      ],
+      "text": "book.minejago.wiki.characters.ninja_team.cole.text",
+      "title": "book.minejago.wiki.characters.ninja_team.cole.title",
+      "use_legacy_rendering": false
+    },
+    {
+      "type": "modonomicon:image",
+      "anchor": "zane",
+      "border": true,
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "images": [
+        "minejago:textures/modonomicon/wiki/characters/ninja_team/zane.png"
+      ],
+      "text": "book.minejago.wiki.characters.ninja_team.zane.text",
+      "title": "book.minejago.wiki.characters.ninja_team.zane.title",
+      "use_legacy_rendering": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 0,
+  "x": 0,
+  "y": 0
+}

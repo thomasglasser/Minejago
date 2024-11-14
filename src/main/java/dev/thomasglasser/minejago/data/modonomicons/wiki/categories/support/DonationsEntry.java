@@ -18,7 +18,7 @@ public class DonationsEntry extends IndexModeEntryProvider {
     protected void generatePages() {
         page("buy_me_a_coffee", () -> BookImagePageModel.create()
                 .withAnchor("buy_me_a_coffee")
-                .withImages(WikiBookSubProvider.wikiTexture("donations/buy_me_a_coffee.png")));
+                .withImages(WikiBookSubProvider.wikiTexture("support/donations/buy_me_a_coffee.png")));
 
         page("links", () -> BookTextPageModel.create()
                 .withAnchor("links")

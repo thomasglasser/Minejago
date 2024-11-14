@@ -28,7 +28,7 @@ public class AbilitiesEntry extends IndexModeEntryProvider {
         add(context().pageText(), """
                 While doing Spinjitzu,
                 user speed and knockback are increased,
-                allowing users to use momentum to their advantage.
+                allowing them to use momentum to their advantage.
                 """);
 
         page("passive_knockback", () -> BookTextPageModel.create()

@@ -1,0 +1,89 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "focus",
+  "description": "book.minejago.wiki.focus.meditation.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "minecraft:candle"
+  },
+  "name": "book.minejago.wiki.focus.meditation.name",
+  "pages": [
+    {
+      "type": "modonomicon:image",
+      "anchor": "modifiers_image",
+      "border": true,
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "images": [
+        "minejago:textures/modonomicon/wiki/focus/meditation/modifiers.png"
+      ],
+      "text": "",
+      "title": "book.minejago.wiki.focus.meditation.modifiers_image.title",
+      "use_legacy_rendering": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "modifiers",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.minejago.wiki.focus.meditation.modifiers.text",
+      "title": "book.minejago.wiki.focus.meditation.modifiers.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "modifiers_list_1",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.minejago.wiki.focus.meditation.modifiers_list_1.text",
+      "title": "book.minejago.wiki.focus.meditation.modifiers_list_1.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "modifiers_list_2",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.minejago.wiki.focus.meditation.modifiers_list_2.text",
+      "title": "book.minejago.wiki.focus.meditation.modifiers_list_2.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:image",
+      "anchor": "mega_image",
+      "border": true,
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "images": [
+        "minejago:textures/modonomicon/wiki/focus/meditation/mega.png"
+      ],
+      "text": "",
+      "title": "book.minejago.wiki.focus.meditation.mega_image.title",
+      "use_legacy_rendering": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "mega",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.minejago.wiki.focus.meditation.mega.text",
+      "title": "book.minejago.wiki.focus.meditation.mega.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 1,
+  "x": 0,
+  "y": 0
+}

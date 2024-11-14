@@ -20,7 +20,6 @@ public class MinejagoBlockTagsProvider extends ExtendedBlockTagsProvider {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     protected void addTags(HolderLookup.Provider p_256380_) {
         tag(BlockTags.ENDERMAN_HOLDABLE)
                 .addTag(MinejagoBlockTags.TEAPOTS);

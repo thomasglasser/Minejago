@@ -1,0 +1,31 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "skills",
+  "description": "book.minejago.wiki.skills.tool_proficiency.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "minecraft:diamond_sword"
+  },
+  "name": "book.minejago.wiki.skills.tool_proficiency.name",
+  "pages": [
+    {
+      "type": "modonomicon:image",
+      "anchor": "",
+      "border": true,
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "images": [
+        "minecraft:textures/item/diamond_sword.png"
+      ],
+      "text": "book.minejago.wiki.skills.tool_proficiency.tool_proficiency.text",
+      "title": "book.minejago.wiki.skills.tool_proficiency.tool_proficiency.title",
+      "use_legacy_rendering": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 3,
+  "x": 0,
+  "y": 0
+}

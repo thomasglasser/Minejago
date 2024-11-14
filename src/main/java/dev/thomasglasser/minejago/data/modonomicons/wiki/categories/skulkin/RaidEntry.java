@@ -56,7 +56,7 @@ public class RaidEntry extends IndexModeEntryProvider {
         add(context().pageTitle(), "Samukai");
         add(context().pageText(), """
                 Samukai is the leader of the Skulkin and will lead the final wave of the raid.
-                He throws knives when he is at 25% health and will always drop his chestplate on death.
+                He throws knives when he is at low health and will always drop his chestplate on death.
                 """);
 
         page("configuration", () -> BookTextPageModel.create()

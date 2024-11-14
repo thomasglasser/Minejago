@@ -1,0 +1,66 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "apis",
+  "description": "book.minejago.wiki.apis.advancement_triggers.description",
+  "hide_while_locked": false,
+  "icon": {
+    "components": {
+      "minecraft:potion_contents": {
+        "potion": "minejago:acacia_tea"
+      }
+    },
+    "item": "minejago:filled_teacup"
+  },
+  "name": "book.minejago.wiki.apis.advancement_triggers.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "do_spinjitzu",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.minejago.wiki.apis.advancement_triggers.do_spinjitzu.text",
+      "title": "book.minejago.wiki.apis.advancement_triggers.do_spinjitzu.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "get_power",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.minejago.wiki.apis.advancement_triggers.get_power.text",
+      "title": "book.minejago.wiki.apis.advancement_triggers.get_power.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "brewed_tea",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.minejago.wiki.apis.advancement_triggers.brewed_tea.text",
+      "title": "book.minejago.wiki.apis.advancement_triggers.brewed_tea.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "skulkin_raid_status_changed",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.minejago.wiki.apis.advancement_triggers.skulkin_raid_status_changed.text",
+      "title": "book.minejago.wiki.apis.advancement_triggers.skulkin_raid_status_changed.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 3,
+  "x": 0,
+  "y": 0
+}

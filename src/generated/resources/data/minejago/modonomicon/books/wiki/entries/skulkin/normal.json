@@ -1,0 +1,42 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "skulkin",
+  "description": "book.minejago.wiki.skulkin.normal.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "minejago:skeletal_chestplate_blue"
+  },
+  "name": "book.minejago.wiki.skulkin.normal.name",
+  "pages": [
+    {
+      "type": "modonomicon:image",
+      "anchor": "variants_image",
+      "border": true,
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "images": [
+        "minejago:textures/modonomicon/wiki/skulkin/normal/variants.png"
+      ],
+      "text": "",
+      "title": "book.minejago.wiki.skulkin.normal.variants_image.title",
+      "use_legacy_rendering": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "variants",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.minejago.wiki.skulkin.normal.variants.text",
+      "title": "book.minejago.wiki.skulkin.normal.variants.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 0,
+  "x": 0,
+  "y": 0
+}

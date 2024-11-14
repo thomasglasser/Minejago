@@ -34,7 +34,8 @@ public class MonasteryOfSpinjitzuEntry extends IndexModeEntryProvider {
         add(context().pageText(), """
                 The Spinjitzu Course is a training ground for learning [Spinjitzu](category://spinjitzu).
                 It is a series of obstacles that test the skills of a ninja.
-                It must be activated using the Dragon Button, which can be found at the front of the Monastery.
+                It must be activated using a Dragon Button,
+                two of which can be found at the front of the Monastery.
                 One can practice the course for as long as they like,
                 but in order to unlock [Spinjitzu](category://spinjitzu),
                 they must interact with [Master Wu](entry://characters/ninja_team@wu) and prompt him to begin drinking his tea.
@@ -51,7 +52,7 @@ public class MonasteryOfSpinjitzuEntry extends IndexModeEntryProvider {
 
         add(context().pageTitle(), "Fancy Finds");
         add(context().pageText(), """
-                The Monastery of Spinjitzu is also home to a variety of unique items.
+                The Monastery of Spinjitzu is home to a variety of unique items.
                 Throughout the Monastery, there are decorated pots using the Pottery Sherds Master, Yin Yang, Dragon's Head, and Dragon's Tail.
                 In a chest in [Master Wu's](entry://characters/ninja_team@wu) room,
                 there is a chance to find one or more of the following items:

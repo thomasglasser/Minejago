@@ -1,0 +1,31 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "skills",
+  "description": "book.minejago.wiki.skills.stealth.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "minecraft:gray_wool"
+  },
+  "name": "book.minejago.wiki.skills.stealth.name",
+  "pages": [
+    {
+      "type": "modonomicon:image",
+      "anchor": "",
+      "border": true,
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "images": [
+        "minecraft:textures/item/gray_wool.png"
+      ],
+      "text": "book.minejago.wiki.skills.stealth.stealth.text",
+      "title": "book.minejago.wiki.skills.stealth.stealth.title",
+      "use_legacy_rendering": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 1,
+  "x": 0,
+  "y": 0
+}

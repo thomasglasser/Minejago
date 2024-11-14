@@ -1,0 +1,61 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "support",
+  "description": "book.minejago.wiki.support.mod_pages.description",
+  "hide_while_locked": false,
+  "icon": {
+    "height": 16,
+    "texture": "minejago:textures/modonomicon/wiki/support/mod_pages/modrinth.png",
+    "width": 16
+  },
+  "name": "book.minejago.wiki.support.mod_pages.name",
+  "pages": [
+    {
+      "type": "modonomicon:image",
+      "anchor": "modrinth",
+      "border": true,
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "images": [
+        "minejago:textures/modonomicon/wiki/support/mod_pages/modrinth.png"
+      ],
+      "text": "book.minejago.wiki.support.mod_pages.modrinth.text",
+      "title": "book.minejago.wiki.support.mod_pages.modrinth.title",
+      "use_legacy_rendering": false
+    },
+    {
+      "type": "modonomicon:image",
+      "anchor": "github",
+      "border": true,
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "images": [
+        "minejago:textures/modonomicon/wiki/support/mod_pages/github.png"
+      ],
+      "text": "book.minejago.wiki.support.mod_pages.github.text",
+      "title": "book.minejago.wiki.support.mod_pages.github.title",
+      "use_legacy_rendering": false
+    },
+    {
+      "type": "modonomicon:image",
+      "anchor": "curseforge",
+      "border": true,
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "images": [
+        "minejago:textures/modonomicon/wiki/support/mod_pages/curseforge.png"
+      ],
+      "text": "book.minejago.wiki.support.mod_pages.curseforge.text",
+      "title": "book.minejago.wiki.support.mod_pages.curseforge.title",
+      "use_legacy_rendering": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 0,
+  "x": 0,
+  "y": 0
+}

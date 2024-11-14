@@ -1,0 +1,31 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "skills",
+  "description": "book.minejago.wiki.skills.dexterity.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "minecraft:oak_log"
+  },
+  "name": "book.minejago.wiki.skills.dexterity.name",
+  "pages": [
+    {
+      "type": "modonomicon:image",
+      "anchor": "",
+      "border": true,
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "images": [
+        "minecraft:textures/block/oak_log.png"
+      ],
+      "text": "book.minejago.wiki.skills.dexterity.dexterity.text",
+      "title": "book.minejago.wiki.skills.dexterity.dexterity.title",
+      "use_legacy_rendering": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 2,
+  "x": 0,
+  "y": 0
+}

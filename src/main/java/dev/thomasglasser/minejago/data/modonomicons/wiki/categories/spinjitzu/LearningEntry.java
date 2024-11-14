@@ -67,10 +67,11 @@ public class LearningEntry extends IndexModeEntryProvider {
 
         add(context().pageTitle(), "Configuration");
         add(context().pageText(), """
-                There are currently three configuration options for the Spinjitzu course:
+                There are currently four configuration options for the Spinjitzu course:
                 - "require_course_completion" (default: true) - Whether the course must be completed to unlock Spinjitzu.
                 - "course_time_limit" (default: 30) - The time limit in seconds to complete the course.
                 - "course_radius" (default: 64) - The radius in blocks that [Wu](entry://characters/ninja_team@wu) will check to find a teapot and include course elements
+                - "course_speed" (default: 0.5) - The speed at which the course elements rotate and move
                 """);
     }
 

@@ -46,8 +46,9 @@ public class MagicEntry extends IndexModeEntryProvider {
         add(context().pageText(), """
                 If the [Potion Pot Pack](entry://expansions/potion_pot) is enabled,
                 you can brew vanilla teas in a [teapot](entry://tea/teapot) using vanilla ingredients.
-                Potions brewed in this way are less effective than potions,
-                but they hold six cups of tea and can be drank by multiple players.
+                Vanilla teas are less effective than corresponding potions,
+                but the recipe produces 6 cups instead of 1 bottle,
+                so the effects are spread out evenly.
                 """);
     }
 

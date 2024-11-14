@@ -23,13 +23,11 @@ public class FocusModifiersEntry extends IndexModeEntryProvider {
         add(context().pageTitle(), "JSON Format");
         add(context().pageText(), """
                 An example JSON focus modifier is shown below:
-                ```json
                 {
                   "block": "minejago:scroll_shelf",
                   "modifier": 0.2,
                   "operation": "addition"
                 }
-                ```
                 Now, let's break it down.
                 """);
 

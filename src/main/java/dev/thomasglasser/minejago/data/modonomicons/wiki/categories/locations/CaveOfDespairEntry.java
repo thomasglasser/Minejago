@@ -3,8 +3,12 @@ package dev.thomasglasser.minejago.data.modonomicons.wiki.categories.locations;
 import com.klikli_dev.modonomicon.api.datagen.CategoryProviderBase;
 import com.klikli_dev.modonomicon.api.datagen.IndexModeEntryProvider;
 import com.klikli_dev.modonomicon.api.datagen.book.BookIconModel;
+import com.klikli_dev.modonomicon.api.datagen.book.page.BookImagePageModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
+import dev.thomasglasser.minejago.data.modonomicons.MinejagoBookProvider;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
 
 public class CaveOfDespairEntry extends IndexModeEntryProvider {
     private static final String ID = "cave_of_despair";
@@ -22,20 +26,21 @@ public class CaveOfDespairEntry extends IndexModeEntryProvider {
 
         add(context().pageTitle(), "Obtaining the Scythe of Quakes");
         add(context().pageText(), """
-                To obtain the [Scythe of Quakes](entry://powers/golden_weapons@scythe_of_quakes) from the Cave of Despair,
-                you must interact with the [Earth Dragon](entry://powers/dragons) in the ground.
+                To obtain the [Scythe of Quakes](entry://powers/golden_weapons@scythe_of_quakes),
+                you must interact with the [Earth Dragon](entry://powers/dragons)'s head in the center.
                 The Earth Dragon will then come out of the ground and try to protect the Scythe.
-                You must either tame the [Earth Dragon](entry://powers/dragons) or escape it to obtain the Scythe.
+                You must either tame or escape it to obtain the Scythe.
                 """);
 
-        page("fancy_finds", () -> BookTextPageModel.create()
+        page("fancy_finds", () -> BookImagePageModel.create()
                 .withAnchor("fancy_finds")
+                .withImages(MinejagoBookProvider.itemLoc(MinejagoItems.POTTERY_SHERD_PEAKS), MinejagoBookProvider.itemLoc(MinejagoItems.TERRAIN_ARMOR_TRIM_SMITHING_TEMPLATE), MinejagoBookProvider.blockLoc(Blocks.TERRACOTTA), MinejagoBookProvider.blockLoc(Blocks.LIGHT_GRAY_TERRACOTTA), MinejagoBookProvider.itemLoc(Items.CLAY_BALL), MinejagoBookProvider.itemLoc(Items.EMERALD))
                 .withTitle(context().pageTitle())
                 .withText(context().pageText()));
 
         add(context().pageTitle(), "Fancy Finds");
         add(context().pageText(), """
-                The Cave of Despair is also home to a variety of unique items.
+                The Cave of Despair is home to a variety of unique items.
                 In suspicious red sand around the cave,
                 there is a chance to find one or more of the following items:
                 - Peaks Pottery Sherd

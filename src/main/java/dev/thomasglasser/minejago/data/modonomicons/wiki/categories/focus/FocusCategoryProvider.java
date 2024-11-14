@@ -19,6 +19,11 @@ public class FocusCategoryProvider extends IndexModeCategoryProvider {
     }
 
     @Override
+    public String categoryId() {
+        return ID;
+    }
+
+    @Override
     protected String categoryName() {
         return "Focus";
     }
@@ -35,10 +40,5 @@ public class FocusCategoryProvider extends IndexModeCategoryProvider {
     @Override
     protected BookIconModel categoryIcon() {
         return BookIconModel.create(modLoc("textures/mob_effect/hyperfocus.png"), 18, 18);
-    }
-
-    @Override
-    public String categoryId() {
-        return ID;
     }
 }

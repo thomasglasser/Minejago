@@ -1,0 +1,31 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "dependencies",
+  "description": "book.minejago.wiki.dependencies.tslatentitystatus.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "minecraft:spyglass"
+  },
+  "name": "book.minejago.wiki.dependencies.tslatentitystatus.name",
+  "pages": [
+    {
+      "type": "modonomicon:image",
+      "anchor": "power",
+      "border": true,
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "images": [
+        "minejago:textures/modonomicon/wiki/dependencies/tslatentitystatus/power.png"
+      ],
+      "text": "book.minejago.wiki.dependencies.tslatentitystatus.power.text",
+      "title": "book.minejago.wiki.dependencies.tslatentitystatus.power.title",
+      "use_legacy_rendering": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 6,
+  "x": 0,
+  "y": 0
+}

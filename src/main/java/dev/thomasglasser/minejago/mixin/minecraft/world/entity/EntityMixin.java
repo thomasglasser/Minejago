@@ -39,7 +39,7 @@ public class EntityMixin {
     @ModifyReturnValue(method = "dampensVibrations", at = @At("TAIL"))
     private boolean minejago_dampensVibrations(boolean original) {
         if (minejago$INSTANCE instanceof LivingEntity livingEntity)
-            return MinejagoArmors.isWearingFullGi(livingEntity) || livingEntity.getData(MinejagoAttachmentTypes.SKILL).get(MinejagoSkills.STEALTH).level() > 10 || original;
+            return MinejagoArmors.isWearingFullGi(livingEntity) || livingEntity.getData(MinejagoAttachmentTypes.SKILL).get(MinejagoSkills.STEALTH).level() >= 10 || original;
         return original;
     }
 

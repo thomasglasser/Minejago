@@ -24,23 +24,19 @@ public class TeapotBrewingRecipeEntry extends IndexModeEntryProvider {
         add(context().pageText(), """
                 An example JSON recipe for brewing tea in the teapot is shown below:
                 \\
-                ```json
                 {
-                   "type": "minejago:teapot_brewing",
-                   "base": "minecraft:water",
-                   "brewing_time": {
-                     "type": "minecraft:uniform",
-                     "max_inclusive": 2400,
-                     "min_inclusive": 1200
-                   },
-                   "experience": 0.5,
-                   "group": "focus_tea",
-                   "ingredient": {
-                     "item": "minejago:focus_leaves"
-                   },
-                   "result": "minejago:focus_tea"
-                 }
-                ```
+                  "type": "minejago:teapot_brewing",
+                  "base": "minecraft:water",
+                  "brewing_time": {
+                    "type": "minecraft:uniform",
+                    "max_inclusive": 2400,
+                    "min_inclusive": 1200
+                  },
+                  "experience": 0.5,
+                  "group": "focus_tea",
+                  "ingredient": "minejago:focus_leaves",
+                  "result": "minejago:focus_tea"
+                }
                 \\
                 Now, let's break it down.
                 """);

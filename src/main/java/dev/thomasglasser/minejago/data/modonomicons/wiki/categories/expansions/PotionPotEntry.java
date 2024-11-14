@@ -31,9 +31,9 @@ public class PotionPotEntry extends IndexModeEntryProvider {
 
         add(context().pageTitle(), "Usage");
         add(context().pageText(), """
-                Making the potion tea involves using the same ingredients as the brewing stand.
-                For example, adding nether wart to water in a teapot will create an awkward potion tea.
-                Adding a fermented spider eye to the awkward potion tea will create a potion of weakness tea.
+                Making vanilla tea involves using the same ingredients as the brewing stand.
+                For example, adding nether wart to water in a teapot will create Awkward Tea.
+                Adding a fermented spider eye to Awkward Tea will create Weakness Tea.
                 """);
     }
 

@@ -1,0 +1,41 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "powers",
+  "description": "book.minejago.wiki.powers.discovery.description",
+  "hide_while_locked": false,
+  "icon": {
+    "height": 32,
+    "texture": "minejago:textures/power/fire.png",
+    "width": 32
+  },
+  "name": "book.minejago.wiki.powers.discovery.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "find_wu",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.minejago.wiki.powers.discovery.find_wu.text",
+      "title": "book.minejago.wiki.powers.discovery.find_wu.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "choices",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.minejago.wiki.powers.discovery.choices.text",
+      "title": "book.minejago.wiki.powers.discovery.choices.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 0,
+  "x": 0,
+  "y": 0
+}

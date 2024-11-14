@@ -27,7 +27,6 @@ public class PowersEntry extends IndexModeEntryProvider {
         add(context().pageText(), """
                 An example JSON power is shown below:
                 \\
-                ```json
                 {
                   "border_particle": "minejago:sparks",
                   "display": {
@@ -45,7 +44,6 @@ public class PowersEntry extends IndexModeEntryProvider {
                     "translate": "power.minejago.fire.tagline"
                   }
                 }
-                ```
                 \\
                 Now, let's break it down.
                 """);
@@ -92,11 +90,11 @@ public class PowersEntry extends IndexModeEntryProvider {
                 you will need to add it to the tag for that behavior.
                 \\
                 You will also need a resource pack for client assets with the following files:
-                - A language file at "assets/<namespace>/lang/<language>.json" with the following entries:
-                    - "power.<namespace>.<power_id>" for the power's name
-                    - "power.<namespace>.<power_id>.description" for the power's description
-                    - "power.<namespace>.<power_id>.lore" for the power's lore
-                    - "power.<namespace>.<power_id>.tagline" for the power's tagline
+                - A language file at "assets/<pack_namespace>/lang/<locale_name>.json" with the following entries:
+                    - "power.<pack_namespace>.<power_id>" for the power's name
+                    - "power.<pack_namespace>.<power_id>.description" for the power's description
+                    - "power.<pack_namespace>.<power_id>.lore" for the power's lore
+                    - "power.<pack_namespace>.<power_id>.tagline" for the power's tagline
                 """);
 
         page("other_steps_2", () -> BookTextPageModel.create()
@@ -106,12 +104,12 @@ public class PowersEntry extends IndexModeEntryProvider {
 
         add(context().pageTitle(), "Other Steps");
         add(context().pageText(), """
-                - Model files for the gi sets in hand at "assets/<namespace>/models/item/minejago_armor/<power_id>_training_gi_<piece>.json" for the hood, jacket, pants, and boots.
+                - Model files for the gi sets in hand at "assets/<pack_namespace>/models/item/minejago_armor/<power_id>\\_training_gi_\\<piece>.json" for the hood, jacket, pants, and boots.
                 (For example, "assets/minejago/models/item/minejago_armor/fire_training_gi_jacket.json")
-                - Texture files for the gi sets in hand at "assets/<namespace>/textures/item/minejago_armor/<power_id>_training_gi_<piece>.png" for the hood, jacket, pants, and boots.
-                - Texture files for the gi sets on the player at "assets/<namespace>/textures/models/armor/minejago_armor/training_gi_<power_id>.png"
+                - Texture files for the gi sets in hand at "assets/<pack_namespace>/textures/item/minejago_armor/<power_id>\\_training\\_gi_<piece>.png" for the hood, jacket, pants, and boots.
+                - Texture files for the gi sets on the player at "assets/<pack_namespace>/textures/entity/equipment/humanoid/gi/training_<power_id>.png"
                 Refer to existing gi sets for the correct texture layout.
-                - A texture file for the power's icon at "assets/<namespace>/textures/power/<power_id>.png"
+                - A texture file for the power's icon at "assets/<pack_namespace>/textures/power/<power_id>.png"
                 """);
     }
 

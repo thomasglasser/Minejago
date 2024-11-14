@@ -3,7 +3,6 @@ package dev.thomasglasser.minejago.data.modonomicons.wiki.categories.dependencie
 import com.klikli_dev.modonomicon.api.datagen.IndexModeEntryProvider;
 import com.klikli_dev.modonomicon.api.datagen.book.BookIconModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookImagePageModel;
-import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
 import dev.thomasglasser.minejago.data.modonomicons.wiki.WikiBookSubProvider;
 import net.minecraft.world.item.Items;
 
@@ -16,14 +15,6 @@ public class JeiEntry extends IndexModeEntryProvider {
 
     @Override
     protected void generatePages() {
-        page("gi", () -> BookTextPageModel.create()
-                .withAnchor("gi")
-                .withTitle(context().pageTitle())
-                .withText(context().pageText()));
-
-        add(context().pageTitle(), "Powered Gi");
-        add(context().pageText(), "JEI is able to recognized the datapack powered gi.");
-
         page("teapot_recipe", () -> BookImagePageModel.create()
                 .withAnchor("teapot_recipe")
                 .withImages(WikiBookSubProvider.wikiTexture("dependencies/jei/teapot_recipe.png"))

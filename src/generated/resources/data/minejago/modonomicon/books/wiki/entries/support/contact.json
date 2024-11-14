@@ -1,0 +1,56 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "support",
+  "description": "book.minejago.wiki.support.contact.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "minecraft:goat_horn"
+  },
+  "name": "book.minejago.wiki.support.contact.name",
+  "pages": [
+    {
+      "type": "modonomicon:image",
+      "anchor": "github",
+      "border": true,
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "images": [
+        "minejago:textures/modonomicon/wiki/support/mod_pages/github.png"
+      ],
+      "text": "book.minejago.wiki.support.contact.github.text",
+      "title": "book.minejago.wiki.support.contact.github.title",
+      "use_legacy_rendering": false
+    },
+    {
+      "type": "modonomicon:image",
+      "anchor": "discord",
+      "border": true,
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "images": [
+        "minejago:textures/modonomicon/wiki/support/contact/discord.png"
+      ],
+      "text": "book.minejago.wiki.support.contact.discord.text",
+      "title": "book.minejago.wiki.support.contact.discord.title",
+      "use_legacy_rendering": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "email",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.minejago.wiki.support.contact.email.text",
+      "title": "book.minejago.wiki.support.contact.email.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 3,
+  "x": 0,
+  "y": 0
+}

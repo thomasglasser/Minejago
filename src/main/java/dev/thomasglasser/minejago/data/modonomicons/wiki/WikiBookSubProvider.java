@@ -13,6 +13,7 @@ import dev.thomasglasser.minejago.data.modonomicons.wiki.categories.expansions.E
 import dev.thomasglasser.minejago.data.modonomicons.wiki.categories.focus.FocusCategoryProvider;
 import dev.thomasglasser.minejago.data.modonomicons.wiki.categories.locations.LocationsCategoryProvider;
 import dev.thomasglasser.minejago.data.modonomicons.wiki.categories.powers.PowersCategoryProvider;
+import dev.thomasglasser.minejago.data.modonomicons.wiki.categories.skills.SkillsCategoryProvider;
 import dev.thomasglasser.minejago.data.modonomicons.wiki.categories.skulkin.SkulkinCategoryProvider;
 import dev.thomasglasser.minejago.data.modonomicons.wiki.categories.spinjitzu.SpinjitzuCategoryProvider;
 import dev.thomasglasser.minejago.data.modonomicons.wiki.categories.support.SupportCategoryProvider;
@@ -34,6 +35,7 @@ public class WikiBookSubProvider extends SingleBookSubProvider {
     protected void generateCategories() {
         add(new PowersCategoryProvider(this).generate());
         add(new SpinjitzuCategoryProvider(this).generate());
+        add(new SkillsCategoryProvider(this).generate());
         add(new FocusCategoryProvider(this).generate());
         add(new TeaCategoryProvider(this).generate());
         add(new LocationsCategoryProvider(this).generate());

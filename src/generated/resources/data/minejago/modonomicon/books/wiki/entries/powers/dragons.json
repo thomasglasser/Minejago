@@ -1,0 +1,39 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "powers",
+  "description": "book.minejago.wiki.powers.dragons.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "minecraft:saddle"
+  },
+  "name": "book.minejago.wiki.powers.dragons.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "about",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.minejago.wiki.powers.dragons.about.text",
+      "title": "book.minejago.wiki.powers.dragons.about.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "bonding_and_taming",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.minejago.wiki.powers.dragons.bonding_and_taming.text",
+      "title": "book.minejago.wiki.powers.dragons.bonding_and_taming.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 3,
+  "x": 0,
+  "y": 0
+}

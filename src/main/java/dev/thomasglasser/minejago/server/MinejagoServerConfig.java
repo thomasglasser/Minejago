@@ -56,7 +56,6 @@ public class MinejagoServerConfig {
         requireCourseCompletion = builder
                 .define("require_course_completion", true);
         courseTimeLimit = builder
-                // TODO: Set to reasonable time (require projectile interruption?)
                 .defineInRange("course_time_limit", 30, 5, 300);
         courseRadius = builder
                 .defineInRange("course_radius", 64, 1, 128);

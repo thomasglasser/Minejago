@@ -24,7 +24,7 @@ public class DevEntry extends IndexModeEntryProvider {
                 .withText(context().pageText()));
 
         add(context().pageTitle(), "Legacy Development Team");
-        add(context().pageText(), "The development team that has been with the project since the beginning gets access to an exclusive beard cosmetic.");
+        add(context().pageText(), "Members of the development team that have been with the project since the beginning get access to an exclusive beard cosmetic.");
 
         page("configuration", () -> BookTextPageModel.create()
                 .withAnchor("configuration")

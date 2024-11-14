@@ -1,0 +1,47 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "locations",
+  "description": "book.minejago.wiki.locations.cave_of_despair.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "minejago:scythe_of_quakes"
+  },
+  "name": "book.minejago.wiki.locations.cave_of_despair.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "scythe_of_quakes",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.minejago.wiki.locations.cave_of_despair.scythe_of_quakes.text",
+      "title": "book.minejago.wiki.locations.cave_of_despair.scythe_of_quakes.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:image",
+      "anchor": "fancy_finds",
+      "border": true,
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "images": [
+        "minejago:textures/item/peaks_pottery_sherd.png",
+        "minejago:textures/item/terrain_armor_trim_smithing_template.png",
+        "minecraft:textures/block/terracotta.png",
+        "minecraft:textures/block/light_gray_terracotta.png",
+        "minecraft:textures/item/clay_ball.png",
+        "minecraft:textures/item/emerald.png"
+      ],
+      "text": "book.minejago.wiki.locations.cave_of_despair.fancy_finds.text",
+      "title": "book.minejago.wiki.locations.cave_of_despair.fancy_finds.title",
+      "use_legacy_rendering": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 2,
+  "x": 0,
+  "y": 0
+}

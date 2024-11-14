@@ -3,6 +3,7 @@ package dev.thomasglasser.minejago.data.modonomicons.wiki.categories.support;
 import com.klikli_dev.modonomicon.api.datagen.IndexModeEntryProvider;
 import com.klikli_dev.modonomicon.api.datagen.book.BookIconModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookImagePageModel;
+import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
 import dev.thomasglasser.minejago.data.modonomicons.wiki.WikiBookSubProvider;
 import net.minecraft.world.item.Items;
 
@@ -39,9 +40,8 @@ public class ContactEntry extends IndexModeEntryProvider {
                 the [Discord](https://discord.gg/U6Qf4P9YW4) is the best place to go.
                 """);
 
-        page("email", () -> BookImagePageModel.create()
+        page("email", () -> BookTextPageModel.create()
                 .withAnchor("email")
-                .withImages(WikiBookSubProvider.wikiTexture("support/contact/email.png"))
                 .withTitle(context().pageTitle())
                 .withText(context().pageText()));
 
