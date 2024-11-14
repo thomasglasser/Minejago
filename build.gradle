@@ -193,7 +193,7 @@ dependencies {
 	// Runtime
 	// For ryoamiclights
 	runtimeOnly "maven.modrinth:obsidianui:${obsidianui_version}-neoforge"
-//	runtimeOnly "maven.modrinth:worldedit:${worldedit_version}"
+	runtimeOnly "maven.modrinth:worldedit:${worldedit_version}"
 //	runtimeOnly "maven.modrinth:huge-structure-blocks:${huge_structure_blocks_version}-neoforge"
 }
 
