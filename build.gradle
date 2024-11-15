@@ -173,7 +173,7 @@ dependencies {
 	jarJar implementation("dev.thomasglasser.tommylib:tommylib-neoforge-${minecraft_version}:${tommylib_version}")
 
 	jarJar implementation("maven.modrinth:trimmed:${trimmed_version}+neoforge")
-	jarJar compileOnly("dev.kosmx.player-anim:player-animation-lib-forge:${playeranimator_version}")
+	compileOnly("dev.kosmx.player-anim:player-animation-lib-forge:${playeranimator_version}")
 //	jarJar implementation("dev.kosmx.player-anim:player-animation-lib-forge:${playeranimator_version}")
 
 	implementation "dev.thomasglasser.sherdsapi:sherdsapi-neoforge-${minecraft_version}:${sherdsapi_version}"
