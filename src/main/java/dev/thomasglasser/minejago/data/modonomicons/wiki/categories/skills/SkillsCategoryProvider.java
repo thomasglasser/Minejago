@@ -3,7 +3,7 @@ package dev.thomasglasser.minejago.data.modonomicons.wiki.categories.skills;
 import com.klikli_dev.modonomicon.api.datagen.IndexModeCategoryProvider;
 import com.klikli_dev.modonomicon.api.datagen.ModonomiconProviderBase;
 import com.klikli_dev.modonomicon.api.datagen.book.BookIconModel;
-import net.minecraft.world.item.Items;
+import dev.thomasglasser.minejago.Minejago;
 
 public class SkillsCategoryProvider extends IndexModeCategoryProvider {
     public static final String ID = "skills";
@@ -41,7 +41,6 @@ public class SkillsCategoryProvider extends IndexModeCategoryProvider {
 
     @Override
     protected BookIconModel categoryIcon() {
-        // TODO: Use a skill icon
-        return BookIconModel.create(Items.DIAMOND_BOOTS);
+        return BookIconModel.create(Minejago.modLoc("textures/gui/skill/agility.png"), 32, 39);
     }
 }

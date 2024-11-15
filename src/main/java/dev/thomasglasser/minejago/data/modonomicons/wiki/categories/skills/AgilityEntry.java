@@ -4,8 +4,8 @@ import com.klikli_dev.modonomicon.api.datagen.CategoryProviderBase;
 import com.klikli_dev.modonomicon.api.datagen.IndexModeEntryProvider;
 import com.klikli_dev.modonomicon.api.datagen.book.BookIconModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookImagePageModel;
-import dev.thomasglasser.minejago.data.modonomicons.MinejagoBookProvider;
-import net.minecraft.world.item.Items;
+import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
+import dev.thomasglasser.minejago.Minejago;
 
 public class AgilityEntry extends IndexModeEntryProvider {
     public static final String ID = "agility";
@@ -16,9 +16,13 @@ public class AgilityEntry extends IndexModeEntryProvider {
 
     @Override
     protected void generatePages() {
-        page("agility", () -> BookImagePageModel.create()
-                // TODO: Agility icon
-                .withImages(MinejagoBookProvider.itemLoc(Items.DIAMOND_BOOTS))
+        page("image", () -> BookImagePageModel.create()
+                .withImages(Minejago.modLoc("textures/gui/skill/agility.png"))
+                .withTitle(context().pageTitle()));
+
+        add(context().pageTitle(), "Agility");
+
+        page("description", () -> BookTextPageModel.create()
                 .withTitle(context().pageTitle())
                 .withText(context().pageText()));
 
@@ -42,8 +46,7 @@ public class AgilityEntry extends IndexModeEntryProvider {
 
     @Override
     protected BookIconModel entryIcon() {
-        // TODO: Agility icon
-        return BookIconModel.create(Items.DIAMOND_BOOTS);
+        return BookIconModel.create(Minejago.modLoc("textures/gui/skill/agility.png"), 32, 39);
     }
 
     @Override

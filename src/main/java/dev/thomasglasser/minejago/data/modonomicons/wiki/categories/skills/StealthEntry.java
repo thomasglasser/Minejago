@@ -4,8 +4,8 @@ import com.klikli_dev.modonomicon.api.datagen.CategoryProviderBase;
 import com.klikli_dev.modonomicon.api.datagen.IndexModeEntryProvider;
 import com.klikli_dev.modonomicon.api.datagen.book.BookIconModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookImagePageModel;
-import dev.thomasglasser.minejago.data.modonomicons.MinejagoBookProvider;
-import net.minecraft.world.item.Items;
+import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
+import dev.thomasglasser.minejago.Minejago;
 
 public class StealthEntry extends IndexModeEntryProvider {
     public static final String ID = "stealth";
@@ -16,9 +16,13 @@ public class StealthEntry extends IndexModeEntryProvider {
 
     @Override
     protected void generatePages() {
-        page("stealth", () -> BookImagePageModel.create()
-                // TODO: Stealth icon
-                .withImages(MinejagoBookProvider.itemLoc(Items.GRAY_WOOL))
+        page("image", () -> BookImagePageModel.create()
+                .withImages(Minejago.modLoc("textures/gui/skill/stealth.png"))
+                .withTitle(context().pageTitle()));
+
+        add(context().pageTitle(), "Stealth");
+
+        page("description", () -> BookTextPageModel.create()
                 .withTitle(context().pageTitle())
                 .withText(context().pageText()));
 
@@ -43,8 +47,7 @@ public class StealthEntry extends IndexModeEntryProvider {
 
     @Override
     protected BookIconModel entryIcon() {
-        // TODO: Stealth icon
-        return BookIconModel.create(Items.GRAY_WOOL);
+        return BookIconModel.create(Minejago.modLoc("textures/gui/skill/stealth.png"), 32, 39);
     }
 
     @Override

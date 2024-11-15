@@ -6,11 +6,13 @@ import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.PowerSelectionScreen;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.ScrollEditScreen;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.ScrollViewScreen;
+import dev.thomasglasser.minejago.client.gui.screens.inventory.SkillScreen;
 import dev.thomasglasser.minejago.commands.MinejagoCommandEvents;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import dev.thomasglasser.minejago.plugins.MinejagoWailaPlugin;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.server.commands.PowerCommand;
+import dev.thomasglasser.minejago.server.commands.SkillCommand;
 import dev.thomasglasser.minejago.server.commands.SpinjitzuCommand;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
@@ -238,6 +240,7 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(MinejagoKeyMappings.MEDITATE, "Meditate");
         add(MinejagoKeyMappings.ASCEND, "Ascend");
         add(MinejagoKeyMappings.DESCEND, "Descend");
+        add(MinejagoKeyMappings.OPEN_SKILL_SCREEN, "Open Skill Screen");
 
         add(MinejagoCommandEvents.NOT_LIVING_ENTITY, "Target %s (%s) is not a LivingEntity");
 
@@ -255,6 +258,11 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(SpinjitzuCommand.SUCCESS_SELF, "Set own Spinjitzu to %s");
         add(SpinjitzuCommand.CHANGED, "Your Spinjitzu has been updated to %s");
         add(SpinjitzuCommand.SUCCESS_OTHER, "Set %s's Spinjitzu to %s");
+
+        add(SkillCommand.SUCCESS_SELF, "Set %s skill level to %s");
+        add(SkillCommand.CHANGED, "Your %s skill level has been updated to %s");
+        add(SkillCommand.SUCCESS_OTHER, "Set %s's %s skill level to %s");
+        add(SkillCommand.QUERY, "Your %s skill level is %s");
 
         addCreativeTab(MinejagoCreativeModeTabs.GI, "Gi");
         addCreativeTab(MinejagoCreativeModeTabs.MINEJAGO, "Minejago");
@@ -331,6 +339,8 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         addSkill(MinejagoSkills.STEALTH, "Stealth");
         addSkill(MinejagoSkills.DEXTERITY, "Dexterity");
         addSkill(MinejagoSkills.TOOL_PROFICIENCY, "Tool Proficiency");
+
+        add(SkillScreen.TITLE, "Skills");
 
         addConfigs();
     }

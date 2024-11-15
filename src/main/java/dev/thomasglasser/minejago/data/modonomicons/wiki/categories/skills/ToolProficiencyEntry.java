@@ -4,8 +4,8 @@ import com.klikli_dev.modonomicon.api.datagen.CategoryProviderBase;
 import com.klikli_dev.modonomicon.api.datagen.IndexModeEntryProvider;
 import com.klikli_dev.modonomicon.api.datagen.book.BookIconModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookImagePageModel;
-import dev.thomasglasser.minejago.data.modonomicons.MinejagoBookProvider;
-import net.minecraft.world.item.Items;
+import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
+import dev.thomasglasser.minejago.Minejago;
 
 public class ToolProficiencyEntry extends IndexModeEntryProvider {
     public static final String ID = "tool_proficiency";
@@ -16,9 +16,13 @@ public class ToolProficiencyEntry extends IndexModeEntryProvider {
 
     @Override
     protected void generatePages() {
-        page("tool_proficiency", () -> BookImagePageModel.create()
-                // TODO: Tool Proficiency icon
-                .withImages(MinejagoBookProvider.itemLoc(Items.DIAMOND_SWORD))
+        page("image", () -> BookImagePageModel.create()
+                .withImages(Minejago.modLoc("textures/gui/skill/tool_proficiency.png"))
+                .withTitle(context().pageTitle()));
+
+        add(context().pageTitle(), "Tool Proficiency");
+
+        page("description", () -> BookTextPageModel.create()
                 .withTitle(context().pageTitle())
                 .withText(context().pageText()));
 
@@ -42,8 +46,7 @@ public class ToolProficiencyEntry extends IndexModeEntryProvider {
 
     @Override
     protected BookIconModel entryIcon() {
-        // TODO: Tool Proficiency icon
-        return BookIconModel.create(Items.DIAMOND_SWORD);
+        return BookIconModel.create(Minejago.modLoc("textures/gui/skill/tool_proficiency.png"), 32, 39);
     }
 
     @Override

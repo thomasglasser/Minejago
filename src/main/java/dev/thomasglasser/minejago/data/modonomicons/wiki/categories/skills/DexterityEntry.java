@@ -4,9 +4,8 @@ import com.klikli_dev.modonomicon.api.datagen.CategoryProviderBase;
 import com.klikli_dev.modonomicon.api.datagen.IndexModeEntryProvider;
 import com.klikli_dev.modonomicon.api.datagen.book.BookIconModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookImagePageModel;
-import dev.thomasglasser.minejago.data.modonomicons.MinejagoBookProvider;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.Blocks;
+import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
+import dev.thomasglasser.minejago.Minejago;
 
 public class DexterityEntry extends IndexModeEntryProvider {
     public static final String ID = "dexterity";
@@ -17,9 +16,13 @@ public class DexterityEntry extends IndexModeEntryProvider {
 
     @Override
     protected void generatePages() {
-        page("dexterity", () -> BookImagePageModel.create()
-                // TODO: Dexterity icon
-                .withImages(MinejagoBookProvider.blockLoc(Blocks.OAK_LOG))
+        page("image", () -> BookImagePageModel.create()
+                .withImages(Minejago.modLoc("textures/gui/skill/dexterity.png"))
+                .withTitle(context().pageTitle()));
+
+        add(context().pageTitle(), "Dexterity");
+
+        page("description", () -> BookTextPageModel.create()
                 .withTitle(context().pageTitle())
                 .withText(context().pageText()));
 
@@ -43,8 +46,7 @@ public class DexterityEntry extends IndexModeEntryProvider {
 
     @Override
     protected BookIconModel entryIcon() {
-        // TODO: Dexterity icon
-        return BookIconModel.create(Items.OAK_LOG);
+        return BookIconModel.create(Minejago.modLoc("textures/gui/skill/dexterity.png"), 32, 39);
     }
 
     @Override

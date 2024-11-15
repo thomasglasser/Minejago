@@ -10,6 +10,7 @@ public class MinejagoKeyMappings {
     public static final KeyMapping MEDITATE = register("meditate", InputConstants.KEY_M, KeyMapping.CATEGORY_MOVEMENT);
     public static final KeyMapping ASCEND = register("ascend", InputConstants.KEY_UP, KeyMapping.CATEGORY_MOVEMENT);
     public static final KeyMapping DESCEND = register("descend", InputConstants.KEY_DOWN, KeyMapping.CATEGORY_MOVEMENT);
+    public static final KeyMapping OPEN_SKILL_SCREEN = register("open_skill_screen", InputConstants.KEY_K, KeyMapping.CATEGORY_GAMEPLAY);
 
     private static KeyMapping register(String name, int key, String category) {
         return ClientUtils.registerKeyMapping(Minejago.modLoc(name), key, category);

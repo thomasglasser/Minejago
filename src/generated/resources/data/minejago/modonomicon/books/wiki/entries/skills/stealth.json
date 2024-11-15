@@ -5,7 +5,9 @@
   "description": "book.minejago.wiki.skills.stealth.description",
   "hide_while_locked": false,
   "icon": {
-    "item": "minecraft:gray_wool"
+    "height": 39,
+    "texture": "minejago:textures/gui/skill/stealth.png",
+    "width": 32
   },
   "name": "book.minejago.wiki.skills.stealth.name",
   "pages": [
@@ -17,11 +19,22 @@
         "type": "modonomicon:none"
       },
       "images": [
-        "minecraft:textures/item/gray_wool.png"
+        "minejago:textures/gui/skill/stealth.png"
       ],
-      "text": "book.minejago.wiki.skills.stealth.stealth.text",
-      "title": "book.minejago.wiki.skills.stealth.stealth.title",
+      "text": "",
+      "title": "book.minejago.wiki.skills.stealth.image.title",
       "use_legacy_rendering": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.minejago.wiki.skills.stealth.description.text",
+      "title": "book.minejago.wiki.skills.stealth.description.title",
+      "use_markdown_in_title": false
     }
   ],
   "show_when_any_parent_unlocked": false,

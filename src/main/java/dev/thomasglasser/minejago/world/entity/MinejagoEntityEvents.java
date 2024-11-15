@@ -3,6 +3,7 @@ package dev.thomasglasser.minejago.world.entity;
 import com.google.common.collect.HashMultimap;
 import com.google.common.util.concurrent.AtomicDouble;
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.client.MinejagoClientUtils;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleUtils;
 import dev.thomasglasser.minejago.network.ClientboundRefreshVipDataPayload;
@@ -262,6 +263,8 @@ public class MinejagoEntityEvents {
                         TommyLibServices.NETWORK.sendToServer(ServerboundStartMeditationPayload.INSTANCE);
                     }
                     persistentData.putInt("WaitTicks", 10);
+                } else if (MinejagoKeyMappings.OPEN_SKILL_SCREEN.consumeClick()) {
+                    MinejagoClientUtils.openSkillScreen();
                 } else if (player.isShiftKeyDown()) {
                     if (spinjitzu.active()) {
                         TommyLibServices.NETWORK.sendToServer(ServerboundStopSpinjitzuPayload.INSTANCE);
@@ -304,8 +307,8 @@ public class MinejagoEntityEvents {
 
                 if (dirty) {
                     HashMultimap<Holder<Attribute>, AttributeModifier> modifiers = HashMultimap.create();
-                    modifiers.put(Attributes.MOVEMENT_SPEED, new AttributeModifier(Minejago.modLoc("agility_modifier"), 0.1 * (data.get(MinejagoSkills.AGILITY).level()), AttributeModifier.Operation.ADD_VALUE));
-                    modifiers.put(Attributes.JUMP_STRENGTH, new AttributeModifier(Minejago.modLoc("agility_modifier"), 0.1 * (data.get(MinejagoSkills.AGILITY).level()), AttributeModifier.Operation.ADD_VALUE));
+                    modifiers.put(Attributes.MOVEMENT_SPEED, new AttributeModifier(Minejago.modLoc("agility_modifier"), 0.01 * (data.get(MinejagoSkills.AGILITY).level()), AttributeModifier.Operation.ADD_VALUE));
+                    modifiers.put(Attributes.JUMP_STRENGTH, new AttributeModifier(Minejago.modLoc("agility_modifier"), 0.05 * (data.get(MinejagoSkills.AGILITY).level()), AttributeModifier.Operation.ADD_VALUE));
                     modifiers.put(Attributes.SNEAKING_SPEED, new AttributeModifier(Minejago.modLoc("stealth_modifier"), 0.1 * (data.get(MinejagoSkills.STEALTH).level()), AttributeModifier.Operation.ADD_VALUE));
                     livingEntity.getAttributes().addTransientAttributeModifiers(modifiers);
                     data.setDirty(false);
@@ -315,14 +318,14 @@ public class MinejagoEntityEvents {
                 boolean toolHanded = livingEntity.getMainHandItem().is(ConventionalItemTags.TOOLS);
                 if (dirty || emptyHanded && !livingEntity.getAttributes().hasModifier(Attributes.MINING_EFFICIENCY, Minejago.modLoc("dexterity_modifier")) || toolHanded && !livingEntity.getAttributes().hasModifier(Attributes.MINING_EFFICIENCY, Minejago.modLoc("tool_proficiency_modifier"))) {
                     HashMultimap<Holder<Attribute>, AttributeModifier> emptyHandModifiers = HashMultimap.create();
-                    emptyHandModifiers.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(Minejago.modLoc("dexterity_modifier"), 0.1 * (data.get(MinejagoSkills.DEXTERITY).level()), AttributeModifier.Operation.ADD_VALUE));
-                    emptyHandModifiers.put(Attributes.ATTACK_SPEED, new AttributeModifier(Minejago.modLoc("dexterity_modifier"), 0.1 * (data.get(MinejagoSkills.DEXTERITY).level()), AttributeModifier.Operation.ADD_VALUE));
-                    emptyHandModifiers.put(Attributes.MINING_EFFICIENCY, new AttributeModifier(Minejago.modLoc("dexterity_modifier"), 0.1 * (data.get(MinejagoSkills.DEXTERITY).level()), AttributeModifier.Operation.ADD_VALUE));
+                    emptyHandModifiers.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(Minejago.modLoc("dexterity_modifier"), 0.2 * (data.get(MinejagoSkills.DEXTERITY).level()), AttributeModifier.Operation.ADD_VALUE));
+                    emptyHandModifiers.put(Attributes.ATTACK_SPEED, new AttributeModifier(Minejago.modLoc("dexterity_modifier"), 0.2 * (data.get(MinejagoSkills.DEXTERITY).level()), AttributeModifier.Operation.ADD_VALUE));
+                    emptyHandModifiers.put(Attributes.BLOCK_BREAK_SPEED, new AttributeModifier(Minejago.modLoc("dexterity_modifier"), 0.1 * (data.get(MinejagoSkills.DEXTERITY).level()), AttributeModifier.Operation.ADD_VALUE));
 
                     HashMultimap<Holder<Attribute>, AttributeModifier> toolModifiers = HashMultimap.create();
-                    toolModifiers.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(Minejago.modLoc("tool_proficiency_modifier"), 0.1 * (data.get(MinejagoSkills.TOOL_PROFICIENCY).level()), AttributeModifier.Operation.ADD_VALUE));
-                    toolModifiers.put(Attributes.ATTACK_SPEED, new AttributeModifier(Minejago.modLoc("tool_proficiency_modifier"), 0.1 * (data.get(MinejagoSkills.TOOL_PROFICIENCY).level()), AttributeModifier.Operation.ADD_VALUE));
-                    toolModifiers.put(Attributes.MINING_EFFICIENCY, new AttributeModifier(Minejago.modLoc("tool_proficiency_modifier"), 0.1 * (data.get(MinejagoSkills.TOOL_PROFICIENCY).level()), AttributeModifier.Operation.ADD_VALUE));
+                    toolModifiers.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(Minejago.modLoc("tool_proficiency_modifier"), 0.2 * (data.get(MinejagoSkills.TOOL_PROFICIENCY).level()), AttributeModifier.Operation.ADD_VALUE));
+                    toolModifiers.put(Attributes.ATTACK_SPEED, new AttributeModifier(Minejago.modLoc("tool_proficiency_modifier"), 0.2 * (data.get(MinejagoSkills.TOOL_PROFICIENCY).level()), AttributeModifier.Operation.ADD_VALUE));
+                    toolModifiers.put(Attributes.BLOCK_BREAK_SPEED, new AttributeModifier(Minejago.modLoc("tool_proficiency_modifier"), 0.1 * (data.get(MinejagoSkills.TOOL_PROFICIENCY).level()), AttributeModifier.Operation.ADD_VALUE));
 
                     if (emptyHanded) {
                         livingEntity.getAttributes().addTransientAttributeModifiers(emptyHandModifiers);

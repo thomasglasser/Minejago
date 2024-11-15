@@ -5,7 +5,9 @@
   "description": "book.minejago.wiki.skills.agility.description",
   "hide_while_locked": false,
   "icon": {
-    "item": "minecraft:diamond_boots"
+    "height": 39,
+    "texture": "minejago:textures/gui/skill/agility.png",
+    "width": 32
   },
   "name": "book.minejago.wiki.skills.agility.name",
   "pages": [
@@ -17,11 +19,22 @@
         "type": "modonomicon:none"
       },
       "images": [
-        "minecraft:textures/item/diamond_boots.png"
+        "minejago:textures/gui/skill/agility.png"
       ],
-      "text": "book.minejago.wiki.skills.agility.agility.text",
-      "title": "book.minejago.wiki.skills.agility.agility.title",
+      "text": "",
+      "title": "book.minejago.wiki.skills.agility.image.title",
       "use_legacy_rendering": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.minejago.wiki.skills.agility.description.text",
+      "title": "book.minejago.wiki.skills.agility.description.title",
+      "use_markdown_in_title": false
     }
   ],
   "show_when_any_parent_unlocked": false,

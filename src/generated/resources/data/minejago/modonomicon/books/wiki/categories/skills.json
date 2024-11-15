@@ -8,7 +8,9 @@
   "display_mode": "index",
   "entry_textures": "modonomicon:textures/gui/entry_textures.png",
   "icon": {
-    "item": "minecraft:diamond_boots"
+    "height": 39,
+    "texture": "minejago:textures/gui/skill/agility.png",
+    "width": 32
   },
   "max_scroll_x": 512,
   "max_scroll_y": 512,
