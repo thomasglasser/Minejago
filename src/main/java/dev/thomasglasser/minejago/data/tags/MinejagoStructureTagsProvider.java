@@ -20,6 +20,9 @@ public class MinejagoStructureTagsProvider extends StructureTagsProvider {
         tag(MinejagoStructureTags.CAVE_OF_DESPAIR)
                 .add(MinejagoStructures.CAVE_OF_DESPAIR);
 
+        tag(MinejagoStructureTags.MONASTERY_OF_SPINJITZU)
+                .add(MinejagoStructures.MONASTERY_OF_SPINJITZU);
+
         tag(MinejagoStructureTags.HAS_GOLDEN_WEAPON)
                 .addTag(MinejagoStructureTags.CAVE_OF_DESPAIR);
     }

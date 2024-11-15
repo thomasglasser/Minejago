@@ -18,6 +18,7 @@ import dev.thomasglasser.minejago.network.ServerboundStartSpinjitzuPayload;
 import dev.thomasglasser.minejago.network.ServerboundStopMeditationPayload;
 import dev.thomasglasser.minejago.network.ServerboundStopSpinjitzuPayload;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
+import dev.thomasglasser.minejago.tags.MinejagoStructureTags;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.character.Character;
 import dev.thomasglasser.minejago.world.entity.character.Zane;
@@ -102,6 +103,9 @@ import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 public class MinejagoEntityEvents {
+    public static final String KEY_ISINMONASTERYOFSPINJITZU = "IsInMonasteryOfSpinjitzu";
+    public static final String KEY_ISINCAVEOFDESPAIR = "IsInCaveOfDespair";
+
     public static final Predicate<LivingEntity> NO_SPINJITZU = (player -> !player.getData(MinejagoAttachmentTypes.SPINJITZU).canDoSpinjitzu() ||
             player.isCrouching() ||
             player.getVehicle() != null ||
@@ -149,10 +153,8 @@ public class MinejagoEntityEvents {
 
                 if (!player.onGround()) {
                     persistentData.putInt("OffGroundTicks", persistentData.getInt("OffGroundTicks") + 1);
-                    TommyLibServices.ENTITY.setPersistentData(player, persistentData, true);
                 } else if (persistentData.getInt("OffGroundTicks") > 0) {
                     persistentData.putInt("OffGroundTicks", 0);
-                    TommyLibServices.ENTITY.setPersistentData(player, persistentData, true);
                 }
 
                 if (spinjitzu.canDoSpinjitzu()) {
@@ -233,14 +235,18 @@ public class MinejagoEntityEvents {
                         serverPlayer.refreshDimensions();
                         TommyLibServices.NETWORK.sendToAllClients(new ClientboundStartMeditationPayload(player.getUUID()), level.getServer());
                     }
-                } else if (TommyLibServices.ENTITY.getPersistentData(serverPlayer).contains("StartPos")) {
-                    TommyLibServices.ENTITY.getPersistentData(serverPlayer).remove("StartPos");
-                    TommyLibServices.ENTITY.setPersistentData(serverPlayer, persistentData, true);
+                } else if (persistentData.contains("StartPos")) {
+                    persistentData.remove("StartPos");
                 }
 
                 if (MinejagoLevelUtils.isGoldenWeaponsMapHolderNearby(serverPlayer, SkulkinRaid.PAINTING_RADIUS_BUFFER)) {
                     ((SkulkinRaidsHolder) level).getSkulkinRaids().createOrExtendSkulkinRaid(serverPlayer);
                 }
+
+                persistentData.putBoolean(KEY_ISINCAVEOFDESPAIR, MinejagoLevelUtils.isStructureInRange(MinejagoStructureTags.CAVE_OF_DESPAIR, level, serverPlayer.blockPosition(), 64));
+                persistentData.putBoolean(KEY_ISINMONASTERYOFSPINJITZU, MinejagoLevelUtils.isStructureInRange(MinejagoStructureTags.MONASTERY_OF_SPINJITZU, level, serverPlayer.blockPosition(), 64));
+
+                TommyLibServices.ENTITY.setPersistentData(serverPlayer, persistentData, true);
             } else {
                 int startTicks = persistentData.getInt(ClientboundStartSpinjitzuPayload.KEY_SPINJITZUSTARTTICKS);
                 if (startTicks > 0)
@@ -291,6 +297,16 @@ public class MinejagoEntityEvents {
         Entity entity = event.getEntity();
         if (entity instanceof LivingEntity livingEntity) {
             if (!livingEntity.level().isClientSide) {
+                if (entity.isSpectator()) {
+                    livingEntity.getAttributes().getInstance(Attributes.MOVEMENT_SPEED).removeModifier(Minejago.modLoc("agility_modifier"));
+                    SkillDataSet data = livingEntity.getData(MinejagoAttachmentTypes.SKILL);
+                    if (!data.isDirty()) {
+                        data.setDirty(true);
+                        data.save(livingEntity, true);
+                    }
+                    return;
+                }
+
                 int offGroundTicks = TommyLibServices.ENTITY.getPersistentData(livingEntity).getInt("OffGroundTicks");
                 SkillDataSet data = livingEntity.getData(MinejagoAttachmentTypes.SKILL);
                 if (livingEntity.isSprinting()) {
