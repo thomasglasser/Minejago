@@ -18,7 +18,7 @@ public class SkillScreen extends Screen {
 
     private static final ResourceLocation BACKGROUND = Minejago.modLoc("textures/gui/skill/background.png");
     private static final UnaryOperator<ResourceLocation> ICON = (skill) -> skill.withPrefix("textures/gui/skill/").withSuffix(".png");
-    private static final int BACKGROUND_WIDTH = 145;
+    private static final int BACKGROUND_WIDTH = 146;
     private static final int BACKGROUND_HEIGHT = 134;
 
     public SkillScreen() {
@@ -35,18 +35,18 @@ public class SkillScreen extends Screen {
         guiGraphics.drawString(font, Component.translatable(MinejagoSkills.AGILITY.toLanguageKey("skill")), width / 2 - 60, height / 2 - 3, 0xFFFFFF);
         int agility = skillData.get(MinejagoSkills.AGILITY).level();
         guiGraphics.drawString(font, String.valueOf(agility), width / 2 - (agility >= 10 ? 21 : 18), height / 2 - 30, ChatFormatting.GREEN.getColor());
-        guiGraphics.blit(RenderType::guiTextured, ICON.apply(MinejagoSkills.STEALTH), width / 2 + 5, height / 2 - 46, 0, 0, 32, 39, 32, 39);
-        guiGraphics.drawString(font, Component.translatable(MinejagoSkills.STEALTH.toLanguageKey("skill")), width / 2 + 4, height / 2 - 3, 0xFFFFFF);
+        guiGraphics.blit(RenderType::guiTextured, ICON.apply(MinejagoSkills.STEALTH), width / 2 + 6, height / 2 - 46, 0, 0, 32, 39, 32, 39);
+        guiGraphics.drawString(font, Component.translatable(MinejagoSkills.STEALTH.toLanguageKey("skill")), width / 2 + 5, height / 2 - 3, 0xFFFFFF);
         int stealth = skillData.get(MinejagoSkills.STEALTH).level();
-        guiGraphics.drawString(font, String.valueOf(stealth), width / 2 + (stealth >= 10 ? 45 : 48), height / 2 - 30, ChatFormatting.GREEN.getColor());
+        guiGraphics.drawString(font, String.valueOf(stealth), width / 2 + (stealth >= 10 ? 46 : 50), height / 2 - 30, ChatFormatting.GREEN.getColor());
         guiGraphics.blit(RenderType::guiTextured, ICON.apply(MinejagoSkills.DEXTERITY), width / 2 - 61, height / 2 + 12, 0, 0, 32, 39, 32, 39);
         guiGraphics.drawString(font, Component.translatable(MinejagoSkills.DEXTERITY.toLanguageKey("skill")), width / 2 - 67, height / 2 + 54, 0xFFFFFF);
         int dexterity = skillData.get(MinejagoSkills.DEXTERITY).level();
         guiGraphics.drawString(font, String.valueOf(dexterity), width / 2 - (dexterity >= 10 ? 21 : 18), height / 2 + 28, ChatFormatting.GREEN.getColor());
-        guiGraphics.blit(RenderType::guiTextured, ICON.apply(MinejagoSkills.TOOL_PROFICIENCY), width / 2 + 6, height / 2 + 12, 0, 0, 32, 39, 32, 39);
-        guiGraphics.drawString(font, Component.translatable(MinejagoSkills.TOOL_PROFICIENCY.toLanguageKey("skill")), width / 2 - 15, height / 2 + 54, 0xFFFFFF);
+        guiGraphics.blit(RenderType::guiTextured, ICON.apply(MinejagoSkills.TOOL_PROFICIENCY), width / 2 + 7, height / 2 + 12, 0, 0, 32, 39, 32, 39);
+        guiGraphics.drawString(font, Component.translatable(MinejagoSkills.TOOL_PROFICIENCY.toLanguageKey("skill")), width / 2 - 14, height / 2 + 54, 0xFFFFFF);
         int toolProficiency = skillData.get(MinejagoSkills.TOOL_PROFICIENCY).level();
-        guiGraphics.drawString(font, String.valueOf(toolProficiency), width / 2 + (toolProficiency >= 10 ? 45 : 48), height / 2 + 28, ChatFormatting.GREEN.getColor());
+        guiGraphics.drawString(font, String.valueOf(toolProficiency), width / 2 + (toolProficiency >= 10 ? 46 : 50), height / 2 + 28, ChatFormatting.GREEN.getColor());
     }
 
     @Override
