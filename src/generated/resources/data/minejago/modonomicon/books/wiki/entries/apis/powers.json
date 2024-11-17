@@ -8,7 +8,7 @@
     "components": {
       "minejago:power": "minejago:fire"
     },
-    "item": "minejago:training_gi_jacket"
+    "item": "minejago:trainee_gi_jacket"
   },
   "name": "book.minejago.wiki.apis.powers.name",
   "pages": [

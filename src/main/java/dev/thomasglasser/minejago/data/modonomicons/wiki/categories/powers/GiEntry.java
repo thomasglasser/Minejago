@@ -78,7 +78,7 @@ public class GiEntry extends IndexModeEntryProvider {
 
     @Override
     protected BookIconModel entryIcon() {
-        ItemStack fireHead = MinejagoArmors.TRAINING_GI_SET.HEAD.get().getDefaultInstance();
+        ItemStack fireHead = MinejagoArmors.TRAINEE_GI_SET.HEAD.get().getDefaultInstance();
         fireHead.set(MinejagoDataComponents.POWER.get(), MinejagoPowers.FIRE);
         return BookIconModel.create(fireHead);
     }

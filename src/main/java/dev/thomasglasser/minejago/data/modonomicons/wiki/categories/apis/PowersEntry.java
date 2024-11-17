@@ -128,7 +128,7 @@ public class PowersEntry extends IndexModeEntryProvider {
 
     @Override
     protected BookIconModel entryIcon() {
-        ItemStack icon = MinejagoArmors.TRAINING_GI_SET.CHEST.toStack();
+        ItemStack icon = MinejagoArmors.TRAINEE_GI_SET.CHEST.toStack();
         icon.set(MinejagoDataComponents.POWER, MinejagoPowers.FIRE);
         return BookIconModel.create(icon);
     }

@@ -14,7 +14,7 @@
         "minejago:power": "minejago:fire"
       },
       "count": 1,
-      "id": "minejago:training_gi_hood"
+      "id": "minejago:trainee_gi_hood"
     },
     "title": {
       "translate": "advancement.minejago.story.get_power.title"

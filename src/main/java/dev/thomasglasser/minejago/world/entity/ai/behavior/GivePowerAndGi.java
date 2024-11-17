@@ -75,7 +75,7 @@ public class GivePowerAndGi<E extends PathfinderMob> extends MoveToWalkTarget<E>
     }
 
     protected void equipGi() {
-        ArmorSet set = MinejagoArmors.TRAINING_GI_SET;
+        ArmorSet set = MinejagoArmors.TRAINEE_GI_SET;
         for (ArmorType value : ArmorType.values()) {
             DeferredItem<ArmorItem> ro = set.getForSlot(value.getSlot());
             if (ro != null) {

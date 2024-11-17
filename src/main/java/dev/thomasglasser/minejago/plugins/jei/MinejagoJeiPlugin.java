@@ -49,7 +49,7 @@ public class MinejagoJeiPlugin implements IModPlugin {
     @Override
     public void registerItemSubtypes(ISubtypeRegistration registration) {
         registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, MinejagoItems.FILLED_TEACUP.get(), PotionSubtypeInterpreter.INSTANCE);
-        MinejagoArmors.TRAINING_GI_SET.getAll().forEach(item -> registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, item.get(), GiSubtypeInterpreter.INSTANCE));
+        MinejagoArmors.TRAINEE_GI_SET.getAll().forEach(item -> registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, item.get(), GiSubtypeInterpreter.INSTANCE));
     }
 
     @Override

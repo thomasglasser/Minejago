@@ -34,7 +34,7 @@ public interface MinejagoArmorMaterials {
         defense.put(ArmorType.BODY, 4);
     }), 0, SoundEvents.ARMOR_EQUIP_LEATHER, 0.1F, 0.1F, Optional.empty(), Optional.empty());
 
-    ExtendedArmorMaterial TRAINING_GI = new ExtendedArmorMaterial(20, Util.make(new EnumMap<>(ArmorType.class), defense -> {
+    ExtendedArmorMaterial TRAINEE_GI = new ExtendedArmorMaterial(20, Util.make(new EnumMap<>(ArmorType.class), defense -> {
         defense.put(ArmorType.BOOTS, 2);
         defense.put(ArmorType.LEGGINGS, 4);
         defense.put(ArmorType.CHESTPLATE, 6);

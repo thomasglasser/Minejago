@@ -8,7 +8,7 @@
     "components": {
       "minejago:power": "minejago:fire"
     },
-    "item": "minejago:training_gi_hood"
+    "item": "minejago:trainee_gi_hood"
   },
   "name": "book.minejago.wiki.powers.gi.name",
   "pages": [

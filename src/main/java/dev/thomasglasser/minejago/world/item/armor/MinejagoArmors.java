@@ -32,7 +32,7 @@ public class MinejagoArmors {
     public static final DeferredItem<SamukaisChestplateItem> SAMUKAIS_CHESTPLATE = register("samukais_chestplate", properties -> new SamukaisChestplateItem(MinejagoArmorMaterials.SAMUKAI, DEFAULT_PROPERTIES.apply(properties.rarity(Rarity.RARE))));
 
     public static final ArmorSet BLACK_GI_SET = createGi("black_gi", "Black Gi", false, BlackGiItem::new, DEFAULT_PROPERTIES);
-    public static final ArmorSet TRAINING_GI_SET = createGi("training_gi", "Training Gi", true, TrainingGiItem::new, properties -> DEFAULT_PROPERTIES.apply(properties.rarity(Rarity.UNCOMMON)));
+    public static final ArmorSet TRAINEE_GI_SET = createGi("trainee_gi", "Trainee Gi", true, TraineeGiItem::new, properties -> DEFAULT_PROPERTIES.apply(properties.rarity(Rarity.UNCOMMON)));
 
     public static class SkeletalChestplateSet {
         private final DeferredItem<SkeletalChestplateItem> RED;

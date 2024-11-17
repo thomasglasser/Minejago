@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "minejago:item/fire_training_gi_pants"
+    "layer0": "minejago:item/earth_trainee_gi_hood"
   }
 }

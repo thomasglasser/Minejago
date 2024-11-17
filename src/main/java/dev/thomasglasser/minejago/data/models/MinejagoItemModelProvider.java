@@ -93,7 +93,7 @@ public class MinejagoItemModelProvider extends ExtendedItemModelProvider {
         woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET);
         leavesSet(MinejagoBlocks.FOCUS_LEAVES_SET);
 
-        MinejagoArmors.TRAINING_GI_SET.getAll().forEach(item -> withEntityModel(item).guiLight(BlockModel.GuiLight.FRONT));
+        MinejagoArmors.TRAINEE_GI_SET.getAll().forEach(item -> withEntityModel(item).guiLight(BlockModel.GuiLight.FRONT));
 
         withEntityModelInHand(MinejagoItems.BAMBOO_STAFF, withEntityModel(MinejagoItems.BAMBOO_STAFF)
                 .texture("particle", itemLoc(MinejagoItems.BAMBOO_STAFF))
