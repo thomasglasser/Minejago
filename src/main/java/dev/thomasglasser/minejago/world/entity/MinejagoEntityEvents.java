@@ -309,14 +309,16 @@ public class MinejagoEntityEvents {
 
                 int offGroundTicks = TommyLibServices.ENTITY.getPersistentData(livingEntity).getInt("OffGroundTicks");
                 SkillDataSet data = livingEntity.getData(MinejagoAttachmentTypes.SKILL);
-                if (livingEntity.isSprinting()) {
-                    data.addPractice(livingEntity, MinejagoSkills.AGILITY, 1 / 20f);
-                }
-                if (offGroundTicks > 0 && offGroundTicks <= 30) {
-                    data.addPractice(livingEntity, MinejagoSkills.AGILITY, 1 / 20f);
-                }
-                if (livingEntity.isSteppingCarefully() && !livingEntity.level().getEntities(livingEntity, livingEntity.getBoundingBox().inflate(16)).isEmpty()) {
-                    data.addPractice(livingEntity, MinejagoSkills.STEALTH, 1 / 20f);
+                if (!(livingEntity.isFallFlying() || livingEntity instanceof Player player && player.getAbilities().flying)) {
+                    if (livingEntity.isSprinting()) {
+                        data.addPractice(livingEntity, MinejagoSkills.AGILITY, 1 / 40f);
+                    }
+                    if (offGroundTicks > 0 && offGroundTicks <= 30) {
+                        data.addPractice(livingEntity, MinejagoSkills.AGILITY, 1 / 40f);
+                    }
+                    if (livingEntity.isSteppingCarefully() && !livingEntity.level().getEntities(livingEntity, livingEntity.getBoundingBox().inflate(16)).isEmpty()) {
+                        data.addPractice(livingEntity, MinejagoSkills.STEALTH, 1 / 40f);
+                    }
                 }
 
                 boolean dirty = data.isDirty();
@@ -324,7 +326,8 @@ public class MinejagoEntityEvents {
                 if (dirty) {
                     HashMultimap<Holder<Attribute>, AttributeModifier> modifiers = HashMultimap.create();
                     modifiers.put(Attributes.MOVEMENT_SPEED, new AttributeModifier(Minejago.modLoc("agility_modifier"), 0.01 * (data.get(MinejagoSkills.AGILITY).level()), AttributeModifier.Operation.ADD_VALUE));
-                    modifiers.put(Attributes.JUMP_STRENGTH, new AttributeModifier(Minejago.modLoc("agility_modifier"), 0.05 * (data.get(MinejagoSkills.AGILITY).level()), AttributeModifier.Operation.ADD_VALUE));
+                    modifiers.put(Attributes.JUMP_STRENGTH, new AttributeModifier(Minejago.modLoc("agility_modifier"), 0.04 * (data.get(MinejagoSkills.AGILITY).level()), AttributeModifier.Operation.ADD_VALUE));
+                    modifiers.put(Attributes.SAFE_FALL_DISTANCE, new AttributeModifier(Minejago.modLoc("agility_modifier"), data.get(MinejagoSkills.AGILITY).level(), AttributeModifier.Operation.ADD_VALUE));
                     modifiers.put(Attributes.SNEAKING_SPEED, new AttributeModifier(Minejago.modLoc("stealth_modifier"), 0.1 * (data.get(MinejagoSkills.STEALTH).level()), AttributeModifier.Operation.ADD_VALUE));
                     livingEntity.getAttributes().addTransientAttributeModifiers(modifiers);
                     data.setDirty(false);
