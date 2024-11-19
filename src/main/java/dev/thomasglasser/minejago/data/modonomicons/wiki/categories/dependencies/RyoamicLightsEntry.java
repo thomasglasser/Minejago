@@ -23,7 +23,7 @@ public class RyoamicLightsEntry extends IndexModeEntryProvider {
                 .withText(context().pageText()));
 
         add(context().pageTitle(), "Spinjitzu");
-        add(context().pageText(), "[Spinjitzu](category://spinjitzu) emits light when RyoamicLights is installed.");
+        add(context().pageText(), "[Spinjitzu](category://spinjitzu) emits light when [RyoamicLights](https://modrinth.com/mod/ryoamiclights) is installed.");
 
         page("golden_weapons", () -> BookImagePageModel.create()
                 .withAnchor("golden_weapons")
@@ -32,7 +32,7 @@ public class RyoamicLightsEntry extends IndexModeEntryProvider {
                 .withText(context().pageText()));
 
         add(context().pageTitle(), "Golden Weapons");
-        add(context().pageText(), "[Golden Weapons](entry://powers/golden_weapons) emit light when RyoamicLights is installed.");
+        add(context().pageText(), "[Golden Weapons](entry://powers/golden_weapons) emit light when [RyoamicLights](https://modrinth.com/mod/ryoamiclights) is installed.");
     }
 
     @Override
@@ -42,7 +42,7 @@ public class RyoamicLightsEntry extends IndexModeEntryProvider {
 
     @Override
     protected String entryDescription() {
-        return "[RyoamicLights](https://modrinth.com/mod/ryoamiclights) is a dynamic lights mod.";
+        return "RyoamicLights is a dynamic lights mod.";
     }
 
     @Override

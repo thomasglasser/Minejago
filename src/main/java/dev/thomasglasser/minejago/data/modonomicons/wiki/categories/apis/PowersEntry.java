@@ -18,6 +18,15 @@ public class PowersEntry extends IndexModeEntryProvider {
 
     @Override
     protected void generatePages() {
+        page("generator", () -> BookTextPageModel.create()
+                .withTitle(context().pageTitle())
+                .withText(context().pageText()));
+
+        add(context().pageTitle(), "Generator");
+        add(context().pageText(), """
+                A generator for these powers is available [here](https://jsons.thomasglasser.dev/minejago/power/).
+                """);
+
         page("example", () -> BookTextPageModel.create()
                 .withAnchor("example")
                 .withTitle(context().pageTitle())

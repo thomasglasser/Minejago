@@ -21,7 +21,7 @@ public class PatchedEntry extends IndexModeEntryProvider {
 
         add(context().pageTitle(), "Advancements");
         add(context().pageText(), """
-                Patched provides the ability to insert Minejago elements into vanilla advancements.
+                [Patched](https://modrinth.com/mod/patched) provides the ability to insert Minejago elements into vanilla advancements.
                 Examples of this include inserting modded monsters into the Monster Hunter and Monsters Hunted advancements.
                 """);
     }
@@ -33,7 +33,7 @@ public class PatchedEntry extends IndexModeEntryProvider {
 
     @Override
     protected String entryDescription() {
-        return "[Patched](https://modrinth.com/mod/patched) is a mod that provides the ability to modify parts of json files for data/resource packs to use.";
+        return "Patched is a mod that provides the ability to modify parts of json files for data/resource packs to use.";
     }
 
     @Override

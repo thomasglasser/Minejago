@@ -39,7 +39,7 @@ public class NinjagoCityEntry extends IndexModeEntryProvider {
         return """
                 Currently a small building in the wild,
                 Ninjago City will be a bustling metropolis in the future,
-                home to the [characters](category://characters) of Minejago and their allies.
+                home to the characters of Minejago and their allies.
                 """;
     }
 

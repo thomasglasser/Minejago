@@ -11,6 +11,17 @@
   "pages": [
     {
       "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.minejago.wiki.apis.focus_modifiers.generator.text",
+      "title": "book.minejago.wiki.apis.focus_modifiers.generator.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
       "anchor": "example",
       "condition": {
         "type": "modonomicon:none"

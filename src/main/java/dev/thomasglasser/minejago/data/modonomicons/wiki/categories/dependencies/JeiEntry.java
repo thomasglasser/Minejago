@@ -22,7 +22,7 @@ public class JeiEntry extends IndexModeEntryProvider {
                 .withText(context().pageText()));
 
         add(context().pageTitle(), "Teapot Recipes");
-        add(context().pageText(), "JEI is able to show the recipes of a teapot.");
+        add(context().pageText(), "[Just Enough Items](https://modrinth.com/mod/jei) is able to show the recipes of a teapot.");
     }
 
     @Override
@@ -32,7 +32,7 @@ public class JeiEntry extends IndexModeEntryProvider {
 
     @Override
     protected String entryDescription() {
-        return "[Just Enough Items](https://modrinth.com/mod/jei) is an item and recipe viewing mod.";
+        return "Just Enough Items is an item and recipe viewing mod.";
     }
 
     @Override

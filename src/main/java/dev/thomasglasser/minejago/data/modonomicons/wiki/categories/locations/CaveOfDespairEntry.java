@@ -60,9 +60,9 @@ public class CaveOfDespairEntry extends IndexModeEntryProvider {
     @Override
     protected String entryDescription() {
         return """
-                The Cave of Despair is the location of the [Scythe of Quakes](entry://powers/golden_weapons@scythe_of_quakes) and the [Earth Dragon](entry://powers/dragons).
+                The Cave of Despair is the location of the Scythe of Quakes and the Earth Dragon.
                 It can be found in Badlands biomes.
-                If a [Golden Weapons Map](entry://locations/four_weapons/golden_weapons_map) has been taken by the [Skulkin](category://skulkin),
+                If a Golden Weapons Map has been taken by the Skulkin,
                 they will also be seeking the Scythe,
                 and will try to stop you from reaching it.
                 """;

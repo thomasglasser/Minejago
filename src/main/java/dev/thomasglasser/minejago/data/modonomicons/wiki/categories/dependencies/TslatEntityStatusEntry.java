@@ -22,7 +22,7 @@ public class TslatEntityStatusEntry extends IndexModeEntryProvider {
                 .withText(context().pageText()));
 
         add(context().pageTitle(), "Power");
-        add(context().pageText(), "TslatEntityStatus is able to show the power information of living entities.");
+        add(context().pageText(), "[TslatEntityStatus](https://modrinth.com/mod/tslatentitystatus) is able to show the power information of living entities.");
     }
 
     @Override
@@ -32,7 +32,7 @@ public class TslatEntityStatusEntry extends IndexModeEntryProvider {
 
     @Override
     protected String entryDescription() {
-        return "[TslatEntityStatus](https://modrinth.com/mod/tslatentitystatus) is a mod to view entity health and other statuses.";
+        return "TslatEntityStatus is a mod to view entity health and other statuses.";
     }
 
     @Override

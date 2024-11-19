@@ -23,7 +23,7 @@ public class ModonomiconEntry extends IndexModeEntryProvider {
                 .withText(context().pageText()));
 
         add(context().pageTitle(), "Wiki");
-        add(context().pageText(), "Modonomicon provides an in-game wiki for Minejago.");
+        add(context().pageText(), "[Modonomicon](https://modrinth.com/mod/modonomicon) provides an in-game wiki for Minejago.");
     }
 
     @Override
@@ -33,7 +33,7 @@ public class ModonomiconEntry extends IndexModeEntryProvider {
 
     @Override
     protected String entryDescription() {
-        return "[Modonomicon](https://modrinth.com/mod/modonomicon) is an in-game documentation mod.";
+        return "Modonomicon is an in-game documentation mod.";
     }
 
     @Override

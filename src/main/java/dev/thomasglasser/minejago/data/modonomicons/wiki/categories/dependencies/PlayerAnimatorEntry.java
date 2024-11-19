@@ -23,7 +23,7 @@ public class PlayerAnimatorEntry extends IndexModeEntryProvider {
                 .withText(context().pageText()));
 
         add(context().pageTitle(), "Spinjitzu");
-        add(context().pageText(), "There are special animations for [Spinjitzu](category://spinjitzu) that are shown with playerAnimator installed.");
+        add(context().pageText(), "There are special animations for [Spinjitzu](category://spinjitzu) that are shown with [playerAnimator](https://modrinth.com/mod/playeranimator) installed.");
 
         page("golden_weapons", () -> BookImagePageModel.create()
                 .withAnchor("golden_weapons")
@@ -32,7 +32,7 @@ public class PlayerAnimatorEntry extends IndexModeEntryProvider {
                 .withText(context().pageText()));
 
         add(context().pageTitle(), "Golden Weapons");
-        add(context().pageText(), "There are special animations for using the [Golden Weapons](entry://powers/golden_weapons) with playerAnimator installed.");
+        add(context().pageText(), "There are special animations for using the [Golden Weapons](entry://powers/golden_weapons) with [playerAnimator](https://modrinth.com/mod/playeranimator) installed.");
     }
 
     @Override
@@ -42,7 +42,7 @@ public class PlayerAnimatorEntry extends IndexModeEntryProvider {
 
     @Override
     protected String entryDescription() {
-        return "[playerAnimator](https://modrinth.com/mod/playeranimator) is a player animation library.";
+        return "playerAnimator is a player animation library.";
     }
 
     @Override

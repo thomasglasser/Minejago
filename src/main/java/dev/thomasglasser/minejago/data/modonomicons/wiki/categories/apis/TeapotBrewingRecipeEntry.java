@@ -15,6 +15,15 @@ public class TeapotBrewingRecipeEntry extends IndexModeEntryProvider {
 
     @Override
     protected void generatePages() {
+        page("generator", () -> BookTextPageModel.create()
+                .withTitle(context().pageTitle())
+                .withText(context().pageText()));
+
+        add(context().pageTitle(), "Generator");
+        add(context().pageText(), """
+                A generator for these recipes is available [here](https://jsons.thomasglasser.dev/minejago/mod_recipe/).
+                """);
+
         page("example", () -> BookTextPageModel.create()
                 .withAnchor("example")
                 .withTitle(context().pageTitle())
@@ -81,7 +90,6 @@ public class TeapotBrewingRecipeEntry extends IndexModeEntryProvider {
     protected String entryDescription() {
         return """
                 Datapacks and mods are able to add new recipes to the teapot.
-                A generator for these recipes is available [here](https://jsons.thomasglasser.dev/minejago/mod_recipe/).
                 """;
     }
 

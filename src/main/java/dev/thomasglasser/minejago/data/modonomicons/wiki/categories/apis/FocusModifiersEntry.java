@@ -15,6 +15,15 @@ public class FocusModifiersEntry extends IndexModeEntryProvider {
 
     @Override
     protected void generatePages() {
+        page("generator", () -> BookTextPageModel.create()
+                .withTitle(context().pageTitle())
+                .withText(context().pageText()));
+
+        add(context().pageTitle(), "Generator");
+        add(context().pageText(), """
+                A generator for these modifiers is available [here](https://jsons.thomasglasser.dev/partners/).
+                """);
+
         page("example", () -> BookTextPageModel.create()
                 .withAnchor("example")
                 .withTitle(context().pageTitle())
@@ -90,7 +99,6 @@ public class FocusModifiersEntry extends IndexModeEntryProvider {
     protected String entryDescription() {
         return """
                 Focus modifiers are a data-driven way for datapacks and mods to alter the amount of focus gained during meditation depending on a variety of factors.
-                A generator for these modifiers is available [here](https://jsons.thomasglasser.dev/partners/).
                 """;
     }
 

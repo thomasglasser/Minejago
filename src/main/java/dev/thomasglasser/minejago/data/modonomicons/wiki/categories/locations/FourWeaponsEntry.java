@@ -71,9 +71,9 @@ public class FourWeaponsEntry extends IndexModeEntryProvider {
     @Override
     protected String entryDescription() {
         return """
-                The home of [Kai](entry://characters/ninja_team@kai) and [Nya](entry://characters/ninja_team@nya),
+                The home of Kai and Nya,
                 Four Weapons is a blacksmith shop.
-                It can be found in Plains biomes and it is the host of [Skulkin Raids](entry://skulkin/raid).
+                It can be found in Plains biomes and it is the host of Skulkin Raids.
                 """;
     }
 

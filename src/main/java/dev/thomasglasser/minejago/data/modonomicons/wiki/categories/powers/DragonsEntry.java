@@ -51,7 +51,7 @@ public class DragonsEntry extends IndexModeEntryProvider {
 
     @Override
     protected String entryDescription() {
-        return "Powerful creatures that protect the [Golden Weapons](entry://powers/golden_weapons) and their wielders and can travel between worlds";
+        return "Powerful creatures that protect the Golden Weapons and their wielders and can travel between worlds";
     }
 
     @Override

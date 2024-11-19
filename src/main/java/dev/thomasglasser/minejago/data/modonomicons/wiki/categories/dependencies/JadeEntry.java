@@ -23,7 +23,7 @@ public class JadeEntry extends IndexModeEntryProvider {
                 .withText(context().pageText()));
 
         add(context().pageTitle(), "Teapot");
-        add(context().pageText(), "Jade is able to show the contents and brewing information of a teapot.");
+        add(context().pageText(), "[Jade](https://modrinth.com/mod/jade) is able to show the contents and brewing information of a teapot.");
 
         page("golden_weapons_map", () -> BookImagePageModel.create()
                 .withAnchor("golden_weapons_map")
@@ -32,7 +32,7 @@ public class JadeEntry extends IndexModeEntryProvider {
                 .withText(context().pageText()));
 
         add(context().pageTitle(), "Golden Weapons Map");
-        add(context().pageText(), "Jade is able to show whether a Four Weapons sign contains a Golden Weapons Map.");
+        add(context().pageText(), "[Jade](https://modrinth.com/mod/jade) is able to show whether a Four Weapons sign contains a Golden Weapons Map.");
 
         page("power", () -> BookImagePageModel.create()
                 .withAnchor("power")
@@ -41,7 +41,7 @@ public class JadeEntry extends IndexModeEntryProvider {
                 .withText(context().pageText()));
 
         add(context().pageTitle(), "Power");
-        add(context().pageText(), "Jade is able to show the power information of living entities.");
+        add(context().pageText(), "[Jade](https://modrinth.com/mod/jade) is able to show the power information of living entities.");
     }
 
     @Override
@@ -51,7 +51,7 @@ public class JadeEntry extends IndexModeEntryProvider {
 
     @Override
     protected String entryDescription() {
-        return "[Jade](https://modrinth.com/mod/jade) is the information HUD mod.";
+        return "Jade is the information HUD mod.";
     }
 
     @Override

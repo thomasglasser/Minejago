@@ -87,7 +87,7 @@ public class MonasteryOfSpinjitzuEntry extends IndexModeEntryProvider {
     @Override
     protected String entryDescription() {
         return """
-                The home of [Master Wu](entry://characters/ninja_team@wu),
+                The home of Master Wu,
                 the Monastery of Spinjitzu is a place of training, meditation, and relaxation.
                 It can be found in Mountain Peaks biomes.
                 """;

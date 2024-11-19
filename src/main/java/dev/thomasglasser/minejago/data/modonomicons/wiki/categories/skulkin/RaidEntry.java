@@ -80,7 +80,7 @@ public class RaidEntry extends IndexModeEntryProvider {
     @Override
     protected String entryDescription() {
         return """
-                A raid on the [Four Weapons Blacksmith](entry://locations/four_weapons) by the Skulkin searching for the [Golden Weapons Map](entry://locations/four_weapons@golden_weapons_map).
+                A raid on the Four Weapons Blacksmith by the Skulkin searching for the Golden Weapons Map.
                 There are 4 waves of Skulkin, with Samukai leading the final wave.
                 """;
     }
