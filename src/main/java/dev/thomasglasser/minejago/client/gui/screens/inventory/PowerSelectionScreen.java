@@ -218,7 +218,7 @@ public class PowerSelectionScreen extends Screen {
         protected void renderIcon(GuiGraphics guiGraphics) {
             int x = getX() - 1;
             int y = getY() - 1;
-            guiGraphics.blit(RenderType::guiTextured, textureLoc, x, y, 0, 0, 0, 32, 32, 32, 32);
+            guiGraphics.blit(RenderType::guiTextured, textureLoc, x, y, 0, 0, 32, 32, 32, 32);
         }
 
         public boolean isSelected() {

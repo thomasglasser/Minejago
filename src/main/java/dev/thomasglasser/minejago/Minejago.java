@@ -12,6 +12,7 @@ import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.data.MinejagoDataGenerators;
 import dev.thomasglasser.minejago.network.MinejagoPayloads;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
+import dev.thomasglasser.minejago.server.commands.arguments.MinejagoArgumentTypes;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
@@ -118,6 +119,7 @@ public class Minejago {
         MinejagoSlotDisplays.init();
         MinejagoRecipeDisplays.init();
         MinejagoRecipeBookCategories.init();
+        MinejagoArgumentTypes.init();
 
         if (FMLEnvironment.dist.isClient())
             MinejagoKeyMappings.init();
