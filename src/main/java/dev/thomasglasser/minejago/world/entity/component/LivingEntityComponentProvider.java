@@ -35,13 +35,13 @@ public enum LivingEntityComponentProvider implements IEntityComponentProvider {
 
                     @Override
                     public Vec2 getSize() {
-                        if (size == null) size = new Vec2(16, 16);
+                        if (size == null) size = new Vec2(10, 10);
                         return size;
                     }
 
                     @Override
                     public void render(GuiGraphics guiGraphics, float x, float y, float maxX, float maxY) {
-                        guiGraphics.blit(RenderType::guiTextured, power.getIcon(registry), (int) x, (int) y, 16, 16, 0, 0, 32, 32, 32, 32);
+                        guiGraphics.blit(RenderType::guiTextured, power.getIcon(registry), (int) x - 2, (int) y - 1, 0, 0, 10, 10, 32, 32, 32, 32);
                     }
                 };
                 iTooltip.add(icon);

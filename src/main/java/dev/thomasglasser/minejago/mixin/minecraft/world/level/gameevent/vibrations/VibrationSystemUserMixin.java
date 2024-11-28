@@ -2,7 +2,7 @@ package dev.thomasglasser.minejago.mixin.minecraft.world.level.gameevent.vibrati
 
 import com.llamalad7.mixinextras.sugar.Local;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
-import dev.thomasglasser.minejago.world.entity.skill.MinejagoSkills;
+import dev.thomasglasser.minejago.world.entity.skill.Skill;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -22,7 +22,7 @@ public interface VibrationSystemUserMixin {
     @Inject(method = "isValidVibration", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/level/gameevent/vibrations/VibrationSystem$User;canTriggerAvoidVibration()Z"))
     default void isValidVibration(Holder<GameEvent> gameEvent, GameEvent.Context context, CallbackInfoReturnable<Boolean> cir, @Local Entity entity) {
         if (canTriggerAvoidVibration() && entity instanceof LivingEntity livingEntity && !livingEntity.level().isClientSide) {
-            livingEntity.getData(MinejagoAttachmentTypes.SKILL).addPractice(livingEntity, MinejagoSkills.STEALTH, 1 / 20f);
+            livingEntity.getData(MinejagoAttachmentTypes.SKILL).addPractice(livingEntity, Skill.STEALTH, 1 / 20f);
         }
     }
 }

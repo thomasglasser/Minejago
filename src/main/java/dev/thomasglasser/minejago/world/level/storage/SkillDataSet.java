@@ -3,11 +3,12 @@ package dev.thomasglasser.minejago.world.level.storage;
 import com.google.common.collect.Maps;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.mojang.serialization.codecs.UnboundedMapCodec;
+import com.mojang.serialization.codecs.SimpleMapCodec;
 import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
 import dev.thomasglasser.minejago.network.ClientboundSkillLevelUpPacket;
 import dev.thomasglasser.minejago.network.ClientboundSyncSkillDataSetPayload;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
+import dev.thomasglasser.minejago.world.entity.skill.Skill;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import java.util.HashMap;
 import java.util.List;
@@ -15,35 +16,35 @@ import java.util.Map;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.LivingEntity;
 
 public class SkillDataSet {
     public static final int LEVEL_UP_THRESHOLD = 100;
-    public static final UnboundedMapCodec<ResourceLocation, SkillData> MAP_CODEC = Codec.unboundedMap(ResourceLocation.CODEC, SkillData.CODEC);
+    public static final SimpleMapCodec<Skill, SkillData> MAP_CODEC = Codec.simpleMap(Codec.STRING.xmap(Skill::valueOf, Skill::name), SkillData.CODEC, StringRepresentable.keys(Skill.values()));
     public static final Codec<SkillDataSet> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             MAP_CODEC.fieldOf("map").forGetter(set -> set.map)).apply(instance, SkillDataSet::new));
     public static final StreamCodec<RegistryFriendlyByteBuf, SkillDataSet> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.map(
                     Maps::newHashMapWithExpectedSize,
-                    ResourceLocation.STREAM_CODEC,
+                    ByteBufCodecs.STRING_UTF8.map(Skill::valueOf, Skill::name),
                     SkillData.STREAM_CODEC),
             set -> set.map,
             SkillDataSet::new);
 
-    private final Map<ResourceLocation, SkillData> map;
+    private final Map<Skill, SkillData> map;
     private boolean dirty;
 
     public SkillDataSet() {
         this.map = new HashMap<>();
     }
 
-    public SkillDataSet(Map<ResourceLocation, SkillData> map) {
+    public SkillDataSet(Map<Skill, SkillData> map) {
         this.map = new HashMap<>(map);
     }
 
-    public void addPractice(LivingEntity livingEntity, ResourceLocation key, float amount) {
+    public void addPractice(LivingEntity livingEntity, Skill key, float amount) {
         if (livingEntity.level().isClientSide)
             throw new IllegalStateException("Cannot tick practice on client side");
         SkillData data = get(key);
@@ -57,21 +58,17 @@ public class SkillDataSet {
         }
     }
 
-    public SkillData get(ResourceLocation key) {
+    public SkillData get(Skill key) {
         return map.getOrDefault(key, new SkillData());
     }
 
-    public SkillData put(LivingEntity entity, ResourceLocation key, SkillData value, boolean syncToClient) {
+    public SkillData put(LivingEntity entity, Skill key, SkillData value, boolean syncToClient) {
         SkillData data = map.put(key, value);
         if (entity instanceof ServerPlayer player)
             MinejagoCriteriaTriggers.INCREASED_SKILL.get().trigger(player, key, value.level());
         setDirty(true);
         save(entity, syncToClient);
         return data;
-    }
-
-    public List<ResourceLocation> keySet() {
-        return List.copyOf(map.keySet());
     }
 
     public List<SkillData> values() {

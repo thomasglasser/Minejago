@@ -191,7 +191,7 @@ public class MinejagoClientEvents {
                 TESClientUtil.prepRenderForTexture(power.orElseThrow().value().getIcon(mc.level.registryAccess().lookupOrThrow(MinejagoRegistries.POWER)));
                 guiGraphics.pose().pushPose();
                 guiGraphics.pose().scale(0.5f, 0.5f, 1.0f);
-                TESClientUtil.drawSimpleTexture(guiGraphics, 0, 0, 32, 32, 0, 0, 32);
+                TESClientUtil.drawSimpleTexture(guiGraphics, -2, -1, 18, 18, 32, 32, 32, 32, 32, 32);
                 guiGraphics.pose().popPose();
                 return 16;
             }

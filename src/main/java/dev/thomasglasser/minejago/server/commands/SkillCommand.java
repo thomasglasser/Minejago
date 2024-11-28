@@ -4,16 +4,16 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import dev.thomasglasser.minejago.commands.MinejagoCommandEvents;
+import dev.thomasglasser.minejago.server.commands.arguments.SkillArgument;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
+import dev.thomasglasser.minejago.world.entity.skill.Skill;
 import dev.thomasglasser.minejago.world.level.storage.SkillData;
 import dev.thomasglasser.minejago.world.level.storage.SkillDataSet;
 import java.util.Collection;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
-import net.minecraft.commands.arguments.ResourceLocationArgument;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -29,36 +29,36 @@ public class SkillCommand {
         dispatcher.register(Commands.literal("skill")
                 .requires((source) -> source.hasPermission(2))
                 .then(Commands.argument("target", EntityArgument.entities())
-                        .then(Commands.argument("skill", ResourceLocationArgument.id())
-                                .executes(context -> queryLevel(context, EntityArgument.getEntities(context, "target"), ResourceLocationArgument.getId(context, "skill")))
+                        .then(Commands.argument("skill", SkillArgument.skill())
+                                .executes(context -> queryLevel(context, EntityArgument.getEntities(context, "target"), SkillArgument.getSkill(context, "skill")))
                                 .then(Commands.argument("level", IntegerArgumentType.integer(0))
-                                        .executes(context -> setLevel(context, EntityArgument.getEntities(context, "target"), ResourceLocationArgument.getId(context, "skill"), IntegerArgumentType.getInteger(context, "level")))))));
+                                        .executes(context -> setLevel(context, EntityArgument.getEntities(context, "target"), SkillArgument.getSkill(context, "skill"), IntegerArgumentType.getInteger(context, "level")))))));
     }
 
-    private static void logLevelChange(CommandSourceStack pSource, Entity entity, ResourceLocation skill, int level) {
+    private static void logLevelChange(CommandSourceStack pSource, Entity entity, Skill skill, int level) {
         if (!(entity instanceof LivingEntity livingEntity)) {
             pSource.sendFailure(Component.translatable(MinejagoCommandEvents.NOT_LIVING_ENTITY, entity.getDisplayName(), entity.getStringUUID()));
             return;
         }
         if (pSource.getEntity() == entity) {
-            pSource.sendSuccess(() -> Component.translatable(SUCCESS_SELF, Component.translatable(skill.toLanguageKey("skill")), level), true);
+            pSource.sendSuccess(() -> Component.translatable(SUCCESS_SELF, Component.translatable(skill.toLanguageKey()), level), true);
         } else {
             if (pSource.getLevel().getGameRules().getBoolean(GameRules.RULE_SENDCOMMANDFEEDBACK) && livingEntity instanceof Player player) {
-                player.displayClientMessage(Component.translatable(CHANGED, Component.translatable(skill.toLanguageKey("skill")), level), false);
+                player.displayClientMessage(Component.translatable(CHANGED, Component.translatable(skill.toLanguageKey()), level), false);
             }
 
-            pSource.sendSuccess(() -> Component.translatable(SUCCESS_OTHER, livingEntity.getDisplayName(), Component.translatable(skill.toLanguageKey("skill")), level), true);
+            pSource.sendSuccess(() -> Component.translatable(SUCCESS_OTHER, livingEntity.getDisplayName(), Component.translatable(skill.toLanguageKey()), level), true);
         }
     }
 
-    private static int queryLevel(CommandContext<CommandSourceStack> pSource, Collection<? extends Entity> entities, ResourceLocation skill) {
+    private static int queryLevel(CommandContext<CommandSourceStack> pSource, Collection<? extends Entity> entities, Skill skill) {
         int i = 0;
 
         for (Entity entity : entities) {
             if (entity instanceof LivingEntity livingEntity) {
                 SkillDataSet skillDataSet = livingEntity.getData(MinejagoAttachmentTypes.SKILL);
                 SkillData skillData = skillDataSet.get(skill);
-                pSource.getSource().sendSuccess(() -> Component.translatable(QUERY, Component.translatable(skill.toLanguageKey("skill")), skillData.level()), false);
+                pSource.getSource().sendSuccess(() -> Component.translatable(QUERY, Component.translatable(skill.toLanguageKey()), skillData.level()), false);
                 ++i;
             }
         }
@@ -66,7 +66,7 @@ public class SkillCommand {
         return i;
     }
 
-    private static int setLevel(CommandContext<CommandSourceStack> pSource, Collection<? extends Entity> entities, ResourceLocation skill, int level) {
+    private static int setLevel(CommandContext<CommandSourceStack> pSource, Collection<? extends Entity> entities, Skill skill, int level) {
         int i = 0;
 
         for (Entity entity : entities) {
