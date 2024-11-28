@@ -16,6 +16,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.commands.arguments.ResourceKeyArgument;
 import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
@@ -41,7 +42,7 @@ public class PowerCommand {
                 .requires((p_137736_) -> p_137736_.hasPermission(2))
                 .executes(context -> {
                     PowerData powerData = context.getSource().getPlayer().getData(MinejagoAttachmentTypes.POWER);
-                    context.getSource().sendSuccess(() -> Component.translatable(QUERY, context.getSource().registryAccess().holderOrThrow(powerData.power()).value().getFormattedName()), false);
+                    context.getSource().sendSuccess(() -> Component.translatable(QUERY, context.getSource().registryAccess().holderOrThrow(powerData.power()).value().getFormattedName(context.getSource().registryAccess().lookupOrThrow(MinejagoRegistries.POWER))), false);
                     return 1;
                 })
                 .then(Commands.literal("clear")
@@ -55,15 +56,16 @@ public class PowerCommand {
     }
 
     private static void logPowerChange(CommandSourceStack pSource, Entity entity, ResourceKey<Power> power, boolean clear) {
+        Registry<Power> registry = pSource.registryAccess().lookupOrThrow(MinejagoRegistries.POWER);
         if (entity instanceof LivingEntity livingEntity) {
             if (pSource.getEntity() == entity) {
-                pSource.sendSuccess(() -> Component.translatable(clear ? SUCCESS_CLEARED_SELF : SUCCESS_SELF, pSource.registryAccess().holderOrThrow(power).value().getFormattedName()), true);
+                pSource.sendSuccess(() -> Component.translatable(clear ? SUCCESS_CLEARED_SELF : SUCCESS_SELF, pSource.registryAccess().holderOrThrow(power).value().getFormattedName(registry)), true);
             } else {
                 if (pSource.getLevel().getGameRules().getBoolean(GameRules.RULE_SENDCOMMANDFEEDBACK) && livingEntity instanceof Player player) {
-                    player.displayClientMessage(Component.translatable(clear ? CLEARED : CHANGED, pSource.registryAccess().holderOrThrow(power).value().getFormattedName()), false);
+                    player.displayClientMessage(Component.translatable(clear ? CLEARED : CHANGED, pSource.registryAccess().holderOrThrow(power).value().getFormattedName(registry)), false);
                 }
 
-                pSource.sendSuccess(() -> Component.translatable(clear ? SUCCESS_CLEARED_OTHER : SUCCESS_OTHER, livingEntity.getDisplayName(), pSource.registryAccess().holderOrThrow(power).value().getFormattedName()), true);
+                pSource.sendSuccess(() -> Component.translatable(clear ? SUCCESS_CLEARED_OTHER : SUCCESS_OTHER, livingEntity.getDisplayName(), pSource.registryAccess().holderOrThrow(power).value().getFormattedName(registry)), true);
             }
         } else {
             pSource.sendFailure(Component.translatable(MinejagoCommandEvents.NOT_LIVING_ENTITY, entity.getDisplayName(), entity.getStringUUID()));

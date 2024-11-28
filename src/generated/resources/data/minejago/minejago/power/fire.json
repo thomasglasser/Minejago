@@ -9,7 +9,6 @@
     }
   },
   "has_sets": true,
-  "id": "minejago:fire",
   "power_color": "#B90E04",
   "tagline": {
     "translate": "power.minejago.fire.tagline"

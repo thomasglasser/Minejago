@@ -9,7 +9,6 @@
     }
   },
   "has_sets": true,
-  "id": "minejago:lightning",
   "power_color": "#4668D5",
   "tagline": {
     "translate": "power.minejago.lightning.tagline"

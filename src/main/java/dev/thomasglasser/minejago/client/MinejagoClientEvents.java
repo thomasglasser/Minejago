@@ -38,6 +38,7 @@ import dev.thomasglasser.minejago.client.renderer.entity.layers.LegacyDevTeamLay
 import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterLayer;
 import dev.thomasglasser.minejago.client.renderer.entity.state.MinejagoPlayerRenderState;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
+import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.network.ServerboundFlyVehiclePayload;
 import dev.thomasglasser.minejago.network.ServerboundStopMeditationPayload;
 import dev.thomasglasser.minejago.plugins.MinejagoDynamicLights;
@@ -187,7 +188,7 @@ public class MinejagoClientEvents {
         if (mc.level != null && !inWorldHud) {
             Optional<Holder.Reference<Power>> power = mc.level.holder(entity.getData(MinejagoAttachmentTypes.POWER).power());
             if (power.isPresent()) {
-                TESClientUtil.prepRenderForTexture(power.orElseThrow().value().getIcon());
+                TESClientUtil.prepRenderForTexture(power.orElseThrow().value().getIcon(mc.level.registryAccess().lookupOrThrow(MinejagoRegistries.POWER)));
                 guiGraphics.pose().pushPose();
                 guiGraphics.pose().scale(0.5f, 0.5f, 1.0f);
                 TESClientUtil.drawSimpleTexture(guiGraphics, 0, 0, 32, 32, 0, 0, 32);

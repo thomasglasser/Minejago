@@ -47,7 +47,6 @@ public class PowersEntry extends IndexModeEntryProvider {
                     }
                   },
                   "has_sets": true,
-                  "id": "minejago:fire",
                   "power_color": "#B90E04",
                   "tagline": {
                     "translate": "power.minejago.fire.tagline"
@@ -78,8 +77,6 @@ public class PowersEntry extends IndexModeEntryProvider {
 
         add(context().pageTitle(), "JSON Format");
         add(context().pageText(), """
-                The "id" field specifies the unique identifier for the power.
-                \\
                 The "power_color" field specifies the color of the power for use in text and spinjitzu.
                 \\
                 The "tagline" field specifies the tagline of the power for the power selection screen and power discovery.
@@ -92,7 +89,7 @@ public class PowersEntry extends IndexModeEntryProvider {
 
         add(context().pageTitle(), "Other Steps");
         add(context().pageText(), """
-                Once you've added the power file to your datapack,
+                Once you've added the power file to your datapack under your chosen id,
                 you'll need to add some other files with it:
                 - If you want your power to work with modded behaviors,
                 such as golden weapon compatibility,

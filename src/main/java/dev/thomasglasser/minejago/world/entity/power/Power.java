@@ -2,8 +2,6 @@ package dev.thomasglasser.minejago.world.entity.power;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import java.util.Optional;
 import java.util.function.Supplier;
 import net.minecraft.ChatFormatting;
@@ -23,7 +21,6 @@ import org.jetbrains.annotations.Nullable;
 
 public class Power {
     public static final Codec<Power> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            ResourceLocation.CODEC.fieldOf("id").forGetter(Power::getId),
             TextColor.CODEC.optionalFieldOf("power_color", TextColor.fromLegacyFormat(ChatFormatting.GRAY)).forGetter(Power::getColor),
             ComponentSerialization.CODEC.optionalFieldOf("tagline", Component.empty()).forGetter(Power::getTagline),
             BuiltInRegistries.PARTICLE_TYPE.byNameCodec().optionalFieldOf("border_particle").forGetter(Power::getBorderParticleType),
@@ -31,17 +28,14 @@ public class Power {
             Display.CODEC.optionalFieldOf("display", Display.EMPTY).forGetter(Power::getDisplay),
             Codec.BOOL.optionalFieldOf("is_special", false).forGetter(Power::isSpecial)).apply(instance, Power::new));
 
-    private final ResourceLocation id;
-    private final TextColor color;
+    protected Component tagline;
     @Nullable
     protected Supplier<? extends ParticleOptions> borderParticle;
     protected boolean hasSets;
     protected Display display;
     protected boolean isSpecial;
-    protected Component tagline;
 
-    private String descId;
-    private final ResourceLocation icon;
+    private final TextColor color;
 
     public static Builder builder(ResourceKey<Power> id) {
         return new Builder(id.location());
@@ -51,23 +45,17 @@ public class Power {
         return new Builder(id);
     }
 
-    public static Builder builder(String id) {
-        return new Builder(Minejago.modLoc(id));
-    }
-
-    protected Power(ResourceLocation id, TextColor color, @Nullable Component tagline, @Nullable Supplier<? extends ParticleOptions> borderParticle, boolean hasSets, @Nullable Display display, boolean isSpecial) {
-        this.id = id;
+    protected Power(TextColor color, @Nullable Component tagline, @Nullable Supplier<? extends ParticleOptions> borderParticle, boolean hasSets, @Nullable Display display, boolean isSpecial) {
         this.color = color;
         this.tagline = tagline == null ? Component.empty() : tagline;
         this.borderParticle = borderParticle;
         this.hasSets = hasSets;
         this.display = display == null ? Display.EMPTY : display;
         this.isSpecial = isSpecial;
-        this.icon = ResourceLocation.fromNamespaceAndPath(id.getNamespace(), "textures/power/" + id.getPath() + ".png");
     }
 
-    protected Power(ResourceLocation id, TextColor color, @Nullable Component tagline, Optional<ParticleType<?>> borderParticle, boolean hasSets, Display display, boolean isSpecial) {
-        this(id, color, tagline, borderParticle.orElse(null) instanceof ParticleOptions ? () -> (ParticleOptions) borderParticle.orElse(null) : null, hasSets, display, isSpecial);
+    protected Power(TextColor color, @Nullable Component tagline, Optional<ParticleType<?>> borderParticle, boolean hasSets, Display display, boolean isSpecial) {
+        this(color, tagline, borderParticle.orElse(null) instanceof ParticleOptions ? () -> (ParticleOptions) borderParticle.orElse(null) : null, hasSets, display, isSpecial);
     }
 
     @Nullable
@@ -84,26 +72,12 @@ public class Power {
         return color;
     }
 
-    @Override
-    public String toString() {
-        return "[" + super.toString() + "]: {power:" + id + "}";
-    }
-
-    public ResourceLocation getId() {
-        return id;
-    }
-
     public boolean hasSets() {
         return hasSets;
     }
 
-    public String getDescriptionId() {
-        if (descId == null) descId = Util.makeDescriptionId("power", getId());
-        return descId;
-    }
-
-    public Component getFormattedName() {
-        MutableComponent component = Component.translatable(getDescriptionId());
+    public Component getFormattedName(Registry<Power> registry) {
+        MutableComponent component = Component.translatable(Util.makeDescriptionId("power", registry.getKey(this)));
         component.withStyle((component.getStyle().withColor(color)));
         return component;
     }
@@ -120,12 +94,12 @@ public class Power {
         return tagline;
     }
 
-    public ResourceLocation getIcon() {
-        return icon;
+    public ResourceLocation getIcon(Registry<Power> registry) {
+        return registry.getKey(this).withPrefix("textures/power/").withSuffix(".png");
     }
 
     public boolean is(TagKey<Power> tag, Registry<Power> registry) {
-        return registry.getOrThrow(tag).contains(registry.getOrThrow(ResourceKey.create(registry.key(), getId())));
+        return registry.getOrThrow(tag).contains(registry.getOrThrow(registry.getResourceKey(this).orElseThrow()));
     }
 
     public boolean is(Power power) {
@@ -136,8 +110,8 @@ public class Power {
         return this == power.get();
     }
 
-    public boolean is(ResourceKey<Power> key) {
-        return key == ResourceKey.create(MinejagoRegistries.POWER, getId());
+    public boolean is(ResourceKey<Power> key, Registry<Power> registry) {
+        return registry.getOrThrow(key).value() == this;
     }
 
     public record Display(Component lore, Component description) {
@@ -230,13 +204,8 @@ public class Power {
             return this;
         }
 
-        public Builder isSpecial(boolean is) {
-            this.isSpecial = is;
-            return this;
-        }
-
         public Power build() {
-            return new Power(id, color, tagline, borderParticle, hasSets, display, isSpecial);
+            return new Power(color, tagline, borderParticle, hasSets, display, isSpecial);
         }
     }
 }

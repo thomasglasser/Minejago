@@ -2,6 +2,7 @@ package dev.thomasglasser.minejago.world.entity.ai.behavior;
 
 import com.mojang.datafixers.util.Pair;
 import dev.thomasglasser.minejago.core.component.MinejagoDataComponents;
+import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.world.entity.ai.memory.MinejagoMemoryModuleTypes;
 import dev.thomasglasser.minejago.world.entity.character.Wu;
 import dev.thomasglasser.minejago.world.entity.power.Power;
@@ -64,7 +65,7 @@ public class GivePowerAndGi<E extends PathfinderMob> extends MoveToWalkTarget<E>
         if (power1.hasSets())
             equipGi();
         if (target instanceof Player player)
-            player.displayClientMessage(Component.translatable(Wu.POWER_GIVEN_KEY, entity.getDisplayName(), target.getDisplayName(), power1.getFormattedName(), power1.getTagline()), false);
+            player.displayClientMessage(Component.translatable(Wu.POWER_GIVEN_KEY, entity.getDisplayName(), target.getDisplayName(), power1.getFormattedName(entity.level().registryAccess().lookupOrThrow(MinejagoRegistries.POWER)), power1.getTagline()), false);
 
         this.target = null;
         BrainUtil.setMemory(entity, MemoryModuleType.WALK_TARGET, new WalkTarget(originalPos, 1.2f, 1));

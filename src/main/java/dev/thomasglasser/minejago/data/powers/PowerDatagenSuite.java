@@ -17,6 +17,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import net.minecraft.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.particles.ParticleOptions;
@@ -109,7 +110,7 @@ public class PowerDatagenSuite {
         PowerConfig config = new PowerConfig();
         configConsumer.accept(config);
 
-        String nameKey = power.getDescriptionId();
+        String nameKey = Util.makeDescriptionId("power", key.location());
         String taglineKey = power.getTagline().getContents() instanceof TranslatableContents translatableContents ? translatableContents.getKey() : null;
         String loreKey = power.getDisplay().lore().getContents() instanceof TranslatableContents translatableContents ? translatableContents.getKey() : null;
         String descKey = power.getDisplay().description().getContents() instanceof TranslatableContents translatableContents ? translatableContents.getKey() : null;

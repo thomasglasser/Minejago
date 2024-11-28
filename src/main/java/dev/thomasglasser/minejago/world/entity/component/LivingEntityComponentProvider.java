@@ -1,11 +1,13 @@
 package dev.thomasglasser.minejago.world.entity.component;
 
+import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.plugins.MinejagoWailaPlugin;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -26,7 +28,8 @@ public enum LivingEntityComponentProvider implements IEntityComponentProvider {
         if (entityAccessor.getEntity() instanceof LivingEntity livingEntity && entityAccessor.getLevel() != null) {
             ResourceKey<Power> powerKey = livingEntity.getData(MinejagoAttachmentTypes.POWER).power();
             if (powerKey != MinejagoPowers.NONE) {
-                Power power = entityAccessor.getLevel().holderOrThrow(powerKey).value();
+                Registry<Power> registry = entityAccessor.getLevel().registryAccess().lookupOrThrow(MinejagoRegistries.POWER);
+                Power power = registry.getValue(powerKey);
                 IElement icon = new Element() {
                     private Vec2 size;
 
@@ -38,11 +41,11 @@ public enum LivingEntityComponentProvider implements IEntityComponentProvider {
 
                     @Override
                     public void render(GuiGraphics guiGraphics, float x, float y, float maxX, float maxY) {
-                        guiGraphics.blit(RenderType::guiTextured, power.getIcon(), (int) x, (int) y, 16, 16, 0, 0, 32, 32, 32, 32);
+                        guiGraphics.blit(RenderType::guiTextured, power.getIcon(registry), (int) x, (int) y, 16, 16, 0, 0, 32, 32, 32, 32);
                     }
                 };
                 iTooltip.add(icon);
-                iTooltip.append(Component.translatable("entity.minejago.living.waila.power", power.getFormattedName()));
+                iTooltip.append(Component.translatable("entity.minejago.living.waila.power", power.getFormattedName(registry)));
             }
         }
     }

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.Button;
@@ -118,7 +119,7 @@ public class PowerSelectionScreen extends Screen {
 
     public void renderPowerInfo(GuiGraphics guiGraphics) {
         if (selectedPower != null) {
-            Component title = selectedPower.getFormattedName();
+            Component title = selectedPower.getFormattedName(Minecraft.getInstance().level.registryAccess().lookupOrThrow(MinejagoRegistries.POWER));
 
             Power.Display display = selectedPower.getDisplay();
             Component lore = display.lore();
@@ -176,15 +177,17 @@ public class PowerSelectionScreen extends Screen {
     }
 
     class PowerButton extends AbstractButton {
+        private static final Registry<Power> REGISTRY = Minecraft.getInstance().level.registryAccess().lookupOrThrow(MinejagoRegistries.POWER);
+
         private boolean selected;
         private final Power power;
         private final ResourceLocation textureLoc;
 
         protected PowerButton(int i, int j, Power power) {
-            super(i, j, 32, 32, power.getFormattedName());
-            textureLoc = power.getIcon();
+            super(i, j, 32, 32, power.getFormattedName(REGISTRY));
+            textureLoc = power.getIcon(REGISTRY);
             this.power = power;
-            setTooltip(Tooltip.create(power.getFormattedName()));
+            setTooltip(Tooltip.create(power.getFormattedName(REGISTRY)));
         }
 
         @Override
