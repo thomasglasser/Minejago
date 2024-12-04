@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.world.entity.ai.behavior;
 
 import com.mojang.datafixers.util.Pair;
+import dev.thomasglasser.minejago.core.component.MinejagoDataComponents;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.tags.MinejagoEntityTypeTags;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
@@ -9,9 +10,11 @@ import dev.thomasglasser.minejago.world.entity.skulkin.SkulkinHorse;
 import dev.thomasglasser.minejago.world.entity.skulkin.SkullTruck;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaider;
+import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaidsHolder;
 import dev.thomasglasser.minejago.world.level.MinejagoLevelUtils;
 import java.util.List;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
@@ -42,6 +45,8 @@ public class FleeSkulkinRaidAndDespawn<T extends SkulkinRaider> extends Extended
         if (raid != null && raid.getEscapePos() != null) {
             if (entity.position().closerThan(raid.getEscapePos(), 5)) {
                 // TODO: Place underworld portal blocks
+                if (entity.getItemInHand(InteractionHand.MAIN_HAND).has(MinejagoDataComponents.GOLDEN_WEAPONS_MAP) || entity.getItemInHand(InteractionHand.OFF_HAND).has(MinejagoDataComponents.GOLDEN_WEAPONS_MAP))
+                    ((SkulkinRaidsHolder) entity.level()).getSkulkinRaids().setMapTaken();
                 if (entity.getVehicle() != null)
                     entity.getVehicle().remove(Entity.RemovalReason.CHANGED_DIMENSION);
                 entity.remove(Entity.RemovalReason.CHANGED_DIMENSION);
@@ -50,14 +55,14 @@ public class FleeSkulkinRaidAndDespawn<T extends SkulkinRaider> extends Extended
             } else if (MinejagoServerConfig.get().enableTech.get()) {
                 if (entity.getType().is(MinejagoEntityTypeTags.SKULL_TRUCK_RIDERS)) {
                     List<SkullTruck> trucks = entity.level().getEntitiesOfClass(SkullTruck.class, entity.getBoundingBox().inflate(8), truck -> truck.getPassengers().size() < 3);
-                    if (!trucks.isEmpty()) entity.startRiding(trucks.get(0));
+                    if (!trucks.isEmpty()) entity.startRiding(trucks.getFirst());
                 } else {
                     List<AbstractSkulkinVehicle> bikes = entity.level().getEntitiesOfClass(AbstractSkulkinVehicle.class, entity.getBoundingBox().inflate(8), bike -> bike.getType() == MinejagoEntityTypes.SKULL_MOTORBIKE.get() && bike.getControllingPassenger() == null);
-                    if (!bikes.isEmpty()) entity.startRiding(bikes.get(0));
+                    if (!bikes.isEmpty()) entity.startRiding(bikes.getFirst());
                 }
             } else {
                 List<SkulkinHorse> horses = entity.level().getEntitiesOfClass(SkulkinHorse.class, entity.getBoundingBox().inflate(8), skulkinHorse -> !skulkinHorse.hasControllingPassenger());
-                if (!horses.isEmpty()) entity.startRiding(horses.get(0));
+                if (!horses.isEmpty()) entity.startRiding(horses.getFirst());
             }
             BrainUtil.setMemory(entity, MemoryModuleType.WALK_TARGET, new WalkTarget(raid.getEscapePos(), 1.4f, 4));
         }

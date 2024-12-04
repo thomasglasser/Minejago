@@ -27,7 +27,6 @@ import net.tslat.smartbrainlib.api.core.behaviour.FirstApplicableBehaviour;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.attack.AnimatableMeleeAttack;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetWalkTargetToAttackTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.target.InvalidateAttackTarget;
-import net.tslat.smartbrainlib.example.SBLSkeleton;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
@@ -101,7 +100,7 @@ public class Samukai extends SkulkinRaider implements GeoEntity {
     }
 
     @Override
-    public BrainActivityGroup<? extends SBLSkeleton> getFightTasks() {
+    public BrainActivityGroup<? extends SkulkinRaider> getFightTasks() {
         return BrainActivityGroup.fightTasks(
                 new InvalidateAttackTarget<>(), // Invalidate the attack target if it's no longer applicable
                 new SetWalkTargetToAttackTarget<>() // Run at the target if not holding a bow

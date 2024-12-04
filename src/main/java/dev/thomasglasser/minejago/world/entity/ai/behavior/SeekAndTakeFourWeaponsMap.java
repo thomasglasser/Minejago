@@ -3,7 +3,6 @@ package dev.thomasglasser.minejago.world.entity.ai.behavior;
 import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaider;
-import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaidsHolder;
 import dev.thomasglasser.minejago.world.item.MinejagoItemUtils;
 import dev.thomasglasser.minejago.world.level.MinejagoLevelUtils;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
@@ -24,7 +23,7 @@ import net.tslat.smartbrainlib.util.BrainUtil;
 public class SeekAndTakeFourWeaponsMap<T extends SkulkinRaider> extends ExtendedBehaviour<T> {
     private static final List<Pair<MemoryModuleType<?>, MemoryStatus>> MEMORY_REQUIREMENTS = List.of(Pair.of(MemoryModuleType.WALK_TARGET, MemoryStatus.REGISTERED));
 
-    private float speedModifier;
+    private float speedModifier = 1;
     private final List<BlockPos> visited = Lists.<BlockPos>newArrayList();
 
     public SeekAndTakeFourWeaponsMap<T> speedModifier(float speedMod) {
@@ -56,14 +55,14 @@ public class SeekAndTakeFourWeaponsMap<T extends SkulkinRaider> extends Extended
                 do {
                     toCheck = DefaultRandomPos.getPosTowards(entity, 15, 8, Vec3.atBottomCenterOf(MinejagoLevelUtils.getGoldenWeaponsMapHolderNearby(entity, 16).blockPosition()), (float) (Math.PI / 2));
                 } while (toCheck == null || visited.contains(new BlockPos((int) toCheck.x, (int) toCheck.y, (int) toCheck.z)));
-                BrainUtil.setMemory(entity, MemoryModuleType.WALK_TARGET, new WalkTarget(toCheck, speedModifier, 0));
+                speedModifier = 1;
+                BrainUtil.setMemory(entity, MemoryModuleType.WALK_TARGET, new WalkTarget(toCheck, speedModifier, 1));
                 entity.stopRiding();
             } else if (MinejagoLevelUtils.isGoldenWeaponsMapHolderNearby(entity, 1)) {
                 Painting fw = MinejagoLevelUtils.getGoldenWeaponsMapHolderNearby(entity, 1);
                 CompoundTag persistentData = TommyLibServices.ENTITY.getPersistentData(fw);
                 persistentData.putBoolean("MapTaken", true);
                 TommyLibServices.ENTITY.setPersistentData(fw, persistentData, true);
-                ((SkulkinRaidsHolder) level).getSkulkinRaids().setMapTaken();
                 entity.setItemSlot(EquipmentSlot.OFFHAND, MinejagoItemUtils.createFourWeaponsMaps(level, entity));
                 entity.setDropChance(EquipmentSlot.OFFHAND, 2.0F);
                 Vec3 escapePos = null;

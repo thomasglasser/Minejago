@@ -16,6 +16,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class SkulkinRaids extends SavedData {
@@ -64,7 +65,7 @@ public class SkulkinRaids extends SavedData {
 
     public static boolean canJoinSkulkinRaid(SkulkinRaider raider, SkulkinRaid raid) {
         if (raider != null && raid != null && raid.getLevel() != null) {
-            return raider.isAlive() && raider.canJoinSkulkinRaid() && raider.getNoActionTime() <= 2400 && raider.level().dimensionType() == raid.getLevel().dimensionType();
+            return raider.isAlive() && raider.getNoActionTime() <= 2400 && raider.level().dimensionType() == raid.getLevel().dimensionType();
         } else {
             return false;
         }
@@ -103,12 +104,20 @@ public class SkulkinRaids extends SavedData {
         raids.nextAvailableID = tag.getInt("NextAvailableID");
         raids.tick = tag.getInt("Tick");
         raids.mapTaken = tag.getBoolean("MapTaken");
-        ListTag listTag = tag.getList("SkulkinRaids", 10);
 
-        for (int i = 0; i < listTag.size(); ++i) {
-            CompoundTag compoundTag = listTag.getCompound(i);
+        ListTag raidsTag = tag.getList("SkulkinRaids", 10);
+        for (int i = 0; i < raidsTag.size(); ++i) {
+            CompoundTag compoundTag = raidsTag.getCompound(i);
             SkulkinRaid raid = new SkulkinRaid(level, compoundTag);
             raids.raidMap.put(raid.getId(), raid);
+        }
+
+        ListTag raidedAreasTag = tag.getList("RaidedAreas", 10);
+        for (int i = 0; i < raidedAreasTag.size(); ++i) {
+            CompoundTag area = raidedAreasTag.getCompound(i);
+            Vec3 min = new Vec3(area.getDouble("MinX"), area.getDouble("MinY"), area.getDouble("MinZ"));
+            Vec3 max = new Vec3(area.getDouble("MaxX"), area.getDouble("MaxY"), area.getDouble("MaxZ"));
+            raids.raidedAreas.add(new AABB(min, max));
         }
 
         return raids;
@@ -119,15 +128,30 @@ public class SkulkinRaids extends SavedData {
         compoundTag.putInt("NextAvailableID", this.nextAvailableID);
         compoundTag.putInt("Tick", this.tick);
         compoundTag.putBoolean("MapTaken", mapTaken);
-        ListTag listTag = new ListTag();
 
+        ListTag listTag = new ListTag();
         for (SkulkinRaid raid : this.raidMap.values()) {
             CompoundTag compoundTag2 = new CompoundTag();
             raid.save(compoundTag2);
             listTag.add(compoundTag2);
         }
-
         compoundTag.put("SkulkinRaids", listTag);
+
+        ListTag raidedAreaTag = new ListTag();
+        for (AABB aabb : raidedAreas) {
+            CompoundTag area = new CompoundTag();
+            Vec3 min = aabb.getMinPosition();
+            area.putDouble("MinX", min.x);
+            area.putDouble("MinY", min.y);
+            area.putDouble("MinZ", min.z);
+            Vec3 max = aabb.getMaxPosition();
+            area.putDouble("MaxX", max.x);
+            area.putDouble("MaxY", max.y);
+            area.putDouble("MaxZ", max.z);
+            raidedAreaTag.add(area);
+        }
+        compoundTag.put("RaidedAreas", raidedAreaTag);
+
         return compoundTag;
     }
 

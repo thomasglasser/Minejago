@@ -45,14 +45,14 @@ public class SkulkinArmySpawner implements CustomSpawner {
                 if (player.isSpectator()) {
                     return 0;
                 } else if (structurePos == null) {
-                    this.nextTick += (120 + randomSource.nextInt(120)) * 20;
+                    this.nextTick += (30 + randomSource.nextInt(30)) * 20;
                     return 0;
                 } else {
-                    int j = (16 + randomSource.nextInt(16)) * (randomSource.nextBoolean() ? -1 : 1);
-                    int k = (16 + randomSource.nextInt(16)) * (randomSource.nextBoolean() ? -1 : 1);
+                    int j = (8 + randomSource.nextInt(8)) * (randomSource.nextBoolean() ? -1 : 1);
+                    int k = (8 + randomSource.nextInt(8)) * (randomSource.nextBoolean() ? -1 : 1);
                     BlockPos.MutableBlockPos mutableBlockPos = structurePos.mutable().move(j, 0, k);
                     if (!level.hasChunksAt(mutableBlockPos.getX() - 10, mutableBlockPos.getZ() - 10, mutableBlockPos.getX() + 10, mutableBlockPos.getZ() + 10)) {
-                        this.nextTick += (120 + randomSource.nextInt(120)) * 20;
+                        this.nextTick += (30 + randomSource.nextInt(30)) * 20;
                         return 0;
                     }
                     mutableBlockPos.setY(level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, mutableBlockPos).getY());

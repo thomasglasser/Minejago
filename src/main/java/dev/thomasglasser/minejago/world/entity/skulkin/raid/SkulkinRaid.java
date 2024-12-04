@@ -1,6 +1,5 @@
 package dev.thomasglasser.minejago.world.entity.skulkin.raid;
 
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
 import dev.thomasglasser.minejago.advancements.criterion.SkulkinRaidTrigger;
@@ -17,6 +16,7 @@ import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -27,10 +27,7 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderGetter;
 import net.minecraft.core.SectionPos;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundSoundPacket;
@@ -40,24 +37,15 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.Unit;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.raid.Raid;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.BannerPattern;
-import net.minecraft.world.level.block.entity.BannerPatternLayers;
-import net.minecraft.world.level.block.entity.BannerPatterns;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -84,8 +72,7 @@ public class SkulkinRaid {
     public static final int VALID_RAID_RADIUS = 96;
     public static final int VALID_RAID_RADIUS_SQR = 9216;
     public static final int RAID_REMOVAL_THRESHOLD_SQR = 12544;
-    private final Map<Integer, SkulkinRaider> groupToLeaderMap = Maps.newHashMap();
-    private final Map<Integer, Set<SkulkinRaider>> groupRaiderMap = Maps.newHashMap();
+    private final Map<Integer, Set<SkulkinRaider>> raidersByWave = new HashMap<>();
     private long ticksActive;
     private BlockPos center;
     private final ServerLevel level;
@@ -166,7 +153,7 @@ public class SkulkinRaid {
     public Set<SkulkinRaider> getAllRaiders() {
         Set<SkulkinRaider> set = Sets.newHashSet();
 
-        for (Set<SkulkinRaider> set1 : this.groupRaiderMap.values()) {
+        for (Set<SkulkinRaider> set1 : raidersByWave.values()) {
             set.addAll(set1);
         }
 
@@ -379,7 +366,7 @@ public class SkulkinRaid {
     }
 
     private void updateRaiders() {
-        Iterator<Set<SkulkinRaider>> iterator = this.groupRaiderMap.values().iterator();
+        Iterator<Set<SkulkinRaider>> iterator = this.raidersByWave.values().iterator();
         Set<SkulkinRaider> set = Sets.newHashSet();
 
         while (iterator.hasNext()) {
@@ -407,9 +394,6 @@ public class SkulkinRaid {
 
         for (SkulkinRaider raider1 : set) {
             this.removeFromRaid(raider1, true);
-            if (raider1.isPatrolLeader()) {
-                this.removeLeader(raider1.getWave());
-            }
         }
     }
 
@@ -433,7 +417,6 @@ public class SkulkinRaid {
     }
 
     private void spawnGroup(BlockPos pos) {
-        boolean flag = false;
         int i = this.groupsSpawned + 1;
         this.totalHealth = 0.0F;
         DifficultyInstance difficultyInstance = this.level.getCurrentDifficultyAt(pos);
@@ -443,18 +426,12 @@ public class SkulkinRaid {
         int k = 0;
 
         if (this.groupsSpawned == this.numGroups - 1)
-            flag = spawnBosses(i, pos);
+            spawnBosses(i, pos);
 
         for (int l = 0; l < j; l++) {
             SkulkinRaider raider = MinejagoEntityTypes.SKULKIN.get().create(this.level, EntitySpawnReason.EVENT);
             if (raider == null) {
                 break;
-            }
-
-            if (!flag && raider.canBeLeader()) {
-                raider.setPatrolLeader(true);
-                this.setLeader(i, raider);
-                flag = true;
             }
 
             this.joinRaid(i, raider, pos, false);
@@ -487,7 +464,6 @@ public class SkulkinRaid {
         if (flag) {
             raider.setCurrentRaid(this);
             raider.setWave(wave);
-            raider.setCanJoinRaid(true);
             raider.setTicksOutsideRaid(0);
             if (!isRecruited && pos != null) {
                 raider.setPos((double) pos.getX() + 0.5, (double) pos.getY() + 1.0, (double) pos.getZ() + 0.5);
@@ -505,7 +481,7 @@ public class SkulkinRaid {
     public float getHealthOfLivingRaiders() {
         float f = 0.0F;
 
-        for (Set<SkulkinRaider> set : this.groupRaiderMap.values()) {
+        for (Set<SkulkinRaider> set : this.raidersByWave.values()) {
             for (SkulkinRaider raider : set) {
                 f += raider.getHealth();
             }
@@ -519,11 +495,11 @@ public class SkulkinRaid {
     }
 
     public int getTotalRaidersAlive() {
-        return this.groupRaiderMap.values().stream().mapToInt(Set::size).sum();
+        return this.raidersByWave.values().stream().mapToInt(Set::size).sum();
     }
 
     public void removeFromRaid(SkulkinRaider raider, boolean wanderedOutOfRaid) {
-        Set<SkulkinRaider> set = this.groupRaiderMap.get(raider.getWave());
+        Set<SkulkinRaider> set = this.raidersByWave.get(raider.getWave());
         if (set != null) {
             boolean flag = set.remove(raider);
             if (flag) {
@@ -540,25 +516,6 @@ public class SkulkinRaid {
 
     private void setDirty() {
         this.level.getRaids().setDirty();
-    }
-
-    public static ItemStack getCursedBannerInstance(HolderGetter<BannerPattern> holderGetter) {
-        ItemStack itemStack = new ItemStack(Items.BLACK_BANNER);
-        BannerPatternLayers bannerPatternLayers = new BannerPatternLayers.Builder()
-                .addIfRegistered(holderGetter, BannerPatterns.CROSS, DyeColor.RED)
-                .addIfRegistered(holderGetter, BannerPatterns.RHOMBUS_MIDDLE, DyeColor.BROWN)
-                .addIfRegistered(holderGetter, BannerPatterns.SKULL, DyeColor.WHITE)
-                .build();
-        itemStack.set(DataComponents.BANNER_PATTERNS, bannerPatternLayers);
-        itemStack.set(DataComponents.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE);
-        itemStack.set(DataComponents.ITEM_NAME, CURSED_BANNER_PATTERN_NAME);
-        itemStack.set(DataComponents.RARITY, Rarity.UNCOMMON);
-        return itemStack;
-    }
-
-    @Nullable
-    public SkulkinRaider getLeader(int wave) {
-        return this.groupToLeaderMap.get(wave);
     }
 
     @Nullable
@@ -601,8 +558,8 @@ public class SkulkinRaid {
     }
 
     public boolean addWaveMob(int wave, SkulkinRaider p_raider, boolean isRecruited) {
-        this.groupRaiderMap.computeIfAbsent(wave, p_37746_ -> Sets.newHashSet());
-        Set<SkulkinRaider> set = this.groupRaiderMap.get(wave);
+        this.raidersByWave.computeIfAbsent(wave, p_37746_ -> Sets.newHashSet());
+        Set<SkulkinRaider> set = this.raidersByWave.get(wave);
         SkulkinRaider raider = null;
 
         for (SkulkinRaider raider1 : set) {
@@ -625,16 +582,6 @@ public class SkulkinRaid {
         this.updateBossbar();
         this.setDirty();
         return true;
-    }
-
-    public void setLeader(int wave, SkulkinRaider raider) {
-        this.groupToLeaderMap.put(wave, raider);
-        raider.setItemSlot(EquipmentSlot.HEAD, getCursedBannerInstance(raider.registryAccess().lookupOrThrow(Registries.BANNER_PATTERN)));
-        raider.setDropChance(EquipmentSlot.HEAD, 2.0F);
-    }
-
-    public void removeLeader(int wave) {
-        this.groupToLeaderMap.remove(wave);
     }
 
     public BlockPos getCenter() {
@@ -709,11 +656,6 @@ public class SkulkinRaid {
         Samukai samukai = MinejagoEntityTypes.SAMUKAI.get().create(this.level, EntitySpawnReason.EVENT);
         if (samukai == null) {
             return false;
-        }
-        if (samukai.canBeLeader()) {
-            samukai.setPatrolLeader(true);
-            this.setLeader(i, samukai);
-            bl = true;
         }
         this.joinRaid(i, samukai, pos, false);
 

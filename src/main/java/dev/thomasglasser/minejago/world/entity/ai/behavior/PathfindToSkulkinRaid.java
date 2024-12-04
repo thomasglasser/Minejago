@@ -28,7 +28,7 @@ public class PathfindToSkulkinRaid<T extends SkulkinRaider> extends ExtendedBeha
                 && !entity.isVehicle()
                 && entity.hasActiveRaid()
                 && !entity.getCurrentRaid().isOver()
-                && !MinejagoLevelUtils.isGoldenWeaponsMapHolderNearby(entity, 32);
+                && !MinejagoLevelUtils.isGoldenWeaponsMapHolderNearby(entity, 16);
     }
 
     @Override

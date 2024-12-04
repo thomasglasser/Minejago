@@ -47,7 +47,6 @@ import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityEvents;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.power.Power;
-import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
 import dev.thomasglasser.minejago.world.entity.spinjitzucourse.CenterSpinjitzuCourseElement;
 import dev.thomasglasser.minejago.world.entity.spinjitzucourse.SpinningDummiesSpinjitzuCourseElement;
 import dev.thomasglasser.minejago.world.entity.spinjitzucourse.SpinningMacesSpinjitzuCourseElement;
@@ -89,7 +88,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -161,10 +159,6 @@ public class MinejagoClientEvents {
 
         if (tab == CreativeModeTabs.COMBAT) {
             MinejagoArmors.ARMOR_SETS.forEach(set -> items.addAll(set.getAllAsItems().stream().map(Item::getDefaultInstance).toList()));
-        }
-
-        if (tab == CreativeModeTabs.FUNCTIONAL_BLOCKS) {
-            items.add(SkulkinRaid.getCursedBannerInstance(lookupProvider.lookupOrThrow(Registries.BANNER_PATTERN)));
         }
 
         return items;

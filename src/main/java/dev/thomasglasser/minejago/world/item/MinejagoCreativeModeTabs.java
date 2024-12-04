@@ -2,7 +2,6 @@ package dev.thomasglasser.minejago.world.item;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
-import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
 import dev.thomasglasser.minejago.world.item.armor.GiGeoArmorItem;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.armor.PoweredArmorItem;
@@ -14,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
@@ -44,8 +42,6 @@ public class MinejagoCreativeModeTabs {
         MinejagoArmors.ARMOR_SETS.forEach(armorSet -> output.acceptAll(armorSet.getAll().stream().map(ro -> ro.get().getDefaultInstance()).toList()));
         MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(chestplate -> output.accept(chestplate.get()));
         output.accept(MinejagoArmors.SAMUKAIS_CHESTPLATE.get());
-
-        output.accept(SkulkinRaid.getCursedBannerInstance(parameters.holders().lookupOrThrow(Registries.BANNER_PATTERN)));
     }));
 
     private static DeferredHolder<CreativeModeTab, CreativeModeTab> register(String name, Supplier<CreativeModeTab> tab) {

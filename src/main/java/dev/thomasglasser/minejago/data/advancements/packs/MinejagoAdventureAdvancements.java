@@ -7,7 +7,6 @@ import dev.thomasglasser.minejago.tags.MinejagoEntityTypeTags;
 import dev.thomasglasser.minejago.tags.MinejagoItemTags;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;
-import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
@@ -55,7 +54,7 @@ public class MinejagoAdventureAdvancements extends ExtendedAdvancementGenerator 
         AdvancementHolder killASkulkin = create(ResourceLocation.withDefaultNamespace("adventure/kill_a_mob"), MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.SPEED).get(), "kill_a_skulkin", AdvancementType.TASK, true, true, false, null,
                 "kill_skulkin", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(entities, MinejagoEntityTypeTags.SKULKINS)), "Redead", "Kill a Skulkin Warrior");
 
-        AdvancementHolder startSkulkinRaid = create(killASkulkin, SkulkinRaid.getCursedBannerInstance(provider.lookupOrThrow(Registries.BANNER_PATTERN)), "start_skulkin_raid", AdvancementType.GOAL, true, true, false, null,
+        AdvancementHolder startSkulkinRaid = create(killASkulkin, MinejagoItems.BONE_KNIFE.get(), "start_skulkin_raid", AdvancementType.GOAL, true, true, false, null,
                 "start_skulkin_raid", SkulkinRaidTrigger.TriggerInstance.raidStarted(), "Ninja, GO!", "The Skulkin are coming!");
 
         AdvancementHolder winSkulkinRaid = create(startSkulkinRaid, Items.FILLED_MAP, "win_skulkin_raid", AdvancementType.CHALLENGE, true, true, false, AdvancementRewards.Builder.experience(10).build(),

@@ -14,27 +14,8 @@
     },
     "frame": "goal",
     "icon": {
-      "components": {
-        "minecraft:banner_patterns": [
-          {
-            "color": "red",
-            "pattern": "minecraft:cross"
-          },
-          {
-            "color": "brown",
-            "pattern": "minecraft:rhombus"
-          },
-          {
-            "color": "white",
-            "pattern": "minecraft:skull"
-          }
-        ],
-        "minecraft:hide_additional_tooltip": {},
-        "minecraft:item_name": "{\"color\":\"gold\",\"translate\":\"block.minejago.cursed_banner\"}",
-        "minecraft:rarity": "uncommon"
-      },
       "count": 1,
-      "id": "minecraft:black_banner"
+      "id": "minejago:bone_knife"
     },
     "title": {
       "translate": "advancement.minejago.adventure.start_skulkin_raid.title"
