@@ -64,7 +64,7 @@ public class SeekAndTakeFourWeaponsMap<T extends SkulkinRaider> extends Extended
                 persistentData.putBoolean("MapTaken", true);
                 TommyLibServices.ENTITY.setPersistentData(fw, persistentData, true);
                 ((SkulkinRaidsHolder) level).getSkulkinRaids().setMapTaken();
-                entity.setItemSlot(EquipmentSlot.OFFHAND, MinejagoItemUtils.createCaveOfDespairMap(level, entity));
+                entity.setItemSlot(EquipmentSlot.OFFHAND, MinejagoItemUtils.createFourWeaponsMaps(level, entity));
                 entity.setDropChance(EquipmentSlot.OFFHAND, 2.0F);
                 Vec3 escapePos = null;
                 while (escapePos == null) {

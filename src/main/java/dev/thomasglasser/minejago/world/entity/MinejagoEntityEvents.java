@@ -246,7 +246,9 @@ public class MinejagoEntityEvents {
                 persistentData.putBoolean(KEY_ISINCAVEOFDESPAIR, MinejagoLevelUtils.isStructureInRange(MinejagoStructureTags.CAVE_OF_DESPAIR, level, serverPlayer.blockPosition(), 64));
                 persistentData.putBoolean(KEY_ISINMONASTERYOFSPINJITZU, MinejagoLevelUtils.isStructureInRange(MinejagoStructureTags.MONASTERY_OF_SPINJITZU, level, serverPlayer.blockPosition(), 64));
 
-                TommyLibServices.ENTITY.setPersistentData(serverPlayer, persistentData, true);
+                if (persistentData != TommyLibServices.ENTITY.getPersistentData(serverPlayer)) {
+                    TommyLibServices.ENTITY.setPersistentData(serverPlayer, persistentData, true);
+                }
             } else {
                 int startTicks = persistentData.getInt(ClientboundStartSpinjitzuPayload.KEY_SPINJITZUSTARTTICKS);
                 if (startTicks > 0)
@@ -421,7 +423,7 @@ public class MinejagoEntityEvents {
         Entity entity = event.getTarget();
         CompoundTag persistentData = TommyLibServices.ENTITY.getPersistentData(entity);
         if (level instanceof ServerLevel serverLevel && hand == InteractionHand.MAIN_HAND && entity instanceof Painting painting && painting.getVariant().is(MinejagoPaintingVariants.FOUR_WEAPONS) && !persistentData.getBoolean("MapTaken")) {
-            player.addItem(MinejagoItemUtils.createCaveOfDespairMap(serverLevel, player));
+            player.addItem(MinejagoItemUtils.createFourWeaponsMaps(serverLevel, player));
             if (!player.isCreative()) {
                 persistentData.putBoolean("MapTaken", true);
                 persistentData.putBoolean("MapTakenByPlayer", true);

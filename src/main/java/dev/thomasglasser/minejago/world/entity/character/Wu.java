@@ -171,9 +171,14 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
                     new SpinjitzuData(true, false).save(player, true);
                     player.getData(MinejagoAttachmentTypes.FOCUS).addExhaustion(FocusConstants.EXHAUSTION_LEARN_SPINJITZU);
                     playSound(SoundEvents.VILLAGER_CELEBRATE, 1.0f, 0.9f);
-                    stopTracking(player);
+                    courseData.remove(player);
                     setLifting(false);
                     entityData.set(DATA_INTERRUPTED, false);
+                } else {
+                    playSound(SoundEvents.VILLAGER_NO, 1.0f, 0.9f);
+                    ArrayList<AbstractSpinjitzuCourseElement<?>> remaining = new ArrayList<>(trackedCourseElements);
+                    remaining.removeAll(courseData.get(player));
+                    System.out.println(remaining);
                 }
             } else {
                 List<LivingEntity> cooldownList = new ArrayList<>();
@@ -212,14 +217,6 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
         super.tick();
         if (!level().isClientSide) {
             entitiesOnCooldown.remove((int) level().getGameTime());
-        }
-    }
-
-    public void stopTracking(Player player) {
-        courseData.remove(player);
-        if (courseData.isEmpty()) {
-            trackedCourseElements.forEach(AbstractSpinjitzuCourseElement::endTracking);
-            trackedCourseElements.clear();
         }
     }
 
@@ -331,7 +328,7 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
 
     @Override
     public boolean shouldSetRandomWalkTarget(Character character) {
-        return courseData.isEmpty();
+        return trackedCourseElements.isEmpty();
     }
 
     public void setMaxTime(int maxTime) {
@@ -380,5 +377,10 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
             }
         }
         return isInterrupted();
+    }
+
+    public void clearTrackedElements() {
+        trackedCourseElements.forEach(AbstractSpinjitzuCourseElement::endTracking);
+        trackedCourseElements.clear();
     }
 }

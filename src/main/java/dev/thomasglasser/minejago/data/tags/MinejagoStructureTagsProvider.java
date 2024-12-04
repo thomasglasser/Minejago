@@ -17,13 +17,27 @@ public class MinejagoStructureTagsProvider extends StructureTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider pProvider) {
+        tag(MinejagoStructureTags.FOUR_WEAPONS)
+                .add(MinejagoStructures.FOUR_WEAPONS);
+
+        tag(MinejagoStructureTags.NINJAGO_CITY)
+                .add(MinejagoStructures.NINJAGO_CITY);
+
         tag(MinejagoStructureTags.CAVE_OF_DESPAIR)
                 .add(MinejagoStructures.CAVE_OF_DESPAIR);
+
+        // TODO: Other structures
+        tag(MinejagoStructureTags.ICE_TEMPLE);
+        tag(MinejagoStructureTags.FLOATING_RUINS);
+        tag(MinejagoStructureTags.FIRE_TEMPLE);
 
         tag(MinejagoStructureTags.MONASTERY_OF_SPINJITZU)
                 .add(MinejagoStructures.MONASTERY_OF_SPINJITZU);
 
         tag(MinejagoStructureTags.HAS_GOLDEN_WEAPON)
-                .addTag(MinejagoStructureTags.CAVE_OF_DESPAIR);
+                .addTag(MinejagoStructureTags.CAVE_OF_DESPAIR)
+                .addTag(MinejagoStructureTags.ICE_TEMPLE)
+                .addTag(MinejagoStructureTags.FLOATING_RUINS)
+                .addTag(MinejagoStructureTags.FIRE_TEMPLE);
     }
 }

@@ -28,8 +28,8 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 
-public class MinejagoRecipes extends ExtendedRecipeProvider {
-    public MinejagoRecipes(HolderLookup.Provider provider, RecipeOutput output) {
+public class MinejagoRecipeProvider extends ExtendedRecipeProvider {
+    public MinejagoRecipeProvider(HolderLookup.Provider provider, RecipeOutput output) {
         super(provider, output);
     }
 
@@ -60,14 +60,6 @@ public class MinejagoRecipes extends ExtendedRecipeProvider {
                 .requires(ItemTags.FISHES)
                 .group("teapot")
                 .unlockedBy("has_self", has(MinejagoBlocks.JASPOT.get()))
-                .save(output);
-        shapeless(RecipeCategory.BREWING, MinejagoBlocks.FLAME_TEAPOT.get(), 1)
-                .requires(MinejagoBlocks.TEAPOTS.get(DyeColor.GRAY).get())
-                .requires(ConventionalItemTags.ORANGE_DYES)
-                .group("teapot")
-                .unlockedBy("has_self", has(MinejagoBlocks.FLAME_TEAPOT.get()))
-                .unlockedBy("has_orange_dye", has(ConventionalItemTags.ORANGE_DYES))
-                .unlockedBy("has_teapot", has(MinejagoItemTags.TEAPOTS))
                 .save(output);
 
         MinejagoBlocks.TEAPOTS.forEach((color, pot) -> coloredTeapotFromColoredTerracotta(pot.get(), BuiltInRegistries.BLOCK.getValue(ResourceLocation.withDefaultNamespace(color.getName() + "_terracotta"))));

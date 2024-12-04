@@ -5,6 +5,7 @@ import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
@@ -39,6 +40,12 @@ public class SpinningDummiesSpinjitzuCourseElement extends PlatformedSpinjitzuCo
     }
 
     @Override
+    public void checkPartCollision(AbstractSpinjitzuCourseElementPart<SpinningDummiesSpinjitzuCourseElement> part, Entity entity) {
+        if (!(part instanceof SpinningDummiesSpinjitzuCourseElementPart dummy) || !dummy.hit)
+            super.checkPartCollision(part, entity);
+    }
+
+    @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         super.registerControllers(controllers);
         controllers.add(new AnimationController<>(this, "dummy_1_controller", 0, state -> PlayState.CONTINUE)
@@ -50,6 +57,8 @@ public class SpinningDummiesSpinjitzuCourseElement extends PlatformedSpinjitzuCo
     }
 
     protected static class SpinningDummiesSpinjitzuCourseElementPart extends SpinningSpinjitzuCourseElementPart<SpinningDummiesSpinjitzuCourseElement> {
+        private static final EntityDimensions HIT = EntityDimensions.scalable(0, 0);
+
         private boolean hit = false;
         private int hitTimer = 0;
 
@@ -57,20 +66,30 @@ public class SpinningDummiesSpinjitzuCourseElement extends PlatformedSpinjitzuCo
             super(parent, name, width, height, x, y, z);
         }
 
-        @Override
-        public boolean hurtServer(ServerLevel serverLevel, DamageSource damageSource, float v) {
+        private void hit() {
             hit = true;
             hitTimer = 40;
             refreshDimensions();
+        }
+
+        @Override
+        public boolean hurtServer(ServerLevel serverLevel, DamageSource damageSource, float v) {
+            hit();
             getParent().triggerAnim(name + "_controller", name + "_hit");
             playSound(MinejagoSoundEvents.SPINNING_DUMMIES_HIT.get());
-            return super.hurtServer(serverLevel, damageSource, v);
+            return true;
+        }
+
+        @Override
+        public boolean hurtClient(DamageSource p_376938_) {
+            hit();
+            return true;
         }
 
         @Override
         public EntityDimensions getDimensions(Pose pose) {
             if (hit) {
-                return EntityDimensions.scalable(0.0f, 0.0f);
+                return HIT;
             }
             return super.getDimensions(pose);
         }
@@ -85,11 +104,6 @@ public class SpinningDummiesSpinjitzuCourseElement extends PlatformedSpinjitzuCo
                     refreshDimensions();
                 }
             }
-        }
-
-        @Override
-        public boolean canBeCollidedWith() {
-            return !hit;
         }
     }
 }

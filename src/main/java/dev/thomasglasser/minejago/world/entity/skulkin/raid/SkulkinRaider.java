@@ -88,7 +88,8 @@ public abstract class SkulkinRaider extends SBLSkeleton {
                 new ObtainNearbyRaidBanner<>(ALLOWED_ITEMS, ALLOWED_STACKS),
                 new PathfindToSkulkinRaid<>(),
                 new SeekAndTakeFourWeaponsMap<>(),
-                new FleeSkulkinRaidAndDespawn<>()).behaviours(super.getCoreTasks().getBehaviours().toArray(new Behavior[0]));
+                new FleeSkulkinRaidAndDespawn<>()).behaviours(super.getCoreTasks().getBehaviours().toArray(new Behavior[0]))
+                .behaviours(super.getCoreTasks().getBehaviours().toArray(new Behavior[] {}));
     }
 
     public void addAdditionalSaveData(CompoundTag pCompound) {

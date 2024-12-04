@@ -60,10 +60,6 @@ public class MinejagoBlockStateProvider extends ExtendedBlockStateProvider {
                 .rotationY((int) (blockState.getValue(TeapotBlock.FACING).getOpposite()).toYRot())
                 .modelFile(blockState.getValue(TeapotBlock.FILLED) ? models().withExistingParent("jaspot_filled", modBlockLoc("teapot_filled_base")).texture("pot", modBlockLoc("jaspot")).texture("particle", modItemLoc("jaspot")) : models().withExistingParent("jaspot", modBlockLoc("teapot_base")).texture("pot", modBlockLoc("jaspot")).texture("particle", modItemLoc("jaspot")))
                 .build());
-        getVariantBuilder(MinejagoBlocks.FLAME_TEAPOT.get()).forAllStates(blockState -> ConfiguredModel.builder()
-                .rotationY((int) (blockState.getValue(TeapotBlock.FACING).getOpposite()).toYRot())
-                .modelFile(blockState.getValue(TeapotBlock.FILLED) ? models().withExistingParent("flame_teapot_filled", modBlockLoc("teapot_filled_base")).texture("pot", modBlockLoc("flame_teapot")).texture("particle", modItemLoc("flame_teapot")) : models().withExistingParent("flame_teapot", modBlockLoc("teapot_base")).texture("pot", modBlockLoc("flame_teapot")).texture("particle", modItemLoc("flame_teapot")))
-                .build());
 
         getVariantBuilder(MinejagoBlocks.GOLD_DISC.get()).forAllStates(blockState -> {
             Direction facing = blockState.getValue(DiscBlock.FACING);

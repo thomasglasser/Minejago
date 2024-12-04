@@ -23,14 +23,14 @@ public class MinejagoBiomeTagsProvider extends BiomeTagsProvider {
                 .add(Biomes.MEADOW);
         tag(MinejagoBiomeTags.HAS_CAVE_OF_DESPAIR)
                 .addTag(BiomeTags.IS_BADLANDS);
-        tag(MinejagoBiomeTags.WITHOUT_SKULKIN_PATROL_SPAWNS)
-                .add(Biomes.MUSHROOM_FIELDS);
         tag(MinejagoBiomeTags.HAS_FOCUS_TREES)
                 .add(Biomes.MEADOW);
         tag(MinejagoBiomeTags.HAS_NINJAGO_CITY)
                 .add(Biomes.PLAINS)
                 .add(Biomes.SAVANNA);
         tag(MinejagoBiomeTags.HAS_MONASTERY_OF_SPINJITZU)
+                .add(Biomes.SNOWY_SLOPES)
+                .add(Biomes.FROZEN_PEAKS)
                 .add(Biomes.JAGGED_PEAKS)
                 .add(Biomes.STONY_PEAKS);
     }

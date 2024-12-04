@@ -15,6 +15,15 @@ import dev.thomasglasser.minejago.server.commands.PowerCommand;
 import dev.thomasglasser.minejago.server.commands.SkillCommand;
 import dev.thomasglasser.minejago.server.commands.SpinjitzuCommand;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
+import dev.thomasglasser.minejago.tags.MinejagoBannerPatternTags;
+import dev.thomasglasser.minejago.tags.MinejagoBiomeTags;
+import dev.thomasglasser.minejago.tags.MinejagoBlockTags;
+import dev.thomasglasser.minejago.tags.MinejagoDamageTypeTags;
+import dev.thomasglasser.minejago.tags.MinejagoDimensionTypeTags;
+import dev.thomasglasser.minejago.tags.MinejagoEntityTypeTags;
+import dev.thomasglasser.minejago.tags.MinejagoItemTags;
+import dev.thomasglasser.minejago.tags.MinejagoPowerTags;
+import dev.thomasglasser.minejago.tags.MinejagoStructureTags;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.character.Wu;
@@ -55,57 +64,12 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
 
     @Override
     protected void addTranslations() {
-        add(MinejagoItems.BONE_KNIFE.get(), "Bone Knife");
-        add(MinejagoItems.BAMBOO_STAFF.get(), "Bamboo Staff");
-        add(MinejagoItems.SCYTHE_OF_QUAKES.get(), "Scythe of Quakes");
-        add(MinejagoItems.TEACUP.get(), "Teacup");
-        add(MinejagoItems.FILLED_TEACUP.get(), "Tea");
-        MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(item -> add(item.get(), "Skeletal Chestplate"));
-        MinejagoArmors.ARMOR_SETS.forEach(set -> set.getAll().forEach(item -> {
-            String nameForSlot = switch (set.getForItem(item.get())) {
-                case FEET -> "Boots";
-                case LEGS -> "Pants";
-                case CHEST -> "Jacket";
-                case HEAD -> "Hood";
-                default -> null;
-            };
-
-            add(item.get(), set.getDisplayName() + " " + nameForSlot);
-        }));
-        MinejagoArmors.POWER_SETS.forEach(set -> set.getAll().forEach(item -> {
-            String nameForSlot = switch (set.getForItem(item.get())) {
-                case FEET -> "Boots";
-                case LEGS -> "Pants";
-                case CHEST -> "Jacket";
-                case HEAD -> "Hood";
-                default -> null;
-            };
-
-            add(item.get(), set.getDisplayName() + " " + nameForSlot);
-        }));
-        add(MinejagoArmors.SAMUKAIS_CHESTPLATE.get(), "Samukai's Chestplate");
-        add(MinejagoItems.SCROLL.get(), "Scroll");
-        add(MinejagoItems.WRITABLE_SCROLL.get(), "Scroll and Quill");
-        add(MinejagoItems.WRITTEN_SCROLL.get(), "Written Scroll");
-
-        add(MinejagoBlocks.TEAPOT.get(), "Teapot");
-        MinejagoBlocks.TEAPOTS.forEach((color, pot) -> add(pot.get(), WordUtils.capitalize(color.getName().replace('_', ' ')) + " Teapot"));
-        add(MinejagoBlocks.JASPOT.get(), "Jaspot");
-        add(MinejagoBlocks.FLAME_TEAPOT.get(), "Flame Teapot");
-
-        add(MinejagoBlocks.GOLD_DISC.get(), "Gold Disc");
-        add(MinejagoBlocks.TOP_POST.get(), "Top Post");
-        add(MinejagoBlocks.CHISELED_SCROLL_SHELF.get(), "Chiseled Scroll Shelf");
-        add(MinejagoBlocks.EARTH_DRAGON_HEAD.get(), "Earth Dragon Head");
-        add(MinejagoBlocks.SUSPICIOUS_RED_SAND.get(), "Suspicious Red Sand");
-        add(MinejagoBlocks.DRAGON_BUTTON.get(), "Dragon Button");
-        add(MinejagoBlocks.SCROLL_SHELF.get(), "Scroll Shelf");
-
-        add(MinejagoBlocks.ENCHANTED_WOOD_SET, "Enchanted");
-
-        add(MinejagoBlocks.FOCUS_LEAVES_SET, "Focus");
-
-        add(SkulkinRaid.CURSED_BANNER_PATTERN_NAME, "Cursed Banner");
+        addItems();
+        addBlocks();
+        addEntityTypes();
+        addSounds();
+        addTags();
+        addConfigs();
 
         add(Skulkin.Variant.STRENGTH, "Strength");
         add(Skulkin.Variant.SPEED, "Speed");
@@ -113,58 +77,15 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(Skulkin.Variant.KNIFE, "Knife");
         add(Skulkin.Variant.BONE, "Bone");
 
-        ItemStack uncraftableTea = new ItemStack(MinejagoItems.FILLED_TEACUP.get());
-        uncraftableTea.set(DataComponents.POTION_CONTENTS, PotionContents.EMPTY);
-        add(uncraftableTea, "Uncraftable Tea");
-        add(MinejagoItems.FILLED_TEACUP.get(), Potions.WATER, "Cup of Water");
-        add(MinejagoItems.FILLED_TEACUP.get(), MinejagoPotions.MILK, "Cup of Milk");
-
-        for (Holder<Potion> potion : BuiltInRegistries.POTION.listElements().filter(ref -> ref.key().location().getNamespace().equals(ResourceLocation.DEFAULT_NAMESPACE)).toList()) {
-            ResourceLocation location = potion.unwrapKey().orElseThrow().location();
-            if (!(potion == Potions.WATER) && !(location.getPath().contains("long") || location.getPath().contains("strong")))
-                add(MinejagoItems.FILLED_TEACUP.get(), potion, Items.POTION.getName(PotionContents.createItemStack(Items.POTION, potion)).getString().replace("Potion", "Tea"));
-        }
-
         addArmorTrim(MinejagoItems.FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE.get(), "Four Weapons");
         addArmorTrim(MinejagoItems.TERRAIN_ARMOR_TRIM_SMITHING_TEMPLATE.get(), "Terrain");
         addArmorTrim(MinejagoItems.LOTUS_ARMOR_TRIM_SMITHING_TEMPLATE.get(), "Lotus");
 
-        add(MinejagoEntityTypes.THROWN_BONE_KNIFE.get(), "Bone Knife");
-        add(MinejagoEntityTypes.THROWN_BAMBOO_STAFF.get(), "Bamboo Staff");
-        add(MinejagoEntityTypes.EARTH_BLAST.get(), "Earth Blast");
-        add(MinejagoEntityTypes.WU.get(), "Wu", MinejagoItems.WU_SPAWN_EGG.get());
-        add(MinejagoEntityTypes.KAI.get(), "Kai", MinejagoItems.KAI_SPAWN_EGG.get());
-        add(MinejagoEntityTypes.NYA.get(), "Nya", MinejagoItems.NYA_SPAWN_EGG.get());
-        add(MinejagoEntityTypes.JAY.get(), "Jay", MinejagoItems.JAY_SPAWN_EGG.get());
-        add(MinejagoEntityTypes.COLE.get(), "Cole", MinejagoItems.COLE_SPAWN_EGG.get());
-        add(MinejagoEntityTypes.ZANE.get(), "Zane", MinejagoItems.ZANE_SPAWN_EGG.get());
-        add(MinejagoEntityTypes.SKULKIN.get(), "Skulkin", MinejagoItems.SKULKIN_SPAWN_EGG.get());
-        add(MinejagoEntityTypes.KRUNCHA.get(), "Kruncha", MinejagoItems.KRUNCHA_SPAWN_EGG.get());
-        add(MinejagoEntityTypes.NUCKAL.get(), "Nuckal", MinejagoItems.NUCKAL_SPAWN_EGG.get());
-        add(MinejagoEntityTypes.SKULKIN_HORSE.get(), "Skulkin Horse", MinejagoItems.SKULKIN_HORSE_SPAWN_EGG.get());
-        add(MinejagoEntityTypes.EARTH_DRAGON.get(), "Earth Dragon", MinejagoItems.EARTH_DRAGON_SPAWN_EGG.get());
-        add(MinejagoEntityTypes.SAMUKAI.get(), "Samukai", MinejagoItems.SAMUKAI_SPAWN_EGG.get());
-        add(MinejagoEntityTypes.SKULL_TRUCK.get(), "Skull Truck", MinejagoItems.SKULL_TRUCK_SPAWN_EGG.get());
-        add(MinejagoEntityTypes.SKULL_MOTORBIKE.get(), "Skull Motorbike", MinejagoItems.SKULL_MOTORBIKE_SPAWN_EGG.get());
-
-        addSpinjitzuCourseElement(MinejagoEntityTypes.CENTER_SPINJITZU_COURSE_ELEMENT, MinejagoItems.CENTER_SPINJITZU_COURSE_ELEMENT, "Center");
-        addSpinjitzuCourseElement(MinejagoEntityTypes.BOUNCING_POLE_SPINJITZU_COURSE_ELEMENT, MinejagoItems.BOUNCING_POLE_SPINJITZU_COURSE_ELEMENT, "Bouncing Pole");
-        addSpinjitzuCourseElement(MinejagoEntityTypes.ROCKING_POLE_SPINJITZU_COURSE_ELEMENT, MinejagoItems.ROCKING_POLE_SPINJITZU_COURSE_ELEMENT, "Rocking Pole");
-        addSpinjitzuCourseElement(MinejagoEntityTypes.SPINNING_POLE_SPINJITZU_COURSE_ELEMENT, MinejagoItems.SPINNING_POLE_SPINJITZU_COURSE_ELEMENT, "Spinning Pole");
-        addSpinjitzuCourseElement(MinejagoEntityTypes.SPINNING_MACES_SPINJITZU_COURSE_ELEMENT, MinejagoItems.SPINNING_MACES_SPINJITZU_COURSE_ELEMENT, "Spinning Maces");
-        addSpinjitzuCourseElement(MinejagoEntityTypes.SPINNING_DUMMIES_SPINJITZU_COURSE_ELEMENT, MinejagoItems.SPINNING_DUMMIES_SPINJITZU_COURSE_ELEMENT, "Spinning Dummies");
-        addSpinjitzuCourseElement(MinejagoEntityTypes.SWIRLING_KNIVES_SPINJITZU_COURSE_ELEMENT, MinejagoItems.SWIRLING_KNIVES_SPINJITZU_COURSE_ELEMENT, "Swirling Knives");
-        addSpinjitzuCourseElement(MinejagoEntityTypes.SPINNING_AXES_SPINJITZU_COURSE_ELEMENT, MinejagoItems.SPINNING_AXES_SPINJITZU_COURSE_ELEMENT, "Spinning Axes");
-
         addPattern(MinejagoBannerPatterns.EDGE_LINES, "Edge Lines");
-
         addPattern(MinejagoBannerPatterns.FOUR_WEAPONS_LEFT, "Four Weapons Left");
         addPattern(MinejagoBannerPatterns.FOUR_WEAPONS_RIGHT, "Four Weapons Right");
         add(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get(), "Four Weapons Banner Pattern");
-
         addPatternAndItem(MinejagoBannerPatterns.NINJA, MinejagoItems.NINJA_BANNER_PATTERN, "Ninja");
-
-        add(Items.FILLED_MAP.getDescriptionId() + ".golden_weapons", "Golden Weapons Map");
 
         add("container.teapot", "Teapot");
 
@@ -178,60 +99,9 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         addTea(MinejagoPotions.BIRCH_TEA, "Birch Tea");
         addTea(MinejagoPotions.AZALEA_TEA, "Azalea Tea");
         addTea(MinejagoPotions.FLOWERING_AZALEA_TEA, "Flowering Azalea Tea");
-
         addTea(MinejagoPotions.FOCUS_TEA, "Focus Tea");
 
         addPotions(MinejagoPotions.MILK, "Milk");
-
-        add(MinejagoSoundEvents.TEAPOT_WHISTLE.get(), "Teapot whistles");
-        add(MinejagoSoundEvents.DRAGON_BUTTON_OPEN.get(), "Dragon Button opens");
-        add(MinejagoSoundEvents.DRAGON_BUTTON_CLICK.get(), "Dragon Button clicks");
-        add(MinejagoSoundEvents.DRAGON_BUTTON_CLOSE.get(), "Dragon Button closes");
-        add(MinejagoSoundEvents.SPINJITZU_START.get(), "Spinjitzu activates");
-        add(MinejagoSoundEvents.SPINJITZU_ACTIVE.get(), "Spinjitzu whooshes");
-        add(MinejagoSoundEvents.SPINJITZU_STOP.get(), "Spinjitzu fades");
-        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_FAIL.get(), "Scythe flickers");
-        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_EXPLOSION.get(), "Ground quakes");
-        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_CASCADE.get(), "Scythe drags");
-        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_PATH.get(), "Scythe beams");
-        add(MinejagoSoundEvents.BONE_KNIFE_THROW.get(), "Knife flies");
-        add(MinejagoSoundEvents.BONE_KNIFE_IMPACT.get(), "Knife sticks");
-        add(MinejagoSoundEvents.BAMBOO_STAFF_THROW.get(), "Staff tosses");
-        add(MinejagoSoundEvents.BAMBOO_STAFF_IMPACT.get(), "Staff lands");
-        add(MinejagoSoundEvents.EARTH_DRAGON_AMBIENT.get(), "Earth Dragon breathes");
-        add(MinejagoSoundEvents.EARTH_DRAGON_AWAKEN.get(), "Earth Dragon awakens");
-        add(MinejagoSoundEvents.EARTH_DRAGON_DEATH.get(), "Earth Dragon dies");
-        add(MinejagoSoundEvents.EARTH_DRAGON_FLAP.get(), "Earth Dragon awakens");
-        add(MinejagoSoundEvents.EARTH_DRAGON_HURT.get(), "Earth Dragon flaps");
-        add(MinejagoSoundEvents.EARTH_DRAGON_ROAR.get(), "Earth Dragon roars");
-        add(MinejagoSoundEvents.EARTH_DRAGON_STEP.get(), "Earth Dragon steps");
-        add(MinejagoSoundEvents.EARTH_DRAGON_BOND_UP.get(), "Earth Dragon growls happily");
-        add(MinejagoSoundEvents.EARTH_DRAGON_BOND_DOWN.get(), "Earth Dragon grumbles");
-        add(MinejagoSoundEvents.EARTH_DRAGON_TAME.get(), "Earth Dragon purrs");
-        add(MinejagoSoundEvents.SKULL_TRUCK_AMBIENT_ACTIVE.get(), "Skull Truck revs");
-        add(MinejagoSoundEvents.SKULL_TRUCK_AMBIENT_IDLE.get(), "Skull Truck idles");
-        add(MinejagoSoundEvents.SKULL_TRUCK_DEATH.get(), "Skull Truck breaks");
-        add(MinejagoSoundEvents.SKULL_TRUCK_HURT.get(), "Skull Truck dents");
-        add(MinejagoSoundEvents.SKULL_TRUCK_IGNITION.get(), "Skull Truck starts");
-        add(MinejagoSoundEvents.SKULL_MOTORBIKE_AMBIENT_ACTIVE.get(), "Skull Motorbike revs");
-        add(MinejagoSoundEvents.SKULL_MOTORBIKE_AMBIENT_IDLE.get(), "Skull Motorbike idles");
-        add(MinejagoSoundEvents.SKULL_MOTORBIKE_DEATH.get(), "Skull Motorbike breaks");
-        add(MinejagoSoundEvents.SKULL_MOTORBIKE_HURT.get(), "Skull Motorbike dents");
-        add(MinejagoSoundEvents.SKULL_MOTORBIKE_IGNITION.get(), "Skull Motorbike starts");
-        add(MinejagoSoundEvents.SKULKIN_RAID_HORN.get(), "Skeletal horn blares");
-        add(MinejagoSoundEvents.SPINJITZU_COURSE_RISE.get(), "Machine rises");
-        add(MinejagoSoundEvents.SPINJITZU_COURSE_FALL.get(), "Machine falls");
-        add(MinejagoSoundEvents.BOUNCING_POLE_ACTIVE.get(), "Pole bounces");
-        add(MinejagoSoundEvents.CENTER_ACTIVE.get(), "Center spins");
-        add(MinejagoSoundEvents.ROCKING_POLE_ACTIVE.get(), "Pole rocks");
-        add(MinejagoSoundEvents.SPINNING_AXES_ACTIVE.get(), "Axes spin");
-        add(MinejagoSoundEvents.SPINNING_DUMMIES_ACTIVE.get(), "Dummies spin");
-        add(MinejagoSoundEvents.SPINNING_DUMMIES_HIT.get(), "Dummy falls");
-        add(MinejagoSoundEvents.SPINNING_MACES_ACTIVE.get(), "Maces spin");
-        add(MinejagoSoundEvents.SPINNING_POLE_ACTIVE.get(), "Pole spins");
-        add(MinejagoSoundEvents.SWIRLING_KNIVES_ACTIVE.get(), "Knives swirl");
-        add(MinejagoSoundEvents.ARMOR_EQUIP_SKELETAL.get(), "Skeletal armor clinks");
-        add(MinejagoSoundEvents.PLAYER_SKILL_LEVELUP.get(), "Player chimes");
 
         add(MinejagoMobEffects.CURE.get(), "Instant Cure");
         add(MinejagoMobEffects.HYPERFOCUS.get(), "Hyperfocus");
@@ -333,7 +203,7 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(TeapotBlock.POTION, "%s");
         add(TeapotBlock.POTION_AND_ITEM, "%s with %s");
 
-        add(MinejagoItemUtils.NO_STRUCTURES_FOUND, "You feel the weapons are not in this area...");
+        add(MinejagoItemUtils.NO_STRUCTURES_FOUND, "No %s found in a reasonable distance.");
 
         add(Skill.AGILITY, "Agility");
         add(Skill.STEALTH, "Stealth");
@@ -341,13 +211,248 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(Skill.TOOL_PROFICIENCY, "Tool Proficiency");
 
         add(SkillScreen.TITLE, "Skills");
-
-        addConfigs();
     }
 
     protected void addTea(Holder<Potion> tea, String name) {
         addPotions(tea, name);
         add(MinejagoItems.FILLED_TEACUP.get(), tea, name);
+    }
+
+    protected void addPluginConfig(ResourceLocation location, String name) {
+        addPluginConfig(location, Minejago.MOD_NAME, name);
+    }
+
+    protected <T extends AbstractSpinjitzuCourseElement<T>> void addSpinjitzuCourseElement(DeferredHolder<EntityType<?>, EntityType<T>> entity, DeferredItem<? extends SpinjitzuCourseElementItem> item, String name) {
+        add(entity.get(), name + " Spinjitzu Course Element");
+        add(item.get(), name + " Spinjitzu Course Element");
+    }
+
+    protected void add(Skulkin.Variant variant, String name) {
+        add(variant.getDescriptionId(), name);
+    }
+
+    protected void add(Skill key, String name) {
+        add(key.toLanguageKey(), name);
+    }
+
+    protected void addItems() {
+        add(MinejagoItems.BONE_KNIFE.get(), "Bone Knife");
+        add(MinejagoItems.BAMBOO_STAFF.get(), "Bamboo Staff");
+        add(MinejagoItems.SCYTHE_OF_QUAKES.get(), "Scythe of Quakes");
+        add(MinejagoItems.TEACUP.get(), "Teacup");
+        add(MinejagoItems.FILLED_TEACUP.get(), "Tea");
+        add(MinejagoItems.SCROLL.get(), "Scroll");
+        add(MinejagoItems.WRITABLE_SCROLL.get(), "Scroll and Quill");
+        add(MinejagoItems.WRITTEN_SCROLL.get(), "Written Scroll");
+        add(SkulkinRaid.CURSED_BANNER_PATTERN_NAME, "Cursed Banner");
+
+        // Teas
+        ItemStack uncraftableTea = new ItemStack(MinejagoItems.FILLED_TEACUP.get());
+        uncraftableTea.set(DataComponents.POTION_CONTENTS, PotionContents.EMPTY);
+        add(uncraftableTea, "Uncraftable Tea");
+        add(MinejagoItems.FILLED_TEACUP.get(), Potions.WATER, "Cup of Water");
+        add(MinejagoItems.FILLED_TEACUP.get(), MinejagoPotions.MILK, "Cup of Milk");
+
+        for (Holder<Potion> potion : BuiltInRegistries.POTION.listElements().filter(ref -> ref.key().location().getNamespace().equals(ResourceLocation.DEFAULT_NAMESPACE)).toList()) {
+            ResourceLocation location = potion.unwrapKey().orElseThrow().location();
+            if (!(potion == Potions.WATER) && !(location.getPath().contains("long") || location.getPath().contains("strong")))
+                add(MinejagoItems.FILLED_TEACUP.get(), potion, Items.POTION.getName(PotionContents.createItemStack(Items.POTION, potion)).getString().replace("Potion", "Tea"));
+        }
+
+        // Armors
+        add(MinejagoArmors.SAMUKAIS_CHESTPLATE.get(), "Samukai's Chestplate");
+        MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(item -> add(item.get(), "Skeletal Chestplate"));
+        MinejagoArmors.ARMOR_SETS.forEach(set -> set.getAll().forEach(item -> {
+            String nameForSlot = switch (set.getForItem(item.get())) {
+                case FEET -> "Boots";
+                case LEGS -> "Pants";
+                case CHEST -> "Jacket";
+                case HEAD -> "Hood";
+                default -> null;
+            };
+
+            add(item.get(), set.getDisplayName() + " " + nameForSlot);
+        }));
+        MinejagoArmors.POWER_SETS.forEach(set -> set.getAll().forEach(item -> {
+            String nameForSlot = switch (set.getForItem(item.get())) {
+                case FEET -> "Boots";
+                case LEGS -> "Pants";
+                case CHEST -> "Jacket";
+                case HEAD -> "Hood";
+                default -> null;
+            };
+
+            add(item.get(), set.getDisplayName() + " " + nameForSlot);
+        }));
+    }
+
+    protected void addBlocks() {
+        add(MinejagoBlocks.GOLD_DISC.get(), "Gold Disc");
+        add(MinejagoBlocks.TOP_POST.get(), "Top Post");
+        add(MinejagoBlocks.CHISELED_SCROLL_SHELF.get(), "Chiseled Scroll Shelf");
+        add(MinejagoBlocks.EARTH_DRAGON_HEAD.get(), "Earth Dragon Head");
+        add(MinejagoBlocks.SUSPICIOUS_RED_SAND.get(), "Suspicious Red Sand");
+        add(MinejagoBlocks.DRAGON_BUTTON.get(), "Dragon Button");
+        add(MinejagoBlocks.SCROLL_SHELF.get(), "Scroll Shelf");
+
+        // Teapots
+        add(MinejagoBlocks.TEAPOT.get(), "Teapot");
+        MinejagoBlocks.TEAPOTS.forEach((color, pot) -> add(pot.get(), WordUtils.capitalize(color.getName().replace('_', ' ')) + " Teapot"));
+        add(MinejagoBlocks.JASPOT.get(), "Jaspot");
+
+        // Wood Sets
+        add(MinejagoBlocks.ENCHANTED_WOOD_SET, "Enchanted");
+
+        // Leaves Sets
+        add(MinejagoBlocks.FOCUS_LEAVES_SET, "Focus");
+    }
+
+    protected void addEntityTypes() {
+        // Projectiles
+        add(MinejagoEntityTypes.THROWN_BONE_KNIFE.get(), "Bone Knife");
+        add(MinejagoEntityTypes.THROWN_BAMBOO_STAFF.get(), "Bamboo Staff");
+        add(MinejagoEntityTypes.EARTH_BLAST.get(), "Earth Blast");
+
+        // Characters
+        add(MinejagoEntityTypes.WU.get(), "Wu", MinejagoItems.WU_SPAWN_EGG.get());
+        add(MinejagoEntityTypes.KAI.get(), "Kai", MinejagoItems.KAI_SPAWN_EGG.get());
+        add(MinejagoEntityTypes.NYA.get(), "Nya", MinejagoItems.NYA_SPAWN_EGG.get());
+        add(MinejagoEntityTypes.JAY.get(), "Jay", MinejagoItems.JAY_SPAWN_EGG.get());
+        add(MinejagoEntityTypes.COLE.get(), "Cole", MinejagoItems.COLE_SPAWN_EGG.get());
+        add(MinejagoEntityTypes.ZANE.get(), "Zane", MinejagoItems.ZANE_SPAWN_EGG.get());
+
+        // Skulkin
+        add(MinejagoEntityTypes.SKULKIN.get(), "Skulkin", MinejagoItems.SKULKIN_SPAWN_EGG.get());
+        add(MinejagoEntityTypes.KRUNCHA.get(), "Kruncha", MinejagoItems.KRUNCHA_SPAWN_EGG.get());
+        add(MinejagoEntityTypes.NUCKAL.get(), "Nuckal", MinejagoItems.NUCKAL_SPAWN_EGG.get());
+        add(MinejagoEntityTypes.SAMUKAI.get(), "Samukai", MinejagoItems.SAMUKAI_SPAWN_EGG.get());
+        add(MinejagoEntityTypes.SKULKIN_HORSE.get(), "Skulkin Horse", MinejagoItems.SKULKIN_HORSE_SPAWN_EGG.get());
+        add(MinejagoEntityTypes.SKULL_MOTORBIKE.get(), "Skull Motorbike", MinejagoItems.SKULL_MOTORBIKE_SPAWN_EGG.get());
+        add(MinejagoEntityTypes.SKULL_TRUCK.get(), "Skull Truck", MinejagoItems.SKULL_TRUCK_SPAWN_EGG.get());
+
+        // Dragons
+        add(MinejagoEntityTypes.EARTH_DRAGON.get(), "Earth Dragon", MinejagoItems.EARTH_DRAGON_SPAWN_EGG.get());
+
+        // Spinjitzu Course Elements
+        addSpinjitzuCourseElement(MinejagoEntityTypes.CENTER_SPINJITZU_COURSE_ELEMENT, MinejagoItems.CENTER_SPINJITZU_COURSE_ELEMENT, "Center");
+        addSpinjitzuCourseElement(MinejagoEntityTypes.BOUNCING_POLE_SPINJITZU_COURSE_ELEMENT, MinejagoItems.BOUNCING_POLE_SPINJITZU_COURSE_ELEMENT, "Bouncing Pole");
+        addSpinjitzuCourseElement(MinejagoEntityTypes.ROCKING_POLE_SPINJITZU_COURSE_ELEMENT, MinejagoItems.ROCKING_POLE_SPINJITZU_COURSE_ELEMENT, "Rocking Pole");
+        addSpinjitzuCourseElement(MinejagoEntityTypes.SPINNING_POLE_SPINJITZU_COURSE_ELEMENT, MinejagoItems.SPINNING_POLE_SPINJITZU_COURSE_ELEMENT, "Spinning Pole");
+        addSpinjitzuCourseElement(MinejagoEntityTypes.SPINNING_MACES_SPINJITZU_COURSE_ELEMENT, MinejagoItems.SPINNING_MACES_SPINJITZU_COURSE_ELEMENT, "Spinning Maces");
+        addSpinjitzuCourseElement(MinejagoEntityTypes.SPINNING_DUMMIES_SPINJITZU_COURSE_ELEMENT, MinejagoItems.SPINNING_DUMMIES_SPINJITZU_COURSE_ELEMENT, "Spinning Dummies");
+        addSpinjitzuCourseElement(MinejagoEntityTypes.SWIRLING_KNIVES_SPINJITZU_COURSE_ELEMENT, MinejagoItems.SWIRLING_KNIVES_SPINJITZU_COURSE_ELEMENT, "Swirling Knives");
+        addSpinjitzuCourseElement(MinejagoEntityTypes.SPINNING_AXES_SPINJITZU_COURSE_ELEMENT, MinejagoItems.SPINNING_AXES_SPINJITZU_COURSE_ELEMENT, "Spinning Axes");
+    }
+
+    protected void addSounds() {
+        // Blocks
+        add(MinejagoSoundEvents.TEAPOT_WHISTLE.get(), "Teapot whistles");
+        add(MinejagoSoundEvents.DRAGON_BUTTON_OPEN.get(), "Dragon Button opens");
+        add(MinejagoSoundEvents.DRAGON_BUTTON_CLICK.get(), "Dragon Button clicks");
+        add(MinejagoSoundEvents.DRAGON_BUTTON_CLOSE.get(), "Dragon Button closes");
+
+        // Items
+        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_FAIL.get(), "Scythe flickers");
+        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_EXPLOSION.get(), "Ground quakes");
+        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_CASCADE.get(), "Scythe drags");
+        add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_PATH.get(), "Scythe beams");
+        add(MinejagoSoundEvents.ARMOR_EQUIP_SKELETAL.get(), "Skeletal armor clinks");
+
+        // Projectiles
+        add(MinejagoSoundEvents.BONE_KNIFE_THROW.get(), "Knife flies");
+        add(MinejagoSoundEvents.BONE_KNIFE_IMPACT.get(), "Knife sticks");
+        add(MinejagoSoundEvents.BAMBOO_STAFF_THROW.get(), "Staff tosses");
+        add(MinejagoSoundEvents.BAMBOO_STAFF_IMPACT.get(), "Staff lands");
+
+        // Entities
+        add(MinejagoSoundEvents.EARTH_DRAGON_AMBIENT.get(), "Earth Dragon breathes");
+        add(MinejagoSoundEvents.EARTH_DRAGON_AWAKEN.get(), "Earth Dragon awakens");
+        add(MinejagoSoundEvents.EARTH_DRAGON_DEATH.get(), "Earth Dragon dies");
+        add(MinejagoSoundEvents.EARTH_DRAGON_FLAP.get(), "Earth Dragon awakens");
+        add(MinejagoSoundEvents.EARTH_DRAGON_HURT.get(), "Earth Dragon flaps");
+        add(MinejagoSoundEvents.EARTH_DRAGON_ROAR.get(), "Earth Dragon roars");
+        add(MinejagoSoundEvents.EARTH_DRAGON_STEP.get(), "Earth Dragon steps");
+        add(MinejagoSoundEvents.EARTH_DRAGON_BOND_UP.get(), "Earth Dragon growls happily");
+        add(MinejagoSoundEvents.EARTH_DRAGON_BOND_DOWN.get(), "Earth Dragon grumbles");
+        add(MinejagoSoundEvents.EARTH_DRAGON_TAME.get(), "Earth Dragon purrs");
+        add(MinejagoSoundEvents.SKULL_TRUCK_AMBIENT_ACTIVE.get(), "Skull Truck revs");
+        add(MinejagoSoundEvents.SKULL_TRUCK_AMBIENT_IDLE.get(), "Skull Truck idles");
+        add(MinejagoSoundEvents.SKULL_TRUCK_DEATH.get(), "Skull Truck breaks");
+        add(MinejagoSoundEvents.SKULL_TRUCK_HURT.get(), "Skull Truck dents");
+        add(MinejagoSoundEvents.SKULL_TRUCK_IGNITION.get(), "Skull Truck starts");
+        add(MinejagoSoundEvents.SKULL_MOTORBIKE_AMBIENT_ACTIVE.get(), "Skull Motorbike revs");
+        add(MinejagoSoundEvents.SKULL_MOTORBIKE_AMBIENT_IDLE.get(), "Skull Motorbike idles");
+        add(MinejagoSoundEvents.SKULL_MOTORBIKE_DEATH.get(), "Skull Motorbike breaks");
+        add(MinejagoSoundEvents.SKULL_MOTORBIKE_HURT.get(), "Skull Motorbike dents");
+        add(MinejagoSoundEvents.SKULL_MOTORBIKE_IGNITION.get(), "Skull Motorbike starts");
+        add(MinejagoSoundEvents.SPINJITZU_COURSE_RISE.get(), "Machine rises");
+        add(MinejagoSoundEvents.SPINJITZU_COURSE_FALL.get(), "Machine falls");
+        add(MinejagoSoundEvents.BOUNCING_POLE_ACTIVE.get(), "Pole bounces");
+        add(MinejagoSoundEvents.CENTER_ACTIVE.get(), "Center spins");
+        add(MinejagoSoundEvents.ROCKING_POLE_ACTIVE.get(), "Pole rocks");
+        add(MinejagoSoundEvents.SPINNING_AXES_ACTIVE.get(), "Axes spin");
+        add(MinejagoSoundEvents.SPINNING_DUMMIES_ACTIVE.get(), "Dummies spin");
+        add(MinejagoSoundEvents.SPINNING_DUMMIES_HIT.get(), "Dummy falls");
+        add(MinejagoSoundEvents.SPINNING_MACES_ACTIVE.get(), "Maces spin");
+        add(MinejagoSoundEvents.SPINNING_POLE_ACTIVE.get(), "Pole spins");
+        add(MinejagoSoundEvents.SWIRLING_KNIVES_ACTIVE.get(), "Knives swirl");
+
+        add(MinejagoSoundEvents.SPINJITZU_START.get(), "Spinjitzu activates");
+        add(MinejagoSoundEvents.SPINJITZU_ACTIVE.get(), "Spinjitzu whooshes");
+        add(MinejagoSoundEvents.SPINJITZU_STOP.get(), "Spinjitzu fades");
+        add(MinejagoSoundEvents.SKULKIN_RAID_HORN.get(), "Skeletal horn blares");
+        add(MinejagoSoundEvents.PLAYER_SKILL_LEVELUP.get(), "Player chimes");
+    }
+
+    protected void addTags() {
+        // Banner Patterns
+        add(MinejagoBannerPatternTags.PATTERN_ITEM_FOUR_WEAPONS, "Four Weapons");
+        add(MinejagoBannerPatternTags.PATTERN_ITEM_NINJA, "Ninja");
+
+        // Biomes
+        add(MinejagoBiomeTags.HAS_FOCUS_TREES, "Has Focus Trees");
+        add(MinejagoBiomeTags.HAS_FOUR_WEAPONS, "Has Four Weapons");
+        add(MinejagoBiomeTags.HAS_CAVE_OF_DESPAIR, "Has Cave of Despair");
+        add(MinejagoBiomeTags.HAS_NINJAGO_CITY, "Has Ninjago City");
+        add(MinejagoBiomeTags.HAS_MONASTERY_OF_SPINJITZU, "Has Monastery of Spinjitzu");
+
+        // Blocks
+        add(MinejagoBlockTags.TEAPOTS, "Teapots");
+
+        // Damage Types
+        add(MinejagoDamageTypeTags.RESISTED_BY_GOLDEN_WEAPONS, "Resisted By Golden Weapons");
+
+        // Dimension Types
+        add(MinejagoDimensionTypeTags.HAS_SKULKIN_RAIDS, "Has Skulkin Raids");
+
+        // Entity Types
+        add(MinejagoEntityTypeTags.SKULKINS, "Skulkins");
+        add(MinejagoEntityTypeTags.SKULL_TRUCK_RIDERS, "Skull Truck Riders");
+        add(MinejagoEntityTypeTags.DRAGONS, "Dragons");
+
+        // Items
+        add(MinejagoItemTags.GOLDEN_WEAPONS, "Golden Weapons");
+        add(MinejagoItemTags.TEAPOTS, "Teapots");
+        add(MinejagoItemTags.LECTERN_SCROLLS, "Lectern Scrolls");
+        add(MinejagoItemTags.SCROLL_SHELF_SCROLLS, "Scroll Shelf Scrolls");
+        add(MinejagoItemTags.DRAGON_FOODS, "Dragon Foods");
+        add(MinejagoItemTags.DRAGON_TREATS, "Dragon Treats");
+        add(MinejagoItemTags.REPAIRS_SKELETAL_ARMOR, "Repairs Skeletal Armor");
+        add(MinejagoItemTags.BONE_TOOL_MATERIALS, "Bone Tool Materials");
+        add(MinejagoItemTags.GI, "Gi");
+
+        // Powers
+        add(MinejagoPowerTags.EARTH, "Earth");
+
+        // Structures
+        add(MinejagoStructureTags.FOUR_WEAPONS, "Four Weapons");
+        add(MinejagoStructureTags.NINJAGO_CITY, "Ninjago City");
+        add(MinejagoStructureTags.MONASTERY_OF_SPINJITZU, "Monastery of Spinjitzu");
+        add(MinejagoStructureTags.CAVE_OF_DESPAIR, "Cave of Despair");
+        add(MinejagoStructureTags.ICE_TEMPLE, "Ice Temple");
+        add(MinejagoStructureTags.FLOATING_RUINS, "Floating Ruins");
+        add(MinejagoStructureTags.FIRE_TEMPLE, "Fire Temple");
+        add(MinejagoStructureTags.HAS_GOLDEN_WEAPON, "Has Golden Weapon");
     }
 
     protected void addConfigs() {
@@ -384,22 +489,5 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         addConfigSection(MinejagoClientConfig.FOCUS_BAR, "Focus Bar", "Settings for focus bar");
         addConfig(MinejagoClientConfig.get().xOffset, "Horizontal Offset", "Horizontal pixels off from the normal position");
         addConfig(MinejagoClientConfig.get().yOffset, "Vertical Offset", "Vertical pixels off from the normal position");
-    }
-
-    protected void addPluginConfig(ResourceLocation location, String name) {
-        addPluginConfig(location, Minejago.MOD_NAME, name);
-    }
-
-    protected <T extends AbstractSpinjitzuCourseElement<T>> void addSpinjitzuCourseElement(DeferredHolder<EntityType<?>, EntityType<T>> entity, DeferredItem<? extends SpinjitzuCourseElementItem> item, String name) {
-        add(entity.get(), name + " Spinjitzu Course Element");
-        add(item.get(), name + " Spinjitzu Course Element");
-    }
-
-    protected void add(Skulkin.Variant variant, String name) {
-        add(variant.getDescriptionId(), name);
-    }
-
-    protected void add(Skill key, String name) {
-        add(key.toLanguageKey(), name);
     }
 }

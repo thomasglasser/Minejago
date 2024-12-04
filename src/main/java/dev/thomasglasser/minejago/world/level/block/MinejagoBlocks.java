@@ -45,7 +45,6 @@ public class MinejagoBlocks {
     public static final DeferredBlock<TeapotBlock> TEAPOT = registerBlockAndItemAndWrap("teapot", TeapotBlock::new, () -> BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).instabreak().noOcclusion(), List.of(CreativeModeTabs.FUNCTIONAL_BLOCKS));
     public static final SortedMap<DyeColor, DeferredBlock<TeapotBlock>> TEAPOTS = teapots();
     public static final DeferredBlock<TeapotBlock> JASPOT = registerBlockAndItemAndWrap("jaspot", TeapotBlock::new, () -> BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).instabreak().noOcclusion(), properties -> properties.rarity(Rarity.UNCOMMON), List.of(CreativeModeTabs.FUNCTIONAL_BLOCKS));
-    public static final DeferredBlock<TeapotBlock> FLAME_TEAPOT = registerBlockAndItemAndWrap("flame_teapot", TeapotBlock::new, () -> BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).instabreak().noOcclusion(), List.of(CreativeModeTabs.FUNCTIONAL_BLOCKS));
 
     public static final DeferredBlock<DiscBlock> GOLD_DISC = registerBlockAndItemAndWrap("gold_disc", DiscBlock::new, () -> BlockBehaviour.Properties.of().instabreak().pushReaction(PushReaction.DESTROY), List.of(CreativeModeTabs.BUILDING_BLOCKS));
     public static final DeferredBlock<TopPostBlock> TOP_POST = registerBlockAndItemAndWrap("top_post", TopPostBlock::new, () -> BlockBehaviour.Properties.of().instabreak().noCollission().pushReaction(PushReaction.DESTROY), List.of(CreativeModeTabs.BUILDING_BLOCKS));
@@ -98,7 +97,6 @@ public class MinejagoBlocks {
         pots.add(TEAPOT.get());
         TEAPOTS.values().forEach(blockDeferredBlock -> pots.add(blockDeferredBlock.get()));
         pots.add(JASPOT.get());
-        pots.add(FLAME_TEAPOT.get());
         return pots;
     }
 

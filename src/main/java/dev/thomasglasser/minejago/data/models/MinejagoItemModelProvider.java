@@ -46,7 +46,6 @@ public class MinejagoItemModelProvider extends ExtendedItemModelProvider {
         basicItem(MinejagoItems.LOTUS_ARMOR_TRIM_SMITHING_TEMPLATE.get());
         basicItem(MinejagoBlocks.TEAPOT.get().asItem());
         basicItem(MinejagoBlocks.JASPOT.get().asItem());
-        basicItem(MinejagoBlocks.FLAME_TEAPOT.get().asItem());
         basicItem(MinejagoBlocks.GOLD_DISC.get().asItem());
         basicItem(MinejagoBlocks.TOP_POST.get().asItem());
         basicItem(MinejagoItems.SCROLL.get());

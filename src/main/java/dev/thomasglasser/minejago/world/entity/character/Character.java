@@ -148,18 +148,18 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
                 new InteractWithDoor<>(),
                 new FloatToSurfaceOfFluid<Character>().startCondition(this::shouldFloatToSurfaceOfFluid).whenStarting(this::onStartFloatingToSurfaceOfFluid).whenStopping(this::onStopFloatingToSurfaceOfFluid),
                 new SetWalkTargetToAttackTarget<>(),
-                new LookAtTargetSink(40, 300), 														// Look at the look target
+                new LookAtTargetSink(40, 300),
                 new MoveToWalkTarget<>().whenStopping(this::onMoveToWalkTargetStopping));
     }
 
     @Override
     public BrainActivityGroup<Character> getIdleTasks() {
         return BrainActivityGroup.idleTasks(
-                new FirstApplicableBehaviour<Character>( 				// Run only one of the below behaviours, trying each one in order. Include explicit generic typing because javac is silly
-                        new TargetOrRetaliate<Character>().alertAlliesWhen((owner, attacker) -> true).isAllyIf(this::shouldHelp).whenStarting(this::onTargetOrRetaliate),						// Set the attack target
-                        new SetPlayerLookTarget<>(),					// Set the look target to a nearby player if available
-                        new SetRandomLookTarget<>()), 					// Set the look target to a random nearby location
-                new OneRandomBehaviour<>( 								// Run only one of the below behaviours, picked at random
+                new FirstApplicableBehaviour<>(
+                        new TargetOrRetaliate<Character>().alertAlliesWhen((owner, attacker) -> true).isAllyIf(this::shouldHelp).whenStarting(this::onTargetOrRetaliate),                        // Set the attack target
+                        new SetPlayerLookTarget<>(),
+                        new SetRandomLookTarget<>()),
+                new OneRandomBehaviour<>(
                         new Idle<>().runFor(entity -> entity.getRandom().nextInt(30, 60)),
                         new SetRandomWalkTarget<Character>().avoidWaterWhen(this::shouldAvoidWater).startCondition(this::shouldSetRandomWalkTarget)));
     }

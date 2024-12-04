@@ -27,7 +27,6 @@ public class MinejagoBlockLoot extends ExtendedBlockLootSubProvider {
         for (DeferredBlock<TeapotBlock> pot : MinejagoBlocks.TEAPOTS.values())
             add(pot.get(), createContainerDrop(pot.get()));
         add(MinejagoBlocks.JASPOT.get(), createContainerDrop(MinejagoBlocks.JASPOT.get()));
-        add(MinejagoBlocks.FLAME_TEAPOT.get(), createContainerDrop(MinejagoBlocks.FLAME_TEAPOT.get()));
 
         dropSelf(MinejagoBlocks.GOLD_DISC.get());
         dropSelf(MinejagoBlocks.TOP_POST.get());

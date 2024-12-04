@@ -114,13 +114,13 @@ public class TrackSpinjitzuCourseCompletion<T extends Wu> extends ExtendedBehavi
         entity.setLifting(false);
         entity.setCurrentStage(Stage.STAND_UP);
         entity.setItemInHand(InteractionHand.MAIN_HAND, originalStack);
-        // TODO: Stand up
         Set<Player> currentPlayers = Set.copyOf(entity.getCourseData().keySet());
         currentPlayers.forEach((player) -> {
             entity.level().playSound(null, player.blockPosition(), SoundEvents.VILLAGER_NO, entity.getSoundSource(), 1f, 0.9f);
-            entity.stopTracking(player);
             entity.getEntitiesOnCooldown().computeIfAbsent((int) (entity.level().getGameTime() + SharedConstants.TICKS_PER_GAME_DAY), k -> new ArrayList<>()).add(player);
         });
+        entity.getCourseData().clear();
+        entity.clearTrackedElements();
     }
 
     @Override

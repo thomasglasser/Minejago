@@ -44,6 +44,7 @@ public class CharacterRenderer<T extends Character> extends DynamicGeoEntityRend
     protected ItemStack offhandItem;
 
     private SpinjitzuModel<EntityRenderState> spinjitzuModel;
+    private EntityRenderState renderState;
 
     public CharacterRenderer(EntityRendererProvider.Context context, CharacterModel<T> model) {
         super(context, model);
@@ -135,16 +136,21 @@ public class CharacterRenderer<T extends Character> extends DynamicGeoEntityRend
 
     @Override
     public void render(EntityRenderState entityRenderState, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+        renderState = entityRenderState;
         super.render(entityRenderState, poseStack, bufferSource, packedLight);
+    }
+
+    @Override
+    public void renderFinal(PoseStack poseStack, T animatable, BakedGeoModel model, MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay, int renderColor) {
+        super.renderFinal(poseStack, animatable, model, bufferSource, buffer, partialTick, packedLight, packedOverlay, renderColor);
         if (animatable != null) {
             setModelProperties(animatable);
             if (animatable.isDoingSpinjitzu()) {
                 if (spinjitzuModel == null) {
                     spinjitzuModel = new SpinjitzuModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(SpinjitzuModel.LAYER_LOCATION));
                 }
-                spinjitzuModel.setupAnim(entityRenderState);
+                spinjitzuModel.setupAnim(renderState);
                 copyFromBone(model.getBone(BODY).orElseThrow(), spinjitzuModel.getBody());
-                poseStack.mulPose(Axis.XP.rotationDegrees(180.0F));
                 int color = animatable.level().holderOrThrow(animatable.getData(MinejagoAttachmentTypes.POWER).power()).value().getColor().getValue();
                 spinjitzuModel.render(poseStack, bufferSource, animatable.tickCount, partialTick, color);
             }

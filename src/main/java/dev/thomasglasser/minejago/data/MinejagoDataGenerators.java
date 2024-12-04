@@ -13,7 +13,7 @@ import dev.thomasglasser.minejago.data.modonomicons.MinejagoBookProvider;
 import dev.thomasglasser.minejago.data.particles.MinejagoParticleDescriptionProvider;
 import dev.thomasglasser.minejago.data.patches.MinejagoDataPatchProvider;
 import dev.thomasglasser.minejago.data.powers.MinejagoPowerDatagenSuite;
-import dev.thomasglasser.minejago.data.recipes.MinejagoRecipes;
+import dev.thomasglasser.minejago.data.recipes.MinejagoRecipeProvider;
 import dev.thomasglasser.minejago.data.recipes.expansions.MinejagoPotionPotPackRecipes;
 import dev.thomasglasser.minejago.data.sounds.MinejagoSoundDefinitions;
 import dev.thomasglasser.minejago.data.tags.MinejagoBannerPatternTagsProvider;
@@ -116,7 +116,7 @@ public class MinejagoDataGenerators {
         generator.addProvider(includeServer, new MinejagoDimensionTypeTagsProvider(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(includeServer, new MinejagoDamageTypeTagsProvider(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(includeServer, new MinejagoAdvancementProvider(packOutput, lookupProvider, existingFileHelper, enUs));
-        generator.addProvider(includeServer, new RecipeProviderRunner(packOutput, Minejago.MOD_ID, lookupProvider, MinejagoRecipes::new));
+        generator.addProvider(includeServer, new RecipeProviderRunner(packOutput, Minejago.MOD_ID, lookupProvider, MinejagoRecipeProvider::new));
         generator.addProvider(includeServer, new MinejagoFocusModifierProvider(packOutput, lookupProvider));
         generator.addProvider(includeServer, new MinejagoBookProvider(packOutput, lookupProvider, enUs::add));
 
