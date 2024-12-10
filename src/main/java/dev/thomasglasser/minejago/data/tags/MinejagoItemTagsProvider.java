@@ -40,10 +40,6 @@ public class MinejagoItemTagsProvider extends ExtendedItemTagsProvider {
                 .add(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.BOW).value())
                 .add(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.KNIFE).value())
                 .add(MinejagoArmors.SAMUKAIS_CHESTPLATE.get());
-        tag(ItemTags.TRIM_TEMPLATES)
-                .add(MinejagoItems.FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE.get())
-                .add(MinejagoItems.TERRAIN_ARMOR_TRIM_SMITHING_TEMPLATE.get())
-                .add(MinejagoItems.LOTUS_ARMOR_TRIM_SMITHING_TEMPLATE.get());
         tag(ItemTags.MAP_INVISIBILITY_EQUIPMENT)
                 .addTag(MinejagoItemTags.GI);
 
