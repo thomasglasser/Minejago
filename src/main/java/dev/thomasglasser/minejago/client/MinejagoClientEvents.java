@@ -36,9 +36,9 @@ import dev.thomasglasser.minejago.client.renderer.entity.SkullMotorbikeRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.SkullTruckRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.LegacyDevTeamLayer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterLayer;
-import dev.thomasglasser.minejago.client.renderer.entity.state.MinejagoPlayerRenderState;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
+import dev.thomasglasser.minejago.network.ClientboundStartSpinjitzuPayload;
 import dev.thomasglasser.minejago.network.ServerboundFlyVehiclePayload;
 import dev.thomasglasser.minejago.network.ServerboundStopMeditationPayload;
 import dev.thomasglasser.minejago.plugins.MinejagoDynamicLights;
@@ -60,6 +60,8 @@ import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
 import dev.thomasglasser.minejago.world.level.block.entity.TeapotBlockEntity;
+import dev.thomasglasser.minejago.world.level.storage.PowerData;
+import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
 import dev.thomasglasser.tommylib.api.client.ClientUtils;
 import dev.thomasglasser.tommylib.api.client.renderer.entity.ThrownSwordRenderer;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
@@ -118,6 +120,7 @@ import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.event.RenderPlayerEvent;
 import net.neoforged.neoforge.client.event.SelectMusicEvent;
+import net.neoforged.neoforge.client.renderstate.RegisterRenderStateModifiersEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.tslat.tes.api.util.TESClientUtil;
 import org.lwjgl.glfw.GLFW;
@@ -318,20 +321,21 @@ public class MinejagoClientEvents {
         event.registerAbove(ResourceLocation.withDefaultNamespace("food_level"), Minejago.modLoc("focus"), MinejagoGuis::renderFocusBar);
     }
 
-    public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
+    public static void onRegisterClientReloadListener(RegisterClientReloadListenersEvent event) {
         event.registerReloadListener(MinejagoClientUtils.getBewlr());
     }
 
     public static void onPostPlayerRender(RenderPlayerEvent.Post event) {
         PlayerRenderState state = event.getRenderState();
-        MinejagoPlayerRenderState minejagoState = (MinejagoPlayerRenderState) event.getRenderState();
         SpinjitzuModel<PlayerRenderState> model = new SpinjitzuModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(SpinjitzuModel.LAYER_LOCATION));
-        if (minejagoState.minejago$isSpinjitzuActive() && minejagoState.minejago$spinjitzuStartTicks() <= 0) {
+        Boolean active = state.getRenderData(SpinjitzuData.ACTIVE);
+        Integer startTicks = state.getRenderData(SpinjitzuData.START_TICKS);
+        Integer color = state.getRenderData(PowerData.COLOR);
+        if (active != null && active && startTicks != null && startTicks <= 0 && color != null) {
             model.setupAnim(state);
             model.getBody().copyFrom(event.getRenderer().getModel().body);
             float scale = state.scale;
             event.getPoseStack().scale(scale, scale, scale);
-            int color = minejagoState.minejago$spinjitzuColor();
             model.render(event.getPoseStack(), event.getMultiBufferSource(), (int) state.ageInTicks, event.getPartialTick(), 0xFF000000 | color);
         }
     }
@@ -362,5 +366,17 @@ public class MinejagoClientEvents {
 
     public static void addSkulkinRaid(UUID id) {
         skulkinRaids.add(id);
+    }
+
+    public static void onRegisterRenderStateModifiers(RegisterRenderStateModifiersEvent event) {
+        event.registerEntityModifier(PlayerRenderer.class, (player, renderState) -> {
+            renderState.setRenderData(MinejagoClientUtils.RENDER_SNAPSHOT, MinejagoClientUtils.renderSnapshotTesterLayer(player));
+            renderState.setRenderData(MinejagoClientUtils.SNAPSHOT_CHOICE, MinejagoClientUtils.snapshotChoice(player));
+            renderState.setRenderData(MinejagoClientUtils.RENDER_DEV, MinejagoClientUtils.renderDevLayer(player));
+            renderState.setRenderData(MinejagoClientUtils.RENDER_LEGACY_DEV, MinejagoClientUtils.renderLegacyDevLayer(player));
+            renderState.setRenderData(SpinjitzuData.ACTIVE, player.getData(MinejagoAttachmentTypes.SPINJITZU).active());
+            renderState.setRenderData(SpinjitzuData.START_TICKS, TommyLibServices.ENTITY.getPersistentData(player).getInt(ClientboundStartSpinjitzuPayload.KEY_SPINJITZUSTARTTICKS));
+            renderState.setRenderData(PowerData.COLOR, player.registryAccess().holderOrThrow(player.getData(MinejagoAttachmentTypes.POWER).power()).value().getColor().getValue());
+        });
     }
 }

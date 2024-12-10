@@ -2,8 +2,8 @@ package dev.thomasglasser.minejago.client.renderer.entity.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import dev.thomasglasser.minejago.client.MinejagoClientUtils;
 import dev.thomasglasser.minejago.client.model.LegacyDevTeamBeardModel;
-import dev.thomasglasser.minejago.client.renderer.entity.state.MinejagoPlayerRenderState;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -26,7 +26,8 @@ public class LegacyDevTeamLayer<S extends PlayerRenderState> extends RenderLayer
     public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, S renderState, float p_117353_, float p_117354_) {
         VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityCutout(LegacyDevTeamBeardModel.TEXTURE));
         poseStack.translate(0, -0.055, 0);
-        if (((MinejagoPlayerRenderState) renderState).minejago$renderLegacyDev())
+        Boolean renderLegacyDev = renderState.getRenderData(MinejagoClientUtils.RENDER_LEGACY_DEV);
+        if (renderLegacyDev != null && renderLegacyDev)
             model.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
     }
 }

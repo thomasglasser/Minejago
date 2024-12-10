@@ -2,8 +2,8 @@ package dev.thomasglasser.minejago.client.renderer.entity.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import dev.thomasglasser.minejago.client.MinejagoClientUtils;
 import dev.thomasglasser.minejago.client.model.PilotsSnapshotTesterHatModel;
-import dev.thomasglasser.minejago.client.renderer.entity.state.MinejagoPlayerRenderState;
 import java.util.Calendar;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.EntityModelSet;
@@ -28,7 +28,7 @@ public class SnapshotTesterLayer<S extends PlayerRenderState> extends RenderLaye
     }
 
     protected ResourceLocation getTextureLocation(S renderState) {
-        return switch (((MinejagoPlayerRenderState) renderState).minejago$snapshotChoice()) {
+        return switch (renderState.getRenderData(MinejagoClientUtils.SNAPSHOT_CHOICE)) {
             case BAMBOO_HAT -> {
                 if (xmasTextures)
                     yield PilotsSnapshotTesterHatModel.HOLIDAY_TEXTURE;
@@ -41,10 +41,11 @@ public class SnapshotTesterLayer<S extends PlayerRenderState> extends RenderLaye
 
     @Override
     public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, S renderState, float p_117353_, float p_117354_) {
-        if (((MinejagoPlayerRenderState) renderState).minejago$renderSnapshot()) {
+        Boolean renderSnapshot = renderState.getRenderData(MinejagoClientUtils.RENDER_SNAPSHOT);
+        if (renderSnapshot != null && renderSnapshot) {
             VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityCutout(getTextureLocation(renderState)));
             getParentModel().getHead().translateAndRotate(poseStack);
-            switch (((MinejagoPlayerRenderState) renderState).minejago$snapshotChoice()) {
+            switch (renderState.getRenderData(MinejagoClientUtils.SNAPSHOT_CHOICE)) {
                 case BAMBOO_HAT -> pilotsSnapshotTesterHatModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
                 case null -> {}
             }

@@ -42,6 +42,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.phys.AABB;
 import net.tslat.smartbrainlib.api.SmartBrainOwner;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
 import net.tslat.smartbrainlib.api.core.SmartBrainProvider;
@@ -273,11 +274,11 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
         new SpinjitzuData(true, doingSpinjitzu).save(this, !level().isClientSide);
     }
 
-    public static boolean checkCharacterSpawnRules(EntityType<? extends Character> character, LevelAccessor level, EntitySpawnReason entitySpawnReason, BlockPos pos, RandomSource random) {
+    public static boolean checkNaturalCharacterSpawnRules(EntityType<? extends Character> character, LevelAccessor level, EntitySpawnReason entitySpawnReason, BlockPos pos, RandomSource random) {
         List<Character> characters = new ArrayList<>();
         ServerLevel serverLevel = level instanceof Level ? (ServerLevel) level : level instanceof WorldGenRegion ? ((WorldGenRegion) level).getLevel() : null;
         if (serverLevel != null) {
-            for (Entity entity : serverLevel.getEntities().getAll()) {
+            for (Entity entity : serverLevel.getEntities(null, AABB.ofSize(pos.getCenter(), 256, 256, 256))) {
                 if (entity.getType() == character) {
                     characters.add((Character) entity);
                 }

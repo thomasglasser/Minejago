@@ -454,7 +454,7 @@ public class MinejagoEntityEvents {
 
     public static void onSpawnPlacementsRegister(RegisterSpawnPlacementsEvent event) {
         event.register(MinejagoEntityTypes.ZANE.get(), SpawnPlacementTypes.IN_WATER, Heightmap.Types.OCEAN_FLOOR_WG, Zane::checkZaneSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
-        event.register(MinejagoEntityTypes.COLE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Character::checkCharacterSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
+        event.register(MinejagoEntityTypes.COLE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Character::checkNaturalCharacterSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
     }
 
     public static void onLivingKnockBack(LivingKnockBackEvent event) {

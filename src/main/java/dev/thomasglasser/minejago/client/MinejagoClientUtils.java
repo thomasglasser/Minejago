@@ -28,12 +28,18 @@ import net.minecraft.client.gui.screens.inventory.BookViewScreen;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.context.ContextKey;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.Nullable;
 
 public class MinejagoClientUtils {
+    public static final ContextKey<Boolean> RENDER_SNAPSHOT = Minejago.contextKey("render_snapshot");
+    public static final ContextKey<SnapshotTesterCosmeticOptions> SNAPSHOT_CHOICE = Minejago.contextKey("snapshot_choice");
+    public static final ContextKey<Boolean> RENDER_DEV = Minejago.contextKey("render_dev");
+    public static final ContextKey<Boolean> RENDER_LEGACY_DEV = Minejago.contextKey("render_legacy_dev");
+
     private static final HashMap<Player, VipData> vipData = new HashMap<>();
     private static final MinejagoBlockEntityWithoutLevelRenderer bewlr = new MinejagoBlockEntityWithoutLevelRenderer();
 

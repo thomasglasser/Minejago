@@ -13,6 +13,7 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.context.ContextKey;
 import net.minecraft.world.entity.LivingEntity;
 
 public record SpinjitzuData(boolean unlocked, boolean active) {
@@ -26,6 +27,8 @@ public record SpinjitzuData(boolean unlocked, boolean active) {
             ByteBufCodecs.BOOL, SpinjitzuData::active,
             SpinjitzuData::new);
 
+    public static final ContextKey<Boolean> ACTIVE = Minejago.contextKey("active");
+    public static final ContextKey<Integer> START_TICKS = Minejago.contextKey("start_ticks");
     public static final ResourceLocation SPEED_MODIFIER = Minejago.modLoc("spinjitzu_speed");
     public static final ResourceLocation KNOCKBACK_MODIFIER = Minejago.modLoc("spinjitzu_knockback");
     public SpinjitzuData() {

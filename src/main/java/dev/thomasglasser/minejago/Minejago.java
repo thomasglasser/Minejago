@@ -40,6 +40,7 @@ import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
 import dev.thomasglasser.minejago.world.level.saveddata.maps.MinejagoMapDecorationTypes;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.context.ContextKey;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -87,6 +88,10 @@ public class Minejago {
 
     public static ResourceLocation modLoc(String path) {
         return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
+    }
+
+    public static <T> ContextKey<T> contextKey(String path) {
+        return new ContextKey<>(modLoc(path));
     }
 
     private static void initRegistries() {
@@ -154,7 +159,8 @@ public class Minejago {
         bus.addListener(MinejagoClientEvents::onAddLayers);
         bus.addListener(MinejagoClientEvents::onBuildCreativeTabContent);
         bus.addListener(MinejagoClientEvents::onRegisterGuiOverlays);
-        bus.addListener(MinejagoClientEvents::registerClientReloadListeners);
+        bus.addListener(MinejagoClientEvents::onRegisterClientReloadListener);
+        bus.addListener(MinejagoClientEvents::onRegisterRenderStateModifiers);
     }
 
     private void addForgeListeners() {

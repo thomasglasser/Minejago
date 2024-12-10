@@ -15,9 +15,7 @@
   "client": [
     "minecraft.client.gui.screens.inventory.LecternScreenMixin",
     "minecraft.client.player.LocalPlayerMixin",
-    "minecraft.client.renderer.blockentity.LecternRendererMixin",
-    "minecraft.client.renderer.entity.player.PlayerRendererMixin",
-    "minecraft.client.renderer.entity.state.PlayerRenderStateMixin"
+    "minecraft.client.renderer.blockentity.LecternRendererMixin"
   ],
   "server": [
   ],
