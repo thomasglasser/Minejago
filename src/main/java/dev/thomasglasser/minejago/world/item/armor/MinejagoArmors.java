@@ -62,7 +62,11 @@ public class MinejagoArmors {
         }
 
         public List<DeferredItem<SkeletalChestplateItem>> getAll() {
-            return new ArrayList<>(List.of(RED, BLUE, WHITE, BLACK, BONE));
+            return List.of(RED, BLUE, WHITE, BLACK, BONE);
+        }
+
+        public List<ItemStack> getAllAsStacks() {
+            return List.of(RED.toStack(), BLUE.toStack(), WHITE.toStack(), BLACK.toStack(), BONE.toStack());
         }
     }
 
@@ -99,7 +103,7 @@ public class MinejagoArmors {
     }
 
     private static <T extends ArmorItem> DeferredItem<T> register(String name, Function<Item.Properties, T> item) {
-        return ItemUtils.register(ARMORS, name, item, List.of());
+        return ItemUtils.register(ARMORS, name, item);
     }
 
     public static boolean isWearingFullGi(LivingEntity entity) {

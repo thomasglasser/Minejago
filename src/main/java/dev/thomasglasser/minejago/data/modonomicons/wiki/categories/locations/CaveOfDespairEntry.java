@@ -34,7 +34,7 @@ public class CaveOfDespairEntry extends IndexModeEntryProvider {
 
         page("fancy_finds", () -> BookImagePageModel.create()
                 .withAnchor("fancy_finds")
-                .withImages(MinejagoBookProvider.itemLoc(MinejagoItems.POTTERY_SHERD_PEAKS), MinejagoBookProvider.itemLoc(MinejagoItems.TERRAIN_ARMOR_TRIM_SMITHING_TEMPLATE), MinejagoBookProvider.blockLoc(Blocks.TERRACOTTA), MinejagoBookProvider.blockLoc(Blocks.LIGHT_GRAY_TERRACOTTA), MinejagoBookProvider.itemLoc(Items.CLAY_BALL), MinejagoBookProvider.itemLoc(Items.EMERALD))
+                .withImages(MinejagoBookProvider.itemLoc(MinejagoItems.PEAKS_POTTERY_SHERD), MinejagoBookProvider.itemLoc(MinejagoItems.TERRAIN_ARMOR_TRIM_SMITHING_TEMPLATE), MinejagoBookProvider.blockLoc(Blocks.TERRACOTTA), MinejagoBookProvider.blockLoc(Blocks.LIGHT_GRAY_TERRACOTTA), MinejagoBookProvider.itemLoc(Items.CLAY_BALL), MinejagoBookProvider.itemLoc(Items.EMERALD))
                 .withTitle(context().pageTitle())
                 .withText(context().pageText()));
 

@@ -21,6 +21,7 @@ public class MinejagoPotions {
     public static final DeferredHolder<Potion, Potion> MANGROVE_TEA = register("mangrove_tea", 0x4d1719);
     public static final DeferredHolder<Potion, Potion> JUNGLE_TEA = register("jungle_tea", 0x4d3323);
     public static final DeferredHolder<Potion, Potion> DARK_OAK_TEA = register("dark_oak_tea", 0x33200f);
+    public static final DeferredHolder<Potion, Potion> PALE_OAK_TEA = register("pale_oak_tea", 0x6f6968);
     public static final DeferredHolder<Potion, Potion> BIRCH_TEA = register("birch_tea", 0x4d432f);
     public static final DeferredHolder<Potion, Potion> AZALEA_TEA = register("azalea_tea", 0x3f4a2b);
     public static final DeferredHolder<Potion, Potion> FLOWERING_AZALEA_TEA = register("flowering_azalea_tea", 0x592f62);

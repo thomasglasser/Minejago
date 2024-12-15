@@ -157,10 +157,10 @@ public class Minejago {
         bus.addListener(MinejagoClientEvents::onRegisterLayers);
         bus.addListener(MinejagoClientEvents::registerModels);
         bus.addListener(MinejagoClientEvents::onAddLayers);
-        bus.addListener(MinejagoClientEvents::onBuildCreativeTabContent);
         bus.addListener(MinejagoClientEvents::onRegisterGuiOverlays);
         bus.addListener(MinejagoClientEvents::onRegisterClientReloadListener);
         bus.addListener(MinejagoClientEvents::onRegisterRenderStateModifiers);
+        bus.addListener(MinejagoClientEvents::onBuildCreativeModeTabContents);
     }
 
     private void addForgeListeners() {

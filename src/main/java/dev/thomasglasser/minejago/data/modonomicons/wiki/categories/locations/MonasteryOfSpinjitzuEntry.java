@@ -46,7 +46,7 @@ public class MonasteryOfSpinjitzuEntry extends IndexModeEntryProvider {
 
         page("fancy_finds", () -> BookImagePageModel.create()
                 .withAnchor("fancy_finds")
-                .withImages(MinejagoBookProvider.itemLoc(MinejagoItems.POTTERY_SHERD_MASTER), MinejagoBookProvider.itemLoc(MinejagoItems.POTTERY_SHERD_YIN_YANG), MinejagoBookProvider.itemLoc(MinejagoItems.POTTERY_SHERD_DRAGONS_HEAD), MinejagoBookProvider.itemLoc(MinejagoItems.POTTERY_SHERD_DRAGONS_TAIL), MinejagoBookProvider.itemLoc(MinejagoItems.LOTUS_ARMOR_TRIM_SMITHING_TEMPLATE), MinejagoBookProvider.itemLoc(MinejagoItems.NINJA_BANNER_PATTERN))
+                .withImages(MinejagoBookProvider.itemLoc(MinejagoItems.MASTER_POTTERY_SHERD), MinejagoBookProvider.itemLoc(MinejagoItems.YIN_YANG_POTTERY_SHERD), MinejagoBookProvider.itemLoc(MinejagoItems.DRAGONS_HEAD_POTTERY_SHERD), MinejagoBookProvider.itemLoc(MinejagoItems.DRAGONS_TAIL_POTTERY_SHERD), MinejagoBookProvider.itemLoc(MinejagoItems.LOTUS_ARMOR_TRIM_SMITHING_TEMPLATE), MinejagoBookProvider.itemLoc(MinejagoItems.NINJA_BANNER_PATTERN))
                 .withTitle(context().pageTitle())
                 .withText(context().pageText()));
 

@@ -96,6 +96,7 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         addTea(MinejagoPotions.MANGROVE_TEA, "Mangrove Tea");
         addTea(MinejagoPotions.JUNGLE_TEA, "Jungle Tea");
         addTea(MinejagoPotions.DARK_OAK_TEA, "Dark Oak Tea");
+        addTea(MinejagoPotions.PALE_OAK_TEA, "Pale Oak Tea");
         addTea(MinejagoPotions.BIRCH_TEA, "Birch Tea");
         addTea(MinejagoPotions.AZALEA_TEA, "Azalea Tea");
         addTea(MinejagoPotions.FLOWERING_AZALEA_TEA, "Flowering Azalea Tea");
@@ -106,11 +107,11 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(MinejagoMobEffects.CURE.get(), "Instant Cure");
         add(MinejagoMobEffects.HYPERFOCUS.get(), "Hyperfocus");
 
-        add(MinejagoKeyMappings.ACTIVATE_SPINJITZU, "Activate Spinjitzu");
-        add(MinejagoKeyMappings.MEDITATE, "Meditate");
-        add(MinejagoKeyMappings.ASCEND, "Ascend");
-        add(MinejagoKeyMappings.DESCEND, "Descend");
-        add(MinejagoKeyMappings.OPEN_SKILL_SCREEN, "Open Skill Screen");
+        add(MinejagoKeyMappings.ACTIVATE_SPINJITZU.get(), "Activate Spinjitzu");
+        add(MinejagoKeyMappings.MEDITATE.get(), "Meditate");
+        add(MinejagoKeyMappings.ASCEND.get(), "Ascend");
+        add(MinejagoKeyMappings.DESCEND.get(), "Descend");
+        add(MinejagoKeyMappings.OPEN_SKILL_SCREEN.get(), "Open Skill Screen");
 
         add(MinejagoCommandEvents.NOT_LIVING_ENTITY, "Target %s (%s) is not a LivingEntity");
 
@@ -153,13 +154,13 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         addPaintingVariant(MinejagoPaintingVariants.IT_TAKES_A_VILLAGE, "It Takes A Village", "waifu_png_pl");
         addPaintingVariant(MinejagoPaintingVariants.IT_TAKES_A_VILLAGE_WRECKED, "It Takes A Village (Wrecked)", "waifu_png_pl");
 
-        addSherd(MinejagoItems.POTTERY_SHERD_ICE_CUBE.get(), "Ice Cube");
-        addSherd(MinejagoItems.POTTERY_SHERD_THUNDER.get(), "Thunder");
-        addSherd(MinejagoItems.POTTERY_SHERD_PEAKS.get(), "Peaks");
-        addSherd(MinejagoItems.POTTERY_SHERD_MASTER.get(), "Master");
-        addSherd(MinejagoItems.POTTERY_SHERD_YIN_YANG.get(), "Yin Yang");
-        addSherd(MinejagoItems.POTTERY_SHERD_DRAGONS_HEAD.get(), "Dragon's Head");
-        addSherd(MinejagoItems.POTTERY_SHERD_DRAGONS_TAIL.get(), "Dragon's Tail");
+        addSherd(MinejagoItems.ICE_CUBE_POTTERY_SHERD.get(), "Ice Cube");
+        addSherd(MinejagoItems.THUNDER_POTTERY_SHERD.get(), "Thunder");
+        addSherd(MinejagoItems.PEAKS_POTTERY_SHERD.get(), "Peaks");
+        addSherd(MinejagoItems.MASTER_POTTERY_SHERD.get(), "Master");
+        addSherd(MinejagoItems.YIN_YANG_POTTERY_SHERD.get(), "Yin Yang");
+        addSherd(MinejagoItems.DRAGONS_HEAD_POTTERY_SHERD.get(), "Dragon's Head");
+        addSherd(MinejagoItems.DRAGONS_TAIL_POTTERY_SHERD.get(), "Dragon's Tail");
 
         add(MinejagoItems.MOD_NEEDED, "To get the full functionality of this item, please install the %s mod.");
 

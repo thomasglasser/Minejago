@@ -126,6 +126,7 @@ public class MinejagoRecipeProvider extends ExtendedRecipeProvider {
         normalTea(Items.MANGROVE_LEAVES, MinejagoPotions.MANGROVE_TEA);
         normalTea(Items.JUNGLE_LEAVES, MinejagoPotions.JUNGLE_TEA);
         normalTea(Items.DARK_OAK_LEAVES, MinejagoPotions.DARK_OAK_TEA);
+        normalTea(Items.PALE_OAK_LEAVES, MinejagoPotions.PALE_OAK_TEA);
         normalTea(Items.BIRCH_LEAVES, MinejagoPotions.BIRCH_TEA);
         normalTea(Items.AZALEA_LEAVES, MinejagoPotions.AZALEA_TEA);
         normalTea(Items.FLOWERING_AZALEA_LEAVES, MinejagoPotions.FLOWERING_AZALEA_TEA);

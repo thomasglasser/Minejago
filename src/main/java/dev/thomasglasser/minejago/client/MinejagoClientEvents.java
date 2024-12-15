@@ -53,7 +53,6 @@ import dev.thomasglasser.minejago.world.entity.spinjitzucourse.SpinningMacesSpin
 import dev.thomasglasser.minejago.world.entity.spinjitzucourse.SpinningPoleSpinjitzuCourseElement;
 import dev.thomasglasser.minejago.world.entity.spinjitzucourse.SwirlingKnivesSpinjitzuCourseElement;
 import dev.thomasglasser.minejago.world.focus.FocusData;
-import dev.thomasglasser.minejago.world.item.MinejagoItemUtils;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
@@ -87,24 +86,22 @@ import net.minecraft.client.renderer.entity.state.PlayerRenderState;
 import net.minecraft.client.resources.PlayerSkin;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.raid.Raid;
+import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.block.Block;
@@ -138,10 +135,10 @@ public class MinejagoClientEvents {
         if (player == null)
             return;
         if (PlayerRideableFlying.isRidingFlyable(player)) {
-            if (MinejagoKeyMappings.ASCEND.isDown()) {
+            if (MinejagoKeyMappings.ASCEND.get().isDown()) {
                 ((PlayerRideableFlying) player.getVehicle()).ascend();
                 TommyLibServices.NETWORK.sendToServer(new ServerboundFlyVehiclePayload(ServerboundFlyVehiclePayload.Stage.START_ASCEND));
-            } else if (MinejagoKeyMappings.DESCEND.isDown()) {
+            } else if (MinejagoKeyMappings.DESCEND.get().isDown()) {
                 ((PlayerRideableFlying) player.getVehicle()).descend();
                 TommyLibServices.NETWORK.sendToServer(new ServerboundFlyVehiclePayload(ServerboundFlyVehiclePayload.Stage.START_DESCEND));
             } else {
@@ -151,25 +148,9 @@ public class MinejagoClientEvents {
         }
     }
 
-    public static List<ItemStack> getItemsForTab(ResourceKey<CreativeModeTab> tab, HolderLookup.Provider lookupProvider) {
-        List<ItemStack> items = new ArrayList<>();
-
-        if (tab == CreativeModeTabs.FOOD_AND_DRINKS) {
-            for (Holder<Potion> potion : BuiltInRegistries.POTION.listElements().filter(ref -> ref.key().location().getNamespace().equals(ResourceLocation.DEFAULT_NAMESPACE) || ref.key().location().getNamespace().equals(Minejago.MOD_ID)).toList()) {
-                items.add(MinejagoItemUtils.fillTeacup(potion));
-            }
-        }
-
-        if (tab == CreativeModeTabs.COMBAT) {
-            MinejagoArmors.ARMOR_SETS.forEach(set -> items.addAll(set.getAllAsItems().stream().map(Item::getDefaultInstance).toList()));
-        }
-
-        return items;
-    }
-
     public static void onInput(int key) {
         Player mainClientPlayer = ClientUtils.getMainClientPlayer();
-        if (mainClientPlayer != null && !(key >= GLFW.GLFW_KEY_F1 && key <= GLFW.GLFW_KEY_F25) && !MinejagoKeyMappings.MEDITATE.isDown() && key != GLFW.GLFW_KEY_LEFT_SHIFT && key != GLFW.GLFW_KEY_ESCAPE) {
+        if (mainClientPlayer != null && !(key >= GLFW.GLFW_KEY_F1 && key <= GLFW.GLFW_KEY_F25) && !MinejagoKeyMappings.MEDITATE.get().isDown() && key != GLFW.GLFW_KEY_LEFT_SHIFT && key != GLFW.GLFW_KEY_ESCAPE) {
             FocusData focusData = mainClientPlayer.getData(MinejagoAttachmentTypes.FOCUS);
             CompoundTag persistentData = TommyLibServices.ENTITY.getPersistentData(mainClientPlayer);
             if (focusData.isMeditating() && persistentData.getInt("WaitTicks") <= 0) {
@@ -307,10 +288,6 @@ public class MinejagoClientEvents {
         }
     }
 
-    public static void onBuildCreativeTabContent(BuildCreativeModeTabContentsEvent event) {
-        event.acceptAll(MinejagoClientEvents.getItemsForTab(event.getTabKey(), event.getParameters().holders()));
-    }
-
     public static void onClientConfigChanged(ModConfigEvent event) {
         if (event.getConfig().getType() == ModConfig.Type.CLIENT && Minecraft.getInstance().player != null) {
             MinejagoClientUtils.refreshVip();
@@ -378,5 +355,186 @@ public class MinejagoClientEvents {
             renderState.setRenderData(SpinjitzuData.START_TICKS, TommyLibServices.ENTITY.getPersistentData(player).getInt(ClientboundStartSpinjitzuPayload.KEY_SPINJITZUSTARTTICKS));
             renderState.setRenderData(PowerData.COLOR, player.registryAccess().holderOrThrow(player.getData(MinejagoAttachmentTypes.POWER).power()).value().getColor().getValue());
         });
+    }
+
+    public static void onBuildCreativeModeTabContents(BuildCreativeModeTabContentsEvent event) {
+        CreativeModeTab.ItemDisplayParameters parameters = event.getParameters();
+        if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
+            // Wood Sets
+            event.insertAfter(Items.CHERRY_BUTTON.getDefaultInstance(), MinejagoBlocks.ENCHANTED_WOOD_SET.log().toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoBlocks.ENCHANTED_WOOD_SET.log().toStack(), MinejagoBlocks.ENCHANTED_WOOD_SET.wood().toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoBlocks.ENCHANTED_WOOD_SET.wood().toStack(), MinejagoBlocks.ENCHANTED_WOOD_SET.strippedLog().toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoBlocks.ENCHANTED_WOOD_SET.strippedLog().toStack(), MinejagoBlocks.ENCHANTED_WOOD_SET.strippedWood().toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoBlocks.ENCHANTED_WOOD_SET.strippedWood().toStack(), MinejagoBlocks.ENCHANTED_WOOD_SET.planks().toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoBlocks.ENCHANTED_WOOD_SET.planks().toStack(), MinejagoBlocks.ENCHANTED_WOOD_SET.stairs().toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoBlocks.ENCHANTED_WOOD_SET.stairs().toStack(), MinejagoBlocks.ENCHANTED_WOOD_SET.slab().toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoBlocks.ENCHANTED_WOOD_SET.slab().toStack(), MinejagoBlocks.ENCHANTED_WOOD_SET.fence().toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoBlocks.ENCHANTED_WOOD_SET.fence().toStack(), MinejagoBlocks.ENCHANTED_WOOD_SET.fenceGate().toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoBlocks.ENCHANTED_WOOD_SET.fenceGate().toStack(), MinejagoBlocks.ENCHANTED_WOOD_SET.door().toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoBlocks.ENCHANTED_WOOD_SET.door().toStack(), MinejagoBlocks.ENCHANTED_WOOD_SET.trapdoor().toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoBlocks.ENCHANTED_WOOD_SET.trapdoor().toStack(), MinejagoBlocks.ENCHANTED_WOOD_SET.pressurePlate().toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoBlocks.ENCHANTED_WOOD_SET.pressurePlate().toStack(), MinejagoBlocks.ENCHANTED_WOOD_SET.button().toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+
+            event.insertAfter(Items.LIGHT_WEIGHTED_PRESSURE_PLATE.getDefaultInstance(), MinejagoBlocks.GOLD_DISC.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.accept(MinejagoBlocks.TOP_POST.toStack());
+        } else if (event.getTabKey() == CreativeModeTabs.COLORED_BLOCKS) {
+            event.accept(MinejagoBlocks.TEAPOT);
+            event.accept(MinejagoBlocks.TEAPOTS.get(DyeColor.WHITE));
+            event.accept(MinejagoBlocks.TEAPOTS.get(DyeColor.LIGHT_GRAY));
+            event.accept(MinejagoBlocks.TEAPOTS.get(DyeColor.GRAY));
+            event.accept(MinejagoBlocks.TEAPOTS.get(DyeColor.BLACK));
+            event.accept(MinejagoBlocks.TEAPOTS.get(DyeColor.BROWN));
+            event.accept(MinejagoBlocks.TEAPOTS.get(DyeColor.RED));
+            event.accept(MinejagoBlocks.TEAPOTS.get(DyeColor.ORANGE));
+            event.accept(MinejagoBlocks.TEAPOTS.get(DyeColor.YELLOW));
+            event.accept(MinejagoBlocks.TEAPOTS.get(DyeColor.LIME));
+            event.accept(MinejagoBlocks.TEAPOTS.get(DyeColor.GREEN));
+            event.accept(MinejagoBlocks.TEAPOTS.get(DyeColor.CYAN));
+            event.accept(MinejagoBlocks.TEAPOTS.get(DyeColor.LIGHT_BLUE));
+            event.accept(MinejagoBlocks.TEAPOTS.get(DyeColor.BLUE));
+            event.accept(MinejagoBlocks.TEAPOTS.get(DyeColor.PURPLE));
+            event.accept(MinejagoBlocks.TEAPOTS.get(DyeColor.MAGENTA));
+            event.accept(MinejagoBlocks.TEAPOTS.get(DyeColor.PINK));
+            event.accept(MinejagoBlocks.JASPOT);
+        } else if (event.getTabKey() == CreativeModeTabs.NATURAL_BLOCKS) {
+            // Wood Sets
+            event.insertAfter(Items.CHERRY_LOG.getDefaultInstance(), MinejagoBlocks.ENCHANTED_WOOD_SET.log().toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+
+            // Leaves Sets
+            event.insertAfter(Items.CHERRY_LEAVES.getDefaultInstance(), MinejagoBlocks.FOCUS_LEAVES_SET.leaves().toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(event.getParameters().enabledFeatures().contains(FeatureFlags.WINTER_DROP) ? Items.PALE_OAK_SAPLING.getDefaultInstance() : Items.CHERRY_SAPLING.getDefaultInstance(), MinejagoBlocks.FOCUS_LEAVES_SET.sapling().toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        } else if (event.getTabKey() == CreativeModeTabs.FUNCTIONAL_BLOCKS) {
+            event.insertAfter(Items.SUSPICIOUS_SAND.getDefaultInstance(), MinejagoBlocks.SUSPICIOUS_RED_SAND.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(Items.CHISELED_BOOKSHELF.getDefaultInstance(), MinejagoBlocks.SCROLL_SHELF.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoBlocks.SCROLL_SHELF.toStack(), MinejagoBlocks.CHISELED_SCROLL_SHELF.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+
+            // Wood Sets
+            event.insertAfter(Items.CHERRY_HANGING_SIGN.getDefaultInstance(), MinejagoBlocks.ENCHANTED_WOOD_SET.sign().toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoBlocks.ENCHANTED_WOOD_SET.sign().toStack(), MinejagoBlocks.ENCHANTED_WOOD_SET.hangingSign().toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+
+            // Colored Blocks
+            event.insertAfter(Raid.getOminousBannerInstance(event.getParameters().holders().lookupOrThrow(Registries.BANNER_PATTERN)), MinejagoBlocks.TEAPOT.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoBlocks.TEAPOT.toStack(), MinejagoBlocks.TEAPOTS.get(DyeColor.WHITE).toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoBlocks.TEAPOTS.get(DyeColor.WHITE).toStack(), MinejagoBlocks.TEAPOTS.get(DyeColor.LIGHT_GRAY).toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoBlocks.TEAPOTS.get(DyeColor.LIGHT_GRAY).toStack(), MinejagoBlocks.TEAPOTS.get(DyeColor.GRAY).toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoBlocks.TEAPOTS.get(DyeColor.GRAY).toStack(), MinejagoBlocks.TEAPOTS.get(DyeColor.BLACK).toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoBlocks.TEAPOTS.get(DyeColor.BLACK).toStack(), MinejagoBlocks.TEAPOTS.get(DyeColor.BROWN).toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoBlocks.TEAPOTS.get(DyeColor.BROWN).toStack(), MinejagoBlocks.TEAPOTS.get(DyeColor.RED).toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoBlocks.TEAPOTS.get(DyeColor.RED).toStack(), MinejagoBlocks.TEAPOTS.get(DyeColor.ORANGE).toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoBlocks.TEAPOTS.get(DyeColor.ORANGE).toStack(), MinejagoBlocks.TEAPOTS.get(DyeColor.YELLOW).toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoBlocks.TEAPOTS.get(DyeColor.YELLOW).toStack(), MinejagoBlocks.TEAPOTS.get(DyeColor.LIME).toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoBlocks.TEAPOTS.get(DyeColor.LIME).toStack(), MinejagoBlocks.TEAPOTS.get(DyeColor.GREEN).toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoBlocks.TEAPOTS.get(DyeColor.GREEN).toStack(), MinejagoBlocks.TEAPOTS.get(DyeColor.CYAN).toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoBlocks.TEAPOTS.get(DyeColor.CYAN).toStack(), MinejagoBlocks.TEAPOTS.get(DyeColor.LIGHT_BLUE).toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoBlocks.TEAPOTS.get(DyeColor.LIGHT_BLUE).toStack(), MinejagoBlocks.TEAPOTS.get(DyeColor.BLUE).toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoBlocks.TEAPOTS.get(DyeColor.BLUE).toStack(), MinejagoBlocks.TEAPOTS.get(DyeColor.PURPLE).toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoBlocks.TEAPOTS.get(DyeColor.PURPLE).toStack(), MinejagoBlocks.TEAPOTS.get(DyeColor.MAGENTA).toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoBlocks.TEAPOTS.get(DyeColor.MAGENTA).toStack(), MinejagoBlocks.TEAPOTS.get(DyeColor.PINK).toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoBlocks.TEAPOTS.get(DyeColor.PINK).toStack(), MinejagoBlocks.JASPOT.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        } else if (event.getTabKey() == CreativeModeTabs.REDSTONE_BLOCKS) {
+            event.insertAfter(Items.LEVER.getDefaultInstance(), MinejagoBlocks.DRAGON_BUTTON.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+
+            // Spinjitzu Course Elements
+            event.insertAfter(Items.BELL.getDefaultInstance(), MinejagoItems.CENTER_SPINJITZU_COURSE_ELEMENT.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.CENTER_SPINJITZU_COURSE_ELEMENT.toStack(), MinejagoItems.SPINNING_DUMMIES_SPINJITZU_COURSE_ELEMENT.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.SPINNING_DUMMIES_SPINJITZU_COURSE_ELEMENT.toStack(), MinejagoItems.SPINNING_POLE_SPINJITZU_COURSE_ELEMENT.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.SPINNING_POLE_SPINJITZU_COURSE_ELEMENT.toStack(), MinejagoItems.SWIRLING_KNIVES_SPINJITZU_COURSE_ELEMENT.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.SWIRLING_KNIVES_SPINJITZU_COURSE_ELEMENT.toStack(), MinejagoItems.BOUNCING_POLE_SPINJITZU_COURSE_ELEMENT.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.BOUNCING_POLE_SPINJITZU_COURSE_ELEMENT.toStack(), MinejagoItems.SPINNING_AXES_SPINJITZU_COURSE_ELEMENT.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.SPINNING_AXES_SPINJITZU_COURSE_ELEMENT.toStack(), MinejagoItems.ROCKING_POLE_SPINJITZU_COURSE_ELEMENT.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.ROCKING_POLE_SPINJITZU_COURSE_ELEMENT.toStack(), MinejagoItems.SPINNING_MACES_SPINJITZU_COURSE_ELEMENT.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        } else if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
+            event.insertAfter(Items.NETHERITE_HOE.getDefaultInstance(), MinejagoItems.SCYTHE_OF_QUAKES.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(Items.WRITABLE_BOOK.getDefaultInstance(), MinejagoItems.WRITABLE_SCROLL.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+
+            // Wood Sets
+            event.insertAfter(Items.CHERRY_CHEST_BOAT.getDefaultInstance(), MinejagoBlocks.ENCHANTED_WOOD_SET.boat().toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoBlocks.ENCHANTED_WOOD_SET.boat().toStack(), MinejagoBlocks.ENCHANTED_WOOD_SET.chestBoat().toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        } else if (event.getTabKey() == CreativeModeTabs.COMBAT) {
+            // Unique Weapons
+            event.insertAfter(Items.MACE.getDefaultInstance(), MinejagoItems.BAMBOO_STAFF.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.BAMBOO_STAFF.toStack(), MinejagoItems.BONE_KNIFE.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.BONE_KNIFE.toStack(), MinejagoItems.SCYTHE_OF_QUAKES.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+
+            // Armor Sets
+            event.insertAfter(Items.NETHERITE_BOOTS.getDefaultInstance(), MinejagoArmors.BLACK_GI_SET.HEAD.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoArmors.BLACK_GI_SET.HEAD.toStack(), MinejagoArmors.BLACK_GI_SET.CHEST.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoArmors.BLACK_GI_SET.CHEST.toStack(), MinejagoArmors.BLACK_GI_SET.LEGS.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoArmors.BLACK_GI_SET.LEGS.toStack(), MinejagoArmors.BLACK_GI_SET.FEET.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+
+            // Unique Armor
+            event.insertAfter(Items.TURTLE_HELMET.getDefaultInstance(), MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAllAsStacks().getFirst(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAllAsStacks().getFirst(), MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAllAsStacks().get(1), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAllAsStacks().get(1), MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAllAsStacks().get(2), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAllAsStacks().get(2), MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAllAsStacks().get(3), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAllAsStacks().get(3), MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAllAsStacks().getLast(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAllAsStacks().getLast(), MinejagoArmors.SAMUKAIS_CHESTPLATE.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        } else if (event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS) {
+            parameters.holders()
+                    .lookup(Registries.POTION)
+                    .ifPresent(
+                            potion -> {
+                                CreativeModeTabs.generatePotionEffectTypes(
+                                        event,
+                                        potion,
+                                        MinejagoItems.FILLED_TEACUP.get(),
+                                        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS,
+                                        parameters.enabledFeatures());
+                            });
+        } else if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
+            event.insertAfter(Items.BOOK.getDefaultInstance(), MinejagoItems.SCROLL.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(Items.GLASS_BOTTLE.getDefaultInstance(), MinejagoItems.TEACUP.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+
+            // Tea Ingredients
+            event.insertAfter(Items.PHANTOM_MEMBRANE.getDefaultInstance(), Items.OAK_LEAVES.getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(Items.OAK_LEAVES.getDefaultInstance(), Items.SPRUCE_LEAVES.getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(Items.SPRUCE_LEAVES.getDefaultInstance(), Items.BIRCH_LEAVES.getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(Items.BIRCH_LEAVES.getDefaultInstance(), Items.JUNGLE_LEAVES.getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(Items.JUNGLE_LEAVES.getDefaultInstance(), Items.ACACIA_LEAVES.getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(Items.ACACIA_LEAVES.getDefaultInstance(), Items.DARK_OAK_LEAVES.getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            if (event.getParameters().enabledFeatures().contains(FeatureFlags.WINTER_DROP))
+                event.insertAfter(Items.DARK_OAK_LEAVES.getDefaultInstance(), Items.PALE_OAK_LEAVES.getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(event.getParameters().enabledFeatures().contains(FeatureFlags.WINTER_DROP) ? Items.PALE_OAK_LEAVES.getDefaultInstance() : Items.DARK_OAK_LEAVES.getDefaultInstance(), Items.MANGROVE_LEAVES.getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(Items.MANGROVE_LEAVES.getDefaultInstance(), Items.CHERRY_LEAVES.getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(Items.CHERRY_LEAVES.getDefaultInstance(), MinejagoBlocks.FOCUS_LEAVES_SET.leaves().toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoBlocks.FOCUS_LEAVES_SET.leaves().toStack(), Items.AZALEA_LEAVES.getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(Items.AZALEA_LEAVES.getDefaultInstance(), Items.FLOWERING_AZALEA_LEAVES.getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+
+            // Banner Patterns
+            event.insertAfter(Items.GUSTER_BANNER_PATTERN.getDefaultInstance(), MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.toStack(), MinejagoItems.NINJA_BANNER_PATTERN.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+
+            // Pottery Sherds
+            event.insertAfter(Items.SNORT_POTTERY_SHERD.getDefaultInstance(), MinejagoItems.ICE_CUBE_POTTERY_SHERD.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.ICE_CUBE_POTTERY_SHERD.toStack(), MinejagoItems.THUNDER_POTTERY_SHERD.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.THUNDER_POTTERY_SHERD.toStack(), MinejagoItems.PEAKS_POTTERY_SHERD.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.PEAKS_POTTERY_SHERD.toStack(), MinejagoItems.MASTER_POTTERY_SHERD.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.MASTER_POTTERY_SHERD.toStack(), MinejagoItems.YIN_YANG_POTTERY_SHERD.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.YIN_YANG_POTTERY_SHERD.toStack(), MinejagoItems.DRAGONS_HEAD_POTTERY_SHERD.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.DRAGONS_HEAD_POTTERY_SHERD.toStack(), MinejagoItems.DRAGONS_TAIL_POTTERY_SHERD.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+
+            // Smithing Templates
+            event.insertAfter(Items.BOLT_ARMOR_TRIM_SMITHING_TEMPLATE.getDefaultInstance(), MinejagoItems.FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE.toStack(), MinejagoItems.TERRAIN_ARMOR_TRIM_SMITHING_TEMPLATE.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.TERRAIN_ARMOR_TRIM_SMITHING_TEMPLATE.toStack(), MinejagoItems.LOTUS_ARMOR_TRIM_SMITHING_TEMPLATE.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        } else if (event.getTabKey() == CreativeModeTabs.SPAWN_EGGS) {
+            // Must be in alphabetical order
+            event.insertAfter(Items.COD_SPAWN_EGG.getDefaultInstance(), MinejagoItems.COLE_SPAWN_EGG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(Items.DROWNED_SPAWN_EGG.getDefaultInstance(), MinejagoItems.EARTH_DRAGON_SPAWN_EGG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(Items.IRON_GOLEM_SPAWN_EGG.getDefaultInstance(), MinejagoItems.JAY_SPAWN_EGG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.JAY_SPAWN_EGG.toStack(), MinejagoItems.KAI_SPAWN_EGG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.KAI_SPAWN_EGG.toStack(), MinejagoItems.KRUNCHA_SPAWN_EGG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(Items.MULE_SPAWN_EGG.getDefaultInstance(), MinejagoItems.NUCKAL_SPAWN_EGG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.NUCKAL_SPAWN_EGG.toStack(), MinejagoItems.NYA_SPAWN_EGG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(Items.SALMON_SPAWN_EGG.getDefaultInstance(), MinejagoItems.SAMUKAI_SPAWN_EGG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(Items.SKELETON_HORSE_SPAWN_EGG.getDefaultInstance(), MinejagoItems.SKULL_MOTORBIKE_SPAWN_EGG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.SKULL_MOTORBIKE_SPAWN_EGG.toStack(), MinejagoItems.SKULL_TRUCK_SPAWN_EGG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.SKULL_TRUCK_SPAWN_EGG.toStack(), MinejagoItems.SKULKIN_SPAWN_EGG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.SKULKIN_SPAWN_EGG.toStack(), MinejagoItems.SKULKIN_HORSE_SPAWN_EGG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(Items.WOLF_SPAWN_EGG.getDefaultInstance(), MinejagoItems.WU_SPAWN_EGG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.WU_SPAWN_EGG.toStack(), MinejagoItems.ZANE_SPAWN_EGG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        } else if (event.getTabKey() == CreativeModeTabs.OP_BLOCKS) {
+            event.insertAfter(Items.STRUCTURE_VOID.getDefaultInstance(), MinejagoBlocks.EARTH_DRAGON_HEAD.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        }
     }
 }

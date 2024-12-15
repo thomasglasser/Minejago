@@ -255,14 +255,14 @@ public class MinejagoEntityEvents {
                     persistentData.putInt(ClientboundStartSpinjitzuPayload.KEY_SPINJITZUSTARTTICKS, startTicks - 1);
                 if (waitTicks > 0) {
                     persistentData.putInt("WaitTicks", --waitTicks);
-                } else if (MinejagoKeyMappings.ACTIVATE_SPINJITZU.isDown() && !focusData.isMeditating()) {
+                } else if (MinejagoKeyMappings.ACTIVATE_SPINJITZU.get().isDown() && !focusData.isMeditating()) {
                     if (spinjitzu.active()) {
                         TommyLibServices.NETWORK.sendToServer(ServerboundStopSpinjitzuPayload.INSTANCE);
                     } else if (!NO_SPINJITZU.test(player)) {
                         TommyLibServices.NETWORK.sendToServer(ServerboundStartSpinjitzuPayload.INSTANCE);
                     }
                     persistentData.putInt("WaitTicks", 10);
-                } else if (MinejagoKeyMappings.MEDITATE.isDown() && !spinjitzu.active()) {
+                } else if (MinejagoKeyMappings.MEDITATE.get().isDown() && !spinjitzu.active()) {
                     if (focusData.isMeditating()) {
                         focusData.stopMeditating();
                         TommyLibServices.NETWORK.sendToServer(new ServerboundStopMeditationPayload(false));
@@ -271,7 +271,7 @@ public class MinejagoEntityEvents {
                         TommyLibServices.NETWORK.sendToServer(ServerboundStartMeditationPayload.INSTANCE);
                     }
                     persistentData.putInt("WaitTicks", 10);
-                } else if (MinejagoKeyMappings.OPEN_SKILL_SCREEN.consumeClick()) {
+                } else if (MinejagoKeyMappings.OPEN_SKILL_SCREEN.get().consumeClick()) {
                     MinejagoClientUtils.openSkillScreen();
                 } else if (player.isShiftKeyDown()) {
                     if (spinjitzu.active()) {

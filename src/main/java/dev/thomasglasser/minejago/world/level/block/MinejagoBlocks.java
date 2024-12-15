@@ -18,10 +18,7 @@ import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -42,34 +39,32 @@ public class MinejagoBlocks {
     public static final LeavesSet FOCUS_LEAVES_SET = registerLeavesSet("focus", new TreeGrower("focus", 0.1F, Optional.empty(), Optional.empty(), Optional.of(MinejagoTreeFeatures.FOCUS), Optional.of(MinejagoTreeFeatures.FANCY_FOCUS), Optional.of(MinejagoTreeFeatures.FOCUS_BEES_005), Optional.of(MinejagoTreeFeatures.FANCY_FOCUS_BEES_005)));
 
     // Pots
-    public static final DeferredBlock<TeapotBlock> TEAPOT = registerBlockAndItemAndWrap("teapot", TeapotBlock::new, () -> BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).instabreak().noOcclusion(), List.of(CreativeModeTabs.FUNCTIONAL_BLOCKS));
+    public static final DeferredBlock<TeapotBlock> TEAPOT = registerBlockAndItemAndWrap("teapot", TeapotBlock::new, () -> BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).instabreak().noOcclusion());
     public static final SortedMap<DyeColor, DeferredBlock<TeapotBlock>> TEAPOTS = teapots();
-    public static final DeferredBlock<TeapotBlock> JASPOT = registerBlockAndItemAndWrap("jaspot", TeapotBlock::new, () -> BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).instabreak().noOcclusion(), properties -> properties.rarity(Rarity.UNCOMMON), List.of(CreativeModeTabs.FUNCTIONAL_BLOCKS));
+    public static final DeferredBlock<TeapotBlock> JASPOT = registerBlockAndItemAndWrap("jaspot", TeapotBlock::new, () -> BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).instabreak().noOcclusion(), properties -> properties.rarity(Rarity.UNCOMMON));
 
-    public static final DeferredBlock<DiscBlock> GOLD_DISC = registerBlockAndItemAndWrap("gold_disc", DiscBlock::new, () -> BlockBehaviour.Properties.of().instabreak().pushReaction(PushReaction.DESTROY), List.of(CreativeModeTabs.BUILDING_BLOCKS));
-    public static final DeferredBlock<TopPostBlock> TOP_POST = registerBlockAndItemAndWrap("top_post", TopPostBlock::new, () -> BlockBehaviour.Properties.of().instabreak().noCollission().pushReaction(PushReaction.DESTROY), List.of(CreativeModeTabs.BUILDING_BLOCKS));
-    public static final DeferredBlock<Block> SCROLL_SHELF = registerBlockAndItemAndWrap("scroll_shelf", Block::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.BOOKSHELF), List.of(CreativeModeTabs.FUNCTIONAL_BLOCKS));
-    public static final DeferredBlock<ChiseledScrollShelfBlock> CHISELED_SCROLL_SHELF = registerBlockAndItemAndWrap("chiseled_scroll_shelf", ChiseledScrollShelfBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.CHISELED_BOOKSHELF), List.of(CreativeModeTabs.FUNCTIONAL_BLOCKS, CreativeModeTabs.REDSTONE_BLOCKS));
-    public static final DeferredBlock<BrushableBlock> SUSPICIOUS_RED_SAND = registerBlockAndItemAndWrap("suspicious_red_sand", properties -> new BrushableBlock(Blocks.RED_SAND, SoundEvents.BRUSH_SAND, SoundEvents.BRUSH_SAND_COMPLETED, properties), () -> BlockBehaviour.Properties.ofFullCopy(Blocks.SUSPICIOUS_SAND).mapColor(MapColor.COLOR_ORANGE), List.of(CreativeModeTabs.FUNCTIONAL_BLOCKS));
-    public static final DeferredBlock<?> DRAGON_BUTTON = registerBlockAndItemAndWrap("dragon_button", DragonButtonBlock::new, BlockBehaviour.Properties::of, List.of(CreativeModeTabs.REDSTONE_BLOCKS));
+    public static final DeferredBlock<DiscBlock> GOLD_DISC = registerBlockAndItemAndWrap("gold_disc", DiscBlock::new, () -> BlockBehaviour.Properties.of().instabreak().pushReaction(PushReaction.DESTROY));
+    public static final DeferredBlock<TopPostBlock> TOP_POST = registerBlockAndItemAndWrap("top_post", TopPostBlock::new, () -> BlockBehaviour.Properties.of().instabreak().noCollission().pushReaction(PushReaction.DESTROY));
+    public static final DeferredBlock<Block> SCROLL_SHELF = registerBlockAndItemAndWrap("scroll_shelf", Block::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.BOOKSHELF));
+    public static final DeferredBlock<ChiseledScrollShelfBlock> CHISELED_SCROLL_SHELF = registerBlockAndItemAndWrap("chiseled_scroll_shelf", ChiseledScrollShelfBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.CHISELED_BOOKSHELF));
+    public static final DeferredBlock<BrushableBlock> SUSPICIOUS_RED_SAND = registerBlockAndItemAndWrap("suspicious_red_sand", properties -> new BrushableBlock(Blocks.RED_SAND, SoundEvents.BRUSH_SAND, SoundEvents.BRUSH_SAND_COMPLETED, properties), () -> BlockBehaviour.Properties.ofFullCopy(Blocks.SUSPICIOUS_SAND).mapColor(MapColor.COLOR_ORANGE));
+    public static final DeferredBlock<?> DRAGON_BUTTON = registerBlockAndItemAndWrap("dragon_button", DragonButtonBlock::new, BlockBehaviour.Properties::of);
 
-    public static final DeferredBlock<DragonHeadBlock> EARTH_DRAGON_HEAD = registerBlockAndItemAndWrap("earth_dragon_head", properties -> new DragonHeadBlock(MinejagoEntityTypes.EARTH_DRAGON::get, properties), () -> BlockBehaviour.Properties.ofFullCopy(Blocks.BARRIER).mapColor(MapColor.NONE).noLootTable().lightLevel(state -> state.getValue(DragonHeadBlock.ACTIVATED) ? 0 : 10), List.of(CreativeModeTabs.FUNCTIONAL_BLOCKS));
+    public static final DeferredBlock<DragonHeadBlock> EARTH_DRAGON_HEAD = registerBlockAndItemAndWrap("earth_dragon_head", properties -> new DragonHeadBlock(MinejagoEntityTypes.EARTH_DRAGON::get, properties), () -> BlockBehaviour.Properties.ofFullCopy(Blocks.BARRIER).mapColor(MapColor.NONE).noLootTable().lightLevel(state -> state.getValue(DragonHeadBlock.ACTIVATED) ? 0 : 10));
 
     private static <T extends Block> DeferredBlock<T> registerBlockAndItemAndWrap(
             String name,
             Function<BlockBehaviour.Properties, T> blockFactory,
-            Supplier<BlockBehaviour.Properties> properties,
-            List<ResourceKey<CreativeModeTab>> tabs) {
-        return BlockUtils.registerBlockAndItemAndWrap(BLOCKS, name, blockFactory, properties, MinejagoItems::registerBlock, tabs);
+            Supplier<BlockBehaviour.Properties> properties) {
+        return BlockUtils.registerBlockAndItemAndWrap(BLOCKS, name, blockFactory, properties, MinejagoItems::registerBlock);
     }
 
     private static <T extends Block> DeferredBlock<T> registerBlockAndItemAndWrap(
             String name,
             Function<BlockBehaviour.Properties, T> blockFactory,
             Supplier<BlockBehaviour.Properties> properties,
-            UnaryOperator<Item.Properties> itemProperties,
-            List<ResourceKey<CreativeModeTab>> tabs) {
-        return BlockUtils.registerBlockAndItemAndWrap(BLOCKS, name, blockFactory, properties, MinejagoItems::registerBlock, itemProperties, tabs);
+            UnaryOperator<Item.Properties> itemProperties) {
+        return BlockUtils.registerBlockAndItemAndWrap(BLOCKS, name, blockFactory, properties, MinejagoItems::registerBlock, itemProperties);
     }
 
     private static <T extends Block> DeferredBlock<T> register(String name, Function<BlockBehaviour.Properties, T> blockFactory, Supplier<BlockBehaviour.Properties> properties) {
@@ -87,7 +82,7 @@ public class MinejagoBlocks {
     private static SortedMap<DyeColor, DeferredBlock<TeapotBlock>> teapots() {
         SortedMap<DyeColor, DeferredBlock<TeapotBlock>> map = new TreeMap<>();
         for (DyeColor color : DyeColor.values()) {
-            map.put(color, registerBlockAndItemAndWrap(color.getName() + "_teapot", TeapotBlock::new, () -> BlockBehaviour.Properties.of().mapColor(color).instabreak().noOcclusion(), List.of(CreativeModeTabs.FUNCTIONAL_BLOCKS)));
+            map.put(color, registerBlockAndItemAndWrap(color.getName() + "_teapot", TeapotBlock::new, () -> BlockBehaviour.Properties.of().mapColor(color).instabreak().noOcclusion()));
         }
         return map;
     }
