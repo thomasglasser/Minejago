@@ -20,7 +20,6 @@ import net.minecraft.util.context.ContextKey;
 import net.minecraft.world.entity.LivingEntity;
 
 public record PowerData(ResourceKey<Power> power, boolean given) {
-
     public static final Codec<PowerData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ResourceKey.codec(MinejagoRegistries.POWER).fieldOf("power").forGetter(PowerData::power),
             Codec.BOOL.fieldOf("given").forGetter(PowerData::given))
@@ -31,6 +30,7 @@ public record PowerData(ResourceKey<Power> power, boolean given) {
             PowerData::new);
 
     public static final ContextKey<Integer> COLOR = Minejago.contextKey("color");
+
     public PowerData() {
         this(MinejagoPowers.NONE, false);
     }

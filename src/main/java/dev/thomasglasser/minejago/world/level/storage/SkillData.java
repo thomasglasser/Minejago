@@ -7,7 +7,6 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 
 public record SkillData(int level, float practice) {
-
     public static final Codec<SkillData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.INT.fieldOf("level").forGetter(SkillData::level),
             Codec.FLOAT.fieldOf("practice").forGetter(SkillData::practice)).apply(instance, SkillData::new));
@@ -15,6 +14,7 @@ public record SkillData(int level, float practice) {
             ByteBufCodecs.INT, SkillData::level,
             ByteBufCodecs.FLOAT, SkillData::practice,
             SkillData::new);
+
     public SkillData() {
         this(0, 0);
     }

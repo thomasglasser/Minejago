@@ -17,7 +17,6 @@ import net.minecraft.util.context.ContextKey;
 import net.minecraft.world.entity.LivingEntity;
 
 public record SpinjitzuData(boolean unlocked, boolean active) {
-
     public static final Codec<SpinjitzuData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.BOOL.fieldOf("unlocked").forGetter(SpinjitzuData::unlocked),
             Codec.BOOL.fieldOf("active").forGetter(SpinjitzuData::active))
@@ -31,6 +30,7 @@ public record SpinjitzuData(boolean unlocked, boolean active) {
     public static final ContextKey<Integer> START_TICKS = Minejago.contextKey("start_ticks");
     public static final ResourceLocation SPEED_MODIFIER = Minejago.modLoc("spinjitzu_speed");
     public static final ResourceLocation KNOCKBACK_MODIFIER = Minejago.modLoc("spinjitzu_knockback");
+
     public SpinjitzuData() {
         this(false, false);
     }
