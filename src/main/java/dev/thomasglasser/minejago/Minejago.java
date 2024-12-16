@@ -25,14 +25,10 @@ import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.focus.modifier.resourcekey.ResourceKeyFocusModifiers;
 import dev.thomasglasser.minejago.world.item.MinejagoCreativeModeTabs;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
-import dev.thomasglasser.minejago.world.item.MinejagoToolMaterials;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
-import dev.thomasglasser.minejago.world.item.crafting.MinejagoRecipeBookCategories;
 import dev.thomasglasser.minejago.world.item.crafting.MinejagoRecipeSerializers;
 import dev.thomasglasser.minejago.world.item.crafting.MinejagoRecipeTypes;
-import dev.thomasglasser.minejago.world.item.crafting.display.MinejagoRecipeDisplays;
-import dev.thomasglasser.minejago.world.item.crafting.display.MinejagoSlotDisplays;
 import dev.thomasglasser.minejago.world.item.equipment.MinejagoArmorMaterials;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
@@ -40,7 +36,6 @@ import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
 import dev.thomasglasser.minejago.world.level.saveddata.maps.MinejagoMapDecorationTypes;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.context.ContextKey;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -90,10 +85,6 @@ public class Minejago {
         return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
     }
 
-    public static <T> ContextKey<T> contextKey(String path) {
-        return new ContextKey<>(modLoc(path));
-    }
-
     private static void initRegistries() {
         MinejagoRegistries.init();
 
@@ -102,7 +93,6 @@ public class Minejago {
         MinejagoRecipeTypes.init();
         MinejagoRecipeSerializers.init();
         MinejagoArmors.init();
-        MinejagoToolMaterials.init();
         MinejagoPowers.init();
         MinejagoEntityTypes.init();
         MinejagoParticleTypes.init();
@@ -121,9 +111,6 @@ public class Minejago {
         MinejagoEntitySerializers.init();
         MinejagoMapDecorationTypes.init();
         MinejagoPoiTypes.init();
-        MinejagoSlotDisplays.init();
-        MinejagoRecipeDisplays.init();
-        MinejagoRecipeBookCategories.init();
         MinejagoArgumentTypes.init();
 
         if (FMLEnvironment.dist.isClient())
@@ -159,7 +146,6 @@ public class Minejago {
         bus.addListener(MinejagoClientEvents::onAddLayers);
         bus.addListener(MinejagoClientEvents::onRegisterGuiOverlays);
         bus.addListener(MinejagoClientEvents::onRegisterClientReloadListener);
-        bus.addListener(MinejagoClientEvents::onRegisterRenderStateModifiers);
         bus.addListener(MinejagoClientEvents::onBuildCreativeModeTabContents);
     }
 

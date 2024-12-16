@@ -19,6 +19,6 @@ public class HolidayCharacterRenderer<T extends Character> extends CharacterRend
     public ResourceLocation getTextureLocation(T animatable) {
         if (holidayTexture == null) holidayTexture = Minejago.modLoc("textures/entity/character/holiday_" + BuiltInRegistries.ENTITY_TYPE.getKey(animatable.getType()).getPath() + ".png");
         Calendar calendar = Calendar.getInstance();
-        return (calendar.get(Calendar.MONTH) + 1 == 12 && calendar.get(Calendar.DATE) >= 24 && calendar.get(Calendar.DATE) <= 26) ? holidayTexture : model.getTextureResource(animatable, this);
+        return (calendar.get(Calendar.MONTH) + 1 == 12 && calendar.get(Calendar.DATE) >= 24 && calendar.get(Calendar.DATE) <= 26) ? holidayTexture : model.getTextureResource(animatable);
     }
 }

@@ -86,7 +86,7 @@ import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.HurtBySensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyPlayersSensor;
-import net.tslat.smartbrainlib.util.BrainUtil;
+import net.tslat.smartbrainlib.util.BrainUtils;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -189,9 +189,9 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
     }
 
     @Override
-    protected void customServerAiStep(ServerLevel p_376777_) {
-        super.customServerAiStep(p_376777_);
-        tickBrain(this);
+    protected void customServerAiStep() {
+        super.customServerAiStep();
+        this.tickBrain(this);
     }
 
     @Override
@@ -212,8 +212,8 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
                         if (target.isAlliedTo(owner)) return false;
                         if (target instanceof TamableAnimal tamableAnimal && tamableAnimal.getOwner() == dragon.getOwner()) return false;
                         if (target.getLastHurtByMob() != null && target.getLastHurtByMob().is(dragon.getOwner())) return true;
-                        if (BrainUtil.hasMemory(target.getBrain(), MemoryModuleType.ATTACK_TARGET)) {
-                            return BrainUtil.getTargetOfEntity(target) == dragon.getOwner();
+                        if (BrainUtils.hasMemory(target.getBrain(), MemoryModuleType.ATTACK_TARGET)) {
+                            return BrainUtils.getTargetOfEntity(target) == dragon.getOwner();
                         } else if (target instanceof Mob mob) {
                             return mob.getTarget() == dragon.getOwner();
                         }
@@ -446,10 +446,10 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
     }
 
     @Override
-    public boolean hurtServer(ServerLevel p_376221_, DamageSource p_376460_, float p_376610_) {
-        if (p_376460_.getEntity() instanceof Player player)
-            decreaseBond(player, p_376610_ * 2);
-        return super.hurtServer(p_376221_, p_376460_, p_376610_);
+    public boolean hurt(DamageSource source, float amount) {
+        if (source.getEntity() instanceof Player player)
+            decreaseBond(player, amount * 2);
+        return super.hurt(source, amount);
     }
 
     public double getPerceivedTargetDistanceSquareForMeleeAttack(LivingEntity entity) {
@@ -643,13 +643,13 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
     }
 
     @Override
-    protected void dropEquipment(ServerLevel p_376330_) {
-        super.dropEquipment(p_376330_);
+    protected void dropEquipment() {
+        super.dropEquipment();
         if (this.inventory != null) {
             for (int i = 0; i < this.inventory.getContainerSize(); i++) {
                 ItemStack itemstack = this.inventory.getItem(i);
                 if (!itemstack.isEmpty() && !EnchantmentHelper.has(itemstack, EnchantmentEffectComponents.PREVENT_EQUIPMENT_DROP)) {
-                    this.spawnAtLocation(p_376330_, itemstack);
+                    this.spawnAtLocation(itemstack);
                 }
             }
         }

@@ -1,13 +1,5 @@
 {
   "asset_id": "minejago:fruit_colored_ninja",
-  "author": {
-    "color": "gray",
-    "translate": "painting.minejago.fruit_colored_ninja.author"
-  },
   "height": 3,
-  "title": {
-    "color": "yellow",
-    "translate": "painting.minejago.fruit_colored_ninja.title"
-  },
   "width": 4
 }

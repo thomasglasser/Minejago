@@ -9,9 +9,9 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
@@ -59,7 +59,7 @@ public class MinejagoGuis {
                     if ((Math.abs(xOff) < 80 && Math.abs(yOff) < 10) && (player.isEyeInFluid(FluidTags.WATER) || Math.min(player.getAirSupply(), player.getMaxAirSupply()) < player.getMaxAirSupply()))
                         y -= 10;
 
-                    guiGraphics.blit(RenderType::guiTextured, EMPTY_FOCUS_LOCATION, x, y, 0, 0, 9, 9, 9, 9, 9, 9);
+                    guiGraphics.blit(EMPTY_FOCUS_LOCATION, x, y, 0, 0, 9, 9, 9, 9);
                     if (i * 2 + 1 < focusLevel)
                         renderEyes(guiGraphics, x, y, OUTER_FULL_FOCUS_LOCATION, INNER_FULL_FOCUS_LOCATION, color);
                     if (i * 2 + 21 < focusLevel)
@@ -76,7 +76,7 @@ public class MinejagoGuis {
     }
 
     private static void renderEyes(GuiGraphics guiGraphics, int x, int y, ResourceLocation outer, @Nullable ResourceLocation inner, int color) {
-        if (inner != null) guiGraphics.innerBlit(RenderType::guiTextured, inner, x, x + 9, y, y + 9, 0, 1, 0, 1, 0xFF000000 | color);
-        guiGraphics.blit(RenderType::guiTextured, outer, x, y, 0, 0, 9, 9, 9, 9);
+        if (inner != null) guiGraphics.innerBlit(inner, x, x + 9, y, y + 9, 0, 0, 1, 0, 1, FastColor.ARGB32.red(color) / 255f, FastColor.ARGB32.green(color) / 255f, FastColor.ARGB32.blue(color) / 255f, 1);
+        guiGraphics.blit(outer, x, y, 0, 0, 9, 9, 9, 9);
     }
 }

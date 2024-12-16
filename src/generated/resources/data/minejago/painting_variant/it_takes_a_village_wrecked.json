@@ -1,13 +1,5 @@
 {
   "asset_id": "minejago:it_takes_a_village_wrecked",
-  "author": {
-    "color": "gray",
-    "translate": "painting.minejago.it_takes_a_village_wrecked.author"
-  },
   "height": 4,
-  "title": {
-    "color": "yellow",
-    "translate": "painting.minejago.it_takes_a_village_wrecked.title"
-  },
   "width": 8
 }

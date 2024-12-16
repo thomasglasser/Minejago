@@ -15,7 +15,9 @@
       "condition": {
         "type": "modonomicon:none"
       },
-      "item": "minecraft:enchanted_book",
+      "item": {
+        "item": "minecraft:enchanted_book"
+      },
       "text": "book.minejago.wiki.dependencies.modonomicon.wiki.text",
       "title": "book.minejago.wiki.dependencies.modonomicon.wiki.title"
     }

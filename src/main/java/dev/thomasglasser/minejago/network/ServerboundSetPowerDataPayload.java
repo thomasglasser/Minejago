@@ -20,7 +20,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.player.Player;
-import net.tslat.smartbrainlib.util.BrainUtil;
+import net.tslat.smartbrainlib.util.BrainUtils;
 import org.jetbrains.annotations.Nullable;
 
 public record ServerboundSetPowerDataPayload(ResourceKey<Power> power, boolean markGiven, Optional<Integer> wuId) implements ExtendedPacketPayload {
@@ -48,8 +48,8 @@ public record ServerboundSetPowerDataPayload(ResourceKey<Power> power, boolean m
                 new PowerData(power, true).save(serverPlayer, true);
                 serverPlayer.displayClientMessage(Component.translatable(Wu.NO_POWER_GIVEN_KEY), true);
             } else if (wu != null) {
-                BrainUtil.setMemory(wu, MemoryModuleType.INTERACTION_TARGET, serverPlayer);
-                BrainUtil.setMemory(wu, MinejagoMemoryModuleTypes.SELECTED_POWER.get(), power);
+                BrainUtils.setMemory(wu, MemoryModuleType.INTERACTION_TARGET, serverPlayer);
+                BrainUtils.setMemory(wu, MinejagoMemoryModuleTypes.SELECTED_POWER.get(), power);
             } else {
                 new PowerData(power, true).save(serverPlayer, true);
             }

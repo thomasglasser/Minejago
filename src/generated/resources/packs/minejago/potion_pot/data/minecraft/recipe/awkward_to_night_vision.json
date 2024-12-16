@@ -4,6 +4,8 @@
   "brewing_time": 800,
   "experience": 0.35,
   "group": "potion",
-  "ingredient": "minecraft:golden_carrot",
+  "ingredient": {
+    "item": "minecraft:golden_carrot"
+  },
   "result": "minecraft:night_vision"
 }

@@ -4,7 +4,6 @@ import dev.thomasglasser.minejago.world.entity.spinjitzucourse.AbstractSpinjitzu
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
@@ -22,7 +21,7 @@ public class SpinjitzuCourseElementItem extends Item {
         if (context.getLevel().isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
-            AbstractSpinjitzuCourseElement<?> entity = entityType.get().create(context.getLevel(), EntitySpawnReason.SPAWN_ITEM_USE);
+            AbstractSpinjitzuCourseElement<?> entity = entityType.get().create(context.getLevel());
             if (entity != null) {
                 BlockPos pos = context.getClickedPos();
                 if (context.getLevel().getBlockState(pos).canBeReplaced()) {

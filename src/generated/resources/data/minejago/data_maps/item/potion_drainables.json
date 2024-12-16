@@ -1,13 +1,5 @@
 {
   "values": {
-    "minecraft:milk_bucket": {
-      "cups": 6,
-      "potion": "minejago:milk",
-      "remainder": {
-        "count": 1,
-        "id": "minecraft:bucket"
-      }
-    },
     "minecraft:potion": {
       "cups": 2,
       "remainder": {

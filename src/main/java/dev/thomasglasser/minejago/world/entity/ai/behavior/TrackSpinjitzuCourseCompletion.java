@@ -26,7 +26,7 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.tslat.smartbrainlib.api.core.behaviour.ExtendedBehaviour;
-import net.tslat.smartbrainlib.util.BrainUtil;
+import net.tslat.smartbrainlib.util.BrainUtils;
 
 public class TrackSpinjitzuCourseCompletion<T extends Wu> extends ExtendedBehaviour<T> {
     public static final int SIT_DOWN_DURATION = 15;
@@ -49,10 +49,10 @@ public class TrackSpinjitzuCourseCompletion<T extends Wu> extends ExtendedBehavi
     protected boolean checkExtraStartConditions(ServerLevel level, T entity) {
         if (level.getPoiManager().findClosest(poi -> poi.is(MinejagoPoiTypes.TEAPOTS), entity.blockPosition(), 2, PoiManager.Occupancy.ANY).isPresent()) {
             return super.checkExtraStartConditions(level, entity) && !entity.getCourseData().isEmpty();
-        } else if (BrainUtil.getMemory(entity, MemoryModuleType.WALK_TARGET) == null && !entity.getCourseData().isEmpty()) {
+        } else if (BrainUtils.getMemory(entity, MemoryModuleType.WALK_TARGET) == null && !entity.getCourseData().isEmpty()) {
             Optional<BlockPos> potPos = level.getPoiManager().findClosest(poi -> poi.is(MinejagoPoiTypes.TEAPOTS), entity.blockPosition(), MinejagoServerConfig.get().courseRadius.get(), PoiManager.Occupancy.ANY);
             if (potPos.isPresent())
-                BrainUtil.setMemory(entity, MemoryModuleType.WALK_TARGET, new WalkTarget(potPos.get(), 1f, 0));
+                BrainUtils.setMemory(entity, MemoryModuleType.WALK_TARGET, new WalkTarget(potPos.get(), 1f, 0));
             else
                 entity.getCourseData().clear();
         }

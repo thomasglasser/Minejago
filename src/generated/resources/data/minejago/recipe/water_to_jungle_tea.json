@@ -8,6 +8,8 @@
   },
   "experience": 0.5,
   "group": "jungle_tea",
-  "ingredient": "minecraft:jungle_leaves",
+  "ingredient": {
+    "item": "minecraft:jungle_leaves"
+  },
   "result": "minejago:jungle_tea"
 }

@@ -4,6 +4,8 @@
   "brewing_time": 800,
   "experience": 0.35,
   "group": "potion",
-  "ingredient": "minecraft:phantom_membrane",
+  "ingredient": {
+    "item": "minecraft:phantom_membrane"
+  },
   "result": "minecraft:slow_falling"
 }

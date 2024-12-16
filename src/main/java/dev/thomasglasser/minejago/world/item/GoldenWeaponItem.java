@@ -5,7 +5,6 @@ import static dev.thomasglasser.minejago.world.item.MinejagoItems.MOD_NEEDED;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.MinejagoClientUtils;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
-import dev.thomasglasser.minejago.tags.MinejagoDamageTypeTags;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
@@ -29,11 +28,10 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.DamageResistant;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.component.Unbreakable;
 import net.minecraft.world.item.context.UseOnContext;
@@ -42,16 +40,16 @@ import net.minecraft.world.level.Level;
 public abstract class GoldenWeaponItem extends Item implements ModeledItem {
     public GoldenWeaponItem(Properties pProperties) {
         super(pProperties.rarity(Rarity.RARE).stacksTo(1)
-                .component(DataComponents.TOOLTIP_STYLE, Minejago.modLoc("golden_weapon"))
+//                .component(DataComponents.TOOLTIP_STYLE, Minejago.modLoc("golden_weapon"))
                 .component(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true)
                 .component(DataComponents.UNBREAKABLE, new Unbreakable(true))
-                .component(DataComponents.DAMAGE_RESISTANT, new DamageResistant(MinejagoDamageTypeTags.RESISTED_BY_GOLDEN_WEAPONS))
+//                .component(DataComponents.DAMAGE_RESISTANT, new DamageResistant(MinejagoDamageTypeTags.RESISTED_BY_GOLDEN_WEAPONS))
                 .component(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder().add(Attributes.ATTACK_DAMAGE, new AttributeModifier(SwordItem.BASE_ATTACK_DAMAGE_ID, 30, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND).build()));
     }
 
     @Override
-    public ItemUseAnimation getUseAnimation(ItemStack pStack) {
-        return ItemUseAnimation.NONE;
+    public UseAnim getUseAnimation(ItemStack pStack) {
+        return UseAnim.NONE;
     }
 
     public abstract boolean canPowerHandle(ResourceKey<Power> power, Level level);
@@ -86,7 +84,7 @@ public abstract class GoldenWeaponItem extends Item implements ModeledItem {
     protected abstract InteractionResult doUseOn(UseOnContext context);
 
     @Override
-    public final boolean releaseUsing(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity, int pTimeCharged) {
+    public final void releaseUsing(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity, int pTimeCharged) {
         if (pLivingEntity instanceof Player && MinejagoServerConfig.get().requireCompatiblePower.get()) {
             if (!canPowerHandle(pLivingEntity.getData(MinejagoAttachmentTypes.POWER).power(), pLevel)) {
                 if (MinejagoServerConfig.get().enableMalfunction.get()) {
@@ -95,7 +93,6 @@ public abstract class GoldenWeaponItem extends Item implements ModeledItem {
                 if (this.getFailSound() != null) {
                     pLevel.playSound(null, pLivingEntity.blockPosition(), getFailSound(), SoundSource.PLAYERS);
                 }
-                return false;
             }
         }
         Player player = pLivingEntity instanceof Player p ? p : null;
@@ -104,7 +101,6 @@ public abstract class GoldenWeaponItem extends Item implements ModeledItem {
             focusData.addExhaustion(FocusConstants.EXHAUSTION_GOLDEN_WEAPON);
         }
         doReleaseUsing(pStack, pLevel, pLivingEntity, pTimeCharged);
-        return true;
     }
 
     protected abstract void doReleaseUsing(ItemStack stack, Level level, LivingEntity livingEntity, int timeCharged);

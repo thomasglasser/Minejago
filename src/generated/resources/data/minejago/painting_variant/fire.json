@@ -1,13 +1,5 @@
 {
   "asset_id": "minejago:fire",
-  "author": {
-    "color": "gray",
-    "translate": "painting.minejago.fire.author"
-  },
   "height": 1,
-  "title": {
-    "color": "yellow",
-    "translate": "painting.minejago.fire.title"
-  },
   "width": 1
 }

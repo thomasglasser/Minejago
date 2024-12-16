@@ -3,7 +3,6 @@ package dev.thomasglasser.minejago.world.level.block;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -12,8 +11,8 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -128,11 +127,13 @@ public class DiscBlock extends HorizontalDirectionalBlock {
     }
 
     @Override
-    protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess scheduledTickAccess, BlockPos currentPos, Direction direction, BlockPos offsetPos, BlockState offsetState, RandomSource random) {
-        Row row = state.getValue(ROW);
-        Column column = state.getValue(COLUMN);
-        // TODO: Check if the block is still valid
-        return super.updateShape(state, level, scheduledTickAccess, currentPos, direction, offsetPos, offsetState, random);
+    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos currentPos, BlockPos neighborPos) {
+        if (direction.getOpposite() == state.getValue(FACING) && !state.canSurvive(level, currentPos)) {
+            state.getBlock().destroy(level, currentPos, state);
+            return Blocks.AIR.defaultBlockState();
+        }
+
+        return super.updateShape(state, direction, neighborState, level, currentPos, neighborPos);
     }
 
     @Override

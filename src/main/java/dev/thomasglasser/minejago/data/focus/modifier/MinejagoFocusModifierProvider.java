@@ -19,6 +19,7 @@ import static net.minecraft.world.level.block.Blocks.WHITE_CANDLE;
 import static net.minecraft.world.level.block.Blocks.YELLOW_CANDLE;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.world.entity.vehicle.MinejagoBoatTypes;
 import dev.thomasglasser.minejago.world.focus.modifier.Operation;
 import dev.thomasglasser.minejago.world.focus.modifier.world.Weather;
 import dev.thomasglasser.minejago.world.focus.modifier.world.WorldFocusModifier;
@@ -29,8 +30,10 @@ import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biomes;
@@ -96,8 +99,10 @@ public class MinejagoFocusModifierProvider extends FocusModifierProvider {
     private void addMobEffects() {}
 
     private void addEntities() {
-        add(MinejagoBlocks.ENCHANTED_WOOD_SET.boat().get().getEntityType(), 0.25, Operation.ADDITION);
-        add(MinejagoBlocks.ENCHANTED_WOOD_SET.chestBoat().get().getEntityType(), 0.25, Operation.ADDITION);
+        CompoundTag enchanted = new CompoundTag();
+        enchanted.putString("Type", MinejagoBoatTypes.ENCHANTED.getValue().getSerializedName());
+        add(EntityType.BOAT, enchanted, 0.25, Operation.ADDITION);
+        add(EntityType.CHEST_BOAT, enchanted, 0.25, Operation.ADDITION);
     }
 
     private void addItemStacks() {

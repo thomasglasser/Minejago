@@ -3,7 +3,7 @@ package dev.thomasglasser.minejago.world.item.armortrim;
 import dev.thomasglasser.minejago.Minejago;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.equipment.trim.TrimPattern;
+import net.minecraft.world.item.armortrim.TrimPattern;
 
 public class MinejagoTrimPatterns {
     public static final ResourceKey<TrimPattern> FOUR_WEAPONS = registryKey("four_weapons");

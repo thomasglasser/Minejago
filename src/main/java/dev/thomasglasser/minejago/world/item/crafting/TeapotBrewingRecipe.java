@@ -4,11 +4,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.thomasglasser.minejago.world.item.MinejagoItemUtils;
-import dev.thomasglasser.minejago.world.item.MinejagoItems;
-import dev.thomasglasser.minejago.world.item.crafting.display.PotionSlotDisplay;
-import dev.thomasglasser.minejago.world.item.crafting.display.TeapotRecipeDisplay;
-import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
-import java.util.List;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -19,16 +14,11 @@ import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.PlacementInfo;
 import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeBookCategory;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.display.RecipeDisplay;
-import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 
 public class TeapotBrewingRecipe implements Recipe<TeapotBrewingRecipe.TeapotBrewingRecipeInput> {
     private final String group;
@@ -37,8 +27,6 @@ public class TeapotBrewingRecipe implements Recipe<TeapotBrewingRecipe.TeapotBre
     private final Holder<Potion> result;
     private final float experience;
     private final IntProvider brewingTime;
-    @Nullable
-    private PlacementInfo placementInfo;
 
     public TeapotBrewingRecipe(String group, Holder<Potion> base, Ingredient ingredient, Holder<Potion> result, float experience, IntProvider brewingTime) {
         this.group = group;
@@ -56,7 +44,12 @@ public class TeapotBrewingRecipe implements Recipe<TeapotBrewingRecipe.TeapotBre
 
     @Override
     public ItemStack assemble(TeapotBrewingRecipeInput input, HolderLookup.Provider registries) {
-        return MinejagoItemUtils.fillTeacup(result);
+        return getResultItem(registries);
+    }
+
+    @Override
+    public boolean canCraftInDimensions(int i, int i1) {
+        return false;
     }
 
     public String group() {
@@ -84,24 +77,8 @@ public class TeapotBrewingRecipe implements Recipe<TeapotBrewingRecipe.TeapotBre
     }
 
     @Override
-    public PlacementInfo placementInfo() {
-        if (this.placementInfo == null) {
-            this.placementInfo = PlacementInfo.create(this.ingredient);
-        }
-
-        return this.placementInfo;
-    }
-
-    @Override
-    public List<RecipeDisplay> display() {
-        return List.of(
-                new TeapotRecipeDisplay(
-                        new PotionSlotDisplay(this.base(), MinejagoItems.FILLED_TEACUP),
-                        this.ingredient().display(),
-                        new PotionSlotDisplay(this.result(), MinejagoItems.FILLED_TEACUP),
-                        new SlotDisplay.ItemSlotDisplay(MinejagoBlocks.TEAPOT.asItem()),
-                        this.experience,
-                        this.brewingTime));
+    public ItemStack getResultItem(HolderLookup.Provider provider) {
+        return MinejagoItemUtils.fillTeacup(result);
     }
 
     @Override
@@ -112,11 +89,6 @@ public class TeapotBrewingRecipe implements Recipe<TeapotBrewingRecipe.TeapotBre
     @Override
     public RecipeSerializer<? extends Recipe<TeapotBrewingRecipeInput>> getSerializer() {
         return MinejagoRecipeSerializers.TEAPOT_BREWING.get();
-    }
-
-    @Override
-    public RecipeBookCategory recipeBookCategory() {
-        return MinejagoRecipeBookCategories.TEAPOT_BREWING.get();
     }
 
     public static class Serializer implements RecipeSerializer<TeapotBrewingRecipe> {

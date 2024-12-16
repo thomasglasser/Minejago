@@ -4,6 +4,8 @@
   "brewing_time": 800,
   "experience": 0.35,
   "group": "potion",
-  "ingredient": "minecraft:pufferfish",
+  "ingredient": {
+    "item": "minecraft:pufferfish"
+  },
   "result": "minecraft:water_breathing"
 }

@@ -3,8 +3,12 @@
   "category": "misc",
   "group": "teapot",
   "ingredients": [
-    "minejago:cyan_teapot",
-    "#minecraft:fishes"
+    {
+      "item": "minejago:cyan_teapot"
+    },
+    {
+      "tag": "minecraft:fishes"
+    }
   ],
   "result": {
     "count": 1,

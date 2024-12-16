@@ -165,7 +165,7 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
         NonNullList<ItemStack> itemList = NonNullList.withSize(1, ItemStack.EMPTY);
         ContainerHelper.loadAllItems(compoundTag, itemList, provider);
         item = itemList.getFirst();
-        Holder<Potion> newPotion = BuiltInRegistries.POTION.get(ResourceLocation.parse(compoundTag.getString("Potion"))).orElse(null);
+        Holder<Potion> newPotion = BuiltInRegistries.POTION.getHolder(ResourceLocation.parse(compoundTag.getString("Potion"))).orElse(null);
         if (newPotion != potion) {
             potion = newPotion;
             if (this.level != null && this.level.isClientSide)

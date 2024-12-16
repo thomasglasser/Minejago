@@ -18,7 +18,6 @@ import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -67,9 +66,9 @@ public class PowerSelectionScreen extends Screen {
     protected void init() {
         clearWidgets();
         if (minecraft != null && minecraft.level != null) {
-            Registry<Power> registry = minecraft.level.registryAccess().lookupOrThrow(MinejagoRegistries.POWER);
+            Registry<Power> registry = minecraft.level.registryAccess().registryOrThrow(MinejagoRegistries.POWER);
             powers.forEach(powerLoc -> {
-                Power power1 = registry.getValue(powerLoc);
+                Power power1 = registry.get(powerLoc);
                 if (power1 != null) {
                     PowerButton button = new PowerButton(((this.width - BACKGROUND_WIDTH) / 2) + 41 + ((powers.indexOf(powerLoc) % 5) * 34), ((this.height - BACKGROUND_VERTICAL_START) / 2) + 7, power1);
                     if (powers.indexOf(powerLoc) < 5) {
@@ -101,7 +100,7 @@ public class PowerSelectionScreen extends Screen {
     public void renderBase(GuiGraphics guiGraphics) {
         int i = (this.width - BACKGROUND_WIDTH) / 2;
         int j = (this.height - BACKGROUND_VERTICAL_START) / 2;
-        guiGraphics.blit(RenderType::guiTextured, BACKGROUND, i, j, 0, 0, BACKGROUND_WIDTH, BACKGROUND_HEIGHT, 256, 256);
+        guiGraphics.blit(BACKGROUND, i, j, 0, 0, BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
     }
 
     @Override
@@ -119,7 +118,7 @@ public class PowerSelectionScreen extends Screen {
 
     public void renderPowerInfo(GuiGraphics guiGraphics) {
         if (selectedPower != null) {
-            Component title = selectedPower.getFormattedName(Minecraft.getInstance().level.registryAccess().lookupOrThrow(MinejagoRegistries.POWER));
+            Component title = selectedPower.getFormattedName(Minecraft.getInstance().level.registryAccess().registryOrThrow(MinejagoRegistries.POWER));
 
             Power.Display display = selectedPower.getDisplay();
             Component lore = display.lore();
@@ -163,7 +162,7 @@ public class PowerSelectionScreen extends Screen {
         int k = i + 228;
         int l = j + 48;
         ResourceLocation resourceLocation = this.canScroll ? SCROLLER_SPRITE : SCROLLER_DISABLED_SPRITE;
-        guiGraphics.blitSprite(RenderType::guiTextured, resourceLocation, k, l + this.descStart, 12, 15);
+        guiGraphics.blitSprite(resourceLocation, k, l + this.descStart, 12, 15);
     }
 
     protected void renderArrows(GuiGraphics guiGraphics, int mouseX, int mouseY) {
@@ -171,13 +170,13 @@ public class PowerSelectionScreen extends Screen {
         int j = ((this.height - BACKGROUND_VERTICAL_START) / 2);
         int k = i + 20;
         int l = j + 12;
-        if (showLeftArrow) guiGraphics.blit(RenderType::guiTextured, BACKGROUND, k, l, 156 + (!insideLeftArrow(mouseX, mouseY) ? 26 : 0), 166, 13, 20, 256, 256);
+        if (showLeftArrow) guiGraphics.blit(BACKGROUND, k, l, 156 + (!insideLeftArrow(mouseX, mouseY) ? 26 : 0), 166, 13, 20);
         k = i + 216;
-        if (showRightArrow) guiGraphics.blit(RenderType::guiTextured, BACKGROUND, k, l, 169 + (!insideRightArrow(mouseX, mouseY) ? 26 : 0), 166, 13, 20, 256, 256);
+        if (showRightArrow) guiGraphics.blit(BACKGROUND, k, l, 169 + (!insideRightArrow(mouseX, mouseY) ? 26 : 0), 166, 13, 20);
     }
 
     class PowerButton extends AbstractButton {
-        private static final Registry<Power> REGISTRY = Minecraft.getInstance().level.registryAccess().lookupOrThrow(MinejagoRegistries.POWER);
+        private static final Registry<Power> REGISTRY = Minecraft.getInstance().level.registryAccess().registryOrThrow(MinejagoRegistries.POWER);
 
         private boolean selected;
         private final Power power;
@@ -215,13 +214,13 @@ public class PowerSelectionScreen extends Screen {
             if (hoveringOver) v = 199;
             if (!selected) u = 32;
 
-            guiGraphics.blit(RenderType::guiTextured, BACKGROUND, getX(), getY(), u, v, 32, 32, 256, 256);
+            guiGraphics.blit(BACKGROUND, getX(), getY(), u, v, 32, 32);
         }
 
         protected void renderIcon(GuiGraphics guiGraphics) {
             int x = getX() - 1;
             int y = getY() - 1;
-            guiGraphics.blit(RenderType::guiTextured, textureLoc, x, y, 0, 0, 32, 32, 32, 32);
+            guiGraphics.blit(textureLoc, x, y, 0, 0, 32, 32, 32, 32);
         }
 
         public boolean isSelected() {

@@ -3,7 +3,6 @@ package dev.thomasglasser.minejago.client.model;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.entity.character.Character;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib.renderer.GeoRenderer;
 
 public class WuModel<T extends Character> extends CharacterModel<T> {
     private static final ResourceLocation ANIMATIONS = Minejago.modLoc("animations/entity/character/wu.animation.json");
@@ -16,7 +15,7 @@ public class WuModel<T extends Character> extends CharacterModel<T> {
     }
 
     @Override
-    public ResourceLocation getModelResource(T animatable, GeoRenderer<T> renderer) {
+    public ResourceLocation getModelResource(T animatable) {
         return MODEL;
     }
 
@@ -26,7 +25,7 @@ public class WuModel<T extends Character> extends CharacterModel<T> {
     }
 
     @Override
-    public ResourceLocation[] getAnimationResourceFallbacks(T animatable, GeoRenderer<T> renderer) {
+    public ResourceLocation[] getAnimationResourceFallbacks(T animatable) {
         return new ResourceLocation[] { CharacterModel.ANIMATIONS };
     }
 }

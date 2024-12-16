@@ -2,6 +2,7 @@ package dev.thomasglasser.minejago.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.world.entity.skulkin.Nuckal;
 import net.minecraft.client.model.AnimationUtils;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -12,13 +13,12 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.client.renderer.entity.state.SkeletonRenderState;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
-public class NuckalModel<T extends SkeletonRenderState> extends HumanoidModel<T> {
+public class NuckalModel<T extends Nuckal> extends HumanoidModel<T> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Minejago.modLoc("nuckal"), "main");
 
     public NuckalModel(ModelPart pRoot) {
@@ -36,7 +36,7 @@ public class NuckalModel<T extends SkeletonRenderState> extends HumanoidModel<T>
                 .texOffs(0, 0).addBox(-1.0F, -8.0F, -1.0F, 2.0F, 1.0F, 2.0F, new CubeDeformation(0.0F))
                 .texOffs(0, 0).addBox(-1.0F, -8.0F, 2.0F, 2.0F, 1.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-        PartDefinition hat = head.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
+        PartDefinition hat = partdefinition.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
 
         PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create().texOffs(16, 16).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
@@ -52,12 +52,12 @@ public class NuckalModel<T extends SkeletonRenderState> extends HumanoidModel<T>
     }
 
     @Override
-    public void setupAnim(T renderState) {
-        super.setupAnim(renderState);
-        ItemStack itemstack = renderState.getMainHandItem();
-        if (renderState.isAggressive && (itemstack.isEmpty() || !itemstack.is(Items.BOW))) {
-            float f = Mth.sin(renderState.attackTime * (float) Math.PI);
-            float f1 = Mth.sin((1.0F - (1.0F - renderState.attackTime) * (1.0F - renderState.attackTime)) * (float) Math.PI);
+    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        ItemStack itemstack = entity.getMainHandItem();
+        if (entity.isAggressive() && (itemstack.isEmpty() || !itemstack.is(Items.BOW))) {
+            float f = Mth.sin(attackTime * (float) Math.PI);
+            float f1 = Mth.sin((1.0F - (1.0F - attackTime) * (1.0F - attackTime)) * (float) Math.PI);
             this.rightArm.zRot = 0.0F;
             this.leftArm.zRot = 0.0F;
             this.rightArm.yRot = -(0.1F - f * 0.6F);
@@ -66,7 +66,7 @@ public class NuckalModel<T extends SkeletonRenderState> extends HumanoidModel<T>
             this.leftArm.xRot = (-(float) Math.PI / 2F);
             this.rightArm.xRot -= f * 1.2F - f1 * 0.4F;
             this.leftArm.xRot -= f * 1.2F - f1 * 0.4F;
-            AnimationUtils.bobArms(this.rightArm, this.leftArm, renderState.ageInTicks);
+            AnimationUtils.bobArms(this.rightArm, this.leftArm, ageInTicks);
         }
     }
 

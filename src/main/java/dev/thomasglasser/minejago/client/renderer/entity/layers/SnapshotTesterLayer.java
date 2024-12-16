@@ -7,19 +7,19 @@ import dev.thomasglasser.minejago.client.model.PilotsSnapshotTesterHatModel;
 import java.util.Calendar;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.EntityModelSet;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.client.renderer.entity.state.PlayerRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
-public class SnapshotTesterLayer<S extends PlayerRenderState> extends RenderLayer<S, PlayerModel> {
+public class SnapshotTesterLayer<S extends AbstractClientPlayer> extends RenderLayer<S, PlayerModel<S>> {
     private final PilotsSnapshotTesterHatModel pilotsSnapshotTesterHatModel;
     private final boolean xmasTextures;
 
-    public SnapshotTesterLayer(RenderLayerParent<S, PlayerModel> renderer, EntityModelSet modelSet) {
+    public SnapshotTesterLayer(RenderLayerParent<S, PlayerModel<S>> renderer, EntityModelSet modelSet) {
         super(renderer);
         this.pilotsSnapshotTesterHatModel = new PilotsSnapshotTesterHatModel(modelSet.bakeLayer(PilotsSnapshotTesterHatModel.LAYER_LOCATION));
 
@@ -27,8 +27,9 @@ public class SnapshotTesterLayer<S extends PlayerRenderState> extends RenderLaye
         this.xmasTextures = (calendar.get(Calendar.MONTH) + 1 == 12 && calendar.get(Calendar.DATE) >= 24 && calendar.get(Calendar.DATE) <= 26);
     }
 
-    protected ResourceLocation getTextureLocation(S renderState) {
-        return switch (renderState.getRenderData(MinejagoClientUtils.SNAPSHOT_CHOICE)) {
+    @Override
+    protected ResourceLocation getTextureLocation(S player) {
+        return switch (MinejagoClientUtils.snapshotChoice(player)) {
             case BAMBOO_HAT -> {
                 if (xmasTextures)
                     yield PilotsSnapshotTesterHatModel.HOLIDAY_TEXTURE;
@@ -40,13 +41,12 @@ public class SnapshotTesterLayer<S extends PlayerRenderState> extends RenderLaye
     }
 
     @Override
-    public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, S renderState, float p_117353_, float p_117354_) {
-        Boolean renderSnapshot = renderState.getRenderData(MinejagoClientUtils.RENDER_SNAPSHOT);
-        if (renderSnapshot != null && renderSnapshot) {
-            VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityCutout(getTextureLocation(renderState)));
+    public void render(PoseStack poseStack, MultiBufferSource multiBufferSource, int i, S player, float v, float v1, float v2, float v3, float v4, float v5) {
+        if (MinejagoClientUtils.renderSnapshotTesterLayer(player)) {
+            VertexConsumer vertexConsumer = multiBufferSource.getBuffer(RenderType.entityCutout(getTextureLocation(player)));
             getParentModel().getHead().translateAndRotate(poseStack);
-            switch (renderState.getRenderData(MinejagoClientUtils.SNAPSHOT_CHOICE)) {
-                case BAMBOO_HAT -> pilotsSnapshotTesterHatModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
+            switch (MinejagoClientUtils.snapshotChoice(player)) {
+                case BAMBOO_HAT -> pilotsSnapshotTesterHatModel.renderToBuffer(poseStack, vertexConsumer, i, OverlayTexture.NO_OVERLAY);
                 case null -> {}
             }
         }

@@ -23,16 +23,16 @@ import net.minecraft.world.item.ItemStackLinkedSet;
 public class MinejagoCreativeModeTabs {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(BuiltInRegistries.CREATIVE_MODE_TAB, Minejago.MOD_ID);
 
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GI = register("gi", () -> TommyLibServices.ITEM.tabBuilder().title(Component.translatable(Minejago.modLoc("gi").toLanguageKey("item_group"))).icon(() -> MinejagoArmors.BLACK_GI_SET.HEAD.get().getDefaultInstance()).displayItems((parameters, output) -> {
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GI = register("gi", () -> TommyLibServices.CLIENT.tabBuilder().title(Component.translatable(Minejago.modLoc("gi").toLanguageKey("item_group"))).icon(() -> MinejagoArmors.BLACK_GI_SET.HEAD.get().getDefaultInstance()).displayItems((parameters, output) -> {
         output.acceptAll(MinejagoArmors.BLACK_GI_SET.getAllAsStacks());
         parameters.holders()
                 .lookup(MinejagoRegistries.POWER)
                 .ifPresent(powers -> {
-                    generatePoweredSet(MinejagoArmors.TRAINEE_GI_SET, output, powers);
+                    generatePoweredSets(MinejagoArmors.TRAINEE_GI_SET, output, powers);
                 });
     }).build());
 
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MINEJAGO = register("minejago", () -> TommyLibServices.ITEM.tabBuilder().title(Component.translatable(Minejago.modLoc(Minejago.MOD_ID).toLanguageKey("item_group"))).icon(() -> MinejagoItems.SCYTHE_OF_QUAKES.get().getDefaultInstance()).type(CreativeModeTab.Type.SEARCH).displayItems((parameters, output) -> {
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MINEJAGO = register("minejago", () -> TommyLibServices.CLIENT.tabBuilder().title(Component.translatable(Minejago.modLoc(Minejago.MOD_ID).toLanguageKey("item_group"))).icon(() -> MinejagoItems.SCYTHE_OF_QUAKES.get().getDefaultInstance()).type(CreativeModeTab.Type.SEARCH).displayItems((parameters, output) -> {
         Set<ItemStack> set = ItemStackLinkedSet.createTypeAndComponentsSet();
 
         for (CreativeModeTab creativemodetab : parameters.holders().lookupOrThrow(Registries.CREATIVE_MODE_TAB).listElements().map(Holder::value).toList()) {
@@ -52,11 +52,11 @@ public class MinejagoCreativeModeTabs {
         return CREATIVE_MODE_TABS.register(name, tab);
     }
 
-    private static void generatePoweredSet(
+    private static void generatePoweredSets(
             ArmorSet armorSet,
             CreativeModeTab.Output output,
-            HolderLookup.RegistryLookup<Power> powerVariants) {
-        powerVariants.listElements()
+            HolderLookup.RegistryLookup<Power> powers) {
+        powers.listElements()
                 .forEach(
                         power -> {
                             if (power.value().hasSets()) {

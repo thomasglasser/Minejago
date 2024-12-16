@@ -1,15 +1,15 @@
 package dev.thomasglasser.minejago.world.item.armor;
 
-import dev.thomasglasser.tommylib.api.world.item.armor.ExtendedArmorItem;
 import dev.thomasglasser.tommylib.api.world.item.armor.GeoArmorItem;
-import dev.thomasglasser.tommylib.api.world.item.equipment.ExtendedArmorMaterial;
+import net.minecraft.core.Holder;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.equipment.ArmorType;
 
-public abstract class GiGeoArmorItem extends ExtendedArmorItem implements GeoArmorItem {
-    protected GiGeoArmorItem(ExtendedArmorMaterial material, ArmorType type, Item.Properties properties) {
+public abstract class GiGeoArmorItem extends ArmorItem implements GeoArmorItem {
+    protected GiGeoArmorItem(Holder<ArmorMaterial> material, Type type, Item.Properties properties) {
         super(material, type, properties);
     }
 

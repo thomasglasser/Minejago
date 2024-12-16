@@ -3,7 +3,6 @@ package dev.thomasglasser.minejago.client.gui.screens.inventory;
 import dev.thomasglasser.minejago.Minejago;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.BookViewScreen;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
@@ -22,6 +21,6 @@ public class ScrollViewScreen extends BookViewScreen {
     @Override
     public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         this.renderTransparentBackground(guiGraphics);
-        guiGraphics.blit(RenderType::guiTextured, BACKGROUND, (this.width - 192) / 2, 2, 0.0F, 0.0F, 192, 192, 256, 256);
+        guiGraphics.blit(BACKGROUND, (this.width - 192) / 2, 2, 0.0F, 0.0F, 192, 192, 256, 256);
     }
 }

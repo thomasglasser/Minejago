@@ -2,7 +2,6 @@ package dev.thomasglasser.minejago.client.gui.screens.inventory;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.PageButton;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 
 public class CustomPageButton extends PageButton {
@@ -29,6 +28,6 @@ public class CustomPageButton extends PageButton {
             l += 13;
         }
 
-        guiGraphics.blit(RenderType::guiTextured, location, this.getX(), this.getY(), k, l, 23, 13, pngWidth, pngHeight);
+        guiGraphics.blit(location, this.getX(), this.getY(), k, l, 23, 13, pngWidth, pngHeight);
     }
 }

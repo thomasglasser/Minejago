@@ -4,6 +4,8 @@
   "brewing_time": 800,
   "experience": 0.35,
   "group": "potion",
-  "ingredient": "minecraft:breeze_rod",
+  "ingredient": {
+    "item": "minecraft:breeze_rod"
+  },
   "result": "minecraft:wind_charged"
 }

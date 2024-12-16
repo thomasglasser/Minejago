@@ -1,0 +1,8 @@
+{
+  "entity_type": "minecraft:chest_boat",
+  "modifier": 0.25,
+  "nbt": {
+    "Type": "minejago:enchanted"
+  },
+  "operation": "addition"
+}

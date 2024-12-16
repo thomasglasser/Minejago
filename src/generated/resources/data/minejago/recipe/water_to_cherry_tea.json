@@ -8,6 +8,8 @@
   },
   "experience": 0.5,
   "group": "cherry_tea",
-  "ingredient": "minecraft:cherry_leaves",
+  "ingredient": {
+    "item": "minecraft:cherry_leaves"
+  },
   "result": "minejago:cherry_tea"
 }

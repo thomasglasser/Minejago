@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import dev.thomasglasser.minejago.Minejago;
 import net.minecraft.client.model.EntityModel;
@@ -15,12 +16,12 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 
-public class SpinjitzuModel<T extends EntityRenderState> extends EntityModel<T> {
+public class SpinjitzuModel<T extends Entity> extends EntityModel<T> {
     public static final ResourceLocation BASE_TEXTURE = Minejago.modLoc("textures/entity/player/spinjitzu.png");
     public static final ResourceLocation SWIRL_TEXTURE = Minejago.modLoc("textures/entity/player/spinjitzu_swirl.png");
 
@@ -41,7 +42,7 @@ public class SpinjitzuModel<T extends EntityRenderState> extends EntityModel<T> 
     private final ModelPart outerBottom;
 
     public SpinjitzuModel(ModelPart root) {
-        super(root, RenderType::entityTranslucent);
+        super(RenderType::entityTranslucent);
         this.body = root.getChild("body");
         this.inner = body.getChild("inner");
         this.innerTop = inner.getChild("inner_top");
@@ -103,9 +104,8 @@ public class SpinjitzuModel<T extends EntityRenderState> extends EntityModel<T> 
     }
 
     @Override
-    public void setupAnim(T renderState) {
-        super.setupAnim(renderState);
-        float f = renderState.ageInTicks * (float) Math.PI * -0.1F;
+    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        float f = ageInTicks * (float) Math.PI * -0.1F;
         this.outerBottom.x = Mth.cos(f) * 1.0F * 0.6F;
         this.outerBottom.z = Mth.sin(f) * 1.0F * 0.6F;
         this.innerBottom.x = Mth.cos(f) * 1.0F * 0.6F;
@@ -130,5 +130,10 @@ public class SpinjitzuModel<T extends EntityRenderState> extends EntityModel<T> 
 
     public ModelPart getBody() {
         return body;
+    }
+
+    @Override
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int i, int i1, int i2) {
+        body.render(poseStack, vertexConsumer, i, i1, i2);
     }
 }

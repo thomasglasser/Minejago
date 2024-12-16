@@ -25,10 +25,10 @@ import net.minecraft.world.effect.MobEffectUtil;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.Brain;
@@ -64,7 +64,7 @@ import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.HurtBySensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyPlayersSensor;
-import net.tslat.smartbrainlib.util.BrainUtil;
+import net.tslat.smartbrainlib.util.BrainUtils;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -116,8 +116,8 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
     }
 
     @Override
-    protected void customServerAiStep(ServerLevel p_376725_) {
-        super.customServerAiStep(p_376725_);
+    protected void customServerAiStep() {
+        super.customServerAiStep();
         this.tickBrain(this);
     }
 
@@ -193,15 +193,15 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
     }
 
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_146746_, DifficultyInstance p_146747_, EntitySpawnReason p_363316_, @Nullable SpawnGroupData p_146749_) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData) {
         this.setCanPickUpLoot(true);
-        if (p_363316_ == EntitySpawnReason.NATURAL || p_363316_ == EntitySpawnReason.CHUNK_GENERATION) {
-            List<? extends Character> list = level().getEntitiesOfClass(this.getClass(), getBoundingBox().inflate(1024));
+        if (spawnType == MobSpawnType.NATURAL || spawnType == MobSpawnType.CHUNK_GENERATION) {
+            List<? extends Character> list = level.getEntitiesOfClass(this.getClass(), getBoundingBox().inflate(1024));
             list.remove(this);
             if (!list.isEmpty())
                 discard();
         }
-        return super.finalizeSpawn(p_146746_, p_146747_, p_363316_, p_146749_);
+        return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
     }
 
     @Override
@@ -215,7 +215,7 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
         LivingEntity helperTarget = null;
 
         if (helper instanceof SmartBrainOwner<?>) {
-            helperTarget = BrainUtil.getTargetOfEntity(helper);
+            helperTarget = BrainUtils.getTargetOfEntity(helper);
         } else if (helper instanceof Mob mob) {
             helperTarget = mob.getTarget();
         }
@@ -274,7 +274,7 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
         new SpinjitzuData(true, doingSpinjitzu).save(this, !level().isClientSide);
     }
 
-    public static boolean checkNaturalCharacterSpawnRules(EntityType<? extends Character> character, LevelAccessor level, EntitySpawnReason entitySpawnReason, BlockPos pos, RandomSource random) {
+    public static boolean checkNaturalCharacterSpawnRules(EntityType<? extends Character> character, LevelAccessor level, MobSpawnType entitySpawnReason, BlockPos pos, RandomSource random) {
         List<Character> characters = new ArrayList<>();
         ServerLevel serverLevel = level instanceof Level ? (ServerLevel) level : level instanceof WorldGenRegion ? ((WorldGenRegion) level).getLevel() : null;
         if (serverLevel != null) {

@@ -2,8 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
-    "p": "#minecraft:planks",
-    "s": "minejago:scroll"
+    "p": {
+      "tag": "minecraft:planks"
+    },
+    "s": {
+      "item": "minejago:scroll"
+    }
   },
   "pattern": [
     "ppp",

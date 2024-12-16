@@ -2,7 +2,6 @@ package dev.thomasglasser.minejago.world.entity.spinjitzucourse;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
@@ -52,12 +51,12 @@ public abstract class AbstractSpinjitzuCourseElementPart<T extends AbstractSpinj
     }
 
     @Override
-    public boolean hurtServer(ServerLevel serverLevel, DamageSource damageSource, float v) {
-        return active && !isInvulnerableTo(damageSource) && this.getParent().hurtServer(serverLevel, damageSource, v);
+    public boolean hurt(DamageSource source, float amount) {
+        return active && !isInvulnerableTo(source) && this.getParent().hurt(source, amount);
     }
 
     public boolean isInvulnerableTo(DamageSource source) {
-        return getParent().isInvulnerableTo(source) || isInvulnerableToBase(source);
+        return getParent().isInvulnerableTo(source) || super.isInvulnerableTo(source);
     }
 
     /**

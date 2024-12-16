@@ -4,6 +4,8 @@
   "brewing_time": 800,
   "experience": 0.35,
   "group": "potion",
-  "ingredient": "minecraft:blaze_powder",
+  "ingredient": {
+    "item": "minecraft:blaze_powder"
+  },
   "result": "minecraft:strength"
 }

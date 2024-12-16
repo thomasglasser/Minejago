@@ -2,7 +2,6 @@ package dev.thomasglasser.minejago.world.entity.spinjitzucourse;
 
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -66,24 +65,16 @@ public class SpinningDummiesSpinjitzuCourseElement extends PlatformedSpinjitzuCo
             super(parent, name, width, height, x, y, z);
         }
 
-        private void hit() {
+        @Override
+        public boolean hurt(DamageSource source, float amount) {
             hit = true;
             hitTimer = 40;
             refreshDimensions();
-        }
-
-        @Override
-        public boolean hurtServer(ServerLevel serverLevel, DamageSource damageSource, float v) {
-            hit();
-            getParent().triggerAnim(name + "_controller", name + "_hit");
-            playSound(MinejagoSoundEvents.SPINNING_DUMMIES_HIT.get());
-            return true;
-        }
-
-        @Override
-        public boolean hurtClient(DamageSource p_376938_) {
-            hit();
-            return true;
+            if (!level().isClientSide) {
+                getParent().triggerAnim(name + "_controller", name + "_hit");
+                playSound(MinejagoSoundEvents.SPINNING_DUMMIES_HIT.get());
+            }
+            return super.hurt(source, amount);
         }
 
         @Override

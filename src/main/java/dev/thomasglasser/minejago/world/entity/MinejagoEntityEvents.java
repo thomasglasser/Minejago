@@ -193,7 +193,7 @@ public class MinejagoEntityEvents {
                         Biome biome = level.getBiome(playerPos).value();
                         AtomicDouble i = new AtomicDouble(1);
                         Weather weather = Weather.CLEAR;
-                        Biome.Precipitation precipitation = biome.getPrecipitationAt(playerPos, level.getSeaLevel());
+                        Biome.Precipitation precipitation = biome.getPrecipitationAt(playerPos);
                         if (level.isThundering()) {
                             if (precipitation == Biome.Precipitation.SNOW) {
                                 weather = Weather.THUNDER_SNOW;
@@ -206,7 +206,7 @@ public class MinejagoEntityEvents {
                         i.set(WorldFocusModifiers.applyModifier((int) level.getDayTime(), weather, playerPos.getY(), TeapotBlock.getBiomeTemperature(level, playerPos), i.get()));
                         i.set(ResourceKeyFocusModifiers.applyModifier(level.getBiome(playerPos).unwrapKey().orElseThrow(), i.get()));
                         i.set(ResourceKeyFocusModifiers.applyModifier(level.dimension(), i.get()));
-                        serverPlayer.serverLevel().structureManager().getAllStructuresAt(playerPos).keySet().forEach(structure -> i.set(ResourceKeyFocusModifiers.applyModifier(level.registryAccess().lookupOrThrow(Registries.STRUCTURE).getResourceKey(structure).orElseThrow(), i.get())));
+                        serverPlayer.serverLevel().structureManager().getAllStructuresAt(playerPos).keySet().forEach(structure -> i.set(ResourceKeyFocusModifiers.applyModifier(level.registryAccess().registryOrThrow(Registries.STRUCTURE).getResourceKey(structure).orElseThrow(), i.get())));
                         Stream<BlockState> blocks = level.getBlockStates(player.getBoundingBox().inflate(4));
                         blocks.forEach(blockState -> i.set(BlockStateFocusModifiers.applyModifier(blockState, i.get())));
                         serverPlayer.getActiveEffects().forEach(mobEffectInstance -> i.set(ResourceKeyFocusModifiers.applyModifier(mobEffectInstance.getEffect().unwrapKey().orElseThrow(), i.get()) * (mobEffectInstance.getAmplifier() + 1)));

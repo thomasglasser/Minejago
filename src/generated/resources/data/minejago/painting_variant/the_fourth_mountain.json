@@ -1,13 +1,5 @@
 {
   "asset_id": "minejago:the_fourth_mountain",
-  "author": {
-    "color": "gray",
-    "translate": "painting.minejago.the_fourth_mountain.author"
-  },
   "height": 2,
-  "title": {
-    "color": "yellow",
-    "translate": "painting.minejago.the_fourth_mountain.title"
-  },
   "width": 2
 }

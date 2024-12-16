@@ -85,7 +85,7 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem {
                     }
                 }
             }
-            if (!pContext.getPlayer().getAbilities().instabuild) pContext.getPlayer().getCooldowns().addCooldown(pContext.getItemInHand(), 600);
+            if (!pContext.getPlayer().getAbilities().instabuild) pContext.getPlayer().getCooldowns().addCooldown(pContext.getItemInHand().getItem(), 600);
             pContext.getLevel().playSound(null, pContext.getPlayer().blockPosition(), MinejagoSoundEvents.SCYTHE_OF_QUAKES_CASCADE.get(), SoundSource.PLAYERS);
         } else if (player.isShiftKeyDown()) {
             // TODO: Update playerAnimator
@@ -95,7 +95,7 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem {
                 if (!level.isClientSide)
                     level.explode(null, place.getX(), place.getY() + 1, place.getZ(), 4, false, Level.ExplosionInteraction.BLOCK);
             }
-            if (!pContext.getPlayer().getAbilities().instabuild) pContext.getPlayer().getCooldowns().addCooldown(pContext.getItemInHand(), 1200);
+            if (!pContext.getPlayer().getAbilities().instabuild) pContext.getPlayer().getCooldowns().addCooldown(pContext.getItemInHand().getItem(), 1200);
             pContext.getLevel().playSound(null, pContext.getPlayer().blockPosition(), MinejagoSoundEvents.SCYTHE_OF_QUAKES_EXPLOSION.get(), SoundSource.PLAYERS);
         } else {
             player.startUsingItem(pContext.getHand());
@@ -110,7 +110,7 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem {
     @Override
     public void doReleaseUsing(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity, int pTimeCharged) {
         if (pLivingEntity instanceof Player player1) {
-            if (!player1.getAbilities().instabuild) player1.getCooldowns().addCooldown(pStack, 20 * (pTimeCharged > 10 ? (pStack.getUseDuration(pLivingEntity) - pTimeCharged) : 1));
+            if (!player1.getAbilities().instabuild) player1.getCooldowns().addCooldown(pStack.getItem(), 20 * (pTimeCharged > 10 ? (pStack.getUseDuration(pLivingEntity) - pTimeCharged) : 1));
             if (!pLevel.isClientSide) TommyLibServices.NETWORK.sendToAllClients(new ClientboundStopAnimationPayload(pLivingEntity.getUUID()), pLevel.getServer());
             ItemAttributeModifiers original = pStack.get(DataComponents.ATTRIBUTE_MODIFIERS);
             ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder();

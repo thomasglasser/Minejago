@@ -5,7 +5,6 @@ import dev.thomasglasser.minejago.world.level.storage.PowerData;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -38,10 +37,10 @@ public class Cole extends Character {
     }
 
     @Override
-    public boolean hurtServer(ServerLevel p_376221_, DamageSource p_376460_, float p_376610_) {
-        if (p_376460_.is(DamageTypeTags.IS_FALL))
-            return super.hurtServer(p_376221_, p_376460_, p_376610_ / 2.0F);
-        return super.hurtServer(p_376221_, p_376460_, p_376610_);
+    public boolean hurt(DamageSource source, float amount) {
+        if (source.is(DamageTypeTags.IS_FALL))
+            return super.hurt(source, amount / 2.0F);
+        return super.hurt(source, amount);
     }
 
     public static AttributeSupplier.Builder createAttributes() {

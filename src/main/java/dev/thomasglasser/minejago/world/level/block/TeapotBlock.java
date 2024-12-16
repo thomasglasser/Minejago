@@ -24,7 +24,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -36,8 +36,8 @@ import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -109,9 +109,9 @@ public class TeapotBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected InteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
+    protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
         if (pLevel.isClientSide) {
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         } else {
             if (pLevel.getBlockEntity(pPos) instanceof TeapotBlockEntity be) {
                 ItemStack inHand = pPlayer.getItemInHand(pHand);
@@ -140,10 +140,10 @@ public class TeapotBlock extends BaseEntityBlock {
                             ItemUtils.safeShrink(1, inHand, pPlayer);
                         }
                     }
-                    return InteractionResult.SUCCESS;
+                    return ItemInteractionResult.SUCCESS;
                 }
             }
-            return InteractionResult.FAIL;
+            return ItemInteractionResult.FAIL;
         }
     }
 
@@ -191,11 +191,11 @@ public class TeapotBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess scheduledTickAccess, BlockPos pos, Direction direction, BlockPos offsetPos, BlockState offsetState, RandomSource random) {
+    protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
         if (!state.canSurvive(level, pos)) {
             return Blocks.AIR.defaultBlockState();
         }
-        return super.updateShape(state, level, scheduledTickAccess, pos, direction, offsetPos, offsetState, random);
+        return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
     }
 
     @Nullable

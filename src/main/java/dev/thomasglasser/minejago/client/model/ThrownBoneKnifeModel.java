@@ -1,5 +1,7 @@
 package dev.thomasglasser.minejago.client.model;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.thomasglasser.minejago.Minejago;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -15,8 +17,11 @@ import net.minecraft.client.renderer.RenderType;
 public class ThrownBoneKnifeModel extends Model {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Minejago.modLoc("bone_knife"), "main");
 
+    private final ModelPart body;
+
     public ThrownBoneKnifeModel(ModelPart root) {
-        super(root, RenderType::entitySolid);
+        super(RenderType::entitySolid);
+        body = root.getChild("body");
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -45,5 +50,10 @@ public class ThrownBoneKnifeModel extends Model {
                 .texOffs(11, 15).addBox(3.0F, -10.0F, 4.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(1.5F, 16.0F, 3.75F, 0.0F, 1.5708F, -0.7854F));
 
         return LayerDefinition.create(meshdefinition, 32, 32);
+    }
+
+    @Override
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int i, int i1, int i2) {
+        body.render(poseStack, vertexConsumer, i, i1, i2);
     }
 }

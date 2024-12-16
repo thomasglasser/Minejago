@@ -74,9 +74,9 @@ public class MinejagoDataPatchProvider extends PatchProvider {
     private static Map<String, Criterion<?>> getMobsToKill(HolderGetter<EntityType<?>> entities, List<EntityType<?>> mobs) {
         HashMap<String, Criterion<?>> criterion = new HashMap<>();
         mobs.forEach(
-                p_314409_ -> criterion.put(
-                        BuiltInRegistries.ENTITY_TYPE.getKey(p_314409_).toString(),
-                        KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(entities, p_314409_))));
+                entityType -> criterion.put(
+                        BuiltInRegistries.ENTITY_TYPE.getKey(entityType).toString(),
+                        KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(entityType))));
         return criterion;
     }
 }

@@ -6,7 +6,6 @@ import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -28,8 +27,8 @@ public enum LivingEntityComponentProvider implements IEntityComponentProvider {
         if (entityAccessor.getEntity() instanceof LivingEntity livingEntity && entityAccessor.getLevel() != null) {
             ResourceKey<Power> powerKey = livingEntity.getData(MinejagoAttachmentTypes.POWER).power();
             if (powerKey != MinejagoPowers.NONE) {
-                Registry<Power> registry = entityAccessor.getLevel().registryAccess().lookupOrThrow(MinejagoRegistries.POWER);
-                Power power = registry.getValue(powerKey);
+                Registry<Power> registry = entityAccessor.getLevel().registryAccess().registryOrThrow(MinejagoRegistries.POWER);
+                Power power = registry.get(powerKey);
                 IElement icon = new Element() {
                     private Vec2 size;
 
@@ -41,7 +40,7 @@ public enum LivingEntityComponentProvider implements IEntityComponentProvider {
 
                     @Override
                     public void render(GuiGraphics guiGraphics, float x, float y, float maxX, float maxY) {
-                        guiGraphics.blit(RenderType::guiTextured, power.getIcon(registry), (int) x - 2, (int) y - 1, 0, 0, 10, 10, 32, 32, 32, 32);
+                        guiGraphics.blit(power.getIcon(registry), (int) x - 2, (int) y - 1, 0, 0, 10, 10, 32, 32, 32, 32);
                     }
                 };
                 iTooltip.add(icon);

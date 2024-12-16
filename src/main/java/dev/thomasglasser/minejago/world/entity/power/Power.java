@@ -99,7 +99,7 @@ public class Power {
     }
 
     public boolean is(TagKey<Power> tag, Registry<Power> registry) {
-        return registry.getOrThrow(tag).contains(registry.getOrThrow(registry.getResourceKey(this).orElseThrow()));
+        return registry.getTag(tag).orElseThrow().contains(registry.getHolderOrThrow(registry.getResourceKey(this).orElseThrow()));
     }
 
     public boolean is(Power power) {
@@ -111,7 +111,7 @@ public class Power {
     }
 
     public boolean is(ResourceKey<Power> key, Registry<Power> registry) {
-        return registry.getOrThrow(key).value() == this;
+        return registry.getOrThrow(key) == this;
     }
 
     public record Display(Component lore, Component description) {

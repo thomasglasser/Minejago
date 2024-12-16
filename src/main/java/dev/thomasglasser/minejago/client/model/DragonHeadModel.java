@@ -5,9 +5,7 @@ import dev.thomasglasser.minejago.world.level.block.DragonHeadBlock;
 import dev.thomasglasser.minejago.world.level.block.entity.DragonHeadBlockEntity;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.model.GeoModel;
-import software.bernie.geckolib.renderer.GeoRenderer;
 
 public class DragonHeadModel extends GeoModel<DragonHeadBlockEntity> {
     private String block;
@@ -16,14 +14,14 @@ public class DragonHeadModel extends GeoModel<DragonHeadBlockEntity> {
     private ResourceLocation texture;
 
     @Override
-    public ResourceLocation getModelResource(DragonHeadBlockEntity animatable, @Nullable GeoRenderer<DragonHeadBlockEntity> renderer) {
+    public ResourceLocation getModelResource(DragonHeadBlockEntity animatable) {
         if (block == null) block = BuiltInRegistries.BLOCK.getKey(animatable.getBlockState().getBlock()).getPath();
         if (model == null) model = Minejago.modLoc("geo/block/" + block + ".geo.json");
         return model;
     }
 
     @Override
-    public ResourceLocation getTextureResource(DragonHeadBlockEntity animatable, @Nullable GeoRenderer<DragonHeadBlockEntity> renderer) {
+    public ResourceLocation getTextureResource(DragonHeadBlockEntity animatable) {
         if (texture == null && animatable.getBlockState().getBlock() instanceof DragonHeadBlock dragonHeadBlock) {
             texture = Minejago.modLoc("textures/entity/dragon/" + BuiltInRegistries.ENTITY_TYPE.getKey(dragonHeadBlock.getEntityType()).getPath() + ".png");
         }

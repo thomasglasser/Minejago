@@ -15,9 +15,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.Unit;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
@@ -162,7 +162,8 @@ public abstract class SkulkinRaider extends Skeleton implements SmartBrainOwner<
     }
 
     @Override
-    protected void customServerAiStep(ServerLevel level) {
+    protected void customServerAiStep() {
+        super.customServerAiStep();
         tickBrain(this);
     }
 
@@ -195,7 +196,7 @@ public abstract class SkulkinRaider extends Skeleton implements SmartBrainOwner<
         }
     }
 
-    public static boolean checkSpawnRules(EntityType<? extends SkulkinRaider> pPatrollingMonster, LevelAccessor pLevel, EntitySpawnReason spawnReason, BlockPos pPos, RandomSource pRandom) {
+    public static boolean checkSpawnRules(EntityType<? extends SkulkinRaider> pPatrollingMonster, LevelAccessor pLevel, MobSpawnType spawnReason, BlockPos pPos, RandomSource pRandom) {
         return pLevel.getBrightness(LightLayer.BLOCK, pPos) <= 8 && checkAnyLightMonsterSpawnRules(pPatrollingMonster, pLevel, spawnReason, pPos, pRandom);
     }
 
@@ -286,11 +287,11 @@ public abstract class SkulkinRaider extends Skeleton implements SmartBrainOwner<
     }
 
     @Override
-    public boolean hurtServer(ServerLevel p_376221_, DamageSource p_376460_, float p_376610_) {
+    public boolean hurt(DamageSource source, float amount) {
         if (this.hasActiveRaid()) {
             this.getCurrentRaid().updateBossbar();
         }
 
-        return super.hurtServer(p_376221_, p_376460_, p_376610_);
+        return super.hurt(source, amount);
     }
 }

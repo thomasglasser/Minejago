@@ -8,6 +8,8 @@
   },
   "experience": 0.5,
   "group": "spruce_tea",
-  "ingredient": "minecraft:spruce_leaves",
+  "ingredient": {
+    "item": "minecraft:spruce_leaves"
+  },
   "result": "minejago:spruce_tea"
 }

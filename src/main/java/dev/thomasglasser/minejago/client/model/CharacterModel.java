@@ -5,7 +5,6 @@ import dev.thomasglasser.minejago.world.entity.character.Character;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
-import software.bernie.geckolib.renderer.GeoRenderer;
 
 public class CharacterModel<T extends Character> extends DefaultedEntityGeoModel<T> {
     public static final ResourceLocation ANIMATIONS = Minejago.modLoc("animations/entity/character/character.animation.json");
@@ -26,12 +25,12 @@ public class CharacterModel<T extends Character> extends DefaultedEntityGeoModel
     }
 
     @Override
-    public ResourceLocation getModelResource(T animatable, GeoRenderer<T> renderer) {
-        return slim ? slimModel : super.getModelResource(animatable, renderer);
+    public ResourceLocation getModelResource(T animatable) {
+        return slim ? slimModel : super.getModelResource(animatable);
     }
 
     @Override
-    public ResourceLocation getTextureResource(T animatable, GeoRenderer<T> renderer) {
+    public ResourceLocation getTextureResource(T animatable) {
         if (texture == null) {
             texture = Minejago.modLoc("textures/entity/character/" + BuiltInRegistries.ENTITY_TYPE.getKey(animatable.getType()).getPath() + ".png");
         }

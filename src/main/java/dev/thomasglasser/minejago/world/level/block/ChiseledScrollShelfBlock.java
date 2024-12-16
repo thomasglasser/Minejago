@@ -6,6 +6,7 @@ import java.util.OptionalInt;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -21,24 +22,24 @@ public class ChiseledScrollShelfBlock extends ChiseledBookShelfBlock {
         super(properties);
     }
 
-    protected InteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         BlockEntity var9 = level.getBlockEntity(blockPos);
         if (var9 instanceof ChiseledBookShelfBlockEntity chiseledBookShelfBlockEntity) {
             if (!itemStack.is(MinejagoItemTags.SCROLL_SHELF_SCROLLS)) {
-                return InteractionResult.TRY_WITH_EMPTY_HAND;
+                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
             } else {
                 OptionalInt optionalInt = this.getHitSlot(blockHitResult, blockState);
                 if (optionalInt.isEmpty()) {
-                    return InteractionResult.PASS;
+                    return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
                 } else if (blockState.getValue(SLOT_OCCUPIED_PROPERTIES.get(optionalInt.getAsInt()))) {
-                    return InteractionResult.TRY_WITH_EMPTY_HAND;
+                    return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
                 } else {
                     addBook(level, blockPos, player, chiseledBookShelfBlockEntity, itemStack, optionalInt.getAsInt());
-                    return InteractionResult.SUCCESS;
+                    return ItemInteractionResult.SUCCESS;
                 }
             }
         } else {
-            return InteractionResult.PASS;
+            return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
         }
     }
 

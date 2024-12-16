@@ -42,7 +42,7 @@ public class PowerCommand {
                 .requires((p_137736_) -> p_137736_.hasPermission(2))
                 .executes(context -> {
                     PowerData powerData = context.getSource().getPlayer().getData(MinejagoAttachmentTypes.POWER);
-                    context.getSource().sendSuccess(() -> Component.translatable(QUERY, context.getSource().registryAccess().holderOrThrow(powerData.power()).value().getFormattedName(context.getSource().registryAccess().lookupOrThrow(MinejagoRegistries.POWER))), false);
+                    context.getSource().sendSuccess(() -> Component.translatable(QUERY, context.getSource().registryAccess().holderOrThrow(powerData.power()).value().getFormattedName(context.getSource().registryAccess().registryOrThrow(MinejagoRegistries.POWER))), false);
                     return 1;
                 })
                 .then(Commands.literal("clear")
@@ -56,7 +56,7 @@ public class PowerCommand {
     }
 
     private static void logPowerChange(CommandSourceStack pSource, Entity entity, ResourceKey<Power> power, boolean clear) {
-        Registry<Power> registry = pSource.registryAccess().lookupOrThrow(MinejagoRegistries.POWER);
+        Registry<Power> registry = pSource.registryAccess().registryOrThrow(MinejagoRegistries.POWER);
         if (entity instanceof LivingEntity livingEntity) {
             if (pSource.getEntity() == entity) {
                 pSource.sendSuccess(() -> Component.translatable(clear ? SUCCESS_CLEARED_SELF : SUCCESS_SELF, pSource.registryAccess().holderOrThrow(power).value().getFormattedName(registry)), true);

@@ -2,9 +2,15 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": "minecraft:diamond",
-    "C": "minecraft:bamboo_block",
-    "S": "minejago:lotus_armor_trim_smithing_template"
+    "#": {
+      "item": "minecraft:diamond"
+    },
+    "C": {
+      "item": "minecraft:bamboo_block"
+    },
+    "S": {
+      "item": "minejago:lotus_armor_trim_smithing_template"
+    }
   },
   "pattern": [
     "#S#",

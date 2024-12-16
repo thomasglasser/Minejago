@@ -5,7 +5,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BottleItem;
 import net.minecraft.world.item.ItemStack;
@@ -23,24 +23,24 @@ public class TeacupItem extends BottleItem {
     }
 
     @Override
-    public InteractionResult use(Level pLevel, Player pPlayer, InteractionHand pHand) {
+    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pHand) {
         ItemStack itemstack = pPlayer.getItemInHand(pHand);
         HitResult hitresult = getPlayerPOVHitResult(pLevel, pPlayer, ClipContext.Fluid.SOURCE_ONLY);
         if (hitresult.getType() != HitResult.Type.MISS) {
             if (hitresult.getType() == HitResult.Type.BLOCK) {
                 BlockPos blockpos = ((BlockHitResult) hitresult).getBlockPos();
                 if (!pLevel.mayInteract(pPlayer, blockpos)) {
-                    return InteractionResult.PASS;
+                    return InteractionResultHolder.pass(itemstack);
                 }
 
                 if (pLevel.getFluidState(blockpos).is(FluidTags.WATER)) {
                     pLevel.playSound(pPlayer, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), SoundEvents.BOTTLE_FILL, SoundSource.NEUTRAL, 1.0F, 1.0F);
                     pLevel.gameEvent(pPlayer, GameEvent.FLUID_PICKUP, blockpos);
-                    return InteractionResult.SUCCESS.heldItemTransformedTo(this.turnBottleIntoItem(itemstack, pPlayer, PotionContents.createItemStack(MinejagoItems.FILLED_TEACUP.get(), Potions.WATER)));
+                    return InteractionResultHolder.success(this.turnBottleIntoItem(itemstack, pPlayer, PotionContents.createItemStack(MinejagoItems.FILLED_TEACUP.get(), Potions.WATER)));
                 }
             }
 
         }
-        return InteractionResult.PASS;
+        return InteractionResultHolder.pass(itemstack);
     }
 }

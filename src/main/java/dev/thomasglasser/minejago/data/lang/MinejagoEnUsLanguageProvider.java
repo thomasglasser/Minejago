@@ -10,6 +10,7 @@ import dev.thomasglasser.minejago.client.gui.screens.inventory.SkillScreen;
 import dev.thomasglasser.minejago.commands.MinejagoCommandEvents;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import dev.thomasglasser.minejago.plugins.MinejagoWailaPlugin;
+import dev.thomasglasser.minejago.plugins.jei.TeapotBrewingRecipeCategory;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.server.commands.PowerCommand;
 import dev.thomasglasser.minejago.server.commands.SkillCommand;
@@ -199,7 +200,7 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(SkulkinRaid.RAID_BAR_DEFEAT_COMPONENT, "Skulkin Raid - Defeat");
         add(SkulkinRaid.SKULKIN_REMAINING, "Skulkin Remaining: %s");
 
-//        add(TeapotBrewingRecipeCategory.RECIPE_KEY, "Teapot Brewing");
+        add(TeapotBrewingRecipeCategory.RECIPE_KEY, "Teapot Brewing");
 
         add(TeapotBlock.POTION, "%s");
         add(TeapotBlock.POTION_AND_ITEM, "%s with %s");
@@ -216,7 +217,7 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
 
     protected void addTea(Holder<Potion> tea, String name) {
         addPotions(tea, name);
-        add(MinejagoItems.FILLED_TEACUP.get(), tea, name);
+        add(MinejagoItemUtils.fillTeacup(tea), name);
     }
 
     protected void addPluginConfig(ResourceLocation location, String name) {
@@ -241,7 +242,6 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(MinejagoItems.BAMBOO_STAFF.get(), "Bamboo Staff");
         add(MinejagoItems.SCYTHE_OF_QUAKES.get(), "Scythe of Quakes");
         add(MinejagoItems.TEACUP.get(), "Teacup");
-        add(MinejagoItems.FILLED_TEACUP.get(), "Tea");
         add(MinejagoItems.SCROLL.get(), "Scroll");
         add(MinejagoItems.WRITABLE_SCROLL.get(), "Scroll and Quill");
         add(MinejagoItems.WRITTEN_SCROLL.get(), "Written Scroll");
@@ -251,13 +251,13 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         ItemStack uncraftableTea = new ItemStack(MinejagoItems.FILLED_TEACUP.get());
         uncraftableTea.set(DataComponents.POTION_CONTENTS, PotionContents.EMPTY);
         add(uncraftableTea, "Uncraftable Tea");
-        add(MinejagoItems.FILLED_TEACUP.get(), Potions.WATER, "Cup of Water");
-        add(MinejagoItems.FILLED_TEACUP.get(), MinejagoPotions.MILK, "Cup of Milk");
+        add(MinejagoItemUtils.fillTeacup(Potions.WATER), "Cup of Water");
+        add(MinejagoItemUtils.fillTeacup(MinejagoPotions.MILK), "Cup of Milk");
 
-        for (Holder<Potion> potion : BuiltInRegistries.POTION.listElements().filter(ref -> ref.key().location().getNamespace().equals(ResourceLocation.DEFAULT_NAMESPACE)).toList()) {
+        for (Holder<Potion> potion : BuiltInRegistries.POTION.holders().filter(ref -> ref.key().location().getNamespace().equals(ResourceLocation.DEFAULT_NAMESPACE)).toList()) {
             ResourceLocation location = potion.unwrapKey().orElseThrow().location();
             if (!(potion == Potions.WATER) && !(location.getPath().contains("long") || location.getPath().contains("strong")))
-                add(MinejagoItems.FILLED_TEACUP.get(), potion, Items.POTION.getName(PotionContents.createItemStack(Items.POTION, potion)).getString().replace("Potion", "Tea"));
+                add(MinejagoItemUtils.fillTeacup(potion), Items.POTION.getName(PotionContents.createItemStack(Items.POTION, potion)).getString().replace("Potion", "Tea"));
         }
 
         // Armors

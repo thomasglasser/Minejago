@@ -4,6 +4,8 @@
   "brewing_time": 800,
   "experience": 0.35,
   "group": "potion",
-  "ingredient": "minecraft:turtle_helmet",
+  "ingredient": {
+    "item": "minecraft:turtle_helmet"
+  },
   "result": "minecraft:turtle_master"
 }

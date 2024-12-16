@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import dev.thomasglasser.minejago.world.entity.dragon.Dragon;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
@@ -19,9 +18,9 @@ public class DragonRenderer<T extends Dragon> extends GeoEntityRenderer<T> {
     }
 
     @Override
-    public void render(EntityRenderState entityRenderState, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-        setModelProperties(animatable);
-        super.render(entityRenderState, poseStack, bufferSource, packedLight);
+    public void render(T entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+        setModelProperties(entity);
+        super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
     }
 
     protected void setModelProperties(T entity) {

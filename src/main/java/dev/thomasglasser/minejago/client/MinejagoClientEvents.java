@@ -59,8 +59,6 @@ import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
 import dev.thomasglasser.minejago.world.level.block.entity.TeapotBlockEntity;
-import dev.thomasglasser.minejago.world.level.storage.PowerData;
-import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
 import dev.thomasglasser.tommylib.api.client.ClientUtils;
 import dev.thomasglasser.tommylib.api.client.renderer.entity.ThrownSwordRenderer;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
@@ -74,15 +72,10 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.BossHealthOverlay;
-import net.minecraft.client.model.BoatModel;
 import net.minecraft.client.model.geom.EntityModelSet;
-import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.BiomeColors;
-import net.minecraft.client.renderer.blockentity.BrushableBlockRenderer;
-import net.minecraft.client.renderer.entity.BoatRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
-import net.minecraft.client.renderer.entity.state.PlayerRenderState;
 import net.minecraft.client.resources.PlayerSkin;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Holder;
@@ -92,11 +85,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.util.ARGB;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.raid.Raid;
-import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -117,7 +110,6 @@ import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.event.RenderPlayerEvent;
 import net.neoforged.neoforge.client.event.SelectMusicEvent;
-import net.neoforged.neoforge.client.renderstate.RegisterRenderStateModifiersEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.tslat.tes.api.util.TESClientUtil;
 import org.lwjgl.glfw.GLFW;
@@ -166,7 +158,7 @@ public class MinejagoClientEvents {
         if (mc.level != null && !inWorldHud) {
             Optional<Holder.Reference<Power>> power = mc.level.holder(entity.getData(MinejagoAttachmentTypes.POWER).power());
             if (power.isPresent()) {
-                TESClientUtil.prepRenderForTexture(power.orElseThrow().value().getIcon(mc.level.registryAccess().lookupOrThrow(MinejagoRegistries.POWER)));
+                TESClientUtil.prepRenderForTexture(power.orElseThrow().value().getIcon(mc.level.registryAccess().registryOrThrow(MinejagoRegistries.POWER)));
                 guiGraphics.pose().pushPose();
                 guiGraphics.pose().scale(0.5f, 0.5f, 1.0f);
                 TESClientUtil.drawSimpleTexture(guiGraphics, -2, -1, 18, 18, 32, 32, 32, 32, 32, 32);
@@ -182,9 +174,6 @@ public class MinejagoClientEvents {
         if (Minejago.Dependencies.RYOAMIC_LIGHTS.isInstalled()) MinejagoDynamicLights.register();
     }
 
-    private static final ModelLayerLocation ENCHANTED_BOAT_LAYER = new ModelLayerLocation(Minejago.modLoc("boat/enchanted"), "main");
-    private static final ModelLayerLocation ENCHANTED_CHEST_BOAT_LAYER = new ModelLayerLocation(Minejago.modLoc("chest_boat/enchanted"), "main");
-
     public static void onRegisterLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(ThrownBoneKnifeModel.LAYER_LOCATION, ThrownBoneKnifeModel::createBodyLayer);
         event.registerLayerDefinition(BambooStaffModel.LAYER_LOCATION, BambooStaffModel::createBodyLayer);
@@ -194,8 +183,6 @@ public class MinejagoClientEvents {
         event.registerLayerDefinition(KrunchaModel.LAYER_LOCATION, KrunchaModel::createBodyLayer);
         event.registerLayerDefinition(NuckalModel.LAYER_LOCATION, NuckalModel::createBodyLayer);
         event.registerLayerDefinition(SpinjitzuModel.LAYER_LOCATION, SpinjitzuModel::createBodyLayer);
-        event.registerLayerDefinition(ENCHANTED_BOAT_LAYER, BoatModel::createBoatModel);
-        event.registerLayerDefinition(ENCHANTED_CHEST_BOAT_LAYER, BoatModel::createChestBoatModel);
     }
 
     public static void onRegisterRenderer(EntityRenderersEvent.RegisterRenderers event) {
@@ -225,11 +212,8 @@ public class MinejagoClientEvents {
         event.registerEntityRenderer(MinejagoEntityTypes.SPINNING_DUMMIES_SPINJITZU_COURSE_ELEMENT.get(), pContext -> new DirectionalSpinjitzuCourseElementRenderer<>(pContext, new SpinningSpinjitzuCourseElementModel<SpinningDummiesSpinjitzuCourseElement>(MinejagoEntityTypes.SPINNING_DUMMIES_SPINJITZU_COURSE_ELEMENT.getId(), "structure")));
         event.registerEntityRenderer(MinejagoEntityTypes.SWIRLING_KNIVES_SPINJITZU_COURSE_ELEMENT.get(), pContext -> new DirectionalSpinjitzuCourseElementRenderer<>(pContext, new SpinningSpinjitzuCourseElementModel<SwirlingKnivesSpinjitzuCourseElement>(MinejagoEntityTypes.SWIRLING_KNIVES_SPINJITZU_COURSE_ELEMENT.getId(), "structure")));
         event.registerEntityRenderer(MinejagoEntityTypes.SPINNING_AXES_SPINJITZU_COURSE_ELEMENT.get(), pContext -> new DirectionalSpinjitzuCourseElementRenderer<>(pContext, new SpinningAxesSpinjitzuCourseElementModel()));
-        event.registerEntityRenderer(MinejagoBlocks.ENCHANTED_WOOD_SET.boat().get().getEntityType(), context -> new BoatRenderer(context, ENCHANTED_BOAT_LAYER));
-        event.registerEntityRenderer(MinejagoBlocks.ENCHANTED_WOOD_SET.chestBoat().get().getEntityType(), context -> new BoatRenderer(context, ENCHANTED_CHEST_BOAT_LAYER));
 
         event.registerBlockEntityRenderer(MinejagoBlockEntityTypes.DRAGON_HEAD.get(), pContext -> new DragonHeadRenderer());
-        event.registerBlockEntityRenderer(MinejagoBlockEntityTypes.BRUSHABLE.get(), BrushableBlockRenderer::new);
         event.registerBlockEntityRenderer(MinejagoBlockEntityTypes.DRAGON_BUTTON.get(), context -> new DragonButtonRenderer(MinejagoBlocks.DRAGON_BUTTON.getId()));
     }
 
@@ -254,7 +238,7 @@ public class MinejagoClientEvents {
     public static void onRegisterItemColorHandlers(RegisterColorHandlersEvent.Item event) {
         event.register((pStack, pTintIndex) -> {
             if (pTintIndex == 0)
-                return ARGB.opaque(pStack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).getColor());
+                return FastColor.ARGB32.opaque(pStack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).getColor());
             return -1;
         }, MinejagoItems.FILLED_TEACUP.get());
         event.register((itemStack, i) -> {
@@ -303,17 +287,15 @@ public class MinejagoClientEvents {
     }
 
     public static void onPostPlayerRender(RenderPlayerEvent.Post event) {
-        PlayerRenderState state = event.getRenderState();
-        SpinjitzuModel<PlayerRenderState> model = new SpinjitzuModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(SpinjitzuModel.LAYER_LOCATION));
-        Boolean active = state.getRenderData(SpinjitzuData.ACTIVE);
-        Integer startTicks = state.getRenderData(SpinjitzuData.START_TICKS);
-        Integer color = state.getRenderData(PowerData.COLOR);
-        if (active != null && active && startTicks != null && startTicks <= 0 && color != null) {
-            model.setupAnim(state);
+        Player player = event.getEntity();
+        SpinjitzuModel<Player> model = new SpinjitzuModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(SpinjitzuModel.LAYER_LOCATION));
+        if (player.getData(MinejagoAttachmentTypes.SPINJITZU).active() && TommyLibServices.ENTITY.getPersistentData(player).getInt(ClientboundStartSpinjitzuPayload.KEY_SPINJITZUSTARTTICKS) <= 0) {
+            model.setupAnim(player, 0, 0, player.tickCount + event.getPartialTick(), 0, 0);
             model.getBody().copyFrom(event.getRenderer().getModel().body);
-            float scale = state.scale;
+            float scale = (float) player.getAttributeValue(Attributes.SCALE);
             event.getPoseStack().scale(scale, scale, scale);
-            model.render(event.getPoseStack(), event.getMultiBufferSource(), (int) state.ageInTicks, event.getPartialTick(), 0xFF000000 | color);
+            int color = player.level().holderOrThrow(player.getData(MinejagoAttachmentTypes.POWER).power()).value().getColor().getValue();
+            model.render(event.getPoseStack(), event.getMultiBufferSource(), player.tickCount, event.getPartialTick(), 0xFF000000 | color);
         }
     }
 
@@ -343,18 +325,6 @@ public class MinejagoClientEvents {
 
     public static void addSkulkinRaid(UUID id) {
         skulkinRaids.add(id);
-    }
-
-    public static void onRegisterRenderStateModifiers(RegisterRenderStateModifiersEvent event) {
-        event.registerEntityModifier(PlayerRenderer.class, (player, renderState) -> {
-            renderState.setRenderData(MinejagoClientUtils.RENDER_SNAPSHOT, MinejagoClientUtils.renderSnapshotTesterLayer(player));
-            renderState.setRenderData(MinejagoClientUtils.SNAPSHOT_CHOICE, MinejagoClientUtils.snapshotChoice(player));
-            renderState.setRenderData(MinejagoClientUtils.RENDER_DEV, MinejagoClientUtils.renderDevLayer(player));
-            renderState.setRenderData(MinejagoClientUtils.RENDER_LEGACY_DEV, MinejagoClientUtils.renderLegacyDevLayer(player));
-            renderState.setRenderData(SpinjitzuData.ACTIVE, player.getData(MinejagoAttachmentTypes.SPINJITZU).active());
-            renderState.setRenderData(SpinjitzuData.START_TICKS, TommyLibServices.ENTITY.getPersistentData(player).getInt(ClientboundStartSpinjitzuPayload.KEY_SPINJITZUSTARTTICKS));
-            renderState.setRenderData(PowerData.COLOR, player.registryAccess().holderOrThrow(player.getData(MinejagoAttachmentTypes.POWER).power()).value().getColor().getValue());
-        });
     }
 
     public static void onBuildCreativeModeTabContents(BuildCreativeModeTabContentsEvent event) {
@@ -402,7 +372,7 @@ public class MinejagoClientEvents {
 
             // Leaves Sets
             event.insertAfter(Items.CHERRY_LEAVES.getDefaultInstance(), MinejagoBlocks.FOCUS_LEAVES_SET.leaves().toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-            event.insertAfter(event.getParameters().enabledFeatures().contains(FeatureFlags.WINTER_DROP) ? Items.PALE_OAK_SAPLING.getDefaultInstance() : Items.CHERRY_SAPLING.getDefaultInstance(), MinejagoBlocks.FOCUS_LEAVES_SET.sapling().toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(Items.CHERRY_SAPLING.getDefaultInstance(), MinejagoBlocks.FOCUS_LEAVES_SET.sapling().toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
         } else if (event.getTabKey() == CreativeModeTabs.FUNCTIONAL_BLOCKS) {
             event.insertAfter(Items.SUSPICIOUS_SAND.getDefaultInstance(), MinejagoBlocks.SUSPICIOUS_RED_SAND.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(Items.CHISELED_BOOKSHELF.getDefaultInstance(), MinejagoBlocks.SCROLL_SHELF.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
@@ -413,7 +383,7 @@ public class MinejagoClientEvents {
             event.insertAfter(MinejagoBlocks.ENCHANTED_WOOD_SET.sign().toStack(), MinejagoBlocks.ENCHANTED_WOOD_SET.hangingSign().toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 
             // Colored Blocks
-            event.insertAfter(Raid.getOminousBannerInstance(event.getParameters().holders().lookupOrThrow(Registries.BANNER_PATTERN)), MinejagoBlocks.TEAPOT.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(Raid.getLeaderBannerInstance(event.getParameters().holders().lookupOrThrow(Registries.BANNER_PATTERN)), MinejagoBlocks.TEAPOT.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(MinejagoBlocks.TEAPOT.toStack(), MinejagoBlocks.TEAPOTS.get(DyeColor.WHITE).toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(MinejagoBlocks.TEAPOTS.get(DyeColor.WHITE).toStack(), MinejagoBlocks.TEAPOTS.get(DyeColor.LIGHT_GRAY).toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(MinejagoBlocks.TEAPOTS.get(DyeColor.LIGHT_GRAY).toStack(), MinejagoBlocks.TEAPOTS.get(DyeColor.GRAY).toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
@@ -448,8 +418,8 @@ public class MinejagoClientEvents {
             event.insertAfter(Items.WRITABLE_BOOK.getDefaultInstance(), MinejagoItems.WRITABLE_SCROLL.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 
             // Wood Sets
-            event.insertAfter(Items.CHERRY_CHEST_BOAT.getDefaultInstance(), MinejagoBlocks.ENCHANTED_WOOD_SET.boat().toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-            event.insertAfter(MinejagoBlocks.ENCHANTED_WOOD_SET.boat().toStack(), MinejagoBlocks.ENCHANTED_WOOD_SET.chestBoat().toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(Items.CHERRY_CHEST_BOAT.getDefaultInstance(), MinejagoBlocks.ENCHANTED_WOOD_SET.boatItem().toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoBlocks.ENCHANTED_WOOD_SET.boatItem().toStack(), MinejagoBlocks.ENCHANTED_WOOD_SET.chestBoatItem().toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
         } else if (event.getTabKey() == CreativeModeTabs.COMBAT) {
             // Unique Weapons
             event.insertAfter(Items.MACE.getDefaultInstance(), MinejagoItems.BAMBOO_STAFF.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
@@ -492,9 +462,7 @@ public class MinejagoClientEvents {
             event.insertAfter(Items.BIRCH_LEAVES.getDefaultInstance(), Items.JUNGLE_LEAVES.getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(Items.JUNGLE_LEAVES.getDefaultInstance(), Items.ACACIA_LEAVES.getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(Items.ACACIA_LEAVES.getDefaultInstance(), Items.DARK_OAK_LEAVES.getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-            if (event.getParameters().enabledFeatures().contains(FeatureFlags.WINTER_DROP))
-                event.insertAfter(Items.DARK_OAK_LEAVES.getDefaultInstance(), Items.PALE_OAK_LEAVES.getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-            event.insertAfter(event.getParameters().enabledFeatures().contains(FeatureFlags.WINTER_DROP) ? Items.PALE_OAK_LEAVES.getDefaultInstance() : Items.DARK_OAK_LEAVES.getDefaultInstance(), Items.MANGROVE_LEAVES.getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(Items.DARK_OAK_LEAVES.getDefaultInstance(), Items.MANGROVE_LEAVES.getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(Items.MANGROVE_LEAVES.getDefaultInstance(), Items.CHERRY_LEAVES.getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(Items.CHERRY_LEAVES.getDefaultInstance(), MinejagoBlocks.FOCUS_LEAVES_SET.leaves().toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(MinejagoBlocks.FOCUS_LEAVES_SET.leaves().toStack(), Items.AZALEA_LEAVES.getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);

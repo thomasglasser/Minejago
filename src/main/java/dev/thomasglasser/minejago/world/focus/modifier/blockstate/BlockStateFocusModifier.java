@@ -47,7 +47,7 @@ public class BlockStateFocusModifier extends FocusModifier {
             else if (json.has("block")) {
                 ResourceLocation loc = ResourceLocation.CODEC.parse(JsonOps.INSTANCE, json.get("block")).result().orElse(ResourceLocation.withDefaultNamespace(""));
                 if (BuiltInRegistries.BLOCK.containsKey(loc))
-                    block = BuiltInRegistries.BLOCK.getValue(loc);
+                    block = BuiltInRegistries.BLOCK.get(loc);
                 else {
                     Minejago.LOGGER.warn("Failed to parse block state focus modifier \"" + id + "\", invalid format: block not found.");
                     return Optional.empty();

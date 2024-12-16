@@ -20,14 +20,14 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.ai.memory.WalkTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.ExtendedBehaviour;
-import net.tslat.smartbrainlib.util.BrainUtil;
+import net.tslat.smartbrainlib.util.BrainUtils;
 
 public class FleeSkulkinRaidAndDespawn<T extends SkulkinRaider> extends ExtendedBehaviour<T> {
     public static final List<Pair<MemoryModuleType<?>, MemoryStatus>> MEMORY_REQUIREMENTS = List.of(Pair.of(MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT));
 
     @Override
     protected boolean checkExtraStartConditions(ServerLevel level, T entity) {
-        return !BrainUtil.hasMemory(entity, MemoryModuleType.ATTACK_TARGET)
+        return !BrainUtils.hasMemory(entity, MemoryModuleType.ATTACK_TARGET)
                 && !entity.isVehicle()
                 && entity.getCurrentRaid() != null
                 && entity.getCurrentRaid().getEscapePos() != null
@@ -64,7 +64,7 @@ public class FleeSkulkinRaidAndDespawn<T extends SkulkinRaider> extends Extended
                 List<SkulkinHorse> horses = entity.level().getEntitiesOfClass(SkulkinHorse.class, entity.getBoundingBox().inflate(8), skulkinHorse -> !skulkinHorse.hasControllingPassenger());
                 if (!horses.isEmpty()) entity.startRiding(horses.getFirst());
             }
-            BrainUtil.setMemory(entity, MemoryModuleType.WALK_TARGET, new WalkTarget(raid.getEscapePos(), 1.4f, 4));
+            BrainUtils.setMemory(entity, MemoryModuleType.WALK_TARGET, new WalkTarget(raid.getEscapePos(), 1.4f, 4));
         }
     }
 

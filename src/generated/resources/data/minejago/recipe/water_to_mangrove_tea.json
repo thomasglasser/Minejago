@@ -8,6 +8,8 @@
   },
   "experience": 0.5,
   "group": "mangrove_tea",
-  "ingredient": "minecraft:mangrove_leaves",
+  "ingredient": {
+    "item": "minecraft:mangrove_leaves"
+  },
   "result": "minejago:mangrove_tea"
 }

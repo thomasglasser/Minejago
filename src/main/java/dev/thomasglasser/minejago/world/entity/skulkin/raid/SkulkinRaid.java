@@ -40,10 +40,8 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.raid.Raid;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -429,7 +427,7 @@ public class SkulkinRaid {
             spawnBosses(i, pos);
 
         for (int l = 0; l < j; l++) {
-            SkulkinRaider raider = MinejagoEntityTypes.SKULKIN.get().create(this.level, EntitySpawnReason.EVENT);
+            SkulkinRaider raider = MinejagoEntityTypes.SKULKIN.get().create(this.level);
             if (raider == null) {
                 break;
             }
@@ -439,13 +437,13 @@ public class SkulkinRaid {
             if (random.nextInt(10) + difficultyInstance.getDifficulty().getId() > 5) {
                 Mob ride;
                 if (MinejagoServerConfig.get().enableTech.get())
-                    ride = MinejagoEntityTypes.SKULL_MOTORBIKE.get().create(level, EntitySpawnReason.EVENT);
+                    ride = MinejagoEntityTypes.SKULL_MOTORBIKE.get().create(level);
                 else
-                    ride = MinejagoEntityTypes.SKULKIN_HORSE.get().create(level, EntitySpawnReason.EVENT);
+                    ride = MinejagoEntityTypes.SKULKIN_HORSE.get().create(level);
                 if (ride == null)
                     break;
                 ride.setPos((double) pos.getX() + 0.5, (double) pos.getY() + 1.0, (double) pos.getZ() + 0.5);
-                ride.finalizeSpawn(this.level, this.level.getCurrentDifficultyAt(pos), EntitySpawnReason.EVENT, null);
+                ride.finalizeSpawn(this.level, this.level.getCurrentDifficultyAt(pos), MobSpawnType.EVENT, null);
                 ride.setOnGround(true);
                 this.level.addFreshEntityWithPassengers(ride);
                 ride.moveTo(pos, 0.0F, 0.0F);
@@ -467,7 +465,7 @@ public class SkulkinRaid {
             raider.setTicksOutsideRaid(0);
             if (!isRecruited && pos != null) {
                 raider.setPos((double) pos.getX() + 0.5, (double) pos.getY() + 1.0, (double) pos.getZ() + 0.5);
-                raider.finalizeSpawn(this.level, this.level.getCurrentDifficultyAt(pos), EntitySpawnReason.EVENT, null);
+                raider.finalizeSpawn(this.level, this.level.getCurrentDifficultyAt(pos), MobSpawnType.EVENT, null);
                 raider.setOnGround(true);
                 this.level.addFreshEntityWithPassengers(raider);
             }
@@ -541,9 +539,9 @@ public class SkulkinRaid {
                                     blockpos$mutableblockpos.getX() + j1,
                                     blockpos$mutableblockpos.getZ() + j1)
                             && this.level.isPositionEntityTicking(blockpos$mutableblockpos)
-                            && (Raid.RAVAGER_SPAWN_PLACEMENT_TYPE.isSpawnPositionOk(this.level, blockpos$mutableblockpos, EntityType.RAVAGER)
-                                    || this.level.getBlockState(blockpos$mutableblockpos.below()).is(Blocks.SNOW)
-                                            && this.level.getBlockState(blockpos$mutableblockpos).isAir())) {
+                            && (/*Raid.RAVAGER_SPAWN_PLACEMENT_TYPE.isSpawnPositionOk(this.level, blockpos$mutableblockpos, EntityType.RAVAGER)
+                                    || */this.level.getBlockState(blockpos$mutableblockpos.below()).is(Blocks.SNOW)
+                                    && this.level.getBlockState(blockpos$mutableblockpos).isAir())) {
                         return blockpos$mutableblockpos;
                     }
                 }
@@ -653,17 +651,17 @@ public class SkulkinRaid {
 
     private boolean spawnBosses(int i, BlockPos pos) {
         boolean bl = false;
-        Samukai samukai = MinejagoEntityTypes.SAMUKAI.get().create(this.level, EntitySpawnReason.EVENT);
+        Samukai samukai = MinejagoEntityTypes.SAMUKAI.get().create(this.level);
         if (samukai == null) {
             return false;
         }
         this.joinRaid(i, samukai, pos, false);
 
-        Nuckal nuckal = MinejagoEntityTypes.NUCKAL.get().create(this.level, EntitySpawnReason.EVENT);
+        Nuckal nuckal = MinejagoEntityTypes.NUCKAL.get().create(this.level);
         if (nuckal != null)
             this.joinRaid(i, nuckal, pos, false);
 
-        Kruncha kruncha = MinejagoEntityTypes.KRUNCHA.get().create(this.level, EntitySpawnReason.EVENT);
+        Kruncha kruncha = MinejagoEntityTypes.KRUNCHA.get().create(this.level);
         if (kruncha != null)
             this.joinRaid(i, kruncha, pos, false);
 
@@ -672,11 +670,11 @@ public class SkulkinRaid {
             if (nuckal != null) raiders.add(nuckal);
             if (kruncha != null) raiders.add(kruncha);
 
-            SkullTruck truck = MinejagoEntityTypes.SKULL_TRUCK.get().create(level, EntitySpawnReason.EVENT);
+            SkullTruck truck = MinejagoEntityTypes.SKULL_TRUCK.get().create(level);
             if (truck == null)
                 return false;
             truck.setPos((double) pos.getX() + 0.5, (double) pos.getY() + 1.0, (double) pos.getZ() + 0.5);
-            truck.finalizeSpawn(this.level, this.level.getCurrentDifficultyAt(pos), EntitySpawnReason.EVENT, null);
+            truck.finalizeSpawn(this.level, this.level.getCurrentDifficultyAt(pos), MobSpawnType.EVENT, null);
             truck.setOnGround(true);
             this.level.addFreshEntityWithPassengers(truck);
             truck.moveTo(pos, 0.0F, 0.0F);
@@ -693,11 +691,11 @@ public class SkulkinRaid {
             if (kruncha != null) raiders.add(kruncha);
 
             for (SkulkinRaider raider : raiders) {
-                Mob horse = MinejagoEntityTypes.SKULKIN_HORSE.get().create(level, EntitySpawnReason.EVENT);
+                Mob horse = MinejagoEntityTypes.SKULKIN_HORSE.get().create(level);
                 if (horse == null)
                     break;
                 horse.setPos((double) pos.getX() + 0.5, (double) pos.getY() + 1.0, (double) pos.getZ() + 0.5);
-                horse.finalizeSpawn(this.level, this.level.getCurrentDifficultyAt(pos), EntitySpawnReason.EVENT, null);
+                horse.finalizeSpawn(this.level, this.level.getCurrentDifficultyAt(pos), MobSpawnType.EVENT, null);
                 horse.setOnGround(true);
                 this.level.addFreshEntityWithPassengers(horse);
                 horse.moveTo(pos, 0.0F, 0.0F);

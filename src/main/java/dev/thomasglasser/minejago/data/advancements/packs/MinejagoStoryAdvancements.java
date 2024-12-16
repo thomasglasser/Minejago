@@ -79,9 +79,9 @@ public class MinejagoStoryAdvancements extends ExtendedAdvancementGenerator {
         AdvancementHolder enterAllGoldenWeaponsStructures = create(enterGoldenWeaponsStructure, MinejagoItems.SCYTHE_OF_QUAKES.get()/*TODO: Replace with sword of fire*/, "enter_all_golden_weapons_structures", AdvancementType.GOAL, true, true, false, AdvancementRewards.Builder.experience(50).build(), AdvancementRequirements.Strategy.AND, goldenWeaponsStructures, "The Homes of Creation", "Find all structures containing Golden Weapons");
 
         AdvancementHolder tameDragon = create(enterGoldenWeaponsStructure, Items.SADDLE, "tame_dragon", AdvancementType.CHALLENGE, true, true, false, AdvancementRewards.Builder.experience(15).build(),
-                "tame_dragon", TameAnimalTrigger.TriggerInstance.tamedAnimal(EntityPredicate.Builder.entity().of(entities, MinejagoEntityTypeTags.DRAGONS)), "Out of this World", "Tame a dragon");
+                "tame_dragon", TameAnimalTrigger.TriggerInstance.tamedAnimal(EntityPredicate.Builder.entity().of(MinejagoEntityTypeTags.DRAGONS)), "Out of this World", "Tame a dragon");
 
         AdvancementHolder useScytheOfQuakes = create(enterGoldenWeaponsStructure, MinejagoItems.SCYTHE_OF_QUAKES.get(), "use_scythe_of_quakes", AdvancementType.TASK, true, true, false, null,
-                "use_scythe_of_quakes", ItemUsedOnLocationTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location(), ItemPredicate.Builder.item().of(items, MinejagoItems.SCYTHE_OF_QUAKES.get())), "A Groundbreaking Discovery", "Perform an ability using the Scythe of Quakes");
+                "use_scythe_of_quakes", ItemUsedOnLocationTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location(), ItemPredicate.Builder.item().of(MinejagoItems.SCYTHE_OF_QUAKES.get())), "A Groundbreaking Discovery", "Perform an ability using the Scythe of Quakes");
     }
 }

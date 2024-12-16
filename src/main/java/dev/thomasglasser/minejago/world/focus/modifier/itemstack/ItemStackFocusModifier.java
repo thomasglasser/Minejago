@@ -46,7 +46,7 @@ public class ItemStackFocusModifier extends FocusModifier {
             else if (json.has("item")) {
                 ResourceLocation loc = ResourceLocation.CODEC.parse(JsonOps.INSTANCE, json.get("item")).result().orElse(ResourceLocation.withDefaultNamespace(""));
                 if (BuiltInRegistries.ITEM.containsKey(loc))
-                    item = BuiltInRegistries.ITEM.getValue(loc);
+                    item = BuiltInRegistries.ITEM.get(loc);
                 else {
                     Minejago.LOGGER.warn("Failed to parse item stack focus modifier \"" + id + "\", invalid format: item not found.");
                     return Optional.empty();

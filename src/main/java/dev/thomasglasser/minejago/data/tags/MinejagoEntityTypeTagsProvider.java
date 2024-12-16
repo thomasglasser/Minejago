@@ -3,16 +3,15 @@ package dev.thomasglasser.minejago.data.tags;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.tags.MinejagoEntityTypeTags;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
-import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
-import dev.thomasglasser.tommylib.api.data.tags.ExtendedEntityTypeTagsProvider;
 import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.tags.EntityTypeTagsProvider;
 import net.minecraft.tags.EntityTypeTags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
-public class MinejagoEntityTypeTagsProvider extends ExtendedEntityTypeTagsProvider {
+public class MinejagoEntityTypeTagsProvider extends EntityTypeTagsProvider {
     public MinejagoEntityTypeTagsProvider(PackOutput pOutput, CompletableFuture<HolderLookup.Provider> pProvider, @Nullable ExistingFileHelper existingFileHelper) {
         super(pOutput, pProvider, Minejago.MOD_ID, existingFileHelper);
     }
@@ -40,7 +39,5 @@ public class MinejagoEntityTypeTagsProvider extends ExtendedEntityTypeTagsProvid
 
         tag(MinejagoEntityTypeTags.DRAGONS)
                 .add(MinejagoEntityTypes.EARTH_DRAGON.get());
-
-        woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET);
     }
 }

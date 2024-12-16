@@ -4,6 +4,8 @@
   "brewing_time": 800,
   "experience": 0.35,
   "group": "potion",
-  "ingredient": "minecraft:rabbit_foot",
+  "ingredient": {
+    "item": "minecraft:rabbit_foot"
+  },
   "result": "minecraft:leaping"
 }

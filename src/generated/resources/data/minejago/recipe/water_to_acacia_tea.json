@@ -8,6 +8,8 @@
   },
   "experience": 0.5,
   "group": "acacia_tea",
-  "ingredient": "minecraft:acacia_leaves",
+  "ingredient": {
+    "item": "minecraft:acacia_leaves"
+  },
   "result": "minejago:acacia_tea"
 }

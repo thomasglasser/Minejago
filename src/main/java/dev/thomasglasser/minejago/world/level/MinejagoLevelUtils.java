@@ -75,7 +75,7 @@ public final class MinejagoLevelUtils {
         int endX = centerPos.getX() + range;
         int endZ = centerPos.getZ() + range;
 
-        Registry<Structure> registry = level.registryAccess().lookupOrThrow(Registries.STRUCTURE);
+        Registry<Structure> registry = level.registryAccess().registryOrThrow(Registries.STRUCTURE);
 
         for (int x = startX; x <= endX; x++) {
             for (int z = startZ; z <= endZ; z++) {

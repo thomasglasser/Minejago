@@ -46,10 +46,10 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -63,7 +63,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
 import net.tslat.smartbrainlib.api.core.behaviour.FirstApplicableBehaviour;
-import net.tslat.smartbrainlib.util.BrainUtil;
+import net.tslat.smartbrainlib.util.BrainUtils;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
@@ -123,7 +123,7 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
     }
 
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_146746_, DifficultyInstance p_146747_, EntitySpawnReason p_363316_, @Nullable SpawnGroupData p_146749_) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_146746_, DifficultyInstance p_146747_, MobSpawnType p_363316_, @Nullable SpawnGroupData p_146749_) {
         SpawnGroupData data = super.finalizeSpawn(p_146746_, p_146747_, p_363316_, p_146749_);
         populateDefaultEquipmentSlots(random, p_146747_);
         setCanPickUpLoot(false);
@@ -134,13 +134,13 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         boolean canGivePower = !player.getData(MinejagoAttachmentTypes.POWER).given() || MinejagoServerConfig.get().allowChange.get();
         if (canGivePower && player.getInventory().hasAnyMatching(itemStack -> itemStack.has(MinejagoDataComponents.GOLDEN_WEAPONS_MAP.get()))) {
-            Registry<Power> registry = level().registryAccess().lookupOrThrow(MinejagoRegistries.POWER);
+            Registry<Power> registry = level().registryAccess().registryOrThrow(MinejagoRegistries.POWER);
 
             if (!MinejagoServerConfig.get().drainPool.get() || (powersToGive.size() <= 1)) {
                 powersToGive = new ArrayList<>(registry.registryKeySet());
                 if (!MinejagoServerConfig.get().enableNoPower.get())
                     removePowersToGive(MinejagoPowers.NONE);
-                powersToGive.removeIf(key -> registry.getValue(key).isSpecial());
+                powersToGive.removeIf(key -> registry.get(key).isSpecial());
             }
 
             if (player instanceof ServerPlayer serverPlayer && hand == InteractionHand.MAIN_HAND) {
@@ -158,8 +158,8 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
                         serverPlayer.displayClientMessage(Component.translatable(Wu.NO_POWER_GIVEN_KEY), true);
                         givingPower = false;
                     } else {
-                        BrainUtil.setMemory(this, MemoryModuleType.INTERACTION_TARGET, serverPlayer);
-                        BrainUtil.setMemory(this, MinejagoMemoryModuleTypes.SELECTED_POWER.get(), newPower);
+                        BrainUtils.setMemory(this, MemoryModuleType.INTERACTION_TARGET, serverPlayer);
+                        BrainUtils.setMemory(this, MinejagoMemoryModuleTypes.SELECTED_POWER.get(), newPower);
                     }
                 }
             }
@@ -200,7 +200,7 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
                         } else {
                             courseData.put(player, new HashSet<>());
                             BlockPos pos = teapotPos.get();
-                            BrainUtil.setMemory(this, MemoryModuleType.WALK_TARGET, new WalkTarget(pos.relative(Direction.getRandom(random)), 1f, 0));
+                            BrainUtils.setMemory(this, MemoryModuleType.WALK_TARGET, new WalkTarget(pos.relative(Direction.getRandom(random)), 1f, 0));
                         }
                     } else {
                         playSound(SoundEvents.VILLAGER_NO, 1.0f, 0.9f);
@@ -300,14 +300,14 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
     }
 
     @Override
-    public boolean hurtServer(ServerLevel p_376221_, DamageSource p_376460_, float p_376610_) {
-        if (!courseData.isEmpty() && !p_376460_.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+    public boolean hurt(DamageSource source, float amount) {
+        if (!courseData.isEmpty() && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             if (isLifting()) {
                 markInterrupted();
             }
             return false;
         }
-        return super.hurtServer(p_376221_, p_376460_, p_376610_);
+        return super.hurt(source, amount);
     }
 
     public Map<Player, Set<AbstractSpinjitzuCourseElement<?>>> getCourseData() {

@@ -4,6 +4,8 @@
   "brewing_time": 800,
   "experience": 0.35,
   "group": "potion",
-  "ingredient": "minecraft:nether_wart",
+  "ingredient": {
+    "item": "minecraft:nether_wart"
+  },
   "result": "minecraft:awkward"
 }

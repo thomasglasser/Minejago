@@ -1,46 +1,53 @@
 package dev.thomasglasser.minejago.world.item.equipment;
 
+import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
-import dev.thomasglasser.minejago.tags.MinejagoItemTags;
-import dev.thomasglasser.tommylib.api.world.item.equipment.ExtendedArmorMaterial;
+import dev.thomasglasser.tommylib.api.registration.DeferredHolder;
+import dev.thomasglasser.tommylib.api.registration.DeferredRegister;
 import java.util.EnumMap;
-import java.util.Optional;
+import java.util.List;
 import net.minecraft.Util;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.item.equipment.ArmorType;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 
-public interface MinejagoArmorMaterials {
-    ExtendedArmorMaterial SKELETAL = new ExtendedArmorMaterial(13, Util.make(new EnumMap<>(ArmorType.class), defense -> {
-        defense.put(ArmorType.BOOTS, 2);
-        defense.put(ArmorType.LEGGINGS, 3);
-        defense.put(ArmorType.CHESTPLATE, 4);
-        defense.put(ArmorType.HELMET, 2);
-        defense.put(ArmorType.BODY, 6);
-    }), 10, MinejagoSoundEvents.ARMOR_EQUIP_SKELETAL, 0, 0, Optional.of(MinejagoItemTags.REPAIRS_SKELETAL_ARMOR), Optional.empty());
+public class MinejagoArmorMaterials {
+    public static final DeferredRegister<ArmorMaterial> ARMOR_MATERIALS = DeferredRegister.create(Registries.ARMOR_MATERIAL, Minejago.MOD_ID);
 
-    ExtendedArmorMaterial SAMUKAI = new ExtendedArmorMaterial(30, Util.make(new EnumMap<>(ArmorType.class), defense -> {
-        defense.put(ArmorType.BOOTS, 4);
-        defense.put(ArmorType.LEGGINGS, 6);
-        defense.put(ArmorType.CHESTPLATE, 8);
-        defense.put(ArmorType.HELMET, 4);
-        defense.put(ArmorType.BODY, 12);
-    }), 12, MinejagoSoundEvents.ARMOR_EQUIP_SKELETAL, 1.0F, 0.1F, Optional.empty(), Optional.empty());
+    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> SKELETAL = ARMOR_MATERIALS.register("skeletal", () -> new ArmorMaterial(Util.make(new EnumMap<>(ArmorItem.Type.class), defense -> {
+        defense.put(ArmorItem.Type.BOOTS, 2);
+        defense.put(ArmorItem.Type.LEGGINGS, 3);
+        defense.put(ArmorItem.Type.CHESTPLATE, 4);
+        defense.put(ArmorItem.Type.HELMET, 2);
+        defense.put(ArmorItem.Type.BODY, 6);
+    }), 10, MinejagoSoundEvents.ARMOR_EQUIP_SKELETAL, () -> Ingredient.of(Items.BONE), List.of(), 0, 0));
 
-    ExtendedArmorMaterial BLACK_GI = new ExtendedArmorMaterial(20, Util.make(new EnumMap<>(ArmorType.class), defense -> {
-        defense.put(ArmorType.BOOTS, 1);
-        defense.put(ArmorType.LEGGINGS, 2);
-        defense.put(ArmorType.CHESTPLATE, 3);
-        defense.put(ArmorType.HELMET, 1);
-        defense.put(ArmorType.BODY, 4);
-    }), 0, SoundEvents.ARMOR_EQUIP_LEATHER, 0.1F, 0.1F, Optional.empty(), Optional.empty());
+    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> SAMUKAI = ARMOR_MATERIALS.register("samukai", () -> new ArmorMaterial(Util.make(new EnumMap<>(ArmorItem.Type.class), defense -> {
+        defense.put(ArmorItem.Type.BOOTS, 4);
+        defense.put(ArmorItem.Type.LEGGINGS, 6);
+        defense.put(ArmorItem.Type.CHESTPLATE, 8);
+        defense.put(ArmorItem.Type.HELMET, 4);
+        defense.put(ArmorItem.Type.BODY, 12);
+    }), 12, MinejagoSoundEvents.ARMOR_EQUIP_SKELETAL, () -> Ingredient.EMPTY, List.of(), 1, 0.1F));
 
-    ExtendedArmorMaterial TRAINEE_GI = new ExtendedArmorMaterial(20, Util.make(new EnumMap<>(ArmorType.class), defense -> {
-        defense.put(ArmorType.BOOTS, 2);
-        defense.put(ArmorType.LEGGINGS, 4);
-        defense.put(ArmorType.CHESTPLATE, 6);
-        defense.put(ArmorType.HELMET, 2);
-        defense.put(ArmorType.BODY, 8);
-    }), 0, SoundEvents.ARMOR_EQUIP_LEATHER, 0.2F, 0.2F, Optional.empty(), Optional.empty());
+    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> BLACK_GI = ARMOR_MATERIALS.register("black_gi", () -> new ArmorMaterial(Util.make(new EnumMap<>(ArmorItem.Type.class), defense -> {
+        defense.put(ArmorItem.Type.BOOTS, 1);
+        defense.put(ArmorItem.Type.LEGGINGS, 2);
+        defense.put(ArmorItem.Type.CHESTPLATE, 3);
+        defense.put(ArmorItem.Type.HELMET, 1);
+        defense.put(ArmorItem.Type.BODY, 4);
+    }), 0, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.EMPTY, List.of(), 0.1F, 0.1F));
 
-    static void init() {}
+    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> TRAINEE_GI = ARMOR_MATERIALS.register("trainee_gi", () -> new ArmorMaterial(Util.make(new EnumMap<>(ArmorItem.Type.class), defense -> {
+        defense.put(ArmorItem.Type.BOOTS, 2);
+        defense.put(ArmorItem.Type.LEGGINGS, 4);
+        defense.put(ArmorItem.Type.CHESTPLATE, 6);
+        defense.put(ArmorItem.Type.HELMET, 2);
+        defense.put(ArmorItem.Type.BODY, 8);
+    }), 0, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.EMPTY, List.of(), 0.2F, 0.2F));
+
+    public static void init() {}
 }

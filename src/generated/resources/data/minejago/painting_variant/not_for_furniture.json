@@ -1,13 +1,5 @@
 {
   "asset_id": "minejago:not_for_furniture",
-  "author": {
-    "color": "gray",
-    "translate": "painting.minejago.not_for_furniture.author"
-  },
   "height": 2,
-  "title": {
-    "color": "yellow",
-    "translate": "painting.minejago.not_for_furniture.title"
-  },
   "width": 1
 }

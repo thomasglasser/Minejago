@@ -1,5 +1,7 @@
 package dev.thomasglasser.minejago.client.model;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.tommylib.api.client.renderer.entity.ThrownSwordRenderer;
@@ -18,8 +20,11 @@ public class ScytheModel extends Model {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Minejago.modLoc("scythe"), "in_hand");
     public static final ResourceLocation TEXTURE = ThrownSwordRenderer.TEXTURE.apply(MinejagoItems.SCYTHE_OF_QUAKES.getId());
 
+    private final ModelPart body;
+
     public ScytheModel(ModelPart root) {
-        super(root, RenderType::entityCutout);
+        super(RenderType::entityCutout);
+        this.body = root.getChild("body");
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -31,5 +36,10 @@ public class ScytheModel extends Model {
                 .texOffs(4, 0).addBox(-7.5F, -29.0F, 0.0F, 9.0F, 5.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 24.0F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 32, 32);
+    }
+
+    @Override
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int i, int i1, int i2) {
+        body.render(poseStack, vertexConsumer, i, i1, i2);
     }
 }

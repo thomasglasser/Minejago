@@ -5,7 +5,6 @@ import dev.thomasglasser.minejago.world.level.block.entity.DragonButtonBlockEnti
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.model.DefaultedBlockGeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
-import software.bernie.geckolib.renderer.GeoRenderer;
 
 public class DragonButtonRenderer extends GeoBlockRenderer<DragonButtonBlockEntity> {
     public DragonButtonRenderer(ResourceLocation location) {
@@ -21,7 +20,7 @@ public class DragonButtonRenderer extends GeoBlockRenderer<DragonButtonBlockEnti
             }
 
             @Override
-            public ResourceLocation getModelResource(DragonButtonBlockEntity animatable, GeoRenderer<DragonButtonBlockEntity> renderer) {
+            public ResourceLocation getModelResource(DragonButtonBlockEntity animatable) {
                 return animatable.getBlockState().getValue(DragonButtonBlock.PART) == DragonButtonBlock.Part.TOP ? top : bottom;
             }
         });

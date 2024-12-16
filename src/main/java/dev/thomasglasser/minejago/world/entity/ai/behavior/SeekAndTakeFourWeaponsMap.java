@@ -18,7 +18,7 @@ import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.decoration.Painting;
 import net.minecraft.world.phys.Vec3;
 import net.tslat.smartbrainlib.api.core.behaviour.ExtendedBehaviour;
-import net.tslat.smartbrainlib.util.BrainUtil;
+import net.tslat.smartbrainlib.util.BrainUtils;
 
 public class SeekAndTakeFourWeaponsMap<T extends SkulkinRaider> extends ExtendedBehaviour<T> {
     private static final List<Pair<MemoryModuleType<?>, MemoryStatus>> MEMORY_REQUIREMENTS = List.of(Pair.of(MemoryModuleType.WALK_TARGET, MemoryStatus.REGISTERED));
@@ -49,14 +49,14 @@ public class SeekAndTakeFourWeaponsMap<T extends SkulkinRaider> extends Extended
     @Override
     protected void tick(ServerLevel level, T entity, long gameTime) {
         super.tick(level, entity, gameTime);
-        if (!BrainUtil.hasMemory(entity, MemoryModuleType.WALK_TARGET)) {
+        if (!BrainUtils.hasMemory(entity, MemoryModuleType.WALK_TARGET)) {
             if (visited.contains(entity.blockPosition())) {
                 Vec3 toCheck;
                 do {
                     toCheck = DefaultRandomPos.getPosTowards(entity, 15, 8, Vec3.atBottomCenterOf(MinejagoLevelUtils.getGoldenWeaponsMapHolderNearby(entity, 16).blockPosition()), (float) (Math.PI / 2));
                 } while (toCheck == null || visited.contains(new BlockPos((int) toCheck.x, (int) toCheck.y, (int) toCheck.z)));
                 speedModifier = 1;
-                BrainUtil.setMemory(entity, MemoryModuleType.WALK_TARGET, new WalkTarget(toCheck, speedModifier, 1));
+                BrainUtils.setMemory(entity, MemoryModuleType.WALK_TARGET, new WalkTarget(toCheck, speedModifier, 1));
                 entity.stopRiding();
             } else if (MinejagoLevelUtils.isGoldenWeaponsMapHolderNearby(entity, 1)) {
                 Painting fw = MinejagoLevelUtils.getGoldenWeaponsMapHolderNearby(entity, 1);

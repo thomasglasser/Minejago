@@ -4,6 +4,8 @@
   "brewing_time": 800,
   "experience": 0.35,
   "group": "potion",
-  "ingredient": "minecraft:glistering_melon_slice",
+  "ingredient": {
+    "item": "minecraft:glistering_melon_slice"
+  },
   "result": "minecraft:healing"
 }

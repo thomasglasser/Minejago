@@ -5,7 +5,6 @@ import dev.thomasglasser.minejago.world.inventory.DragonInventoryMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -38,13 +37,13 @@ public class DragonInventoryScreen extends AbstractContainerScreen<DragonInvento
     protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
         int i = (this.width - this.imageWidth) / 2;
         int j = (this.height - this.imageHeight) / 2;
-        guiGraphics.blit(RenderType::guiTextured, HORSE_INVENTORY_LOCATION, i, j, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
+        guiGraphics.blit(HORSE_INVENTORY_LOCATION, i, j, 0, 0, this.imageWidth, this.imageHeight);
         if (this.inventoryColumns > 0) {
-            guiGraphics.blitSprite(RenderType::guiTextured, CHEST_SLOTS_SPRITE, 90, 54, 0, 0, i + 79, j + 17, this.inventoryColumns * 18, 54);
+            guiGraphics.blitSprite(CHEST_SLOTS_SPRITE, 90, 54, 0, 0, i + 79, j + 17, this.inventoryColumns * 18, 54);
         }
 
         if (this.dragon.isSaddleable()) {
-            guiGraphics.blitSprite(RenderType::guiTextured, SADDLE_SLOT_SPRITE, i + 7, j + 35 - 18, 18, 18);
+            guiGraphics.blitSprite(SADDLE_SLOT_SPRITE, i + 7, j + 35 - 18, 18, 18);
         }
 
         InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, i + 26, j + 18, i + 78, j + 70, 17, 0.25F, this.xMouse, this.yMouse, this.dragon);

@@ -8,6 +8,8 @@
   },
   "experience": 0.5,
   "group": "birch_tea",
-  "ingredient": "minecraft:birch_leaves",
+  "ingredient": {
+    "item": "minecraft:birch_leaves"
+  },
   "result": "minejago:birch_tea"
 }

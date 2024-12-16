@@ -40,8 +40,6 @@ public class MinejagoItemTagsProvider extends ExtendedItemTagsProvider {
                 .add(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.BOW).value())
                 .add(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.KNIFE).value())
                 .add(MinejagoArmors.SAMUKAIS_CHESTPLATE.get());
-        tag(ItemTags.MAP_INVISIBILITY_EQUIPMENT)
-                .addTag(MinejagoItemTags.GI);
 
         copy(MinejagoBlockTags.TEAPOTS, MinejagoItemTags.TEAPOTS);
 

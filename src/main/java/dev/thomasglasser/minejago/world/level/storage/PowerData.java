@@ -2,7 +2,6 @@ package dev.thomasglasser.minejago.world.level.storage;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.network.ClientboundSyncPowerDataPayload;
@@ -16,7 +15,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.context.ContextKey;
 import net.minecraft.world.entity.LivingEntity;
 
 public record PowerData(ResourceKey<Power> power, boolean given) {
@@ -28,8 +26,6 @@ public record PowerData(ResourceKey<Power> power, boolean given) {
             ResourceKey.streamCodec(MinejagoRegistries.POWER), PowerData::power,
             ByteBufCodecs.BOOL, PowerData::given,
             PowerData::new);
-
-    public static final ContextKey<Integer> COLOR = Minejago.contextKey("color");
 
     public PowerData() {
         this(MinejagoPowers.NONE, false);

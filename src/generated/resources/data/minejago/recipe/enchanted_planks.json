@@ -3,7 +3,9 @@
   "category": "building",
   "group": "planks",
   "ingredients": [
-    "#minejago:enchanted_logs"
+    {
+      "tag": "minejago:enchanted_logs"
+    }
   ],
   "result": {
     "count": 4,

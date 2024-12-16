@@ -15,7 +15,9 @@
       "condition": {
         "type": "modonomicon:none"
       },
-      "item": "minejago:scroll_shelf",
+      "item": {
+        "item": "minejago:scroll_shelf"
+      },
       "text": "book.minejago.wiki.decorations.scroll.scroll_shelf.text",
       "title": "book.minejago.wiki.decorations.scroll.scroll_shelf.title"
     },
@@ -25,7 +27,9 @@
       "condition": {
         "type": "modonomicon:none"
       },
-      "item": "minejago:writable_scroll",
+      "item": {
+        "item": "minejago:writable_scroll"
+      },
       "text": "book.minejago.wiki.decorations.scroll.writable.text",
       "title": "book.minejago.wiki.decorations.scroll.writable.title"
     }

@@ -33,14 +33,14 @@ public enum TeapotBlockComponentProvider implements IBlockComponentProvider {
                 ItemStack potionStack = PotionContents.createItemStack(MinejagoItems.FILLED_TEACUP.get(), potion);
                 IElement icon = ElementHelper.INSTANCE.item(potionStack, 0.5f).translate(new Vec2(0, -2));
                 iTooltip.add(icon);
-                iTooltip.append(Component.translatable("block.minejago.teapot.waila.potion", be.getPotion() == Potions.WATER ? Blocks.WATER.getName() : PotionContents.createItemStack(Items.POTION, be.getPotion()).getItemName()).withStyle(ChatFormatting.GRAY));
+                iTooltip.append(Component.translatable("block.minejago.teapot.waila.potion", be.getPotion() == Potions.WATER ? Blocks.WATER.getName() : PotionContents.createItemStack(Items.POTION, be.getPotion()).getDisplayName()).withStyle(ChatFormatting.GRAY));
             }
 
             ItemStack item = be.getInSlot(0);
             if (!item.isEmpty()) {
                 IElement icon = ElementHelper.INSTANCE.item(item, 0.5f).translate(new Vec2(0, -2));
                 iTooltip.add(icon);
-                iTooltip.append(Component.translatable("block.minejago.teapot.waila.item", item.getItemName()).withStyle(ChatFormatting.GRAY));
+                iTooltip.append(Component.translatable("block.minejago.teapot.waila.item", item.getDisplayName()).withStyle(ChatFormatting.GRAY));
             }
 
             int cups = be.getCups();

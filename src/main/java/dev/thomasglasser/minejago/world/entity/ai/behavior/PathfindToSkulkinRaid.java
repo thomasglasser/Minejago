@@ -15,7 +15,7 @@ import net.minecraft.world.entity.ai.memory.WalkTarget;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.phys.Vec3;
 import net.tslat.smartbrainlib.api.core.behaviour.ExtendedBehaviour;
-import net.tslat.smartbrainlib.util.BrainUtil;
+import net.tslat.smartbrainlib.util.BrainUtils;
 
 public class PathfindToSkulkinRaid<T extends SkulkinRaider> extends ExtendedBehaviour<T> {
     private static final List<Pair<MemoryModuleType<?>, MemoryStatus>> MEMORY_REQUIREMENTS = List.of(Pair.of(MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT));
@@ -24,7 +24,7 @@ public class PathfindToSkulkinRaid<T extends SkulkinRaider> extends ExtendedBeha
 
     @Override
     protected boolean checkExtraStartConditions(ServerLevel level, T entity) {
-        return !BrainUtil.hasMemory(entity, MemoryModuleType.ATTACK_TARGET)
+        return !BrainUtils.hasMemory(entity, MemoryModuleType.ATTACK_TARGET)
                 && !entity.isVehicle()
                 && entity.hasActiveRaid()
                 && !entity.getCurrentRaid().isOver()
@@ -48,10 +48,10 @@ public class PathfindToSkulkinRaid<T extends SkulkinRaider> extends ExtendedBeha
                 this.recruitNearby(raid, entity);
             }
 
-            if (!BrainUtil.hasMemory(entity, MemoryModuleType.WALK_TARGET)) {
+            if (!BrainUtils.hasMemory(entity, MemoryModuleType.WALK_TARGET)) {
                 Vec3 vec3 = DefaultRandomPos.getPosTowards(entity, 15, 4, Vec3.atBottomCenterOf(raid.getCenter()), (float) (Math.PI / 2));
                 if (vec3 != null) {
-                    BrainUtil.setMemory(entity, MemoryModuleType.WALK_TARGET, new WalkTarget(vec3, 1.0f, 8));
+                    BrainUtils.setMemory(entity, MemoryModuleType.WALK_TARGET, new WalkTarget(vec3, 1.0f, 8));
                 }
             }
         }

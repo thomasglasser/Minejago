@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:crafting_transmute",
-  "category": "misc",
-  "group": "teapot_dye",
-  "input": "#minejago:teapots",
-  "material": "#c:dyes/red",
-  "result": "minejago:red_teapot"
-}
