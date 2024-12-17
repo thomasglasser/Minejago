@@ -278,7 +278,7 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
         List<Character> characters = new ArrayList<>();
         ServerLevel serverLevel = level instanceof Level ? (ServerLevel) level : level instanceof WorldGenRegion ? ((WorldGenRegion) level).getLevel() : null;
         if (serverLevel != null) {
-            for (Entity entity : serverLevel.getEntities(null, AABB.ofSize(pos.getCenter(), 256, 256, 256))) {
+            for (Entity entity : serverLevel.getEntities(null, AABB.ofSize(pos.getCenter(), 512, 512, 512))) {
                 if (entity.getType() == character) {
                     characters.add((Character) entity);
                 }
