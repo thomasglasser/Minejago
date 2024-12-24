@@ -71,13 +71,12 @@ type="required"
 versionRange="[${tslateffectslib_version},)"
 ordering="NONE"
 side="BOTH"
-# TODO: Update playeranimator
-#[[dependencies.${mod_id}]]
-#modId="playeranimator"
-#type="required"
-#versionRange="[${playeranimator_version},)"
-#ordering="NONE"
-#side="CLIENT"
+[[dependencies.${mod_id}]]
+modId="playeranimator"
+type="required"
+versionRange="[${playeranimator_version},)"
+ordering="NONE"
+side="CLIENT"
 
 # Optional Dependencies
 [[dependencies.${mod_id}]]

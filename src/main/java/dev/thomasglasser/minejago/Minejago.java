@@ -175,10 +175,11 @@ public class Minejago {
     }
 
     public enum Dependencies {
+        MODONOMICON("modonomicon"),
         MOONLIGHT_LIB("moonlight"),
+        PLAYER_ANIMATOR("playeranimator"),
         RYOAMIC_LIGHTS("ryoamiclights"),
         TRIMMED("trimmed"),
-        MODONOMICON("modonomicon"),
         TSLAT_ENTITY_STATUS("tslatentitystatus");
 
         private final String modId;

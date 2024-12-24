@@ -1,7 +1,10 @@
 package dev.thomasglasser.minejago.network;
 
+import dev.kosmx.playerAnim.api.firstPerson.FirstPersonMode;
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.client.animation.definitions.PlayerAnimations;
 import dev.thomasglasser.tommylib.api.client.ClientUtils;
+import dev.thomasglasser.tommylib.api.client.animation.AnimationUtils;
 import dev.thomasglasser.tommylib.api.network.ExtendedPacketPayload;
 import io.netty.buffer.ByteBuf;
 import java.util.UUID;
@@ -21,13 +24,12 @@ public record ClientboundStopSpinjitzuPayload(UUID uuid, boolean fail) implement
     // On Client
     public void handle(Player player) {
         Player clientPlayer = ClientUtils.getPlayerByUUID(uuid);
-        // TODO: Update playerAnimator
-//        if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled()) {
-//            if (fail)
-//                AnimationUtils.startAnimation(PlayerAnimations.Spinjitzu.WOBBLE.getAnimation(), null, clientPlayer, FirstPersonMode.VANILLA);
-//            else
-//                AnimationUtils.startAnimation(PlayerAnimations.Spinjitzu.FINISH.getAnimation(), null, clientPlayer, FirstPersonMode.VANILLA);
-//        }
+        if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled()) {
+            if (fail)
+                AnimationUtils.startAnimation(PlayerAnimations.Spinjitzu.WOBBLE.getAnimation(), null, clientPlayer, FirstPersonMode.VANILLA);
+            else
+                AnimationUtils.startAnimation(PlayerAnimations.Spinjitzu.FINISH.getAnimation(), null, clientPlayer, FirstPersonMode.VANILLA);
+        }
     }
 
     @Override
