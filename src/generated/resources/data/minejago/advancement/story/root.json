@@ -13,7 +13,7 @@
   },
   "display": {
     "announce_to_chat": false,
-    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png",
+    "background": "minejago:textures/gui/advancements/backgrounds/minejago.png",
     "description": {
       "translate": "advancement.minejago.story.root.desc"
     },

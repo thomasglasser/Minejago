@@ -24,14 +24,10 @@ import net.minecraft.advancements.critereon.ItemUsedOnLocationTrigger;
 import net.minecraft.advancements.critereon.LocationPredicate;
 import net.minecraft.advancements.critereon.PlayerTrigger;
 import net.minecraft.advancements.critereon.TameAnimalTrigger;
-import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentPredicate;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Unit;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
@@ -46,10 +42,7 @@ public class MinejagoStoryAdvancements extends ExtendedAdvancementGenerator {
 
     @Override
     public void generate(HolderLookup.Provider registries) {
-        HolderGetter<EntityType<?>> entities = registries.lookupOrThrow(Registries.ENTITY_TYPE);
-        HolderGetter<Item> items = registries.lookupOrThrow(Registries.ITEM);
-
-        AdvancementHolder root = root(MinejagoItems.SCYTHE_OF_QUAKES.get(), "root", ResourceLocation.withDefaultNamespace("textures/gui/advancements/backgrounds/stone.png"), AdvancementType.TASK, false, false, false, null,
+        AdvancementHolder root = root(MinejagoItems.SCYTHE_OF_QUAKES.get(), "root", Minejago.modLoc("textures/gui/advancements/backgrounds/minejago.png"), AdvancementType.TASK, false, false, false, null,
                 "get_crafting_table", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.CRAFTING_TABLE), "Minejago", "Long before time had a name...");
 
         AdvancementHolder enterMonastery = create(root, MinejagoItems.SCROLL.get(), "enter_monastery", AdvancementType.TASK, true, true, false, null,
