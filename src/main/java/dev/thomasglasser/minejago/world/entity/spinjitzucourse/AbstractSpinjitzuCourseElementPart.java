@@ -1,7 +1,9 @@
 package dev.thomasglasser.minejago.world.entity.spinjitzucourse;
 
+import java.util.Set;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
@@ -21,13 +23,15 @@ public abstract class AbstractSpinjitzuCourseElementPart<T extends AbstractSpinj
 
     public AbstractSpinjitzuCourseElementPart(T parent, String name, float width, float height, double offsetX, double offsetY, double offsetZ) {
         super(parent);
+        this.noCulling = true;
         this.size = EntityDimensions.scalable(width, height);
         this.refreshDimensions();
         this.name = name;
         this.offsetX = offsetX;
         this.offsetY = offsetY;
         this.offsetZ = offsetZ;
-        moveTo(parent.getX() + offsetX, parent.getY() + offsetY, parent.getZ() + offsetZ);
+        if (level() instanceof ServerLevel serverLevel)
+            teleportTo(serverLevel, parent.getX() + offsetX, parent.getY() + offsetY, parent.getZ() + offsetZ, Set.of(), parent.getYRot(), 0.0F);
     }
 
     @Override

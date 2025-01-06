@@ -1,8 +1,10 @@
 package dev.thomasglasser.minejago.world.item;
 
 import dev.thomasglasser.minejago.world.entity.spinjitzucourse.AbstractSpinjitzuCourseElement;
+import java.util.Set;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
@@ -28,9 +30,10 @@ public class SpinjitzuCourseElementItem extends Item {
                     context.getLevel().removeBlock(pos, false);
                     pos = pos.below();
                 }
-                entity.moveTo(pos.above().getBottomCenter());
                 if (context.getPlayer() != null)
-                    entity.setYRotSynced(context.getPlayer().getDirection().getOpposite().toYRot());
+                    entity.teleportTo((ServerLevel) context.getLevel(), pos.above().getBottomCenter().x, pos.above().getBottomCenter().y, pos.above().getBottomCenter().z, Set.of(), context.getPlayer().getDirection().getOpposite().toYRot(), 0.0F);
+                else
+                    entity.moveTo(pos.above().getBottomCenter());
                 context.getLevel().addFreshEntity(entity);
                 if (!(context.getPlayer() != null && context.getPlayer().getAbilities().instabuild))
                     context.getItemInHand().shrink(1);

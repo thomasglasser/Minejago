@@ -36,7 +36,6 @@ public abstract class AbstractSpinjitzuCourseElement<T extends AbstractSpinjitzu
     public static final String DEPLOY_KEY = "deploy";
     public static final String REST_KEY = "rest";
 
-    protected static final EntityDataAccessor<Float> DATA_Y_ROT = SynchedEntityData.defineId(AbstractSpinjitzuCourseElement.class, EntityDataSerializers.FLOAT);
     protected static final EntityDataAccessor<Float> DATA_ID_DAMAGE = SynchedEntityData.defineId(AbstractSpinjitzuCourseElement.class, EntityDataSerializers.FLOAT);
     protected static final EntityDataAccessor<Boolean> DATA_ID_ACTIVE = SynchedEntityData.defineId(AbstractSpinjitzuCourseElement.class, EntityDataSerializers.BOOLEAN);
     protected static final EntityDataAccessor<Integer> DATA_ID_SIGNAL_BELOW = SynchedEntityData.defineId(AbstractSpinjitzuCourseElement.class, EntityDataSerializers.INT);
@@ -57,6 +56,7 @@ public abstract class AbstractSpinjitzuCourseElement<T extends AbstractSpinjitzu
 
     public AbstractSpinjitzuCourseElement(EntityType<?> entityType, Level level, Vec3 visitBox) {
         super(entityType, level);
+        this.noCulling = true;
         this.visitBox = visitBox;
     }
 
@@ -95,19 +95,10 @@ public abstract class AbstractSpinjitzuCourseElement<T extends AbstractSpinjitzu
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(DATA_Y_ROT, 0.0F);
         builder.define(DATA_ID_DAMAGE, 0.0F);
         builder.define(DATA_ID_ACTIVE, false);
         builder.define(DATA_ID_SIGNAL_BELOW, 0);
         builder.define(DATA_ID_ACTIVE_TICKS, 0);
-    }
-
-    public void setYRotSynced(float yRot) {
-        this.entityData.set(DATA_Y_ROT, yRot);
-    }
-
-    public float getYRotSynced() {
-        return this.entityData.get(DATA_Y_ROT);
     }
 
     public void setDamage(float damage) {
@@ -162,8 +153,6 @@ public abstract class AbstractSpinjitzuCourseElement<T extends AbstractSpinjitzu
         // Ensures everything syncs properly
         if (tickCount < 2) {
             refreshDimensions();
-            if (getYRotSynced() != 0)
-                setYRot(getYRotSynced());
             for (AbstractSpinjitzuCourseElementPart<T> part : getParts()) {
                 part.setActive(isActive());
             }
@@ -269,20 +258,18 @@ public abstract class AbstractSpinjitzuCourseElement<T extends AbstractSpinjitzu
 
     @Override
     protected void addAdditionalSaveData(CompoundTag compound) {
-        compound.putFloat("y_rot", getYRotSynced());
-        compound.putFloat("damage", getDamage());
-        compound.putBoolean("active", isActive());
-        compound.putInt("signal_below", getSignalBelow());
-        compound.putInt("active_ticks", getActiveTicks());
+        compound.putFloat("Damage", getDamage());
+        compound.putBoolean("Active", isActive());
+        compound.putInt("SignalBelow", getSignalBelow());
+        compound.putInt("ActiveTicks", getActiveTicks());
     }
 
     @Override
     protected void readAdditionalSaveData(CompoundTag compound) {
-        setYRotSynced(compound.getFloat("y_rot"));
-        setDamage(compound.getFloat("damage"));
-        setActive(compound.getBoolean("active"));
-        setSignalBelow(compound.getInt("signal_below"));
-        setActiveTicks(compound.getInt("active_ticks"));
+        setDamage(compound.getFloat("Damage"));
+        setActive(compound.getBoolean("Active"));
+        setSignalBelow(compound.getInt("SignalBelow"));
+        setActiveTicks(compound.getInt("ActiveTicks"));
     }
 
     protected void setActive(boolean active) {
@@ -334,12 +321,6 @@ public abstract class AbstractSpinjitzuCourseElement<T extends AbstractSpinjitzu
 
     public void endTracking() {
         this.courseTracker = null;
-    }
-
-    @Override
-    public void moveTo(double x, double y, double z, float yRot, float xRot) {
-        setYRotSynced(yRot);
-        super.moveTo(x, y, z, yRot, xRot);
     }
 
     public SoundEvent getAmbientSound() {
