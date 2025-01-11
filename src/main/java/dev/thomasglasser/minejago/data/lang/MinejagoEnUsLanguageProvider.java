@@ -20,7 +20,6 @@ import dev.thomasglasser.minejago.tags.MinejagoBannerPatternTags;
 import dev.thomasglasser.minejago.tags.MinejagoBiomeTags;
 import dev.thomasglasser.minejago.tags.MinejagoBlockTags;
 import dev.thomasglasser.minejago.tags.MinejagoDamageTypeTags;
-import dev.thomasglasser.minejago.tags.MinejagoDimensionTypeTags;
 import dev.thomasglasser.minejago.tags.MinejagoEntityTypeTags;
 import dev.thomasglasser.minejago.tags.MinejagoItemTags;
 import dev.thomasglasser.minejago.tags.MinejagoPowerTags;
@@ -422,9 +421,6 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
 
         // Damage Types
         add(MinejagoDamageTypeTags.RESISTED_BY_GOLDEN_WEAPONS, "Resisted By Golden Weapons");
-
-        // Dimension Types
-        add(MinejagoDimensionTypeTags.HAS_SKULKIN_RAIDS, "Has Skulkin Raids");
 
         // Entity Types
         add(MinejagoEntityTypeTags.SKULKINS, "Skulkins");

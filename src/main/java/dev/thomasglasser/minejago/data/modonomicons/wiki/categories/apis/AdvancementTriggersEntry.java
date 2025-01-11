@@ -16,22 +16,22 @@ public class AdvancementTriggersEntry extends IndexModeEntryProvider {
 
     @Override
     protected void generatePages() {
-        page("do_spinjitzu", () -> BookTextPageModel.create()
-                .withAnchor("do_spinjitzu")
+        page("did_spinjitzu", () -> BookTextPageModel.create()
+                .withAnchor("did_spinjitzu")
                 .withTitle(context().pageTitle())
                 .withText(context().pageText()));
 
-        add(context().pageTitle(), "Do Spinjitzu");
+        add(context().pageTitle(), "Did Spinjitzu");
         add(context().pageText(), """
                 This trigger is called when a player activates spinjitzu. It has no parameters.
                 """);
 
-        page("get_power", () -> BookTextPageModel.create()
-                .withAnchor("get_power")
+        page("got_power", () -> BookTextPageModel.create()
+                .withAnchor("got_power")
                 .withTitle(context().pageTitle())
                 .withText(context().pageText()));
 
-        add(context().pageTitle(), "Get Power");
+        add(context().pageTitle(), "Got Power");
         add(context().pageText(), """
                 This trigger is called when a player gets a power. It has one parameter:
                 - "power": The power ID.

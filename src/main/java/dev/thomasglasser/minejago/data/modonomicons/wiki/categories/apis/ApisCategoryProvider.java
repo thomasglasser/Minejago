@@ -18,6 +18,7 @@ public class ApisCategoryProvider extends IndexModeCategoryProvider {
         add(new PowersEntry(this).generate());
         add(new FocusModifiersEntry(this).generate());
         add(new AdvancementTriggersEntry(this).generate());
+        add(new TagsEntry(this).generate());
     }
 
     @Override

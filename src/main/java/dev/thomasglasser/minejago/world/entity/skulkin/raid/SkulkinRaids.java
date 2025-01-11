@@ -2,7 +2,6 @@ package dev.thomasglasser.minejago.world.entity.skulkin.raid;
 
 import com.google.common.collect.Maps;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
-import dev.thomasglasser.minejago.tags.MinejagoDimensionTypeTags;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -78,19 +77,15 @@ public class SkulkinRaids extends SavedData {
         } else if (!MinejagoServerConfig.get().enableSkulkinRaids.get()) {
             return null;
         } else {
-            if (!serverPlayer.level().dimensionTypeRegistration().is(MinejagoDimensionTypeTags.HAS_SKULKIN_RAIDS) || isRaidedChunk(serverPlayer.blockPosition())) {
-                return null;
-            } else {
-                SkulkinRaid raid = this.getOrCreateSkulkinRaid(serverPlayer.serverLevel(), serverPlayer.blockPosition());
-                if (!raid.isStarted()) {
-                    if (!this.raidMap.containsKey(raid.getId())) {
-                        this.raidMap.put(raid.getId(), raid);
-                        raidedAreas.add(AABB.ofSize(serverPlayer.blockPosition().getCenter(), SkulkinRaid.VALID_RAID_RADIUS, SkulkinRaid.VALID_RAID_RADIUS, SkulkinRaid.VALID_RAID_RADIUS));
-                    }
+            SkulkinRaid raid = this.getOrCreateSkulkinRaid(serverPlayer.serverLevel(), serverPlayer.blockPosition());
+            if (!raid.isStarted()) {
+                if (!this.raidMap.containsKey(raid.getId())) {
+                    this.raidMap.put(raid.getId(), raid);
+                    raidedAreas.add(AABB.ofSize(serverPlayer.blockPosition().getCenter(), SkulkinRaid.VALID_RAID_RADIUS, SkulkinRaid.VALID_RAID_RADIUS, SkulkinRaid.VALID_RAID_RADIUS));
                 }
-                this.setDirty();
-                return raid;
             }
+            this.setDirty();
+            return raid;
         }
     }
 

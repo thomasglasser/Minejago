@@ -3,7 +3,6 @@ package dev.thomasglasser.minejago.data.modonomicons.wiki.categories.focus;
 import com.klikli_dev.modonomicon.api.datagen.IndexModeEntryProvider;
 import com.klikli_dev.modonomicon.api.datagen.book.BookIconModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookImagePageModel;
-import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
 import dev.thomasglasser.minejago.data.modonomicons.wiki.WikiBookSubProvider;
 import dev.thomasglasser.minejago.world.item.MinejagoItemUtils;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
@@ -41,18 +40,6 @@ public class TeaEntry extends IndexModeEntryProvider {
                 Focus Trees can be found in meadows.
                 They are a source of Enchanted Wood and Focus Leaves.
                 Focus Leaves can be harvested with Shears and brewed in a [teapot](entry://tea/teapot) to make Focus Tea.
-                """);
-
-        page("advancements", () -> BookTextPageModel.create()
-                .withAnchor("advancements")
-                .withTitle(context().pageTitle())
-                .withText(context().pageText()));
-
-        add(context().pageTitle(), "Advancement Integration");
-        add(context().pageText(), """
-                If [Patched](entry://dependencies/patched) is installed,
-                Focus Tea has been integrated into the vanilla advancements "A Furious Cocktail" and "How Did We Get Here?".
-                The Hyperfocus effect is now a requirement for both of these advancements.
                 """);
     }
 

@@ -19,8 +19,6 @@ enumExtensions="META-INF/enum_extensions.json"
 config = "${mod_id}.mixins.json"
 [mc-publish]
 loaders = ['neoforge']
-[modproperties.${mod_id}.patched]
-format_version = 1
 [[dependencies.${mod_id}]]
 modId="neoforge"
 type="required"
@@ -95,12 +93,6 @@ side="BOTH"
 modId="modonomicon"
 type="optional"
 versionRange="[${modonomicon_version},)"
-ordering="NONE"
-side="BOTH"
-[[dependencies.${mod_id}]]
-modId="patched"
-type="optional"
-versionRange="[${patched_version},)"
 ordering="NONE"
 side="BOTH"
 [[dependencies.${mod_id}]]

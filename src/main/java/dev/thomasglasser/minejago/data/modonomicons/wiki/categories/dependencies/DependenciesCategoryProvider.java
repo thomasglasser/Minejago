@@ -17,7 +17,6 @@ public class DependenciesCategoryProvider extends IndexModeCategoryProvider {
         add(new JadeEntry(this).generate());
         add(new JeiEntry(this).generate());
         add(new ModonomiconEntry(this).generate());
-        add(new PatchedEntry(this).generate());
         add(new PlayerAnimatorEntry(this).generate());
         add(new RyoamicLightsEntry(this).generate());
         add(new TslatEntityStatusEntry(this).generate());

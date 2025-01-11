@@ -29,8 +29,6 @@ public class SkulkinCategoryProvider extends IndexModeCategoryProvider {
         return """
                 Skeletal creatures of the Underworld.
                 They can drop their armor and weapons on death.
-                If [Patched](entry://dependencies/patched) is installed, all Skulkin are integrated into the vanilla advancements "Monster Hunter" and "Monsters Hunted",
-                so they are part of the requirements for both.
                 """;
     }
 

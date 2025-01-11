@@ -41,17 +41,6 @@
       "text": "book.minejago.wiki.focus.tea.tree.text",
       "title": "book.minejago.wiki.focus.tea.tree.title",
       "use_legacy_rendering": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "advancements",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.minejago.wiki.focus.tea.advancements.text",
-      "title": "book.minejago.wiki.focus.tea.advancements.title",
-      "use_markdown_in_title": false
     }
   ],
   "show_when_any_parent_unlocked": false,

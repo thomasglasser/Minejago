@@ -18,6 +18,7 @@ import dev.thomasglasser.minejago.network.ServerboundStartSpinjitzuPayload;
 import dev.thomasglasser.minejago.network.ServerboundStopMeditationPayload;
 import dev.thomasglasser.minejago.network.ServerboundStopSpinjitzuPayload;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
+import dev.thomasglasser.minejago.tags.MinejagoItemTags;
 import dev.thomasglasser.minejago.tags.MinejagoStructureTags;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.character.Character;
@@ -35,9 +36,7 @@ import dev.thomasglasser.minejago.world.focus.modifier.itemstack.ItemStackFocusM
 import dev.thomasglasser.minejago.world.focus.modifier.resourcekey.ResourceKeyFocusModifiers;
 import dev.thomasglasser.minejago.world.focus.modifier.world.Weather;
 import dev.thomasglasser.minejago.world.focus.modifier.world.WorldFocusModifiers;
-import dev.thomasglasser.minejago.world.item.GoldenWeaponItem;
 import dev.thomasglasser.minejago.world.item.MinejagoItemUtils;
-import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.level.MinejagoLevelUtils;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
@@ -49,12 +48,13 @@ import dev.thomasglasser.minejago.world.level.storage.SkillDataSet;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import dev.thomasglasser.tommylib.api.tags.ConventionalItemTags;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -64,7 +64,6 @@ import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -78,8 +77,8 @@ import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.entity.decoration.Painting;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.npc.InventoryCarrier;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -358,60 +357,18 @@ public class MinejagoEntityEvents {
                 }
             }
 
+            List<ItemStack> stacks = new ArrayList<>();
+            livingEntity.getAllSlots().forEach(stacks::add);
+
             if (livingEntity instanceof Player player) {
-                Inventory i = player.getInventory();
-
-                if (i.contains(MinejagoItems.SCYTHE_OF_QUAKES.get().getDefaultInstance()) /*&& i.contains(MinejagoElements.SHURIKENS_OF_ICE.get().getDefaultInstance()) && i.contains(MinejagoElements.NUNCHUCKS_OF_LIGHTNING.get().getDefaultInstance()) && i.contains(MinejagoElements.SWORD_OF_FIRE.get().getDefaultInstance())*/) {
-                    GoldenWeaponItem.overload(livingEntity);
-                }
+                stacks.addAll(player.getInventory().items);
             } else if (livingEntity instanceof InventoryCarrier carrier) {
-                boolean f = false, e = false, i = false, l = false;
+                stacks.addAll(carrier.getInventory().getItems());
+            }
 
-                for (ItemStack stack : livingEntity.getAllSlots()) {
-                    if (stack.getItem() == MinejagoItems.SCYTHE_OF_QUAKES.get()) {
-                        e = true;
-                    }
-                    /*else if (stack.getItem() == MinejagoElements.SWORD_OF_FIRE.get())
-                    {
-                    f = true;
-                    }
-                    else if (stack.getItem() == MinejagoElements.NUNCHUCKS_OF_LIGHTNING.get())
-                    {
-                    l = true;
-                    }
-                    else if (stack.getItem() == MinejagoElements.SHURIKENS_OF_ICE.get())
-                    {
-                    i = true;
-                    }*/
-                }
-
-                SimpleContainer inventory = carrier.getInventory();
-
-                if ((inventory.hasAnyOf(Set.of(MinejagoItems.SCYTHE_OF_QUAKES.get())) || e) /*&& (inventory.hasAnyOf(Set.of(MinejagoElements.SWORD_OF_FIRE.get())) || f) && (inventory.hasAnyOf(Set.of(MinejagoElements.NUNCHUCKS_OF_LIGHTNING.get())) || l) && (inventory.hasAnyOf(Set.of(MinejagoElements.SHURIKENS_OF_ICE.get())) || i)*/) {
-                    GoldenWeaponItem.overload(livingEntity);
-                }
-            } else {
-                boolean f = false, e = false, i = false, l = false;
-
-                for (ItemStack stack : livingEntity.getAllSlots()) {
-                    if (stack.getItem() == MinejagoItems.SCYTHE_OF_QUAKES.get()) {
-                        e = true;
-                    }
-                    /*else if (stack.getItem() == MinejagoElements.SWORD_OF_FIRE.get())
-                    {
-                    f = true;
-                    }
-                    else if (stack.getItem() == MinejagoElements.NUNCHUCKS_OF_LIGHTNING.get())
-                    {
-                    l = true;
-                    }
-                    else if (stack.getItem() == MinejagoElements.SHURIKENS_OF_ICE.get())
-                    {
-                    i = true;
-                    }*/
-                }
-
-                if (f && e && i && l) GoldenWeaponItem.overload(livingEntity);
+            HolderSet.Named<Item> weapons = livingEntity.level().registryAccess().registryOrThrow(Registries.ITEM).getOrCreateTag(MinejagoItemTags.GOLDEN_WEAPONS);
+            if (weapons.size() > 0 && weapons.stream().allMatch(item -> stacks.stream().anyMatch(stack -> stack.is(item.value())))) {
+                // TODO: Overload event
             }
         }
     }

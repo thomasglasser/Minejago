@@ -186,7 +186,6 @@ dependencies {
 //	implementation "net.tslat.effectslib:TslatEffectsLib-neoforge-${minecraft_version}:${tslateffectslib_version}"
 	implementation "maven.modrinth:ryoamiclights:${ryoamiclights_version}-neoforge"
 	implementation "com.klikli_dev:modonomicon-${minecraft_version}-neoforge:${modonomicon_version}"
-	implementation "maven.modrinth:patched:${patched_version}"
 	implementation "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 	implementation "maven.modrinth:jade:${jade_version}+neoforge"
 
@@ -225,7 +224,6 @@ processResources {
 			"jade_version": jade_version,
 			"jei_version": jei_version,
 			"modonomicon_version": modonomicon_version,
-			"patched_version": patched_version,
 			"playeranimator_version": playeranimator_version,
 			"ryoamiclights_version": ryoamiclights_version,
 			"tslatentitystatus_version": tslatentitystatus_version

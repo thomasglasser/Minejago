@@ -16,24 +16,24 @@
   "pages": [
     {
       "type": "modonomicon:text",
-      "anchor": "do_spinjitzu",
+      "anchor": "did_spinjitzu",
       "condition": {
         "type": "modonomicon:none"
       },
       "show_title_separator": true,
-      "text": "book.minejago.wiki.apis.advancement_triggers.do_spinjitzu.text",
-      "title": "book.minejago.wiki.apis.advancement_triggers.do_spinjitzu.title",
+      "text": "book.minejago.wiki.apis.advancement_triggers.did_spinjitzu.text",
+      "title": "book.minejago.wiki.apis.advancement_triggers.did_spinjitzu.title",
       "use_markdown_in_title": false
     },
     {
       "type": "modonomicon:text",
-      "anchor": "get_power",
+      "anchor": "got_power",
       "condition": {
         "type": "modonomicon:none"
       },
       "show_title_separator": true,
-      "text": "book.minejago.wiki.apis.advancement_triggers.get_power.text",
-      "title": "book.minejago.wiki.apis.advancement_triggers.get_power.title",
+      "text": "book.minejago.wiki.apis.advancement_triggers.got_power.text",
+      "title": "book.minejago.wiki.apis.advancement_triggers.got_power.title",
       "use_markdown_in_title": false
     },
     {

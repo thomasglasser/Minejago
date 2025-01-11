@@ -137,10 +137,6 @@ public abstract class GoldenWeaponItem extends Item implements ModeledItem {
 
     protected abstract void goCrazy(Player player);
 
-    public static void overload(LivingEntity entity) {
-        // TODO: Weapons portal event
-    }
-
     public SoundEvent getFailSound() {
         return null;
     }
