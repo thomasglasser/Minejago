@@ -3,6 +3,7 @@ package dev.thomasglasser.minejago;
 import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
 import dev.thomasglasser.minejago.client.MinejagoClientConfig;
 import dev.thomasglasser.minejago.client.MinejagoClientEvents;
+import dev.thomasglasser.minejago.client.MinejagoClientUtils;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.commands.MinejagoCommandEvents;
 import dev.thomasglasser.minejago.core.MinejagoCoreEvents;
@@ -35,6 +36,7 @@ import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTy
 import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
 import dev.thomasglasser.minejago.world.level.saveddata.maps.MinejagoMapDecorationTypes;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
+import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -59,6 +61,10 @@ public class Minejago {
 
     public Minejago(IEventBus bus, ModContainer modContainer) {
         LOGGER.info("Initializing {} for {} in a {} environment...", MOD_NAME, TommyLibServices.PLATFORM.getPlatformName(), TommyLibServices.PLATFORM.getEnvironmentName());
+
+        if (FMLEnvironment.production && FMLEnvironment.dist.isClient() && !modContainer.getModInfo().getVersion().getQualifier().isEmpty() && !MinejagoClientUtils.isVip(Minecraft.getInstance().getUser().getProfileId(), "snapshot")) {
+            throw new RuntimeException("You are running a snapshot version of Minejago and are not a part of the Snapshot Program. Please switch to a stable version.");
+        }
 
         initRegistries();
 

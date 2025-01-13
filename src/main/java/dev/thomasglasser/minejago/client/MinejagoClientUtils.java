@@ -90,7 +90,7 @@ public class MinejagoClientUtils {
         vipData.put(player, data);
     }
 
-    private static boolean isVip(UUID uuid, String type) {
+    public static boolean isVip(UUID uuid, String type) {
         BufferedReader fileReader = null;
 
         try {
