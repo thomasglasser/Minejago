@@ -206,19 +206,4 @@ public class Minejago {
             return ResourceLocation.fromNamespaceAndPath(modId, path);
         }
     }
-
-    public enum Expansions {
-        IMMERSION_PACK("immersion"),
-        POTION_POT_PACK("potion_pot");
-
-        private final String id;
-
-        Expansions(String id) {
-            this.id = id;
-        }
-
-        public String getId() {
-            return id;
-        }
-    }
 }

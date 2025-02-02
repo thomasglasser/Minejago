@@ -1,13 +1,14 @@
 package dev.thomasglasser.minejago.data.lang.expansions;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 
 public class MinejagoImmersionPackEnUsLanguageProvider extends LanguageProvider {
     public MinejagoImmersionPackEnUsLanguageProvider(PackOutput output) {
-        super(output, Minejago.Expansions.IMMERSION_PACK.getId(), "en_us");
+        super(output, MinejagoPacks.IMMERSION.knownPack().id(), "en_us");
     }
 
     @Override
