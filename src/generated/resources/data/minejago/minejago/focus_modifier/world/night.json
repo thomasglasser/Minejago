@@ -1,0 +1,9 @@
+{
+  "type": "minejago:world",
+  "day_time": {
+    "max": 23000,
+    "min": 13000
+  },
+  "modifier": 0.5,
+  "operation": "addition"
+}

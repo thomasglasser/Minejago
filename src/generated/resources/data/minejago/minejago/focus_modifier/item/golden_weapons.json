@@ -1,0 +1,8 @@
+{
+  "type": "minejago:item",
+  "item": {
+    "items": "#minejago:golden_weapons"
+  },
+  "modifier": 0.5,
+  "operation": "addition"
+}

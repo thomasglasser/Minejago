@@ -3,14 +3,12 @@
     "minecraft:glass_bottle": {
       "cups": 2,
       "filled": {
-        "count": 1,
         "id": "minecraft:potion"
       }
     },
     "minejago:teacup": {
       "cups": 1,
       "filled": {
-        "count": 1,
         "id": "minejago:filled_teacup"
       }
     }

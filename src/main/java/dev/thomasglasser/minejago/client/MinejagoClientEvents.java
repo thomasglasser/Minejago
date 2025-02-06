@@ -309,9 +309,9 @@ public class MinejagoClientEvents {
                 BossHealthOverlay bossOverlay = ClientUtils.getMinecraft().gui.getBossOverlay();
                 if (bossOverlay.shouldPlayMusic() && skulkinRaids.stream().anyMatch(bossOverlay.events::containsKey)) {
                     event.setMusic(MinejagoMusics.SKULKIN_RAID);
-                } else if (data.getBoolean(MinejagoEntityEvents.KEY_ISINMONASTERYOFSPINJITZU)) {
+                } else if (data.getBoolean(MinejagoEntityEvents.KEY_IS_IN_MONASTERY_OF_SPINJITZU)) {
                     event.setMusic(MinejagoMusics.MONASTERY_OF_SPINJITZU);
-                } else if (data.getBoolean(MinejagoEntityEvents.KEY_ISINCAVEOFDESPAIR)) {
+                } else if (data.getBoolean(MinejagoEntityEvents.KEY_IS_IN_CAVE_OF_DESPAIR)) {
                     event.setMusic(MinejagoMusics.CAVE_OF_DESPAIR);
                 } else if (MinejagoMusics.getAll().stream().anyMatch(music -> Minecraft.getInstance().getMusicManager().isPlayingMusic(music))) {
                     event.setMusic(null);

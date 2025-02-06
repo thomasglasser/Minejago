@@ -1,0 +1,12 @@
+{
+  "type": "minejago:block",
+  "block": {
+    "blocks": "#minecraft:candles",
+    "state": {
+      "candles": "1",
+      "lit": "true"
+    }
+  },
+  "modifier": 0.25,
+  "operation": "addition"
+}

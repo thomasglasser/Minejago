@@ -1,0 +1,8 @@
+{
+  "type": "minejago:world",
+  "modifier": 1.0,
+  "operation": "addition",
+  "y": {
+    "min": 100
+  }
+}

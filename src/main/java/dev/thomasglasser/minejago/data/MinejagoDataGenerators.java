@@ -1,10 +1,10 @@
 package dev.thomasglasser.minejago.data;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.data.advancements.MinejagoAdvancementProvider;
 import dev.thomasglasser.minejago.data.blockstates.MinejagoBlockStateProvider;
 import dev.thomasglasser.minejago.data.datamaps.MinejagoDataMapsProvider;
-import dev.thomasglasser.minejago.data.focus.modifier.MinejagoFocusModifierProvider;
 import dev.thomasglasser.minejago.data.lang.MinejagoEnUsLanguageProvider;
 import dev.thomasglasser.minejago.data.lang.expansions.MinejagoImmersionPackEnUsLanguageProvider;
 import dev.thomasglasser.minejago.data.loot.MinejagoLootTables;
@@ -34,6 +34,7 @@ import dev.thomasglasser.minejago.data.worldgen.placement.MinejagoTreePlacements
 import dev.thomasglasser.minejago.data.worldgen.placement.MinejagoVegetationPlacements;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
+import dev.thomasglasser.minejago.world.focus.modifier.MinejagoFocusModifiers;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPatterns;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.MinejagoStructures;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.placement.MinejagoStructureSets;
@@ -69,7 +70,8 @@ public class MinejagoDataGenerators {
                 MinejagoVegetationPlacements.bootstrap(pContext);
             }))
             .add(Registries.BANNER_PATTERN, MinejagoBannerPatterns::bootstrap)
-            .add(Registries.PAINTING_VARIANT, MinejagoPaintingVariants::boostrap);
+            .add(Registries.PAINTING_VARIANT, MinejagoPaintingVariants::boostrap)
+            .add(MinejagoRegistries.FOCUS_MODIFIER, MinejagoFocusModifiers::bootstrap);
 
     public static void gatherData(GatherDataEvent event) {
         DataGenerator generator = event.getGenerator();
@@ -116,7 +118,6 @@ public class MinejagoDataGenerators {
         generator.addProvider(includeServer, new MinejagoDamageTypeTagsProvider(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(includeServer, new MinejagoAdvancementProvider(packOutput, lookupProvider, existingFileHelper, enUs));
         generator.addProvider(includeServer, new MinejagoRecipeProvider(packOutput, lookupProvider));
-        generator.addProvider(includeServer, new MinejagoFocusModifierProvider(packOutput, lookupProvider));
         generator.addProvider(includeServer, new MinejagoBookProvider(packOutput, lookupProvider, enUs::add));
 
         //Client

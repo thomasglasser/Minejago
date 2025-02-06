@@ -9,6 +9,7 @@ import dev.thomasglasser.minejago.commands.MinejagoCommandEvents;
 import dev.thomasglasser.minejago.core.MinejagoCoreEvents;
 import dev.thomasglasser.minejago.core.component.MinejagoDataComponents;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
+import dev.thomasglasser.minejago.core.registries.MinejagoBuiltInRegistries;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.data.MinejagoDataGenerators;
 import dev.thomasglasser.minejago.network.MinejagoPayloads;
@@ -23,7 +24,7 @@ import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.ai.memory.MinejagoMemoryModuleTypes;
 import dev.thomasglasser.minejago.world.entity.ai.poi.MinejagoPoiTypes;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
-import dev.thomasglasser.minejago.world.focus.modifier.resourcekey.ResourceKeyFocusModifiers;
+import dev.thomasglasser.minejago.world.focus.modifier.MinejagoFocusModifierSerializers;
 import dev.thomasglasser.minejago.world.item.MinejagoCreativeModeTabs;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
@@ -93,7 +94,7 @@ public class Minejago {
 
     private static void initRegistries() {
         MinejagoRegistries.init();
-
+        MinejagoBuiltInRegistries.init();
         MinejagoArmorMaterials.init();
         MinejagoDataComponents.init();
         MinejagoRecipeTypes.init();
@@ -112,12 +113,12 @@ public class Minejago {
         MinejagoGameEvents.init();
         MinejagoMemoryModuleTypes.init();
         MinejagoCriteriaTriggers.init();
-        ResourceKeyFocusModifiers.init();
         MinejagoAttachmentTypes.init();
         MinejagoEntitySerializers.init();
         MinejagoMapDecorationTypes.init();
         MinejagoPoiTypes.init();
         MinejagoArgumentTypes.init();
+        MinejagoFocusModifierSerializers.init();
 
         if (FMLEnvironment.dist.isClient())
             MinejagoKeyMappings.init();
@@ -135,6 +136,7 @@ public class Minejago {
         bus.addListener(MinejagoEntityEvents::onEntityAttributeCreation);
         bus.addListener(MinejagoEntityEvents::onSpawnPlacementsRegister);
         bus.addListener(MinejagoCoreEvents::onAddPackFinders);
+        bus.addListener(MinejagoCoreEvents::onNewRegistry);
         bus.addListener(MinejagoCoreEvents::onNewDataPackRegistry);
         bus.addListener(MinejagoCoreEvents::onRegisterPackets);
         bus.addListener(MinejagoEntityEvents::onAddBlocksToBlockEntityType);
@@ -161,7 +163,6 @@ public class Minejago {
         NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onPlayerTick);
         NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onServerPlayerLoggedIn);
         NeoForge.EVENT_BUS.addListener(MinejagoCommandEvents::onCommandsRegister);
-        NeoForge.EVENT_BUS.addListener(MinejagoCoreEvents::onAddReloadListeners);
         NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onLivingKnockBack);
         NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onEntityJoinLevel);
         NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onPlayerClone);

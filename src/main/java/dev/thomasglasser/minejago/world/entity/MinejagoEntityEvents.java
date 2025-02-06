@@ -30,12 +30,12 @@ import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaidsHolder;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
 import dev.thomasglasser.minejago.world.focus.FocusData;
-import dev.thomasglasser.minejago.world.focus.modifier.blockstate.BlockStateFocusModifiers;
-import dev.thomasglasser.minejago.world.focus.modifier.entity.EntityFocusModifiers;
-import dev.thomasglasser.minejago.world.focus.modifier.itemstack.ItemStackFocusModifiers;
-import dev.thomasglasser.minejago.world.focus.modifier.resourcekey.ResourceKeyFocusModifiers;
-import dev.thomasglasser.minejago.world.focus.modifier.world.Weather;
-import dev.thomasglasser.minejago.world.focus.modifier.world.WorldFocusModifiers;
+import dev.thomasglasser.minejago.world.focus.modifier.BlockFocusModifier;
+import dev.thomasglasser.minejago.world.focus.modifier.EntityFocusModifier;
+import dev.thomasglasser.minejago.world.focus.modifier.ItemFocusModifier;
+import dev.thomasglasser.minejago.world.focus.modifier.LocationFocusModifier;
+import dev.thomasglasser.minejago.world.focus.modifier.Weather;
+import dev.thomasglasser.minejago.world.focus.modifier.WorldFocusModifier;
 import dev.thomasglasser.minejago.world.item.MinejagoItemUtils;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.level.MinejagoLevelUtils;
@@ -84,7 +84,6 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
@@ -102,8 +101,9 @@ import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 public class MinejagoEntityEvents {
-    public static final String KEY_ISINMONASTERYOFSPINJITZU = "IsInMonasteryOfSpinjitzu";
-    public static final String KEY_ISINCAVEOFDESPAIR = "IsInCaveOfDespair";
+    public static final String KEY_OFF_GROUND_TICKS = "OffGroundTicks";
+    public static final String KEY_IS_IN_MONASTERY_OF_SPINJITZU = "IsInMonasteryOfSpinjitzu";
+    public static final String KEY_IS_IN_CAVE_OF_DESPAIR = "IsInCaveOfDespair";
 
     public static final Predicate<LivingEntity> NO_SPINJITZU = (player -> !player.getData(MinejagoAttachmentTypes.SPINJITZU).canDoSpinjitzu() ||
             player.isCrouching() ||
@@ -118,7 +118,7 @@ public class MinejagoEntityEvents {
             player.isBlocking() ||
             player.getActiveEffects().stream().anyMatch((mobEffectInstance -> mobEffectInstance.getEffect().value().getCategory() == MobEffectCategory.HARMFUL)) ||
             player.isInWater() ||
-            TommyLibServices.ENTITY.getPersistentData(player).getInt("OffGroundTicks") > 30 ||
+            TommyLibServices.ENTITY.getPersistentData(player).getInt(KEY_OFF_GROUND_TICKS) > 30 ||
             player.getData(MinejagoAttachmentTypes.FOCUS).getFocusLevel() < FocusConstants.SPINJITZU_LEVEL);
 
     public static final Predicate<LivingEntity> NO_MEDITATION = (player -> player.isCrouching() ||
@@ -140,7 +140,8 @@ public class MinejagoEntityEvents {
             CompoundTag persistentData = TommyLibServices.ENTITY.getPersistentData(player);
             int waitTicks = persistentData.getInt("WaitTicks");
             if (player instanceof ServerPlayer serverPlayer) {
-                ServerLevel level = serverPlayer.serverLevel();
+                ServerLevel serverLevel = serverPlayer.serverLevel();
+                ServerLevel level = serverLevel;
                 if ((level.getDifficulty() == Difficulty.PEACEFUL || serverPlayer.getAbilities().instabuild) && focusData.needsFocus()) {
                     focusData.setFocusLevel(FocusConstants.MAX_FOCUS);
                 }
@@ -151,9 +152,9 @@ public class MinejagoEntityEvents {
                 }
 
                 if (!player.onGround()) {
-                    persistentData.putInt("OffGroundTicks", persistentData.getInt("OffGroundTicks") + 1);
-                } else if (persistentData.getInt("OffGroundTicks") > 0) {
-                    persistentData.putInt("OffGroundTicks", 0);
+                    persistentData.putInt(KEY_OFF_GROUND_TICKS, persistentData.getInt(KEY_OFF_GROUND_TICKS) + 1);
+                } else if (persistentData.getInt(KEY_OFF_GROUND_TICKS) > 0) {
+                    persistentData.putInt(KEY_OFF_GROUND_TICKS, 0);
                 }
 
                 if (spinjitzu.canDoSpinjitzu()) {
@@ -202,24 +203,24 @@ public class MinejagoEntityEvents {
                                 weather = Weather.SNOW;
                             } else if (precipitation == Biome.Precipitation.RAIN) weather = Weather.RAIN;
                         }
-                        i.set(WorldFocusModifiers.applyModifier((int) level.getDayTime(), weather, playerPos.getY(), TeapotBlock.getBiomeTemperature(level, playerPos), i.get()));
-                        i.set(ResourceKeyFocusModifiers.applyModifier(level.getBiome(playerPos).unwrapKey().orElseThrow(), i.get()));
-                        i.set(ResourceKeyFocusModifiers.applyModifier(level.dimension(), i.get()));
-                        serverPlayer.serverLevel().structureManager().getAllStructuresAt(playerPos).keySet().forEach(structure -> i.set(ResourceKeyFocusModifiers.applyModifier(level.registryAccess().registryOrThrow(Registries.STRUCTURE).getResourceKey(structure).orElseThrow(), i.get())));
-                        Stream<BlockState> blocks = level.getBlockStates(player.getBoundingBox().inflate(4));
-                        blocks.forEach(blockState -> i.set(BlockStateFocusModifiers.applyModifier(blockState, i.get())));
-                        serverPlayer.getActiveEffects().forEach(mobEffectInstance -> i.set(ResourceKeyFocusModifiers.applyModifier(mobEffectInstance.getEffect().unwrapKey().orElseThrow(), i.get()) * (mobEffectInstance.getAmplifier() + 1)));
+                        i.set(WorldFocusModifier.checkAndApply(serverLevel, (int) level.getDayTime(), weather, playerPos.getY(), TeapotBlock.getBiomeTemperature(level, playerPos), i.get()));
+                        i.set(LocationFocusModifier.checkAndApply(serverLevel, player.position(), i.get()));
+                        Stream<BlockPos> blocks = BlockPos.betweenClosedStream(player.getBoundingBox().inflate(4));
+                        blocks.forEach(pos -> i.set(BlockFocusModifier.checkAndApply(serverLevel, pos, i.get())));
+                        EntityFocusModifier.checkAndApply(serverLevel, player.position(), player, true, i.get());
                         List<Entity> entities = level.getEntities(serverPlayer, serverPlayer.getBoundingBox().inflate(4));
                         entities.forEach(entity -> {
                             if (entity instanceof ItemEntity item) {
-                                i.set(ItemStackFocusModifiers.applyModifier(item.getItem(), i.get()));
+                                i.set(ItemFocusModifier.checkAndApply(serverLevel, item.getItem(), i.get()));
                             } else if (entity instanceof ItemFrame itemFrame) {
-                                i.set(ItemStackFocusModifiers.applyModifier(itemFrame.getItem(), i.get()));
+                                i.set(ItemFocusModifier.checkAndApply(serverLevel, itemFrame.getItem(), i.get()));
                             } else {
-                                i.set(EntityFocusModifiers.applyModifier(entity, i.get()));
+                                i.set(EntityFocusModifier.checkAndApply(serverLevel, entity.position(), entity, false, i.get()));
                             }
                         });
-                        serverPlayer.getInventory().items.forEach(stack -> i.set(ItemStackFocusModifiers.applyModifier(stack, i.get())));
+                        serverPlayer.getInventory().armor.forEach(stack -> i.set(ItemFocusModifier.checkAndApply(serverLevel, stack, i.get())));
+                        serverPlayer.getInventory().items.forEach(stack -> i.set(ItemFocusModifier.checkAndApply(serverLevel, stack, i.get())));
+                        serverPlayer.getInventory().offhand.forEach(stack -> i.set(ItemFocusModifier.checkAndApply(serverLevel, stack, i.get())));
                         focusData.meditate(focusData.isMegaMeditating(), (int) i.getAndSet(0), FocusConstants.FOCUS_SATURATION_NORMAL);
                     }
 
@@ -242,8 +243,8 @@ public class MinejagoEntityEvents {
                     ((SkulkinRaidsHolder) level).getSkulkinRaids().createOrExtendSkulkinRaid(serverPlayer);
                 }
 
-                persistentData.putBoolean(KEY_ISINCAVEOFDESPAIR, MinejagoLevelUtils.isStructureInRange(MinejagoStructureTags.CAVE_OF_DESPAIR, level, serverPlayer.blockPosition(), 64));
-                persistentData.putBoolean(KEY_ISINMONASTERYOFSPINJITZU, MinejagoLevelUtils.isStructureInRange(MinejagoStructureTags.MONASTERY_OF_SPINJITZU, level, serverPlayer.blockPosition(), 64));
+                persistentData.putBoolean(KEY_IS_IN_CAVE_OF_DESPAIR, MinejagoLevelUtils.isStructureInRange(MinejagoStructureTags.CAVE_OF_DESPAIR, level, serverPlayer.blockPosition(), 64));
+                persistentData.putBoolean(KEY_IS_IN_MONASTERY_OF_SPINJITZU, MinejagoLevelUtils.isStructureInRange(MinejagoStructureTags.MONASTERY_OF_SPINJITZU, level, serverPlayer.blockPosition(), 64));
 
                 if (persistentData != TommyLibServices.ENTITY.getPersistentData(serverPlayer)) {
                     TommyLibServices.ENTITY.setPersistentData(serverPlayer, persistentData, true);
@@ -308,7 +309,7 @@ public class MinejagoEntityEvents {
                     return;
                 }
 
-                int offGroundTicks = TommyLibServices.ENTITY.getPersistentData(livingEntity).getInt("OffGroundTicks");
+                int offGroundTicks = TommyLibServices.ENTITY.getPersistentData(livingEntity).getInt(KEY_OFF_GROUND_TICKS);
                 SkillDataSet data = livingEntity.getData(MinejagoAttachmentTypes.SKILL);
                 if (!(livingEntity.isFallFlying() || livingEntity instanceof Player player && player.getAbilities().flying)) {
                     if (livingEntity.isSprinting()) {

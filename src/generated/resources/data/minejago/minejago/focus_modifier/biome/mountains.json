@@ -1,0 +1,8 @@
+{
+  "type": "minejago:location",
+  "location": {
+    "biomes": "#minecraft:is_mountain"
+  },
+  "modifier": 0.2,
+  "operation": "addition"
+}

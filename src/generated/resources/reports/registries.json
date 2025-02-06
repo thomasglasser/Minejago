@@ -396,6 +396,33 @@
     "minejago:ninjago_city/billboards",
     "minejago:ninjago_city/buildings"
   ],
+  "minejago:focus_modifier": [
+    "minejago:biome/mountains",
+    "minejago:block/1_lit_candle",
+    "minejago:block/2_lit_candles",
+    "minejago:block/3_lit_candles",
+    "minejago:block/4_lit_candles",
+    "minejago:block/enchanted_wood",
+    "minejago:block/scroll_shelf",
+    "minejago:block/water",
+    "minejago:dimension/the_end",
+    "minejago:dimension/the_nether",
+    "minejago:entity/enchanted_boats",
+    "minejago:item/golden_weapons",
+    "minejago:world/dawn",
+    "minejago:world/dusk",
+    "minejago:world/high",
+    "minejago:world/night",
+    "minejago:world/rain",
+    "minejago:world/thunder_rain"
+  ],
+  "minejago:focus_modifier_serializer": [
+    "minejago:block",
+    "minejago:entity",
+    "minejago:item",
+    "minejago:location",
+    "minejago:world"
+  ],
   "neoforge:attachment_types": [
     "minejago:focus",
     "minejago:power",
