@@ -21,7 +21,7 @@ public class FocusModifiersEntry extends IndexModeEntryProvider {
 
         add(context().pageTitle(), "Generator");
         add(context().pageText(), """
-                A generator for these modifiers is available [here](https://jsons.thomasglasser.dev/partners/).
+                A generator for these modifiers is available online [here](https://snapshot-jsons.thomasglasser.dev/partners/).
                 """);
 
         page("example", () -> BookTextPageModel.create()

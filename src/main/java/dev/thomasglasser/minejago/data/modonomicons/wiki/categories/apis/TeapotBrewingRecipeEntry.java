@@ -21,7 +21,7 @@ public class TeapotBrewingRecipeEntry extends IndexModeEntryProvider {
 
         add(context().pageTitle(), "Generator");
         add(context().pageText(), """
-                A generator for these recipes is available [here](https://jsons.thomasglasser.dev/minejago/mod_recipe/).
+                A generator for recipes is available online [here](https://snapshot-jsons.thomasglasser.dev/recipe/).
                 """);
 
         page("example", () -> BookTextPageModel.create()

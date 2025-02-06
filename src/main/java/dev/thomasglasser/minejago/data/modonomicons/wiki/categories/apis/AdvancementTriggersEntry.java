@@ -16,6 +16,16 @@ public class AdvancementTriggersEntry extends IndexModeEntryProvider {
 
     @Override
     protected void generatePages() {
+        page("generator", () -> BookTextPageModel.create()
+                .withAnchor("generator")
+                .withTitle(context().pageTitle())
+                .withText(context().pageText()));
+
+        add(context().pageTitle(), "Generator");
+        add(context().pageText(), """
+                A generator for these triggers is available online [here](https://snapshot-jsons.thomasglasser.dev/advancement/).
+                """);
+
         page("did_spinjitzu", () -> BookTextPageModel.create()
                 .withAnchor("did_spinjitzu")
                 .withTitle(context().pageTitle())

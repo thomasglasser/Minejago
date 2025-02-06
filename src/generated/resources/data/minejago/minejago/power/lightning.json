@@ -1,5 +1,6 @@
 {
   "border_particle": "minejago:bolts",
+  "color": "#4668D5",
   "display": {
     "description": {
       "translate": "power.minejago.lightning.description"
@@ -9,7 +10,6 @@
     }
   },
   "has_sets": true,
-  "power_color": "#4668D5",
   "tagline": {
     "translate": "power.minejago.lightning.tagline"
   }

@@ -15,6 +15,16 @@ public class TagsEntry extends IndexModeEntryProvider {
 
     @Override
     protected void generatePages() {
+        page("generator", () -> BookTextPageModel.create()
+                .withAnchor("generator")
+                .withTitle(context().pageTitle())
+                .withText(context().pageText()));
+
+        add(context().pageTitle(), "Generator");
+        add(context().pageText(), """
+                A generator for vanilla tags is available online [here](https://snapshot-jsons.thomasglasser.dev/generators/) and for mod tags [here](https://snapshot-jsons.thomasglasser.dev/partners/).
+                """);
+
         page("biome", () -> BookTextPageModel.create()
                 .withTitle(context().pageTitle())
                 .withText(context().pageText()));

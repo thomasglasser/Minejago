@@ -346,8 +346,8 @@
   ],
   "minecraft:trigger_type": [
     "minejago:brewed_tea",
-    "minejago:do_spinjitzu",
-    "minejago:get_power",
+    "minejago:did_spinjitzu",
+    "minejago:got_power",
     "minejago:increased_skill",
     "minejago:skulkin_raid_status_changed"
   ],

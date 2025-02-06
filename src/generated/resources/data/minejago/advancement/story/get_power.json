@@ -2,7 +2,7 @@
   "parent": "minejago:story/get_four_weapons_maps",
   "criteria": {
     "get_power": {
-      "trigger": "minejago:get_power"
+      "trigger": "minejago:got_power"
     }
   },
   "display": {

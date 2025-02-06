@@ -16,6 +16,17 @@
   "pages": [
     {
       "type": "modonomicon:text",
+      "anchor": "generator",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.minejago.wiki.apis.advancement_triggers.generator.text",
+      "title": "book.minejago.wiki.apis.advancement_triggers.generator.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
       "anchor": "did_spinjitzu",
       "condition": {
         "type": "modonomicon:none"

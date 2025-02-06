@@ -24,7 +24,7 @@ public class PowersEntry extends IndexModeEntryProvider {
 
         add(context().pageTitle(), "Generator");
         add(context().pageText(), """
-                A generator for these powers is available [here](https://jsons.thomasglasser.dev/minejago/power/).
+                A generator for these powers is available online [here](https://snapshot-jsons.thomasglasser.dev/minejago/power/).
                 """);
 
         page("example", () -> BookTextPageModel.create()

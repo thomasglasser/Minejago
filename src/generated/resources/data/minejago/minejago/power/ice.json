@@ -1,5 +1,6 @@
 {
   "border_particle": "minejago:snows",
+  "color": "#EDECE4",
   "display": {
     "description": {
       "translate": "power.minejago.ice.description"
@@ -9,7 +10,6 @@
     }
   },
   "has_sets": true,
-  "power_color": "#EDECE4",
   "tagline": {
     "translate": "power.minejago.ice.tagline"
   }

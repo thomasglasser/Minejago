@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class Power {
     public static final Codec<Power> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            TextColor.CODEC.optionalFieldOf("power_color", TextColor.fromLegacyFormat(ChatFormatting.GRAY)).forGetter(Power::getColor),
+            TextColor.CODEC.optionalFieldOf("color", TextColor.fromLegacyFormat(ChatFormatting.GRAY)).forGetter(Power::getColor),
             ComponentSerialization.CODEC.optionalFieldOf("tagline", Component.empty()).forGetter(Power::getTagline),
             BuiltInRegistries.PARTICLE_TYPE.byNameCodec().optionalFieldOf("border_particle").forGetter(Power::getBorderParticleType),
             Codec.BOOL.optionalFieldOf("has_sets", false).forGetter(Power::hasSets),

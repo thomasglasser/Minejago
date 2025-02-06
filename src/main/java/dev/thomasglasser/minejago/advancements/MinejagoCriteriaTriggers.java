@@ -15,8 +15,8 @@ import net.minecraft.core.registries.BuiltInRegistries;
 public class MinejagoCriteriaTriggers {
     public static final DeferredRegister<CriterionTrigger<?>> CRITERION_TRIGGERS = DeferredRegister.create(BuiltInRegistries.TRIGGER_TYPES, Minejago.MOD_ID);
 
-    public static final DeferredHolder<CriterionTrigger<?>, DidSpinjitzuTrigger> DID_SPINJITZU = register("do_spinjitzu", DidSpinjitzuTrigger::new);
-    public static final DeferredHolder<CriterionTrigger<?>, GotPowerTrigger> GOT_POWER = register("get_power", GotPowerTrigger::new);
+    public static final DeferredHolder<CriterionTrigger<?>, DidSpinjitzuTrigger> DID_SPINJITZU = register("did_spinjitzu", DidSpinjitzuTrigger::new);
+    public static final DeferredHolder<CriterionTrigger<?>, GotPowerTrigger> GOT_POWER = register("got_power", GotPowerTrigger::new);
     public static final DeferredHolder<CriterionTrigger<?>, BrewedTeaTrigger> BREWED_TEA = register("brewed_tea", BrewedTeaTrigger::new);
     public static final DeferredHolder<CriterionTrigger<?>, SkulkinRaidTrigger> SKULKIN_RAID_STATUS_CHANGED = register("skulkin_raid_status_changed", SkulkinRaidTrigger::new);
     public static final DeferredHolder<CriterionTrigger<?>, SkillIncreasedTrigger> INCREASED_SKILL = register("increased_skill", SkillIncreasedTrigger::new);

@@ -1,5 +1,5 @@
 {
   "border_particle": "minejago:sparkles",
-  "is_special": true,
-  "power_color": "#F8D66F"
+  "color": "#F8D66F",
+  "is_special": true
 }

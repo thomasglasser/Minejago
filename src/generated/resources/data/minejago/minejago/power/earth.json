@@ -1,5 +1,6 @@
 {
   "border_particle": "minejago:rocks",
+  "color": "#5A4441",
   "display": {
     "description": {
       "translate": "power.minejago.earth.description"
@@ -9,7 +10,6 @@
     }
   },
   "has_sets": true,
-  "power_color": "#5A4441",
   "tagline": {
     "translate": "power.minejago.earth.tagline"
   }
