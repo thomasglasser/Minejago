@@ -1,6 +1,5 @@
 package dev.thomasglasser.minejago.data.lang.expansions;
 
-import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.Blocks;

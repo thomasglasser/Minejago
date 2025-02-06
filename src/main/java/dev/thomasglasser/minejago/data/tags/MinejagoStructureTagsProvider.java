@@ -3,16 +3,18 @@ package dev.thomasglasser.minejago.data.tags;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.tags.MinejagoStructureTags;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.MinejagoStructures;
+import dev.thomasglasser.tommylib.api.data.tags.ExtendedTagsProvider;
 import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.StructureTagsProvider;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
-public class MinejagoStructureTagsProvider extends StructureTagsProvider {
+public class MinejagoStructureTagsProvider extends ExtendedTagsProvider<Structure> {
     public MinejagoStructureTagsProvider(PackOutput p_256522_, CompletableFuture<HolderLookup.Provider> p_256661_, @Nullable ExistingFileHelper existingFileHelper) {
-        super(p_256522_, p_256661_, Minejago.MOD_ID, existingFileHelper);
+        super(p_256522_, Registries.STRUCTURE, p_256661_, Minejago.MOD_ID, existingFileHelper);
     }
 
     @Override
@@ -26,7 +28,6 @@ public class MinejagoStructureTagsProvider extends StructureTagsProvider {
         tag(MinejagoStructureTags.CAVE_OF_DESPAIR)
                 .add(MinejagoStructures.CAVE_OF_DESPAIR);
 
-        // TODO: Other structures
         tag(MinejagoStructureTags.ICE_TEMPLE);
         tag(MinejagoStructureTags.FLOATING_RUINS);
         tag(MinejagoStructureTags.FIRE_TEMPLE);

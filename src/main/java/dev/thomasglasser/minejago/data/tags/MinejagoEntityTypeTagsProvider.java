@@ -3,17 +3,19 @@ package dev.thomasglasser.minejago.data.tags;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.tags.MinejagoEntityTypeTags;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
+import dev.thomasglasser.tommylib.api.data.tags.ExtendedIntrinsicHolderTagsProvider;
 import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.EntityTypeTagsProvider;
 import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.world.entity.EntityType;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
-public class MinejagoEntityTypeTagsProvider extends EntityTypeTagsProvider {
+public class MinejagoEntityTypeTagsProvider extends ExtendedIntrinsicHolderTagsProvider<EntityType<?>> {
     public MinejagoEntityTypeTagsProvider(PackOutput pOutput, CompletableFuture<HolderLookup.Provider> pProvider, @Nullable ExistingFileHelper existingFileHelper) {
-        super(pOutput, pProvider, Minejago.MOD_ID, existingFileHelper);
+        super(pOutput, Registries.ENTITY_TYPE, pProvider, (entityType) -> entityType.builtInRegistryHolder().key(), Minejago.MOD_ID, existingFileHelper);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package dev.thomasglasser.minejago.client;
 
-import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.DragonInventoryScreen;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.PowerSelectionScreen;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.ScrollViewScreen;
@@ -15,10 +14,6 @@ import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.inventory.DragonInventoryMenu;
 import dev.thomasglasser.tommylib.api.client.ClientUtils;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +25,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
-import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.Nullable;
 
 public class MinejagoClientUtils {
