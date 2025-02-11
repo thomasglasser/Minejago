@@ -1,7 +1,0 @@
-{
-  "parent": "minejago:block/disc_bottom_right",
-  "textures": {
-    "base": "minejago:block/gold_disc_base",
-    "bump": "minejago:block/gold_disc_bump"
-  }
-}

@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/cube_column_horizontal",
-  "textures": {
-    "end": "minecraft:block/oak_planks",
-    "side": "minejago:block/scroll_shelf"
-  }
-}

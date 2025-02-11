@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "minejago:item/rocking_pole_spinjitzu_course_element"
-  }
-}

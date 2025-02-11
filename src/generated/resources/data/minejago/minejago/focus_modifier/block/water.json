@@ -1,8 +1,0 @@
-{
-  "type": "minejago:block",
-  "block": {
-    "blocks": "minecraft:water"
-  },
-  "modifier": 0.05,
-  "operation": "addition"
-}

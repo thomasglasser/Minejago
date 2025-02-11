@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/cube_column",
-  "textures": {
-    "end": "minejago:block/enchanted_log_top",
-    "side": "minejago:block/enchanted_log"
-  }
-}

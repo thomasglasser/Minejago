@@ -1,8 +1,0 @@
-{
-  "type": "minejago:block",
-  "block": {
-    "blocks": "minejago:scroll_shelf"
-  },
-  "modifier": 0.2,
-  "operation": "addition"
-}

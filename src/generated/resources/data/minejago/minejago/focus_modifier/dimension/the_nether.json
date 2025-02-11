@@ -1,8 +1,0 @@
-{
-  "type": "minejago:location",
-  "location": {
-    "dimension": "minecraft:the_nether"
-  },
-  "modifier": 1.0,
-  "operation": "subtraction"
-}
