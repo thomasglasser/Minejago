@@ -24,60 +24,21 @@ public class TeapotBrewingRecipeEntry extends IndexModeEntryProvider {
                 A generator for recipes is available online [here](https://snapshot-jsons.thomasglasser.dev/recipe/).
                 """);
 
-        page("example", () -> BookTextPageModel.create()
-                .withAnchor("example")
+        page("format", () -> BookTextPageModel.create()
+                .withAnchor("format")
                 .withTitle(context().pageTitle())
                 .withText(context().pageText()));
 
         add(context().pageTitle(), "JSON Format");
         add(context().pageText(), """
-                An example JSON recipe for brewing tea in the teapot is shown below:
-                \\
-                {
-                  "type": "minejago:teapot_brewing",
-                  "base": "minecraft:water",
-                  "brewing_time": {
-                    "type": "minecraft:uniform",
-                    "max_inclusive": 2400,
-                    "min_inclusive": 1200
-                  },
-                  "experience": 0.5,
-                  "group": "focus_tea",
-                  "ingredient": "minejago:focus_leaves",
-                  "result": "minejago:focus_tea"
-                }
-                \\
-                Now, let's break it down.
-                """);
-
-        page("format_1", () -> BookTextPageModel.create()
-                .withAnchor("format_1")
-                .withTitle(context().pageTitle())
-                .withText(context().pageText()));
-
-        add(context().pageTitle(), "JSON Format");
-        add(context().pageText(), """
-                The "type" field specifies the type of recipe. In this case, it is "minejago:teapot_brewing".
-                \\
-                The "base" field specifies the base potion for the recipe. In this case, it is "minecraft:water".
-                \\
-                The "brewing_time" field specifies the time it takes to brew the tea in ticks. In this case, it is a random time between 1200 and 2400.
-                """);
-
-        page("format_2", () -> BookTextPageModel.create()
-                .withAnchor("format_2")
-                .withTitle(context().pageTitle())
-                .withText(context().pageText()));
-
-        add(context().pageTitle(), "JSON Format");
-        add(context().pageText(), """
-                The "experience" field specifies the experience gained from brewing the tea. In this case, it is 0.5.
-                \\
-                The "group" field specifies the recipe group. In this case, it is "focus_tea". This value is useful for grouping similar recipes together.
-                \\
-                The "ingredient" field specifies the ingredient required to brew the tea. In this case, it is "minejago:focus_leaves".
-                \\
-                The "result" field specifies the resulting potion from brewing the tea. In this case, it is "minejago:focus_tea".
+                Teapot brewing recipes have the following fields:
+                - type: The type of recipe. In this case, it is "minejago:teapot_brewing".
+                - base: The base potion for the recipe.
+                - brewing_time: The time it takes to brew the tea in ticks.
+                - experience: The experience gained from brewing the tea.
+                - group: The recipe group. This value is useful for grouping similar recipes together.
+                - ingredient: The ingredient required to brew the tea.
+                - result: The resulting potion from brewing the tea.
                 """);
     }
 

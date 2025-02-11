@@ -439,7 +439,7 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(MinejagoItemTags.GI, "Gi");
 
         // Powers
-        add(MinejagoPowerTags.EARTH, "Earth");
+        add(MinejagoPowerTags.CAN_USE_SCYTHE_OF_QUAKES, "Can Use Scythe Of Quakes");
 
         // Structures
         add(MinejagoStructureTags.FOUR_WEAPONS, "Four Weapons");

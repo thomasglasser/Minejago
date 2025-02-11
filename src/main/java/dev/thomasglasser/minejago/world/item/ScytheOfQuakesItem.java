@@ -46,7 +46,7 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem {
 
     @Override
     public boolean canPowerHandle(ResourceKey<Power> power, Level level) {
-        return level.holder(power).orElseThrow().is(MinejagoPowerTags.EARTH);
+        return level.holder(power).orElseThrow().is(MinejagoPowerTags.CAN_USE_SCYTHE_OF_QUAKES);
     }
 
     @Override

@@ -22,35 +22,13 @@
     },
     {
       "type": "modonomicon:text",
-      "anchor": "example",
+      "anchor": "format",
       "condition": {
         "type": "modonomicon:none"
       },
       "show_title_separator": true,
-      "text": "book.minejago.wiki.apis.teapot_brewing_recipe.example.text",
-      "title": "book.minejago.wiki.apis.teapot_brewing_recipe.example.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "format_1",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.minejago.wiki.apis.teapot_brewing_recipe.format_1.text",
-      "title": "book.minejago.wiki.apis.teapot_brewing_recipe.format_1.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "format_2",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.minejago.wiki.apis.teapot_brewing_recipe.format_2.text",
-      "title": "book.minejago.wiki.apis.teapot_brewing_recipe.format_2.title",
+      "text": "book.minejago.wiki.apis.teapot_brewing_recipe.format.text",
+      "title": "book.minejago.wiki.apis.teapot_brewing_recipe.format.title",
       "use_markdown_in_title": false
     }
   ],

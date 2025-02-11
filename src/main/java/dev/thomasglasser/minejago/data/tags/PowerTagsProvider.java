@@ -18,7 +18,7 @@ public class PowerTagsProvider extends ExtendedTagsProvider<Power> {
 
     @Override
     protected void addTags(HolderLookup.Provider pProvider) {
-        tag(MinejagoPowerTags.EARTH)
+        tag(MinejagoPowerTags.CAN_USE_SCYTHE_OF_QUAKES)
                 .add(MinejagoPowers.EARTH);
     }
 }

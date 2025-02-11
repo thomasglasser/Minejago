@@ -25,57 +25,13 @@
     },
     {
       "type": "modonomicon:text",
-      "anchor": "example",
+      "anchor": "",
       "condition": {
         "type": "modonomicon:none"
       },
       "show_title_separator": true,
-      "text": "book.minejago.wiki.apis.powers.example.text",
-      "title": "book.minejago.wiki.apis.powers.example.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "format_1",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.minejago.wiki.apis.powers.format_1.text",
-      "title": "book.minejago.wiki.apis.powers.format_1.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "format_2",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.minejago.wiki.apis.powers.format_2.text",
-      "title": "book.minejago.wiki.apis.powers.format_2.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "other_steps_1",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.minejago.wiki.apis.powers.other_steps_1.text",
-      "title": "book.minejago.wiki.apis.powers.other_steps_1.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "other_steps_2",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.minejago.wiki.apis.powers.other_steps_2.text",
-      "title": "book.minejago.wiki.apis.powers.other_steps_2.title",
+      "text": "book.minejago.wiki.apis.powers.guide.text",
+      "title": "book.minejago.wiki.apis.powers.guide.title",
       "use_markdown_in_title": false
     }
   ],

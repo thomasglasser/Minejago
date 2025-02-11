@@ -22,17 +22,6 @@
     },
     {
       "type": "modonomicon:text",
-      "anchor": "example",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.minejago.wiki.apis.focus_modifiers.example.text",
-      "title": "book.minejago.wiki.apis.focus_modifiers.example.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
       "anchor": "format",
       "condition": {
         "type": "modonomicon:none"
@@ -40,28 +29,6 @@
       "show_title_separator": true,
       "text": "book.minejago.wiki.apis.focus_modifiers.format.text",
       "title": "book.minejago.wiki.apis.focus_modifiers.format.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "targets_1",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.minejago.wiki.apis.focus_modifiers.targets_1.text",
-      "title": "book.minejago.wiki.apis.focus_modifiers.targets_1.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "targets_2",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.minejago.wiki.apis.focus_modifiers.targets_2.text",
-      "title": "book.minejago.wiki.apis.focus_modifiers.targets_2.title",
       "use_markdown_in_title": false
     }
   ],

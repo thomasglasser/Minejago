@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class EarthDragon extends Dragon {
     public EarthDragon(EntityType<? extends EarthDragon> entityType, Level level) {
-        super(entityType, level, MinejagoPowers.EARTH, MinejagoPowerTags.EARTH);
+        super(entityType, level, MinejagoPowers.EARTH, MinejagoPowerTags.CAN_USE_SCYTHE_OF_QUAKES);
     }
 
     @Nullable
