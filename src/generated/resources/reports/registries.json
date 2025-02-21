@@ -208,10 +208,13 @@
     "minejago:zane_spawn_egg"
   ],
   "minecraft:map_decoration_type": [
-    "minejago:nunchucks_of_lightning",
-    "minejago:scythe_of_quakes",
-    "minejago:shurikens_of_ice",
-    "minejago:sword_of_fire"
+    "minejago:cave_of_despair",
+    "minejago:fire_temple",
+    "minejago:floating_ruins",
+    "minejago:four_weapons",
+    "minejago:ice_temple",
+    "minejago:monastery_of_spinjitzu",
+    "minejago:ninjago_city"
   ],
   "minecraft:memory_module_type": [
     "minejago:in_raid",

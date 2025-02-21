@@ -28,9 +28,9 @@ import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
 
 public class MinejagoStructures {
     public static final ResourceKey<Structure> FOUR_WEAPONS = createKey("four_weapons");
-    public static final ResourceKey<Structure> CAVE_OF_DESPAIR = createKey("cave_of_despair");
     public static final ResourceKey<Structure> NINJAGO_CITY = createKey("ninjago_city");
     public static final ResourceKey<Structure> MONASTERY_OF_SPINJITZU = createKey("monastery_of_spinjitzu");
+    public static final ResourceKey<Structure> CAVE_OF_DESPAIR = createKey("cave_of_despair");
 
     private static ResourceKey<Structure> createKey(String name) {
         return ResourceKey.create(Registries.STRUCTURE, Minejago.modLoc(name));
@@ -58,7 +58,41 @@ public class MinejagoStructures {
                         List.of(),
                         JigsawStructure.DEFAULT_DIMENSION_PADDING,
                         JigsawStructure.DEFAULT_LIQUID_SETTINGS));
-
+        context.register(NINJAGO_CITY,
+                new JigsawStructure(
+                        new Structure.StructureSettings.Builder(holderGetter.getOrThrow(MinejagoBiomeTags.HAS_NINJAGO_CITY))
+                                .generationStep(GenerationStep.Decoration.SURFACE_STRUCTURES)
+                                .terrainAdapation(TerrainAdjustment.BEARD_THIN)
+                                .build(),
+                        holderGetter2.getOrThrow(NinjagoCityPools.BUILDINGS),
+                        Optional.empty(),
+                        JigsawStructure.MAX_DEPTH,
+                        ConstantHeight.of(VerticalAnchor.absolute(0)),
+                        false,
+                        Optional.of(Heightmap.Types.WORLD_SURFACE_WG),
+                        80,
+                        List.of(),
+                        JigsawStructure.DEFAULT_DIMENSION_PADDING,
+                        JigsawStructure.DEFAULT_LIQUID_SETTINGS));
+        context.register(MONASTERY_OF_SPINJITZU,
+                new JigsawStructure(
+                        new Structure.StructureSettings.Builder(holderGetter.getOrThrow(MinejagoBiomeTags.HAS_MONASTERY_OF_SPINJITZU))
+                                .generationStep(GenerationStep.Decoration.SURFACE_STRUCTURES)
+                                .terrainAdapation(TerrainAdjustment.BEARD_THIN)
+                                .spawnOverrides(
+                                        Map.of(
+                                                MobCategory.MONSTER, new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create())))
+                                .build(),
+                        holderGetter2.getOrThrow(MonasteryOfSpinjitzuPools.START),
+                        Optional.empty(),
+                        JigsawStructure.MAX_DEPTH,
+                        ConstantHeight.of(VerticalAnchor.absolute(0)),
+                        false,
+                        Optional.of(Heightmap.Types.WORLD_SURFACE_WG),
+                        80,
+                        List.of(),
+                        JigsawStructure.DEFAULT_DIMENSION_PADDING,
+                        JigsawStructure.DEFAULT_LIQUID_SETTINGS));
         context.register(
                 CAVE_OF_DESPAIR,
                 new JigsawStructure(
@@ -76,43 +110,6 @@ public class MinejagoStructures {
                         ConstantHeight.of(VerticalAnchor.absolute(40)),
                         false,
                         Optional.empty(),
-                        80,
-                        List.of(),
-                        JigsawStructure.DEFAULT_DIMENSION_PADDING,
-                        JigsawStructure.DEFAULT_LIQUID_SETTINGS));
-
-        context.register(NINJAGO_CITY,
-                new JigsawStructure(
-                        new Structure.StructureSettings.Builder(holderGetter.getOrThrow(MinejagoBiomeTags.HAS_NINJAGO_CITY))
-                                .generationStep(GenerationStep.Decoration.SURFACE_STRUCTURES)
-                                .terrainAdapation(TerrainAdjustment.BEARD_THIN)
-                                .build(),
-                        holderGetter2.getOrThrow(NinjagoCityPools.BUILDINGS),
-                        Optional.empty(),
-                        JigsawStructure.MAX_DEPTH,
-                        ConstantHeight.of(VerticalAnchor.absolute(0)),
-                        false,
-                        Optional.of(Heightmap.Types.WORLD_SURFACE_WG),
-                        80,
-                        List.of(),
-                        JigsawStructure.DEFAULT_DIMENSION_PADDING,
-                        JigsawStructure.DEFAULT_LIQUID_SETTINGS));
-
-        context.register(MONASTERY_OF_SPINJITZU,
-                new JigsawStructure(
-                        new Structure.StructureSettings.Builder(holderGetter.getOrThrow(MinejagoBiomeTags.HAS_MONASTERY_OF_SPINJITZU))
-                                .generationStep(GenerationStep.Decoration.SURFACE_STRUCTURES)
-                                .terrainAdapation(TerrainAdjustment.BEARD_THIN)
-                                .spawnOverrides(
-                                        Map.of(
-                                                MobCategory.MONSTER, new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create())))
-                                .build(),
-                        holderGetter2.getOrThrow(MonasteryOfSpinjitzuPools.START),
-                        Optional.empty(),
-                        JigsawStructure.MAX_DEPTH,
-                        ConstantHeight.of(VerticalAnchor.absolute(0)),
-                        false,
-                        Optional.of(Heightmap.Types.WORLD_SURFACE_WG),
                         80,
                         List.of(),
                         JigsawStructure.DEFAULT_DIMENSION_PADDING,

@@ -22,7 +22,6 @@ import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.component.BundleContents;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
-import net.minecraft.world.level.saveddata.maps.MapDecorationTypes;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.neoforged.neoforge.common.Tags;
 
@@ -54,14 +53,14 @@ public final class MinejagoItemUtils {
     public static ItemStack createFourWeaponsMaps(ServerLevel serverLevel, Entity entity) {
         ItemStack bundle = Items.BUNDLE.getDefaultInstance();
         List<ItemStack> maps = new ArrayList<>();
-        maps.add(createGoldenWeaponsMap(serverLevel, entity, MinejagoStructureTags.FOUR_WEAPONS, MapDecorationTypes.RED_BANNER/*TODO: Four Weapons icon*/));
-        maps.add(createGoldenWeaponsMap(serverLevel, entity, MinejagoStructureTags.NINJAGO_CITY, MapDecorationTypes.GRAY_BANNER/*TODO: Ninjago City icon*/));
-        maps.add(createGoldenWeaponsMap(serverLevel, entity, MinejagoStructureTags.MONASTERY_OF_SPINJITZU, MapDecorationTypes.WHITE_BANNER/*TODO: Monastery icon*/));
-        maps.add(createGoldenWeaponsMap(serverLevel, entity, MinejagoStructureTags.CAVE_OF_DESPAIR, MinejagoMapDecorationTypes.SCYTHE_OF_QUAKES.asReferenceFrom(serverLevel.registryAccess())));
+        maps.add(createGoldenWeaponsMap(serverLevel, entity, MinejagoStructureTags.FOUR_WEAPONS, MinejagoMapDecorationTypes.FOUR_WEAPONS.asReferenceFrom(serverLevel.registryAccess())));
+        maps.add(createGoldenWeaponsMap(serverLevel, entity, MinejagoStructureTags.NINJAGO_CITY, MinejagoMapDecorationTypes.NINJAGO_CITY.asReferenceFrom(serverLevel.registryAccess())));
+        maps.add(createGoldenWeaponsMap(serverLevel, entity, MinejagoStructureTags.MONASTERY_OF_SPINJITZU, MinejagoMapDecorationTypes.MONASTERY_OF_SPINJITZU.asReferenceFrom(serverLevel.registryAccess())));
+        maps.add(createGoldenWeaponsMap(serverLevel, entity, MinejagoStructureTags.CAVE_OF_DESPAIR, MinejagoMapDecorationTypes.CAVE_OF_DESPAIR.asReferenceFrom(serverLevel.registryAccess())));
         // TODO: Add other structures
-//        maps.add(createGoldenWeaponsMap(serverLevel, entity, MinejagoStructureTags.ICE_TEMPLE, MinejagoMapDecorationTypes.SHURIKENS_OF_ICE.asReferenceFrom(serverLevel.registryAccess())));
-//        maps.add(createGoldenWeaponsMap(serverLevel, entity, MinejagoStructureTags.FLOATING_RUINS, MinejagoMapDecorationTypes.NUNCHUCKS_OF_LIGHTNING.asReferenceFrom(serverLevel.registryAccess())));
-//        maps.add(createGoldenWeaponsMap(serverLevel, entity, MinejagoStructureTags.FIRE_TEMPLE, MinejagoMapDecorationTypes.SWORD_OF_FIRE.asReferenceFrom(serverLevel.registryAccess())));
+//        maps.add(createGoldenWeaponsMap(serverLevel, entity, MinejagoStructureTags.ICE_TEMPLE, MinejagoMapDecorationTypes.ICE_TEMPLE.asReferenceFrom(serverLevel.registryAccess())));
+//        maps.add(createGoldenWeaponsMap(serverLevel, entity, MinejagoStructureTags.FLOATING_RUINS, MinejagoMapDecorationTypes.FLOATING_RUINS.asReferenceFrom(serverLevel.registryAccess())));
+//        maps.add(createGoldenWeaponsMap(serverLevel, entity, MinejagoStructureTags.FIRE_TEMPLE, MinejagoMapDecorationTypes.FIRE_TEMPLE.asReferenceFrom(serverLevel.registryAccess())));
         maps.removeIf(ItemStack::isEmpty);
         BundleContents contents = new BundleContents(maps);
         bundle.set(DataComponents.BUNDLE_CONTENTS, contents);

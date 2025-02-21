@@ -24,18 +24,15 @@ public class MinejagoStructureSets {
         context.register(
                 FOUR_WEAPONS,
                 new StructureSet(holderGetter.getOrThrow(MinejagoStructures.FOUR_WEAPONS), new RandomSpreadStructurePlacement(64, 16, RandomSpreadType.LINEAR, 14914101)));
-
-        context.register(
-                CAVE_OF_DESPAIR,
-                new StructureSet(holderGetter.getOrThrow(MinejagoStructures.CAVE_OF_DESPAIR), new RandomSpreadStructurePlacement(32, 8, RandomSpreadType.LINEAR, 14914102)));
-
         context.register(
                 NINJAGO_CITY,
-                new StructureSet(holderGetter.getOrThrow(MinejagoStructures.NINJAGO_CITY), new RandomSpreadStructurePlacement(128, 32, RandomSpreadType.LINEAR, 14914103)));
-
+                new StructureSet(holderGetter.getOrThrow(MinejagoStructures.NINJAGO_CITY), new RandomSpreadStructurePlacement(128, 32, RandomSpreadType.LINEAR, 14914102)));
         context.register(
                 MONASTERY_OF_SPINJITZU,
-                new StructureSet(holderGetter.getOrThrow(MinejagoStructures.MONASTERY_OF_SPINJITZU), new RandomSpreadStructurePlacement(128, 32, RandomSpreadType.LINEAR, 14914104)));
+                new StructureSet(holderGetter.getOrThrow(MinejagoStructures.MONASTERY_OF_SPINJITZU), new RandomSpreadStructurePlacement(128, 32, RandomSpreadType.LINEAR, 14914103)));
+        context.register(
+                CAVE_OF_DESPAIR,
+                new StructureSet(holderGetter.getOrThrow(MinejagoStructures.CAVE_OF_DESPAIR), new RandomSpreadStructurePlacement(32, 8, RandomSpreadType.LINEAR, 14914104)));
     }
 
     private static ResourceKey<StructureSet> register(String name) {

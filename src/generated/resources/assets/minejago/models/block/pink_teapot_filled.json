@@ -1,7 +1,6 @@
 {
   "parent": "minejago:block/teapot_filled_base",
   "textures": {
-    "particle": "minejago:item/pink_teapot",
     "pot": "minejago:block/pink_teapot"
   }
 }
