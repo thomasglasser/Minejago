@@ -7,7 +7,6 @@ import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.tommylib.api.data.models.ExtendedItemModelProvider;
 import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.data.PackOutput;
-import net.minecraft.server.packs.PackType;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
@@ -69,10 +68,7 @@ public class MinejagoItemModelProvider extends ExtendedItemModelProvider {
                 .texture("layer0", modItemLoc(MinejagoItems.FILLED_TEACUP.getId().getPath() + "_overlay"))
                 .texture("layer1", modItemLoc(MinejagoItems.FILLED_TEACUP.getId().getPath()));
 
-        MinejagoBlocks.TEAPOTS.forEach((dyeColor, itemRegistryObject) -> {
-            if (existingFileHelper.exists(Minejago.modLoc("textures/item/" + dyeColor.getName() + "_teapot.png"), PackType.CLIENT_RESOURCES))
-                basicItem(itemRegistryObject.get().asItem());
-        });
+        MinejagoBlocks.TEAPOTS.forEach((dyeColor, itemRegistryObject) -> basicItem(itemRegistryObject.get().asItem()));
 
         spawnEggItem(MinejagoItems.WU_SPAWN_EGG);
         spawnEggItem(MinejagoItems.KAI_SPAWN_EGG);
