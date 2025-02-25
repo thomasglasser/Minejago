@@ -25,7 +25,7 @@ public record ClientboundStartSpinjitzuPayload(UUID uuid) implements ExtendedPac
     public void handle(Player player) {
         Player clientPlayer = ClientUtils.getPlayerByUUID(uuid);
         if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled()) {
-            AnimationUtils.startAnimation(PlayerAnimations.Spinjitzu.START.getAnimation(), PlayerAnimations.Spinjitzu.ACTIVE.getAnimation(), clientPlayer, FirstPersonMode.VANILLA);
+            AnimationUtils.startAnimation(PlayerAnimations.Spinjitzu.START.getAnimation(), PlayerAnimations.Spinjitzu.ACTIVE.getAnimation(), clientPlayer, FirstPersonMode.THIRD_PERSON_MODEL);
             TommyLibServices.ENTITY.getPersistentData(clientPlayer).putInt(KEY_SPINJITZUSTARTTICKS, 10);
         }
     }

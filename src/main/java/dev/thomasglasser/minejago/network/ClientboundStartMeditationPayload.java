@@ -28,7 +28,7 @@ public record ClientboundStartMeditationPayload(UUID uuid) implements ExtendedPa
         player.refreshDimensions();
 
         if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled())
-            AnimationUtils.startAnimation(PlayerAnimations.Meditation.START.getAnimation(), player, FirstPersonMode.VANILLA);
+            AnimationUtils.startAnimation(PlayerAnimations.Meditation.START.getAnimation(), player, FirstPersonMode.THIRD_PERSON_MODEL);
     }
 
     @Override

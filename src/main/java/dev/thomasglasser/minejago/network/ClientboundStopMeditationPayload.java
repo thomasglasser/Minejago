@@ -33,7 +33,7 @@ public record ClientboundStopMeditationPayload(UUID uuid, boolean fail) implemen
             if (fail)
                 AnimationUtils.stopAnimation(clientPlayer);
             else
-                AnimationUtils.startAnimation(PlayerAnimations.Meditation.FINISH.getAnimation(), clientPlayer, FirstPersonMode.VANILLA);
+                AnimationUtils.startAnimation(PlayerAnimations.Meditation.FINISH.getAnimation(), clientPlayer, FirstPersonMode.THIRD_PERSON_MODEL);
         }
     }
 

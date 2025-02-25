@@ -26,9 +26,9 @@ public record ClientboundStopSpinjitzuPayload(UUID uuid, boolean fail) implement
         Player clientPlayer = ClientUtils.getPlayerByUUID(uuid);
         if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled()) {
             if (fail)
-                AnimationUtils.startAnimation(PlayerAnimations.Spinjitzu.WOBBLE.getAnimation(), null, clientPlayer, FirstPersonMode.VANILLA);
+                AnimationUtils.startAnimation(PlayerAnimations.Spinjitzu.WOBBLE.getAnimation(), null, clientPlayer, FirstPersonMode.THIRD_PERSON_MODEL);
             else
-                AnimationUtils.startAnimation(PlayerAnimations.Spinjitzu.FINISH.getAnimation(), null, clientPlayer, FirstPersonMode.VANILLA);
+                AnimationUtils.startAnimation(PlayerAnimations.Spinjitzu.FINISH.getAnimation(), null, clientPlayer, FirstPersonMode.THIRD_PERSON_MODEL);
         }
     }
 

@@ -26,7 +26,7 @@ public record ClientboundStartMegaMeditationPayload(UUID uuid) implements Extend
         player.getData(MinejagoAttachmentTypes.FOCUS).startMegaMeditating();
         player.refreshDimensions();
         if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled())
-            AnimationUtils.startAnimation(PlayerAnimations.Meditation.FLOAT.getAnimation(), player, FirstPersonMode.VANILLA);
+            AnimationUtils.startAnimation(PlayerAnimations.Meditation.FLOAT.getAnimation(), player, FirstPersonMode.THIRD_PERSON_MODEL);
     }
 
     @Override

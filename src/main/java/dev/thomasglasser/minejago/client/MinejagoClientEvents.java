@@ -289,7 +289,7 @@ public class MinejagoClientEvents {
     public static void onPostPlayerRender(RenderPlayerEvent.Post event) {
         Player player = event.getEntity();
         SpinjitzuModel<Player> model = new SpinjitzuModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(SpinjitzuModel.LAYER_LOCATION));
-        if (player.getData(MinejagoAttachmentTypes.SPINJITZU).active() && TommyLibServices.ENTITY.getPersistentData(player).getInt(ClientboundStartSpinjitzuPayload.KEY_SPINJITZUSTARTTICKS) <= 0) {
+        if (!(ClientUtils.getMainClientPlayer() == player && ClientUtils.getMinecraft().options.getCameraType().isFirstPerson()) && player.getData(MinejagoAttachmentTypes.SPINJITZU).active() && TommyLibServices.ENTITY.getPersistentData(player).getInt(ClientboundStartSpinjitzuPayload.KEY_SPINJITZUSTARTTICKS) <= 0) {
             model.setupAnim(player, 0, 0, player.tickCount + event.getPartialTick(), 0, 0);
             model.getBody().copyFrom(event.getRenderer().getModel().body);
             float scale = (float) player.getAttributeValue(Attributes.SCALE);
