@@ -5,7 +5,7 @@
 	"textures": {
 		"particle": "minejago:item/teapot",
 		"pot": "minejago:block/teapot",
-		"tea": "minejago:block/tea"
+		"tea": "minejago:block/filled_teapot_overlay"
 	},
 	"elements": [
 		{

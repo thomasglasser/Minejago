@@ -1,32 +1,107 @@
 {
   "variants": {
-    "facing=east,filled=false": {
+    "cups=0,facing=east": {
       "model": "minejago:block/brown_teapot",
       "y": 90
     },
-    "facing=east,filled=true": {
-      "model": "minejago:block/brown_teapot_filled",
-      "y": 90
-    },
-    "facing=north,filled=false": {
+    "cups=0,facing=north": {
       "model": "minejago:block/brown_teapot"
     },
-    "facing=north,filled=true": {
-      "model": "minejago:block/brown_teapot_filled"
-    },
-    "facing=south,filled=false": {
+    "cups=0,facing=south": {
       "model": "minejago:block/brown_teapot",
       "y": 180
     },
-    "facing=south,filled=true": {
-      "model": "minejago:block/brown_teapot_filled",
-      "y": 180
-    },
-    "facing=west,filled=false": {
+    "cups=0,facing=west": {
       "model": "minejago:block/brown_teapot",
       "y": 270
     },
-    "facing=west,filled=true": {
+    "cups=1,facing=east": {
+      "model": "minejago:block/brown_teapot",
+      "y": 90
+    },
+    "cups=1,facing=north": {
+      "model": "minejago:block/brown_teapot"
+    },
+    "cups=1,facing=south": {
+      "model": "minejago:block/brown_teapot",
+      "y": 180
+    },
+    "cups=1,facing=west": {
+      "model": "minejago:block/brown_teapot",
+      "y": 270
+    },
+    "cups=2,facing=east": {
+      "model": "minejago:block/brown_teapot",
+      "y": 90
+    },
+    "cups=2,facing=north": {
+      "model": "minejago:block/brown_teapot"
+    },
+    "cups=2,facing=south": {
+      "model": "minejago:block/brown_teapot",
+      "y": 180
+    },
+    "cups=2,facing=west": {
+      "model": "minejago:block/brown_teapot",
+      "y": 270
+    },
+    "cups=3,facing=east": {
+      "model": "minejago:block/brown_teapot",
+      "y": 90
+    },
+    "cups=3,facing=north": {
+      "model": "minejago:block/brown_teapot"
+    },
+    "cups=3,facing=south": {
+      "model": "minejago:block/brown_teapot",
+      "y": 180
+    },
+    "cups=3,facing=west": {
+      "model": "minejago:block/brown_teapot",
+      "y": 270
+    },
+    "cups=4,facing=east": {
+      "model": "minejago:block/brown_teapot_filled",
+      "y": 90
+    },
+    "cups=4,facing=north": {
+      "model": "minejago:block/brown_teapot_filled"
+    },
+    "cups=4,facing=south": {
+      "model": "minejago:block/brown_teapot_filled",
+      "y": 180
+    },
+    "cups=4,facing=west": {
+      "model": "minejago:block/brown_teapot_filled",
+      "y": 270
+    },
+    "cups=5,facing=east": {
+      "model": "minejago:block/brown_teapot_filled",
+      "y": 90
+    },
+    "cups=5,facing=north": {
+      "model": "minejago:block/brown_teapot_filled"
+    },
+    "cups=5,facing=south": {
+      "model": "minejago:block/brown_teapot_filled",
+      "y": 180
+    },
+    "cups=5,facing=west": {
+      "model": "minejago:block/brown_teapot_filled",
+      "y": 270
+    },
+    "cups=6,facing=east": {
+      "model": "minejago:block/brown_teapot_filled",
+      "y": 90
+    },
+    "cups=6,facing=north": {
+      "model": "minejago:block/brown_teapot_filled"
+    },
+    "cups=6,facing=south": {
+      "model": "minejago:block/brown_teapot_filled",
+      "y": 180
+    },
+    "cups=6,facing=west": {
       "model": "minejago:block/brown_teapot_filled",
       "y": 270
     }

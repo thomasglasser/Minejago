@@ -54,8 +54,8 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -72,14 +72,14 @@ public class TeapotBlock extends BaseEntityBlock {
             ItemStack.ITEM_NON_AIR_CODEC.optionalFieldOf("display_cup", MinejagoItems.FILLED_TEACUP).forGetter(TeapotBlock::getDisplayCup)).apply(instance, TeapotBlock::new));
     public static final VoxelShape SHAPE = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 10.0D, 13.0D);
     public static final ResourceLocation CONTENTS = Minejago.modLoc("teapot_contents");
-    public static final BooleanProperty FILLED = BooleanProperty.create("filled");
+    public static final IntegerProperty CUPS = IntegerProperty.create("cups", 0, 6);
     public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
 
     private final Holder<Item> displayCup;
 
     public TeapotBlock(Properties pProperties, @Nullable Holder<Item> displayCup) {
         super(pProperties);
-        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(FILLED, Boolean.FALSE));
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(CUPS, 0));
         this.displayCup = displayCup != null ? displayCup : MinejagoItems.FILLED_TEACUP;
     }
 
@@ -91,7 +91,7 @@ public class TeapotBlock extends BaseEntityBlock {
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
-        builder.add(FILLED);
+        builder.add(CUPS);
         builder.add(FACING);
     }
 

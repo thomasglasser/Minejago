@@ -252,7 +252,7 @@ public class MinejagoClientEvents {
         event.register(((blockState, blockAndTintGetter, blockPos, i) -> {
             if (blockPos == null || blockAndTintGetter == null)
                 return -1;
-            if (i == 1 && blockAndTintGetter.getBlockEntity(blockPos) instanceof TeapotBlockEntity teapotBlockEntity && blockState.getValue(TeapotBlock.FILLED)) {
+            if (i == 1 && blockAndTintGetter.getBlockEntity(blockPos) instanceof TeapotBlockEntity teapotBlockEntity && blockState.getValue(TeapotBlock.CUPS) > 3) {
                 return PotionContents.createItemStack(Items.POTION, teapotBlockEntity.getPotion()).get(DataComponents.POTION_CONTENTS).getColor();
             }
             return -1;

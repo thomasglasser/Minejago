@@ -76,10 +76,8 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
     }
 
     public static void serverTick(Level pLevel, BlockPos pPos, BlockState pState, TeapotBlockEntity pBlockEntity) {
-        if (pBlockEntity.cups < 3)
-            pLevel.setBlock(pPos, pState.setValue(TeapotBlock.FILLED, false), Block.UPDATE_ALL);
-        else
-            pLevel.setBlock(pPos, pState.setValue(TeapotBlock.FILLED, true), Block.UPDATE_ALL);
+        if (pState.getValue(TeapotBlock.CUPS) != pBlockEntity.cups)
+            pLevel.setBlock(pPos, pState.setValue(TeapotBlock.CUPS, pBlockEntity.cups), Block.UPDATE_ALL);
 
         if (pBlockEntity.cups > 0) {
             Optional<RecipeHolder<TeapotBrewingRecipe>> recipe = pBlockEntity.quickCheck.getRecipeFor(new TeapotBrewingRecipe.TeapotBrewingRecipeInput(pBlockEntity.potion, pBlockEntity.item), (ServerLevel) pLevel);

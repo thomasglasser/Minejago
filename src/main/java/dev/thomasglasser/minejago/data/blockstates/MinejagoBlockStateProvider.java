@@ -46,19 +46,19 @@ public class MinejagoBlockStateProvider extends ExtendedBlockStateProvider {
     protected void registerStatesAndModels() {
         getVariantBuilder(MinejagoBlocks.TEAPOT.get()).forAllStates(blockState -> ConfiguredModel.builder()
                 .rotationY((int) (blockState.getValue(TeapotBlock.FACING).getOpposite()).toYRot())
-                .modelFile(blockState.getValue(TeapotBlock.FILLED) ? models().withExistingParent("teapot_filled", modBlockLoc("teapot_filled_base")) : models().withExistingParent("teapot", modBlockLoc("teapot_base")))
+                .modelFile(blockState.getValue(TeapotBlock.CUPS) > 3 ? models().withExistingParent("teapot_filled", modBlockLoc("teapot_filled_base")) : models().withExistingParent("teapot", modBlockLoc("teapot_base")))
                 .build());
         MinejagoBlocks.TEAPOTS.forEach((dyeColor, blockBlockRegistryObject) -> {
             if (models().existingFileHelper.exists(modBlockLoc(dyeColor.getName() + "_teapot"), TEXTURE)) {
                 getVariantBuilder(blockBlockRegistryObject.get()).forAllStates(blockState -> ConfiguredModel.builder()
                         .rotationY((int) (blockState.getValue(TeapotBlock.FACING).getOpposite()).toYRot())
-                        .modelFile(blockState.getValue(TeapotBlock.FILLED) ? models().withExistingParent(dyeColor.getName() + "_teapot_filled", modBlockLoc("teapot_filled_base")).texture("pot", modBlockLoc(dyeColor.getName() + "_teapot")).texture("particle", modItemLoc(dyeColor.getName() + "_teapot")) : models().withExistingParent(dyeColor.getName() + "_teapot", modBlockLoc("teapot_base")).texture("pot", modBlockLoc(dyeColor.getName() + "_teapot")).texture("particle", modItemLoc(dyeColor.getName() + "_teapot")))
+                        .modelFile(blockState.getValue(TeapotBlock.CUPS) > 3 ? models().withExistingParent(dyeColor.getName() + "_teapot_filled", modBlockLoc("teapot_filled_base")).texture("pot", modBlockLoc(dyeColor.getName() + "_teapot")).texture("particle", modItemLoc(dyeColor.getName() + "_teapot")) : models().withExistingParent(dyeColor.getName() + "_teapot", modBlockLoc("teapot_base")).texture("pot", modBlockLoc(dyeColor.getName() + "_teapot")).texture("particle", modItemLoc(dyeColor.getName() + "_teapot")))
                         .build());
             }
         });
         getVariantBuilder(MinejagoBlocks.JASPOT.get()).forAllStates(blockState -> ConfiguredModel.builder()
                 .rotationY((int) (blockState.getValue(TeapotBlock.FACING).getOpposite()).toYRot())
-                .modelFile(blockState.getValue(TeapotBlock.FILLED) ? models().withExistingParent("jaspot_filled", modBlockLoc("teapot_filled_base")).texture("pot", modBlockLoc("jaspot")).texture("particle", modItemLoc("jaspot")) : models().withExistingParent("jaspot", modBlockLoc("teapot_base")).texture("pot", modBlockLoc("jaspot")).texture("particle", modItemLoc("jaspot")))
+                .modelFile(blockState.getValue(TeapotBlock.CUPS) > 3 ? models().withExistingParent("jaspot_filled", modBlockLoc("teapot_filled_base")).texture("pot", modBlockLoc("jaspot")).texture("particle", modItemLoc("jaspot")) : models().withExistingParent("jaspot", modBlockLoc("teapot_base")).texture("pot", modBlockLoc("jaspot")).texture("particle", modItemLoc("jaspot")))
                 .build());
 
         getVariantBuilder(MinejagoBlocks.GOLD_DISC.get()).forAllStates(blockState -> {
