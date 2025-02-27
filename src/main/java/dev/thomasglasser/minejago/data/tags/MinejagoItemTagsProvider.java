@@ -73,6 +73,9 @@ public class MinejagoItemTagsProvider extends ExtendedItemTagsProvider {
         IntrinsicTagAppender<Item> gi = tag(MinejagoItemTags.GI);
         MinejagoArmors.GI_SETS.forEach(set -> gi.add(set.getAllAsItems().toArray(new ArmorItem[0])));
 
+        tag(MinejagoItemTags.TEACUPS)
+                .add(MinejagoItems.allTeacups().toArray(new Item[0]));
+
         // Wood sets
         woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET);
         leavesSet(MinejagoBlocks.FOCUS_LEAVES_SET);

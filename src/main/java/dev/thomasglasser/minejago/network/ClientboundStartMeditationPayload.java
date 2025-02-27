@@ -1,6 +1,5 @@
 package dev.thomasglasser.minejago.network;
 
-import dev.kosmx.playerAnim.api.firstPerson.FirstPersonMode;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.animation.definitions.PlayerAnimations;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
@@ -28,7 +27,7 @@ public record ClientboundStartMeditationPayload(UUID uuid) implements ExtendedPa
         player.refreshDimensions();
 
         if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled())
-            AnimationUtils.startAnimation(PlayerAnimations.Meditation.START.getAnimation(), player, FirstPersonMode.THIRD_PERSON_MODEL);
+            AnimationUtils.startAnimation(PlayerAnimations.Meditation.START.getAnimation(), player);
     }
 
     @Override

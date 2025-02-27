@@ -1,6 +1,5 @@
 package dev.thomasglasser.minejago.network;
 
-import dev.kosmx.playerAnim.api.firstPerson.FirstPersonMode;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.animation.definitions.PlayerAnimations;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
@@ -33,7 +32,7 @@ public record ClientboundStopMeditationPayload(UUID uuid, boolean fail) implemen
             if (fail)
                 AnimationUtils.stopAnimation(clientPlayer);
             else
-                AnimationUtils.startAnimation(PlayerAnimations.Meditation.FINISH.getAnimation(), clientPlayer, FirstPersonMode.THIRD_PERSON_MODEL);
+                AnimationUtils.startAnimation(PlayerAnimations.Meditation.FINISH.getAnimation(), clientPlayer);
         }
     }
 

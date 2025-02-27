@@ -1,7 +1,7 @@
 package dev.thomasglasser.minejago.plugins.jei;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.world.item.MinejagoItemUtils;
+import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.crafting.MinejagoRecipeTypes;
 import dev.thomasglasser.minejago.world.item.crafting.TeapotBrewingRecipe;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
@@ -22,6 +22,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.neoforged.neoforge.common.crafting.DataComponentIngredient;
 import org.jetbrains.annotations.Nullable;
 
@@ -47,7 +48,7 @@ public class TeapotBrewingRecipeCategory implements IRecipeCategory<TeapotBrewin
     public void setRecipe(IRecipeLayoutBuilder builder, TeapotBrewingRecipe recipe, IFocusGroup focuses) {
         builder.addInputSlot(7, 41)
                 .setStandardSlotBackground()
-                .addIngredients(DataComponentIngredient.of(false, MinejagoItemUtils.fillTeacup(recipe.base())));
+                .addIngredients(DataComponentIngredient.of(false, PotionContents.createItemStack(MinejagoItems.FILLED_TEACUP.get(), recipe.base())));
         builder.addInputSlot(39, 7)
                 .setStandardSlotBackground()
                 .addIngredients(recipe.ingredient());

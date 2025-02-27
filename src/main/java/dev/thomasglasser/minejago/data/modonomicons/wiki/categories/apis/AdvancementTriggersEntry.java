@@ -4,8 +4,9 @@ import com.klikli_dev.modonomicon.api.datagen.CategoryProviderBase;
 import com.klikli_dev.modonomicon.api.datagen.IndexModeEntryProvider;
 import com.klikli_dev.modonomicon.api.datagen.book.BookIconModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
-import dev.thomasglasser.minejago.world.item.MinejagoItemUtils;
+import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
+import net.minecraft.world.item.alchemy.PotionContents;
 
 public class AdvancementTriggersEntry extends IndexModeEntryProvider {
     private static final String ID = "advancement_triggers";
@@ -82,7 +83,7 @@ public class AdvancementTriggersEntry extends IndexModeEntryProvider {
 
     @Override
     protected BookIconModel entryIcon() {
-        return BookIconModel.create(MinejagoItemUtils.fillTeacup(MinejagoPotions.ACACIA_TEA.asReferenceFrom(registries())));
+        return BookIconModel.create(PotionContents.createItemStack(MinejagoItems.FILLED_TEACUP.get(), MinejagoPotions.ACACIA_TEA.asReferenceFrom(registries())));
     }
 
     @Override

@@ -27,20 +27,20 @@ public enum TeapotBlockComponentProvider implements IBlockComponentProvider {
 
     @Override
     public void appendTooltip(ITooltip iTooltip, BlockAccessor blockAccessor, IPluginConfig iPluginConfig) {
-        if (blockAccessor.getBlockEntity() instanceof TeapotBlockEntity be && blockAccessor.getBlock() instanceof TeapotBlock) {
+        if (blockAccessor.getBlockEntity() instanceof TeapotBlockEntity be && blockAccessor.getBlock() instanceof TeapotBlock teapotBlock) {
             Holder<Potion> potion = be.getPotion();
             if (potion != null) {
-                ItemStack potionStack = PotionContents.createItemStack(MinejagoItems.FILLED_TEACUP.get(), potion);
+                ItemStack potionStack = PotionContents.createItemStack(teapotBlock.getDisplayCup().value(), potion);
                 IElement icon = ElementHelper.INSTANCE.item(potionStack, 0.5f).translate(new Vec2(0, -2));
                 iTooltip.add(icon);
-                iTooltip.append(Component.translatable("block.minejago.teapot.waila.potion", be.getPotion() == Potions.WATER ? Blocks.WATER.getName() : PotionContents.createItemStack(Items.POTION, be.getPotion()).getDisplayName()).withStyle(ChatFormatting.GRAY));
+                iTooltip.append(Component.translatable("block.minejago.teapot.waila.potion", be.getPotion() == Potions.WATER ? Blocks.WATER.getName() : PotionContents.createItemStack(Items.POTION, be.getPotion()).getHoverName()).withStyle(ChatFormatting.GRAY));
             }
 
             ItemStack item = be.getInSlot(0);
             if (!item.isEmpty()) {
                 IElement icon = ElementHelper.INSTANCE.item(item, 0.5f).translate(new Vec2(0, -2));
                 iTooltip.add(icon);
-                iTooltip.append(Component.translatable("block.minejago.teapot.waila.item", item.getDisplayName()).withStyle(ChatFormatting.GRAY));
+                iTooltip.append(Component.translatable("block.minejago.teapot.waila.item", item.getHoverName()).withStyle(ChatFormatting.GRAY));
             }
 
             int cups = be.getCups();

@@ -97,6 +97,7 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.FoliageColor;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.fml.config.ModConfig;
@@ -237,10 +238,10 @@ public class MinejagoClientEvents {
 
     public static void onRegisterItemColorHandlers(RegisterColorHandlersEvent.Item event) {
         event.register((pStack, pTintIndex) -> {
-            if (pTintIndex == 0)
+            if (pTintIndex == 1)
                 return FastColor.ARGB32.opaque(pStack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).getColor());
             return -1;
-        }, MinejagoItems.FILLED_TEACUP.get());
+        }, MinejagoItems.allFilledTeacups().toArray(new ItemLike[0]));
         event.register((itemStack, i) -> {
             BlockState blockstate = ((BlockItem) itemStack.getItem()).getBlock().defaultBlockState();
             return ClientUtils.getMinecraft().getBlockColors().getColor(blockstate, ClientUtils.getLevel(), null, i);
@@ -454,6 +455,23 @@ public class MinejagoClientEvents {
         } else if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
             event.insertAfter(Items.BOOK.getDefaultInstance(), MinejagoItems.SCROLL.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(Items.GLASS_BOTTLE.getDefaultInstance(), MinejagoItems.TEACUP.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.TEACUP.toStack(), MinejagoItems.TEACUPS.get(DyeColor.WHITE).toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.TEACUPS.get(DyeColor.WHITE).toStack(), MinejagoItems.TEACUPS.get(DyeColor.LIGHT_GRAY).toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.TEACUPS.get(DyeColor.LIGHT_GRAY).toStack(), MinejagoItems.TEACUPS.get(DyeColor.GRAY).toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.TEACUPS.get(DyeColor.GRAY).toStack(), MinejagoItems.TEACUPS.get(DyeColor.BLACK).toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.TEACUPS.get(DyeColor.BLACK).toStack(), MinejagoItems.TEACUPS.get(DyeColor.BROWN).toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.TEACUPS.get(DyeColor.BROWN).toStack(), MinejagoItems.TEACUPS.get(DyeColor.RED).toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.TEACUPS.get(DyeColor.RED).toStack(), MinejagoItems.TEACUPS.get(DyeColor.ORANGE).toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.TEACUPS.get(DyeColor.ORANGE).toStack(), MinejagoItems.TEACUPS.get(DyeColor.YELLOW).toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.TEACUPS.get(DyeColor.YELLOW).toStack(), MinejagoItems.TEACUPS.get(DyeColor.LIME).toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.TEACUPS.get(DyeColor.LIME).toStack(), MinejagoItems.TEACUPS.get(DyeColor.GREEN).toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.TEACUPS.get(DyeColor.GREEN).toStack(), MinejagoItems.TEACUPS.get(DyeColor.CYAN).toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.TEACUPS.get(DyeColor.CYAN).toStack(), MinejagoItems.TEACUPS.get(DyeColor.LIGHT_BLUE).toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.TEACUPS.get(DyeColor.LIGHT_BLUE).toStack(), MinejagoItems.TEACUPS.get(DyeColor.BLUE).toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.TEACUPS.get(DyeColor.BLUE).toStack(), MinejagoItems.TEACUPS.get(DyeColor.PURPLE).toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.TEACUPS.get(DyeColor.PURPLE).toStack(), MinejagoItems.TEACUPS.get(DyeColor.MAGENTA).toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.TEACUPS.get(DyeColor.MAGENTA).toStack(), MinejagoItems.TEACUPS.get(DyeColor.PINK).toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.TEACUPS.get(DyeColor.PINK).toStack(), MinejagoItems.MINICUP.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 
             // Tea Ingredients
             event.insertAfter(Items.PHANTOM_MEMBRANE.getDefaultInstance(), Items.OAK_LEAVES.getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);

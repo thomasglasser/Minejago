@@ -3,8 +3,9 @@ package dev.thomasglasser.minejago.data.modonomicons.wiki.categories.tea;
 import com.klikli_dev.modonomicon.api.datagen.IndexModeEntryProvider;
 import com.klikli_dev.modonomicon.api.datagen.book.BookIconModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
-import dev.thomasglasser.minejago.world.item.MinejagoItemUtils;
+import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
+import net.minecraft.world.item.alchemy.PotionContents;
 
 public class RegularEntry extends IndexModeEntryProvider {
     private static final String ID = "regular";
@@ -50,7 +51,7 @@ public class RegularEntry extends IndexModeEntryProvider {
 
     @Override
     protected BookIconModel entryIcon() {
-        return BookIconModel.create(MinejagoItemUtils.fillTeacup(MinejagoPotions.OAK_TEA.asReferenceFrom(registries())));
+        return BookIconModel.create(PotionContents.createItemStack(MinejagoItems.FILLED_TEACUP.get(), MinejagoPotions.OAK_TEA.asReferenceFrom(registries())));
     }
 
     @Override

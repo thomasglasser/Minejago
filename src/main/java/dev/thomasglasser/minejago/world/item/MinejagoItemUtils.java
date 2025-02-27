@@ -17,8 +17,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.MapItem;
-import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.component.BundleContents;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
@@ -31,10 +29,6 @@ public final class MinejagoItemUtils {
     private static final int RADIUS = 100;
 
     private MinejagoItemUtils() {}
-
-    public static ItemStack fillTeacup(Holder<Potion> potion) {
-        return PotionContents.createItemStack(MinejagoItems.FILLED_TEACUP.get(), potion);
-    }
 
     public static ItemStack createGoldenWeaponsMap(ServerLevel serverLevel, Entity entity, TagKey<Structure> structure, Holder<MapDecorationType> decoration) {
         BlockPos pos = serverLevel.findNearestMapStructure(structure, entity.blockPosition(), RADIUS, true);

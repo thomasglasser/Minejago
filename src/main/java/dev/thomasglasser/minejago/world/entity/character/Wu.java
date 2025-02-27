@@ -58,6 +58,7 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.WalkTarget;
 import net.minecraft.world.entity.ai.village.poi.PoiManager;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -373,7 +374,7 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
             if (interruptedTicks <= 0) {
                 entityData.set(DATA_INTERRUPTED, false);
                 setTimeLeft(getMaxTime() - (TrackSpinjitzuCourseCompletion.SIT_DOWN_DURATION + TrackSpinjitzuCourseCompletion.PAPER_DURATION));
-                setItemInHand(InteractionHand.MAIN_HAND, MinejagoItems.TEACUP.toStack());
+                setItemInHand(InteractionHand.MAIN_HAND, MinejagoItems.TEACUPS.get(DyeColor.LIGHT_BLUE).toStack());
             }
         }
         return isInterrupted();

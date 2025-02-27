@@ -2,7 +2,7 @@ package dev.thomasglasser.minejago.world.level.block.entity;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
-import dev.thomasglasser.minejago.world.item.MinejagoItemUtils;
+import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.crafting.MinejagoRecipeTypes;
 import dev.thomasglasser.minejago.world.item.crafting.TeapotBrewingRecipe;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
@@ -32,6 +32,7 @@ import net.minecraft.world.Nameable;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
@@ -338,7 +339,7 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
     protected void collectImplicitComponents(DataComponentMap.Builder components) {
         super.collectImplicitComponents(components);
         if (potion != null) {
-            components.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(List.of(item, MinejagoItemUtils.fillTeacup(potion).copyWithCount(cups))));
+            components.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(List.of(item, PotionContents.createItemStack(MinejagoItems.FILLED_TEACUP.get(), potion).copyWithCount(cups))));
         }
     }
 

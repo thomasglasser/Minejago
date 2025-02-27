@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.plugins.jei;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.world.item.FilledTeacupItem;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.crafting.MinejagoRecipeTypes;
@@ -49,7 +50,9 @@ public class MinejagoJeiPlugin implements IModPlugin {
 
     @Override
     public void registerItemSubtypes(ISubtypeRegistration registration) {
-        registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, MinejagoItems.FILLED_TEACUP.get(), PotionSubtypeInterpreter.INSTANCE);
+        for (FilledTeacupItem teacup : MinejagoItems.allFilledTeacups()) {
+            registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, teacup, PotionSubtypeInterpreter.INSTANCE);
+        }
         MinejagoArmors.TRAINEE_GI_SET.getAll().forEach(item -> registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, item.get(), GiSubtypeInterpreter.INSTANCE));
     }
 

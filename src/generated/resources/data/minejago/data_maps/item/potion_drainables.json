@@ -20,10 +20,112 @@
         "id": "minecraft:bucket"
       }
     },
+    "minejago:black_filled_teacup": {
+      "cups": 1,
+      "remainder": {
+        "id": "minejago:black_teacup"
+      }
+    },
+    "minejago:blue_filled_teacup": {
+      "cups": 1,
+      "remainder": {
+        "id": "minejago:blue_teacup"
+      }
+    },
+    "minejago:brown_filled_teacup": {
+      "cups": 1,
+      "remainder": {
+        "id": "minejago:brown_teacup"
+      }
+    },
+    "minejago:cyan_filled_teacup": {
+      "cups": 1,
+      "remainder": {
+        "id": "minejago:cyan_teacup"
+      }
+    },
+    "minejago:filled_minicup": {
+      "cups": 1,
+      "remainder": {
+        "id": "minejago:minicup"
+      }
+    },
     "minejago:filled_teacup": {
       "cups": 1,
       "remainder": {
         "id": "minejago:teacup"
+      }
+    },
+    "minejago:gray_filled_teacup": {
+      "cups": 1,
+      "remainder": {
+        "id": "minejago:gray_teacup"
+      }
+    },
+    "minejago:green_filled_teacup": {
+      "cups": 1,
+      "remainder": {
+        "id": "minejago:green_teacup"
+      }
+    },
+    "minejago:light_blue_filled_teacup": {
+      "cups": 1,
+      "remainder": {
+        "id": "minejago:light_blue_teacup"
+      }
+    },
+    "minejago:light_gray_filled_teacup": {
+      "cups": 1,
+      "remainder": {
+        "id": "minejago:light_gray_teacup"
+      }
+    },
+    "minejago:lime_filled_teacup": {
+      "cups": 1,
+      "remainder": {
+        "id": "minejago:lime_teacup"
+      }
+    },
+    "minejago:magenta_filled_teacup": {
+      "cups": 1,
+      "remainder": {
+        "id": "minejago:magenta_teacup"
+      }
+    },
+    "minejago:orange_filled_teacup": {
+      "cups": 1,
+      "remainder": {
+        "id": "minejago:orange_teacup"
+      }
+    },
+    "minejago:pink_filled_teacup": {
+      "cups": 1,
+      "remainder": {
+        "id": "minejago:pink_teacup"
+      }
+    },
+    "minejago:purple_filled_teacup": {
+      "cups": 1,
+      "remainder": {
+        "id": "minejago:purple_teacup"
+      }
+    },
+    "minejago:red_filled_teacup": {
+      "cups": 1,
+      "remainder": {
+        "id": "minejago:red_teacup"
+      }
+    },
+    "minejago:white_filled_teacup": {
+      "cups": 1,
+      "remainder": {
+        "id": "minejago:white_teacup"
+      }
+    },
+    "minejago:yellow_filled_teacup": {
+      "cups": 1,
+      "remainder": {
+        "id": "minejago:yellow_teacup"
       }
     }
   }

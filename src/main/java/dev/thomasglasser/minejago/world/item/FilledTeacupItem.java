@@ -15,6 +15,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.PotionItem;
@@ -36,35 +37,40 @@ public class FilledTeacupItem extends PotionItem {
      * the Item before the action is complete.
      */
     public ItemStack finishUsingItem(ItemStack pStack, Level pLevel, LivingEntity pEntityLiving) {
-        Player player = pEntityLiving instanceof Player ? (Player) pEntityLiving : null;
-        if (player instanceof ServerPlayer) {
-            CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer) player, pStack);
-        }
-
-        if (!pLevel.isClientSide && pStack.has(DataComponents.POTION_CONTENTS)) {
-            for (MobEffectInstance mobEffectInstance : pStack.get(DataComponents.POTION_CONTENTS).getAllEffects()) {
-                pEntityLiving.addEffect(new MobEffectInstance(mobEffectInstance));
+        FoodProperties food = pStack.get(DataComponents.FOOD);
+        if (food != null) {
+            Player player = pEntityLiving instanceof Player ? (Player) pEntityLiving : null;
+            if (player instanceof ServerPlayer) {
+                CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer) player, pStack);
             }
-        }
 
-        if (player != null) {
-            player.awardStat(Stats.ITEM_USED.get(this));
-            if (!player.getAbilities().instabuild) {
-                pStack.shrink(1);
-            }
-        }
-
-        if (player == null || !player.getAbilities().instabuild) {
-            if (pStack.isEmpty()) {
-                return new ItemStack(MinejagoItems.TEACUP.get());
+            PotionContents potionContents = pStack.get(DataComponents.POTION_CONTENTS);
+            if (!pLevel.isClientSide && potionContents != null) {
+                for (MobEffectInstance mobEffectInstance : potionContents.getAllEffects()) {
+                    pEntityLiving.addEffect(new MobEffectInstance(mobEffectInstance));
+                }
             }
 
             if (player != null) {
-                player.getInventory().add(new ItemStack(MinejagoItems.TEACUP.get()));
+                player.awardStat(Stats.ITEM_USED.get(this));
+                if (!player.getAbilities().instabuild) {
+                    pStack.shrink(1);
+                }
             }
-        }
 
-        pEntityLiving.gameEvent(GameEvent.DRINK);
+            if ((player == null || !player.getAbilities().instabuild) && food.usingConvertsTo().isPresent()) {
+                ItemStack converted = food.usingConvertsTo().get().copyWithCount(1);
+                if (pStack.isEmpty()) {
+                    return converted;
+                }
+
+                if (player != null) {
+                    player.getInventory().add(converted);
+                }
+            }
+
+            pEntityLiving.gameEvent(GameEvent.DRINK);
+        }
         return pStack;
     }
 
@@ -79,13 +85,16 @@ public class FilledTeacupItem extends PotionItem {
         BlockState blockstate = level.getBlockState(blockpos);
         if (pContext.getClickedFace() != Direction.DOWN && blockstate.is(BlockTags.CONVERTABLE_TO_MUD) && itemstack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).is(Potions.WATER)) {
             level.playSound(null, blockpos, SoundEvents.GENERIC_SPLASH, SoundSource.PLAYERS, 1.0F, 1.0F);
-            player.setItemInHand(pContext.getHand(), ItemUtils.createFilledResult(itemstack, player, new ItemStack(MinejagoItems.TEACUP.get())));
-            player.awardStat(Stats.ITEM_USED.get(itemstack.getItem()));
+            FoodProperties food = itemstack.get(DataComponents.FOOD);
+            if (player != null && food != null && food.usingConvertsTo().isPresent()) {
+                player.setItemInHand(pContext.getHand(), ItemUtils.createFilledResult(itemstack, player, food.usingConvertsTo().get()));
+                player.awardStat(Stats.ITEM_USED.get(itemstack.getItem()));
+            }
             if (!level.isClientSide) {
                 ServerLevel serverlevel = (ServerLevel) level;
 
                 for (int i = 0; i < 5; ++i) {
-                    serverlevel.sendParticles(ParticleTypes.SPLASH, (double) blockpos.getX() + level.random.nextDouble(), (double) (blockpos.getY() + 1), (double) blockpos.getZ() + level.random.nextDouble(), 1, 0.0D, 0.0D, 0.0D, 1.0D);
+                    serverlevel.sendParticles(ParticleTypes.SPLASH, (double) blockpos.getX() + level.random.nextDouble(), blockpos.getY() + 1, (double) blockpos.getZ() + level.random.nextDouble(), 1, 0.0D, 0.0D, 0.0D, 1.0D);
                 }
             }
 

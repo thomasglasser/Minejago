@@ -1,6 +1,5 @@
 package dev.thomasglasser.minejago.network;
 
-import dev.kosmx.playerAnim.api.firstPerson.FirstPersonMode;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.animation.definitions.PlayerAnimations;
 import dev.thomasglasser.tommylib.api.client.ClientUtils;
@@ -25,7 +24,7 @@ public record ClientboundStartSpinjitzuPayload(UUID uuid) implements ExtendedPac
     public void handle(Player player) {
         Player clientPlayer = ClientUtils.getPlayerByUUID(uuid);
         if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled()) {
-            AnimationUtils.startAnimation(PlayerAnimations.Spinjitzu.START.getAnimation(), PlayerAnimations.Spinjitzu.ACTIVE.getAnimation(), clientPlayer, FirstPersonMode.THIRD_PERSON_MODEL);
+            AnimationUtils.startAnimation(PlayerAnimations.Spinjitzu.START.getAnimation(), PlayerAnimations.Spinjitzu.ACTIVE.getAnimation(), clientPlayer);
             TommyLibServices.ENTITY.getPersistentData(clientPlayer).putInt(KEY_SPINJITZUSTARTTICKS, 10);
         }
     }

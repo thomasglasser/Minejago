@@ -12,16 +12,23 @@ import dev.thomasglasser.tommylib.api.registration.DeferredRegister;
 import dev.thomasglasser.tommylib.api.world.item.ItemUtils;
 import dev.thomasglasser.tommylib.api.world.item.ModeledThrowableSwordItem;
 import dev.thomasglasser.tommylib.api.world.item.ThrowableSwordItem;
+import it.unimi.dsi.fastutil.objects.ReferenceLinkedOpenHashSet;
+import java.util.SortedMap;
+import java.util.SortedSet;
+import java.util.TreeMap;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BannerPatternItem;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.SmithingTemplateItem;
@@ -29,12 +36,23 @@ import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.armortrim.TrimPattern;
 import net.minecraft.world.item.component.WritableBookContent;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.entity.BannerPattern;
 
 public class MinejagoItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Minejago.MOD_ID);
 
     public static final String MOD_NEEDED = "error.mod_needed";
+
+    // Teacups
+    private static final Function<ItemLike, TeacupItem> TEACUP_FUNCTION = (filled) -> new TeacupItem(new Item.Properties(), filled);
+    private static final Function<ItemLike, FilledTeacupItem> FILLED_TEACUP_FUNCTION = (item) -> new FilledTeacupItem(new Item.Properties().stacksTo(1).component(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).component(DataComponents.FOOD, new FoodProperties.Builder().usingConvertsTo(item).alwaysEdible().build()));
+    public static final DeferredItem<TeacupItem> TEACUP = register("teacup", () -> TEACUP_FUNCTION.apply(BuiltInRegistries.ITEM.get(Minejago.modLoc("filled_teacup"))));
+    public static final SortedMap<DyeColor, DeferredItem<TeacupItem>> TEACUPS = teacups();
+    public static final DeferredItem<TeacupItem> MINICUP = register("minicup", () -> TEACUP_FUNCTION.apply(BuiltInRegistries.ITEM.get(Minejago.modLoc("filled_minicup"))));
+    public static final DeferredItem<FilledTeacupItem> FILLED_TEACUP = register("filled_teacup", () -> FILLED_TEACUP_FUNCTION.apply(TEACUP));
+    public static final SortedMap<DyeColor, DeferredItem<FilledTeacupItem>> FILLED_TEACUPS = filledTeacups();
+    public static final DeferredItem<FilledTeacupItem> FILLED_MINICUP = register("filled_minicup", () -> FILLED_TEACUP_FUNCTION.apply(MINICUP));
 
     public static final DeferredItem<ModeledThrowableSwordItem> BAMBOO_STAFF = register("bamboo_staff", () -> new ModeledThrowableSwordItem(MinejagoEntityTypes.THROWN_BAMBOO_STAFF::value, MinejagoSoundEvents.BAMBOO_STAFF_THROW, MinejagoSoundEvents.BAMBOO_STAFF_IMPACT, MinejagoTiers.BONE, new Item.Properties()) {
         @Override
@@ -49,8 +67,6 @@ public class MinejagoItems {
     });
     public static final DeferredItem<ThrowableSwordItem> BONE_KNIFE = register("bone_knife", () -> new ThrowableSwordItem(MinejagoEntityTypes.THROWN_BONE_KNIFE::value, MinejagoSoundEvents.BONE_KNIFE_THROW, MinejagoSoundEvents.BONE_KNIFE_IMPACT, MinejagoTiers.BONE, new Item.Properties().rarity(Rarity.UNCOMMON)));
     public static final DeferredItem<ScytheOfQuakesItem> SCYTHE_OF_QUAKES = register("scythe_of_quakes", () -> new ScytheOfQuakesItem(new Item.Properties()));
-    public static final DeferredItem<TeacupItem> TEACUP = register("teacup", () -> new TeacupItem(new Item.Properties()));
-    public static final DeferredItem<FilledTeacupItem> FILLED_TEACUP = register("filled_teacup", () -> new FilledTeacupItem(new Item.Properties().stacksTo(1).component(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).component(DataComponents.FOOD, new FoodProperties.Builder().usingConvertsTo(TEACUP).alwaysEdible().build())));
     public static final DeferredItem<Item> SCROLL = register("scroll", () -> new Item(new Item.Properties()));
     public static final DeferredItem<WritableScrollItem> WRITABLE_SCROLL = register("writable_scroll", () -> new WritableScrollItem(new Item.Properties().stacksTo(1).component(DataComponents.WRITABLE_BOOK_CONTENT, WritableBookContent.EMPTY)));
     public static final DeferredItem<WrittenScrollItem> WRITTEN_SCROLL = register("written_scroll", () -> new WrittenScrollItem(new Item.Properties().stacksTo(16).component(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true)));
@@ -123,5 +139,37 @@ public class MinejagoItems {
 
     private static DeferredItem<SpawnEggItem> registerSpawnEgg(String name, Supplier<EntityType<? extends Mob>> entityType, int primaryColor, int secondaryColor) {
         return ItemUtils.registerSpawnEgg(ITEMS, name, entityType, primaryColor, secondaryColor);
+    }
+
+    private static SortedMap<DyeColor, DeferredItem<TeacupItem>> teacups() {
+        SortedMap<DyeColor, DeferredItem<TeacupItem>> map = new TreeMap<>();
+        for (DyeColor color : DyeColor.values()) {
+            map.put(color, register(color.getName() + "_teacup", () -> TEACUP_FUNCTION.apply(FILLED_TEACUPS.get(color))));
+        }
+        return map;
+    }
+
+    private static SortedMap<DyeColor, DeferredItem<FilledTeacupItem>> filledTeacups() {
+        SortedMap<DyeColor, DeferredItem<FilledTeacupItem>> map = new TreeMap<>();
+        for (DyeColor color : DyeColor.values()) {
+            map.put(color, register(color.getName() + "_filled_teacup", () -> FILLED_TEACUP_FUNCTION.apply(TEACUPS.get(color))));
+        }
+        return map;
+    }
+
+    public static SortedSet<TeacupItem> allTeacups() {
+        SortedSet<TeacupItem> set = new ReferenceLinkedOpenHashSet<>();
+        set.add(TEACUP.get());
+        TEACUPS.values().forEach(cup -> set.add(cup.get()));
+        set.add(MINICUP.get());
+        return set;
+    }
+
+    public static SortedSet<FilledTeacupItem> allFilledTeacups() {
+        SortedSet<FilledTeacupItem> set = new ReferenceLinkedOpenHashSet<>();
+        set.add(FILLED_TEACUP.get());
+        FILLED_TEACUPS.values().forEach(cup -> set.add(cup.get()));
+        set.add(FILLED_MINICUP.get());
+        return set;
     }
 }

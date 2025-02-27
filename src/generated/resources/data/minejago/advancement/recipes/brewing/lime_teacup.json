@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_teacup": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#minejago:teacups"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_terracotta": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#minecraft:terracotta"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minejago:lime_teacup"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_terracotta",
+      "has_teacup"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minejago:lime_teacup"
+    ]
+  }
+}

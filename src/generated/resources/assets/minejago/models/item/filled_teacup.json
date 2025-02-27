@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "minejago:item/filled_teacup_overlay",
-    "layer1": "minejago:item/filled_teacup"
+    "layer0": "minejago:item/teacup",
+    "layer1": "minejago:item/filled_teacup_overlay"
   }
 }

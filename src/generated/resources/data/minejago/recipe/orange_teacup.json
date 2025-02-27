@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "teacup",
+  "key": {
+    "x": {
+      "item": "minecraft:orange_terracotta"
+    }
+  },
+  "pattern": [
+    "x x",
+    " x "
+  ],
+  "result": {
+    "count": 4,
+    "id": "minejago:orange_teacup"
+  }
+}

@@ -32,6 +32,7 @@ import dev.thomasglasser.minejago.world.entity.skill.Skill;
 import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
 import dev.thomasglasser.minejago.world.entity.spinjitzucourse.AbstractSpinjitzuCourseElement;
+import dev.thomasglasser.minejago.world.item.FilledTeacupItem;
 import dev.thomasglasser.minejago.world.item.MinejagoCreativeModeTabs;
 import dev.thomasglasser.minejago.world.item.MinejagoItemUtils;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
@@ -50,6 +51,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
@@ -135,8 +137,8 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(SkillCommand.SUCCESS_OTHER, "Set %s's %s skill level to %s");
         add(SkillCommand.QUERY, "Your %s skill level is %s");
 
-        addCreativeTab(MinejagoCreativeModeTabs.GI, "Gi");
-        addCreativeTab(MinejagoCreativeModeTabs.MINEJAGO, "Minejago");
+        add(MinejagoCreativeModeTabs.GI.get(), "Gi");
+        add(MinejagoCreativeModeTabs.MINEJAGO.get(), "Minejago");
 
         addPaintingVariant(MinejagoPaintingVariants.A_MORNING_BREW, "A Morning Brew", "waifu_png_pl");
         addPaintingVariant(MinejagoPaintingVariants.NEEDS_HAIR_GEL, "Needs Hair Gel", "waifu_png_pl");
@@ -216,7 +218,10 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
 
     protected void addTea(Holder<Potion> tea, String name) {
         addPotions(tea, name);
-        add(MinejagoItemUtils.fillTeacup(tea), name);
+        add(PotionContents.createItemStack(MinejagoItems.FILLED_TEACUP.get(), tea), name);
+        for (DeferredItem<FilledTeacupItem> cup : MinejagoItems.FILLED_TEACUPS.values()) {
+            add(PotionContents.createItemStack(cup.get(), tea), name);
+        }
     }
 
     protected void addPluginConfig(ResourceLocation location, String name) {
@@ -240,23 +245,31 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(MinejagoItems.BONE_KNIFE.get(), "Bone Knife");
         add(MinejagoItems.BAMBOO_STAFF.get(), "Bamboo Staff");
         add(MinejagoItems.SCYTHE_OF_QUAKES.get(), "Scythe of Quakes");
-        add(MinejagoItems.TEACUP.get(), "Teacup");
         add(MinejagoItems.SCROLL.get(), "Scroll");
         add(MinejagoItems.WRITABLE_SCROLL.get(), "Scroll and Quill");
         add(MinejagoItems.WRITTEN_SCROLL.get(), "Written Scroll");
         add(SkulkinRaid.CURSED_BANNER_PATTERN_NAME, "Cursed Banner");
 
         // Teas
-        ItemStack uncraftableTea = new ItemStack(MinejagoItems.FILLED_TEACUP.get());
-        uncraftableTea.set(DataComponents.POTION_CONTENTS, PotionContents.EMPTY);
-        add(uncraftableTea, "Uncraftable Tea");
-        add(MinejagoItemUtils.fillTeacup(Potions.WATER), "Cup of Water");
-        add(MinejagoItemUtils.fillTeacup(MinejagoPotions.MILK), "Cup of Milk");
+        add(MinejagoItems.TEACUP.get(), "Teacup");
+        for (DyeColor color : DyeColor.values()) {
+            add(MinejagoItems.TEACUPS.get(color).toStack(), capitalize(color.getName()) + " Teacup");
+        }
+        add(MinejagoItems.MINICUP.get(), "Minicup");
 
-        for (Holder<Potion> potion : BuiltInRegistries.POTION.holders().filter(ref -> ref.key().location().getNamespace().equals(ResourceLocation.DEFAULT_NAMESPACE)).toList()) {
-            ResourceLocation location = potion.unwrapKey().orElseThrow().location();
-            if (!(potion == Potions.WATER) && !(location.getPath().contains("long") || location.getPath().contains("strong")))
-                add(MinejagoItemUtils.fillTeacup(potion), Items.POTION.getName(PotionContents.createItemStack(Items.POTION, potion)).getString().replace("Potion", "Tea"));
+        for (FilledTeacupItem cup : MinejagoItems.allFilledTeacups()) {
+            ItemStack uncraftableTea = cup.getDefaultInstance();
+            uncraftableTea.set(DataComponents.POTION_CONTENTS, PotionContents.EMPTY);
+            add(uncraftableTea, "Uncraftable Tea");
+
+            add(PotionContents.createItemStack(cup, Potions.WATER), "Cup of Water");
+            add(PotionContents.createItemStack(cup, MinejagoPotions.MILK), "Cup of Milk");
+
+            for (Holder<Potion> potion : BuiltInRegistries.POTION.holders().filter(ref -> ref.key().location().getNamespace().equals(ResourceLocation.DEFAULT_NAMESPACE)).toList()) {
+                ResourceLocation location = potion.unwrapKey().orElseThrow().location();
+                if (!(potion == Potions.WATER) && !(location.getPath().contains("long") || location.getPath().contains("strong")))
+                    add(PotionContents.createItemStack(cup, potion), Items.POTION.getName(PotionContents.createItemStack(Items.POTION, potion)).getString().replace("Potion", "Tea"));
+            }
         }
 
         // Armors

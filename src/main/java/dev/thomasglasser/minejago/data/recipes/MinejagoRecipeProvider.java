@@ -3,6 +3,7 @@ package dev.thomasglasser.minejago.data.recipes;
 import static net.minecraft.data.recipes.ShapedRecipeBuilder.shaped;
 import static net.minecraft.data.recipes.ShapelessRecipeBuilder.shapeless;
 
+import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.tags.MinejagoItemTags;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
@@ -36,18 +37,22 @@ public class MinejagoRecipeProvider extends ExtendedRecipeProvider {
     }
 
     @Override
-    protected void buildRecipes(RecipeOutput p_recipeOutput, HolderLookup.Provider holderLookup) {
-        buildCrafting(p_recipeOutput);
-        buildBrewing(p_recipeOutput, holderLookup);
+    protected void buildRecipes(RecipeOutput recipeOutput, HolderLookup.Provider holderLookup) {
+        buildCrafting(recipeOutput);
+        buildBrewing(recipeOutput, holderLookup);
     }
 
     private void buildCrafting(RecipeOutput output) {
-        shaped(RecipeCategory.BREWING, MinejagoItems.TEACUP.get(), 4)
-                .pattern("x x")
-                .pattern(" x ")
-                .define('x', ItemTags.TERRACOTTA)
-                .unlockedBy("has_terracotta", has(ItemTags.TERRACOTTA))
+        coloredTeacupFromColoredTerracotta(output, MinejagoItems.TEACUP.get(), Blocks.TERRACOTTA);
+        MinejagoItems.TEACUPS.forEach((color, cup) -> coloredTeacupFromColoredTerracotta(output, cup.get(), BuiltInRegistries.BLOCK.get(ResourceLocation.withDefaultNamespace(color.getName() + "_terracotta"))));
+        teacupCopyRecipes(output);
+        shapeless(RecipeCategory.BREWING, MinejagoItems.MINICUP.get(), 1)
+                .requires(MinejagoBlocks.TEAPOTS.get(DyeColor.BLACK).get())
+                .requires(ItemTags.FISHES)
+                .group("teapot")
+                .unlockedBy("has_self", has(MinejagoItems.MINICUP.get()))
                 .save(output);
+
         shaped(RecipeCategory.COMBAT, MinejagoItems.BAMBOO_STAFF.get(), 1)
                 .pattern(" o ")
                 .pattern(" o ")
@@ -57,6 +62,8 @@ public class MinejagoRecipeProvider extends ExtendedRecipeProvider {
                 .save(output);
 
         coloredTeapotFromColoredTerracotta(output, MinejagoBlocks.TEAPOT.get(), Blocks.TERRACOTTA);
+        MinejagoBlocks.TEAPOTS.forEach((color, pot) -> coloredTeapotFromColoredTerracotta(output, pot.get(), BuiltInRegistries.BLOCK.get(ResourceLocation.withDefaultNamespace(color.getName() + "_terracotta"))));
+        teapotCopyRecipes(output);
         shapeless(RecipeCategory.BREWING, MinejagoBlocks.JASPOT.get(), 1)
                 .requires(MinejagoBlocks.TEAPOTS.get(DyeColor.CYAN).get())
                 .requires(ItemTags.FISHES)
@@ -64,8 +71,6 @@ public class MinejagoRecipeProvider extends ExtendedRecipeProvider {
                 .unlockedBy("has_self", has(MinejagoBlocks.JASPOT.get()))
                 .save(output);
 
-        MinejagoBlocks.TEAPOTS.forEach((color, pot) -> coloredTeapotFromColoredTerracotta(output, pot.get(), BuiltInRegistries.BLOCK.get(ResourceLocation.withDefaultNamespace(color.getName() + "_terracotta"))));
-        teapotRecipes(output);
         shapeless(RecipeCategory.MISC, MinejagoItems.SCROLL.get(), 1)
                 .requires(Items.PAPER, 3)
                 .unlockedBy("has_paper", has(Items.PAPER))
@@ -110,13 +115,37 @@ public class MinejagoRecipeProvider extends ExtendedRecipeProvider {
                 .save(output);
     }
 
-    private void teapotRecipes(RecipeOutput output) {
+    private void teapotCopyRecipes(RecipeOutput output) {
         for (DyeColor dyecolor : DyeColor.values()) {
             TagKey<Item> dyeItems = ConventionalItemTags.forDyeColor(dyecolor);
 //            TransmuteRecipeBuilder.transmute(RecipeCategory.BREWING, this.tag(MinejagoItemTags.TEAPOTS), Ingredient.of(registries.lookupOrThrow(Registries.ITEM).getOrThrow(dyeItems)), MinejagoBlocks.TEAPOTS.get(dyecolor).asItem())
 //                    .group("teapot_dye")
-//                    .unlockedBy("has_dye", this.has(dyeItems))
+//                    .unlockedBy("has_dye", has(dyeItems))
+//                    .unlockedBy("has_teapot", has(MinejagoItemTags.TEAPOTS))
 //                    .save(output, Minejago.modLoc(dyecolor.getName() + "_teapot_from_dye").toString());
+        }
+    }
+
+    protected void coloredTeacupFromColoredTerracotta(RecipeOutput output, ItemLike teacup, ItemLike color) {
+        shaped(RecipeCategory.BREWING, teacup, 4)
+                .pattern("x x")
+                .pattern(" x ")
+                .define('x', color)
+                .group("teacup")
+                .unlockedBy("has_terracotta", has(ItemTags.TERRACOTTA))
+                .unlockedBy("has_teacup", has(MinejagoItemTags.TEACUPS))
+                .save(output);
+    }
+
+    protected void teacupCopyRecipes(RecipeOutput recipeOutput) {
+        for (DyeColor color : DyeColor.values()) {
+            TagKey<Item> dyeItems = ConventionalItemTags.forDyeColor(color);
+            shapeless(RecipeCategory.BREWING, MinejagoItems.TEACUPS.get(color).get(), 1)
+                    .requires(MinejagoItemTags.TEACUPS)
+                    .requires(dyeItems)
+                    .unlockedBy("has_dye", has(dyeItems))
+                    .unlockedBy("has_teacup", has(MinejagoItemTags.TEACUPS))
+                    .save(recipeOutput, Minejago.modLoc(color.getName() + "_teacup_from_dye"));
         }
     }
 

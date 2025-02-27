@@ -3,7 +3,7 @@ package dev.thomasglasser.minejago.world.item.crafting;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.thomasglasser.minejago.world.item.MinejagoItemUtils;
+import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -13,6 +13,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeInput;
@@ -78,7 +79,7 @@ public class TeapotBrewingRecipe implements Recipe<TeapotBrewingRecipe.TeapotBre
 
     @Override
     public ItemStack getResultItem(HolderLookup.Provider provider) {
-        return MinejagoItemUtils.fillTeacup(result);
+        return PotionContents.createItemStack(MinejagoItems.FILLED_TEACUP.get(), result);
     }
 
     @Override
@@ -130,7 +131,7 @@ public class TeapotBrewingRecipe implements Recipe<TeapotBrewingRecipe.TeapotBre
         @Override
         public ItemStack getItem(int index) {
             return switch (index) {
-                case 0 -> MinejagoItemUtils.fillTeacup(base);
+                case 0 -> PotionContents.createItemStack(MinejagoItems.FILLED_TEACUP.get(), base);
                 case 1 -> ingredient;
                 default -> throw new IllegalArgumentException("Recipe does not contain slot " + index);
             };

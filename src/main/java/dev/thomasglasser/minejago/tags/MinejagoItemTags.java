@@ -15,6 +15,7 @@ public class MinejagoItemTags {
     public static final TagKey<Item> REPAIRS_SKELETAL_ARMOR = create("repairs_skeletal_armor");
     public static final TagKey<Item> BONE_TOOL_MATERIALS = create("bone_tool_materials");
     public static final TagKey<Item> GI = create("gi");
+    public static final TagKey<Item> TEACUPS = create("teacups");
 
     private static TagKey<Item> create(String name) {
         return TagKey.create(Registries.ITEM, Minejago.modLoc(name));

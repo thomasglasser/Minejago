@@ -11,12 +11,14 @@ import dev.thomasglasser.tommylib.api.registration.DeferredRegister;
 import dev.thomasglasser.tommylib.api.world.level.block.BlockUtils;
 import dev.thomasglasser.tommylib.api.world.level.block.LeavesSet;
 import dev.thomasglasser.tommylib.api.world.level.block.WoodSet;
-import java.util.ArrayList;
-import java.util.List;
+import it.unimi.dsi.fastutil.objects.ReferenceLinkedOpenHashSet;
 import java.util.Optional;
 import java.util.SortedMap;
+import java.util.SortedSet;
 import java.util.TreeMap;
+import java.util.function.BiFunction;
 import java.util.function.Supplier;
+import net.minecraft.core.Holder;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.BlockItem;
@@ -39,10 +41,11 @@ public class MinejagoBlocks {
     public static final WoodSet ENCHANTED_WOOD_SET = registerWoodSet("enchanted", MapColor.COLOR_PURPLE, MapColor.COLOR_GRAY, MinejagoWoodTypes::getEnchanted, MinejagoBoatTypes.ENCHANTED.getValue());
     public static final LeavesSet FOCUS_LEAVES_SET = registerLeavesSet("focus", new TreeGrower("focus", 0.1F, Optional.empty(), Optional.empty(), Optional.of(MinejagoTreeFeatures.FOCUS), Optional.of(MinejagoTreeFeatures.FANCY_FOCUS), Optional.of(MinejagoTreeFeatures.FOCUS_BEES_005), Optional.of(MinejagoTreeFeatures.FANCY_FOCUS_BEES_005)));
 
-    // Pots
-    public static final DeferredBlock<TeapotBlock> TEAPOT = registerBlockAndItemAndWrap("teapot", () -> new TeapotBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).instabreak().noOcclusion()));
+    // Teapots
+    private static final BiFunction<MapColor, Holder<Item>, TeapotBlock> TEAPOT_FUNCTION = (color, item) -> new TeapotBlock(BlockBehaviour.Properties.of().mapColor(color).instabreak().noOcclusion(), item);
+    public static final DeferredBlock<TeapotBlock> TEAPOT = registerBlockAndItemAndWrap("teapot", () -> TEAPOT_FUNCTION.apply(MapColor.COLOR_ORANGE, MinejagoItems.FILLED_TEACUP));
     public static final SortedMap<DyeColor, DeferredBlock<TeapotBlock>> TEAPOTS = teapots();
-    public static final DeferredBlock<TeapotBlock> JASPOT = registerBlockAndItemAndWrap("jaspot", () -> new TeapotBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).instabreak().noOcclusion()), new Item.Properties().rarity(Rarity.UNCOMMON));
+    public static final DeferredBlock<TeapotBlock> JASPOT = registerBlockAndItemAndWrap("jaspot", () -> TEAPOT_FUNCTION.apply(MapColor.COLOR_LIGHT_BLUE, MinejagoItems.MINICUP), new Item.Properties().rarity(Rarity.UNCOMMON));
 
     public static final DeferredBlock<DiscBlock> GOLD_DISC = registerBlockAndItemAndWrap("gold_disc", () -> new DiscBlock(BlockBehaviour.Properties.of().instabreak().pushReaction(PushReaction.DESTROY)));
     public static final DeferredBlock<TopPostBlock> TOP_POST = registerBlockAndItemAndWrap("top_post", () -> new TopPostBlock(BlockBehaviour.Properties.of().instabreak().noCollission().pushReaction(PushReaction.DESTROY)));
@@ -81,13 +84,13 @@ public class MinejagoBlocks {
     private static SortedMap<DyeColor, DeferredBlock<TeapotBlock>> teapots() {
         SortedMap<DyeColor, DeferredBlock<TeapotBlock>> map = new TreeMap<>();
         for (DyeColor color : DyeColor.values()) {
-            map.put(color, registerBlockAndItemAndWrap(color.getName() + "_teapot", () -> new TeapotBlock(BlockBehaviour.Properties.of().mapColor(color).instabreak().noOcclusion())));
+            map.put(color, registerBlockAndItemAndWrap(color.getName() + "_teapot", () -> TEAPOT_FUNCTION.apply(color.getMapColor(), MinejagoItems.FILLED_TEACUPS.get(color))));
         }
         return map;
     }
 
-    public static List<Block> allPots() {
-        List<Block> pots = new ArrayList<>();
+    public static SortedSet<Block> allPots() {
+        SortedSet<Block> pots = new ReferenceLinkedOpenHashSet<>();
         pots.add(TEAPOT.get());
         TEAPOTS.values().forEach(blockDeferredBlock -> pots.add(blockDeferredBlock.get()));
         pots.add(JASPOT.get());

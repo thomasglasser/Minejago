@@ -1,12 +1,14 @@
 package dev.thomasglasser.minejago.world.level.block;
 
 import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import dev.thomasglasser.minejago.datamaps.MinejagoDataMaps;
 import dev.thomasglasser.minejago.datamaps.PotionDrainable;
 import dev.thomasglasser.minejago.datamaps.PotionFillable;
+import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
 import dev.thomasglasser.minejago.world.level.block.entity.TeapotBlockEntity;
 import dev.thomasglasser.tommylib.api.world.item.ItemUtils;
@@ -14,6 +16,7 @@ import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -64,19 +67,25 @@ import org.jetbrains.annotations.Nullable;
 public class TeapotBlock extends BaseEntityBlock {
     public static final String POTION = "container.teapot.potion";
     public static final String POTION_AND_ITEM = "container.teapot.potion_and_item";
+    public static final MapCodec<TeapotBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+            propertiesCodec(),
+            ItemStack.ITEM_NON_AIR_CODEC.optionalFieldOf("display_cup", MinejagoItems.FILLED_TEACUP).forGetter(TeapotBlock::getDisplayCup)).apply(instance, TeapotBlock::new));
     public static final VoxelShape SHAPE = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 10.0D, 13.0D);
     public static final ResourceLocation CONTENTS = Minejago.modLoc("teapot_contents");
     public static final BooleanProperty FILLED = BooleanProperty.create("filled");
     public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
 
-    public TeapotBlock(Properties pProperties) {
+    private final Holder<Item> displayCup;
+
+    public TeapotBlock(Properties pProperties, @Nullable Holder<Item> displayCup) {
         super(pProperties);
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(FILLED, Boolean.FALSE));
+        this.displayCup = displayCup != null ? displayCup : MinejagoItems.FILLED_TEACUP;
     }
 
     @Override
     protected MapCodec<? extends BaseEntityBlock> codec() {
-        return simpleCodec(TeapotBlock::new);
+        return CODEC;
     }
 
     @Override
@@ -274,5 +283,9 @@ public class TeapotBlock extends BaseEntityBlock {
         super.onPlace(state, level, pos, oldState, movedByPiston);
         if (level.getBlockEntity(pos) instanceof TeapotBlockEntity teapotBlockEntity)
             teapotBlockEntity.setTemperature(getBiomeTemperature(level, pos));
+    }
+
+    public Holder<Item> getDisplayCup() {
+        return displayCup;
     }
 }

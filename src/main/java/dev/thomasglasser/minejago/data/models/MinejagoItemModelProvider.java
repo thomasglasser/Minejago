@@ -2,11 +2,13 @@ package dev.thomasglasser.minejago.data.models;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
+import dev.thomasglasser.minejago.world.item.TeacupItem;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.tommylib.api.data.models.ExtendedItemModelProvider;
 import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.data.PackOutput;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
@@ -31,7 +33,6 @@ public class MinejagoItemModelProvider extends ExtendedItemModelProvider {
         }));
         MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(item -> singleTexture(item.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/skeletal_chestplate_" + item.get().getVariant().getColor().getName())));
         basicItem(MinejagoArmors.SAMUKAIS_CHESTPLATE.get());
-        basicItem(MinejagoItems.TEACUP.get());
         basicItem(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get());
         basicItem(MinejagoItems.ICE_CUBE_POTTERY_SHERD.get());
         basicItem(MinejagoItems.THUNDER_POTTERY_SHERD.get());
@@ -64,9 +65,20 @@ public class MinejagoItemModelProvider extends ExtendedItemModelProvider {
 
         basicBlockItem(MinejagoBlocks.SCROLL_SHELF);
 
+        for (TeacupItem teacup : MinejagoItems.allTeacups()) {
+            basicItem(teacup);
+        }
         withExistingParent(MinejagoItems.FILLED_TEACUP.getId().getPath(), mcItemLoc("generated"))
-                .texture("layer0", modItemLoc(MinejagoItems.FILLED_TEACUP.getId().getPath() + "_overlay"))
-                .texture("layer1", modItemLoc(MinejagoItems.FILLED_TEACUP.getId().getPath()));
+                .texture("layer0", modItemLoc(MinejagoItems.TEACUP.getId().getPath()))
+                .texture("layer1", modItemLoc(MinejagoItems.FILLED_TEACUP.getId().getPath() + "_overlay"));
+        for (DyeColor color : DyeColor.values()) {
+            withExistingParent(MinejagoItems.FILLED_TEACUPS.get(color).getId().getPath(), mcItemLoc("generated"))
+                    .texture("layer0", modItemLoc(MinejagoItems.TEACUPS.get(color).getId().getPath()))
+                    .texture("layer1", modItemLoc(MinejagoItems.FILLED_TEACUP.getId().getPath() + "_overlay"));
+        }
+        withExistingParent(MinejagoItems.FILLED_MINICUP.getId().getPath(), mcItemLoc("generated"))
+                .texture("layer0", modItemLoc(MinejagoItems.MINICUP.getId().getPath()))
+                .texture("layer1", modItemLoc(MinejagoItems.FILLED_TEACUP.getId().getPath() + "_overlay"));
 
         MinejagoBlocks.TEAPOTS.forEach((dyeColor, itemRegistryObject) -> basicItem(itemRegistryObject.get().asItem()));
 
