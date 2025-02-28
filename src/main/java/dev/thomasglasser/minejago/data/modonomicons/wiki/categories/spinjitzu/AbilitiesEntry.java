@@ -27,8 +27,8 @@ public class AbilitiesEntry extends IndexModeEntryProvider {
         add(context().pageTitle(), "Attributes");
         add(context().pageText(), """
                 While doing Spinjitzu,
-                user speed and knockback are increased,
-                allowing them to use momentum to their advantage.
+                movement speed and attack knockback are increased,
+                allowing one to use momentum to their advantage.
                 """);
 
         page("passive_knockback", () -> BookTextPageModel.create()
@@ -41,7 +41,7 @@ public class AbilitiesEntry extends IndexModeEntryProvider {
                 While doing Spinjitzu,
                 any entity that comes into contact with the user
                 will be knocked back,
-                forming a protective barrier around the user.
+                forming a protective barrier around them.
                 """);
 
         page("environmental", () -> BookImagePageModel.create()

@@ -32,9 +32,9 @@ public class MagicEntry extends IndexModeEntryProvider {
                 .withTitle(context().pageTitle())
                 .withText(context().pageText()));
 
-        add(context().pageTitle(), "Boiled Milk");
+        add(context().pageTitle(), "Milk");
         add(context().pageText(), """
-                Milk can be boiled in a [teapot](entry://tea/teapot) to make Boiled Milk.
+                Milk can be boiled in a [teapot](entry://tea/teapot).
                 This drink gives you the Instant Cure effect that weakens all potion effects.
                 """);
 

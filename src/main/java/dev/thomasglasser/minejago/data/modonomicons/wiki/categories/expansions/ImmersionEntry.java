@@ -17,13 +17,20 @@ public class ImmersionEntry extends IndexModeEntryProvider {
     @Override
     protected void generatePages() {
         page("drum", () -> BookImagePageModel.create()
-                .withAnchor("drum")
                 .withImages(WikiBookSubProvider.wikiTexture("expansions/immersion/drum.png"))
                 .withTitle(context().pageTitle())
                 .withText(context().pageText()));
 
         add(context().pageTitle(), "Drum");
         add(context().pageText(), "All references of the Note Block have been renamed to Drum and the block has been made to resemble the drum from the pilots.");
+
+        page("teapot", () -> BookImagePageModel.create()
+                .withImages(WikiBookSubProvider.wikiTexture("expansions/immersion/teapot.png"))
+                .withTitle(context().pageTitle())
+                .withText(context().pageText()));
+
+        add(context().pageTitle(), "Teapot");
+        add(context().pageText(), "The Light Blue Teapot and Teacup found in the [Monastery of Spinjitzu](entry://locations/monastery_of_spinjitzu) have been retextured to look more like Wu's.");
     }
 
     @Override

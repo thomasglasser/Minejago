@@ -36,7 +36,7 @@ public class TeapotEntry extends IndexModeEntryProvider {
     protected String entryDescription() {
         return """
                 Used to brew tea,
-                the teapot can be carried around and placed wherever you need it while keeping its contents.
+                teapots can be carried around and placed wherever you need while keeping their contents.
                 There is no screen or recipe book, so making tea requires a bit of experimentation.
                 """;
     }

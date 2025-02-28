@@ -85,7 +85,7 @@ public class TrackSpinjitzuCourseCompletion<T extends Wu> extends ExtendedBehavi
                 entity.setCurrentStage(Stage.PREPARE);
                 entity.setItemInHand(InteractionHand.MAIN_HAND, MinejagoItems.TEACUPS.get(DyeColor.LIGHT_BLUE).toStack());
             } else if (timePassed == SIT_DOWN_DURATION + PAPER_DURATION + CUP_DURATION) {
-                entity.setItemInHand(InteractionHand.MAIN_HAND, MinejagoBlocks.TEAPOTS.get(DyeColor.CYAN).toStack());
+                entity.setItemInHand(InteractionHand.MAIN_HAND, MinejagoBlocks.TEAPOTS.get(DyeColor.LIGHT_BLUE).toStack());
             } else if (timePassed == SIT_DOWN_DURATION + PAPER_DURATION + CUP_DURATION + TEA_DURATION) {
                 entity.setItemInHand(InteractionHand.MAIN_HAND, Items.SUGAR.getDefaultInstance());
             } else if (timePassed == SIT_DOWN_DURATION + PAPER_DURATION + CUP_DURATION + TEA_DURATION + SUGAR_DURATION) {
