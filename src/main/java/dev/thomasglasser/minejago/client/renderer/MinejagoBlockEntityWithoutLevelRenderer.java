@@ -44,6 +44,8 @@ public class MinejagoBlockEntityWithoutLevelRenderer extends BlockEntityWithoutL
             poseStack.scale(1.0F, -1.0F, -1.0F);
             VertexConsumer vertexConsumer = ItemRenderer.getFoilBuffer(buffer, this.scytheModel.renderType(ScytheModel.TEXTURE), false, stack.hasFoil());
             this.scytheModel.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
+        } else if (stack.is(MinejagoItems.SHURIKEN_OF_ICE.get())) {
+            // TODO: Render Shuriken of Ice
         } else if (stack.getItem() instanceof PoweredArmorItem) {
             poseStack.translate(0.5D, 0.5D, 0.5D);
             ResourceLocation location = stack.getOrDefault(MinejagoDataComponents.POWER.get(), MinejagoPowers.NONE).location();

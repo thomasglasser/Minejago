@@ -50,6 +50,10 @@ public class MinejagoSoundEvents {
     public static final DeferredHolder<SoundEvent, SoundEvent> SCYTHE_OF_QUAKES_EXPLOSION = register("scythe_of_quakes", "item", "explosion");
     public static final DeferredHolder<SoundEvent, SoundEvent> SCYTHE_OF_QUAKES_PATH = register("scythe_of_quakes", "item", "path");
 
+    // Shuriken of Ice
+    public static final DeferredHolder<SoundEvent, SoundEvent> SHURIKEN_OF_ICE_THROW = register("shuriken_of_ice", "item", "throw");
+    public static final DeferredHolder<SoundEvent, SoundEvent> SHURIKEN_OF_ICE_IMPACT = register("shuriken_of_ice", "item", "impact");
+
     // Bamboo Staff
     public static final DeferredHolder<SoundEvent, SoundEvent> BAMBOO_STAFF_IMPACT = register("bamboo_staff", "item", "impact");
     public static final DeferredHolder<SoundEvent, SoundEvent> BAMBOO_STAFF_THROW = register("bamboo_staff", "item", "throw");

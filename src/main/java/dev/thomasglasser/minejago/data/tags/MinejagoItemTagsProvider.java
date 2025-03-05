@@ -30,7 +30,8 @@ public class MinejagoItemTagsProvider extends ExtendedItemTagsProvider {
         tag(ItemTags.SWORDS)
                 .add(MinejagoItems.BONE_KNIFE.get());
         tag(MinejagoItemTags.GOLDEN_WEAPONS)
-                .add(MinejagoItems.SCYTHE_OF_QUAKES.get());
+                .add(MinejagoItems.SCYTHE_OF_QUAKES.get())
+                .add(MinejagoItems.SHURIKEN_OF_ICE.get());
         MinejagoArmors.ARMOR_SETS.forEach(this::armorSet);
         MinejagoArmors.POWER_SETS.forEach(this::armorSet);
         tag(ItemTags.CHEST_ARMOR)

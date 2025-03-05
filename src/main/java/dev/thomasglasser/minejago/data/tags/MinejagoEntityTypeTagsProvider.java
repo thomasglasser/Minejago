@@ -24,6 +24,7 @@ public class MinejagoEntityTypeTagsProvider extends ExtendedIntrinsicHolderTagsP
                 .addTag(MinejagoEntityTypeTags.SKULKINS);
 
         tag(EntityTypeTags.IMPACT_PROJECTILES)
+                .add(MinejagoEntityTypes.THROWN_SHURIKEN_OF_ICE.get())
                 .add(MinejagoEntityTypes.THROWN_BAMBOO_STAFF.get())
                 .add(MinejagoEntityTypes.THROWN_BONE_KNIFE.get())
                 .add(MinejagoEntityTypes.EARTH_BLAST.get());

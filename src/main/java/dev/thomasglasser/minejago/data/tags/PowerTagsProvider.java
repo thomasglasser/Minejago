@@ -20,5 +20,8 @@ public class PowerTagsProvider extends ExtendedTagsProvider<Power> {
     protected void addTags(HolderLookup.Provider pProvider) {
         tag(MinejagoPowerTags.CAN_USE_SCYTHE_OF_QUAKES)
                 .add(MinejagoPowers.EARTH);
+
+        tag(MinejagoPowerTags.CAN_USE_SHURIKEN_OF_ICE)
+                .add(MinejagoPowers.ICE);
     }
 }

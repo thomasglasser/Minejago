@@ -108,6 +108,7 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
 
         add(MinejagoMobEffects.CURE.get(), "Instant Cure");
         add(MinejagoMobEffects.HYPERFOCUS.get(), "Hyperfocus");
+        add(MinejagoMobEffects.FROZEN.get(), "Frozen");
 
         add(MinejagoKeyMappings.ACTIVATE_SPINJITZU.get(), "Activate Spinjitzu");
         add(MinejagoKeyMappings.MEDITATE.get(), "Meditate");
@@ -242,9 +243,11 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
     }
 
     protected void addItems() {
+        add(MinejagoItems.SCYTHE_OF_QUAKES.get(), "Scythe of Quakes");
+        add(MinejagoItems.SHURIKEN_OF_ICE.get(), "Shuriken of Ice");
+
         add(MinejagoItems.BONE_KNIFE.get(), "Bone Knife");
         add(MinejagoItems.BAMBOO_STAFF.get(), "Bamboo Staff");
-        add(MinejagoItems.SCYTHE_OF_QUAKES.get(), "Scythe of Quakes");
         add(MinejagoItems.SCROLL.get(), "Scroll");
         add(MinejagoItems.WRITABLE_SCROLL.get(), "Scroll and Quill");
         add(MinejagoItems.WRITTEN_SCROLL.get(), "Written Scroll");
@@ -307,6 +310,7 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(MinejagoBlocks.SUSPICIOUS_RED_SAND.get(), "Suspicious Red Sand");
         add(MinejagoBlocks.DRAGON_BUTTON.get(), "Dragon Button");
         add(MinejagoBlocks.SCROLL_SHELF.get(), "Scroll Shelf");
+        add(MinejagoBlocks.FREEZING_ICE.get(), "Freezing Ice");
 
         // Teapots
         add(MinejagoBlocks.TEAPOT.get(), "Teapot");
@@ -322,6 +326,7 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
 
     protected void addEntityTypes() {
         // Projectiles
+        add(MinejagoEntityTypes.THROWN_SHURIKEN_OF_ICE.get(), "Shurikens of Ice");
         add(MinejagoEntityTypes.THROWN_BONE_KNIFE.get(), "Bone Knife");
         add(MinejagoEntityTypes.THROWN_BAMBOO_STAFF.get(), "Bamboo Staff");
         add(MinejagoEntityTypes.EARTH_BLAST.get(), "Earth Blast");
@@ -369,6 +374,8 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_EXPLOSION.get(), "Ground quakes");
         add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_CASCADE.get(), "Scythe drags");
         add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_PATH.get(), "Scythe beams");
+        add(MinejagoSoundEvents.SHURIKEN_OF_ICE_THROW.get(), "Shuriken tosses");
+        add(MinejagoSoundEvents.SHURIKEN_OF_ICE_IMPACT.get(), "Shuriken lands");
         add(MinejagoSoundEvents.ARMOR_EQUIP_SKELETAL.get(), "Skeletal armor clinks");
 
         // Projectiles
@@ -453,6 +460,7 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
 
         // Powers
         add(MinejagoPowerTags.CAN_USE_SCYTHE_OF_QUAKES, "Can Use Scythe Of Quakes");
+        add(MinejagoPowerTags.CAN_USE_SHURIKEN_OF_ICE, "Can Use Shurikens Of Ice");
 
         // Structures
         add(MinejagoStructureTags.FOUR_WEAPONS, "Four Weapons");

@@ -31,6 +31,9 @@ public class MinejagoSoundDefinitions extends ExtendedSoundDefinitionsProvider {
         add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_FAIL);
         add(MinejagoSoundEvents.SCYTHE_OF_QUAKES_CASCADE);
 
+        add(MinejagoSoundEvents.SHURIKEN_OF_ICE_THROW);
+        add(MinejagoSoundEvents.SHURIKEN_OF_ICE_IMPACT);
+
         add(MinejagoSoundEvents.BONE_KNIFE_THROW);
         add(MinejagoSoundEvents.BONE_KNIFE_IMPACT);
 

@@ -10,6 +10,7 @@ import dev.thomasglasser.minejago.world.entity.character.Zane;
 import dev.thomasglasser.minejago.world.entity.dragon.Dragon;
 import dev.thomasglasser.minejago.world.entity.dragon.EarthDragon;
 import dev.thomasglasser.minejago.world.entity.projectile.EarthBlast;
+import dev.thomasglasser.minejago.world.entity.projectile.ThrownShurikenOfIce;
 import dev.thomasglasser.minejago.world.entity.skulkin.AbstractSkulkinVehicle;
 import dev.thomasglasser.minejago.world.entity.skulkin.Kruncha;
 import dev.thomasglasser.minejago.world.entity.skulkin.Nuckal;
@@ -47,6 +48,9 @@ public class MinejagoEntityTypes {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, Minejago.MOD_ID);
 
     // Projectiles
+    public static final DeferredHolder<EntityType<?>, EntityType<ThrownShurikenOfIce>> THROWN_SHURIKEN_OF_ICE = register("thrown_shuriken_of_ice", () -> EntityType.Builder.<ThrownShurikenOfIce>of(ThrownShurikenOfIce::new, MobCategory.MISC)
+            .sized(0.5F, 0.5F)
+            .build(("thrown_shuriken_of_ice")));
     public static final DeferredHolder<EntityType<?>, EntityType<ThrownSword>> THROWN_BAMBOO_STAFF = register("thrown_bamboo_staff", () -> EntityType.Builder.<ThrownSword>of(ThrownSword::new, MobCategory.MISC)
             .sized(0.5F, 0.5F)
             .build(("thrown_bamboo_staff")));

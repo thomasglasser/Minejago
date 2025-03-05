@@ -73,6 +73,9 @@ public class MinejagoMobEffects {
         }
     });
 
+    // Harmful
+    public static final DeferredHolder<MobEffect, MobEffect> FROZEN = register("frozen", () -> new FrozenMobEffect(0x92b9fe));
+
     private static DeferredHolder<MobEffect, MobEffect> register(String name, Supplier<MobEffect> effect) {
         return MOB_EFFECTS.register(name, effect);
     }

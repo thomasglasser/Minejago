@@ -21,6 +21,8 @@ import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.tags.MinejagoItemTags;
 import dev.thomasglasser.minejago.tags.MinejagoStructureTags;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
+import dev.thomasglasser.minejago.world.effect.FrozenMobEffect;
+import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.character.Character;
 import dev.thomasglasser.minejago.world.entity.character.Zane;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
@@ -59,12 +61,16 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -85,6 +91,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.EntityEvent;
@@ -466,6 +473,17 @@ public class MinejagoEntityEvents {
     }
 
     public static void onIncomingDamage(LivingIncomingDamageEvent event) {
+        LivingEntity entity = event.getEntity();
+        if (TommyLibServices.ENTITY.getPersistentData(entity).getBoolean(FrozenMobEffect.TAG_FROZEN) && !(event.getSource().is(DamageTypeTags.IS_FREEZING) || event.getSource().is(DamageTypeTags.BYPASSES_INVULNERABILITY))) {
+            event.setCanceled(true);
+            if ((event.getSource().is(DamageTypeTags.IS_FIRE) || event.getSource().getWeaponItem() != null && event.getSource().getWeaponItem().canPerformAction(ItemAbilities.PICKAXE_DIG)) && entity.getRandom().nextInt(10) == 0) {
+                entity.level().playSound(null, entity.blockPosition(), SoundEvents.GLASS_BREAK, SoundSource.PLAYERS, 1.0F, 1.0F);
+                entity.removeEffect(MinejagoMobEffects.FROZEN);
+                // TODO: Remove when TEL fixes onRemove
+                entity.addEffect(new MobEffectInstance(MinejagoMobEffects.FROZEN, 1, 0));
+            }
+            return;
+        }
         if (event.getSource().getDirectEntity() instanceof LivingEntity attacker) {
             SkillDataSet data = attacker.getData(MinejagoAttachmentTypes.SKILL);
             if (attacker.getMainHandItem().isEmpty())

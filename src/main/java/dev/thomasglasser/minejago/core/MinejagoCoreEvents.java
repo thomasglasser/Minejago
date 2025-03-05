@@ -4,11 +4,9 @@ import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.core.registries.MinejagoBuiltInRegistries;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.datamaps.MinejagoDataMaps;
-import dev.thomasglasser.minejago.network.MinejagoPayloads;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.focus.modifier.FocusModifier;
-import dev.thomasglasser.tommylib.api.network.NeoForgeNetworkUtils;
 import dev.thomasglasser.tommylib.api.packs.PackInfo;
 import java.util.Optional;
 import net.minecraft.network.chat.Component;
@@ -18,8 +16,6 @@ import net.minecraft.server.packs.PathPackResources;
 import net.minecraft.server.packs.repository.Pack;
 import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
-import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
-import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
@@ -52,11 +48,6 @@ public class MinejagoCoreEvents {
     public static void onNewDataPackRegistry(DataPackRegistryEvent.NewRegistry event) {
         event.dataPackRegistry(MinejagoRegistries.POWER, Power.CODEC, Power.CODEC);
         event.dataPackRegistry(MinejagoRegistries.FOCUS_MODIFIER, FocusModifier.DIRECT_CODEC, FocusModifier.DIRECT_CODEC);
-    }
-
-    public static void onRegisterPackets(RegisterPayloadHandlersEvent event) {
-        PayloadRegistrar registrar = event.registrar(Minejago.MOD_ID);
-        MinejagoPayloads.PAYLOADS.forEach((info) -> NeoForgeNetworkUtils.register(registrar, info));
     }
 
     public static void onRegisterDataMapTypes(RegisterDataMapTypesEvent event) {

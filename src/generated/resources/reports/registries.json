@@ -36,6 +36,7 @@
     "minejago:enchanted_wood",
     "minejago:focus_leaves",
     "minejago:focus_sapling",
+    "minejago:freezing_ice",
     "minejago:gold_disc",
     "minejago:gray_teapot",
     "minejago:green_teapot",
@@ -99,6 +100,7 @@
     "minejago:swirling_knives_spinjitzu_course_element",
     "minejago:thrown_bamboo_staff",
     "minejago:thrown_bone_knife",
+    "minejago:thrown_shuriken_of_ice",
     "minejago:wu",
     "minejago:zane"
   ],
@@ -154,6 +156,7 @@
     "minejago:focus_sapling",
     "minejago:four_weapons_armor_trim_smithing_template",
     "minejago:four_weapons_banner_pattern",
+    "minejago:freezing_ice",
     "minejago:gold_disc",
     "minejago:gray_filled_teacup",
     "minejago:gray_teacup",
@@ -203,6 +206,7 @@
     "minejago:scroll",
     "minejago:scroll_shelf",
     "minejago:scythe_of_quakes",
+    "minejago:shuriken_of_ice",
     "minejago:skeletal_chestplate_black",
     "minejago:skeletal_chestplate_blue",
     "minejago:skeletal_chestplate_bone",
@@ -255,6 +259,7 @@
     "minejago:selected_power"
   ],
   "minecraft:mob_effect": [
+    "minejago:frozen",
     "minejago:hyperfocus",
     "minejago:instant_cure"
   ],
@@ -354,6 +359,8 @@
     "minejago:scythe_of_quakes_explosion",
     "minejago:scythe_of_quakes_fail",
     "minejago:scythe_of_quakes_path",
+    "minejago:shuriken_of_ice_impact",
+    "minejago:shuriken_of_ice_throw",
     "minejago:skulkin_raid_horn",
     "minejago:skull_motorbike_ambient_active",
     "minejago:skull_motorbike_ambient_idle",

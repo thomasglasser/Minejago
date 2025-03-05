@@ -76,5 +76,7 @@ public class MinejagoStoryAdvancements extends ExtendedAdvancementGenerator {
 
         AdvancementHolder useScytheOfQuakes = create(enterGoldenWeaponsStructure, MinejagoItems.SCYTHE_OF_QUAKES.get(), "use_scythe_of_quakes", AdvancementType.TASK, true, true, false, null,
                 "use_scythe_of_quakes", ItemUsedOnLocationTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location(), ItemPredicate.Builder.item().of(MinejagoItems.SCYTHE_OF_QUAKES.get())), "A Groundbreaking Discovery", "Perform an ability using the Scythe of Quakes");
+
+        // TODO: Use Shuriken of Ice
     }
 }

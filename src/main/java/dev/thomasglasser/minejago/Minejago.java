@@ -75,8 +75,6 @@ public class Minejago {
             TESAPI.addTESHudElement(Minejago.modLoc("power_symbol"), MinejagoClientEvents::renderPowerSymbol);
         }
 
-        MinejagoPayloads.init();
-
         if (FMLEnvironment.dist.isClient()) bus.addListener(MinejagoClientEvents::onClientSetup);
 
         addModListeners(bus);
@@ -138,9 +136,9 @@ public class Minejago {
         bus.addListener(MinejagoCoreEvents::onAddPackFinders);
         bus.addListener(MinejagoCoreEvents::onNewRegistry);
         bus.addListener(MinejagoCoreEvents::onNewDataPackRegistry);
-        bus.addListener(MinejagoCoreEvents::onRegisterPackets);
         bus.addListener(MinejagoEntityEvents::onAddBlocksToBlockEntityType);
         bus.addListener(MinejagoCoreEvents::onRegisterDataMapTypes);
+        bus.addListener(MinejagoPayloads::onRegisterPackets);
     }
 
     private void addModClientListeners(IEventBus bus) {

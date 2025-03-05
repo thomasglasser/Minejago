@@ -20,7 +20,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -53,6 +55,32 @@ public abstract class GoldenWeaponItem extends Item implements ModeledItem {
     }
 
     public abstract boolean canPowerHandle(ResourceKey<Power> power, Level level);
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
+        if (MinejagoServerConfig.get().requireCompatiblePower.get()) {
+            if (!canPowerHandle(player.getData(MinejagoAttachmentTypes.POWER).power(), level)) {
+                if (MinejagoServerConfig.get().enableMalfunction.get()) {
+                    goCrazy(player);
+                }
+                if (this.getFailSound() != null) {
+                    level.playSound(null, player.blockPosition(), getFailSound(), SoundSource.PLAYERS);
+                }
+                return InteractionResultHolder.sidedSuccess(player.getItemInHand(usedHand), level.isClientSide);
+            }
+        }
+        FocusData focusData = player.getData(MinejagoAttachmentTypes.FOCUS);
+        focusData.addExhaustion(FocusConstants.EXHAUSTION_GOLDEN_WEAPON);
+        if (focusData.getFocusLevel() < FocusConstants.GOLDEN_WEAPON_LEVEL) {
+            if (this.getFailSound() != null) {
+                level.playSound(null, player.blockPosition(), getFailSound(), SoundSource.PLAYERS);
+            }
+            return InteractionResultHolder.sidedSuccess(player.getItemInHand(usedHand), level.isClientSide);
+        }
+        return doUse(level, player, usedHand);
+    }
+
+    protected abstract InteractionResultHolder<ItemStack> doUse(Level level, Player player, InteractionHand usedHand);
 
     @Override
     public final InteractionResult useOn(UseOnContext pContext) {

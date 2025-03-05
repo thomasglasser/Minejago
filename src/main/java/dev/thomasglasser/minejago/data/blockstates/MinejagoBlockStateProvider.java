@@ -105,6 +105,8 @@ public class MinejagoBlockStateProvider extends ExtendedBlockStateProvider {
         models().withExistingParent(MinejagoBlocks.CHISELED_SCROLL_SHELF.getId().getPath() + "_inventory", BuiltInRegistries.BLOCK.getKey(Blocks.CHISELED_BOOKSHELF).withPrefix("block/").withSuffix("_inventory"))
                 .texture("front", modBlockLoc(MinejagoBlocks.CHISELED_SCROLL_SHELF.getId().getPath() + "_empty"));
         simpleBlock(MinejagoBlocks.SCROLL_SHELF.get(), models().cubeColumnHorizontal(MinejagoBlocks.SCROLL_SHELF.getId().getPath(), blockLoc(MinejagoBlocks.SCROLL_SHELF), mcBlockLoc(BuiltInRegistries.BLOCK.getKey(Blocks.OAK_PLANKS).getPath())));
+
+        simpleBlock(MinejagoBlocks.FREEZING_ICE.get());
     }
 
     @Override

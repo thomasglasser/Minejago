@@ -44,16 +44,6 @@ public class MinejagoItems {
 
     public static final String MOD_NEEDED = "error.mod_needed";
 
-    // Teacups
-    private static final Function<ItemLike, TeacupItem> TEACUP_FUNCTION = (filled) -> new TeacupItem(new Item.Properties(), filled);
-    private static final Function<ItemLike, FilledTeacupItem> FILLED_TEACUP_FUNCTION = (item) -> new FilledTeacupItem(new Item.Properties().stacksTo(1).component(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).component(DataComponents.FOOD, new FoodProperties.Builder().usingConvertsTo(item).alwaysEdible().build()));
-    public static final DeferredItem<TeacupItem> TEACUP = register("teacup", () -> TEACUP_FUNCTION.apply(BuiltInRegistries.ITEM.get(Minejago.modLoc("filled_teacup"))));
-    public static final SortedMap<DyeColor, DeferredItem<TeacupItem>> TEACUPS = teacups();
-    public static final DeferredItem<TeacupItem> MINICUP = register("minicup", () -> TEACUP_FUNCTION.apply(BuiltInRegistries.ITEM.get(Minejago.modLoc("filled_minicup"))));
-    public static final DeferredItem<FilledTeacupItem> FILLED_TEACUP = register("filled_teacup", () -> FILLED_TEACUP_FUNCTION.apply(TEACUP));
-    public static final SortedMap<DyeColor, DeferredItem<FilledTeacupItem>> FILLED_TEACUPS = filledTeacups();
-    public static final DeferredItem<FilledTeacupItem> FILLED_MINICUP = register("filled_minicup", () -> FILLED_TEACUP_FUNCTION.apply(MINICUP));
-
     public static final DeferredItem<ModeledThrowableSwordItem> BAMBOO_STAFF = register("bamboo_staff", () -> new ModeledThrowableSwordItem(MinejagoEntityTypes.THROWN_BAMBOO_STAFF::value, MinejagoSoundEvents.BAMBOO_STAFF_THROW, MinejagoSoundEvents.BAMBOO_STAFF_IMPACT, MinejagoTiers.BONE, new Item.Properties()) {
         @Override
         public void createBewlrProvider(Consumer<BewlrProvider> consumer) {
@@ -66,10 +56,23 @@ public class MinejagoItems {
         }
     });
     public static final DeferredItem<ThrowableSwordItem> BONE_KNIFE = register("bone_knife", () -> new ThrowableSwordItem(MinejagoEntityTypes.THROWN_BONE_KNIFE::value, MinejagoSoundEvents.BONE_KNIFE_THROW, MinejagoSoundEvents.BONE_KNIFE_IMPACT, MinejagoTiers.BONE, new Item.Properties().rarity(Rarity.UNCOMMON)));
-    public static final DeferredItem<ScytheOfQuakesItem> SCYTHE_OF_QUAKES = register("scythe_of_quakes", () -> new ScytheOfQuakesItem(new Item.Properties()));
     public static final DeferredItem<Item> SCROLL = register("scroll", () -> new Item(new Item.Properties()));
     public static final DeferredItem<WritableScrollItem> WRITABLE_SCROLL = register("writable_scroll", () -> new WritableScrollItem(new Item.Properties().stacksTo(1).component(DataComponents.WRITABLE_BOOK_CONTENT, WritableBookContent.EMPTY)));
     public static final DeferredItem<WrittenScrollItem> WRITTEN_SCROLL = register("written_scroll", () -> new WrittenScrollItem(new Item.Properties().stacksTo(16).component(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true)));
+
+    // Teacups
+    private static final Function<ItemLike, TeacupItem> TEACUP_FUNCTION = (filled) -> new TeacupItem(new Item.Properties(), filled);
+    private static final Function<ItemLike, FilledTeacupItem> FILLED_TEACUP_FUNCTION = (item) -> new FilledTeacupItem(new Item.Properties().stacksTo(1).component(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).component(DataComponents.FOOD, new FoodProperties.Builder().usingConvertsTo(item).alwaysEdible().build()));
+    public static final DeferredItem<TeacupItem> TEACUP = register("teacup", () -> TEACUP_FUNCTION.apply(BuiltInRegistries.ITEM.get(Minejago.modLoc("filled_teacup"))));
+    public static final SortedMap<DyeColor, DeferredItem<TeacupItem>> TEACUPS = teacups();
+    public static final DeferredItem<TeacupItem> MINICUP = register("minicup", () -> TEACUP_FUNCTION.apply(BuiltInRegistries.ITEM.get(Minejago.modLoc("filled_minicup"))));
+    public static final DeferredItem<FilledTeacupItem> FILLED_TEACUP = register("filled_teacup", () -> FILLED_TEACUP_FUNCTION.apply(TEACUP));
+    public static final SortedMap<DyeColor, DeferredItem<FilledTeacupItem>> FILLED_TEACUPS = filledTeacups();
+    public static final DeferredItem<FilledTeacupItem> FILLED_MINICUP = register("filled_minicup", () -> FILLED_TEACUP_FUNCTION.apply(MINICUP));
+
+    //
+    public static final DeferredItem<ScytheOfQuakesItem> SCYTHE_OF_QUAKES = register("scythe_of_quakes", () -> new ScytheOfQuakesItem(new Item.Properties()));
+    public static final DeferredItem<ShurikenOfIceItem> SHURIKEN_OF_ICE = register("shuriken_of_ice", () -> new ShurikenOfIceItem(new Item.Properties()));
 
     // Banner Patterns
     public static final DeferredItem<BannerPatternItem> FOUR_WEAPONS_BANNER_PATTERN = registerBannerPattern(MinejagoBannerPatternTags.PATTERN_ITEM_FOUR_WEAPONS);

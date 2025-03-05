@@ -64,6 +64,7 @@ public class MinejagoItemModelProvider extends ExtendedItemModelProvider {
         basicItem(MinejagoItems.NINJA_BANNER_PATTERN.get());
 
         basicBlockItem(MinejagoBlocks.SCROLL_SHELF);
+        basicBlockItem(MinejagoBlocks.FREEZING_ICE);
 
         for (TeacupItem teacup : MinejagoItems.allTeacups()) {
             basicItem(teacup);
@@ -118,6 +119,7 @@ public class MinejagoItemModelProvider extends ExtendedItemModelProvider {
                 .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0, -90, 25).translation(-3, 25, 1).end()
                 .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(0, 90, -25).translation(13, 25, 1).end()
                 .end(), basicInventoryItem(MinejagoItems.SCYTHE_OF_QUAKES));
+        basicItem(MinejagoItems.SHURIKEN_OF_ICE);
 
         withExistingParent(MinejagoBlocks.CHISELED_SCROLL_SHELF.getId().getPath(), MinejagoBlocks.CHISELED_SCROLL_SHELF.getId().withPrefix("block/").withSuffix("_inventory"));
     }

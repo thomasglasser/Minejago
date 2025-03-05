@@ -4,6 +4,7 @@ import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.gui.MinejagoGuis;
 import dev.thomasglasser.minejago.client.model.BambooStaffModel;
 import dev.thomasglasser.minejago.client.model.BouncingPoleSpinjitzuCourseElementModel;
+import dev.thomasglasser.minejago.client.model.FreezingIceModel;
 import dev.thomasglasser.minejago.client.model.KrunchaModel;
 import dev.thomasglasser.minejago.client.model.LegacyDevTeamBeardModel;
 import dev.thomasglasser.minejago.client.model.NuckalModel;
@@ -34,6 +35,7 @@ import dev.thomasglasser.minejago.client.renderer.entity.SkulkinHorseRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.SkulkinRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.SkullMotorbikeRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.SkullTruckRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.layers.FreezingIceLayer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.LegacyDevTeamLayer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterLayer;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
@@ -75,6 +77,8 @@ import net.minecraft.client.gui.components.BossHealthOverlay;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.BiomeColors;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.resources.PlayerSkin;
 import net.minecraft.client.resources.model.ModelResourceLocation;
@@ -86,6 +90,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.FastColor;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -181,12 +186,14 @@ public class MinejagoClientEvents {
         event.registerLayerDefinition(ScytheModel.LAYER_LOCATION, ScytheModel::createBodyLayer);
         event.registerLayerDefinition(PilotsSnapshotTesterHatModel.LAYER_LOCATION, PilotsSnapshotTesterHatModel::createBodyLayer);
         event.registerLayerDefinition(LegacyDevTeamBeardModel.LAYER_LOCATION, LegacyDevTeamBeardModel::createBodyLayer);
+        event.registerLayerDefinition(FreezingIceModel.LAYER_LOCATION, FreezingIceModel::createBodyLayer);
         event.registerLayerDefinition(KrunchaModel.LAYER_LOCATION, KrunchaModel::createBodyLayer);
         event.registerLayerDefinition(NuckalModel.LAYER_LOCATION, NuckalModel::createBodyLayer);
         event.registerLayerDefinition(SpinjitzuModel.LAYER_LOCATION, SpinjitzuModel::createBodyLayer);
     }
 
     public static void onRegisterRenderer(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(MinejagoEntityTypes.THROWN_SHURIKEN_OF_ICE.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.THROWN_BONE_KNIFE.get(), (context -> new ThrownSwordRenderer<>(context, MinejagoItems.BONE_KNIFE.getId(), new ThrownBoneKnifeModel(context.bakeLayer(ThrownBoneKnifeModel.LAYER_LOCATION)))));
         event.registerEntityRenderer(MinejagoEntityTypes.THROWN_BAMBOO_STAFF.get(), (context -> new ThrownSwordRenderer<>(context, MinejagoItems.BAMBOO_STAFF.getId(), new BambooStaffModel(context.bakeLayer(BambooStaffModel.LAYER_LOCATION)))));
         event.registerEntityRenderer(MinejagoEntityTypes.EARTH_BLAST.get(), EarthBlastRenderer::new);
@@ -267,8 +274,15 @@ public class MinejagoClientEvents {
             PlayerRenderer player = event.getSkin(skin);
 
             if (player != null) {
+                player.addLayer(new FreezingIceLayer(player, models));
                 player.addLayer(new SnapshotTesterLayer<>(player, models));
                 player.addLayer(new LegacyDevTeamLayer<>(player, models));
+            }
+        }
+
+        for (EntityType<?> type : event.getEntityTypes()) {
+            if (event.getRenderer(type) instanceof LivingEntityRenderer livingRenderer) {
+                livingRenderer.addLayer(new FreezingIceLayer<>(livingRenderer, models));
             }
         }
     }
@@ -374,6 +388,8 @@ public class MinejagoClientEvents {
             // Leaves Sets
             event.insertAfter(Items.CHERRY_LEAVES.getDefaultInstance(), MinejagoBlocks.FOCUS_LEAVES_SET.leaves().toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(Items.CHERRY_SAPLING.getDefaultInstance(), MinejagoBlocks.FOCUS_LEAVES_SET.sapling().toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+
+            event.insertAfter(Items.BLUE_ICE.getDefaultInstance(), MinejagoBlocks.FREEZING_ICE.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
         } else if (event.getTabKey() == CreativeModeTabs.FUNCTIONAL_BLOCKS) {
             event.insertAfter(Items.SUSPICIOUS_SAND.getDefaultInstance(), MinejagoBlocks.SUSPICIOUS_RED_SAND.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(Items.CHISELED_BOOKSHELF.getDefaultInstance(), MinejagoBlocks.SCROLL_SHELF.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
@@ -416,6 +432,7 @@ public class MinejagoClientEvents {
             event.insertAfter(MinejagoItems.ROCKING_POLE_SPINJITZU_COURSE_ELEMENT.toStack(), MinejagoItems.SPINNING_MACES_SPINJITZU_COURSE_ELEMENT.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
         } else if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
             event.insertAfter(Items.NETHERITE_HOE.getDefaultInstance(), MinejagoItems.SCYTHE_OF_QUAKES.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.SCYTHE_OF_QUAKES.toStack(), MinejagoItems.SHURIKEN_OF_ICE.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(Items.WRITABLE_BOOK.getDefaultInstance(), MinejagoItems.WRITABLE_SCROLL.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 
             // Wood Sets
@@ -423,9 +440,10 @@ public class MinejagoClientEvents {
             event.insertAfter(MinejagoBlocks.ENCHANTED_WOOD_SET.boatItem().toStack(), MinejagoBlocks.ENCHANTED_WOOD_SET.chestBoatItem().toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
         } else if (event.getTabKey() == CreativeModeTabs.COMBAT) {
             // Unique Weapons
-            event.insertAfter(Items.MACE.getDefaultInstance(), MinejagoItems.BAMBOO_STAFF.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(Items.MACE.getDefaultInstance(), MinejagoItems.SCYTHE_OF_QUAKES.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.SCYTHE_OF_QUAKES.toStack(), MinejagoItems.SHURIKEN_OF_ICE.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.SHURIKEN_OF_ICE.toStack(), MinejagoItems.BAMBOO_STAFF.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(MinejagoItems.BAMBOO_STAFF.toStack(), MinejagoItems.BONE_KNIFE.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-            event.insertAfter(MinejagoItems.BONE_KNIFE.toStack(), MinejagoItems.SCYTHE_OF_QUAKES.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 
             // Armor Sets
             event.insertAfter(Items.NETHERITE_BOOTS.getDefaultInstance(), MinejagoArmors.BLACK_GI_SET.HEAD.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);

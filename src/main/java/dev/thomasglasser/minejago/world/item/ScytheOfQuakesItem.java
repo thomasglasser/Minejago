@@ -1,6 +1,5 @@
 package dev.thomasglasser.minejago.world.item;
 
-import com.google.common.collect.ImmutableMultimap;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.animation.definitions.ItemAnimations;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
@@ -20,10 +19,11 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -47,6 +47,11 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem {
     @Override
     public boolean canPowerHandle(ResourceKey<Power> power, Level level) {
         return level.holder(power).orElseThrow().is(MinejagoPowerTags.CAN_USE_SCYTHE_OF_QUAKES);
+    }
+
+    @Override
+    protected InteractionResultHolder<ItemStack> doUse(Level level, Player player, InteractionHand usedHand) {
+        return InteractionResultHolder.pass(player.getItemInHand(usedHand));
     }
 
     @Override
@@ -105,8 +110,6 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem {
         }
         return InteractionResult.SUCCESS;
     }
-
-    ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
 
     @Override
     public void doReleaseUsing(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity, int pTimeCharged) {

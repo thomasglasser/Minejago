@@ -488,6 +488,18 @@
     ],
     "subtitle": "subtitles.item.scythe_of_quakes.path"
   },
+  "item.shuriken_of_ice.impact": {
+    "sounds": [
+      "minejago:item/shuriken_of_ice/impact"
+    ],
+    "subtitle": "subtitles.item.shuriken_of_ice.impact"
+  },
+  "item.shuriken_of_ice.throw": {
+    "sounds": [
+      "minejago:item/shuriken_of_ice/throw"
+    ],
+    "subtitle": "subtitles.item.shuriken_of_ice.throw"
+  },
   "music.cave_of_despair": {
     "sounds": [
       {
