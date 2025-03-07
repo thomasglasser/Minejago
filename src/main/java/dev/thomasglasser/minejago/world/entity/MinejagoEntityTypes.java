@@ -19,6 +19,7 @@ import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;
 import dev.thomasglasser.minejago.world.entity.skulkin.SkulkinHorse;
 import dev.thomasglasser.minejago.world.entity.skulkin.SkullMotorbike;
 import dev.thomasglasser.minejago.world.entity.skulkin.SkullTruck;
+import dev.thomasglasser.minejago.world.entity.skulkin.Spykor;
 import dev.thomasglasser.minejago.world.entity.spinjitzucourse.BouncingPoleSpinjitzuCourseElement;
 import dev.thomasglasser.minejago.world.entity.spinjitzucourse.CenterSpinjitzuCourseElement;
 import dev.thomasglasser.minejago.world.entity.spinjitzucourse.RockingPoleSpinjitzuCourseElement;
@@ -91,24 +92,28 @@ public class MinejagoEntityTypes {
     public static final DeferredHolder<EntityType<?>, EntityType<Nuckal>> NUCKAL = register("nuckal", () -> EntityType.Builder.of(Nuckal::new, MobCategory.MONSTER)
             .sized(0.6f, 1.95f)
             .build(("nuckal")));
-    public static final DeferredHolder<EntityType<?>, EntityType<SkulkinHorse>> SKULKIN_HORSE = register("skulkin_horse", () -> EntityType.Builder.of(SkulkinHorse::new, MobCategory.CREATURE)
+    public static final DeferredHolder<EntityType<?>, EntityType<SkulkinHorse>> SKULKIN_HORSE = register("skulkin_horse", () -> EntityType.Builder.of(SkulkinHorse::new, MobCategory.MONSTER)
             .sized(1.3964844f, 1.6f)
             .build(("skulkin_horse")));
     public static final DeferredHolder<EntityType<?>, EntityType<Samukai>> SAMUKAI = register("samukai", () -> EntityType.Builder.of(Samukai::new, MobCategory.MONSTER)
             .sized(0.875f, 2.375f)
             .build(("samukai")));
-    public static final DeferredHolder<EntityType<?>, EntityType<SkullTruck>> SKULL_TRUCK = register("skull_truck", () -> EntityType.Builder.of(SkullTruck::new, MobCategory.MISC)
+    public static final DeferredHolder<EntityType<?>, EntityType<SkullTruck>> SKULL_TRUCK = register("skull_truck", () -> EntityType.Builder.of(SkullTruck::new, MobCategory.MONSTER)
             .sized(3.5f, 3.1875f)
             .passengerAttachments(
                     new Vec3(0.0, 1.2625, 0.0),
                     new Vec3(0.3875, 1.2625, -0.725),
                     new Vec3(-0.3875, 1.2625, -0.725))
             .build(("skull_truck")));
-    public static final DeferredHolder<EntityType<?>, EntityType<SkullMotorbike>> SKULL_MOTORBIKE = register("skull_motorbike", () -> EntityType.Builder.of(SkullMotorbike::new, MobCategory.MISC)
+    public static final DeferredHolder<EntityType<?>, EntityType<SkullMotorbike>> SKULL_MOTORBIKE = register("skull_motorbike", () -> EntityType.Builder.of(SkullMotorbike::new, MobCategory.MONSTER)
             .sized(1.375f, 1.5f)
             .passengerAttachments(
                     new Vec3(0.0, 0.45, -0.3))
             .build(("skull_motorbike")));
+    public static final DeferredHolder<EntityType<?>, EntityType<Spykor>> SPYKOR = register("spykor", () -> EntityType.Builder.of(Spykor::new, MobCategory.MONSTER)
+            .sized(2F, 1.4375F)
+            .passengerAttachments(0.765F)
+            .build(("spykor")));
 
     // Dragons
     public static final DeferredHolder<EntityType<?>, EntityType<EarthDragon>> EARTH_DRAGON = register("earth_dragon", () -> EntityType.Builder.of(EarthDragon::new, MobCategory.CREATURE)
@@ -164,6 +169,7 @@ public class MinejagoEntityTypes {
         map.put(SAMUKAI.get(), Samukai.createAttributes().build());
         map.put(SKULL_TRUCK.get(), SkullTruck.createAttributes().build());
         map.put(SKULL_MOTORBIKE.get(), AbstractSkulkinVehicle.createAttributes().build());
+        map.put(SPYKOR.get(), Spykor.createAttributes().build());
 
         return map;
     }

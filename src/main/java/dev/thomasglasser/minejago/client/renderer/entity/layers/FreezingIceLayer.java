@@ -25,20 +25,22 @@ public class FreezingIceLayer<E extends LivingEntity> extends RenderLayer<E, Ent
 
     @Override
     public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, E entity, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
-        int width = Mth.ceil(entity.getBbWidth());
-        int height = Mth.ceil(entity.getBbHeight());
-        VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.entityTranslucentCull(FreezingIceModel.TEXTURE));
-        if (TommyLibServices.ENTITY.getPersistentData(entity).getBoolean(FrozenMobEffect.TAG_FROZEN)) {
-            poseStack.translate(-width, 0, -width);
-            renderColumn(poseStack, vertexConsumer, packedLight, height);
-            for (float z = 0; z < width * 2 + 1; z++) {
-                for (float x = 0; x < width * 2; x++) {
-                    poseStack.translate(1, 0, 0);
-                    renderColumn(poseStack, vertexConsumer, packedLight, height);
-                }
-                if (z + 1 < width * 2 + 1) {
-                    poseStack.translate(-(width * 2), 0, 1);
-                    renderColumn(poseStack, vertexConsumer, packedLight, height);
+        if (!entity.isDeadOrDying()) {
+            int width = Mth.ceil(entity.getBbWidth());
+            int height = Mth.ceil(entity.getBbHeight());
+            VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.entityTranslucentCull(FreezingIceModel.TEXTURE));
+            if (TommyLibServices.ENTITY.getPersistentData(entity).getBoolean(FrozenMobEffect.TAG_FROZEN)) {
+                poseStack.translate(-width, 0, -width);
+                renderColumn(poseStack, vertexConsumer, packedLight, height);
+                for (float z = 0; z < width * 2 + 1; z++) {
+                    for (float x = 0; x < width * 2; x++) {
+                        poseStack.translate(1, 0, 0);
+                        renderColumn(poseStack, vertexConsumer, packedLight, height);
+                    }
+                    if (z + 1 < width * 2 + 1) {
+                        poseStack.translate(-(width * 2), 0, 1);
+                        renderColumn(poseStack, vertexConsumer, packedLight, height);
+                    }
                 }
             }
         }

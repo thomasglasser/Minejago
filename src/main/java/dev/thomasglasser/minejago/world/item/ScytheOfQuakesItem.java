@@ -277,10 +277,8 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem {
 
     @Override
     protected void goCrazy(Player player) {
-        if (!player.level().isClientSide && !player.getAbilities().instabuild) {
-            player.level().explode(null, player.getX(), player.getY() + 1, player.getZ(), 8.0F, Level.ExplosionInteraction.TNT);
-            TommyLibServices.NETWORK.sendToAllClients(new ClientboundStartScytheAnimationPayload(player.getUUID(), ItemAnimations.ScytheOfQuakes.SLAM_START, Optional.empty()), player.getServer());
-        }
+        player.level().explode(null, player.getX(), player.getY() + 1, player.getZ(), 8.0F, Level.ExplosionInteraction.TNT);
+        TommyLibServices.NETWORK.sendToAllClients(new ClientboundStartScytheAnimationPayload(player.getUUID(), ItemAnimations.ScytheOfQuakes.SLAM_START, Optional.empty()), player.getServer());
     }
 
     @Override

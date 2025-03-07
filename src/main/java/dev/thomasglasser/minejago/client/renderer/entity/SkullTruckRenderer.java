@@ -8,6 +8,6 @@ import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 public class SkullTruckRenderer<T extends SkullTruck> extends GeoEntityRenderer<T> {
     public SkullTruckRenderer(EntityRendererProvider.Context renderManager) {
-        super(renderManager, new DefaultedEntityGeoModel<>(Minejago.modLoc("skulkin/skull_truck"), false));
+        super(renderManager, new DefaultedEntityGeoModel<>(Minejago.modLoc("skulkin/skull_truck")));
     }
 }

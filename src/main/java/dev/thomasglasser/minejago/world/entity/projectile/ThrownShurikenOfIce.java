@@ -3,7 +3,6 @@ package dev.thomasglasser.minejago.world.entity.projectile;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
-import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -22,19 +21,20 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SnowLayerBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-public class ThrownShurikenOfIce extends AbstractArrow implements ItemSupplier {
+public class ThrownShurikenOfIce extends AbstractArrow {
     private static final EntityDataAccessor<Boolean> ID_FOIL = SynchedEntityData.defineId(ThrownShurikenOfIce.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> ID_SNOW_MODE = SynchedEntityData.defineId(ThrownShurikenOfIce.class, EntityDataSerializers.BOOLEAN);
 
@@ -99,7 +99,9 @@ public class ThrownShurikenOfIce extends AbstractArrow implements ItemSupplier {
         }
 
         if (level() instanceof ServerLevel serverLevel && this.isSnowMode() && this.tickCount % 2 == 0) {
-            if (!serverLevel.getBlockState(serverLevel.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, blockPosition())).is(Blocks.SNOW))
+            BlockPos pos = serverLevel.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, blockPosition());
+            BlockState state = serverLevel.getBlockState(pos);
+            if (!state.is(Blocks.SNOW) || ((SnowLayerBlock) Blocks.SNOW).canSurvive(state, serverLevel, pos))
                 FallingBlockEntity.fall(this.level(), this.blockPosition(), Blocks.SNOW.defaultBlockState());
             serverLevel.sendParticles(ParticleTypes.SNOWFLAKE, this.getX(), this.getY(), this.getZ(), 10, 0.0D, 0.0D, 0.0D, 0.0D);
         }
@@ -219,11 +221,5 @@ public class ThrownShurikenOfIce extends AbstractArrow implements ItemSupplier {
     @Override
     protected SoundEvent getDefaultHitGroundSoundEvent() {
         return MinejagoSoundEvents.SHURIKEN_OF_ICE_IMPACT.get();
-    }
-
-    @Override
-    public ItemStack getItem() {
-        // TODO: Remove when 3d model is implemented
-        return MinejagoItems.SHURIKEN_OF_ICE.toStack();
     }
 }

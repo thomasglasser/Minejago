@@ -132,7 +132,7 @@ public class Minejago {
 
     private void addModListeners(IEventBus bus) {
         bus.addListener(MinejagoEntityEvents::onEntityAttributeCreation);
-        bus.addListener(MinejagoEntityEvents::onSpawnPlacementsRegister);
+        bus.addListener(MinejagoEntityEvents::onRegisterSpawnPlacements);
         bus.addListener(MinejagoCoreEvents::onAddPackFinders);
         bus.addListener(MinejagoCoreEvents::onNewRegistry);
         bus.addListener(MinejagoCoreEvents::onNewDataPackRegistry);

@@ -60,7 +60,7 @@ public abstract class GoldenWeaponItem extends Item implements ModeledItem {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
         if (MinejagoServerConfig.get().requireCompatiblePower.get()) {
             if (!canPowerHandle(player.getData(MinejagoAttachmentTypes.POWER).power(), level)) {
-                if (MinejagoServerConfig.get().enableMalfunction.get()) {
+                if (MinejagoServerConfig.get().enableMalfunction.get() && !player.level().isClientSide && !player.getAbilities().instabuild) {
                     goCrazy(player);
                 }
                 if (this.getFailSound() != null) {
@@ -86,7 +86,7 @@ public abstract class GoldenWeaponItem extends Item implements ModeledItem {
     public final InteractionResult useOn(UseOnContext pContext) {
         if (MinejagoServerConfig.get().requireCompatiblePower.get()) {
             if (!canPowerHandle(pContext.getPlayer().getData(MinejagoAttachmentTypes.POWER).power(), pContext.getLevel())) {
-                if (MinejagoServerConfig.get().enableMalfunction.get()) {
+                if (MinejagoServerConfig.get().enableMalfunction.get() && !pContext.getPlayer().level().isClientSide && !pContext.getPlayer().getAbilities().instabuild) {
                     goCrazy(pContext.getPlayer());
                 }
                 if (this.getFailSound() != null) {
@@ -113,10 +113,10 @@ public abstract class GoldenWeaponItem extends Item implements ModeledItem {
 
     @Override
     public final void releaseUsing(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity, int pTimeCharged) {
-        if (pLivingEntity instanceof Player && MinejagoServerConfig.get().requireCompatiblePower.get()) {
+        if (pLivingEntity instanceof Player player && MinejagoServerConfig.get().requireCompatiblePower.get()) {
             if (!canPowerHandle(pLivingEntity.getData(MinejagoAttachmentTypes.POWER).power(), pLevel)) {
-                if (MinejagoServerConfig.get().enableMalfunction.get()) {
-                    goCrazy((Player) pLivingEntity);
+                if (MinejagoServerConfig.get().enableMalfunction.get() && !player.level().isClientSide && !player.getAbilities().instabuild) {
+                    goCrazy(player);
                 }
                 if (this.getFailSound() != null) {
                     pLevel.playSound(null, pLivingEntity.blockPosition(), getFailSound(), SoundSource.PLAYERS);
@@ -135,10 +135,10 @@ public abstract class GoldenWeaponItem extends Item implements ModeledItem {
 
     @Override
     public final void onUseTick(Level level, LivingEntity livingEntity, ItemStack stack, int remainingUseDuration) {
-        if (livingEntity instanceof Player && MinejagoServerConfig.get().requireCompatiblePower.get()) {
+        if (livingEntity instanceof Player player && MinejagoServerConfig.get().requireCompatiblePower.get()) {
             if (!canPowerHandle(livingEntity.getData(MinejagoAttachmentTypes.POWER).power(), level)) {
-                if (MinejagoServerConfig.get().enableMalfunction.get()) {
-                    goCrazy((Player) livingEntity);
+                if (MinejagoServerConfig.get().enableMalfunction.get() && !player.level().isClientSide && !player.getAbilities().instabuild) {
+                    goCrazy(player);
                 }
                 if (this.getFailSound() != null) {
                     level.playSound(null, livingEntity.blockPosition(), getFailSound(), SoundSource.PLAYERS);

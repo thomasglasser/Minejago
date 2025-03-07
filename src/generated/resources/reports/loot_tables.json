@@ -45,5 +45,20 @@
   "minejago:blocks/yellow_teapot",
   "minejago:chests/four_weapons",
   "minejago:chests/monastery_of_spinjitzu_kitchen",
-  "minejago:chests/monastery_of_spinjitzu_wus_room"
+  "minejago:chests/monastery_of_spinjitzu_wus_room",
+  "minejago:entities/cole",
+  "minejago:entities/earth_dragon",
+  "minejago:entities/jay",
+  "minejago:entities/kai",
+  "minejago:entities/kruncha",
+  "minejago:entities/nuckal",
+  "minejago:entities/nya",
+  "minejago:entities/samukai",
+  "minejago:entities/skulkin",
+  "minejago:entities/skulkin_horse",
+  "minejago:entities/skull_motorbike",
+  "minejago:entities/skull_truck",
+  "minejago:entities/spykor",
+  "minejago:entities/wu",
+  "minejago:entities/zane"
 ]

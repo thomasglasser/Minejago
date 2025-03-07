@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.thomasglasser.minejago.client.model.BambooStaffModel;
 import dev.thomasglasser.minejago.client.model.ScytheModel;
+import dev.thomasglasser.minejago.client.model.ShurikenModel;
 import dev.thomasglasser.minejago.core.component.MinejagoDataComponents;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
@@ -23,6 +24,7 @@ import net.minecraft.world.item.ItemStack;
 public class MinejagoBlockEntityWithoutLevelRenderer extends BlockEntityWithoutLevelRenderer implements ResourceManagerReloadListener {
     private BambooStaffModel bambooStaffModel;
     private ScytheModel scytheModel;
+    private ShurikenModel shurikenModel;
 
     public MinejagoBlockEntityWithoutLevelRenderer() {
         super(null, null);
@@ -31,6 +33,7 @@ public class MinejagoBlockEntityWithoutLevelRenderer extends BlockEntityWithoutL
     public void onResourceManagerReload(ResourceManager manager) {
         this.bambooStaffModel = new BambooStaffModel(Minecraft.getInstance().getEntityModels().bakeLayer(BambooStaffModel.LAYER_LOCATION));
         this.scytheModel = new ScytheModel(Minecraft.getInstance().getEntityModels().bakeLayer(ScytheModel.LAYER_LOCATION));
+        this.shurikenModel = new ShurikenModel(Minecraft.getInstance().getEntityModels().bakeLayer(ShurikenModel.LAYER_LOCATION));
     }
 
     public void renderByItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
@@ -45,7 +48,9 @@ public class MinejagoBlockEntityWithoutLevelRenderer extends BlockEntityWithoutL
             VertexConsumer vertexConsumer = ItemRenderer.getFoilBuffer(buffer, this.scytheModel.renderType(ScytheModel.TEXTURE), false, stack.hasFoil());
             this.scytheModel.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
         } else if (stack.is(MinejagoItems.SHURIKEN_OF_ICE.get())) {
-            // TODO: Render Shuriken of Ice
+            poseStack.scale(1.0F, -1.0F, -1.0F);
+            VertexConsumer vertexConsumer = ItemRenderer.getFoilBuffer(buffer, this.scytheModel.renderType(ShurikenModel.TEXTURE), false, stack.hasFoil());
+            this.shurikenModel.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
         } else if (stack.getItem() instanceof PoweredArmorItem) {
             poseStack.translate(0.5D, 0.5D, 0.5D);
             ResourceLocation location = stack.getOrDefault(MinejagoDataComponents.POWER.get(), MinejagoPowers.NONE).location();

@@ -1,6 +1,90 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "minejago:item/shuriken_of_ice"
+  "base": {
+    "parent": "minecraft:builtin/entity",
+    "display": {
+      "firstperson_lefthand": {
+        "rotation": [
+          0,
+          -90,
+          -30
+        ],
+        "translation": [
+          -7.6,
+          23,
+          10
+        ],
+        "scale": [
+          0.6,
+          0.6,
+          0.6
+        ]
+      },
+      "firstperson_righthand": {
+        "rotation": [
+          0,
+          90,
+          30
+        ],
+        "translation": [
+          2,
+          23,
+          10
+        ],
+        "scale": [
+          0.6,
+          0.6,
+          0.6
+        ]
+      },
+      "thirdperson_lefthand": {
+        "rotation": [
+          30,
+          90,
+          0
+        ],
+        "translation": [
+          8,
+          19,
+          20
+        ]
+      },
+      "thirdperson_righthand": {
+        "rotation": [
+          30,
+          -90,
+          0
+        ],
+        "translation": [
+          -8,
+          19,
+          20
+        ]
+      }
+    },
+    "textures": {
+      "particle": "minejago:item/shuriken_of_ice"
+    }
+  },
+  "gui_light": "front",
+  "loader": "neoforge:separate_transforms",
+  "perspectives": {
+    "fixed": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "minejago:item/shuriken_of_ice"
+      }
+    },
+    "ground": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "minejago:item/shuriken_of_ice"
+      }
+    },
+    "gui": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "minejago:item/shuriken_of_ice"
+      }
+    }
   }
 }
