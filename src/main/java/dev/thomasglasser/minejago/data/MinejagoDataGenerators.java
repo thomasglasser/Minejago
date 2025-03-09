@@ -97,8 +97,8 @@ public class MinejagoDataGenerators {
 
         // Powers
         MinejagoPowerDatagenSuite powerDatagenSuite = new MinejagoPowerDatagenSuite(event, enUs);
-        CompletableFuture<HolderLookup.Provider> powerLookupProvider = powerDatagenSuite.getRegistryProvider();
-        generator.addProvider(includeServer, new PowerTagsProvider(packOutput, Minejago.MOD_ID, powerLookupProvider, existingFileHelper));
+        lookupProvider = powerDatagenSuite.getRegistryProvider();
+        generator.addProvider(includeServer, new PowerTagsProvider(packOutput, Minejago.MOD_ID, lookupProvider, existingFileHelper));
 
         //Server
         DatapackBuiltinEntriesProvider datapackEntries = new DatapackBuiltinEntriesProvider(packOutput, lookupProvider, BUILDER, Set.of(Minejago.MOD_ID));

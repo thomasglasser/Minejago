@@ -469,6 +469,14 @@
     "minejago:location",
     "minejago:world"
   ],
+  "minejago:power": [
+    "minejago:creation",
+    "minejago:earth",
+    "minejago:fire",
+    "minejago:ice",
+    "minejago:lightning",
+    "minejago:none"
+  ],
   "neoforge:attachment_types": [
     "minejago:focus",
     "minejago:power",
