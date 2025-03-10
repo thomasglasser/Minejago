@@ -143,7 +143,7 @@ public class MinejagoEntityEvents {
             focusData.tick(player);
 
             SpinjitzuData spinjitzu = player.getData(MinejagoAttachmentTypes.SPINJITZU);
-            CompoundTag persistentData = TommyLibServices.ENTITY.getPersistentData(player);
+            CompoundTag persistentData = TommyLibServices.ENTITY.getPersistentData(player).copy();
             int waitTicks = persistentData.getInt("WaitTicks");
             if (player instanceof ServerPlayer serverPlayer) {
                 ServerLevel serverLevel = serverPlayer.serverLevel();
@@ -252,7 +252,7 @@ public class MinejagoEntityEvents {
                 persistentData.putBoolean(KEY_IS_IN_CAVE_OF_DESPAIR, MinejagoLevelUtils.isStructureInRange(MinejagoStructureTags.CAVE_OF_DESPAIR, level, serverPlayer.blockPosition(), 64));
                 persistentData.putBoolean(KEY_IS_IN_MONASTERY_OF_SPINJITZU, MinejagoLevelUtils.isStructureInRange(MinejagoStructureTags.MONASTERY_OF_SPINJITZU, level, serverPlayer.blockPosition(), 64));
 
-                if (persistentData != TommyLibServices.ENTITY.getPersistentData(serverPlayer)) {
+                if (!persistentData.equals(TommyLibServices.ENTITY.getPersistentData(serverPlayer))) {
                     TommyLibServices.ENTITY.setPersistentData(serverPlayer, persistentData, true);
                 }
             } else {

@@ -318,26 +318,17 @@ public class MinejagoClientEvents {
         }
     }
 
-    private static int musicCooldown = 0;
-
     public static void onSelectMusic(SelectMusicEvent event) {
         Player player = ClientUtils.getMainClientPlayer();
         if (player != null) {
-            if (musicCooldown <= 0) {
-                CompoundTag data = TommyLibServices.ENTITY.getPersistentData(player);
-                BossHealthOverlay bossOverlay = ClientUtils.getMinecraft().gui.getBossOverlay();
-                if (bossOverlay.shouldPlayMusic() && skulkinRaids.stream().anyMatch(bossOverlay.events::containsKey)) {
-                    event.setMusic(MinejagoMusics.SKULKIN_RAID);
-                } else if (data.getBoolean(MinejagoEntityEvents.KEY_IS_IN_MONASTERY_OF_SPINJITZU)) {
-                    event.setMusic(MinejagoMusics.MONASTERY_OF_SPINJITZU);
-                } else if (data.getBoolean(MinejagoEntityEvents.KEY_IS_IN_CAVE_OF_DESPAIR)) {
-                    event.setMusic(MinejagoMusics.CAVE_OF_DESPAIR);
-                } else if (MinejagoMusics.getAll().stream().anyMatch(music -> Minecraft.getInstance().getMusicManager().isPlayingMusic(music))) {
-                    event.setMusic(null);
-                    musicCooldown = 20;
-                }
-            } else {
-                musicCooldown--;
+            CompoundTag data = TommyLibServices.ENTITY.getPersistentData(player);
+            BossHealthOverlay bossOverlay = ClientUtils.getMinecraft().gui.getBossOverlay();
+            if (bossOverlay.shouldPlayMusic() && skulkinRaids.stream().anyMatch(bossOverlay.events::containsKey)) {
+                event.setMusic(MinejagoMusics.SKULKIN_RAID);
+            } else if (data.getBoolean(MinejagoEntityEvents.KEY_IS_IN_MONASTERY_OF_SPINJITZU)) {
+                event.setMusic(MinejagoMusics.MONASTERY_OF_SPINJITZU);
+            } else if (data.getBoolean(MinejagoEntityEvents.KEY_IS_IN_CAVE_OF_DESPAIR)) {
+                event.setMusic(MinejagoMusics.CAVE_OF_DESPAIR);
             }
         }
     }
