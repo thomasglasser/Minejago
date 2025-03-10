@@ -107,6 +107,7 @@ import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 public class MinejagoEntityEvents {
+    public static final String KEY_WAIT_TICKS = "WaitTicks";
     public static final String KEY_OFF_GROUND_TICKS = "OffGroundTicks";
     public static final String KEY_IS_IN_MONASTERY_OF_SPINJITZU = "IsInMonasteryOfSpinjitzu";
     public static final String KEY_IS_IN_CAVE_OF_DESPAIR = "IsInCaveOfDespair";
@@ -144,7 +145,7 @@ public class MinejagoEntityEvents {
 
             SpinjitzuData spinjitzu = player.getData(MinejagoAttachmentTypes.SPINJITZU);
             CompoundTag persistentData = TommyLibServices.ENTITY.getPersistentData(player).copy();
-            int waitTicks = persistentData.getInt("WaitTicks");
+            int waitTicks = persistentData.getInt(KEY_WAIT_TICKS);
             if (player instanceof ServerPlayer serverPlayer) {
                 ServerLevel serverLevel = serverPlayer.serverLevel();
                 ServerLevel level = serverLevel;
@@ -260,14 +261,14 @@ public class MinejagoEntityEvents {
                 if (startTicks > 0)
                     persistentData.putInt(ClientboundStartSpinjitzuPayload.KEY_SPINJITZUSTARTTICKS, startTicks - 1);
                 if (waitTicks > 0) {
-                    persistentData.putInt("WaitTicks", --waitTicks);
+                    persistentData.putInt(KEY_WAIT_TICKS, --waitTicks);
                 } else if (MinejagoKeyMappings.ACTIVATE_SPINJITZU.get().isDown() && !focusData.isMeditating()) {
                     if (spinjitzu.active()) {
                         TommyLibServices.NETWORK.sendToServer(ServerboundStopSpinjitzuPayload.INSTANCE);
                     } else if (!NO_SPINJITZU.test(player)) {
                         TommyLibServices.NETWORK.sendToServer(ServerboundStartSpinjitzuPayload.INSTANCE);
                     }
-                    persistentData.putInt("WaitTicks", 10);
+                    persistentData.putInt(KEY_WAIT_TICKS, 10);
                 } else if (MinejagoKeyMappings.MEDITATE.get().isDown() && !spinjitzu.active()) {
                     if (focusData.isMeditating()) {
                         focusData.stopMeditating();
@@ -276,7 +277,7 @@ public class MinejagoEntityEvents {
                         focusData.startMeditating();
                         TommyLibServices.NETWORK.sendToServer(ServerboundStartMeditationPayload.INSTANCE);
                     }
-                    persistentData.putInt("WaitTicks", 10);
+                    persistentData.putInt(KEY_WAIT_TICKS, 10);
                 } else if (MinejagoKeyMappings.OPEN_SKILL_SCREEN.get().consumeClick()) {
                     MinejagoClientUtils.openSkillScreen();
                 } else if (player.isShiftKeyDown()) {
@@ -287,7 +288,7 @@ public class MinejagoEntityEvents {
                         focusData.stopMeditating();
                         TommyLibServices.NETWORK.sendToServer(new ServerboundStopMeditationPayload(false));
                     }
-                    persistentData.putInt("WaitTicks", 10);
+                    persistentData.putInt(KEY_WAIT_TICKS, 10);
                 }
                 TommyLibServices.ENTITY.setPersistentData(player, persistentData, false);
             }
