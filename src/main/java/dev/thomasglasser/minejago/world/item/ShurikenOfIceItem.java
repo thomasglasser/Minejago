@@ -1,20 +1,15 @@
 package dev.thomasglasser.minejago.world.item;
 
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
-import dev.thomasglasser.minejago.tags.MinejagoPowerTags;
-import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
-import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownShurikenOfIce;
 import dev.thomasglasser.tommylib.api.world.item.ItemUtils;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Position;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -27,11 +22,6 @@ import net.minecraft.world.level.Level;
 public class ShurikenOfIceItem extends GoldenWeaponItem implements ProjectileItem {
     public ShurikenOfIceItem(Properties pProperties) {
         super(pProperties);
-    }
-
-    @Override
-    public boolean canPowerHandle(ResourceKey<Power> power, Level level) {
-        return level.holder(power).orElseThrow().is(MinejagoPowerTags.CAN_USE_SHURIKEN_OF_ICE);
     }
 
     @Override
@@ -64,12 +54,7 @@ public class ShurikenOfIceItem extends GoldenWeaponItem implements ProjectileIte
     protected void doReleaseUsing(ItemStack stack, Level level, LivingEntity livingEntity, int timeCharged) {}
 
     @Override
-    protected void doOnUsingTick(ItemStack stack, LivingEntity player, int count) {}
-
-    @Override
-    protected void goCrazy(Player player) {
-        player.addEffect(new MobEffectInstance(MinejagoMobEffects.FROZEN.asReferenceFrom(player.level().registryAccess()), -1, 0));
-    }
+    protected void doOnUsingTick(ItemStack stack, LivingEntity player, int remainingUseDuration) {}
 
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         return true;

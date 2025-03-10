@@ -9,7 +9,6 @@ import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
 import dev.thomasglasser.minejago.world.focus.FocusData;
 import dev.thomasglasser.minejago.world.inventory.DragonInventoryMenu;
-import dev.thomasglasser.minejago.world.item.GoldenWeaponItem;
 import dev.thomasglasser.minejago.world.level.storage.PowerData;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import dev.thomasglasser.tommylib.api.world.entity.PlayerRideableFlying;
@@ -58,6 +57,7 @@ import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
@@ -65,6 +65,8 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.entity.player.PlayerContainerEvent;
 import net.tslat.smartbrainlib.api.SmartBrainOwner;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
 import net.tslat.smartbrainlib.api.core.SmartBrainProvider;
@@ -110,7 +112,7 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
 
     public final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private final Map<Player, Double> bond = new HashMap<>();
-    private final TagKey<Power> acceptablePowers;
+    private final TagKey<Item> protectingItems;
 
     private boolean isLiftingOff;
     private Flight flight = Flight.HOVERING;
@@ -119,10 +121,10 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
 
     protected SimpleContainer inventory;
 
-    public Dragon(EntityType<? extends Dragon> entityType, Level level, ResourceKey<Power> power, TagKey<Power> powers) {
+    public Dragon(EntityType<? extends Dragon> entityType, Level level, ResourceKey<Power> power, TagKey<Item> protectingItems) {
         super(entityType, level);
         new PowerData(power, false).save(this, false);
-        this.acceptablePowers = powers;
+        this.protectingItems = protectingItems;
         setTame(false, false);
         createInventory();
     }
@@ -205,7 +207,7 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
                     if (owner == null) {
                         if (target instanceof Player player) {
                             if (getBond(player) < 0) return true;
-                            if (player.getInventory().items.stream().anyMatch(stack -> stack.getItem() instanceof GoldenWeaponItem goldenWeaponItem && goldenWeaponItem.canPowerHandle(this.getData(MinejagoAttachmentTypes.POWER).power(), level()))) return true;
+                            if (player.getInventory().contains(protectingItems)) return true;
                         }
                         return target instanceof TamableAnimal tamableAnimal && tamableAnimal.getOwner() instanceof Player player && getBond(player) < 0;
                     } else {
@@ -249,7 +251,7 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
     @Override
     public BrainActivityGroup<? extends Dragon> getFightTasks() {
         return BrainActivityGroup.fightTasks(
-                new InvalidateAttackTarget<>().invalidateIf((entity, target) -> target instanceof Player pl && (pl.isCreative() || pl.isSpectator() || (getBond(pl) >= 0 && !pl.getInventory().items.stream().anyMatch(stack -> stack.getItem() instanceof GoldenWeaponItem goldenWeaponItem && goldenWeaponItem.canPowerHandle(getData(MinejagoAttachmentTypes.POWER).power(), level()))))), 	 // Invalidate the attack target if it's no longer applicable
+                new InvalidateAttackTarget<>().invalidateIf((entity, target) -> target instanceof Player player && (player.isCreative() || player.isSpectator() || (getBond(player) >= 0 && !player.getInventory().contains(protectingItems)))), 	 // Invalidate the attack target if it's no longer applicable
                 new FirstApplicableBehaviour<>( 																							  	 // Run only one of the below behaviours, trying each one in order
                         new AnimatableMeleeAttack<>(0).whenStarting(entity -> setAggressive(false)), // Melee attack
                         new AnimatableRangedAttack<Dragon>(20).whenStarting(dragon -> dragon.setShooting(true)).whenStopping(dragon -> dragon.setShooting(false)))	 												 // Fire a bow, if holding one
@@ -385,7 +387,7 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
                 return InteractionResult.SUCCESS;
             } else if (bond <= 50 && focusData.getFocusLevel() >= FocusConstants.DRAGON_TALK_LEVEL && random.nextInt(10) < 2) {
                 double i = TALK_BOND;
-                if (level().holderOrThrow(player.getData(MinejagoAttachmentTypes.POWER).power()).is(acceptablePowers)) i += 1.5;
+                if (level().holderOrThrow(player.getData(MinejagoAttachmentTypes.POWER).power()).is(getData(MinejagoAttachmentTypes.POWER).power())) i += 1.5;
                 increaseBond(player, i);
                 player.getData(MinejagoAttachmentTypes.FOCUS).addExhaustion(FocusConstants.EXHAUSTION_DRAGON_TALK);
                 return InteractionResult.SUCCESS;
@@ -398,8 +400,9 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
                         this.equipSaddle(stack, SoundSource.PLAYERS);
                     else
                         player.startRiding(this);
-                } else if (level().holderOrThrow(player.getData(MinejagoAttachmentTypes.POWER).power()).is(acceptablePowers) && focusData.getFocusLevel() >= 14) {
-                    // TODO: give DX suit
+                } else if (level().holderOrThrow(player.getData(MinejagoAttachmentTypes.POWER).power()).is(getData(MinejagoAttachmentTypes.POWER).power()) && focusData.getFocusLevel() >= 14) {
+                    // TODO: add DX suit to inventory
+                    inventory.setItem(1, Items.GOLDEN_APPLE.getDefaultInstance());
                     player.getData(MinejagoAttachmentTypes.FOCUS).addExhaustion(FocusConstants.EXHAUSTION_DRAGON_TAME);
                     tame(player);
                     if (player.level() instanceof ServerLevel serverLevel) {
@@ -598,7 +601,7 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
     }
 
     public static int getInventorySize(int columns) {
-        return columns * 3 + 1;
+        return columns > 0 ? columns * 3 + 1 : 2;
     }
 
     protected void createInventory() {
@@ -638,7 +641,7 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
             TommyLibServices.NETWORK.sendToClient(new ClientboundOpenDragonInventoryScreenPayload(getId(), getInventoryColumns(), serverPlayer.containerCounter), serverPlayer);
             serverPlayer.containerMenu = new DragonInventoryMenu(serverPlayer.containerCounter, player.getInventory(), inventory, this, i);
             serverPlayer.initMenu(player.containerMenu);
-            net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(new net.neoforged.neoforge.event.entity.player.PlayerContainerEvent.Open(serverPlayer, serverPlayer.containerMenu));
+            NeoForge.EVENT_BUS.post(new PlayerContainerEvent.Open(serverPlayer, serverPlayer.containerMenu));
         }
     }
 

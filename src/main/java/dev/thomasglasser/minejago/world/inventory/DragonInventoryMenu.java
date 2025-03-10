@@ -36,6 +36,8 @@ public class DragonInventoryMenu extends AbstractContainerMenu {
                     this.addSlot(new Slot(this.container, 1 + l + k * columns, 80 + l * 18, 18 + k * 18));
                 }
             }
+        } else {
+            this.addSlot(new Slot(this.container, 1, 80, 18));
         }
 
         for (int i1 = 0; i1 < 3; i1++) {

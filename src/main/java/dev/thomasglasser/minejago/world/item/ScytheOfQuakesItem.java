@@ -6,8 +6,6 @@ import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import dev.thomasglasser.minejago.network.ClientboundStartScytheAnimationPayload;
 import dev.thomasglasser.minejago.network.ClientboundStopAnimationPayload;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
-import dev.thomasglasser.minejago.tags.MinejagoPowerTags;
-import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import dev.thomasglasser.tommylib.api.tags.ConventionalBlockTags;
 import dev.thomasglasser.tommylib.api.world.level.LevelUtils;
@@ -15,7 +13,6 @@ import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -42,11 +39,6 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem {
 
     public ScytheOfQuakesItem(Properties pProperties) {
         super(pProperties);
-    }
-
-    @Override
-    public boolean canPowerHandle(ResourceKey<Power> power, Level level) {
-        return level.holder(power).orElseThrow().is(MinejagoPowerTags.CAN_USE_SCYTHE_OF_QUAKES);
     }
 
     @Override
@@ -129,14 +121,14 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem {
     }
 
     @Override
-    public void doOnUsingTick(ItemStack stack, LivingEntity player, int count) {
+    public void doOnUsingTick(ItemStack stack, LivingEntity player, int remainingUseDuration) {
         Level level = player.level();
-        if (stack.getUseDuration(player) - count + 1 == stack.getUseDuration(player)) {
+        if (stack.getUseDuration(player) - remainingUseDuration + 1 == stack.getUseDuration(player)) {
             player.stopUsingItem();
-            stack.releaseUsing(level, player, count);
+            stack.releaseUsing(level, player, remainingUseDuration);
             return;
         }
-        if (count % 10 == 0) {
+        if (remainingUseDuration % 10 == 0) {
             LevelUtils.beamParticles(MinejagoParticleTypes.ROCKS.get(), level, player);
             Vec3 loc = player.pick(Double.MAX_EXPONENT, 0.0F, false).getLocation();
             BlockPos pos = new BlockPos((int) loc.x, (int) loc.y, (int) loc.z);
@@ -273,12 +265,6 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem {
             stack.set(DataComponents.ATTRIBUTE_MODIFIERS, builder.build());
             level.playSound(null, player.blockPosition(), MinejagoSoundEvents.SCYTHE_OF_QUAKES_PATH.get(), SoundSource.PLAYERS);
         }
-    }
-
-    @Override
-    protected void goCrazy(Player player) {
-        player.level().explode(null, player.getX(), player.getY() + 1, player.getZ(), 8.0F, Level.ExplosionInteraction.TNT);
-        TommyLibServices.NETWORK.sendToAllClients(new ClientboundStartScytheAnimationPayload(player.getUUID(), ItemAnimations.ScytheOfQuakes.SLAM_START, Optional.empty()), player.getServer());
     }
 
     @Override

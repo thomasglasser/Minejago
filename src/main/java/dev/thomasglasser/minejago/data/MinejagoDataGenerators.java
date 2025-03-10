@@ -24,7 +24,6 @@ import dev.thomasglasser.minejago.data.tags.MinejagoGameEventTagsProvider;
 import dev.thomasglasser.minejago.data.tags.MinejagoItemTagsProvider;
 import dev.thomasglasser.minejago.data.tags.MinejagoPaintingVariantTagsProvider;
 import dev.thomasglasser.minejago.data.tags.MinejagoStructureTagsProvider;
-import dev.thomasglasser.minejago.data.tags.PowerTagsProvider;
 import dev.thomasglasser.minejago.data.trimmed.MinejagoTrimDatagenSuite;
 import dev.thomasglasser.minejago.data.worldgen.MinejagoProcessorLists;
 import dev.thomasglasser.minejago.data.worldgen.biome.MinejagoBiomeModifiers;
@@ -98,7 +97,6 @@ public class MinejagoDataGenerators {
         // Powers
         MinejagoPowerDatagenSuite powerDatagenSuite = new MinejagoPowerDatagenSuite(event, enUs);
         lookupProvider = powerDatagenSuite.getRegistryProvider();
-        generator.addProvider(includeServer, new PowerTagsProvider(packOutput, Minejago.MOD_ID, lookupProvider, existingFileHelper));
 
         //Server
         DatapackBuiltinEntriesProvider datapackEntries = new DatapackBuiltinEntriesProvider(packOutput, lookupProvider, BUILDER, Set.of(Minejago.MOD_ID));

@@ -40,6 +40,8 @@ public class DragonInventoryScreen extends AbstractContainerScreen<DragonInvento
         guiGraphics.blit(HORSE_INVENTORY_LOCATION, i, j, 0, 0, this.imageWidth, this.imageHeight);
         if (this.inventoryColumns > 0) {
             guiGraphics.blitSprite(CHEST_SLOTS_SPRITE, 90, 54, 0, 0, i + 79, j + 17, this.inventoryColumns * 18, 54);
+        } else {
+            guiGraphics.blitSprite(CHEST_SLOTS_SPRITE, 90, 54, 0, 0, i + 79, j + 17, 18, 18);
         }
 
         if (this.dragon.isSaddleable()) {

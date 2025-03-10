@@ -128,6 +128,15 @@ public class MinejagoItemModelProvider extends ExtendedItemModelProvider {
                 .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0, -90, 25).translation(-3, 25, 1).end()
                 .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(0, 90, -25).translation(13, 25, 1).end()
                 .end(), basicInventoryItem(MinejagoItems.SHURIKEN_OF_ICE));
+        withEntityModel(MinejagoItems.NUNCHUCKS_OF_LIGHTNING)
+                .transforms()
+                .transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).translation(0, -6, -2).end()
+                .transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND).translation(0, -6, -2).end()
+                .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).translation(0, -4, 0).end()
+                .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).translation(0, -4, 0).end()
+                .end();
+        // TODO: 2d nunchucks
+//        withEntityModelInHand(MinejagoItems.NUNCHUCKS_OF_LIGHTNING, <entity model>, basicInventoryItem(MinejagoItems.NUNCHUCKS_OF_LIGHTNING));
 
         withExistingParent(MinejagoBlocks.CHISELED_SCROLL_SHELF.getId().getPath(), MinejagoBlocks.CHISELED_SCROLL_SHELF.getId().withPrefix("block/").withSuffix("_inventory"));
     }

@@ -26,11 +26,6 @@ public class MinejagoServerConfig {
     public final ModConfigSpec.IntValue courseRadius;
     public final ModConfigSpec.DoubleValue courseSpeed;
 
-    // Golden Weapons
-    public static final String GOLDEN_WEAPONS = "golden_weapons";
-    public final ModConfigSpec.BooleanValue requireCompatiblePower;
-    public final ModConfigSpec.BooleanValue enableMalfunction;
-
     public MinejagoServerConfig() {
         ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
 
@@ -61,13 +56,6 @@ public class MinejagoServerConfig {
                 .defineInRange("course_radius", 64, 1, 128);
         courseSpeed = builder
                 .defineInRange("course_speed", 0.5, 0.1, 1);
-        builder.pop();
-
-        builder.push(GOLDEN_WEAPONS);
-        requireCompatiblePower = builder
-                .define("require_compatible_power", true);
-        enableMalfunction = builder
-                .define("enable_malfunction", true);
         builder.pop();
 
         configSpec = builder.build();

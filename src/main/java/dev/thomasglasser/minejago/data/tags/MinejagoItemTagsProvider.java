@@ -31,7 +31,8 @@ public class MinejagoItemTagsProvider extends ExtendedItemTagsProvider {
                 .add(MinejagoItems.BONE_KNIFE.get());
         tag(MinejagoItemTags.GOLDEN_WEAPONS)
                 .add(MinejagoItems.SCYTHE_OF_QUAKES.get())
-                .add(MinejagoItems.SHURIKEN_OF_ICE.get());
+                .add(MinejagoItems.SHURIKEN_OF_ICE.get())
+                .add(MinejagoItems.NUNCHUCKS_OF_LIGHTNING.get());
         MinejagoArmors.ARMOR_SETS.forEach(this::armorSet);
         MinejagoArmors.POWER_SETS.forEach(this::armorSet);
         tag(ItemTags.CHEST_ARMOR)
@@ -64,6 +65,9 @@ public class MinejagoItemTagsProvider extends ExtendedItemTagsProvider {
 
         tag(MinejagoItemTags.DRAGON_TREATS)
                 .add(Items.COOKED_SALMON);
+
+        tag(MinejagoItemTags.EARTH_DRAGON_PROTECTS)
+                .add(MinejagoItems.SCYTHE_OF_QUAKES.get());
 
         tag(MinejagoItemTags.REPAIRS_SKELETAL_ARMOR)
                 .add(Items.BONE);

@@ -70,9 +70,10 @@ public class MinejagoItems {
     public static final SortedMap<DyeColor, DeferredItem<FilledTeacupItem>> FILLED_TEACUPS = filledTeacups();
     public static final DeferredItem<FilledTeacupItem> FILLED_MINICUP = register("filled_minicup", () -> FILLED_TEACUP_FUNCTION.apply(MINICUP));
 
-    //
+    // Golden Weapons
     public static final DeferredItem<ScytheOfQuakesItem> SCYTHE_OF_QUAKES = register("scythe_of_quakes", () -> new ScytheOfQuakesItem(new Item.Properties()));
     public static final DeferredItem<ShurikenOfIceItem> SHURIKEN_OF_ICE = register("shuriken_of_ice", () -> new ShurikenOfIceItem(new Item.Properties()));
+    public static final DeferredItem<NunchucksOfLightningItem> NUNCHUCKS_OF_LIGHTNING = register("nunchucks_of_lightning", () -> new NunchucksOfLightningItem(new Item.Properties()));
 
     // Banner Patterns
     public static final DeferredItem<BannerPatternItem> FOUR_WEAPONS_BANNER_PATTERN = registerBannerPattern(MinejagoBannerPatternTags.PATTERN_ITEM_FOUR_WEAPONS);

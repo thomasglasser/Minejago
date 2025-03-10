@@ -428,6 +428,7 @@ public class MinejagoClientEvents {
         } else if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
             event.insertAfter(Items.NETHERITE_HOE.getDefaultInstance(), MinejagoItems.SCYTHE_OF_QUAKES.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(MinejagoItems.SCYTHE_OF_QUAKES.toStack(), MinejagoItems.SHURIKEN_OF_ICE.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.SHURIKEN_OF_ICE.toStack(), MinejagoItems.NUNCHUCKS_OF_LIGHTNING.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(Items.WRITABLE_BOOK.getDefaultInstance(), MinejagoItems.WRITABLE_SCROLL.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 
             // Wood Sets
@@ -437,7 +438,8 @@ public class MinejagoClientEvents {
             // Unique Weapons
             event.insertAfter(Items.MACE.getDefaultInstance(), MinejagoItems.SCYTHE_OF_QUAKES.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(MinejagoItems.SCYTHE_OF_QUAKES.toStack(), MinejagoItems.SHURIKEN_OF_ICE.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-            event.insertAfter(MinejagoItems.SHURIKEN_OF_ICE.toStack(), MinejagoItems.BAMBOO_STAFF.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.SHURIKEN_OF_ICE.toStack(), MinejagoItems.NUNCHUCKS_OF_LIGHTNING.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoItems.NUNCHUCKS_OF_LIGHTNING.toStack(), MinejagoItems.BAMBOO_STAFF.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(MinejagoItems.BAMBOO_STAFF.toStack(), MinejagoItems.BONE_KNIFE.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 
             // Armor Sets

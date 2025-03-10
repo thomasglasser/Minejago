@@ -4,9 +4,7 @@ import static dev.thomasglasser.minejago.world.item.MinejagoItems.MOD_NEEDED;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.MinejagoClientUtils;
-import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
-import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
 import dev.thomasglasser.minejago.world.focus.FocusData;
 import dev.thomasglasser.tommylib.api.client.renderer.BewlrProvider;
@@ -17,7 +15,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -54,29 +51,16 @@ public abstract class GoldenWeaponItem extends Item implements ModeledItem {
         return UseAnim.NONE;
     }
 
-    public abstract boolean canPowerHandle(ResourceKey<Power> power, Level level);
-
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
-        if (MinejagoServerConfig.get().requireCompatiblePower.get()) {
-            if (!canPowerHandle(player.getData(MinejagoAttachmentTypes.POWER).power(), level)) {
-                if (MinejagoServerConfig.get().enableMalfunction.get() && !player.level().isClientSide && !player.getAbilities().instabuild) {
-                    goCrazy(player);
-                }
-                if (this.getFailSound() != null) {
-                    level.playSound(null, player.blockPosition(), getFailSound(), SoundSource.PLAYERS);
-                }
-                return InteractionResultHolder.sidedSuccess(player.getItemInHand(usedHand), level.isClientSide);
-            }
-        }
+    public final InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
         FocusData focusData = player.getData(MinejagoAttachmentTypes.FOCUS);
-        focusData.addExhaustion(FocusConstants.EXHAUSTION_GOLDEN_WEAPON);
         if (focusData.getFocusLevel() < FocusConstants.GOLDEN_WEAPON_LEVEL) {
             if (this.getFailSound() != null) {
                 level.playSound(null, player.blockPosition(), getFailSound(), SoundSource.PLAYERS);
             }
             return InteractionResultHolder.sidedSuccess(player.getItemInHand(usedHand), level.isClientSide);
         }
+        focusData.addExhaustion(FocusConstants.EXHAUSTION_GOLDEN_WEAPON);
         return doUse(level, player, usedHand);
     }
 
@@ -84,27 +68,16 @@ public abstract class GoldenWeaponItem extends Item implements ModeledItem {
 
     @Override
     public final InteractionResult useOn(UseOnContext pContext) {
-        if (MinejagoServerConfig.get().requireCompatiblePower.get()) {
-            if (!canPowerHandle(pContext.getPlayer().getData(MinejagoAttachmentTypes.POWER).power(), pContext.getLevel())) {
-                if (MinejagoServerConfig.get().enableMalfunction.get() && !pContext.getPlayer().level().isClientSide && !pContext.getPlayer().getAbilities().instabuild) {
-                    goCrazy(pContext.getPlayer());
-                }
-                if (this.getFailSound() != null) {
-                    pContext.getLevel().playSound(null, pContext.getPlayer().blockPosition(), getFailSound(), SoundSource.PLAYERS);
-                }
-                return pContext.getLevel().isClientSide ? InteractionResult.SUCCESS : InteractionResult.FAIL;
-            }
-        }
         Player player = pContext.getPlayer();
-        FocusData focusData = player == null ? null : player.getData(MinejagoAttachmentTypes.FOCUS);
+        FocusData focusData = player != null ? player.getData(MinejagoAttachmentTypes.FOCUS) : null;
         if (focusData != null) {
-            focusData.addExhaustion(FocusConstants.EXHAUSTION_GOLDEN_WEAPON);
             if (focusData.getFocusLevel() < FocusConstants.GOLDEN_WEAPON_LEVEL) {
                 if (this.getFailSound() != null) {
                     pContext.getLevel().playSound(null, player.blockPosition(), getFailSound(), SoundSource.PLAYERS);
                 }
                 return pContext.getLevel().isClientSide ? InteractionResult.SUCCESS : InteractionResult.FAIL;
             }
+            focusData.addExhaustion(FocusConstants.EXHAUSTION_GOLDEN_WEAPON);
         }
         return doUseOn(pContext);
     }
@@ -113,19 +86,14 @@ public abstract class GoldenWeaponItem extends Item implements ModeledItem {
 
     @Override
     public final void releaseUsing(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity, int pTimeCharged) {
-        if (pLivingEntity instanceof Player player && MinejagoServerConfig.get().requireCompatiblePower.get()) {
-            if (!canPowerHandle(pLivingEntity.getData(MinejagoAttachmentTypes.POWER).power(), pLevel)) {
-                if (MinejagoServerConfig.get().enableMalfunction.get() && !player.level().isClientSide && !player.getAbilities().instabuild) {
-                    goCrazy(player);
-                }
+        FocusData focusData = pLivingEntity instanceof Player p ? p.getData(MinejagoAttachmentTypes.FOCUS) : null;
+        if (focusData != null) {
+            if (focusData.getFocusLevel() < FocusConstants.GOLDEN_WEAPON_LEVEL) {
                 if (this.getFailSound() != null) {
                     pLevel.playSound(null, pLivingEntity.blockPosition(), getFailSound(), SoundSource.PLAYERS);
                 }
+                return;
             }
-        }
-        Player player = pLivingEntity instanceof Player p ? p : null;
-        FocusData focusData = player == null ? null : player.getData(MinejagoAttachmentTypes.FOCUS);
-        if (focusData != null) {
             focusData.addExhaustion(FocusConstants.EXHAUSTION_GOLDEN_WEAPON);
         }
         doReleaseUsing(pStack, pLevel, pLivingEntity, pTimeCharged);
@@ -135,35 +103,21 @@ public abstract class GoldenWeaponItem extends Item implements ModeledItem {
 
     @Override
     public final void onUseTick(Level level, LivingEntity livingEntity, ItemStack stack, int remainingUseDuration) {
-        if (livingEntity instanceof Player player && MinejagoServerConfig.get().requireCompatiblePower.get()) {
-            if (!canPowerHandle(livingEntity.getData(MinejagoAttachmentTypes.POWER).power(), level)) {
-                if (MinejagoServerConfig.get().enableMalfunction.get() && !player.level().isClientSide && !player.getAbilities().instabuild) {
-                    goCrazy(player);
-                }
-                if (this.getFailSound() != null) {
-                    level.playSound(null, livingEntity.blockPosition(), getFailSound(), SoundSource.PLAYERS);
-                }
-                return;
-            }
-        }
-        Player player = livingEntity instanceof Player p ? p : null;
-        FocusData focusData = player == null ? null : player.getData(MinejagoAttachmentTypes.FOCUS);
+        FocusData focusData = livingEntity instanceof Player p ? p.getData(MinejagoAttachmentTypes.FOCUS) : null;
         if (focusData != null) {
-            focusData.addExhaustion(FocusConstants.EXHAUSTION_GOLDEN_WEAPON);
             if (focusData.getFocusLevel() < FocusConstants.GOLDEN_WEAPON_LEVEL) {
                 if (this.getFailSound() != null) {
                     level.playSound(null, livingEntity.blockPosition(), getFailSound(), SoundSource.PLAYERS);
                 }
                 return;
             }
+            focusData.addExhaustion(FocusConstants.EXHAUSTION_GOLDEN_WEAPON);
         }
         doOnUsingTick(stack, livingEntity, remainingUseDuration);
         super.onUseTick(level, livingEntity, stack, remainingUseDuration);
     }
 
-    protected abstract void doOnUsingTick(ItemStack stack, LivingEntity player, int count);
-
-    protected abstract void goCrazy(Player player);
+    protected abstract void doOnUsingTick(ItemStack stack, LivingEntity player, int remainingUseDuration);
 
     public SoundEvent getFailSound() {
         return null;

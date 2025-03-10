@@ -22,7 +22,6 @@ import dev.thomasglasser.minejago.tags.MinejagoBlockTags;
 import dev.thomasglasser.minejago.tags.MinejagoDamageTypeTags;
 import dev.thomasglasser.minejago.tags.MinejagoEntityTypeTags;
 import dev.thomasglasser.minejago.tags.MinejagoItemTags;
-import dev.thomasglasser.minejago.tags.MinejagoPowerTags;
 import dev.thomasglasser.minejago.tags.MinejagoStructureTags;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
@@ -245,6 +244,7 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
     protected void addItems() {
         add(MinejagoItems.SCYTHE_OF_QUAKES.get(), "Scythe of Quakes");
         add(MinejagoItems.SHURIKEN_OF_ICE.get(), "Shuriken of Ice");
+        add(MinejagoItems.NUNCHUCKS_OF_LIGHTNING.get(), "Nunchucks of Lightning");
 
         add(MinejagoItems.BONE_KNIFE.get(), "Bone Knife");
         add(MinejagoItems.BAMBOO_STAFF.get(), "Bamboo Staff");
@@ -455,13 +455,10 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(MinejagoItemTags.SCROLL_SHELF_SCROLLS, "Scroll Shelf Scrolls");
         add(MinejagoItemTags.DRAGON_FOODS, "Dragon Foods");
         add(MinejagoItemTags.DRAGON_TREATS, "Dragon Treats");
+        add(MinejagoItemTags.EARTH_DRAGON_PROTECTS, "Earth Dragon Protects");
         add(MinejagoItemTags.REPAIRS_SKELETAL_ARMOR, "Repairs Skeletal Armor");
         add(MinejagoItemTags.BONE_TOOL_MATERIALS, "Bone Tool Materials");
         add(MinejagoItemTags.GI, "Gi");
-
-        // Powers
-        add(MinejagoPowerTags.CAN_USE_SCYTHE_OF_QUAKES, "Can Use Scythe Of Quakes");
-        add(MinejagoPowerTags.CAN_USE_SHURIKEN_OF_ICE, "Can Use Shurikens Of Ice");
 
         // Structures
         add(MinejagoStructureTags.FOUR_WEAPONS, "Four Weapons");
@@ -493,10 +490,6 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         addConfig(MinejagoServerConfig.get().courseTimeLimit, "Course Time Limit", "The amount of time (in seconds) a player has to complete the Spinjitzu course to unlock Spinjitzu");
         addConfig(MinejagoServerConfig.get().courseRadius, "Course Radius", "The radius that the center Spinjitzu element will search for other course elements");
         addConfig(MinejagoServerConfig.get().courseSpeed, "Course Speed", "The speed at which spinjitzu course elements will spin");
-
-        addConfigSection(MinejagoServerConfig.GOLDEN_WEAPONS, "Golden Weapons", "Settings for the four Golden Weapons");
-        addConfig(MinejagoServerConfig.get().requireCompatiblePower, "Require Compatible Power", "Require users to have a compatible power");
-        addConfig(MinejagoServerConfig.get().enableMalfunction, "Enable Malfunction", "Enable an abnormal reaction when handled by someone without a compatible power");
 
         // Client
         addConfigSection(MinejagoClientConfig.COSMETICS, "Player Cosmetics", "Settings for player cosmetics");
