@@ -5,7 +5,6 @@ import dev.thomasglasser.minejago.client.MinejagoClientConfig;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.focus.FocusData;
 import dev.thomasglasser.tommylib.api.client.ClientUtils;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
@@ -26,7 +25,7 @@ public class MinejagoGuis {
     private static final ResourceLocation OUTER_FULL_MEGA_FOCUS_LOCATION = Minejago.modLoc("textures/gui/mega_focus_full_outer.png");
     private static final ResourceLocation INNER_FULL_MEGA_FOCUS_LOCATION = Minejago.modLoc("textures/gui/mega_focus_full_inner.png");
 
-    public static void renderFocusBar(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+    public static void renderFocusBar(GuiGraphics guiGraphics) {
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.gameMode != null && minecraft.gameMode.canHurtPlayer() && !minecraft.options.hideGui) {
             Gui gui = minecraft.gui;

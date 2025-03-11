@@ -298,7 +298,7 @@ public class MinejagoClientEvents {
     }
 
     public static void onRegisterGuiOverlays(RegisterGuiLayersEvent event) {
-        event.registerAbove(ResourceLocation.withDefaultNamespace("food_level"), Minejago.modLoc("focus"), MinejagoGuis::renderFocusBar);
+        event.registerAbove(ResourceLocation.withDefaultNamespace("food_level"), Minejago.modLoc("focus"), (guiGraphics, deltaTracker) -> MinejagoGuis.renderFocusBar(guiGraphics));
     }
 
     public static void onRegisterClientReloadListener(RegisterClientReloadListenersEvent event) {
