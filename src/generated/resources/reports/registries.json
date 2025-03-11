@@ -89,6 +89,7 @@
     "minejago:nya",
     "minejago:rocking_pole_spinjitzu_course_element",
     "minejago:samukai",
+    "minejago:shadow_source",
     "minejago:skulkin",
     "minejago:skulkin_horse",
     "minejago:skull_motorbike",
@@ -481,6 +482,7 @@
   "neoforge:attachment_types": [
     "minejago:focus",
     "minejago:power",
+    "minejago:shadow_source",
     "minejago:skill",
     "minejago:spinjitzu"
   ],

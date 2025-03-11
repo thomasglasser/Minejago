@@ -32,6 +32,7 @@ import dev.thomasglasser.minejago.client.renderer.entity.HolidayCharacterRendere
 import dev.thomasglasser.minejago.client.renderer.entity.KrunchaRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.NuckalRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.SamukaiRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.ShadowSourceRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.SkulkinHorseRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.SkulkinRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.SkullMotorbikeRenderer;
@@ -224,6 +225,8 @@ public class MinejagoClientEvents {
         event.registerEntityRenderer(MinejagoEntityTypes.SPINNING_DUMMIES_SPINJITZU_COURSE_ELEMENT.get(), pContext -> new DirectionalSpinjitzuCourseElementRenderer<>(pContext, new SpinningSpinjitzuCourseElementModel<SpinningDummiesSpinjitzuCourseElement>(MinejagoEntityTypes.SPINNING_DUMMIES_SPINJITZU_COURSE_ELEMENT.getId(), "structure")));
         event.registerEntityRenderer(MinejagoEntityTypes.SWIRLING_KNIVES_SPINJITZU_COURSE_ELEMENT.get(), pContext -> new DirectionalSpinjitzuCourseElementRenderer<>(pContext, new SpinningSpinjitzuCourseElementModel<SwirlingKnivesSpinjitzuCourseElement>(MinejagoEntityTypes.SWIRLING_KNIVES_SPINJITZU_COURSE_ELEMENT.getId(), "structure")));
         event.registerEntityRenderer(MinejagoEntityTypes.SPINNING_AXES_SPINJITZU_COURSE_ELEMENT.get(), pContext -> new DirectionalSpinjitzuCourseElementRenderer<>(pContext, new SpinningAxesSpinjitzuCourseElementModel()));
+
+        event.registerEntityRenderer(MinejagoEntityTypes.SHADOW_SOURCE.get(), ShadowSourceRenderer::new);
 
         event.registerBlockEntityRenderer(MinejagoBlockEntityTypes.DRAGON_HEAD.get(), pContext -> new DragonHeadRenderer());
         event.registerBlockEntityRenderer(MinejagoBlockEntityTypes.DRAGON_BUTTON.get(), context -> new DragonButtonRenderer(MinejagoBlocks.DRAGON_BUTTON.getId()));

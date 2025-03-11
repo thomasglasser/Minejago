@@ -163,18 +163,23 @@ public class Minejago {
         NeoForge.EVENT_BUS.addListener(MinejagoCommandEvents::onCommandsRegister);
         NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onLivingKnockBack);
         NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onEntityJoinLevel);
+        NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onEntityLeaveLevel);
         NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onPlayerClone);
         NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onEntitySize);
         NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onLivingVisibility);
         NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onBlockBreak);
         NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onIncomingDamage);
         NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onModifyCustomSpawners);
+        NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onLivingDeath);
+        NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onLivingIncomingDamage);
     }
 
     private void addForgeClientListeners() {
         NeoForge.EVENT_BUS.addListener((ClientPlayerNetworkEvent.LoggingIn event) -> MinejagoClientEvents.onPlayerLoggedIn());
         NeoForge.EVENT_BUS.addListener((ClientTickEvent.Post event) -> MinejagoClientEvents.onClientTick());
         NeoForge.EVENT_BUS.addListener((InputEvent.Key event) -> MinejagoClientEvents.onInput(event.getKey()));
+        NeoForge.EVENT_BUS.addListener((InputEvent.MouseButton.Pre event) -> MinejagoClientEvents.onInput(-1));
+        NeoForge.EVENT_BUS.addListener((InputEvent.MouseScrollingEvent event) -> MinejagoClientEvents.onInput(-1));
         NeoForge.EVENT_BUS.addListener(MinejagoClientEvents::onPostPlayerRender);
         NeoForge.EVENT_BUS.addListener(MinejagoClientEvents::onSelectMusic);
     }

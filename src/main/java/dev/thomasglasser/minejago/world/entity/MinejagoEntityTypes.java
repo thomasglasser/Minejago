@@ -148,6 +148,13 @@ public class MinejagoEntityTypes {
             .sized(1f, 4.25f)
             .build(("spinning_axes_spinjitzu_course_element")));
 
+    public static final DeferredHolder<EntityType<?>, EntityType<ShadowSource>> SHADOW_SOURCE = register("shadow_source", () -> EntityType.Builder.<ShadowSource>of(ShadowSource::new, MobCategory.MISC)
+            .noSave()
+            .noSummon()
+            .sized(0.6F, 1.8F)
+            .eyeHeight(1.62F)
+            .build(("shadow_source")));
+
     public static <T extends EntityType<?>> DeferredHolder<EntityType<?>, T> register(String name, Supplier<T> type) {
         return ENTITY_TYPES.register(name, type);
     }

@@ -15,6 +15,7 @@
   "client": [
     "minecraft.client.gui.screens.inventory.LecternScreenMixin",
     "minecraft.client.player.LocalPlayerMixin",
+    "minecraft.client.renderer.ScreenEffectRendererMixin",
     "minecraft.client.renderer.blockentity.LecternRendererMixin"
   ],
   "server": [

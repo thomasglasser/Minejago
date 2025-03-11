@@ -3,11 +3,13 @@ package dev.thomasglasser.minejago.world.focus;
 import static dev.thomasglasser.minejago.world.focus.FocusConstants.EXHAUSTION_DROP;
 import static dev.thomasglasser.minejago.world.focus.FocusConstants.MAX_FOCUS;
 import static dev.thomasglasser.minejago.world.focus.FocusConstants.MAX_MEGA_FOCUS;
+import static dev.thomasglasser.minejago.world.focus.FocusConstants.MAX_SATURATION;
 import static dev.thomasglasser.minejago.world.focus.FocusConstants.MIN_MEGA_FOCUS;
 import static dev.thomasglasser.minejago.world.focus.FocusConstants.START_SATURATION;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.player.Player;
 
@@ -33,7 +35,7 @@ public class FocusData {
 
     private void add(boolean mega, int newFocus, float newSaturation) {
         this.focusLevel = Math.min(newFocus + this.focusLevel, mega ? MAX_MEGA_FOCUS : MAX_FOCUS);
-        this.saturationLevel = Math.min((mega ? (newSaturation * 2.0F) : newSaturation) + this.saturationLevel, (float) this.focusLevel);
+        this.saturationLevel = Math.min((mega ? (newSaturation * 2.0F) : newSaturation) + this.saturationLevel, MAX_SATURATION);
     }
 
     public void meditate(boolean mega, int focusLevelModifier, float saturationLevelModifier) {
@@ -55,7 +57,7 @@ public class FocusData {
     }
 
     public boolean canMegaMeditate(Player player) {
-        return focusLevel >= MIN_MEGA_FOCUS && player.getHealth() >= player.getMaxHealth() && !player.getFoodData().needsFood() && isMeditating();
+        return isMeditating() && focusLevel >= MIN_MEGA_FOCUS && player.getHealth() >= player.getMaxHealth() && !player.getFoodData().needsFood() && !player.hasEffect(MinejagoMobEffects.HYPERFOCUS);
     }
 
     public int getFocusLevel() {

@@ -10,12 +10,14 @@ import dev.thomasglasser.minejago.network.ClientboundRefreshVipDataPayload;
 import dev.thomasglasser.minejago.network.ClientboundStartMeditationPayload;
 import dev.thomasglasser.minejago.network.ClientboundStartMegaMeditationPayload;
 import dev.thomasglasser.minejago.network.ClientboundStartSpinjitzuPayload;
-import dev.thomasglasser.minejago.network.ClientboundStopAnimationPayload;
 import dev.thomasglasser.minejago.network.ClientboundStopMeditationPayload;
 import dev.thomasglasser.minejago.network.ClientboundStopSpinjitzuPayload;
+import dev.thomasglasser.minejago.network.ClientboundSyncShadowSourcePayload;
 import dev.thomasglasser.minejago.network.ServerboundStartMeditationPayload;
+import dev.thomasglasser.minejago.network.ServerboundStartShadowFormPayload;
 import dev.thomasglasser.minejago.network.ServerboundStartSpinjitzuPayload;
 import dev.thomasglasser.minejago.network.ServerboundStopMeditationPayload;
+import dev.thomasglasser.minejago.network.ServerboundStopShadowFormPayload;
 import dev.thomasglasser.minejago.network.ServerboundStopSpinjitzuPayload;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.tags.MinejagoItemTags;
@@ -52,6 +54,9 @@ import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import dev.thomasglasser.tommylib.api.tags.ConventionalItemTags;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import net.minecraft.core.BlockPos;
@@ -59,6 +64,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -72,6 +78,7 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -82,6 +89,7 @@ import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.entity.decoration.Painting;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.npc.InventoryCarrier;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -90,12 +98,16 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.ItemAbilities;
+import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.EntityEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import net.neoforged.neoforge.event.entity.EntityLeaveLevelEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingKnockBackEvent;
@@ -109,42 +121,56 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 public class MinejagoEntityEvents {
     public static final String KEY_WAIT_TICKS = "WaitTicks";
     public static final String KEY_OFF_GROUND_TICKS = "OffGroundTicks";
+    public static final String KEY_START_POS = "StartPos";
     public static final String KEY_IS_IN_MONASTERY_OF_SPINJITZU = "IsInMonasteryOfSpinjitzu";
     public static final String KEY_IS_IN_CAVE_OF_DESPAIR = "IsInCaveOfDespair";
+    public static final ResourceLocation SHADOW_FLIGHT_MODIFIER = Minejago.modLoc("shadow_flight");
 
-    public static final Predicate<LivingEntity> NO_SPINJITZU = (player -> !player.getData(MinejagoAttachmentTypes.SPINJITZU).canDoSpinjitzu() ||
-            player.isCrouching() ||
-            player.getVehicle() != null ||
-            player.isVisuallySwimming() ||
-            player.isUnderWater() ||
-            player.isSleeping() ||
-            player.isFreezing() ||
-            player.isNoGravity() ||
-            player.isInLava() ||
-            player.isFallFlying() ||
-            player.isBlocking() ||
-            player.getActiveEffects().stream().anyMatch((mobEffectInstance -> mobEffectInstance.getEffect().value().getCategory() == MobEffectCategory.HARMFUL)) ||
-            player.isInWater() ||
-            TommyLibServices.ENTITY.getPersistentData(player).getInt(KEY_OFF_GROUND_TICKS) > 30 ||
-            player.getData(MinejagoAttachmentTypes.FOCUS).getFocusLevel() < FocusConstants.SPINJITZU_LEVEL);
+    public static final Predicate<LivingEntity> NO_SPINJITZU = (entity -> !entity.getData(MinejagoAttachmentTypes.SPINJITZU).canDoSpinjitzu() ||
+            entity.isCrouching() ||
+            entity.getVehicle() != null ||
+            entity.isVisuallySwimming() ||
+            entity.isUnderWater() ||
+            entity.isSleeping() ||
+            entity.isFreezing() ||
+            entity.isNoGravity() ||
+            entity.isInLava() ||
+            entity.isFallFlying() ||
+            entity.isBlocking() ||
+            entity.getActiveEffects().stream().anyMatch((mobEffectInstance -> mobEffectInstance.getEffect().value().getCategory() == MobEffectCategory.HARMFUL)) ||
+            entity.isInWater() ||
+            TommyLibServices.ENTITY.getPersistentData(entity).getInt(KEY_OFF_GROUND_TICKS) > 30 ||
+            entity.getData(MinejagoAttachmentTypes.SHADOW_SOURCE).isPresent() ||
+            entity.getData(MinejagoAttachmentTypes.FOCUS).getFocusLevel() < FocusConstants.SPINJITZU_LEVEL);
 
-    public static final Predicate<LivingEntity> NO_MEDITATION = (player -> player.isCrouching() ||
-            player.getVehicle() != null ||
-            player.isVisuallySwimming() ||
-            player.isSleeping() ||
-            player.isNoGravity() ||
-            player.isInLava() ||
-            player.isFallFlying() ||
-            (!TommyLibServices.ENTITY.getPersistentData(player).getString("StartPos").isEmpty() && !player.blockPosition().toString().equals(TommyLibServices.ENTITY.getPersistentData(player).getString("StartPos"))));
+    public static final Predicate<LivingEntity> NO_MEDITATION = (entity -> entity.isCrouching() ||
+            entity.getDeltaMovement().distanceTo(Vec3.ZERO) > 0.08 ||
+            entity.getVehicle() != null ||
+            entity.isVisuallySwimming() ||
+            entity.isSleeping() ||
+            entity.isFreezing() ||
+            entity.isNoGravity() ||
+            entity.isInLava() ||
+            entity.isFallFlying() ||
+            entity.isBlocking() ||
+            entity.getActiveEffects().stream().anyMatch((mobEffectInstance -> mobEffectInstance.getEffect().value().getCategory() == MobEffectCategory.HARMFUL)) ||
+            TommyLibServices.ENTITY.getPersistentData(entity).getInt(KEY_OFF_GROUND_TICKS) > 0 ||
+            entity.getData(MinejagoAttachmentTypes.SPINJITZU).active() ||
+            entity.getData(MinejagoAttachmentTypes.SHADOW_SOURCE).isPresent() ||
+            (!TommyLibServices.ENTITY.getPersistentData(entity).getString(KEY_START_POS).isEmpty() && !entity.blockPosition().toString().equals(TommyLibServices.ENTITY.getPersistentData(entity).getString(KEY_START_POS))));
+
+    public static final Predicate<LivingEntity> NO_SHADOW_FORM = (entity -> entity.getData(MinejagoAttachmentTypes.FOCUS).getFocusLevel() < FocusConstants.SHADOW_FORM_LEVEL);
 
     public static void onPlayerTick(PlayerTickEvent.Post event) {
         Player player = event.getEntity();
         if (player.level().tickRateManager().runsNormally()) {
             FocusData focusData = player.getData(MinejagoAttachmentTypes.FOCUS);
+            SpinjitzuData spinjitzu = player.getData(MinejagoAttachmentTypes.SPINJITZU);
+            Optional<UUID> shadowSource = player.getData(MinejagoAttachmentTypes.SHADOW_SOURCE);
+            CompoundTag persistentData = TommyLibServices.ENTITY.getPersistentData(player).copy();
+
             focusData.tick(player);
 
-            SpinjitzuData spinjitzu = player.getData(MinejagoAttachmentTypes.SPINJITZU);
-            CompoundTag persistentData = TommyLibServices.ENTITY.getPersistentData(player).copy();
             int waitTicks = persistentData.getInt(KEY_WAIT_TICKS);
             if (player instanceof ServerPlayer serverPlayer) {
                 ServerLevel serverLevel = serverPlayer.serverLevel();
@@ -164,13 +190,8 @@ public class MinejagoEntityEvents {
                     persistentData.putInt(KEY_OFF_GROUND_TICKS, 0);
                 }
 
-                if (spinjitzu.canDoSpinjitzu()) {
-                    if (spinjitzu.active()) {
-                        if (focusData.isMeditating()) {
-                            focusData.stopMeditating();
-                            TommyLibServices.NETWORK.sendToAllClients(new ClientboundStopAnimationPayload(serverPlayer.getUUID()), serverPlayer.getServer());
-                        }
-
+                if (spinjitzu.active()) {
+                    if (spinjitzu.canDoSpinjitzu()) {
                         if (NO_SPINJITZU.test(serverPlayer)) {
                             stopSpinjitzu(spinjitzu, serverPlayer, !serverPlayer.isCrouching());
                             return;
@@ -184,23 +205,30 @@ public class MinejagoEntityEvents {
                         if (power.getBorderParticle() != null) {
                             MinejagoParticleUtils.renderNormalSpinjitzuBorder(power.getBorderParticle(), serverPlayer, 4, false);
                         }
+                    } else {
+                        stopSpinjitzu(spinjitzu, serverPlayer, true);
                     }
-                } else if (spinjitzu.active()) {
-                    stopSpinjitzu(spinjitzu, serverPlayer, true);
                 }
 
-                if (focusData.isMeditating()) {
-                    if (NO_MEDITATION.test(serverPlayer)) {
+                ShadowSource source = shadowSource.isPresent() && serverLevel.getEntity(shadowSource.get()) instanceof ShadowSource s ? s : null;
+                boolean shadowMeditating = source != null && source.getData(MinejagoAttachmentTypes.FOCUS).isMeditating();
+                if (focusData.isMeditating() || shadowMeditating) {
+                    if (focusData.isMeditating() && NO_MEDITATION.test(serverPlayer)) {
                         focusData.stopMeditating();
                         TommyLibServices.NETWORK.sendToAllClients(new ClientboundStopMeditationPayload(serverPlayer.getUUID(), true), serverPlayer.getServer());
                     }
 
-                    if ((focusData.isMegaMeditating() && player.tickCount % 200 == 0) || (focusData.isNormalMeditating() && player.tickCount % 60 == 0)) {
-                        BlockPos playerPos = player.blockPosition();
-                        Biome biome = level.getBiome(playerPos).value();
+                    if ((shadowMeditating && (player.tickCount & 20) == 0) || (focusData.isMegaMeditating() && player.tickCount % 200 == 0) || (focusData.isNormalMeditating() && player.tickCount % 60 == 0)) {
+                        BlockPos blockPos = player.blockPosition();
+                        Vec3 pos = player.position();
+                        if (shadowMeditating) {
+                            blockPos = source.blockPosition();
+                            pos = source.position();
+                        }
+                        Biome biome = level.getBiome(blockPos).value();
                         AtomicDouble i = new AtomicDouble(1);
                         Weather weather = Weather.CLEAR;
-                        Biome.Precipitation precipitation = biome.getPrecipitationAt(playerPos);
+                        Biome.Precipitation precipitation = biome.getPrecipitationAt(blockPos);
                         if (level.isThundering()) {
                             if (precipitation == Biome.Precipitation.SNOW) {
                                 weather = Weather.THUNDER_SNOW;
@@ -210,12 +238,12 @@ public class MinejagoEntityEvents {
                                 weather = Weather.SNOW;
                             } else if (precipitation == Biome.Precipitation.RAIN) weather = Weather.RAIN;
                         }
-                        i.set(WorldFocusModifier.checkAndApply(serverLevel, (int) level.getDayTime(), weather, playerPos.getY(), TeapotBlock.getBiomeTemperature(level, playerPos), i.get()));
-                        i.set(LocationFocusModifier.checkAndApply(serverLevel, player.position(), i.get()));
-                        Stream<BlockPos> blocks = BlockPos.betweenClosedStream(player.getBoundingBox().inflate(4));
-                        blocks.forEach(pos -> i.set(BlockFocusModifier.checkAndApply(serverLevel, pos, i.get())));
-                        EntityFocusModifier.checkAndApply(serverLevel, player.position(), player, true, i.get());
-                        List<Entity> entities = level.getEntities(serverPlayer, serverPlayer.getBoundingBox().inflate(4));
+                        i.set(WorldFocusModifier.checkAndApply(serverLevel, (int) level.getDayTime(), weather, blockPos.getY(), TeapotBlock.getBiomeTemperature(level, blockPos), i.get()));
+                        i.set(LocationFocusModifier.checkAndApply(serverLevel, pos, i.get()));
+                        Stream<BlockPos> blocks = BlockPos.betweenClosedStream((shadowMeditating ? source : player).getBoundingBox().inflate(4));
+                        blocks.forEach(bP -> i.set(BlockFocusModifier.checkAndApply(serverLevel, bP, i.get())));
+                        EntityFocusModifier.checkAndApply(serverLevel, pos, player, true, i.get());
+                        List<Entity> entities = level.getEntities(serverPlayer, (shadowMeditating ? source : serverPlayer).getBoundingBox().inflate(4));
                         entities.forEach(entity -> {
                             if (entity instanceof ItemEntity item) {
                                 i.set(ItemFocusModifier.checkAndApply(serverLevel, item.getItem(), i.get()));
@@ -225,10 +253,11 @@ public class MinejagoEntityEvents {
                                 i.set(EntityFocusModifier.checkAndApply(serverLevel, entity.position(), entity, false, i.get()));
                             }
                         });
-                        serverPlayer.getInventory().armor.forEach(stack -> i.set(ItemFocusModifier.checkAndApply(serverLevel, stack, i.get())));
-                        serverPlayer.getInventory().items.forEach(stack -> i.set(ItemFocusModifier.checkAndApply(serverLevel, stack, i.get())));
-                        serverPlayer.getInventory().offhand.forEach(stack -> i.set(ItemFocusModifier.checkAndApply(serverLevel, stack, i.get())));
-                        focusData.meditate(focusData.isMegaMeditating(), (int) i.getAndSet(0), FocusConstants.FOCUS_SATURATION_NORMAL);
+                        Inventory inventory = /*shadowMeditating ? source.getInventory() :*/ serverPlayer.getInventory();
+                        inventory.armor.forEach(stack -> i.set(ItemFocusModifier.checkAndApply(serverLevel, stack, i.get())));
+                        inventory.items.forEach(stack -> i.set(ItemFocusModifier.checkAndApply(serverLevel, stack, i.get())));
+                        inventory.offhand.forEach(stack -> i.set(ItemFocusModifier.checkAndApply(serverLevel, stack, i.get())));
+                        focusData.meditate(shadowMeditating || focusData.isMegaMeditating(), (int) i.getAndSet(0), FocusConstants.FOCUS_SATURATION_NORMAL);
                     }
 
                     if (focusData.canMegaMeditate(serverPlayer)) {
@@ -242,9 +271,25 @@ public class MinejagoEntityEvents {
                         serverPlayer.refreshDimensions();
                         TommyLibServices.NETWORK.sendToAllClients(new ClientboundStartMeditationPayload(player.getUUID()), level.getServer());
                     }
-                } else if (persistentData.contains("StartPos")) {
-                    persistentData.remove("StartPos");
+                } else if (persistentData.contains(KEY_START_POS)) {
+                    persistentData.remove(KEY_START_POS);
                 }
+
+                shadowSource.ifPresent(uuid -> {
+                    if (source == null || NO_SHADOW_FORM.test(serverPlayer) || source.isInLava() || (!TommyLibServices.ENTITY.getPersistentData(source).getString(KEY_START_POS).isEmpty() && !source.blockPosition().toString().equals(TommyLibServices.ENTITY.getPersistentData(source).getString(KEY_START_POS)))) {
+                        stopShadowForm(serverPlayer);
+                    } else {
+                        focusData.addExhaustion(FocusConstants.EXHAUSTION_IN_SHADOW_FORM);
+                        if (player.getAbilities().flying)
+                            focusData.addExhaustion(FocusConstants.EXHAUSTION_SHADOW_FORM_NORMAL_ABILITY);
+                        int count = 0;
+                        for (ItemStack stack : player.getInventory().player.getAllSlots()) {
+                            count += stack.getCount();
+                        }
+                        if (count > 0)
+                            focusData.addExhaustion(FocusConstants.EXHAUSTION_SHADOW_FORM_HOLDING_ITEM * count);
+                    }
+                });
 
                 if (MinejagoLevelUtils.isGoldenWeaponsMapHolderNearby(serverPlayer, SkulkinRaid.PAINTING_RADIUS_BUFFER)) {
                     ((SkulkinRaidsHolder) level).getSkulkinRaids().createOrExtendSkulkinRaid(serverPlayer);
@@ -262,35 +307,48 @@ public class MinejagoEntityEvents {
                     persistentData.putInt(ClientboundStartSpinjitzuPayload.KEY_SPINJITZUSTARTTICKS, startTicks - 1);
                 if (waitTicks > 0) {
                     persistentData.putInt(KEY_WAIT_TICKS, --waitTicks);
-                } else if (MinejagoKeyMappings.ACTIVATE_SPINJITZU.get().isDown() && !focusData.isMeditating()) {
-                    if (spinjitzu.active()) {
-                        TommyLibServices.NETWORK.sendToServer(ServerboundStopSpinjitzuPayload.INSTANCE);
-                    } else if (!NO_SPINJITZU.test(player)) {
-                        TommyLibServices.NETWORK.sendToServer(ServerboundStartSpinjitzuPayload.INSTANCE);
+                } else {
+                    if (MinejagoKeyMappings.ACTIVATE_SPINJITZU.get().isDown()) {
+                        if (spinjitzu.active())
+                            TommyLibServices.NETWORK.sendToServer(ServerboundStopSpinjitzuPayload.INSTANCE);
+                        else if (!NO_SPINJITZU.test(player))
+                            TommyLibServices.NETWORK.sendToServer(ServerboundStartSpinjitzuPayload.INSTANCE);
+                        persistentData.putInt(KEY_WAIT_TICKS, 10);
                     }
-                    persistentData.putInt(KEY_WAIT_TICKS, 10);
-                } else if (MinejagoKeyMappings.MEDITATE.get().isDown() && !spinjitzu.active()) {
-                    if (focusData.isMeditating()) {
-                        focusData.stopMeditating();
-                        TommyLibServices.NETWORK.sendToServer(new ServerboundStopMeditationPayload(false));
-                    } else if (!NO_MEDITATION.test(player)) {
-                        focusData.startMeditating();
-                        TommyLibServices.NETWORK.sendToServer(ServerboundStartMeditationPayload.INSTANCE);
+                    if (MinejagoKeyMappings.MEDITATE.get().isDown()) {
+                        if (focusData.isMeditating())
+                            TommyLibServices.NETWORK.sendToServer(new ServerboundStopMeditationPayload(false));
+                        else if (!NO_MEDITATION.test(player))
+                            TommyLibServices.NETWORK.sendToServer(ServerboundStartMeditationPayload.INSTANCE);
+                        persistentData.putInt(KEY_WAIT_TICKS, 10);
                     }
-                    persistentData.putInt(KEY_WAIT_TICKS, 10);
-                } else if (MinejagoKeyMappings.OPEN_SKILL_SCREEN.get().consumeClick()) {
-                    MinejagoClientUtils.openSkillScreen();
-                } else if (player.isShiftKeyDown()) {
-                    if (spinjitzu.active()) {
-                        TommyLibServices.NETWORK.sendToServer(ServerboundStopSpinjitzuPayload.INSTANCE);
+                    if (MinejagoKeyMappings.ENTER_SHADOW_FORM.get().isDown()) {
+                        if (shadowSource.isPresent())
+                            TommyLibServices.NETWORK.sendToServer(ServerboundStopShadowFormPayload.INSTANCE);
+                        else if (!NO_SHADOW_FORM.test(player) && !NO_MEDITATION.test(player))
+                            TommyLibServices.NETWORK.sendToServer(ServerboundStartShadowFormPayload.INSTANCE);
+                        persistentData.putInt(KEY_WAIT_TICKS, 10);
                     }
-                    if (focusData.isMeditating()) {
-                        focusData.stopMeditating();
-                        TommyLibServices.NETWORK.sendToServer(new ServerboundStopMeditationPayload(false));
+                    if (MinejagoKeyMappings.OPEN_SKILL_SCREEN.get().isDown()) {
+                        MinejagoClientUtils.openSkillScreen();
+                        persistentData.putInt(KEY_WAIT_TICKS, 10);
                     }
-                    persistentData.putInt(KEY_WAIT_TICKS, 10);
+                    if (player.isShiftKeyDown()) {
+                        if (spinjitzu.active()) {
+                            TommyLibServices.NETWORK.sendToServer(ServerboundStopSpinjitzuPayload.INSTANCE);
+                        }
+                        if (focusData.isMeditating()) {
+                            focusData.stopMeditating();
+                            TommyLibServices.NETWORK.sendToServer(new ServerboundStopMeditationPayload(false));
+                        }
+                        persistentData.putInt(KEY_WAIT_TICKS, 10);
+                    }
                 }
                 TommyLibServices.ENTITY.setPersistentData(player, persistentData, false);
+            }
+            if (player.getData(MinejagoAttachmentTypes.SHADOW_SOURCE).isPresent()) {
+                if (player.getLightLevelDependentMagicValue() < 0.1f && !player.getAbilities().flying)
+                    player.getAbilities().flying = true;
             }
         }
     }
@@ -397,18 +455,54 @@ public class MinejagoEntityEvents {
         }
     }
 
-    public static void stopSpinjitzu(SpinjitzuData spinjitzu, ServerPlayer serverPlayer, boolean fail) {
+    public static void stopSpinjitzu(SpinjitzuData spinjitzu, LivingEntity entity, boolean fail) {
         if (spinjitzu.active()) {
-            new SpinjitzuData(spinjitzu.unlocked(), false).save(serverPlayer, true);
-            TommyLibServices.NETWORK.sendToAllClients(new ClientboundStopSpinjitzuPayload(serverPlayer.getUUID(), fail), serverPlayer.getServer());
-            AttributeInstance speed = serverPlayer.getAttribute(Attributes.MOVEMENT_SPEED);
+            new SpinjitzuData(spinjitzu.unlocked(), false).save(entity, true);
+            if (entity instanceof ServerPlayer serverPlayer)
+                TommyLibServices.NETWORK.sendToAllClients(new ClientboundStopSpinjitzuPayload(serverPlayer.getUUID(), fail), serverPlayer.getServer());
+            AttributeInstance speed = entity.getAttribute(Attributes.MOVEMENT_SPEED);
             if (speed != null && speed.hasModifier(SpinjitzuData.SPEED_MODIFIER))
                 speed.removeModifier(SpinjitzuData.SPEED_MODIFIER);
-            AttributeInstance kb = serverPlayer.getAttribute(Attributes.ATTACK_KNOCKBACK);
+            AttributeInstance kb = entity.getAttribute(Attributes.ATTACK_KNOCKBACK);
             if (kb != null && kb.hasModifier(SpinjitzuData.KNOCKBACK_MODIFIER))
                 kb.removeModifier(SpinjitzuData.KNOCKBACK_MODIFIER);
-            serverPlayer.level().playSound(null, serverPlayer.blockPosition(), MinejagoSoundEvents.SPINJITZU_STOP.get(), SoundSource.PLAYERS);
+            entity.level().playSound(null, entity.blockPosition(), MinejagoSoundEvents.SPINJITZU_STOP.get(), SoundSource.PLAYERS);
         }
+    }
+
+    public static void stopShadowForm(LivingEntity entity) {
+        if (!(entity.level() instanceof ServerLevel serverLevel)) return;
+        Optional<UUID> sourceUuid = entity.getData(MinejagoAttachmentTypes.SHADOW_SOURCE);
+        sourceUuid.ifPresent(uuid -> {
+            ShadowSource source = serverLevel.getEntity(uuid) instanceof ShadowSource shadowSource ? shadowSource : null;
+            if (source != null) {
+                if (entity instanceof ServerPlayer serverPlayer) {
+                    serverPlayer.getInventory().dropAll();
+                    if (source.getInventory() != null) {
+                        serverPlayer.getInventory().load(source.getInventory());
+                    }
+                }
+                for (EquipmentSlot slot : EquipmentSlot.values()) {
+                    ItemStack original = entity.getItemBySlot(slot);
+                    if (!original.isEmpty()) {
+                        ItemEntity item = new ItemEntity(serverLevel, entity.getX(), entity.getY(), entity.getZ(), original);
+                        item.setDefaultPickUpDelay();
+                        serverLevel.addFreshEntity(item);
+                    }
+                    ItemStack stack = source.getItemBySlot(slot);
+                    if (stack != null) {
+                        entity.setItemSlot(slot, stack);
+                    }
+                }
+                entity.teleportTo(serverLevel, source.getX(), source.getY(), source.getZ(), Set.of(), source.getYRot(), source.getXRot());
+                source.remove(Entity.RemovalReason.DISCARDED);
+            }
+            AttributeInstance flight = entity.getAttribute(NeoForgeMod.CREATIVE_FLIGHT);
+            if (flight != null && flight.hasModifier(SHADOW_FLIGHT_MODIFIER))
+                flight.removeModifier(SHADOW_FLIGHT_MODIFIER);
+            entity.setData(MinejagoAttachmentTypes.SHADOW_SOURCE, Optional.empty());
+            TommyLibServices.NETWORK.sendToAllClients(new ClientboundSyncShadowSourcePayload(entity.getId(), Optional.empty()), entity.getServer());
+        });
     }
 
     public static void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
@@ -441,6 +535,12 @@ public class MinejagoEntityEvents {
         if (!event.getLevel().isClientSide && event.getEntity() instanceof LivingEntity livingEntity) {
             livingEntity.getData(MinejagoAttachmentTypes.SPINJITZU).save(livingEntity, true);
             livingEntity.getData(MinejagoAttachmentTypes.POWER).save(livingEntity, true);
+        }
+    }
+
+    public static void onEntityLeaveLevel(EntityLeaveLevelEvent event) {
+        if (!event.getLevel().isClientSide() && event.getEntity() instanceof LivingEntity livingEntity) {
+            stopShadowForm(livingEntity);
         }
     }
 
@@ -495,5 +595,26 @@ public class MinejagoEntityEvents {
 
     public static void onModifyCustomSpawners(ModifyCustomSpawnersEvent event) {
         event.addCustomSpawner(new SkulkinArmySpawner());
+    }
+
+    public static void onLivingDeath(LivingDeathEvent event) {
+        LivingEntity entity = event.getEntity();
+        if (entity.getData(MinejagoAttachmentTypes.SHADOW_SOURCE).isPresent()) {
+            if (!entity.level().isClientSide())
+                stopShadowForm(entity);
+            event.getEntity().setHealth((float) event.getEntity().getAttributeBaseValue(Attributes.MAX_HEALTH));
+            event.setCanceled(true);
+        }
+    }
+
+    public static void onLivingIncomingDamage(LivingIncomingDamageEvent event) {
+        LivingEntity entity = event.getEntity();
+        Entity source = event.getSource().getEntity();
+        if (entity.getData(MinejagoAttachmentTypes.SHADOW_SOURCE).isPresent() && (source == null || source.getData(MinejagoAttachmentTypes.SHADOW_SOURCE).isEmpty())) {
+            event.setCanceled(true);
+        }
+        if (source != null && source.getData(MinejagoAttachmentTypes.SHADOW_SOURCE).isPresent()) {
+            entity.getData(MinejagoAttachmentTypes.FOCUS).addExhaustion(FocusConstants.EXHAUSTION_SHADOW_FORM_NORMAL_ABILITY);
+        }
     }
 }

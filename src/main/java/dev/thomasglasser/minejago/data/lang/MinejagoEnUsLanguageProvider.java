@@ -109,11 +109,13 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(MinejagoMobEffects.HYPERFOCUS.get(), "Hyperfocus");
         add(MinejagoMobEffects.FROZEN.get(), "Frozen");
 
+        add(MinejagoKeyMappings.CATEGORY_SHADOW_FORM, "Shadow Form");
         add(MinejagoKeyMappings.ACTIVATE_SPINJITZU.get(), "Activate Spinjitzu");
         add(MinejagoKeyMappings.MEDITATE.get(), "Meditate");
         add(MinejagoKeyMappings.ASCEND.get(), "Ascend");
         add(MinejagoKeyMappings.DESCEND.get(), "Descend");
         add(MinejagoKeyMappings.OPEN_SKILL_SCREEN.get(), "Open Skill Screen");
+        add(MinejagoKeyMappings.ENTER_SHADOW_FORM.get(), "Enter Shadow Form");
 
         add(MinejagoCommandEvents.NOT_LIVING_ENTITY, "Target %s (%s) is not a LivingEntity");
 
@@ -361,6 +363,8 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         addSpinjitzuCourseElement(MinejagoEntityTypes.SPINNING_DUMMIES_SPINJITZU_COURSE_ELEMENT, MinejagoItems.SPINNING_DUMMIES_SPINJITZU_COURSE_ELEMENT, "Spinning Dummies");
         addSpinjitzuCourseElement(MinejagoEntityTypes.SWIRLING_KNIVES_SPINJITZU_COURSE_ELEMENT, MinejagoItems.SWIRLING_KNIVES_SPINJITZU_COURSE_ELEMENT, "Swirling Knives");
         addSpinjitzuCourseElement(MinejagoEntityTypes.SPINNING_AXES_SPINJITZU_COURSE_ELEMENT, MinejagoItems.SPINNING_AXES_SPINJITZU_COURSE_ELEMENT, "Spinning Axes");
+
+        add(MinejagoEntityTypes.SHADOW_SOURCE.get(), "Shadow Source");
     }
 
     protected void addSounds() {

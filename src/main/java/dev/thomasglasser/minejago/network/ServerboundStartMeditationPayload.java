@@ -2,6 +2,7 @@ package dev.thomasglasser.minejago.network;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
+import dev.thomasglasser.minejago.world.entity.MinejagoEntityEvents;
 import dev.thomasglasser.tommylib.api.network.ExtendedPacketPayload;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import io.netty.buffer.ByteBuf;
@@ -24,7 +25,7 @@ public record ServerboundStartMeditationPayload() implements ExtendedPacketPaylo
             player.getData(MinejagoAttachmentTypes.FOCUS).startMeditating();
             player.refreshDimensions();
             CompoundTag persistentData = TommyLibServices.ENTITY.getPersistentData(serverPlayer);
-            persistentData.putString("StartPos", serverPlayer.blockPosition().toString());
+            persistentData.putString(MinejagoEntityEvents.KEY_START_POS, serverPlayer.blockPosition().toString());
             TommyLibServices.ENTITY.setPersistentData(serverPlayer, persistentData, false);
             TommyLibServices.NETWORK.sendToAllClients(new ClientboundStartMeditationPayload(serverPlayer.getUUID()), serverPlayer.getServer());
         }

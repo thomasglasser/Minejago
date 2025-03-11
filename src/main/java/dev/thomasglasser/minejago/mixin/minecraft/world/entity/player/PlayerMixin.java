@@ -1,5 +1,7 @@
 package dev.thomasglasser.minejago.mixin.minecraft.world.entity.player;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -24,11 +26,18 @@ public abstract class PlayerMixin extends LivingEntity {
     }
 
     @Inject(method = "causeFoodExhaustion", at = @At("TAIL"))
-    private void minejago_causeFoodExhaustion(float exhaustion, CallbackInfo ci) {
+    private void causeFoodExhaustion(float exhaustion, CallbackInfo ci) {
         if (!abilities.invulnerable) {
             if (!level().isClientSide) {
                 this.getData(MinejagoAttachmentTypes.FOCUS).addExhaustion(exhaustion);
             }
         }
+    }
+
+    @WrapOperation(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;isSpectator()Z", ordinal = 0))
+    private boolean tick(Player instance, Operation<Boolean> original) {
+        if (original.call(instance))
+            return true;
+        return instance.getData(MinejagoAttachmentTypes.SHADOW_SOURCE).isPresent() && instance.getAbilities().flying;
     }
 }

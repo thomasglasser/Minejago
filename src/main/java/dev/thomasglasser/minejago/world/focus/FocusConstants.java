@@ -6,14 +6,13 @@ public class FocusConstants {
     public static final int MAX_MEGA_FOCUS = 40;
     public static final float MAX_SATURATION = 20.0F;
     public static final float START_SATURATION = 5.0F;
-    public static final float SATURATION_FLOOR = 2.5F;
     public static final float EXHAUSTION_DROP = 4.0F;
     public static final int DRAGON_TAME_LEVEL = 18;
     public static final int DRAGON_TALK_LEVEL = 10;
     public static final int SPINJITZU_LEVEL = 6;
     public static final int LEARN_SPINJITZU_LEVEL = 6;
     public static final int GOLDEN_WEAPON_LEVEL = 4;
-    public static final int DISARRAYED_LEVEL = 0;
+    public static final float SHADOW_FORM_LEVEL = 21;
     public static final float FOCUS_SATURATION_POOR = 0.1F;
     public static final float FOCUS_SATURATION_LOW = 0.3F;
     public static final float FOCUS_SATURATION_NORMAL = 0.6F;
@@ -26,6 +25,10 @@ public class FocusConstants {
     public static final float EXHAUSTION_INSOMNIA = 1.0F;
     public static final float EXHAUSTION_LEARN_SPINJITZU = 2.5F;
     public static final float EXHAUSTION_GOLDEN_WEAPON = 2.0F;
+    public static final float EXHAUSTION_IN_SHADOW_FORM = 10.0F;
+    public static final float EXHAUSTION_SHADOW_FORM_HOLDING_ITEM = 0.1F;
+    public static final float EXHAUSTION_SHADOW_FORM_NORMAL_ABILITY = 1F;
+    public static final float EXHAUSTION_SHADOW_FORM_SUPER_ABILITY = 2F;
 
     public static float saturationByModifier(boolean mega, int i, float f) {
         float saturation = i * f * 2.0F;
