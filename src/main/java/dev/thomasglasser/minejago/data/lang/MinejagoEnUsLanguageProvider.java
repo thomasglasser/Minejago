@@ -116,6 +116,9 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(MinejagoKeyMappings.DESCEND.get(), "Descend");
         add(MinejagoKeyMappings.OPEN_SKILL_SCREEN.get(), "Open Skill Screen");
         add(MinejagoKeyMappings.ENTER_SHADOW_FORM.get(), "Enter Shadow Form");
+        add(MinejagoKeyMappings.SWITCH_DIMENSION.get(), "Switch Dimension");
+        add(MinejagoKeyMappings.INCREASE_SCALE.get(), "Increase Scale");
+        add(MinejagoKeyMappings.DECREASE_SCALE.get(), "Decrease Scale");
 
         add(MinejagoCommandEvents.NOT_LIVING_ENTITY, "Target %s (%s) is not a LivingEntity");
 

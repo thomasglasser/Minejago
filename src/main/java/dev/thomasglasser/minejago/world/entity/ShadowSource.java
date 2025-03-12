@@ -11,20 +11,19 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.TicketType;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.OwnableEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.PowderSnowBlock;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class ShadowSource extends Entity implements OwnableEntity {
@@ -34,7 +33,7 @@ public class ShadowSource extends Entity implements OwnableEntity {
             map.put(slot, SynchedEntityData.defineId(ShadowSource.class, EntityDataSerializers.ITEM_STACK));
     });
     @Nullable
-    private final ListTag inventory;
+    private ListTag inventory;
     private LivingEntity owner;
 
     public ShadowSource(EntityType<? extends ShadowSource> entityType, Level level) {
@@ -47,7 +46,7 @@ public class ShadowSource extends Entity implements OwnableEntity {
         getData(MinejagoAttachmentTypes.FOCUS).setMeditationType(FocusData.MeditationType.MEGA);
         setOwnerUUID(owner.getUUID());
         setPos(owner.position());
-        setRot(owner.getXRot(), owner.getYRot());
+        setRot(owner.getYRot(), owner.getXRot());
         for (EquipmentSlot slot : EquipmentSlot.values()) {
             setItemBySlot(slot, owner.getItemBySlot(slot));
             owner.setItemSlot(slot, ItemStack.EMPTY);
@@ -87,6 +86,10 @@ public class ShadowSource extends Entity implements OwnableEntity {
         return this.inventory;
     }
 
+    public void clearInventory() {
+        this.inventory = null;
+    }
+
     public ItemStack getItemBySlot(EquipmentSlot slot) {
         return this.entityData.get(DATA_ITEMS.get(slot));
     }
@@ -107,6 +110,8 @@ public class ShadowSource extends Entity implements OwnableEntity {
         if (getOwner() instanceof ServerPlayer owner) {
             MinejagoEntityEvents.stopShadowForm(owner);
             owner.hurt(source, amount);
+            if (!isRemoved())
+                kill();
             return true;
         }
         return false;
@@ -134,5 +139,33 @@ public class ShadowSource extends Entity implements OwnableEntity {
             owner = OwnableEntity.super.getOwner();
         }
         return owner;
+    }
+
+    @Override
+    public void remove(RemovalReason reason) {
+        if (level() instanceof ServerLevel serverLevel) {
+            serverLevel.getChunkSource().removeRegionTicket(TicketType.PLAYER, chunkPosition(), 3, chunkPosition());
+        }
+        if (inventory != null) {
+            for (int i = 0; i < inventory.size(); i++) {
+                CompoundTag compoundtag = inventory.getCompound(i);
+                ItemStack itemstack = ItemStack.parse(registryAccess(), compoundtag).orElse(ItemStack.EMPTY);
+                if (!itemstack.isEmpty()) {
+                    ItemEntity itementity = new ItemEntity(level(), getX(), getY(), getZ(), itemstack);
+                    itementity.setDefaultPickUpDelay();
+                    level().addFreshEntity(itementity);
+                }
+            }
+            clearInventory();
+        }
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            ItemStack itemstack = getItemBySlot(slot);
+            if (!itemstack.isEmpty()) {
+                ItemEntity itementity = new ItemEntity(level(), getX(), getY(), getZ(), itemstack);
+                itementity.setDefaultPickUpDelay();
+                level().addFreshEntity(itementity);
+            }
+        }
+        super.remove(reason);
     }
 }

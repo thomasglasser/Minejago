@@ -7,18 +7,20 @@ import dev.thomasglasser.minejago.client.MinejagoClientUtils;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleUtils;
 import dev.thomasglasser.minejago.network.ClientboundRefreshVipDataPayload;
+import dev.thomasglasser.minejago.network.ClientboundSetFocusPayload;
 import dev.thomasglasser.minejago.network.ClientboundStartMeditationPayload;
 import dev.thomasglasser.minejago.network.ClientboundStartMegaMeditationPayload;
 import dev.thomasglasser.minejago.network.ClientboundStartSpinjitzuPayload;
 import dev.thomasglasser.minejago.network.ClientboundStopMeditationPayload;
 import dev.thomasglasser.minejago.network.ClientboundStopSpinjitzuPayload;
-import dev.thomasglasser.minejago.network.ClientboundSyncShadowSourcePayload;
+import dev.thomasglasser.minejago.network.ServerboundAdjustShadowScalePayload;
 import dev.thomasglasser.minejago.network.ServerboundStartMeditationPayload;
 import dev.thomasglasser.minejago.network.ServerboundStartShadowFormPayload;
 import dev.thomasglasser.minejago.network.ServerboundStartSpinjitzuPayload;
 import dev.thomasglasser.minejago.network.ServerboundStopMeditationPayload;
 import dev.thomasglasser.minejago.network.ServerboundStopShadowFormPayload;
 import dev.thomasglasser.minejago.network.ServerboundStopSpinjitzuPayload;
+import dev.thomasglasser.minejago.network.ServerboundSwitchDimensionPayload;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.tags.MinejagoItemTags;
 import dev.thomasglasser.minejago.tags.MinejagoStructureTags;
@@ -47,6 +49,7 @@ import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
 import dev.thomasglasser.minejago.world.level.levelgen.SkulkinArmySpawner;
+import dev.thomasglasser.minejago.world.level.storage.ShadowSourceData;
 import dev.thomasglasser.minejago.world.level.storage.SkillData;
 import dev.thomasglasser.minejago.world.level.storage.SkillDataSet;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
@@ -56,7 +59,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import net.minecraft.core.BlockPos;
@@ -64,9 +66,9 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.TicketType;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -105,7 +107,7 @@ import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.EntityEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
-import net.neoforged.neoforge.event.entity.EntityLeaveLevelEvent;
+import net.neoforged.neoforge.event.entity.EntityTravelToDimensionEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
@@ -124,7 +126,6 @@ public class MinejagoEntityEvents {
     public static final String KEY_START_POS = "StartPos";
     public static final String KEY_IS_IN_MONASTERY_OF_SPINJITZU = "IsInMonasteryOfSpinjitzu";
     public static final String KEY_IS_IN_CAVE_OF_DESPAIR = "IsInCaveOfDespair";
-    public static final ResourceLocation SHADOW_FLIGHT_MODIFIER = Minejago.modLoc("shadow_flight");
 
     public static final Predicate<LivingEntity> NO_SPINJITZU = (entity -> !entity.getData(MinejagoAttachmentTypes.SPINJITZU).canDoSpinjitzu() ||
             entity.isCrouching() ||
@@ -166,7 +167,7 @@ public class MinejagoEntityEvents {
         if (player.level().tickRateManager().runsNormally()) {
             FocusData focusData = player.getData(MinejagoAttachmentTypes.FOCUS);
             SpinjitzuData spinjitzu = player.getData(MinejagoAttachmentTypes.SPINJITZU);
-            Optional<UUID> shadowSource = player.getData(MinejagoAttachmentTypes.SHADOW_SOURCE);
+            Optional<ShadowSourceData> shadowSource = player.getData(MinejagoAttachmentTypes.SHADOW_SOURCE);
             CompoundTag persistentData = TommyLibServices.ENTITY.getPersistentData(player).copy();
 
             focusData.tick(player);
@@ -174,13 +175,12 @@ public class MinejagoEntityEvents {
             int waitTicks = persistentData.getInt(KEY_WAIT_TICKS);
             if (player instanceof ServerPlayer serverPlayer) {
                 ServerLevel serverLevel = serverPlayer.serverLevel();
-                ServerLevel level = serverLevel;
-                if ((level.getDifficulty() == Difficulty.PEACEFUL || serverPlayer.getAbilities().instabuild) && focusData.needsFocus()) {
+                if ((serverLevel.getDifficulty() == Difficulty.PEACEFUL || serverPlayer.getAbilities().instabuild) && focusData.needsFocus()) {
                     focusData.setFocusLevel(FocusConstants.MAX_FOCUS);
                 }
 
                 int j = Mth.clamp(serverPlayer.getStats().getValue(Stats.CUSTOM.get(Stats.TIME_SINCE_REST)), 1, Integer.MAX_VALUE);
-                if (j >= 24000 && level.getGameRules().getBoolean(GameRules.RULE_DOINSOMNIA) && !serverPlayer.getAbilities().instabuild) {
+                if (j >= 24000 && serverLevel.getGameRules().getBoolean(GameRules.RULE_DOINSOMNIA) && !serverPlayer.getAbilities().instabuild) {
                     focusData.addExhaustion(FocusConstants.EXHAUSTION_INSOMNIA);
                 }
 
@@ -198,8 +198,8 @@ public class MinejagoEntityEvents {
                         }
                         focusData.addExhaustion(FocusConstants.EXHAUSTION_SPINJITZU);
                         if (player.tickCount % 20 == 0) {
-                            level.playSound(null, serverPlayer.blockPosition(), MinejagoSoundEvents.SPINJITZU_ACTIVE.get(), SoundSource.PLAYERS);
-                            level.gameEvent(serverPlayer, MinejagoGameEvents.SPINJITZU, serverPlayer.blockPosition());
+                            serverLevel.playSound(null, serverPlayer.blockPosition(), MinejagoSoundEvents.SPINJITZU_ACTIVE.get(), SoundSource.PLAYERS);
+                            serverLevel.gameEvent(serverPlayer, MinejagoGameEvents.SPINJITZU, serverPlayer.blockPosition());
                         }
                         Power power = player.level().holderOrThrow(player.getData(MinejagoAttachmentTypes.POWER).power()).value();
                         if (power.getBorderParticle() != null) {
@@ -210,7 +210,7 @@ public class MinejagoEntityEvents {
                     }
                 }
 
-                ShadowSource source = shadowSource.isPresent() && serverLevel.getEntity(shadowSource.get()) instanceof ShadowSource s ? s : null;
+                ShadowSource source = shadowSource.map(data -> serverLevel.getServer().getLevel(data.level()) instanceof ServerLevel sourceLevel && sourceLevel.getEntity(data.uuid()) instanceof ShadowSource s ? s : null).orElse(null);
                 boolean shadowMeditating = source != null && source.getData(MinejagoAttachmentTypes.FOCUS).isMeditating();
                 if (focusData.isMeditating() || shadowMeditating) {
                     if (focusData.isMeditating() && NO_MEDITATION.test(serverPlayer)) {
@@ -219,9 +219,11 @@ public class MinejagoEntityEvents {
                     }
 
                     if ((shadowMeditating && (player.tickCount & 20) == 0) || (focusData.isMegaMeditating() && player.tickCount % 200 == 0) || (focusData.isNormalMeditating() && player.tickCount % 60 == 0)) {
+                        ServerLevel level = serverLevel;
                         BlockPos blockPos = player.blockPosition();
                         Vec3 pos = player.position();
                         if (shadowMeditating) {
+                            level = serverLevel.getServer().getLevel(shadowSource.get().level()) instanceof ServerLevel sourceLevel ? sourceLevel : serverLevel;
                             blockPos = source.blockPosition();
                             pos = source.position();
                         }
@@ -238,25 +240,26 @@ public class MinejagoEntityEvents {
                                 weather = Weather.SNOW;
                             } else if (precipitation == Biome.Precipitation.RAIN) weather = Weather.RAIN;
                         }
-                        i.set(WorldFocusModifier.checkAndApply(serverLevel, (int) level.getDayTime(), weather, blockPos.getY(), TeapotBlock.getBiomeTemperature(level, blockPos), i.get()));
-                        i.set(LocationFocusModifier.checkAndApply(serverLevel, pos, i.get()));
+                        i.set(WorldFocusModifier.checkAndApply(level, (int) level.getDayTime(), weather, blockPos.getY(), TeapotBlock.getBiomeTemperature(level, blockPos), i.get()));
+                        i.set(LocationFocusModifier.checkAndApply(level, pos, i.get()));
                         Stream<BlockPos> blocks = BlockPos.betweenClosedStream((shadowMeditating ? source : player).getBoundingBox().inflate(4));
                         blocks.forEach(bP -> i.set(BlockFocusModifier.checkAndApply(serverLevel, bP, i.get())));
-                        EntityFocusModifier.checkAndApply(serverLevel, pos, player, true, i.get());
+                        EntityFocusModifier.checkAndApply(level, pos, player, true, i.get());
                         List<Entity> entities = level.getEntities(serverPlayer, (shadowMeditating ? source : serverPlayer).getBoundingBox().inflate(4));
+                        final ServerLevel finalLevel = level;
                         entities.forEach(entity -> {
                             if (entity instanceof ItemEntity item) {
-                                i.set(ItemFocusModifier.checkAndApply(serverLevel, item.getItem(), i.get()));
+                                i.set(ItemFocusModifier.checkAndApply(finalLevel, item.getItem(), i.get()));
                             } else if (entity instanceof ItemFrame itemFrame) {
-                                i.set(ItemFocusModifier.checkAndApply(serverLevel, itemFrame.getItem(), i.get()));
+                                i.set(ItemFocusModifier.checkAndApply(finalLevel, itemFrame.getItem(), i.get()));
                             } else {
-                                i.set(EntityFocusModifier.checkAndApply(serverLevel, entity.position(), entity, false, i.get()));
+                                i.set(EntityFocusModifier.checkAndApply(finalLevel, entity.position(), entity, false, i.get()));
                             }
                         });
                         Inventory inventory = /*shadowMeditating ? source.getInventory() :*/ serverPlayer.getInventory();
-                        inventory.armor.forEach(stack -> i.set(ItemFocusModifier.checkAndApply(serverLevel, stack, i.get())));
-                        inventory.items.forEach(stack -> i.set(ItemFocusModifier.checkAndApply(serverLevel, stack, i.get())));
-                        inventory.offhand.forEach(stack -> i.set(ItemFocusModifier.checkAndApply(serverLevel, stack, i.get())));
+                        inventory.armor.forEach(stack -> i.set(ItemFocusModifier.checkAndApply(finalLevel, stack, i.get())));
+                        inventory.items.forEach(stack -> i.set(ItemFocusModifier.checkAndApply(finalLevel, stack, i.get())));
+                        inventory.offhand.forEach(stack -> i.set(ItemFocusModifier.checkAndApply(finalLevel, stack, i.get())));
                         focusData.meditate(shadowMeditating || focusData.isMegaMeditating(), (int) i.getAndSet(0), FocusConstants.FOCUS_SATURATION_NORMAL);
                     }
 
@@ -264,23 +267,26 @@ public class MinejagoEntityEvents {
                         if (!focusData.isMegaMeditating()) {
                             focusData.startMegaMeditating();
                             serverPlayer.refreshDimensions();
-                            TommyLibServices.NETWORK.sendToAllClients(new ClientboundStartMegaMeditationPayload(player.getUUID()), level.getServer());
+                            TommyLibServices.NETWORK.sendToAllClients(new ClientboundStartMegaMeditationPayload(player.getUUID()), serverLevel.getServer());
                         }
                     } else if (focusData.isMegaMeditating()) {
                         focusData.startMeditating();
                         serverPlayer.refreshDimensions();
-                        TommyLibServices.NETWORK.sendToAllClients(new ClientboundStartMeditationPayload(player.getUUID()), level.getServer());
+                        TommyLibServices.NETWORK.sendToAllClients(new ClientboundStartMeditationPayload(player.getUUID()), serverLevel.getServer());
                     }
                 } else if (persistentData.contains(KEY_START_POS)) {
                     persistentData.remove(KEY_START_POS);
+                    TommyLibServices.ENTITY.removePersistentData(serverPlayer, true, KEY_START_POS);
                 }
 
-                shadowSource.ifPresent(uuid -> {
+                if (shadowSource.isPresent()) {
                     if (source == null || NO_SHADOW_FORM.test(serverPlayer) || source.isInLava() || (!TommyLibServices.ENTITY.getPersistentData(source).getString(KEY_START_POS).isEmpty() && !source.blockPosition().toString().equals(TommyLibServices.ENTITY.getPersistentData(source).getString(KEY_START_POS)))) {
                         stopShadowForm(serverPlayer);
                     } else {
                         focusData.addExhaustion(FocusConstants.EXHAUSTION_IN_SHADOW_FORM);
                         if (player.getAbilities().flying)
+                            focusData.addExhaustion(FocusConstants.EXHAUSTION_SHADOW_FORM_NORMAL_ABILITY);
+                        if (!(player.level().dimension().equals(shadowSource.get().level())))
                             focusData.addExhaustion(FocusConstants.EXHAUSTION_SHADOW_FORM_NORMAL_ABILITY);
                         int count = 0;
                         for (ItemStack stack : player.getInventory().player.getAllSlots()) {
@@ -289,17 +295,17 @@ public class MinejagoEntityEvents {
                         if (count > 0)
                             focusData.addExhaustion(FocusConstants.EXHAUSTION_SHADOW_FORM_HOLDING_ITEM * count);
                     }
-                });
-
-                if (MinejagoLevelUtils.isGoldenWeaponsMapHolderNearby(serverPlayer, SkulkinRaid.PAINTING_RADIUS_BUFFER)) {
-                    ((SkulkinRaidsHolder) level).getSkulkinRaids().createOrExtendSkulkinRaid(serverPlayer);
                 }
 
-                persistentData.putBoolean(KEY_IS_IN_CAVE_OF_DESPAIR, MinejagoLevelUtils.isStructureInRange(MinejagoStructureTags.CAVE_OF_DESPAIR, level, serverPlayer.blockPosition(), 64));
-                persistentData.putBoolean(KEY_IS_IN_MONASTERY_OF_SPINJITZU, MinejagoLevelUtils.isStructureInRange(MinejagoStructureTags.MONASTERY_OF_SPINJITZU, level, serverPlayer.blockPosition(), 64));
+                if (MinejagoLevelUtils.isGoldenWeaponsMapHolderNearby(serverPlayer, SkulkinRaid.PAINTING_RADIUS_BUFFER)) {
+                    ((SkulkinRaidsHolder) serverLevel).getSkulkinRaids().createOrExtendSkulkinRaid(serverPlayer);
+                }
+
+                persistentData.putBoolean(KEY_IS_IN_CAVE_OF_DESPAIR, MinejagoLevelUtils.isStructureInRange(MinejagoStructureTags.CAVE_OF_DESPAIR, serverLevel, serverPlayer.blockPosition(), 64));
+                persistentData.putBoolean(KEY_IS_IN_MONASTERY_OF_SPINJITZU, MinejagoLevelUtils.isStructureInRange(MinejagoStructureTags.MONASTERY_OF_SPINJITZU, serverLevel, serverPlayer.blockPosition(), 64));
 
                 if (!persistentData.equals(TommyLibServices.ENTITY.getPersistentData(serverPlayer))) {
-                    TommyLibServices.ENTITY.setPersistentData(serverPlayer, persistentData, true);
+                    TommyLibServices.ENTITY.mergePersistentData(serverPlayer, persistentData, true);
                 }
             } else {
                 int startTicks = persistentData.getInt(ClientboundStartSpinjitzuPayload.KEY_SPINJITZUSTARTTICKS);
@@ -329,6 +335,18 @@ public class MinejagoEntityEvents {
                             TommyLibServices.NETWORK.sendToServer(ServerboundStartShadowFormPayload.INSTANCE);
                         persistentData.putInt(KEY_WAIT_TICKS, 10);
                     }
+                    if (shadowSource.isPresent()) {
+                        if (MinejagoKeyMappings.SWITCH_DIMENSION.get().isDown()) {
+                            TommyLibServices.NETWORK.sendToServer(ServerboundSwitchDimensionPayload.INSTANCE);
+                            persistentData.putInt(KEY_WAIT_TICKS, 10);
+                        }
+                        if (MinejagoKeyMappings.INCREASE_SCALE.get().isDown()) {
+                            TommyLibServices.NETWORK.sendToServer(new ServerboundAdjustShadowScalePayload(0.1));
+                        }
+                        if (MinejagoKeyMappings.DECREASE_SCALE.get().isDown()) {
+                            TommyLibServices.NETWORK.sendToServer(new ServerboundAdjustShadowScalePayload(-0.1));
+                        }
+                    }
                     if (MinejagoKeyMappings.OPEN_SKILL_SCREEN.get().isDown()) {
                         MinejagoClientUtils.openSkillScreen();
                         persistentData.putInt(KEY_WAIT_TICKS, 10);
@@ -344,7 +362,7 @@ public class MinejagoEntityEvents {
                         persistentData.putInt(KEY_WAIT_TICKS, 10);
                     }
                 }
-                TommyLibServices.ENTITY.setPersistentData(player, persistentData, false);
+                TommyLibServices.ENTITY.mergePersistentData(player, persistentData, false);
             }
             if (player.getData(MinejagoAttachmentTypes.SHADOW_SOURCE).isPresent()) {
                 if (player.getLightLevelDependentMagicValue() < 0.1f && !player.getAbilities().flying)
@@ -472,36 +490,45 @@ public class MinejagoEntityEvents {
 
     public static void stopShadowForm(LivingEntity entity) {
         if (!(entity.level() instanceof ServerLevel serverLevel)) return;
-        Optional<UUID> sourceUuid = entity.getData(MinejagoAttachmentTypes.SHADOW_SOURCE);
-        sourceUuid.ifPresent(uuid -> {
-            ShadowSource source = serverLevel.getEntity(uuid) instanceof ShadowSource shadowSource ? shadowSource : null;
+        Optional<ShadowSourceData> sourceData = entity.getData(MinejagoAttachmentTypes.SHADOW_SOURCE);
+        sourceData.ifPresent(data -> {
+            ServerLevel sourceLevel = serverLevel.getServer().getLevel(data.level());
+            ShadowSource source = sourceLevel != null && sourceLevel.getEntity(data.uuid()) instanceof ShadowSource shadowSource ? shadowSource : null;
             if (source != null) {
                 if (entity instanceof ServerPlayer serverPlayer) {
                     serverPlayer.getInventory().dropAll();
                     if (source.getInventory() != null) {
                         serverPlayer.getInventory().load(source.getInventory());
+                        source.clearInventory();
+                    }
+                } else {
+                    for (EquipmentSlot slot : EquipmentSlot.values()) {
+                        ItemStack original = entity.getItemBySlot(slot);
+                        if (!original.isEmpty()) {
+                            ItemEntity item = new ItemEntity(serverLevel, entity.getX(), entity.getY(), entity.getZ(), original);
+                            item.setDefaultPickUpDelay();
+                            serverLevel.addFreshEntity(item);
+                        }
                     }
                 }
                 for (EquipmentSlot slot : EquipmentSlot.values()) {
-                    ItemStack original = entity.getItemBySlot(slot);
-                    if (!original.isEmpty()) {
-                        ItemEntity item = new ItemEntity(serverLevel, entity.getX(), entity.getY(), entity.getZ(), original);
-                        item.setDefaultPickUpDelay();
-                        serverLevel.addFreshEntity(item);
-                    }
                     ItemStack stack = source.getItemBySlot(slot);
                     if (stack != null) {
                         entity.setItemSlot(slot, stack);
                     }
+                    source.setItemBySlot(slot, ItemStack.EMPTY);
                 }
-                entity.teleportTo(serverLevel, source.getX(), source.getY(), source.getZ(), Set.of(), source.getYRot(), source.getXRot());
+                entity.teleportTo(sourceLevel, source.getX(), source.getY(), source.getZ(), Set.of(), source.getYRot(), source.getXRot());
+                serverLevel.getChunkSource().removeRegionTicket(TicketType.PLAYER, source.chunkPosition(), 3, source.chunkPosition());
                 source.remove(Entity.RemovalReason.DISCARDED);
             }
             AttributeInstance flight = entity.getAttribute(NeoForgeMod.CREATIVE_FLIGHT);
-            if (flight != null && flight.hasModifier(SHADOW_FLIGHT_MODIFIER))
-                flight.removeModifier(SHADOW_FLIGHT_MODIFIER);
-            entity.setData(MinejagoAttachmentTypes.SHADOW_SOURCE, Optional.empty());
-            TommyLibServices.NETWORK.sendToAllClients(new ClientboundSyncShadowSourcePayload(entity.getId(), Optional.empty()), entity.getServer());
+            if (flight != null && flight.hasModifier(ShadowSourceData.FLIGHT_MODIFIER))
+                flight.removeModifier(ShadowSourceData.FLIGHT_MODIFIER);
+            AttributeInstance scale = entity.getAttribute(Attributes.SCALE);
+            if (scale != null && scale.hasModifier(ShadowSourceData.SCALE_MODIFIER))
+                scale.removeModifier(ShadowSourceData.SCALE_MODIFIER);
+            ShadowSourceData.remove(entity, true);
         });
     }
 
@@ -532,15 +559,23 @@ public class MinejagoEntityEvents {
     }
 
     public static void onEntityJoinLevel(EntityJoinLevelEvent event) {
-        if (!event.getLevel().isClientSide && event.getEntity() instanceof LivingEntity livingEntity) {
-            livingEntity.getData(MinejagoAttachmentTypes.SPINJITZU).save(livingEntity, true);
-            livingEntity.getData(MinejagoAttachmentTypes.POWER).save(livingEntity, true);
+        Entity entity = event.getEntity();
+        if (!entity.level().isClientSide && entity instanceof LivingEntity livingEntity) {
+            entity.getData(MinejagoAttachmentTypes.POWER).save(livingEntity, true);
+            entity.getData(MinejagoAttachmentTypes.SPINJITZU).save(livingEntity, true);
+            if (livingEntity instanceof ServerPlayer serverPlayer) {
+                FocusData focusData = entity.getData(MinejagoAttachmentTypes.FOCUS);
+                TommyLibServices.NETWORK.sendToClient(new ClientboundSetFocusPayload(focusData.getFocusLevel(), focusData.getSaturationLevel()), serverPlayer);
+            }
+            entity.getData(MinejagoAttachmentTypes.SKILL).save(livingEntity, true);
+            entity.getData(MinejagoAttachmentTypes.SHADOW_SOURCE).ifPresent(data -> data.save(livingEntity, true));
         }
     }
 
-    public static void onEntityLeaveLevel(EntityLeaveLevelEvent event) {
-        if (!event.getLevel().isClientSide() && event.getEntity() instanceof LivingEntity livingEntity) {
-            stopShadowForm(livingEntity);
+    public static void onPlayerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
+        Player player = event.getEntity();
+        if (!player.level().isClientSide) {
+            stopShadowForm(player);
         }
     }
 
@@ -572,8 +607,16 @@ public class MinejagoEntityEvents {
             event.getPlayer().getData(MinejagoAttachmentTypes.SKILL).addPractice(event.getPlayer(), Skill.TOOL_PROFICIENCY, event.getState().getBlock().defaultDestroyTime());
     }
 
-    public static void onIncomingDamage(LivingIncomingDamageEvent event) {
+    public static void onLivingIncomingDamage(LivingIncomingDamageEvent event) {
         LivingEntity entity = event.getEntity();
+        Entity source = event.getSource().getEntity();
+        if (!event.getSource().is(DamageTypeTags.BYPASSES_INVULNERABILITY) && entity.getData(MinejagoAttachmentTypes.SHADOW_SOURCE).isPresent() && (source == null || source.getData(MinejagoAttachmentTypes.SHADOW_SOURCE).isEmpty())) {
+            event.setCanceled(true);
+            return;
+        }
+        if (source != null && source.getData(MinejagoAttachmentTypes.SHADOW_SOURCE).isPresent()) {
+            entity.getData(MinejagoAttachmentTypes.FOCUS).addExhaustion(FocusConstants.EXHAUSTION_SHADOW_FORM_NORMAL_ABILITY);
+        }
         if (TommyLibServices.ENTITY.getPersistentData(entity).getBoolean(FrozenMobEffect.TAG_FROZEN) && !(event.getSource().is(DamageTypeTags.IS_FREEZING) || event.getSource().is(DamageTypeTags.BYPASSES_INVULNERABILITY))) {
             event.setCanceled(true);
             if ((event.getSource().is(DamageTypeTags.IS_FIRE) || event.getSource().getWeaponItem() != null && event.getSource().getWeaponItem().canPerformAction(ItemAbilities.PICKAXE_DIG)) && entity.getRandom().nextInt(10) == 0) {
@@ -607,14 +650,13 @@ public class MinejagoEntityEvents {
         }
     }
 
-    public static void onLivingIncomingDamage(LivingIncomingDamageEvent event) {
-        LivingEntity entity = event.getEntity();
-        Entity source = event.getSource().getEntity();
-        if (entity.getData(MinejagoAttachmentTypes.SHADOW_SOURCE).isPresent() && (source == null || source.getData(MinejagoAttachmentTypes.SHADOW_SOURCE).isEmpty())) {
-            event.setCanceled(true);
-        }
-        if (source != null && source.getData(MinejagoAttachmentTypes.SHADOW_SOURCE).isPresent()) {
-            entity.getData(MinejagoAttachmentTypes.FOCUS).addExhaustion(FocusConstants.EXHAUSTION_SHADOW_FORM_NORMAL_ABILITY);
+    public static void onEntityTravelToDimension(EntityTravelToDimensionEvent event) {
+        Entity entity = event.getEntity();
+        if (entity.getData(MinejagoAttachmentTypes.SHADOW_SOURCE).isPresent()) {
+            FocusData focusData = entity.getData(MinejagoAttachmentTypes.FOCUS);
+            focusData.addExhaustion(FocusConstants.EXHAUSTION_SHADOW_FORM_SUPER_ABILITY);
+            if (focusData.getFocusLevel() < FocusConstants.SHADOW_FORM_LEVEL)
+                event.setCanceled(true);
         }
     }
 }

@@ -37,7 +37,7 @@ public class FrozenMobEffect extends ExtendedMobEffect {
         super.onApplication(effectInstance, source, entity, amplifier);
         CompoundTag entityData = TommyLibServices.ENTITY.getPersistentData(entity);
         entityData.putBoolean(TAG_FROZEN, true);
-        TommyLibServices.ENTITY.setPersistentData(entity, entityData, true);
+        TommyLibServices.ENTITY.mergePersistentData(entity, entityData, true);
     }
 
     @Override
@@ -56,9 +56,7 @@ public class FrozenMobEffect extends ExtendedMobEffect {
     public void onExpiry(MobEffectInstance effectInstance, LivingEntity entity) {
         super.onExpiry(effectInstance, entity);
         entity.setTicksFrozen(0);
-        CompoundTag entityData = TommyLibServices.ENTITY.getPersistentData(entity);
-        entityData.remove(TAG_FROZEN);
-        TommyLibServices.ENTITY.setPersistentData(entity, entityData, true);
+        TommyLibServices.ENTITY.removePersistentData(entity, true, TAG_FROZEN);
     }
 
     @Override

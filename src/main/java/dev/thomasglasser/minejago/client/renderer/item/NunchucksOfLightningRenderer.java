@@ -5,14 +5,14 @@ import dev.thomasglasser.minejago.world.item.NunchucksOfLightningItem;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.model.DefaultedItemGeoModel;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
+import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 
 public class NunchucksOfLightningRenderer extends GeoItemRenderer<NunchucksOfLightningItem> {
     private static final ResourceLocation TEXTURE = Minejago.modLoc("textures/entity/item/nunchucks_of_lightning.png");
 
     public NunchucksOfLightningRenderer() {
         super(new DefaultedItemGeoModel<>(Minejago.modLoc("nunchucks")));
-        // TODO: Update GeckoLib to support glowing items
-//        addRenderLayer(new AutoGlowingGeoLayer<>(this));
+        addRenderLayer(new AutoGlowingGeoLayer<>(this));
     }
 
     @Override

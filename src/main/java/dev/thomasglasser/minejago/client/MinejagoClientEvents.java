@@ -151,14 +151,14 @@ public class MinejagoClientEvents {
 
     public static void onInput(int key) {
         Player mainClientPlayer = ClientUtils.getMainClientPlayer();
-        if (mainClientPlayer != null && !(key >= GLFW.GLFW_KEY_F1 && key <= GLFW.GLFW_KEY_F25) && !MinejagoKeyMappings.MEDITATE.get().isDown() && key != GLFW.GLFW_KEY_LEFT_SHIFT && key != GLFW.GLFW_KEY_ESCAPE) {
+        if (mainClientPlayer != null && !(key >= GLFW.GLFW_KEY_F1 && key <= GLFW.GLFW_KEY_F25) && !MinejagoKeyMappings.MEDITATE.get().isDown() && !MinejagoKeyMappings.ENTER_SHADOW_FORM.get().isDown() && key != GLFW.GLFW_KEY_LEFT_SHIFT && key != GLFW.GLFW_KEY_ESCAPE) {
             FocusData focusData = mainClientPlayer.getData(MinejagoAttachmentTypes.FOCUS);
             CompoundTag persistentData = TommyLibServices.ENTITY.getPersistentData(mainClientPlayer);
-            if (focusData.isMeditating() && persistentData.getInt("WaitTicks") <= 0) {
+            if (focusData.isMeditating() && persistentData.getInt(MinejagoEntityEvents.KEY_WAIT_TICKS) <= 0) {
                 TommyLibServices.NETWORK.sendToServer(new ServerboundStopMeditationPayload(true));
                 focusData.stopMeditating();
-                persistentData.putInt("WaitTicks", 5);
-                TommyLibServices.ENTITY.setPersistentData(mainClientPlayer, persistentData, false);
+                persistentData.putInt(MinejagoEntityEvents.KEY_WAIT_TICKS, 5);
+                TommyLibServices.ENTITY.mergePersistentData(mainClientPlayer, persistentData, false);
             }
         }
     }
