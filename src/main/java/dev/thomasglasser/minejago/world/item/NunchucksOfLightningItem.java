@@ -26,7 +26,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -77,8 +77,14 @@ public class NunchucksOfLightningItem extends GoldenWeaponItem implements GeoIte
                 lightningBolt.setCause(serverPlayer);
                 if (hitresult instanceof EntityHitResult entityHitResult) {
                     lightningBolt.setPos(entityHitResult.getEntity().position());
-                } else
-                    lightningBolt.setPos(level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, BlockPos.containing(hitresult.getLocation())).getBottomCenter());
+                } else if (hitresult instanceof BlockHitResult blockHitResult) {
+                    BlockPos pos = blockHitResult.getBlockPos();
+                    while (level.getBlockState(pos).isAir())
+                        pos = pos.below();
+                    lightningBolt.setPos(pos.above().getBottomCenter());
+                } else {
+                    lightningBolt.setPos(hitresult.getLocation());
+                }
                 level.addFreshEntity(lightningBolt);
                 player.getCooldowns().addCooldown(this, 10);
             }

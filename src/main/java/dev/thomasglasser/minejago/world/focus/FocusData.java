@@ -9,7 +9,10 @@ import static dev.thomasglasser.minejago.world.focus.FocusConstants.START_SATURA
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import dev.thomasglasser.minejago.network.ClientboundSetFocusPayload;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
+import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.player.Player;
 
@@ -24,6 +27,7 @@ public class FocusData {
     private float exhaustionLevel;
     private int lastFocusLevel = MAX_FOCUS;
     private MeditationType meditationType = MeditationType.NONE;
+    private boolean dirty = false;
 
     public FocusData() {}
 
@@ -36,6 +40,7 @@ public class FocusData {
     private void add(boolean mega, int newFocus, float newSaturation) {
         this.focusLevel = Math.min(newFocus + this.focusLevel, mega ? MAX_MEGA_FOCUS : MAX_FOCUS);
         this.saturationLevel = Math.min((mega ? (newSaturation * 2.0F) : newSaturation) + this.saturationLevel, MAX_SATURATION);
+        setDirty(true);
     }
 
     public void meditate(boolean mega, int focusLevelModifier, float saturationLevelModifier) {
@@ -50,9 +55,15 @@ public class FocusData {
             this.exhaustionLevel -= EXHAUSTION_DROP;
             if (this.saturationLevel > 0) {
                 this.saturationLevel = Math.max(this.saturationLevel - 1.0F, 0.0F);
+                setDirty(true);
             } else if (difficulty != Difficulty.PEACEFUL) {
                 this.focusLevel = Math.max(this.focusLevel - 1, 0);
+                setDirty(true);
             }
+        }
+        if (isDirty() && player instanceof ServerPlayer serverPlayer) {
+            setDirty(false);
+            TommyLibServices.NETWORK.sendToClient(new ClientboundSetFocusPayload(focusLevel, saturationLevel), serverPlayer);
         }
     }
 
@@ -86,10 +97,12 @@ public class FocusData {
 
     public void setFocusLevel(int focusLevel) {
         this.focusLevel = focusLevel;
+        setDirty(true);
     }
 
     public void setSaturation(float saturationLevel) {
         this.saturationLevel = saturationLevel;
+        setDirty(true);
     }
 
     public void setExhaustion(float exhaustionLevel) {
@@ -122,6 +135,14 @@ public class FocusData {
 
     public void stopMeditating() {
         setMeditationType(MeditationType.NONE);
+    }
+
+    public boolean isDirty() {
+        return dirty;
+    }
+
+    public void setDirty(boolean dirty) {
+        this.dirty = dirty;
     }
 
     public enum MeditationType {

@@ -2,12 +2,10 @@ package dev.thomasglasser.minejago.mixin.minecraft.world.entity;
 
 import com.mojang.datafixers.util.Either;
 import dev.thomasglasser.minejago.network.ClientboundOpenScrollPayload;
-import dev.thomasglasser.minejago.network.ClientboundSetFocusPayload;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityEvents;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaidsHolder;
-import dev.thomasglasser.minejago.world.focus.FocusData;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import net.minecraft.core.BlockPos;
@@ -34,13 +32,6 @@ public abstract class ServerPlayerMixin {
 
     @Unique
     private final ServerPlayer minejago$INSTANCE = (ServerPlayer) (Object) this;
-
-    @Unique
-    private FocusData minejago$focusData;
-    @Unique
-    private int minejago$lastSentFocus;
-    @Unique
-    private boolean minejago$lastFoodSaturationZero;
 
     @Inject(method = "crit", at = @At("HEAD"))
     private void minejago_crit(Entity entityHit, CallbackInfo ci) {
@@ -71,16 +62,5 @@ public abstract class ServerPlayerMixin {
         SkulkinRaid raid = ((SkulkinRaidsHolder) serverLevel()).getSkulkinRaidAt(bedPos);
         if (raid != null && raid.isActive())
             cir.setReturnValue(Either.left(Player.BedSleepingProblem.NOT_SAFE));
-    }
-
-    @Inject(method = "doTick", at = @At("TAIL"))
-    private void minejago_doTick(CallbackInfo ci) {
-        if (minejago$focusData == null)
-            minejago$focusData = minejago$INSTANCE.getData(MinejagoAttachmentTypes.FOCUS);
-        if (this.minejago$lastSentFocus != minejago$focusData.getFocusLevel() || this.minejago$focusData.getSaturationLevel() == 0.0F != this.minejago$lastFoodSaturationZero) {
-            TommyLibServices.NETWORK.sendToClient(new ClientboundSetFocusPayload(minejago$focusData.getFocusLevel(), minejago$focusData.getSaturationLevel()), minejago$INSTANCE);
-            this.minejago$lastSentFocus = this.minejago$focusData.getFocusLevel();
-            this.minejago$lastFoodSaturationZero = this.minejago$focusData.getSaturationLevel() == 0.0F;
-        }
     }
 }

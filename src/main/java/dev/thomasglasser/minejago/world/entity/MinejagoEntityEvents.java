@@ -563,10 +563,7 @@ public class MinejagoEntityEvents {
         if (!entity.level().isClientSide && entity instanceof LivingEntity livingEntity) {
             entity.getData(MinejagoAttachmentTypes.POWER).save(livingEntity, true);
             entity.getData(MinejagoAttachmentTypes.SPINJITZU).save(livingEntity, true);
-            if (livingEntity instanceof ServerPlayer serverPlayer) {
-                FocusData focusData = entity.getData(MinejagoAttachmentTypes.FOCUS);
-                TommyLibServices.NETWORK.sendToClient(new ClientboundSetFocusPayload(focusData.getFocusLevel(), focusData.getSaturationLevel()), serverPlayer);
-            }
+            entity.getData(MinejagoAttachmentTypes.FOCUS).setDirty(true);
             entity.getData(MinejagoAttachmentTypes.SKILL).save(livingEntity, true);
             entity.getData(MinejagoAttachmentTypes.SHADOW_SOURCE).ifPresent(data -> data.save(livingEntity, true));
         }
