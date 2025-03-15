@@ -137,6 +137,9 @@ neoForge {
 	}
 
 	runs {
+		configureEach {
+			systemProperties.put('terminal.ansi', 'true')
+		}
 		client {
 			client()
 			ideName = "Client"
@@ -176,7 +179,6 @@ dependencies {
 	jarJar implementation("dev.thomasglasser.tommylib:tommylib-neoforge-${minecraft_version}:${tommylib_version}")
 
 	jarJar implementation("maven.modrinth:trimmed:${trimmed_version}+neoforge")
-	jarJar implementation("dev.kosmx.player-anim:player-animation-lib-forge:${playeranimator_version}")
 
 	implementation "dev.thomasglasser.sherdsapi:sherdsapi-neoforge-${minecraft_version}:${sherdsapi_version}"
 	implementation "net.tslat.smartbrainlib:SmartBrainLib-neoforge-${minecraft_version}:${smartbrainlib_version}"
@@ -186,7 +188,8 @@ dependencies {
 //	implementation "net.tslat.effectslib:TslatEffectsLib-neoforge-${minecraft_version}:${tslateffectslib_version}"
 	implementation "maven.modrinth:ryoamiclights:${ryoamiclights_version}-neoforge"
 	implementation "com.klikli_dev:modonomicon-${minecraft_version}-neoforge:${modonomicon_version}"
-	implementation "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
+    implementation("dev.kosmx.player-anim:player-animation-lib-forge:${playeranimator_version}")
+    implementation "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 	implementation "maven.modrinth:jade:${jade_version}+neoforge"
 
 	// Runtime

@@ -540,7 +540,7 @@ public class MinejagoClientEvents {
 
             event.insertAfter(Items.WOLF_SPAWN_EGG.getDefaultInstance(), MinejagoItems.WU_SPAWN_EGG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(MinejagoItems.WU_SPAWN_EGG.toStack(), MinejagoItems.ZANE_SPAWN_EGG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-        } else if (event.getTabKey() == CreativeModeTabs.OP_BLOCKS) {
+        } else if (event.getTabKey() == CreativeModeTabs.OP_BLOCKS && Minecraft.getInstance().options.operatorItemsTab().get()) {
             event.insertAfter(Items.STRUCTURE_VOID.getDefaultInstance(), MinejagoBlocks.EARTH_DRAGON_HEAD.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
         }
     }

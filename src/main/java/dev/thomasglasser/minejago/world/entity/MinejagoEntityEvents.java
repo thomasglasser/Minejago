@@ -7,7 +7,6 @@ import dev.thomasglasser.minejago.client.MinejagoClientUtils;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleUtils;
 import dev.thomasglasser.minejago.network.ClientboundRefreshVipDataPayload;
-import dev.thomasglasser.minejago.network.ClientboundSetFocusPayload;
 import dev.thomasglasser.minejago.network.ClientboundStartMeditationPayload;
 import dev.thomasglasser.minejago.network.ClientboundStartMegaMeditationPayload;
 import dev.thomasglasser.minejago.network.ClientboundStartSpinjitzuPayload;
