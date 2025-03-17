@@ -214,6 +214,7 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
                         if (target.isAlliedTo(owner)) return false;
                         if (target instanceof TamableAnimal tamableAnimal && tamableAnimal.getOwner() == dragon.getOwner()) return false;
                         if (target.getLastHurtByMob() != null && target.getLastHurtByMob().is(dragon.getOwner())) return true;
+                        if (owner.getLastHurtByMob() != null && owner.getLastHurtByMob().is(target)) return true;
                         if (BrainUtils.hasMemory(target.getBrain(), MemoryModuleType.ATTACK_TARGET)) {
                             return BrainUtils.getTargetOfEntity(target) == dragon.getOwner();
                         } else if (target instanceof Mob mob) {

@@ -163,6 +163,7 @@ public class Minejago {
         NeoForge.EVENT_BUS.addListener(MinejagoCommandEvents::onCommandsRegister);
         NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onLivingKnockBack);
         NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onEntityJoinLevel);
+        NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onEntityLeaveLevel);
         NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onPlayerLoggedOut);
         NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onPlayerClone);
         NeoForge.EVENT_BUS.addListener(MinejagoEntityEvents::onEntitySize);

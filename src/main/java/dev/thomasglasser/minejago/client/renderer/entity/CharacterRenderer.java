@@ -20,10 +20,10 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
+import software.bernie.geckolib.renderer.GeoEntityRenderer;
 import software.bernie.geckolib.renderer.layer.BlockAndItemGeoLayer;
-import software.bernie.geckolib.renderer.specialty.DynamicGeoEntityRenderer;
 
-public class CharacterRenderer<T extends Character> extends DynamicGeoEntityRenderer<T> {
+public class CharacterRenderer<T extends Character> extends GeoEntityRenderer<T> {
     private static final String BODY = "body";
     private static final String HEAD = "head";
     private static final String LEFT_HAND = "left_hand";

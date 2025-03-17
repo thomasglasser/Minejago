@@ -32,6 +32,7 @@ public class MinejagoPayloads {
             new PayloadInfo<>(ClientboundSkillLevelUpPacket.TYPE, ExtendedPacketPayload.Direction.SERVER_TO_CLIENT, ClientboundSkillLevelUpPacket.CODEC),
             new PayloadInfo<>(ClientboundSyncShadowSourcePayload.TYPE, ExtendedPacketPayload.Direction.SERVER_TO_CLIENT, ClientboundSyncShadowSourcePayload.CODEC),
             new PayloadInfo<>(ClientboundStartShadowFormPayload.TYPE, ExtendedPacketPayload.Direction.SERVER_TO_CLIENT, ClientboundStartShadowFormPayload.CODEC),
+            new PayloadInfo<>(ClientboundSetGlowingTag.TYPE, ExtendedPacketPayload.Direction.SERVER_TO_CLIENT, ClientboundSetGlowingTag.CODEC),
 
             // Serverbound
             new PayloadInfo<>(ServerboundChangeVipDataPayload.TYPE, ExtendedPacketPayload.Direction.CLIENT_TO_SERVER, ServerboundChangeVipDataPayload.CODEC),
@@ -44,7 +45,9 @@ public class MinejagoPayloads {
             new PayloadInfo<>(ServerboundStartShadowFormPayload.TYPE, ExtendedPacketPayload.Direction.CLIENT_TO_SERVER, ServerboundStartShadowFormPayload.CODEC),
             new PayloadInfo<>(ServerboundStopShadowFormPayload.TYPE, ExtendedPacketPayload.Direction.CLIENT_TO_SERVER, ServerboundStopShadowFormPayload.CODEC),
             new PayloadInfo<>(ServerboundSwitchDimensionPayload.TYPE, ExtendedPacketPayload.Direction.CLIENT_TO_SERVER, ServerboundSwitchDimensionPayload.CODEC),
-            new PayloadInfo<>(ServerboundAdjustShadowScalePayload.TYPE, ExtendedPacketPayload.Direction.CLIENT_TO_SERVER, ServerboundAdjustShadowScalePayload.CODEC));
+            new PayloadInfo<>(ServerboundAdjustShadowScalePayload.TYPE, ExtendedPacketPayload.Direction.CLIENT_TO_SERVER, ServerboundAdjustShadowScalePayload.CODEC),
+            new PayloadInfo<>(ServerboundSummonClonePayload.TYPE, ExtendedPacketPayload.Direction.CLIENT_TO_SERVER, ServerboundSummonClonePayload.CODEC),
+            new PayloadInfo<>(ServerboundRecallClonesPayload.TYPE, ExtendedPacketPayload.Direction.CLIENT_TO_SERVER, ServerboundRecallClonesPayload.CODEC));
 
     public static void onRegisterPackets(RegisterPayloadHandlersEvent event) {
         PayloadRegistrar registrar = event.registrar(Minejago.MOD_ID);

@@ -1,12 +1,14 @@
 package dev.thomasglasser.minejago.world.entity.ai.behavior;
 
 import com.mojang.datafixers.util.Pair;
+import dev.thomasglasser.minejago.network.ClientboundSetGlowingTag;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.world.entity.ai.poi.MinejagoPoiTypes;
 import dev.thomasglasser.minejago.world.entity.character.Wu;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
+import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -14,8 +16,10 @@ import java.util.Set;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.ai.memory.WalkTarget;
@@ -114,10 +118,12 @@ public class TrackSpinjitzuCourseCompletion<T extends Wu> extends ExtendedBehavi
         entity.setLifting(false);
         entity.setCurrentStage(Stage.STAND_UP);
         entity.setItemInHand(InteractionHand.MAIN_HAND, originalStack);
+        entity.playSound(SoundEvents.VILLAGER_NO, 1.0f, 0.9f);
         Set<Player> currentPlayers = Set.copyOf(entity.getCourseData().keySet());
         currentPlayers.forEach((player) -> {
-            entity.level().playSound(null, player.blockPosition(), SoundEvents.VILLAGER_NO, entity.getSoundSource(), 1f, 0.9f);
             entity.getEntitiesOnCooldown().computeIfAbsent((int) (entity.level().getGameTime() + SharedConstants.TICKS_PER_GAME_DAY), k -> new ArrayList<>()).add(player);
+            if (player instanceof ServerPlayer serverPlayer)
+                TommyLibServices.NETWORK.sendToClient(new ClientboundSetGlowingTag(entity.getTrackedElements().stream().map(Entity::getId).toList(), false), serverPlayer);
         });
         entity.getCourseData().clear();
         entity.clearTrackedElements();

@@ -13,12 +13,14 @@ import dev.thomasglasser.minejago.network.ClientboundStartSpinjitzuPayload;
 import dev.thomasglasser.minejago.network.ClientboundStopMeditationPayload;
 import dev.thomasglasser.minejago.network.ClientboundStopSpinjitzuPayload;
 import dev.thomasglasser.minejago.network.ServerboundAdjustShadowScalePayload;
+import dev.thomasglasser.minejago.network.ServerboundRecallClonesPayload;
 import dev.thomasglasser.minejago.network.ServerboundStartMeditationPayload;
 import dev.thomasglasser.minejago.network.ServerboundStartShadowFormPayload;
 import dev.thomasglasser.minejago.network.ServerboundStartSpinjitzuPayload;
 import dev.thomasglasser.minejago.network.ServerboundStopMeditationPayload;
 import dev.thomasglasser.minejago.network.ServerboundStopShadowFormPayload;
 import dev.thomasglasser.minejago.network.ServerboundStopSpinjitzuPayload;
+import dev.thomasglasser.minejago.network.ServerboundSummonClonePayload;
 import dev.thomasglasser.minejago.network.ServerboundSwitchDimensionPayload;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.tags.MinejagoItemTags;
@@ -30,6 +32,8 @@ import dev.thomasglasser.minejago.world.entity.character.Character;
 import dev.thomasglasser.minejago.world.entity.character.Zane;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
 import dev.thomasglasser.minejago.world.entity.power.Power;
+import dev.thomasglasser.minejago.world.entity.shadow.ShadowClone;
+import dev.thomasglasser.minejago.world.entity.shadow.ShadowSource;
 import dev.thomasglasser.minejago.world.entity.skill.Skill;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaidsHolder;
@@ -58,6 +62,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import net.minecraft.core.BlockPos;
@@ -106,6 +111,7 @@ import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.EntityEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import net.neoforged.neoforge.event.entity.EntityLeaveLevelEvent;
 import net.neoforged.neoforge.event.entity.EntityTravelToDimensionEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
@@ -282,6 +288,15 @@ public class MinejagoEntityEvents {
                     if (source == null || NO_SHADOW_FORM.test(serverPlayer) || source.isInLava() || (!TommyLibServices.ENTITY.getPersistentData(source).getString(KEY_START_POS).isEmpty() && !source.blockPosition().toString().equals(TommyLibServices.ENTITY.getPersistentData(source).getString(KEY_START_POS)))) {
                         stopShadowForm(serverPlayer);
                     } else {
+                        if (serverPlayer.noPhysics) {
+                            recallShadowClones(serverPlayer);
+                        }
+                        if (player.getData(MinejagoAttachmentTypes.SHADOW_SOURCE).isPresent()) {
+                            if (player.getLightLevelDependentMagicValue() < 0.1f && !player.getAbilities().flying) {
+                                player.getAbilities().flying = true;
+                                player.onUpdateAbilities();
+                            }
+                        }
                         focusData.addExhaustion(FocusConstants.EXHAUSTION_IN_SHADOW_FORM);
                         if (player.getAbilities().flying)
                             focusData.addExhaustion(FocusConstants.EXHAUSTION_SHADOW_FORM_NORMAL_ABILITY);
@@ -293,6 +308,9 @@ public class MinejagoEntityEvents {
                         }
                         if (count > 0)
                             focusData.addExhaustion(FocusConstants.EXHAUSTION_SHADOW_FORM_HOLDING_ITEM * count);
+                        int clones = player.getData(MinejagoAttachmentTypes.SHADOW_CLONES).size();
+                        if (clones > 0)
+                            focusData.addExhaustion(FocusConstants.EXHAUSTION_SHADOW_FORM_NORMAL_ABILITY * clones);
                     }
                 }
 
@@ -345,6 +363,14 @@ public class MinejagoEntityEvents {
                         if (MinejagoKeyMappings.DECREASE_SCALE.get().isDown()) {
                             TommyLibServices.NETWORK.sendToServer(new ServerboundAdjustShadowScalePayload(-0.1));
                         }
+                        if (MinejagoKeyMappings.SUMMON_CLONE.get().isDown()) {
+                            TommyLibServices.NETWORK.sendToServer(ServerboundSummonClonePayload.INSTANCE);
+                            persistentData.putInt(KEY_WAIT_TICKS, 5);
+                        }
+                        if (MinejagoKeyMappings.RECALL_CLONES.get().isDown()) {
+                            TommyLibServices.NETWORK.sendToServer(ServerboundRecallClonesPayload.INSTANCE);
+                            persistentData.putInt(KEY_WAIT_TICKS, 5);
+                        }
                     }
                     if (MinejagoKeyMappings.OPEN_SKILL_SCREEN.get().isDown()) {
                         MinejagoClientUtils.openSkillScreen();
@@ -362,10 +388,6 @@ public class MinejagoEntityEvents {
                     }
                 }
                 TommyLibServices.ENTITY.mergePersistentData(player, persistentData, false);
-            }
-            if (player.getData(MinejagoAttachmentTypes.SHADOW_SOURCE).isPresent()) {
-                if (player.getLightLevelDependentMagicValue() < 0.1f && !player.getAbilities().flying)
-                    player.getAbilities().flying = true;
             }
         }
     }
@@ -512,15 +534,14 @@ public class MinejagoEntityEvents {
                 }
                 for (EquipmentSlot slot : EquipmentSlot.values()) {
                     ItemStack stack = source.getItemBySlot(slot);
-                    if (stack != null) {
-                        entity.setItemSlot(slot, stack);
-                    }
-                    source.setItemBySlot(slot, ItemStack.EMPTY);
+                    entity.setItemSlot(slot, stack);
+                    source.setItemSlot(slot, ItemStack.EMPTY);
                 }
                 entity.teleportTo(sourceLevel, source.getX(), source.getY(), source.getZ(), Set.of(), source.getYRot(), source.getXRot());
                 serverLevel.getChunkSource().removeRegionTicket(TicketType.PLAYER, source.chunkPosition(), 3, source.chunkPosition());
                 source.remove(Entity.RemovalReason.DISCARDED);
             }
+            recallShadowClones(entity);
             AttributeInstance flight = entity.getAttribute(NeoForgeMod.CREATIVE_FLIGHT);
             if (flight != null && flight.hasModifier(ShadowSourceData.FLIGHT_MODIFIER))
                 flight.removeModifier(ShadowSourceData.FLIGHT_MODIFIER);
@@ -529,6 +550,16 @@ public class MinejagoEntityEvents {
                 scale.removeModifier(ShadowSourceData.SCALE_MODIFIER);
             ShadowSourceData.remove(entity, true);
         });
+    }
+
+    public static void recallShadowClones(LivingEntity entity) {
+        for (UUID uuid : entity.getData(MinejagoAttachmentTypes.SHADOW_CLONES)) {
+            ShadowClone clone = ((ServerLevel) entity.level()).getEntity(uuid) instanceof ShadowClone shadowClone ? shadowClone : null;
+            if (clone != null) {
+                clone.remove(Entity.RemovalReason.DISCARDED);
+            }
+        }
+        entity.removeData(MinejagoAttachmentTypes.SHADOW_CLONES);
     }
 
     public static void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
@@ -565,6 +596,13 @@ public class MinejagoEntityEvents {
             entity.getData(MinejagoAttachmentTypes.FOCUS).setDirty(true);
             entity.getData(MinejagoAttachmentTypes.SKILL).save(livingEntity, true);
             entity.getData(MinejagoAttachmentTypes.SHADOW_SOURCE).ifPresent(data -> data.save(livingEntity, true));
+        }
+    }
+
+    public static void onEntityLeaveLevel(EntityLeaveLevelEvent event) {
+        Entity entity = event.getEntity();
+        if (!entity.level().isClientSide && entity instanceof LivingEntity livingEntity) {
+            recallShadowClones(livingEntity);
         }
     }
 

@@ -119,6 +119,8 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(MinejagoKeyMappings.SWITCH_DIMENSION.get(), "Switch Dimension");
         add(MinejagoKeyMappings.INCREASE_SCALE.get(), "Increase Scale");
         add(MinejagoKeyMappings.DECREASE_SCALE.get(), "Decrease Scale");
+        add(MinejagoKeyMappings.SUMMON_CLONE.get(), "Summon Clone");
+        add(MinejagoKeyMappings.RECALL_CLONES.get(), "Recall Clones");
 
         add(MinejagoCommandEvents.NOT_LIVING_ENTITY, "Target %s (%s) is not a LivingEntity");
 
@@ -367,7 +369,8 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         addSpinjitzuCourseElement(MinejagoEntityTypes.SWIRLING_KNIVES_SPINJITZU_COURSE_ELEMENT, MinejagoItems.SWIRLING_KNIVES_SPINJITZU_COURSE_ELEMENT, "Swirling Knives");
         addSpinjitzuCourseElement(MinejagoEntityTypes.SPINNING_AXES_SPINJITZU_COURSE_ELEMENT, MinejagoItems.SPINNING_AXES_SPINJITZU_COURSE_ELEMENT, "Spinning Axes");
 
-        add(MinejagoEntityTypes.SHADOW_SOURCE.get(), "Shadow Source");
+        add(MinejagoEntityTypes.SHADOW_SOURCE.get(), "%s's Shadow Source");
+        add(MinejagoEntityTypes.SHADOW_CLONE.get(), "%s's Shadow Clone");
     }
 
     protected void addSounds() {

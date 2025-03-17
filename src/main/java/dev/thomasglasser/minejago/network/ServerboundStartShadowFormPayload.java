@@ -3,7 +3,7 @@ package dev.thomasglasser.minejago.network;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityEvents;
-import dev.thomasglasser.minejago.world.entity.ShadowSource;
+import dev.thomasglasser.minejago.world.entity.shadow.ShadowSource;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
 import dev.thomasglasser.minejago.world.level.storage.ShadowSourceData;
 import dev.thomasglasser.tommylib.api.network.ExtendedPacketPayload;

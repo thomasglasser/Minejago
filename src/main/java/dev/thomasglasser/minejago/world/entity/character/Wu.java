@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Pair;
 import dev.thomasglasser.minejago.core.component.MinejagoDataComponents;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.network.ClientboundOpenPowerSelectionScreenPayload;
+import dev.thomasglasser.minejago.network.ClientboundSetGlowingTag;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntitySerializers;
@@ -46,6 +47,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -175,11 +177,14 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
                     courseData.remove(player);
                     setLifting(false);
                     entityData.set(DATA_INTERRUPTED, false);
+                    if (player instanceof ServerPlayer serverPlayer)
+                        TommyLibServices.NETWORK.sendToClient(new ClientboundSetGlowingTag(trackedCourseElements.stream().map(Entity::getId).toList(), false), serverPlayer);
                 } else {
                     playSound(SoundEvents.VILLAGER_NO, 1.0f, 0.9f);
                     ArrayList<AbstractSpinjitzuCourseElement<?>> remaining = new ArrayList<>(trackedCourseElements);
                     remaining.removeAll(courseData.get(player));
-                    System.out.println(remaining);
+                    if (player instanceof ServerPlayer serverPlayer)
+                        TommyLibServices.NETWORK.sendToClient(new ClientboundSetGlowingTag(remaining.stream().map(Entity::getId).toList(), true), serverPlayer);
                 }
             } else {
                 List<LivingEntity> cooldownList = new ArrayList<>();
@@ -378,6 +383,10 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
             }
         }
         return isInterrupted();
+    }
+
+    public Set<AbstractSpinjitzuCourseElement<?>> getTrackedElements() {
+        return trackedCourseElements;
     }
 
     public void clearTrackedElements() {

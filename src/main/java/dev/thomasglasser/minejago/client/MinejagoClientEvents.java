@@ -24,6 +24,7 @@ import dev.thomasglasser.minejago.client.particle.SparksParticle;
 import dev.thomasglasser.minejago.client.particle.VaporsParticle;
 import dev.thomasglasser.minejago.client.renderer.block.DragonButtonRenderer;
 import dev.thomasglasser.minejago.client.renderer.block.DragonHeadRenderer;
+import dev.thomasglasser.minejago.client.renderer.entity.AbstractShadowCopyRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.CharacterRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.DirectionalSpinjitzuCourseElementRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.DragonRenderer;
@@ -227,6 +228,7 @@ public class MinejagoClientEvents {
         event.registerEntityRenderer(MinejagoEntityTypes.SPINNING_AXES_SPINJITZU_COURSE_ELEMENT.get(), pContext -> new DirectionalSpinjitzuCourseElementRenderer<>(pContext, new SpinningAxesSpinjitzuCourseElementModel()));
 
         event.registerEntityRenderer(MinejagoEntityTypes.SHADOW_SOURCE.get(), ShadowSourceRenderer::new);
+        event.registerEntityRenderer(MinejagoEntityTypes.SHADOW_CLONE.get(), AbstractShadowCopyRenderer::new);
 
         event.registerBlockEntityRenderer(MinejagoBlockEntityTypes.DRAGON_HEAD.get(), pContext -> new DragonHeadRenderer());
         event.registerBlockEntityRenderer(MinejagoBlockEntityTypes.DRAGON_BUTTON.get(), context -> new DragonButtonRenderer(MinejagoBlocks.DRAGON_BUTTON.getId()));

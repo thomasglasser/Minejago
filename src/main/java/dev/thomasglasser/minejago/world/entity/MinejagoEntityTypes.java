@@ -11,6 +11,8 @@ import dev.thomasglasser.minejago.world.entity.dragon.Dragon;
 import dev.thomasglasser.minejago.world.entity.dragon.EarthDragon;
 import dev.thomasglasser.minejago.world.entity.projectile.EarthBlast;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownShurikenOfIce;
+import dev.thomasglasser.minejago.world.entity.shadow.ShadowClone;
+import dev.thomasglasser.minejago.world.entity.shadow.ShadowSource;
 import dev.thomasglasser.minejago.world.entity.skulkin.AbstractSkulkinVehicle;
 import dev.thomasglasser.minejago.world.entity.skulkin.Kruncha;
 import dev.thomasglasser.minejago.world.entity.skulkin.Nuckal;
@@ -148,12 +150,19 @@ public class MinejagoEntityTypes {
             .sized(1f, 4.25f)
             .build(("spinning_axes_spinjitzu_course_element")));
 
+    // Shadows
     public static final DeferredHolder<EntityType<?>, EntityType<ShadowSource>> SHADOW_SOURCE = register("shadow_source", () -> EntityType.Builder.<ShadowSource>of(ShadowSource::new, MobCategory.MISC)
             .noSave()
             .noSummon()
             .sized(0.6F, 1.8F)
             .eyeHeight(1.62F)
             .build(("shadow_source")));
+    public static final DeferredHolder<EntityType<?>, EntityType<ShadowClone>> SHADOW_CLONE = register("shadow_clone", () -> EntityType.Builder.<ShadowClone>of(ShadowClone::new, MobCategory.MISC)
+            .noSave()
+            .noSummon()
+            .sized(0.6F, 1.8F)
+            .eyeHeight(1.62F)
+            .build(("shadow_clone")));
 
     public static <T extends EntityType<?>> DeferredHolder<EntityType<?>, T> register(String name, Supplier<T> type) {
         return ENTITY_TYPES.register(name, type);
@@ -177,6 +186,8 @@ public class MinejagoEntityTypes {
         map.put(SKULL_TRUCK.get(), SkullTruck.createAttributes().build());
         map.put(SKULL_MOTORBIKE.get(), AbstractSkulkinVehicle.createAttributes().build());
         map.put(SPYKOR.get(), Spykor.createAttributes().build());
+        map.put(SHADOW_CLONE.get(), ShadowClone.createAttributes().build());
+        map.put(SHADOW_SOURCE.get(), ShadowSource.createAttributes().build());
 
         return map;
     }
