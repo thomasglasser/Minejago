@@ -93,6 +93,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -113,6 +114,7 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
@@ -161,6 +163,13 @@ public class MinejagoClientEvents {
                 persistentData.putInt(MinejagoEntityEvents.KEY_WAIT_TICKS, 5);
                 TommyLibServices.ENTITY.mergePersistentData(mainClientPlayer, persistentData, false);
             }
+        }
+    }
+
+    public static void onInteractionKeyMappingTriggered(InputEvent.InteractionKeyMappingTriggered event) {
+        Player player = ClientUtils.getMainClientPlayer();
+        if (player != null && player.getData(MinejagoAttachmentTypes.SHADOW_SOURCE).isPresent() && player.getAbilities().flying) {
+            event.setCanceled(true);
         }
     }
 
@@ -306,8 +315,19 @@ public class MinejagoClientEvents {
         event.registerAbove(ResourceLocation.withDefaultNamespace("food_level"), Minejago.modLoc("focus"), (guiGraphics, deltaTracker) -> MinejagoGuis.renderFocusBar(guiGraphics));
     }
 
-    public static void onRegisterClientReloadListener(RegisterClientReloadListenersEvent event) {
+    public static void onRegisterClientReloadListeners(RegisterClientReloadListenersEvent event) {
         event.registerReloadListener(MinejagoClientUtils.getBewlr());
+        event.registerReloadListener((ResourceManagerReloadListener) resourceManager -> {
+            MinejagoClientUtils.refreshVip();
+            AbstractShadowCopyRenderer.clearShadowTextures();
+        });
+    }
+
+    public static void onPrePlayerRender(RenderPlayerEvent.Pre event) {
+        Player player = event.getEntity();
+        if (player.getData(MinejagoAttachmentTypes.SHADOW_SOURCE).isPresent() && player.getAbilities().flying) {
+            event.setCanceled(true);
+        }
     }
 
     public static void onPostPlayerRender(RenderPlayerEvent.Post event) {

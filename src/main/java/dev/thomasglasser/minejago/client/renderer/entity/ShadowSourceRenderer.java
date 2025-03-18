@@ -35,6 +35,8 @@ public class ShadowSourceRenderer<T extends ShadowSource> extends AbstractShadow
 
     @Override
     public ResourceLocation getTextureLocation(T entity) {
-        return null;
+        if (hasOwner())
+            return ownerRenderer.getTextureLocation(owner);
+        return super.getTextureLocation(entity);
     }
 }

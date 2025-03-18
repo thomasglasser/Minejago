@@ -151,7 +151,7 @@ public class Minejago {
         bus.addListener(MinejagoClientEvents::registerModels);
         bus.addListener(MinejagoClientEvents::onAddLayers);
         bus.addListener(MinejagoClientEvents::onRegisterGuiOverlays);
-        bus.addListener(MinejagoClientEvents::onRegisterClientReloadListener);
+        bus.addListener(MinejagoClientEvents::onRegisterClientReloadListeners);
         bus.addListener(MinejagoClientEvents::onBuildCreativeModeTabContents);
     }
 
@@ -181,6 +181,8 @@ public class Minejago {
         NeoForge.EVENT_BUS.addListener((InputEvent.Key event) -> MinejagoClientEvents.onInput(event.getKey()));
         NeoForge.EVENT_BUS.addListener((InputEvent.MouseButton.Pre event) -> MinejagoClientEvents.onInput(-1));
         NeoForge.EVENT_BUS.addListener((InputEvent.MouseScrollingEvent event) -> MinejagoClientEvents.onInput(-1));
+        NeoForge.EVENT_BUS.addListener(MinejagoClientEvents::onInteractionKeyMappingTriggered);
+        NeoForge.EVENT_BUS.addListener(MinejagoClientEvents::onPrePlayerRender);
         NeoForge.EVENT_BUS.addListener(MinejagoClientEvents::onPostPlayerRender);
         NeoForge.EVENT_BUS.addListener(MinejagoClientEvents::onSelectMusic);
     }
