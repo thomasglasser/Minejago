@@ -151,7 +151,7 @@ public class Minejago {
         bus.addListener(MinejagoClientEvents::registerModels);
         bus.addListener(MinejagoClientEvents::onAddLayers);
         bus.addListener(MinejagoClientEvents::onRegisterGuiOverlays);
-        bus.addListener(MinejagoClientEvents::onRegisterClientReloadListener);
+        bus.addListener(MinejagoClientEvents::onRegisterClientReloadListeners);
         bus.addListener(MinejagoClientEvents::onBuildCreativeModeTabContents);
     }
 

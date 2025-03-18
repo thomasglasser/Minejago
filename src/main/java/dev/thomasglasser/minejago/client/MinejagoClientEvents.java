@@ -93,6 +93,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -306,8 +307,12 @@ public class MinejagoClientEvents {
         event.registerAbove(ResourceLocation.withDefaultNamespace("food_level"), Minejago.modLoc("focus"), (guiGraphics, deltaTracker) -> MinejagoGuis.renderFocusBar(guiGraphics));
     }
 
-    public static void onRegisterClientReloadListener(RegisterClientReloadListenersEvent event) {
+    public static void onRegisterClientReloadListeners(RegisterClientReloadListenersEvent event) {
         event.registerReloadListener(MinejagoClientUtils.getBewlr());
+        event.registerReloadListener((ResourceManagerReloadListener) resourceManager -> {
+            MinejagoClientUtils.refreshVip();
+            AbstractShadowCopyRenderer.clearShadowTextures();
+        });
     }
 
     public static void onPostPlayerRender(RenderPlayerEvent.Post event) {

@@ -1,5 +1,6 @@
 package dev.thomasglasser.minejago.client.renderer.entity;
 
+import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -7,8 +8,13 @@ import dev.kosmx.playerAnim.api.TransformType;
 import dev.kosmx.playerAnim.core.util.Vec3f;
 import dev.kosmx.playerAnim.impl.IAnimatedPlayer;
 import dev.kosmx.playerAnim.impl.animation.AnimationApplier;
+import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.entity.shadow.AbstractShadowCopy;
+import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
@@ -19,6 +25,9 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.renderer.texture.AbstractTexture;
+import net.minecraft.client.renderer.texture.DynamicTexture;
+import net.minecraft.client.renderer.texture.SimpleTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -26,8 +35,11 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector2i;
 
 public class AbstractShadowCopyRenderer<T extends AbstractShadowCopy> extends MobRenderer<T, EntityModel<T>> {
+    private static final Map<ResourceLocation, ResourceLocation> SHADOW_TEXTURES = new HashMap<>();
+
     @Nullable
     protected LivingEntityRenderer ownerRenderer;
     @Nullable
@@ -91,7 +103,7 @@ public class AbstractShadowCopyRenderer<T extends AbstractShadowCopy> extends Mo
             Minecraft minecraft = Minecraft.getInstance();
             boolean flag = this.isBodyVisible(entity);
             boolean flag1 = !flag && !entity.isInvisibleTo(minecraft.player);
-            VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.entityTranslucent(ownerRenderer.getTextureLocation(owner)));
+            VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.entityTranslucent(getTextureLocation(entity)));
             int i = getOverlayCoords(entity, this.getWhiteOverlayProgress(entity, partialTicks));
             model.renderToBuffer(poseStack, vertexconsumer, packedLight, i, flag1 ? 654311423 : -1);
 
@@ -131,7 +143,9 @@ public class AbstractShadowCopyRenderer<T extends AbstractShadowCopy> extends Mo
 
     @Override
     public ResourceLocation getTextureLocation(T entity) {
-        return null;
+        if (hasOwner())
+            return getShadowTexture(ownerRenderer.getTextureLocation(owner));
+        return Minejago.modLoc("");
     }
 
     @Override
@@ -154,5 +168,49 @@ public class AbstractShadowCopyRenderer<T extends AbstractShadowCopy> extends Mo
             }
         }
         super.setupRotations(entity, poseStack, bob, yBodyRot, partialTick, scale);
+    }
+
+    public static ResourceLocation getShadowTexture(ResourceLocation original) {
+        if (SHADOW_TEXTURES.containsKey(original)) {
+            return SHADOW_TEXTURES.get(original);
+        } else if (SHADOW_TEXTURES.containsValue(original)) {
+            return original;
+        } else {
+            ResourceLocation result = ResourceLocation.fromNamespaceAndPath(original.getNamespace(), original.getPath() + "_shadow");
+            try (AbstractTexture texture = Minecraft.getInstance().getTextureManager().getTexture(original)) {
+                NativeImage image;
+                if (texture instanceof SimpleTexture simpleTexture) {
+                    image = simpleTexture.getTextureImage(Minecraft.getInstance().getResourceManager()).getImage();
+                } else if (texture instanceof DynamicTexture dynamicTexture) {
+                    image = dynamicTexture.getPixels();
+                } else {
+                    return original;
+                }
+                if (image != null) {
+                    List<Vector2i> nonEmpty = new ArrayList<>();
+
+                    for (int x = 0; x < image.getWidth(); x++) {
+                        for (int y = 0; y < image.getHeight(); y++) {
+                            if (image.getPixelRGBA(x, y) != 0x00000000)
+                                nonEmpty.add(new Vector2i(x, y));
+                        }
+                    }
+
+                    for (Vector2i pixel : nonEmpty) {
+                        image.setPixelRGBA(pixel.x, pixel.y, 0xBF1B1B1B);
+                    }
+                    Minecraft.getInstance().getTextureManager().register(result, new DynamicTexture(image));
+                    SHADOW_TEXTURES.put(original, result);
+                    return result;
+                }
+                return original;
+            } catch (Exception e) {
+                return original;
+            }
+        }
+    }
+
+    public static void clearShadowTextures() {
+        SHADOW_TEXTURES.clear();
     }
 }
