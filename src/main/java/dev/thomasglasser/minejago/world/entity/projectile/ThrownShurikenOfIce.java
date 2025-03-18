@@ -3,6 +3,7 @@ package dev.thomasglasser.minejago.world.entity.projectile;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
+import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -22,7 +23,6 @@ import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -190,7 +190,7 @@ public class ThrownShurikenOfIce extends AbstractArrow {
 
     @Override
     protected ItemStack getDefaultPickupItem() {
-        return Items.AIR.getDefaultInstance();
+        return MinejagoItems.SHURIKEN_OF_ICE.toStack();
     }
 
     public void playerTouch(Player pEntity) {

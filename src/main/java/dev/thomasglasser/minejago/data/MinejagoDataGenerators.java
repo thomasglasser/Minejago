@@ -5,6 +5,8 @@ import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.data.advancements.MinejagoAdvancementProvider;
 import dev.thomasglasser.minejago.data.blockstates.MinejagoBlockStateProvider;
 import dev.thomasglasser.minejago.data.datamaps.MinejagoDataMapsProvider;
+import dev.thomasglasser.minejago.data.dynamiclights.MinejagoEntityLightSourceProvider;
+import dev.thomasglasser.minejago.data.dynamiclights.MinejagoItemLightSourceProvider;
 import dev.thomasglasser.minejago.data.lang.MinejagoEnUsLanguageProvider;
 import dev.thomasglasser.minejago.data.lang.expansions.MinejagoImmersionPackEnUsLanguageProvider;
 import dev.thomasglasser.minejago.data.loot.MinejagoLootTables;
@@ -123,6 +125,8 @@ public class MinejagoDataGenerators {
         generator.addProvider(includeClient, new MinejagoItemModelProvider(packOutput, existingFileHelper));
         generator.addProvider(includeClient, new MinejagoSoundDefinitions(packOutput, existingFileHelper));
         generator.addProvider(includeClient, new MinejagoParticleDescriptionProvider(packOutput, existingFileHelper));
+        generator.addProvider(includeClient, new MinejagoItemLightSourceProvider(packOutput, lookupProvider));
+        generator.addProvider(includeClient, new MinejagoEntityLightSourceProvider(packOutput, lookupProvider));
         generator.addProvider(includeClient, enUs);
     }
 
