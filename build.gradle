@@ -201,6 +201,9 @@ dependencies {
 	jarJar implementation("maven.modrinth:trimmed:${trimmed_version}+neoforge")
 
 	compileOnly("dev.lambdaurora.lambdynamiclights:lambdynamiclights-api:${lambdynlights_version}") {
+		capabilities {
+			requireCapability "dev.lambdaurora.lambdynamiclights:api-mojmap"
+		}
 		transitive = false
 	}
 

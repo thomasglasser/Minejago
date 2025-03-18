@@ -1,7 +1,6 @@
 package dev.thomasglasser.minejago.world.entity.projectile;
 
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
-import dev.thomasglasser.minejago.tags.MinejagoItemTags;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
@@ -24,7 +23,6 @@ import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
