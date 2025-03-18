@@ -1,0 +1,14 @@
+{
+  "luminance": [
+    {
+      "type": "lambdynlights:value",
+      "value": 5
+    }
+  ],
+  "match": {
+    "type": [
+      "minejago:skull_truck",
+      "minejago:skull_motorbike"
+    ]
+  }
+}

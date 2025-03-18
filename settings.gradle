@@ -1,5 +1,14 @@
 pluginManagement {
 	repositories {
+		exclusiveContent {
+			forRepository {
+				maven {
+					name = "Sinytra"
+					url = "https://maven.su5ed.dev/releases"
+				}
+			}
+			filter { includeGroupAndSubgroups "org.sinytra" }
+		}
 		mavenLocal()
 		gradlePluginPortal()
 		maven { url = 'https://maven.neoforged.net/releases' }

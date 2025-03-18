@@ -1,0 +1,10 @@
+{
+  "luminance": [
+    {
+      "type": "lambdynlights:arrow/derived_from_self_item"
+    }
+  ],
+  "match": {
+    "type": "minejago:thrown_shuriken_of_ice"
+  }
+}

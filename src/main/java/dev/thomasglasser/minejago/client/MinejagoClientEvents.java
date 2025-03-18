@@ -1,6 +1,7 @@
 package dev.thomasglasser.minejago.client;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.client.dynamiclights.entity.MinejagoEntityLuminanceTypes;
 import dev.thomasglasser.minejago.client.gui.MinejagoGuis;
 import dev.thomasglasser.minejago.client.model.BambooStaffModel;
 import dev.thomasglasser.minejago.client.model.BouncingPoleSpinjitzuCourseElementModel;
@@ -48,7 +49,6 @@ import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.network.ClientboundStartSpinjitzuPayload;
 import dev.thomasglasser.minejago.network.ServerboundFlyVehiclePayload;
 import dev.thomasglasser.minejago.network.ServerboundStopMeditationPayload;
-import dev.thomasglasser.minejago.plugins.MinejagoDynamicLights;
 import dev.thomasglasser.minejago.sounds.MinejagoMusics;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityEvents;
@@ -181,7 +181,7 @@ public class MinejagoClientEvents {
     }
 
     public static void onClientSetup(FMLClientSetupEvent event) {
-        if (Minejago.Dependencies.RYOAMIC_LIGHTS.isInstalled()) MinejagoDynamicLights.register();
+        if (Minejago.Dependencies.LAMBDYNAMICLIGHTS.isInstalled()) MinejagoEntityLuminanceTypes.init();
     }
 
     public static void onRegisterLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {

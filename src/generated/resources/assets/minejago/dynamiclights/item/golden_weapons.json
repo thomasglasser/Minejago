@@ -1,0 +1,9 @@
+{
+  "luminance": {
+    "type": "value",
+    "value": 10
+  },
+  "match": {
+    "items": "#minejago:golden_weapons"
+  }
+}

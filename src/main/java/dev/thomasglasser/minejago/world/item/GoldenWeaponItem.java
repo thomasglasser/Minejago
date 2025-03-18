@@ -127,8 +127,8 @@ public abstract class GoldenWeaponItem extends Item implements ModeledItem {
     public void appendHoverText(ItemStack itemStack, TooltipContext tooltipContext, List<Component> list, TooltipFlag tooltipFlag) {
         super.appendHoverText(itemStack, tooltipContext, list, tooltipFlag);
         if (tooltipFlag.isAdvanced()) {
-            if (!Minejago.Dependencies.RYOAMIC_LIGHTS.isInstalled())
-                list.add(Component.translatable(MOD_NEEDED, Minejago.Dependencies.RYOAMIC_LIGHTS.getModId()).withStyle(ChatFormatting.RED));
+            if (!Minejago.Dependencies.LAMBDYNAMICLIGHTS.isInstalled())
+                list.add(Component.translatable(MOD_NEEDED, Minejago.Dependencies.LAMBDYNAMICLIGHTS.getModId()).withStyle(ChatFormatting.RED));
         }
     }
 

@@ -1,8 +1,10 @@
 package dev.thomasglasser.minejago.world.entity.projectile;
 
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
+import dev.thomasglasser.minejago.tags.MinejagoItemTags;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
+import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -190,7 +192,7 @@ public class ThrownShurikenOfIce extends AbstractArrow {
 
     @Override
     protected ItemStack getDefaultPickupItem() {
-        return Items.AIR.getDefaultInstance();
+        return MinejagoItems.SHURIKEN_OF_ICE.toStack();
     }
 
     public void playerTouch(Player pEntity) {
