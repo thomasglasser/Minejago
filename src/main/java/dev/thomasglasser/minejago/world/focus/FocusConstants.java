@@ -25,7 +25,7 @@ public class FocusConstants {
     public static final float EXHAUSTION_INSOMNIA = 1.0F;
     public static final float EXHAUSTION_LEARN_SPINJITZU = 2.5F;
     public static final float EXHAUSTION_GOLDEN_WEAPON = 2.0F;
-    public static final float EXHAUSTION_IN_SHADOW_FORM = 10.0F;
+    public static final float EXHAUSTION_IN_SHADOW_FORM = 4F;
     public static final float EXHAUSTION_SHADOW_FORM_HOLDING_ITEM = 0.1F;
     public static final float EXHAUSTION_SHADOW_FORM_NORMAL_ABILITY = 1F;
     public static final float EXHAUSTION_SHADOW_FORM_SUPER_ABILITY = 2F;

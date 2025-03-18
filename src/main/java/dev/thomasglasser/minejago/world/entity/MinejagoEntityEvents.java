@@ -223,7 +223,7 @@ public class MinejagoEntityEvents {
                         TommyLibServices.NETWORK.sendToAllClients(new ClientboundStopMeditationPayload(serverPlayer.getUUID(), true), serverPlayer.getServer());
                     }
 
-                    if ((shadowMeditating && (player.tickCount & 20) == 0) || (focusData.isMegaMeditating() && player.tickCount % 200 == 0) || (focusData.isNormalMeditating() && player.tickCount % 60 == 0)) {
+                    if ((shadowMeditating && player.tickCount % 20 == 0) || (focusData.isMegaMeditating() && player.tickCount % 200 == 0) || (focusData.isNormalMeditating() && player.tickCount % 60 == 0)) {
                         ServerLevel level = serverLevel;
                         BlockPos blockPos = player.blockPosition();
                         Vec3 pos = player.position();
@@ -268,16 +268,18 @@ public class MinejagoEntityEvents {
                         focusData.meditate(shadowMeditating || focusData.isMegaMeditating(), (int) i.getAndSet(0), FocusConstants.FOCUS_SATURATION_NORMAL);
                     }
 
-                    if (focusData.canMegaMeditate(serverPlayer)) {
-                        if (!focusData.isMegaMeditating()) {
-                            focusData.startMegaMeditating();
+                    if (!shadowMeditating) {
+                        if (focusData.canMegaMeditate(serverPlayer)) {
+                            if (!focusData.isMegaMeditating()) {
+                                focusData.startMegaMeditating();
+                                serverPlayer.refreshDimensions();
+                                TommyLibServices.NETWORK.sendToAllClients(new ClientboundStartMegaMeditationPayload(player.getUUID()), serverLevel.getServer());
+                            }
+                        } else if (focusData.isMegaMeditating()) {
+                            focusData.startMeditating();
                             serverPlayer.refreshDimensions();
-                            TommyLibServices.NETWORK.sendToAllClients(new ClientboundStartMegaMeditationPayload(player.getUUID()), serverLevel.getServer());
+                            TommyLibServices.NETWORK.sendToAllClients(new ClientboundStartMeditationPayload(player.getUUID()), serverLevel.getServer());
                         }
-                    } else if (focusData.isMegaMeditating()) {
-                        focusData.startMeditating();
-                        serverPlayer.refreshDimensions();
-                        TommyLibServices.NETWORK.sendToAllClients(new ClientboundStartMeditationPayload(player.getUUID()), serverLevel.getServer());
                     }
                 } else if (persistentData.contains(KEY_START_POS)) {
                     persistentData.remove(KEY_START_POS);
@@ -298,7 +300,7 @@ public class MinejagoEntityEvents {
                             }
                         }
                         focusData.addExhaustion(FocusConstants.EXHAUSTION_IN_SHADOW_FORM);
-                        if (player.getAbilities().flying)
+                        if (!player.getAbilities().flying)
                             focusData.addExhaustion(FocusConstants.EXHAUSTION_SHADOW_FORM_NORMAL_ABILITY);
                         if (!(player.level().dimension().equals(shadowSource.get().level())))
                             focusData.addExhaustion(FocusConstants.EXHAUSTION_SHADOW_FORM_NORMAL_ABILITY);
