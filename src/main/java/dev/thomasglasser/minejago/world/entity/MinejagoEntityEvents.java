@@ -61,7 +61,6 @@ import dev.thomasglasser.tommylib.api.tags.ConventionalItemTags;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -104,6 +103,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.NeoForgeMod;
@@ -515,6 +515,7 @@ public class MinejagoEntityEvents {
         if (!(entity.level() instanceof ServerLevel serverLevel)) return;
         Optional<ShadowSourceData> sourceData = entity.getData(MinejagoAttachmentTypes.SHADOW_SOURCE);
         sourceData.ifPresent(data -> {
+            ShadowSourceData.remove(entity, true);
             ServerLevel sourceLevel = serverLevel.getServer().getLevel(data.level());
             ShadowSource source = sourceLevel != null && sourceLevel.getEntity(data.uuid()) instanceof ShadowSource shadowSource ? shadowSource : null;
             if (source != null) {
@@ -539,8 +540,8 @@ public class MinejagoEntityEvents {
                     entity.setItemSlot(slot, stack);
                     source.setItemSlot(slot, ItemStack.EMPTY);
                 }
-                entity.teleportTo(sourceLevel, source.getX(), source.getY(), source.getZ(), Set.of(), source.getYRot(), source.getXRot());
-                serverLevel.getChunkSource().removeRegionTicket(TicketType.PLAYER, source.chunkPosition(), 3, source.chunkPosition());
+                entity.changeDimension(new DimensionTransition(sourceLevel, source.position(), Vec3.ZERO, source.getYRot(), source.getXRot(), DimensionTransition.DO_NOTHING));
+                sourceLevel.getChunkSource().removeRegionTicket(TicketType.PLAYER, source.chunkPosition(), 3, source.chunkPosition());
                 source.remove(Entity.RemovalReason.DISCARDED);
             }
             recallShadowClones(entity);
@@ -550,7 +551,6 @@ public class MinejagoEntityEvents {
             AttributeInstance scale = entity.getAttribute(Attributes.SCALE);
             if (scale != null && scale.hasModifier(ShadowSourceData.SCALE_MODIFIER))
                 scale.removeModifier(ShadowSourceData.SCALE_MODIFIER);
-            ShadowSourceData.remove(entity, true);
         });
     }
 
