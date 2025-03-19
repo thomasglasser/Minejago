@@ -2,6 +2,7 @@ package dev.thomasglasser.minejago.world.entity.character;
 
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleUtils;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
+import dev.thomasglasser.minejago.tags.MinejagoEntityTypeTags;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntitySerializers;
 import dev.thomasglasser.minejago.world.entity.SpinjitzuDoer;
@@ -29,7 +30,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -150,7 +150,7 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
                 new FloatToSurfaceOfFluid<Character>().startCondition(this::shouldFloatToSurfaceOfFluid).whenStarting(this::onStartFloatingToSurfaceOfFluid).whenStopping(this::onStopFloatingToSurfaceOfFluid),
                 new SetWalkTargetToAttackTarget<>(),
                 new LookAtTargetSink(40, 300),
-                new MoveToWalkTarget<>().whenStopping(this::onMoveToWalkTargetStopping));
+                new MoveToWalkTarget<Character>().whenStopping(this::onMoveToWalkTargetStopping));
     }
 
     @Override
@@ -220,7 +220,16 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
             helperTarget = mob.getTarget();
         }
 
-        return helperTarget == null && helper instanceof Character;
+        return helperTarget == null && victim.isAlliedTo(helper);
+    }
+
+    @Override
+    public boolean isAlliedTo(Entity entity) {
+        if (super.isAlliedTo(entity)) {
+            return true;
+        } else {
+            return entity.getType().is(MinejagoEntityTypeTags.NINJA_FRIENDS) && this.getTeam() == null && entity.getTeam() == null;
+        }
     }
 
     @Override
@@ -255,8 +264,9 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
         }
     }
 
-    protected void onMoveToWalkTargetStopping(PathfinderMob pathfinderMob) {
-        if (pathfinderMob instanceof Character character && character.stopSpinjitzuOnNextStop) character.setDoingSpinjitzu(false);
+    protected void onMoveToWalkTargetStopping(Character character) {
+        if (character.stopSpinjitzuOnNextStop)
+            character.setDoingSpinjitzu(false);
     }
 
     @Override

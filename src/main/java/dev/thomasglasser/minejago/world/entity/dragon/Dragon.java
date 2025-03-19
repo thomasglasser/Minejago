@@ -2,9 +2,9 @@ package dev.thomasglasser.minejago.world.entity.dragon;
 
 import dev.thomasglasser.minejago.network.ClientboundOpenDragonInventoryScreenPayload;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
+import dev.thomasglasser.minejago.tags.MinejagoEntityTypeTags;
 import dev.thomasglasser.minejago.tags.MinejagoItemTags;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
-import dev.thomasglasser.minejago.world.entity.character.Character;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
 import dev.thomasglasser.minejago.world.focus.FocusData;
@@ -201,7 +201,6 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
         return ObjectArrayList.of(
                 new NearbyLivingEntitySensor<Dragon>().setPredicate((target, dragon) -> {
                     if (target instanceof Enemy) return true;
-                    if (target instanceof Character) return false;
                     if (target.isAlliedTo(dragon)) return false;
                     LivingEntity owner = dragon.getOwner();
                     if (owner == null) {
@@ -226,6 +225,13 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
                 }),
                 new NearbyPlayersSensor<>(),
                 new HurtBySensor<>());
+    }
+
+    @Override
+    public boolean isAlliedTo(Entity entity) {
+        if (getOwnerUUID() != null)
+            return super.isAlliedTo(entity);
+        return this.isAlliedTo(entity.getTeam()) || entity.getType().is(MinejagoEntityTypeTags.DRAGONS) || entity.getType().is(MinejagoEntityTypeTags.NINJA_FRIENDS);
     }
 
     @Override

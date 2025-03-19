@@ -454,9 +454,10 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(MinejagoDamageTypeTags.RESISTED_BY_GOLDEN_WEAPONS, "Resisted By Golden Weapons");
 
         // Entity Types
+        add(MinejagoEntityTypeTags.DRAGONS, "Dragons");
+        add(MinejagoEntityTypeTags.NINJA_FRIENDS, "Ninja Friends");
         add(MinejagoEntityTypeTags.SKULKINS, "Skulkins");
         add(MinejagoEntityTypeTags.SKULL_TRUCK_RIDERS, "Skull Truck Riders");
-        add(MinejagoEntityTypeTags.DRAGONS, "Dragons");
 
         // Items
         add(MinejagoItemTags.GOLDEN_WEAPONS, "Golden Weapons");

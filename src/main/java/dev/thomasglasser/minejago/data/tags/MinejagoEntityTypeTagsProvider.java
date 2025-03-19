@@ -29,6 +29,17 @@ public class MinejagoEntityTypeTagsProvider extends ExtendedIntrinsicHolderTagsP
                 .add(MinejagoEntityTypes.THROWN_BONE_KNIFE.get())
                 .add(MinejagoEntityTypes.EARTH_BLAST.get());
 
+        tag(MinejagoEntityTypeTags.DRAGONS)
+                .add(MinejagoEntityTypes.EARTH_DRAGON.get());
+
+        tag(MinejagoEntityTypeTags.NINJA_FRIENDS)
+                .add(MinejagoEntityTypes.WU.get())
+                .add(MinejagoEntityTypes.KAI.get())
+                .add(MinejagoEntityTypes.NYA.get())
+                .add(MinejagoEntityTypes.JAY.get())
+                .add(MinejagoEntityTypes.COLE.get())
+                .add(MinejagoEntityTypes.ZANE.get());
+
         tag(MinejagoEntityTypeTags.SKULKINS)
                 .add(MinejagoEntityTypes.SKULKIN.get())
                 .add(MinejagoEntityTypes.NUCKAL.get())
@@ -39,8 +50,5 @@ public class MinejagoEntityTypeTagsProvider extends ExtendedIntrinsicHolderTagsP
                 .add(MinejagoEntityTypes.SAMUKAI.get())
                 .add(MinejagoEntityTypes.NUCKAL.get())
                 .add(MinejagoEntityTypes.KRUNCHA.get());
-
-        tag(MinejagoEntityTypeTags.DRAGONS)
-                .add(MinejagoEntityTypes.EARTH_DRAGON.get());
     }
 }

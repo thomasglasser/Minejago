@@ -65,10 +65,10 @@ public class MinejagoAdventureAdvancements extends ExtendedAdvancementGenerator 
         AdvancementHolder getTeapot = create(ResourceLocation.withDefaultNamespace("adventure/root"), MinejagoBlocks.TEAPOT.get(), "get_teapot", AdvancementType.TASK, true, true, false, null,
                 "get_teapot", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(MinejagoItemTags.TEAPOTS).build()), "Something is brewing...", "Acquire a teapot");
 
-        AdvancementHolder brewTea = create(getTeapot, PotionContents.createItemStack(MinejagoItems.FILLED_TEACUP.get(), MinejagoPotions.OAK_TEA.asReferenceFrom(provider)), "brew_tea", AdvancementType.TASK, true, true, false, null,
-                "brewed_tea", BrewedTeaTrigger.TriggerInstance.brewedTea(), "Hot Leaf Juice", "Brew tea in a teapot");
-
         AdvancementHolder getJaspot = create(getTeapot, MinejagoBlocks.JASPOT.get(), "get_jaspot", AdvancementType.CHALLENGE, true, true, true, AdvancementRewards.Builder.experience(10).build(),
                 "get_jaspot", InventoryChangeTrigger.TriggerInstance.hasItems(MinejagoBlocks.JASPOT.get()), "Whistlepurr", "Acquire the Jaspot");
+
+        AdvancementHolder brewTea = create(getTeapot, PotionContents.createItemStack(MinejagoItems.FILLED_TEACUP.get(), MinejagoPotions.OAK_TEA.asReferenceFrom(provider)), "brew_tea", AdvancementType.TASK, true, true, false, null,
+                "brewed_tea", BrewedTeaTrigger.TriggerInstance.brewedTea(), "Hot Leaf Juice", "Brew tea in a teapot");
     }
 }

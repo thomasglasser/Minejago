@@ -1,10 +1,10 @@
 package dev.thomasglasser.minejago.world.entity.skulkin.raid;
 
+import dev.thomasglasser.minejago.tags.MinejagoEntityTypeTags;
 import dev.thomasglasser.minejago.world.entity.ai.behavior.FleeSkulkinRaidAndDespawn;
 import dev.thomasglasser.minejago.world.entity.ai.behavior.PathfindToSkulkinRaid;
 import dev.thomasglasser.minejago.world.entity.ai.behavior.SeekAndTakeFourWeaponsMap;
 import dev.thomasglasser.minejago.world.entity.ai.memory.MinejagoMemoryModuleTypes;
-import dev.thomasglasser.minejago.world.entity.character.Character;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import java.util.List;
 import java.util.Map;
@@ -95,7 +95,7 @@ public abstract class SkulkinRaider extends Skeleton implements SmartBrainOwner<
                                 target instanceof IronGolem ||
                                 target instanceof Wolf ||
                                 (target instanceof Turtle turtle && turtle.isBaby() && !turtle.isInWater()) ||
-                                target instanceof Character));
+                                target.getType().is(MinejagoEntityTypeTags.NINJA_FRIENDS)));
     }
 
     @Override
