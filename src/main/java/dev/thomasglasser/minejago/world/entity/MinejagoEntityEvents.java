@@ -58,7 +58,6 @@ import dev.thomasglasser.minejago.world.level.storage.SkillDataSet;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import dev.thomasglasser.tommylib.api.tags.ConventionalItemTags;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -305,7 +304,10 @@ public class MinejagoEntityEvents {
                         if (!(player.level().dimension().equals(shadowSource.get().level())))
                             focusData.addExhaustion(FocusConstants.EXHAUSTION_SHADOW_FORM_NORMAL_ABILITY);
                         int count = 0;
-                        for (ItemStack stack : player.getInventory().player.getAllSlots()) {
+                        for (ItemStack stack : player.getInventory().items) {
+                            count += stack.getCount();
+                        }
+                        for (ItemStack stack : player.getAllSlots()) {
                             count += stack.getCount();
                         }
                         if (count > 0)
@@ -464,20 +466,23 @@ public class MinejagoEntityEvents {
                 }
             }
 
-            List<ItemStack> stacks = new ArrayList<>();
-            livingEntity.getAllSlots().forEach(stacks::add);
-
-            if (livingEntity instanceof Player player) {
-                stacks.addAll(player.getInventory().items);
-            } else if (livingEntity instanceof InventoryCarrier carrier) {
-                stacks.addAll(carrier.getInventory().getItems());
-            }
-
             HolderSet.Named<Item> weapons = livingEntity.level().registryAccess().registryOrThrow(Registries.ITEM).getOrCreateTag(MinejagoItemTags.GOLDEN_WEAPONS);
-            if (weapons.size() > 0 && weapons.stream().allMatch(item -> stacks.stream().anyMatch(stack -> stack.is(item.value())))) {
+            if (weapons.size() > 0 && weapons.stream().allMatch(item -> hasInInventory(livingEntity, stack -> stack.is(item.value())))) {
                 // TODO: Overload event
             }
         }
+    }
+
+    public static boolean hasInInventory(LivingEntity livingEntity, Predicate<ItemStack> predicate) {
+        for (ItemStack stack : livingEntity.getAllSlots()) {
+            if (predicate.test(stack)) return true;
+        }
+        if (livingEntity instanceof Player player) {
+            return player.getInventory().items.stream().anyMatch(predicate);
+        } else if (livingEntity instanceof InventoryCarrier carrier && carrier.getInventory().getItems().stream().anyMatch(predicate)) {
+            return true;
+        }
+        return false;
     }
 
     public static void onPlayerEntityInteract(PlayerInteractEvent.EntityInteract event) {

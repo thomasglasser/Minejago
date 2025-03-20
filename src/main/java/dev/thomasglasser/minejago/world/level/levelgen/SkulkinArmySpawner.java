@@ -99,7 +99,7 @@ public class SkulkinArmySpawner implements CustomSpawner {
             if (raider != null) {
                 raider.setPos(pos.getX(), pos.getY(), pos.getZ());
                 raider.finalizeSpawn(level, level.getCurrentDifficultyAt(pos), MobSpawnType.PATROL, null);
-                level.addFreshEntityWithPassengers(raider);
+                level.addFreshEntity(raider);
                 return true;
             } else {
                 return false;

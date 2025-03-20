@@ -1,9 +1,11 @@
 package dev.thomasglasser.minejago.world.entity.skulkin.raid;
 
+import dev.thomasglasser.minejago.core.component.MinejagoDataComponents;
 import dev.thomasglasser.minejago.tags.MinejagoEntityTypeTags;
 import dev.thomasglasser.minejago.world.entity.ai.behavior.FleeSkulkinRaidAndDespawn;
 import dev.thomasglasser.minejago.world.entity.ai.behavior.PathfindToSkulkinRaid;
-import dev.thomasglasser.minejago.world.entity.ai.behavior.SeekAndTakeFourWeaponsMap;
+import dev.thomasglasser.minejago.world.entity.ai.behavior.SeekAndTakeHiddenFourWeaponsMap;
+import dev.thomasglasser.minejago.world.entity.ai.behavior.SeekAndTakeNearbyItems;
 import dev.thomasglasser.minejago.world.entity.ai.memory.MinejagoMemoryModuleTypes;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import java.util.List;
@@ -16,6 +18,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.Unit;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.Brain;
@@ -28,6 +31,7 @@ import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.item.BowItem;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LightLayer;
@@ -54,6 +58,7 @@ import net.tslat.smartbrainlib.api.core.behaviour.custom.target.SetRandomLookTar
 import net.tslat.smartbrainlib.api.core.behaviour.custom.target.TargetOrRetaliate;
 import net.tslat.smartbrainlib.api.core.navigation.SmoothGroundNavigation;
 import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
+import net.tslat.smartbrainlib.api.core.sensor.custom.NearbyItemsSensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyPlayersSensor;
 import org.jetbrains.annotations.Nullable;
@@ -89,6 +94,7 @@ public abstract class SkulkinRaider extends Skeleton implements SmartBrainOwner<
     @Override
     public List<? extends ExtendedSensor<? extends SkulkinRaider>> getSensors() {
         return ObjectArrayList.of(
+                new NearbyItemsSensor<>(),
                 new NearbyPlayersSensor<>(),
                 new NearbyLivingEntitySensor<SkulkinRaider>()
                         .setPredicate((target, entity) -> target instanceof Player ||
@@ -132,7 +138,8 @@ public abstract class SkulkinRaider extends Skeleton implements SmartBrainOwner<
         return new BrainActivityGroup<SkulkinRaider>(Activity.RAID)
                 .onlyStartWithMemoryStatus(MinejagoMemoryModuleTypes.IN_RAID.get(), MemoryStatus.VALUE_PRESENT)
                 .priority(10).behaviours(
-                        new SeekAndTakeFourWeaponsMap<>(),
+                        new SeekAndTakeNearbyItems<>().speedModifier(1.5F).setPredicate(stack -> stack.has(MinejagoDataComponents.GOLDEN_WEAPONS_MAP.get())),
+                        new SeekAndTakeHiddenFourWeaponsMap<>(),
                         new FleeSkulkinRaidAndDespawn<>(),
                         new PathfindToSkulkinRaid<>());
     }
@@ -162,6 +169,18 @@ public abstract class SkulkinRaider extends Skeleton implements SmartBrainOwner<
     }
 
     @Override
+    public boolean wantsToPickUp(ItemStack stack) {
+        return stack.has(MinejagoDataComponents.GOLDEN_WEAPONS_MAP.get());
+    }
+
+    @Override
+    public EquipmentSlot getEquipmentSlotForItem(ItemStack stack) {
+        if (stack.has(MinejagoDataComponents.GOLDEN_WEAPONS_MAP.get()))
+            return EquipmentSlot.OFFHAND;
+        return super.getEquipmentSlotForItem(stack);
+    }
+
+    @Override
     protected void customServerAiStep() {
         super.customServerAiStep();
         tickBrain(this);
@@ -179,9 +198,6 @@ public abstract class SkulkinRaider extends Skeleton implements SmartBrainOwner<
         }
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         this.wave = pCompound.getInt("Wave");

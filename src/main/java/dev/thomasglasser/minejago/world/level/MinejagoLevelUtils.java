@@ -37,12 +37,12 @@ public final class MinejagoLevelUtils {
 
     public static Painting getGoldenWeaponsMapHolderNearby(LivingEntity entity, int distance) {
         List<Painting> paintings = entity.level().getEntitiesOfClass(Painting.class, entity.getBoundingBox().inflate(distance, distance + 3, distance), painting -> painting.getVariant().is(Minejago.modLoc("four_weapons")) && !TommyLibServices.ENTITY.getPersistentData(painting).getBoolean("MapTaken"));
-        return !paintings.isEmpty() ? paintings.get(0) : null;
+        return !paintings.isEmpty() ? paintings.getFirst() : null;
     }
 
     public static Painting getGoldenWeaponsMapHolderNearby(Level level, BlockPos pos, int distance) {
         List<Painting> paintings = level.getEntitiesOfClass(Painting.class, AABB.ofSize(pos.getCenter(), distance, distance + 3, distance), painting -> painting.getVariant().is(Minejago.modLoc("four_weapons")) && !TommyLibServices.ENTITY.getPersistentData(painting).getBoolean("MapTaken"));
-        return !paintings.isEmpty() ? paintings.get(0) : null;
+        return !paintings.isEmpty() ? paintings.getFirst() : null;
     }
 
     public static boolean isBlockInRange(Block block, Level level, BlockPos centerPos, int range) {

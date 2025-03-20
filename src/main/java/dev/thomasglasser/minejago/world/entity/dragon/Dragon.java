@@ -5,6 +5,7 @@ import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.tags.MinejagoEntityTypeTags;
 import dev.thomasglasser.minejago.tags.MinejagoItemTags;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
+import dev.thomasglasser.minejago.world.entity.MinejagoEntityEvents;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
 import dev.thomasglasser.minejago.world.focus.FocusData;
@@ -204,11 +205,7 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
                     if (target.isAlliedTo(dragon)) return false;
                     LivingEntity owner = dragon.getOwner();
                     if (owner == null) {
-                        if (target instanceof Player player) {
-                            if (getBond(player) < 0) return true;
-                            if (player.getInventory().contains(protectingItems)) return true;
-                        }
-                        return target instanceof TamableAnimal tamableAnimal && tamableAnimal.getOwner() instanceof Player player && getBond(player) < 0;
+                        return MinejagoEntityEvents.hasInInventory(target, stack -> stack.is(protectingItems)) || (target instanceof Player player && getBond(player) < 0) || (target instanceof TamableAnimal tamableAnimal && tamableAnimal.getOwner() instanceof Player targetOwner && getBond(targetOwner) < 0);
                     } else {
                         if (target.isAlliedTo(owner)) return false;
                         if (target instanceof TamableAnimal tamableAnimal && tamableAnimal.getOwner() == dragon.getOwner()) return false;
@@ -258,7 +255,7 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
     @Override
     public BrainActivityGroup<? extends Dragon> getFightTasks() {
         return BrainActivityGroup.fightTasks(
-                new InvalidateAttackTarget<>().invalidateIf((entity, target) -> target instanceof Player player && (player.isCreative() || player.isSpectator() || (getBond(player) >= 0 && !player.getInventory().contains(protectingItems)))), 	 // Invalidate the attack target if it's no longer applicable
+                new InvalidateAttackTarget<>().invalidateIf((entity, target) -> target instanceof Player player ? (player.isCreative() || player.isSpectator() || (getBond(player) >= 0 && !MinejagoEntityEvents.hasInInventory(player, stack -> stack.is(protectingItems)))) : !MinejagoEntityEvents.hasInInventory(target, stack -> stack.is(protectingItems))), 	 // Invalidate the attack target if it's no longer applicable
                 new FirstApplicableBehaviour<>( 																							  	 // Run only one of the below behaviours, trying each one in order
                         new AnimatableMeleeAttack<>(0).whenStarting(entity -> setAggressive(false)), // Melee attack
                         new AnimatableRangedAttack<Dragon>(20).whenStarting(dragon -> dragon.setShooting(true)).whenStopping(dragon -> dragon.setShooting(false)))	 												 // Fire a bow, if holding one

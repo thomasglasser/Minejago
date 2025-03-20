@@ -17,28 +17,20 @@ import net.minecraft.world.entity.ai.memory.WalkTarget;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.decoration.Painting;
 import net.minecraft.world.phys.Vec3;
-import net.tslat.smartbrainlib.api.core.behaviour.ExtendedBehaviour;
 import net.tslat.smartbrainlib.util.BrainUtils;
 
-public class SeekAndTakeFourWeaponsMap<T extends SkulkinRaider> extends ExtendedBehaviour<T> {
-    private static final List<Pair<MemoryModuleType<?>, MemoryStatus>> MEMORY_REQUIREMENTS = List.of(Pair.of(MemoryModuleType.WALK_TARGET, MemoryStatus.REGISTERED));
+public class SeekAndTakeHiddenFourWeaponsMap<T extends SkulkinRaider> extends AbstractSeekAndTake<T> {
+    private static final List<Pair<MemoryModuleType<?>, MemoryStatus>> MEMORY_REQUIREMENTS = List.of(WALK_TARGET_REQUIREMENT);
 
-    private float speedModifier = 1;
-    private final List<BlockPos> visited = Lists.<BlockPos>newArrayList();
+    private final List<BlockPos> visited = Lists.newArrayList();
 
-    public SeekAndTakeFourWeaponsMap<T> speedModifier(float speedMod) {
-        this.speedModifier = speedMod;
-
-        return this;
+    public SeekAndTakeHiddenFourWeaponsMap<T> speedModifier(float speedMod) {
+        return (SeekAndTakeHiddenFourWeaponsMap<T>) super.speedModifier(speedMod);
     }
 
     @Override
     protected boolean checkExtraStartConditions(ServerLevel level, T entity) {
-        return MinejagoLevelUtils.isGoldenWeaponsMapHolderNearby(entity, 16) && this.isValidRaid(entity) && (entity.getTarget() == null || entity.getTarget().isRemoved());
-    }
-
-    private boolean isValidRaid(T entity) {
-        return entity.hasActiveRaid() && !entity.getCurrentRaid().isOver();
+        return super.checkExtraStartConditions(level, entity) && MinejagoLevelUtils.isGoldenWeaponsMapHolderNearby(entity, 16);
     }
 
     @Override
@@ -55,23 +47,24 @@ public class SeekAndTakeFourWeaponsMap<T extends SkulkinRaider> extends Extended
                 do {
                     toCheck = DefaultRandomPos.getPosTowards(entity, 15, 8, Vec3.atBottomCenterOf(MinejagoLevelUtils.getGoldenWeaponsMapHolderNearby(entity, 16).blockPosition()), (float) (Math.PI / 2));
                 } while (toCheck == null || visited.contains(new BlockPos((int) toCheck.x, (int) toCheck.y, (int) toCheck.z)));
-                speedModifier = 1;
                 BrainUtils.setMemory(entity, MemoryModuleType.WALK_TARGET, new WalkTarget(toCheck, speedModifier, 1));
                 entity.stopRiding();
-            } else if (MinejagoLevelUtils.isGoldenWeaponsMapHolderNearby(entity, 1)) {
-                Painting fw = MinejagoLevelUtils.getGoldenWeaponsMapHolderNearby(entity, 1);
-                CompoundTag persistentData = TommyLibServices.ENTITY.getPersistentData(fw);
-                persistentData.putBoolean("MapTaken", true);
-                TommyLibServices.ENTITY.setPersistentData(fw, persistentData, true);
-                entity.setItemSlot(EquipmentSlot.OFFHAND, MinejagoItemUtils.createFourWeaponsMaps(level, entity));
-                entity.setDropChance(EquipmentSlot.OFFHAND, 2.0F);
-                Vec3 escapePos = null;
-                while (escapePos == null) {
-                    escapePos = DefaultRandomPos.getPosAway(entity, 64, 32, Vec3.atBottomCenterOf(entity.getCurrentRaid().getCenter()));
-                }
-                entity.getCurrentRaid().setEscapePos(escapePos);
             } else {
-                visited.add(entity.blockPosition());
+                Painting fw = MinejagoLevelUtils.getGoldenWeaponsMapHolderNearby(entity, 1);
+                if (fw != null) {
+                    CompoundTag persistentData = TommyLibServices.ENTITY.getPersistentData(fw);
+                    persistentData.putBoolean("MapTaken", true);
+                    TommyLibServices.ENTITY.setPersistentData(fw, persistentData, true);
+                    entity.setItemSlot(EquipmentSlot.OFFHAND, MinejagoItemUtils.createFourWeaponsMaps(level, entity));
+                    entity.setDropChance(EquipmentSlot.OFFHAND, 2.0F);
+                    Vec3 escapePos = null;
+                    while (escapePos == null) {
+                        escapePos = DefaultRandomPos.getPosAway(entity, 64, 32, Vec3.atBottomCenterOf(entity.getCurrentRaid().getCenter()));
+                    }
+                    entity.getCurrentRaid().setEscapePos(escapePos);
+                } else {
+                    visited.add(entity.blockPosition());
+                }
             }
         }
     }
