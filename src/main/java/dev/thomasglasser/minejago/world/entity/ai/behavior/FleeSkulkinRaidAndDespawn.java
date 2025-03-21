@@ -46,7 +46,7 @@ public class FleeSkulkinRaidAndDespawn<T extends SkulkinRaider> extends Extended
             if (entity.position().closerThan(raid.getEscapePos(), 5)) {
                 // TODO: Place underworld portal blocks
                 if (entity.getItemInHand(InteractionHand.MAIN_HAND).has(MinejagoDataComponents.GOLDEN_WEAPONS_MAP) || entity.getItemInHand(InteractionHand.OFF_HAND).has(MinejagoDataComponents.GOLDEN_WEAPONS_MAP))
-                    ((SkulkinRaidsHolder) entity.level()).getSkulkinRaids().setMapTaken();
+                    ((SkulkinRaidsHolder) entity.level()).minejago$getSkulkinRaids().setMapTaken();
                 if (entity.getVehicle() != null)
                     entity.getVehicle().remove(Entity.RemovalReason.CHANGED_DIMENSION);
                 entity.remove(Entity.RemovalReason.CHANGED_DIMENSION);

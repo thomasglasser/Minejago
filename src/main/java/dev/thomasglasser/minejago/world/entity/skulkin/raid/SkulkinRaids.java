@@ -31,7 +31,7 @@ public class SkulkinRaids extends SavedData {
     }
 
     public SkulkinRaids() {
-        this.nextAvailableID = 1;
+        this.nextAvailableID = 0;
         this.setDirty();
     }
 
@@ -76,7 +76,7 @@ public class SkulkinRaids extends SavedData {
             return null;
         } else if (!MinejagoServerConfig.get().enableSkulkinRaids.get()) {
             return null;
-        } else {
+        } else if (!isRaidedChunk(serverPlayer.blockPosition())) {
             SkulkinRaid raid = this.getOrCreateSkulkinRaid(serverPlayer.serverLevel(), serverPlayer.blockPosition());
             if (!raid.isStarted()) {
                 if (!this.raidMap.containsKey(raid.getId())) {
@@ -87,6 +87,15 @@ public class SkulkinRaids extends SavedData {
             this.setDirty();
             return raid;
         }
+        return null;
+    }
+
+    public boolean hasAnyRaidsActive() {
+        return raidMap.values().stream().anyMatch(SkulkinRaid::isActive);
+    }
+
+    public void removeRaidedArea(BlockPos pos) {
+        raidedAreas.removeIf(area -> area.contains(pos.getX(), pos.getY(), pos.getZ()));
     }
 
     private SkulkinRaid getOrCreateSkulkinRaid(ServerLevel serverLevel, BlockPos pos) {

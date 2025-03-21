@@ -10,6 +10,7 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.ai.memory.WalkTarget;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.tslat.smartbrainlib.registry.SBLMemoryTypes;
@@ -33,12 +34,16 @@ public class SeekAndTakeNearbyItems<T extends SkulkinRaider> extends AbstractSee
 
     @Override
     protected boolean checkExtraStartConditions(ServerLevel level, T entity) {
-        return super.checkExtraStartConditions(level, entity) && !BrainUtils.getMemory(entity, SBLMemoryTypes.NEARBY_ITEMS.get()).isEmpty();
+        if (!super.checkExtraStartConditions(level, entity) || !entity.canPickUpLoot())
+            return false;
+        List<ItemEntity> items = BrainUtils.getMemory(entity, SBLMemoryTypes.NEARBY_ITEMS.get());
+        return items != null && !items.isEmpty();
     }
 
     @Override
     protected boolean shouldKeepRunning(T entity) {
-        return !BrainUtils.getMemory(entity, SBLMemoryTypes.NEARBY_ITEMS.get()).isEmpty();
+        List<ItemEntity> items = BrainUtils.getMemory(entity, SBLMemoryTypes.NEARBY_ITEMS.get());
+        return items != null && !items.isEmpty();
     }
 
     @Override
@@ -51,7 +56,7 @@ public class SeekAndTakeNearbyItems<T extends SkulkinRaider> extends AbstractSee
                 while (escapePos == null) {
                     escapePos = DefaultRandomPos.getPosAway(entity, 64, 32, Vec3.atBottomCenterOf(entity.getCurrentRaid().getCenter()));
                 }
-                entity.getCurrentRaid().setEscapePos(escapePos);
+                entity.getCurrentRaid().setLoss(escapePos);
             } else {
                 BrainUtils.getMemory(entity, SBLMemoryTypes.NEARBY_ITEMS.get()).stream().filter(iE -> predicate.test(iE.getItem())).findFirst().ifPresent(item -> {
                     BrainUtils.setMemory(entity, MemoryModuleType.WALK_TARGET, new WalkTarget(item.position(), speedModifier, 1));

@@ -16,11 +16,13 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.Unit;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
@@ -35,6 +37,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.tslat.smartbrainlib.api.SmartBrainOwner;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
 import net.tslat.smartbrainlib.api.core.SmartBrainProvider;
@@ -61,6 +64,7 @@ import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
 import net.tslat.smartbrainlib.api.core.sensor.custom.NearbyItemsSensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyPlayersSensor;
+import net.tslat.smartbrainlib.util.BrainUtils;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class SkulkinRaider extends Skeleton implements SmartBrainOwner<SkulkinRaider> {
@@ -77,6 +81,13 @@ public abstract class SkulkinRaider extends Skeleton implements SmartBrainOwner<
     @Override
     protected PathNavigation createNavigation(Level level) {
         return new SmoothGroundNavigation(this, level);
+    }
+
+    @Override
+    public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData) {
+        SpawnGroupData data = super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
+        setCanPickUpLoot(true);
+        return data;
     }
 
     @Override
@@ -203,7 +214,7 @@ public abstract class SkulkinRaider extends Skeleton implements SmartBrainOwner<
         this.wave = pCompound.getInt("Wave");
         if (pCompound.contains("SkulkinRaidId", 3)) {
             if (this.level() instanceof ServerLevel) {
-                this.raid = ((SkulkinRaidsHolder) this.level()).getSkulkinRaids().get(pCompound.getInt("SkulkinRaidId"));
+                this.raid = ((SkulkinRaidsHolder) this.level()).minejago$getSkulkinRaids().get(pCompound.getInt("SkulkinRaidId"));
             }
 
             if (this.raid != null) {
@@ -222,6 +233,8 @@ public abstract class SkulkinRaider extends Skeleton implements SmartBrainOwner<
 
     @Override
     public void aiStep() {
+        super.aiStep();
+
         if (this.level() instanceof ServerLevel && this.isAlive()) {
             SkulkinRaid raid = this.getCurrentRaid();
             if (raid == null) {
@@ -238,8 +251,6 @@ public abstract class SkulkinRaider extends Skeleton implements SmartBrainOwner<
                 }
             }
         }
-
-        super.aiStep();
     }
 
     @Override
@@ -257,10 +268,6 @@ public abstract class SkulkinRaider extends Skeleton implements SmartBrainOwner<
         }
 
         super.die(damageSource);
-    }
-
-    public boolean canJoinPatrol() {
-        return !this.hasActiveRaid();
     }
 
     public void setCurrentRaid(@Nullable SkulkinRaid raid) {
@@ -309,5 +316,15 @@ public abstract class SkulkinRaider extends Skeleton implements SmartBrainOwner<
         }
 
         return super.hurt(source, amount);
+    }
+
+    @Override
+    public @Nullable LivingEntity getTarget() {
+        return BrainUtils.getTargetOfEntity(this);
+    }
+
+    @Override
+    public void setTarget(@Nullable LivingEntity target) {
+        BrainUtils.setTargetOfEntity(this, target);
     }
 }

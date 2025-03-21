@@ -319,7 +319,7 @@ public class MinejagoEntityEvents {
                 }
 
                 if (MinejagoLevelUtils.isGoldenWeaponsMapHolderNearby(serverPlayer, SkulkinRaid.PAINTING_RADIUS_BUFFER)) {
-                    ((SkulkinRaidsHolder) serverLevel).getSkulkinRaids().createOrExtendSkulkinRaid(serverPlayer);
+                    ((SkulkinRaidsHolder) serverLevel).minejago$getSkulkinRaids().createOrExtendSkulkinRaid(serverPlayer);
                 }
 
                 persistentData.putBoolean(KEY_IS_IN_CAVE_OF_DESPAIR, MinejagoLevelUtils.isStructureInRange(MinejagoStructureTags.CAVE_OF_DESPAIR, serverLevel, serverPlayer.blockPosition(), 64));

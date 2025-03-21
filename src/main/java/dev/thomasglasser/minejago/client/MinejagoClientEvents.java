@@ -343,12 +343,17 @@ public class MinejagoClientEvents {
         }
     }
 
+    public static boolean hasSkulkinRaid() {
+        BossHealthOverlay bossHealthOverlay = ClientUtils.getMinecraft().gui.getBossOverlay();
+        return skulkinRaids.stream().anyMatch(bossHealthOverlay.events::containsKey);
+    }
+
     public static void onSelectMusic(SelectMusicEvent event) {
         Player player = ClientUtils.getMainClientPlayer();
         if (player != null) {
             CompoundTag data = TommyLibServices.ENTITY.getPersistentData(player);
             BossHealthOverlay bossOverlay = ClientUtils.getMinecraft().gui.getBossOverlay();
-            if (bossOverlay.shouldPlayMusic() && skulkinRaids.stream().anyMatch(bossOverlay.events::containsKey)) {
+            if (bossOverlay.shouldPlayMusic() && hasSkulkinRaid()) {
                 event.setMusic(MinejagoMusics.SKULKIN_RAID);
             } else if (data.getBoolean(MinejagoEntityEvents.KEY_IS_IN_MONASTERY_OF_SPINJITZU)) {
                 event.setMusic(MinejagoMusics.MONASTERY_OF_SPINJITZU);

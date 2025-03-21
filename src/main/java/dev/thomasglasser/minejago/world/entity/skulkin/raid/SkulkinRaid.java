@@ -40,8 +40,10 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -53,7 +55,7 @@ public class SkulkinRaid {
     private static final int SECTION_RADIUS_FOR_FINDING_NEW_PAINTING = 2;
     private static final int PAINTING_SEARCH_RADIUS = 32;
     private static final int RAID_TIMEOUT_TICKS = 48000;
-    private static final int NUM_SPAWN_ATTEMPTS = 5;
+    private static final int NUM_SPAWN_ATTEMPTS = 20;
     public static final Component CURSED_BANNER_PATTERN_NAME = Component.translatable("block.minejago.cursed_banner").withStyle(ChatFormatting.GOLD);
     public static final String SKULKIN_REMAINING = "event.minejago.skulkin_raid.skulkin_remaining";
     public static final int PAINTING_RADIUS_BUFFER = 16;
@@ -220,23 +222,11 @@ public class SkulkinRaid {
                 }
 
                 if (!level.isNight()) {
-                    this.time = this.level.getDayTime() + 16000L;
-                } else if (time == 0) {
-                    this.time = this.level.getDayTime();
+                    this.level.setDayTime(18000);
                 }
-
-                this.level.setDayTime(this.time);
 
                 if (!MinejagoLevelUtils.isGoldenWeaponsMapHolderNearby(this.level, this.center, VALID_RAID_RADIUS)) {
                     this.moveRaidCenterToNearbyPainting();
-                }
-
-                if (!MinejagoLevelUtils.isGoldenWeaponsMapHolderNearby(this.level, this.center, VALID_RAID_RADIUS)) {
-                    if (this.groupsSpawned > 0) {
-                        this.status = SkulkinRaidStatus.LOSS;
-                    } else {
-                        this.stop();
-                    }
                 }
 
                 this.ticksActive++;
@@ -306,6 +296,7 @@ public class SkulkinRaid {
                     }
 
                     if (j > NUM_SPAWN_ATTEMPTS) {
+                        ((SkulkinRaidsHolder) this.level).minejago$getSkulkinRaids().removeRaidedArea(this.getCenter());
                         this.stop();
                         break;
                     }
@@ -539,9 +530,9 @@ public class SkulkinRaid {
                                     blockpos$mutableblockpos.getX() + j1,
                                     blockpos$mutableblockpos.getZ() + j1)
                             && this.level.isPositionEntityTicking(blockpos$mutableblockpos)
-                            && (/*Raid.RAVAGER_SPAWN_PLACEMENT_TYPE.isSpawnPositionOk(this.level, blockpos$mutableblockpos, EntityType.RAVAGER)
-                                    || */this.level.getBlockState(blockpos$mutableblockpos.below()).is(Blocks.SNOW)
-                                    && this.level.getBlockState(blockpos$mutableblockpos).isAir())) {
+                            && (SpawnPlacements.getPlacementType(EntityType.RAVAGER).isSpawnPositionOk(this.level, blockpos$mutableblockpos, EntityType.RAVAGER)
+                                    || this.level.getBlockState(blockpos$mutableblockpos.below()).is(Blocks.SNOW)
+                                            && this.level.getBlockState(blockpos$mutableblockpos).isAir())) {
                         return blockpos$mutableblockpos;
                     }
                 }
@@ -711,6 +702,11 @@ public class SkulkinRaid {
 
     public void setEscapePos(Vec3 escapePos) {
         this.escapePos = escapePos;
+    }
+
+    public void setLoss(Vec3 escapePos) {
+        this.status = SkulkinRaidStatus.LOSS;
+        setEscapePos(escapePos);
     }
 
     enum SkulkinRaidStatus {

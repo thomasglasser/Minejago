@@ -61,7 +61,7 @@ public class SeekAndTakeHiddenFourWeaponsMap<T extends SkulkinRaider> extends Ab
                     while (escapePos == null) {
                         escapePos = DefaultRandomPos.getPosAway(entity, 64, 32, Vec3.atBottomCenterOf(entity.getCurrentRaid().getCenter()));
                     }
-                    entity.getCurrentRaid().setEscapePos(escapePos);
+                    entity.getCurrentRaid().setLoss(escapePos);
                 } else {
                     visited.add(entity.blockPosition());
                 }
