@@ -10,6 +10,7 @@
     }
   },
   "has_sets": true,
+  "has_special_sets": true,
   "tagline": {
     "translate": "power.minejago.ice.tagline"
   }

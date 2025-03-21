@@ -3,16 +3,15 @@ package dev.thomasglasser.minejago.data.tags;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.tags.MinejagoBlockTags;
 import dev.thomasglasser.minejago.tags.MinejagoItemTags;
-import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.tommylib.api.data.tags.ExtendedItemTagsProvider;
+import dev.thomasglasser.tommylib.api.registration.DeferredHolder;
 import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -34,14 +33,9 @@ public class MinejagoItemTagsProvider extends ExtendedItemTagsProvider {
                 .add(MinejagoItems.SHURIKEN_OF_ICE.get())
                 .add(MinejagoItems.NUNCHUCKS_OF_LIGHTNING.get());
         MinejagoArmors.ARMOR_SETS.forEach(this::armorSet);
-        MinejagoArmors.POWER_SETS.forEach(this::armorSet);
         tag(ItemTags.CHEST_ARMOR)
-                .add(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.BONE).value())
-                .add(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.STRENGTH).value())
-                .add(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.SPEED).value())
-                .add(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.BOW).value())
-                .add(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getForVariant(Skulkin.Variant.KNIFE).value())
-                .add(MinejagoArmors.SAMUKAIS_CHESTPLATE.get());
+                .add(MinejagoArmors.SAMUKAIS_CHESTPLATE.get())
+                .addAll(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAllKeys());
 
         copy(MinejagoBlockTags.TEAPOTS, MinejagoItemTags.TEAPOTS);
 
@@ -76,7 +70,14 @@ public class MinejagoItemTagsProvider extends ExtendedItemTagsProvider {
                 .add(Items.BONE);
 
         IntrinsicTagAppender<Item> gi = tag(MinejagoItemTags.GI);
-        MinejagoArmors.GI_SETS.forEach(set -> gi.add(set.getAllAsItems().toArray(new ArmorItem[0])));
+        // TODO: Add getAllKeys to ArmorSet
+//        MinejagoArmors.NORMAL_GI_SETS.forEach(set -> gi.addAll(set.getAllKeys()));
+        MinejagoArmors.NORMAL_GI_SETS.forEach(set -> gi.addAll(set.getAll().stream().map(DeferredHolder::getKey).toList()));
+        MinejagoArmors.POWERED_GI_SETS.forEach(set -> gi.addAll(set.getAll().stream().map(DeferredHolder::getKey).toList()));
+        MinejagoArmors.SPECIAL_POWERED_GI_SETS.forEach(set -> gi.addAll(set.getAll().stream().map(DeferredHolder::getKey).toList()));
+        MinejagoArmors.STANDALONE_GI.forEach(item -> gi.add(item.get()));
+        MinejagoArmors.STANDALONE_POWERED_GI.forEach(item -> gi.add(item.get()));
+        MinejagoArmors.STANDALONE_SPECIAL_POWERED_GI.forEach(item -> gi.add(item.get()));
 
         tag(MinejagoItemTags.TEACUPS)
                 .add(MinejagoItems.allTeacups().toArray(new Item[0]));

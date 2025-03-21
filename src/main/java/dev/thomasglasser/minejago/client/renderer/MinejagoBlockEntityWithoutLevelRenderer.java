@@ -8,13 +8,15 @@ import dev.thomasglasser.minejago.client.model.ShurikenModel;
 import dev.thomasglasser.minejago.core.component.MinejagoDataComponents;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
-import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.armor.PoweredArmorItem;
 import dev.thomasglasser.tommylib.api.client.ClientUtils;
+import java.util.Optional;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
@@ -51,18 +53,11 @@ public class MinejagoBlockEntityWithoutLevelRenderer extends BlockEntityWithoutL
             poseStack.scale(1.0F, -1.0F, -1.0F);
             VertexConsumer vertexConsumer = ItemRenderer.getFoilBuffer(buffer, this.scytheModel.renderType(ShurikenModel.TEXTURE), false, stack.hasFoil());
             this.shurikenModel.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
-        } else if (stack.getItem() instanceof PoweredArmorItem) {
+        } else if (stack.getItem() instanceof PoweredArmorItem item) {
             poseStack.translate(0.5D, 0.5D, 0.5D);
-            ResourceLocation location = stack.getOrDefault(MinejagoDataComponents.POWER.get(), MinejagoPowers.NONE).location();
-            final String[] path = new String[1];
-            MinejagoArmors.POWER_SETS.forEach(armorSet -> armorSet.getAll().forEach(item -> {
-                if (stack.is(item.get())) {
-                    path[0] = item.getId().getPath();
-                }
-            }));
-            if (!path[0].isEmpty()) {
-                ClientUtils.renderItem(stack, displayContext, false, poseStack, buffer, packedLight, packedOverlay, location.getNamespace(), "minejago_armor/" + location.getPath() + "_" + path[0]);
-            }
+            ResourceLocation power = stack.getOrDefault(MinejagoDataComponents.POWER.get(), MinejagoPowers.NONE).location();
+            Optional<String> optionalPath = BuiltInRegistries.ITEM.getResourceKey(item).map(ResourceKey::location).map(ResourceLocation::getPath);
+            optionalPath.ifPresent(path -> ClientUtils.renderItem(stack, displayContext, false, poseStack, buffer, packedLight, packedOverlay, power.getNamespace(), "minejago_armor/" + power.getPath() + "_" + path));
         }
         poseStack.popPose();
     }

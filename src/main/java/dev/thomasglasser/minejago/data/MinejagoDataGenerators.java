@@ -13,7 +13,6 @@ import dev.thomasglasser.minejago.data.loot.MinejagoLootTables;
 import dev.thomasglasser.minejago.data.models.MinejagoItemModelProvider;
 import dev.thomasglasser.minejago.data.modonomicons.MinejagoBookProvider;
 import dev.thomasglasser.minejago.data.particles.MinejagoParticleDescriptionProvider;
-import dev.thomasglasser.minejago.data.powers.MinejagoPowerDatagenSuite;
 import dev.thomasglasser.minejago.data.recipes.MinejagoRecipeProvider;
 import dev.thomasglasser.minejago.data.recipes.expansions.MinejagoPotionPotPackRecipes;
 import dev.thomasglasser.minejago.data.sounds.MinejagoSoundDefinitions;
@@ -35,6 +34,7 @@ import dev.thomasglasser.minejago.data.worldgen.placement.MinejagoTreePlacements
 import dev.thomasglasser.minejago.data.worldgen.placement.MinejagoVegetationPlacements;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
+import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.focus.modifier.MinejagoFocusModifiers;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPatterns;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.MinejagoStructures;
@@ -57,6 +57,7 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 public class MinejagoDataGenerators {
     private static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
+            .add(MinejagoRegistries.POWER, MinejagoPowers::bootstrap)
             .add(Registries.TEMPLATE_POOL, MinejagoPools::bootstrap)
             .add(Registries.STRUCTURE, MinejagoStructures::bootstrap)
             .add(Registries.STRUCTURE_SET, MinejagoStructureSets::bootstrap)
@@ -90,20 +91,18 @@ public class MinejagoDataGenerators {
     }
 
     private static void genMain(GatherDataEvent event, DataGenerator generator, PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper, boolean includeServer, boolean includeClient) {
+        // Registry Entries
+        DatapackBuiltinEntriesProvider datapackEntries = new DatapackBuiltinEntriesProvider(packOutput, lookupProvider, BUILDER, Set.of(Minejago.MOD_ID));
+        generator.addProvider(includeServer, datapackEntries);
+        lookupProvider = datapackEntries.getRegistryProvider();
+
         // LanguageProviders
-        LanguageProvider enUs = new MinejagoEnUsLanguageProvider(packOutput);
+        LanguageProvider enUs = new MinejagoEnUsLanguageProvider(packOutput, lookupProvider);
 
         // Trims
         new MinejagoTrimDatagenSuite(event, enUs);
 
-        // Powers
-        MinejagoPowerDatagenSuite powerDatagenSuite = new MinejagoPowerDatagenSuite(event, enUs);
-        lookupProvider = powerDatagenSuite.getRegistryProvider();
-
         //Server
-        DatapackBuiltinEntriesProvider datapackEntries = new DatapackBuiltinEntriesProvider(packOutput, lookupProvider, BUILDER, Set.of(Minejago.MOD_ID));
-        generator.addProvider(includeServer, datapackEntries);
-        lookupProvider = datapackEntries.getRegistryProvider();
         generator.addProvider(includeServer, new ModRegistryDumpReport(packOutput, Minejago.MOD_ID, lookupProvider));
         BlockTagsProvider blockTags = generator.addProvider(includeServer, new MinejagoBlockTagsProvider(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(includeServer, new MinejagoItemTagsProvider(packOutput, lookupProvider, blockTags.contentsGetter(), existingFileHelper));
@@ -122,7 +121,7 @@ public class MinejagoDataGenerators {
 
         //Client
         generator.addProvider(includeClient, new MinejagoBlockStateProvider(packOutput, existingFileHelper));
-        generator.addProvider(includeClient, new MinejagoItemModelProvider(packOutput, existingFileHelper));
+        generator.addProvider(includeClient, new MinejagoItemModelProvider(packOutput, existingFileHelper, lookupProvider));
         generator.addProvider(includeClient, new MinejagoSoundDefinitions(packOutput, existingFileHelper));
         generator.addProvider(includeClient, new MinejagoParticleDescriptionProvider(packOutput, existingFileHelper));
         generator.addProvider(includeClient, new MinejagoItemLightSourceProvider(packOutput, lookupProvider));

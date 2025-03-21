@@ -1,5 +1,6 @@
 package dev.thomasglasser.minejago.world.entity.dragon;
 
+import dev.thomasglasser.minejago.core.component.MinejagoDataComponents;
 import dev.thomasglasser.minejago.network.ClientboundOpenDragonInventoryScreenPayload;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.tags.MinejagoEntityTypeTags;
@@ -10,6 +11,7 @@ import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
 import dev.thomasglasser.minejago.world.focus.FocusData;
 import dev.thomasglasser.minejago.world.inventory.DragonInventoryMenu;
+import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.level.storage.PowerData;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import dev.thomasglasser.tommylib.api.world.entity.PlayerRideableFlying;
@@ -18,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -389,37 +392,46 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
 
                 increaseBond(player, stack.is(MinejagoItemTags.DRAGON_TREATS) ? TREAT_BOND : FOOD_BOND);
                 return InteractionResult.SUCCESS;
-            } else if (bond <= 50 && focusData.getFocusLevel() >= FocusConstants.DRAGON_TALK_LEVEL && random.nextInt(10) < 2) {
-                double i = TALK_BOND;
-                if (level().holderOrThrow(player.getData(MinejagoAttachmentTypes.POWER).power()).is(getData(MinejagoAttachmentTypes.POWER).power())) i += 1.5;
-                increaseBond(player, i);
-                player.getData(MinejagoAttachmentTypes.FOCUS).addExhaustion(FocusConstants.EXHAUSTION_DRAGON_TALK);
-                return InteractionResult.SUCCESS;
-            } else if ((bond >= 10 && focusData.getFocusLevel() >= FocusConstants.DRAGON_TAME_LEVEL) || player.getAbilities().instabuild) {
-                if (ownedBy || hasControllingPassenger()) {
-                    if (!this.hasChest() && stack.is(Items.CHEST)) {
-                        this.equipChest(player, stack);
-                        return InteractionResult.SUCCESS;
-                    } else if (stack.is(Items.SADDLE) && isSaddleable() && !isSaddled())
-                        this.equipSaddle(stack, SoundSource.PLAYERS);
-                    else
-                        player.startRiding(this);
-                } else if (level().holderOrThrow(player.getData(MinejagoAttachmentTypes.POWER).power()).is(getData(MinejagoAttachmentTypes.POWER).power()) && focusData.getFocusLevel() >= 14) {
-                    // TODO: add DX suit to inventory
-                    inventory.setItem(1, Items.GOLDEN_APPLE.getDefaultInstance());
-                    player.getData(MinejagoAttachmentTypes.FOCUS).addExhaustion(FocusConstants.EXHAUSTION_DRAGON_TAME);
-                    tame(player);
-                    if (player.level() instanceof ServerLevel serverLevel) {
-                        double d0 = this.random.nextGaussian() * 0.02D;
-                        double d1 = this.random.nextGaussian() * 0.02D;
-                        double d2 = this.random.nextGaussian() * 0.02D;
-                        for (int i = 0; i < 5; i++) {
-                            serverLevel.sendParticles(ParticleTypes.HEART, this.getRandomX(1.0D), this.getRandomY(), this.getRandomZ(1.0D), 1, d0, d1, d2, 1);
+            } else {
+                Holder<Power> power = level().holderOrThrow(player.getData(MinejagoAttachmentTypes.POWER).power());
+                if (bond <= 50 && focusData.getFocusLevel() >= FocusConstants.DRAGON_TALK_LEVEL && random.nextInt(10) < 2) {
+                    double i = TALK_BOND;
+                    if (power.is(getData(MinejagoAttachmentTypes.POWER).power())) i += 1.5;
+                    increaseBond(player, i);
+                    player.getData(MinejagoAttachmentTypes.FOCUS).addExhaustion(FocusConstants.EXHAUSTION_DRAGON_TALK);
+                    return InteractionResult.SUCCESS;
+                } else if ((bond >= 10 && focusData.getFocusLevel() >= FocusConstants.DRAGON_TAME_LEVEL) || player.getAbilities().instabuild) {
+                    if (ownedBy || hasControllingPassenger()) {
+                        if (!this.hasChest() && stack.is(Items.CHEST)) {
+                            this.equipChest(player, stack);
+                            return InteractionResult.SUCCESS;
+                        } else if (stack.is(Items.SADDLE) && isSaddleable() && !isSaddled())
+                            this.equipSaddle(stack, SoundSource.PLAYERS);
+                        else
+                            player.startRiding(this);
+                    } else if (power.is(getData(MinejagoAttachmentTypes.POWER).power()) && focusData.getFocusLevel() >= 14) {
+                        if (power.value().hasSpecialSets()) {
+                            List<ItemStack> armorStacks = MinejagoArmors.DRAGON_EXTREME_GI_SET.getAllAsStacks();
+                            for (int i = 0; i < armorStacks.size(); i++) {
+                                ItemStack dx = armorStacks.get(i);
+                                dx.set(MinejagoDataComponents.POWER, power.getKey());
+                                inventory.setItem(i + 1, dx);
+                            }
                         }
-                        serverLevel.playSound(null, this.blockPosition(), MinejagoSoundEvents.EARTH_DRAGON_TAME.get(), SoundSource.AMBIENT);
+                        player.getData(MinejagoAttachmentTypes.FOCUS).addExhaustion(FocusConstants.EXHAUSTION_DRAGON_TAME);
+                        tame(player);
+                        if (player.level() instanceof ServerLevel serverLevel) {
+                            double d0 = this.random.nextGaussian() * 0.02D;
+                            double d1 = this.random.nextGaussian() * 0.02D;
+                            double d2 = this.random.nextGaussian() * 0.02D;
+                            for (int i = 0; i < 5; i++) {
+                                serverLevel.sendParticles(ParticleTypes.HEART, this.getRandomX(1.0D), this.getRandomY(), this.getRandomZ(1.0D), 1, d0, d1, d2, 1);
+                            }
+                            serverLevel.playSound(null, this.blockPosition(), MinejagoSoundEvents.EARTH_DRAGON_TAME.get(), SoundSource.AMBIENT);
+                        }
                     }
+                    return InteractionResult.SUCCESS;
                 }
-                return InteractionResult.SUCCESS;
             }
         }
         return InteractionResult.CONSUME;
@@ -597,15 +609,15 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
     }
 
     public int getInventoryColumns() {
-        return entityData.get(DATA_CHESTED) ? 5 : 0;
+        return hasChest() ? 5 : 0;
     }
 
-    public final int getInventorySize() {
+    public int getInventorySize() {
         return getInventorySize(this.getInventoryColumns());
     }
 
-    public static int getInventorySize(int columns) {
-        return columns > 0 ? columns * 3 + 1 : 2;
+    public int getInventorySize(int columns) {
+        return hasChest() ? columns * 3 + 1 : 5;
     }
 
     protected void createInventory() {

@@ -25,7 +25,7 @@ public record ClientboundOpenDragonInventoryScreenPayload(int id, int columns, i
     @Override
     public void handle(Player player) {
         if (player.level().getEntity(id) instanceof Dragon dragon) {
-            SimpleContainer simplecontainer = new SimpleContainer(Dragon.getInventorySize(columns));
+            SimpleContainer simplecontainer = new SimpleContainer(dragon.getInventorySize(columns));
             DragonInventoryMenu dragonInventoryMenu = new DragonInventoryMenu(
                     containerId, player.getInventory(), simplecontainer, dragon, columns);
             player.containerMenu = dragonInventoryMenu;

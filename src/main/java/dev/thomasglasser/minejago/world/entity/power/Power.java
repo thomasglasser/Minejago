@@ -25,6 +25,7 @@ public class Power {
             ComponentSerialization.CODEC.optionalFieldOf("tagline", Component.empty()).forGetter(Power::getTagline),
             BuiltInRegistries.PARTICLE_TYPE.byNameCodec().optionalFieldOf("border_particle").forGetter(Power::getBorderParticleType),
             Codec.BOOL.optionalFieldOf("has_sets", false).forGetter(Power::hasSets),
+            Codec.BOOL.optionalFieldOf("has_special_sets", false).forGetter(Power::hasSpecialSets),
             Display.CODEC.optionalFieldOf("display", Display.EMPTY).forGetter(Power::getDisplay),
             Codec.BOOL.optionalFieldOf("is_special", false).forGetter(Power::isSpecial)).apply(instance, Power::new));
 
@@ -32,6 +33,7 @@ public class Power {
     @Nullable
     protected Supplier<? extends ParticleOptions> borderParticle;
     protected boolean hasSets;
+    protected boolean hasSpecialSets;
     protected Display display;
     protected boolean isSpecial;
 
@@ -45,17 +47,18 @@ public class Power {
         return new Builder(id);
     }
 
-    protected Power(TextColor color, @Nullable Component tagline, @Nullable Supplier<? extends ParticleOptions> borderParticle, boolean hasSets, @Nullable Display display, boolean isSpecial) {
+    protected Power(TextColor color, @Nullable Component tagline, @Nullable Supplier<? extends ParticleOptions> borderParticle, boolean hasSets, boolean hasSpecialSets, @Nullable Display display, boolean isSpecial) {
         this.color = color;
         this.tagline = tagline == null ? Component.empty() : tagline;
         this.borderParticle = borderParticle;
         this.hasSets = hasSets;
+        this.hasSpecialSets = hasSpecialSets;
         this.display = display == null ? Display.EMPTY : display;
         this.isSpecial = isSpecial;
     }
 
-    protected Power(TextColor color, @Nullable Component tagline, Optional<ParticleType<?>> borderParticle, boolean hasSets, Display display, boolean isSpecial) {
-        this(color, tagline, borderParticle.orElse(null) instanceof ParticleOptions ? () -> (ParticleOptions) borderParticle.orElse(null) : null, hasSets, display, isSpecial);
+    protected Power(TextColor color, @Nullable Component tagline, Optional<ParticleType<?>> borderParticle, boolean hasSets, boolean hasSpecialSets, Display display, boolean isSpecial) {
+        this(color, tagline, borderParticle.orElse(null) instanceof ParticleOptions ? () -> (ParticleOptions) borderParticle.orElse(null) : null, hasSets, hasSpecialSets, display, isSpecial);
     }
 
     @Nullable
@@ -74,6 +77,10 @@ public class Power {
 
     public boolean hasSets() {
         return hasSets;
+    }
+
+    public boolean hasSpecialSets() {
+        return hasSpecialSets;
     }
 
     public Component getFormattedName(Registry<Power> registry) {
@@ -135,6 +142,7 @@ public class Power {
         private TextColor color;
         protected Supplier<? extends ParticleOptions> borderParticle;
         protected boolean hasSets;
+        protected boolean hasSpecialSets;
         protected Display display;
         protected boolean isSpecial;
         protected Component tagline;
@@ -145,6 +153,7 @@ public class Power {
             this.tagline = Component.empty();
             this.borderParticle = null;
             this.hasSets = false;
+            this.hasSpecialSets = false;
             this.display = Display.EMPTY;
             this.isSpecial = false;
         }
@@ -189,6 +198,16 @@ public class Power {
             return this;
         }
 
+        public Builder hasSpecialSets() {
+            this.hasSpecialSets = true;
+            return this;
+        }
+
+        public Builder hasSpecialSets(boolean has) {
+            this.hasSpecialSets = has;
+            return this;
+        }
+
         public Builder display(Display display) {
             this.display = display;
             return this;
@@ -205,7 +224,7 @@ public class Power {
         }
 
         public Power build() {
-            return new Power(color, tagline, borderParticle, hasSets, display, isSpecial);
+            return new Power(color, tagline, borderParticle, hasSets, hasSpecialSets, display, isSpecial);
         }
     }
 }

@@ -30,14 +30,16 @@ public class DragonInventoryMenu extends AbstractContainerMenu {
                 return dragon.isSaddleable();
             }
         });
-        if (columns > 0) {
+        if (dragon.hasChest()) {
             for (int k = 0; k < 3; k++) {
                 for (int l = 0; l < columns; l++) {
                     this.addSlot(new Slot(this.container, 1 + l + k * columns, 80 + l * 18, 18 + k * 18));
                 }
             }
         } else {
-            this.addSlot(new Slot(this.container, 1, 80, 18));
+            for (int k = 0; k < 4; k++) {
+                this.addSlot(new Slot(this.container, 1 + k, 80 + k * 18, 18));
+            }
         }
 
         for (int i1 = 0; i1 < 3; i1++) {

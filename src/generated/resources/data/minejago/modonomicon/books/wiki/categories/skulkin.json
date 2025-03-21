@@ -8,7 +8,7 @@
   "display_mode": "index",
   "entry_textures": "modonomicon:textures/gui/entry_textures.png",
   "icon": {
-    "item": "minejago:skeletal_chestplate_blue"
+    "item": "minejago:skeletal_chestplate_speed"
   },
   "max_scroll_x": 512,
   "max_scroll_y": 512,

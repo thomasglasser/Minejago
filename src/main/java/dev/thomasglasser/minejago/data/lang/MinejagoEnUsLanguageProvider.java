@@ -8,6 +8,7 @@ import dev.thomasglasser.minejago.client.gui.screens.inventory.ScrollEditScreen;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.ScrollViewScreen;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.SkillScreen;
 import dev.thomasglasser.minejago.commands.MinejagoCommandEvents;
+import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import dev.thomasglasser.minejago.plugins.MinejagoWailaPlugin;
 import dev.thomasglasser.minejago.plugins.jei.TeapotBrewingRecipeCategory;
@@ -27,6 +28,8 @@ import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.character.Wu;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
+import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
+import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.entity.skill.Skill;
 import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
@@ -44,10 +47,17 @@ import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPattern
 import dev.thomasglasser.tommylib.api.data.lang.ExtendedEnUsLanguageProvider;
 import dev.thomasglasser.tommylib.api.registration.DeferredHolder;
 import dev.thomasglasser.tommylib.api.registration.DeferredItem;
+import dev.thomasglasser.tommylib.api.world.item.armor.ArmorSet;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.data.CachedOutput;
 import net.minecraft.data.PackOutput;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.DyeColor;
@@ -57,10 +67,25 @@ import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import org.apache.commons.lang3.text.WordUtils;
+import org.jetbrains.annotations.Nullable;
 
 public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
-    public MinejagoEnUsLanguageProvider(PackOutput output) {
+    protected final CompletableFuture<HolderLookup.Provider> provider;
+
+    @Nullable
+    protected HolderLookup.Provider registries;
+
+    public MinejagoEnUsLanguageProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
         super(output, Minejago.MOD_ID);
+        this.provider = provider;
+    }
+
+    @Override
+    public CompletableFuture<?> run(CachedOutput cache) {
+        return provider.thenCompose(registries -> {
+            this.registries = registries;
+            return super.run(cache);
+        });
     }
 
     @Override
@@ -71,6 +96,29 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         addSounds();
         addTags();
         addConfigs();
+
+        // TODO: Better Power descriptions, lore, taglines
+        HolderGetter<Power> powers = registries.lookupOrThrow(MinejagoRegistries.POWER);
+        addPower(powers.getOrThrow(MinejagoPowers.NONE), "None", "The average Joe.", "TODO: Lore", """
+                TODO: Description
+                """);
+        addPower(powers.getOrThrow(MinejagoPowers.ICE), "Ice", "Cool as ice.", "TODO: Lore", """
+                Like ice itself, the Master of Ice is cold and calculating.
+                They keep their cool in the heat of battle,
+                and can keep their team in check.
+
+                TODO:Description
+                """);
+        addPower(powers.getOrThrow(MinejagoPowers.EARTH), "Earth", "Solid as rock.", "TODO: Lore", """
+                TODO: Description
+                """);
+        addPower(powers.getOrThrow(MinejagoPowers.FIRE), "Fire", "It burns bright in you.", "TODO: Lore", """
+                TODO: Description
+                """);
+        addPower(powers.getOrThrow(MinejagoPowers.LIGHTNING), "Lightning", "Ignite the storm within.", "TODO: Lore", """
+                TODO: Description
+                """);
+        add(MinejagoPowers.CREATION, "Creation");
 
         add(Skulkin.Variant.STRENGTH, "Strength");
         add(Skulkin.Variant.SPEED, "Speed");
@@ -283,20 +331,15 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         }
 
         // Armors
+        MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAllAsItems().forEach(item -> add(item, "Skeletal Chestplate"));
         add(MinejagoArmors.SAMUKAIS_CHESTPLATE.get(), "Samukai's Chestplate");
-        MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(item -> add(item.get(), "Skeletal Chestplate"));
-        MinejagoArmors.ARMOR_SETS.forEach(set -> set.getAll().forEach(item -> {
-            String nameForSlot = switch (set.getForItem(item.get())) {
-                case FEET -> "Boots";
-                case LEGS -> "Pants";
-                case CHEST -> "Jacket";
-                case HEAD -> "Hood";
-                default -> null;
-            };
+        addGi(MinejagoArmors.NORMAL_GI_SETS);
+        addGi(MinejagoArmors.POWERED_GI_SETS);
+        addGi(MinejagoArmors.SPECIAL_POWERED_GI_SETS);
+    }
 
-            add(item.get(), set.getDisplayName() + " " + nameForSlot);
-        }));
-        MinejagoArmors.POWER_SETS.forEach(set -> set.getAll().forEach(item -> {
+    protected void addGi(List<ArmorSet> armorSets) {
+        armorSets.forEach(set -> set.getAll().forEach(item -> {
             String nameForSlot = switch (set.getForItem(item.get())) {
                 case FEET -> "Boots";
                 case LEGS -> "Pants";
@@ -512,5 +555,19 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         addConfigSection(MinejagoClientConfig.FOCUS_BAR, "Focus Bar", "Settings for focus bar");
         addConfig(MinejagoClientConfig.get().xOffset, "Horizontal Offset", "Horizontal pixels off from the normal position");
         addConfig(MinejagoClientConfig.get().yOffset, "Vertical Offset", "Vertical pixels off from the normal position");
+    }
+
+    protected void addPower(Holder.Reference<Power> power, String name, String tagline, String lore, String description) {
+        add(power.getKey(), name);
+        Power value = power.value();
+        if (value.getTagline().getContents() instanceof TranslatableContents translatableContents) {
+            add(translatableContents.getKey(), tagline);
+        }
+        if (value.getDisplay().lore().getContents() instanceof TranslatableContents translatableContents) {
+            add(translatableContents.getKey(), lore);
+        }
+        if (value.getDisplay().description().getContents() instanceof TranslatableContents translatableContents) {
+            add(translatableContents.getKey(), description);
+        }
     }
 }

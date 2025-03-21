@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minejago:item/fire_dragon_extreme_gi_boots"
+  }
+}

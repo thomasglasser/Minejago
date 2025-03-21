@@ -23,7 +23,6 @@ import dev.thomasglasser.minejago.world.entity.MinejagoEntitySerializers;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.ai.memory.MinejagoMemoryModuleTypes;
 import dev.thomasglasser.minejago.world.entity.ai.poi.MinejagoPoiTypes;
-import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.focus.modifier.MinejagoFocusModifierSerializers;
 import dev.thomasglasser.minejago.world.item.MinejagoCreativeModeTabs;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
@@ -98,7 +97,6 @@ public class Minejago {
         MinejagoRecipeTypes.init();
         MinejagoRecipeSerializers.init();
         MinejagoArmors.init();
-        MinejagoPowers.init();
         MinejagoEntityTypes.init();
         MinejagoParticleTypes.init();
         MinejagoBlocks.init();

@@ -2,11 +2,12 @@
   "values": [
     "minejago:black_gi_jacket",
     "minejago:trainee_gi_jacket",
-    "minejago:skeletal_chestplate_bone",
-    "minejago:skeletal_chestplate_red",
-    "minejago:skeletal_chestplate_blue",
-    "minejago:skeletal_chestplate_white",
-    "minejago:skeletal_chestplate_black",
-    "minejago:samukais_chestplate"
+    "minejago:dragon_extreme_gi_jacket",
+    "minejago:samukais_chestplate",
+    "minejago:skeletal_chestplate_strength",
+    "minejago:skeletal_chestplate_speed",
+    "minejago:skeletal_chestplate_bow",
+    "minejago:skeletal_chestplate_knife",
+    "minejago:skeletal_chestplate_bone"
   ]
 }

@@ -104,6 +104,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.FoliageColor;
@@ -479,12 +480,12 @@ public class MinejagoClientEvents {
             event.insertAfter(MinejagoArmors.BLACK_GI_SET.LEGS.toStack(), MinejagoArmors.BLACK_GI_SET.FEET.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 
             // Unique Armor
-            event.insertAfter(Items.TURTLE_HELMET.getDefaultInstance(), MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAllAsStacks().getFirst(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-            event.insertAfter(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAllAsStacks().getFirst(), MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAllAsStacks().get(1), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-            event.insertAfter(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAllAsStacks().get(1), MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAllAsStacks().get(2), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-            event.insertAfter(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAllAsStacks().get(2), MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAllAsStacks().get(3), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-            event.insertAfter(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAllAsStacks().get(3), MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAllAsStacks().getLast(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-            event.insertAfter(MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAllAsStacks().getLast(), MinejagoArmors.SAMUKAIS_CHESTPLATE.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            List<ItemStack> skeletalChestplates = MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAllAsStacks();
+            event.insertAfter(Items.TURTLE_HELMET.getDefaultInstance(), skeletalChestplates.getFirst(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            for (int i = 1; i < skeletalChestplates.size(); i++) {
+                event.insertAfter(skeletalChestplates.get(i - 1), skeletalChestplates.get(i), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            }
+            event.insertAfter(skeletalChestplates.getLast(), MinejagoArmors.SAMUKAIS_CHESTPLATE.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
         } else if (event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS) {
             parameters.holders()
                     .lookup(Registries.POTION)

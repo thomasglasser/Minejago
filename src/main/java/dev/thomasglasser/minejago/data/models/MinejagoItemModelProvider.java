@@ -1,38 +1,45 @@
 package dev.thomasglasser.minejago.data.models;
 
 import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.TeacupItem;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.tommylib.api.data.models.ExtendedItemModelProvider;
+import dev.thomasglasser.tommylib.api.registration.DeferredHolder;
+import java.util.concurrent.CompletableFuture;
 import net.minecraft.client.renderer.block.model.BlockModel;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.CachedOutput;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import org.jetbrains.annotations.Nullable;
 
 public class MinejagoItemModelProvider extends ExtendedItemModelProvider {
-    public MinejagoItemModelProvider(PackOutput output, ExistingFileHelper helper) {
+    protected final CompletableFuture<HolderLookup.Provider> provider;
+
+    @Nullable
+    protected HolderLookup.Provider registries;
+
+    public MinejagoItemModelProvider(PackOutput output, ExistingFileHelper helper, CompletableFuture<HolderLookup.Provider> provider) {
         super(output, Minejago.MOD_ID, helper);
+        this.provider = provider;
+    }
+
+    @Override
+    public CompletableFuture<?> run(CachedOutput cache) {
+        return provider.thenCompose(registries -> {
+            this.registries = registries;
+            return super.run(cache);
+        });
     }
 
     @Override
     protected void registerModels() {
         handheldItem(MinejagoItems.BONE_KNIFE);
-        MinejagoArmors.ARMOR_SETS.forEach(armorSet -> armorSet.getAll().forEach(item -> {
-            String nameForSlot = switch (armorSet.getForItem(item.get())) {
-                case FEET -> "boots";
-                case LEGS -> "pants";
-                case CHEST -> "jacket";
-                case HEAD -> "hood";
-                default -> null;
-            };
-
-            singleTexture(item.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/" + armorSet.getName() + "_" + nameForSlot));
-        }));
-        MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(item -> singleTexture(item.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/skeletal_chestplate_" + item.get().getVariant().getColor().getName())));
-        basicItem(MinejagoArmors.SAMUKAIS_CHESTPLATE.get());
         basicItem(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get());
         basicItem(MinejagoItems.ICE_CUBE_POTTERY_SHERD.get());
         basicItem(MinejagoItems.THUNDER_POTTERY_SHERD.get());
@@ -102,7 +109,43 @@ public class MinejagoItemModelProvider extends ExtendedItemModelProvider {
         woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET);
         leavesSet(MinejagoBlocks.FOCUS_LEAVES_SET);
 
-        MinejagoArmors.TRAINEE_GI_SET.getAll().forEach(item -> withEntityModel(item).guiLight(BlockModel.GuiLight.FRONT));
+        MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(item -> singleTexture(item.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/skeletal_chestplate_" + item.get().getVariant().getSerializedName())));
+        basicItem(MinejagoArmors.SAMUKAIS_CHESTPLATE.get());
+
+        MinejagoArmors.NORMAL_GI_SETS.forEach(set -> set.getAll().forEach(item -> singleTexture(item.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/" + item.getId().getPath()))));
+        MinejagoArmors.STANDALONE_GI.forEach(item -> singleTexture(item.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/" + item.getId().getPath())));
+        registries.lookupOrThrow(MinejagoRegistries.POWER).listElements().forEach(power -> {
+            if (power.value().hasSets()) {
+                MinejagoArmors.POWERED_GI_SETS.forEach(set -> {
+                    // TODO: Add getAllKeys to ArmorSet
+//                    set.getAllKeys().forEach(item -> {
+                    set.getAll().stream().map(DeferredHolder::getKey).forEach(item -> {
+                        String path = power.getKey().location().getPath() + "_" + item.location().getPath();
+                        singleTexture("item/minejago_armor/" + path, mcLoc("item/generated"), "layer0", modLoc("item/" + path));
+                    });
+                });
+                MinejagoArmors.STANDALONE_POWERED_GI.forEach(item -> {
+                    String path = power.getKey().location().getPath() + "_" + item.getKey().location().getPath();
+                    singleTexture("item/minejago_armor/" + path, mcLoc("item/generated"), "layer0", modLoc("item/" + path));
+                });
+            }
+            if (power.value().hasSpecialSets()) {
+                MinejagoArmors.SPECIAL_POWERED_GI_SETS.forEach(set -> {
+                    set.getAll().forEach(item -> {
+                        String path = power.getKey().location().getPath() + "_" + item.getKey().location().getPath();
+                        singleTexture("item/minejago_armor/" + path, mcLoc("item/generated"), "layer0", modLoc("item/" + path));
+                    });
+                });
+                MinejagoArmors.STANDALONE_SPECIAL_POWERED_GI.forEach(item -> {
+                    String path = power.getKey().location().getPath() + "_" + item.getKey().location().getPath();
+                    singleTexture("item/minejago_armor/" + path, mcLoc("item/generated"), "layer0", modLoc("item/" + path));
+                });
+            }
+        });
+        MinejagoArmors.POWERED_GI_SETS.forEach(set -> set.getAll().forEach(item -> withEntityModel(item).guiLight(BlockModel.GuiLight.FRONT)));
+        MinejagoArmors.SPECIAL_POWERED_GI_SETS.forEach(set -> set.getAll().forEach(item -> withEntityModel(item).guiLight(BlockModel.GuiLight.FRONT)));
+        MinejagoArmors.STANDALONE_POWERED_GI.forEach(item -> withEntityModel(item).guiLight(BlockModel.GuiLight.FRONT));
+        MinejagoArmors.STANDALONE_SPECIAL_POWERED_GI.forEach(item -> withEntityModel(item).guiLight(BlockModel.GuiLight.FRONT));
 
         withEntityModelInHand(MinejagoItems.BAMBOO_STAFF, withEntityModel(MinejagoItems.BAMBOO_STAFF)
                 .texture("particle", itemLoc(MinejagoItems.BAMBOO_STAFF))

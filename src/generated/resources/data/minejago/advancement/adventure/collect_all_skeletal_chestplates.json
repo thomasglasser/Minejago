@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "minejago:skeletal_chestplate_white"
+            "items": "minejago:skeletal_chestplate_bow"
           }
         ]
       },
@@ -15,7 +15,7 @@
       "conditions": {
         "items": [
           {
-            "items": "minejago:skeletal_chestplate_black"
+            "items": "minejago:skeletal_chestplate_knife"
           }
         ]
       },
@@ -25,7 +25,7 @@
       "conditions": {
         "items": [
           {
-            "items": "minejago:skeletal_chestplate_blue"
+            "items": "minejago:skeletal_chestplate_speed"
           }
         ]
       },
@@ -35,7 +35,7 @@
       "conditions": {
         "items": [
           {
-            "items": "minejago:skeletal_chestplate_red"
+            "items": "minejago:skeletal_chestplate_strength"
           }
         ]
       },
@@ -49,7 +49,7 @@
     "frame": "challenge",
     "icon": {
       "count": 1,
-      "id": "minejago:skeletal_chestplate_red"
+      "id": "minejago:skeletal_chestplate_strength"
     },
     "title": {
       "translate": "advancement.minejago.adventure.collect_all_skeletal_chestplates.title"

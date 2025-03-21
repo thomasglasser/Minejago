@@ -5,7 +5,7 @@
   "description": "book.minejago.wiki.skulkin.normal.description",
   "hide_while_locked": false,
   "icon": {
-    "item": "minejago:skeletal_chestplate_blue"
+    "item": "minejago:skeletal_chestplate_speed"
   },
   "name": "book.minejago.wiki.skulkin.normal.name",
   "pages": [

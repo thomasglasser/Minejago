@@ -8,6 +8,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -52,7 +53,7 @@ public class Skulkin extends SkulkinRaider {
         this.variant = variant;
     }
 
-    public enum Variant {
+    public enum Variant implements StringRepresentable {
         STRENGTH(ChatFormatting.RED),
         SPEED(ChatFormatting.BLUE),
         BOW(ChatFormatting.WHITE),
@@ -78,6 +79,11 @@ public class Skulkin extends SkulkinRaider {
                 descriptionId = Util.makeDescriptionId("skulkin_variant", Minejago.modLoc(this.name().toLowerCase()));
             }
             return descriptionId;
+        }
+
+        @Override
+        public String getSerializedName() {
+            return this.name().toLowerCase();
         }
     }
 }
