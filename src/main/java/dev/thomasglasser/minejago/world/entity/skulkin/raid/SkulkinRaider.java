@@ -24,6 +24,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.Brain;
+import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.IronGolem;
@@ -325,6 +326,6 @@ public abstract class SkulkinRaider extends Skeleton implements SmartBrainOwner<
 
     @Override
     public void setTarget(@Nullable LivingEntity target) {
-        BrainUtils.setTargetOfEntity(this, target);
+        BrainUtils.setMemory(this, MemoryModuleType.ATTACK_TARGET, target);
     }
 }

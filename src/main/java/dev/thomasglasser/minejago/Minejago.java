@@ -31,6 +31,7 @@ import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
 import dev.thomasglasser.minejago.world.item.crafting.MinejagoRecipeSerializers;
 import dev.thomasglasser.minejago.world.item.crafting.MinejagoRecipeTypes;
 import dev.thomasglasser.minejago.world.item.equipment.MinejagoArmorMaterials;
+import dev.thomasglasser.minejago.world.level.biome.MinejagoBiomeSources;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
 import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
@@ -115,6 +116,7 @@ public class Minejago {
         MinejagoPoiTypes.init();
         MinejagoArgumentTypes.init();
         MinejagoFocusModifierSerializers.init();
+        MinejagoBiomeSources.init();
 
         if (FMLEnvironment.dist.isClient())
             MinejagoKeyMappings.init();
@@ -151,6 +153,7 @@ public class Minejago {
         bus.addListener(MinejagoClientEvents::onRegisterGuiOverlays);
         bus.addListener(MinejagoClientEvents::onRegisterClientReloadListeners);
         bus.addListener(MinejagoClientEvents::onBuildCreativeModeTabContents);
+        bus.addListener(MinejagoClientEvents::onRegisterDimensionSpecialEffects);
     }
 
     private void addForgeListeners() {

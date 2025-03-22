@@ -23,6 +23,7 @@ import dev.thomasglasser.minejago.client.particle.SnowsParticle;
 import dev.thomasglasser.minejago.client.particle.SparklesParticle;
 import dev.thomasglasser.minejago.client.particle.SparksParticle;
 import dev.thomasglasser.minejago.client.particle.VaporsParticle;
+import dev.thomasglasser.minejago.client.renderer.MinejagoDimensionSpecialEffects;
 import dev.thomasglasser.minejago.client.renderer.block.DragonButtonRenderer;
 import dev.thomasglasser.minejago.client.renderer.block.DragonHeadRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.AbstractShadowCopyRenderer;
@@ -66,6 +67,7 @@ import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBlockEntityTypes;
 import dev.thomasglasser.minejago.world.level.block.entity.TeapotBlockEntity;
+import dev.thomasglasser.minejago.world.level.dimension.MinejagoDimensionTypes;
 import dev.thomasglasser.tommylib.api.client.ClientUtils;
 import dev.thomasglasser.tommylib.api.client.renderer.entity.ThrownSwordRenderer;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
@@ -119,6 +121,7 @@ import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
+import net.neoforged.neoforge.client.event.RegisterDimensionSpecialEffectsEvent;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.event.RenderPlayerEvent;
@@ -571,5 +574,9 @@ public class MinejagoClientEvents {
         } else if (event.getTabKey() == CreativeModeTabs.OP_BLOCKS && Minecraft.getInstance().options.operatorItemsTab().get()) {
             event.insertAfter(Items.STRUCTURE_VOID.getDefaultInstance(), MinejagoBlocks.EARTH_DRAGON_HEAD.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
         }
+    }
+
+    public static void onRegisterDimensionSpecialEffects(RegisterDimensionSpecialEffectsEvent event) {
+        event.register(MinejagoDimensionTypes.UNDERWORLD.location(), MinejagoDimensionSpecialEffects.UNDERWORLD);
     }
 }

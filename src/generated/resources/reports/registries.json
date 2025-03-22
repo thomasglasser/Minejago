@@ -76,6 +76,12 @@
     "minejago:golden_weapons_map_data",
     "minejago:power"
   ],
+  "minecraft:dimension": [
+    "minejago:underworld"
+  ],
+  "minecraft:dimension_type": [
+    "minejago:underworld"
+  ],
   "minecraft:entity_type": [
     "minejago:bouncing_pole_spinjitzu_course_element",
     "minejago:center_spinjitzu_course_element",
@@ -404,6 +410,13 @@
     "minejago:increased_skill",
     "minejago:skulkin_raid_status_changed"
   ],
+  "minecraft:worldgen/biome": [
+    "minejago:underworld_center",
+    "minejago:underworld_islands"
+  ],
+  "minecraft:worldgen/biome_source": [
+    "minejago:underworld"
+  ],
   "minecraft:worldgen/configured_feature": [
     "minejago:fancy_focus",
     "minejago:fancy_focus_bees",
@@ -415,6 +428,9 @@
     "minejago:focus_bees_002",
     "minejago:focus_bees_005",
     "minejago:meadow_focus_trees"
+  ],
+  "minecraft:worldgen/noise_settings": [
+    "minejago:underworld"
   ],
   "minecraft:worldgen/placed_feature": [
     "minejago:fancy_focus_bees",

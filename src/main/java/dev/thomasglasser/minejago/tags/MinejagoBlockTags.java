@@ -9,6 +9,8 @@ import net.minecraft.world.level.block.Block;
 public class MinejagoBlockTags {
     public static final TagKey<Block> TEAPOTS = create("teapots");
 
+    public static final TagKey<Block> INFINIBURN_UNDERWORLD = create("infiniburn_underworld");
+
     private static TagKey<Block> create(String name) {
         return TagKey.create(Registries.BLOCK, Minejago.modLoc(name));
     }

@@ -1,0 +1,12 @@
+{
+  "type": "minejago:underworld",
+  "generator": {
+    "type": "minecraft:noise",
+    "biome_source": {
+      "type": "minejago:underworld",
+      "center": "minejago:underworld_center",
+      "islands": "minejago:underworld_islands"
+    },
+    "settings": "minejago:underworld"
+  }
+}

@@ -24,13 +24,6 @@ public class MinejagoBlockTagsProvider extends ExtendedBlockTagsProvider {
         tag(BlockTags.ENDERMAN_HOLDABLE)
                 .addTag(MinejagoBlockTags.TEAPOTS);
 
-        IntrinsicTagAppender<Block> pots = tag(MinejagoBlockTags.TEAPOTS);
-        pots.add(MinejagoBlocks.TEAPOT.get(),
-                MinejagoBlocks.JASPOT.get());
-        for (DeferredBlock<TeapotBlock> pot : MinejagoBlocks.TEAPOTS.values()) {
-            pots.add(pot.get());
-        }
-
         tag(BlockTags.MINEABLE_WITH_SHOVEL)
                 .add(MinejagoBlocks.SUSPICIOUS_RED_SAND.get());
 
@@ -39,5 +32,15 @@ public class MinejagoBlockTagsProvider extends ExtendedBlockTagsProvider {
 
         woodSet(MinejagoBlocks.ENCHANTED_WOOD_SET);
         leavesSet(MinejagoBlocks.FOCUS_LEAVES_SET);
+
+        IntrinsicTagAppender<Block> pots = tag(MinejagoBlockTags.TEAPOTS);
+        pots.add(MinejagoBlocks.TEAPOT.get(),
+                MinejagoBlocks.JASPOT.get());
+        for (DeferredBlock<TeapotBlock> pot : MinejagoBlocks.TEAPOTS.values()) {
+            pots.add(pot.get());
+        }
+
+        tag(MinejagoBlockTags.INFINIBURN_UNDERWORLD)
+                .addTag(BlockTags.INFINIBURN_OVERWORLD);
     }
 }

@@ -36,7 +36,11 @@ import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
 import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.focus.modifier.MinejagoFocusModifiers;
+import dev.thomasglasser.minejago.world.level.biome.MinejagoBiomes;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPatterns;
+import dev.thomasglasser.minejago.world.level.dimension.MinejagoDimensionTypes;
+import dev.thomasglasser.minejago.world.level.dimension.MinejagoLevelStems;
+import dev.thomasglasser.minejago.world.level.levelgen.MinejagoNoiseGeneratorSettings;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.MinejagoStructures;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.placement.MinejagoStructureSets;
 import dev.thomasglasser.minejago.world.level.levelgen.structure.pools.MinejagoPools;
@@ -73,7 +77,11 @@ public class MinejagoDataGenerators {
             }))
             .add(Registries.BANNER_PATTERN, MinejagoBannerPatterns::bootstrap)
             .add(Registries.PAINTING_VARIANT, MinejagoPaintingVariants::boostrap)
-            .add(MinejagoRegistries.FOCUS_MODIFIER, MinejagoFocusModifiers::bootstrap);
+            .add(MinejagoRegistries.FOCUS_MODIFIER, MinejagoFocusModifiers::bootstrap)
+            .add(Registries.BIOME, MinejagoBiomes::bootstrap)
+            .add(Registries.DIMENSION_TYPE, MinejagoDimensionTypes::bootstrap)
+            .add(Registries.LEVEL_STEM, MinejagoLevelStems::bootstrap)
+            .add(Registries.NOISE_SETTINGS, MinejagoNoiseGeneratorSettings::bootstrap);
 
     public static void gatherData(GatherDataEvent event) {
         DataGenerator generator = event.getGenerator();

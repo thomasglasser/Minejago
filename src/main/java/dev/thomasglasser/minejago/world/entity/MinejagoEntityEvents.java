@@ -35,6 +35,9 @@ import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.entity.shadow.ShadowClone;
 import dev.thomasglasser.minejago.world.entity.shadow.ShadowSource;
 import dev.thomasglasser.minejago.world.entity.skill.Skill;
+import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;
+import dev.thomasglasser.minejago.world.entity.skulkin.SkulkinHorse;
+import dev.thomasglasser.minejago.world.entity.skulkin.Spykor;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaidsHolder;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
@@ -576,8 +579,11 @@ public class MinejagoEntityEvents {
     }
 
     public static void onRegisterSpawnPlacements(RegisterSpawnPlacementsEvent event) {
-        event.register(MinejagoEntityTypes.ZANE.get(), SpawnPlacementTypes.IN_WATER, Heightmap.Types.OCEAN_FLOOR_WG, Zane::checkZaneSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
+        event.register(MinejagoEntityTypes.ZANE.get(), SpawnPlacementTypes.IN_WATER, Heightmap.Types.OCEAN_FLOOR, Zane::checkZaneSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
         event.register(MinejagoEntityTypes.COLE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Character::checkNaturalCharacterSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
+        event.register(MinejagoEntityTypes.SKULKIN.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Skulkin::checkMonsterSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
+        event.register(MinejagoEntityTypes.SKULKIN_HORSE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, SkulkinHorse::checkSkeletonHorseSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
+        event.register(MinejagoEntityTypes.SPYKOR.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Spykor::checkMonsterSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
     }
 
     public static void onLivingKnockBack(LivingKnockBackEvent event) {
