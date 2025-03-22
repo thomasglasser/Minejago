@@ -26,7 +26,7 @@ public class MinejagoDimensionTypes {
                 1.0,
                 false,
                 true,
-                0,
+                -32,
                 256,
                 128,
                 MinejagoBlockTags.INFINIBURN_UNDERWORLD,

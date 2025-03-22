@@ -52,9 +52,9 @@ public class SkillDataSet {
             if (livingEntity instanceof ServerPlayer player) {
                 TommyLibServices.NETWORK.sendToClient(new ClientboundSkillLevelUpPacket(key), player);
             }
-            put(livingEntity, key, data.increaseLevel(), true);
+            put(livingEntity, key, data.increaseLevel(), !livingEntity.level().isClientSide);
         } else {
-            put(livingEntity, key, data.addPractice(amount), true);
+            put(livingEntity, key, data.addPractice(amount), !livingEntity.level().isClientSide);
         }
     }
 

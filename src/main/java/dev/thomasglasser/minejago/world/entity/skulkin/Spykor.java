@@ -138,9 +138,6 @@ public class Spykor extends Spider implements GeoEntity {
             }
         }
 
-        if (level.getBlockState(blockPosition()).isAir())
-            setClimbing(true);
-
         return spawnGroupData;
     }
 

@@ -1,7 +1,6 @@
 package dev.thomasglasser.minejago.mixin.minecraft.world.item;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.level.MinejagoLevels;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;

@@ -648,10 +648,15 @@ public class MinejagoEntityEvents {
     }
 
     public static void onBlockBreak(BlockEvent.BreakEvent event) {
-        if (event.getPlayer().getMainHandItem().isEmpty())
-            event.getPlayer().getData(MinejagoAttachmentTypes.SKILL).addPractice(event.getPlayer(), Skill.DEXTERITY, event.getState().getBlock().defaultDestroyTime());
-        else if (event.getPlayer().getMainHandItem().isCorrectToolForDrops(event.getState()))
-            event.getPlayer().getData(MinejagoAttachmentTypes.SKILL).addPractice(event.getPlayer(), Skill.TOOL_PROFICIENCY, event.getState().getBlock().defaultDestroyTime());
+        Player player = event.getPlayer();
+        if (!player.getAbilities().instabuild) {
+            SkillDataSet data = player.getData(MinejagoAttachmentTypes.SKILL);
+            float defaultDestroyTime = event.getState().getBlock().defaultDestroyTime();
+            if (player.getMainHandItem().isEmpty())
+                data.addPractice(player, Skill.DEXTERITY, defaultDestroyTime);
+            else if (player.getMainHandItem().isCorrectToolForDrops(event.getState()))
+                data.addPractice(player, Skill.TOOL_PROFICIENCY, defaultDestroyTime);
+        }
     }
 
     public static void onLivingIncomingDamage(LivingIncomingDamageEvent event) {

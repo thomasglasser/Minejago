@@ -16,7 +16,7 @@
   "legacy_random_source": true,
   "noise": {
     "height": 128,
-    "min_y": 0,
+    "min_y": -32,
     "size_horizontal": 2,
     "size_vertical": 1
   },
@@ -137,7 +137,7 @@
     "vein_toggle": 0.0
   },
   "ore_veins_enabled": false,
-  "sea_level": 32,
+  "sea_level": 0,
   "spawn_target": [],
   "surface_rule": {
     "type": "minecraft:block",
