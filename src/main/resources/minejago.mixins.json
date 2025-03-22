@@ -9,6 +9,7 @@
     "minecraft.world.entity.EntityMixin",
     "minecraft.world.entity.ServerPlayerMixin",
     "minecraft.world.entity.player.PlayerMixin",
+    "minecraft.world.item.CompassItemMixin",
     "minecraft.world.level.block.entity.LecternBlockEntityMixin",
     "minecraft.world.level.gameevent.vibrations.VibrationSystemUserMixin"
   ],
