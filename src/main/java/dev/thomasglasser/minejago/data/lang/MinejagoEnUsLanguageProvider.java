@@ -339,8 +339,8 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
     }
 
     protected void addGi(List<ArmorSet> armorSets) {
-        armorSets.forEach(set -> set.getAll().forEach(item -> {
-            String nameForSlot = switch (set.getForItem(item.get())) {
+        armorSets.forEach(set -> set.getAllAsItems().forEach(item -> {
+            String nameForSlot = switch (set.getForItem(item)) {
                 case FEET -> "Boots";
                 case LEGS -> "Pants";
                 case CHEST -> "Jacket";
@@ -348,7 +348,7 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
                 default -> null;
             };
 
-            add(item.get(), set.getDisplayName() + " " + nameForSlot);
+            add(item, set.getDisplayName() + " " + nameForSlot);
         }));
     }
 

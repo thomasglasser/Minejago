@@ -7,7 +7,6 @@ import dev.thomasglasser.minejago.world.item.TeacupItem;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.tommylib.api.data.models.ExtendedItemModelProvider;
-import dev.thomasglasser.tommylib.api.registration.DeferredHolder;
 import java.util.concurrent.CompletableFuture;
 import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.core.HolderLookup;
@@ -117,9 +116,7 @@ public class MinejagoItemModelProvider extends ExtendedItemModelProvider {
         registries.lookupOrThrow(MinejagoRegistries.POWER).listElements().forEach(power -> {
             if (power.value().hasSets()) {
                 MinejagoArmors.POWERED_GI_SETS.forEach(set -> {
-                    // TODO: Add getAllKeys to ArmorSet
-//                    set.getAllKeys().forEach(item -> {
-                    set.getAll().stream().map(DeferredHolder::getKey).forEach(item -> {
+                    set.getAllKeys().forEach(item -> {
                         String path = power.getKey().location().getPath() + "_" + item.location().getPath();
                         singleTexture("item/minejago_armor/" + path, mcLoc("item/generated"), "layer0", modLoc("item/" + path));
                     });
@@ -131,8 +128,8 @@ public class MinejagoItemModelProvider extends ExtendedItemModelProvider {
             }
             if (power.value().hasSpecialSets()) {
                 MinejagoArmors.SPECIAL_POWERED_GI_SETS.forEach(set -> {
-                    set.getAll().forEach(item -> {
-                        String path = power.getKey().location().getPath() + "_" + item.getKey().location().getPath();
+                    set.getAllKeys().forEach(item -> {
+                        String path = power.getKey().location().getPath() + "_" + item.location().getPath();
                         singleTexture("item/minejago_armor/" + path, mcLoc("item/generated"), "layer0", modLoc("item/" + path));
                     });
                 });

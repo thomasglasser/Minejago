@@ -7,7 +7,6 @@ import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.tommylib.api.data.tags.ExtendedItemTagsProvider;
-import dev.thomasglasser.tommylib.api.registration.DeferredHolder;
 import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -70,11 +69,9 @@ public class MinejagoItemTagsProvider extends ExtendedItemTagsProvider {
                 .add(Items.BONE);
 
         IntrinsicTagAppender<Item> gi = tag(MinejagoItemTags.GI);
-        // TODO: Add getAllKeys to ArmorSet
-//        MinejagoArmors.NORMAL_GI_SETS.forEach(set -> gi.addAll(set.getAllKeys()));
-        MinejagoArmors.NORMAL_GI_SETS.forEach(set -> gi.addAll(set.getAll().stream().map(DeferredHolder::getKey).toList()));
-        MinejagoArmors.POWERED_GI_SETS.forEach(set -> gi.addAll(set.getAll().stream().map(DeferredHolder::getKey).toList()));
-        MinejagoArmors.SPECIAL_POWERED_GI_SETS.forEach(set -> gi.addAll(set.getAll().stream().map(DeferredHolder::getKey).toList()));
+        MinejagoArmors.NORMAL_GI_SETS.forEach(set -> gi.addAll(set.getAllKeys()));
+        MinejagoArmors.POWERED_GI_SETS.forEach(set -> gi.addAll(set.getAllKeys()));
+        MinejagoArmors.SPECIAL_POWERED_GI_SETS.forEach(set -> gi.addAll(set.getAllKeys()));
         MinejagoArmors.STANDALONE_GI.forEach(item -> gi.add(item.get()));
         MinejagoArmors.STANDALONE_POWERED_GI.forEach(item -> gi.add(item.get()));
         MinejagoArmors.STANDALONE_SPECIAL_POWERED_GI.forEach(item -> gi.add(item.get()));
