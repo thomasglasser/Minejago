@@ -473,14 +473,18 @@ public class MinejagoEntityEvents {
         }
     }
 
-    public static boolean hasInInventory(LivingEntity livingEntity, Predicate<ItemStack> predicate) {
-        for (ItemStack stack : livingEntity.getAllSlots()) {
-            if (predicate.test(stack)) return true;
-        }
-        if (livingEntity instanceof Player player) {
-            return player.getInventory().items.stream().anyMatch(predicate);
-        } else if (livingEntity instanceof InventoryCarrier carrier && carrier.getInventory().getItems().stream().anyMatch(predicate)) {
-            return true;
+    public static boolean hasInInventory(Entity entity, Predicate<ItemStack> predicate) {
+        if (entity instanceof LivingEntity livingEntity) {
+            for (ItemStack stack : livingEntity.getAllSlots()) {
+                if (predicate.test(stack)) return true;
+            }
+            if (livingEntity instanceof Player player) {
+                return player.getInventory().items.stream().anyMatch(predicate);
+            } else if (livingEntity instanceof InventoryCarrier carrier && carrier.getInventory().getItems().stream().anyMatch(predicate)) {
+                return true;
+            }
+        } else if (entity instanceof ItemEntity itemEntity) {
+            return predicate.test(itemEntity.getItem());
         }
         return false;
     }
