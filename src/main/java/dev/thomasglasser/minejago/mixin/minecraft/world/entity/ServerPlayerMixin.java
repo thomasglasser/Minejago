@@ -4,7 +4,7 @@ import com.mojang.datafixers.util.Either;
 import dev.thomasglasser.minejago.network.ClientboundOpenScrollPayload;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityEvents;
-import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
+import dev.thomasglasser.minejago.world.entity.skulkin.raid.AbstractSkulkinRaid;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaidsHolder;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
@@ -59,7 +59,7 @@ public abstract class ServerPlayerMixin {
 
     @Inject(method = "startSleepInBed", at = @At("HEAD"), cancellable = true)
     private void minejago_startSleepInBed(BlockPos bedPos, CallbackInfoReturnable<Either<Player.BedSleepingProblem, Unit>> cir) {
-        SkulkinRaid raid = ((SkulkinRaidsHolder) serverLevel()).getSkulkinRaidAt(bedPos);
+        AbstractSkulkinRaid raid = SkulkinRaidsHolder.of(serverLevel()).getSkulkinRaidAt(bedPos);
         if (raid != null && raid.isActive())
             cir.setReturnValue(Either.left(Player.BedSleepingProblem.NOT_SAFE));
     }

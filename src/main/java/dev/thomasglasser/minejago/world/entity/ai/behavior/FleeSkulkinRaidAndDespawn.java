@@ -1,17 +1,15 @@
 package dev.thomasglasser.minejago.world.entity.ai.behavior;
 
 import com.mojang.datafixers.util.Pair;
-import dev.thomasglasser.minejago.core.component.MinejagoDataComponents;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.tags.MinejagoEntityTypeTags;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.skulkin.AbstractSkulkinVehicle;
 import dev.thomasglasser.minejago.world.entity.skulkin.SkulkinHorse;
 import dev.thomasglasser.minejago.world.entity.skulkin.SkullTruck;
-import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
+import dev.thomasglasser.minejago.world.entity.skulkin.raid.AbstractSkulkinRaid;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaider;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaidsHolder;
-import dev.thomasglasser.minejago.world.level.MinejagoLevelUtils;
 import java.util.List;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -27,11 +25,12 @@ public class FleeSkulkinRaidAndDespawn<T extends SkulkinRaider> extends Extended
 
     @Override
     protected boolean checkExtraStartConditions(ServerLevel level, T entity) {
+        AbstractSkulkinRaid raid = entity.getCurrentRaid();
         return !BrainUtils.hasMemory(entity, MemoryModuleType.ATTACK_TARGET)
                 && !entity.isVehicle()
-                && entity.getCurrentRaid() != null
-                && entity.getCurrentRaid().getEscapePos() != null
-                && !MinejagoLevelUtils.isGoldenWeaponsMapHolderNearby(entity, 32);
+                && raid != null
+                && raid.isOver()
+                && raid.getEscapePos() != null;
     }
 
     @Override
@@ -41,12 +40,12 @@ public class FleeSkulkinRaidAndDespawn<T extends SkulkinRaider> extends Extended
 
     @Override
     protected void tick(T entity) {
-        SkulkinRaid raid = entity.getCurrentRaid();
+        AbstractSkulkinRaid raid = entity.getCurrentRaid();
         if (raid != null && raid.getEscapePos() != null) {
             if (entity.position().closerThan(raid.getEscapePos(), 5)) {
                 // TODO: Place underworld portal blocks
-                if (entity.getItemInHand(InteractionHand.MAIN_HAND).has(MinejagoDataComponents.GOLDEN_WEAPONS_MAP) || entity.getItemInHand(InteractionHand.OFF_HAND).has(MinejagoDataComponents.GOLDEN_WEAPONS_MAP))
-                    ((SkulkinRaidsHolder) entity.level()).minejago$getSkulkinRaids().setMapTaken();
+                if (raid.isValidRaidItem(entity.getItemInHand(InteractionHand.MAIN_HAND)) || raid.isValidRaidItem(entity.getItemInHand(InteractionHand.OFF_HAND)))
+                    SkulkinRaidsHolder.of(entity.level()).minejago$getSkulkinRaids().setMapTaken();
                 if (entity.getVehicle() != null)
                     entity.getVehicle().remove(Entity.RemovalReason.CHANGED_DIMENSION);
                 entity.remove(Entity.RemovalReason.CHANGED_DIMENSION);

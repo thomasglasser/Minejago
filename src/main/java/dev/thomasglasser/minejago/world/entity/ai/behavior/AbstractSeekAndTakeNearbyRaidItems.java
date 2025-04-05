@@ -7,12 +7,12 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.tslat.smartbrainlib.api.core.behaviour.ExtendedBehaviour;
 
-public abstract class AbstractSeekAndTake<T extends SkulkinRaider> extends ExtendedBehaviour<T> {
+public abstract class AbstractSeekAndTakeNearbyRaidItems<T extends SkulkinRaider> extends ExtendedBehaviour<T> {
     protected static final Pair<MemoryModuleType<?>, MemoryStatus> WALK_TARGET_REQUIREMENT = Pair.of(MemoryModuleType.WALK_TARGET, MemoryStatus.REGISTERED);
 
     protected float speedModifier = 1;
 
-    public AbstractSeekAndTake<T> speedModifier(float speedMod) {
+    public AbstractSeekAndTakeNearbyRaidItems<T> speedModifier(float speedMod) {
         this.speedModifier = speedMod;
 
         return this;

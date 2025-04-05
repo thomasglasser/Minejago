@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class SkulkinRaids extends SavedData {
     private static final String FILE_ID = "skulkin_raids";
-    private final Map<Integer, SkulkinRaid> raidMap = Maps.newHashMap();
+    private final Map<Integer, AbstractSkulkinRaid> raidMap = Maps.newHashMap();
     private final List<AABB> raidedAreas = new ArrayList<>();
     private int nextAvailableID;
     private int tick;
@@ -35,18 +35,18 @@ public class SkulkinRaids extends SavedData {
         this.setDirty();
     }
 
-    public SkulkinRaid get(int id) {
+    public AbstractSkulkinRaid get(int id) {
         return this.raidMap.get(id);
     }
 
     public void tick() {
-        ++this.tick;
-        Iterator<SkulkinRaid> iterator = this.raidMap.values().iterator();
+        this.tick++;
+        Iterator<AbstractSkulkinRaid> iterator = this.raidMap.values().iterator();
 
         while (iterator.hasNext()) {
-            SkulkinRaid raid = iterator.next();
+            AbstractSkulkinRaid raid = iterator.next();
             if (!MinejagoServerConfig.get().enableSkulkinRaids.get()) {
-                raid.stop();
+                raid.setStopped();
             }
 
             if (raid.isStopped()) {
@@ -56,13 +56,9 @@ public class SkulkinRaids extends SavedData {
                 raid.tick();
             }
         }
-
-        if (this.tick % 200 == 0) {
-            this.setDirty();
-        }
     }
 
-    public static boolean canJoinSkulkinRaid(SkulkinRaider raider, SkulkinRaid raid) {
+    public static boolean canJoinSkulkinRaid(SkulkinRaider raider, AbstractSkulkinRaid raid) {
         if (raider != null && raid != null && raid.getLevel() != null) {
             return raider.isAlive() && raider.getNoActionTime() <= 2400 && raider.level().dimensionType() == raid.getLevel().dimensionType();
         } else {
@@ -71,17 +67,17 @@ public class SkulkinRaids extends SavedData {
     }
 
     @Nullable
-    public SkulkinRaid createOrExtendSkulkinRaid(ServerPlayer serverPlayer) {
+    public AbstractSkulkinRaid createOrExtendSkulkinRaid(ServerPlayer serverPlayer, BlockPos center, AbstractSkulkinRaid.Type type) {
         if (serverPlayer.isSpectator()) {
             return null;
         } else if (!MinejagoServerConfig.get().enableSkulkinRaids.get()) {
             return null;
-        } else if (!isRaidedChunk(serverPlayer.blockPosition())) {
-            SkulkinRaid raid = this.getOrCreateSkulkinRaid(serverPlayer.serverLevel(), serverPlayer.blockPosition());
+        } else if (!isRaidedChunk(center)) {
+            AbstractSkulkinRaid raid = this.getOrCreateSkulkinRaid(serverPlayer.serverLevel(), center, type);
             if (!raid.isStarted()) {
                 if (!this.raidMap.containsKey(raid.getId())) {
                     this.raidMap.put(raid.getId(), raid);
-                    raidedAreas.add(AABB.ofSize(serverPlayer.blockPosition().getCenter(), SkulkinRaid.VALID_RAID_RADIUS, SkulkinRaid.VALID_RAID_RADIUS, SkulkinRaid.VALID_RAID_RADIUS));
+                    raidedAreas.add(AABB.ofSize(center.getCenter(), AbstractSkulkinRaid.VALID_RAID_RADIUS, AbstractSkulkinRaid.VALID_RAID_RADIUS, AbstractSkulkinRaid.VALID_RAID_RADIUS));
                 }
             }
             this.setDirty();
@@ -91,16 +87,16 @@ public class SkulkinRaids extends SavedData {
     }
 
     public boolean hasAnyRaidsActive() {
-        return raidMap.values().stream().anyMatch(SkulkinRaid::isActive);
+        return raidMap.values().stream().anyMatch(AbstractSkulkinRaid::isActive);
     }
 
     public void removeRaidedArea(BlockPos pos) {
         raidedAreas.removeIf(area -> area.contains(pos.getX(), pos.getY(), pos.getZ()));
     }
 
-    private SkulkinRaid getOrCreateSkulkinRaid(ServerLevel serverLevel, BlockPos pos) {
-        SkulkinRaid raid = ((SkulkinRaidsHolder) serverLevel).getSkulkinRaidAt(pos);
-        return raid != null ? raid : new SkulkinRaid(this.getUniqueId(), serverLevel, pos);
+    private AbstractSkulkinRaid getOrCreateSkulkinRaid(ServerLevel serverLevel, BlockPos center, AbstractSkulkinRaid.Type type) {
+        AbstractSkulkinRaid raid = SkulkinRaidsHolder.of(serverLevel).getSkulkinRaidAt(center);
+        return raid != null ? raid : type.create(serverLevel, this.getUniqueId(), center);
     }
 
     public static SkulkinRaids load(ServerLevel level, CompoundTag tag) {
@@ -112,7 +108,8 @@ public class SkulkinRaids extends SavedData {
         ListTag raidsTag = tag.getList("SkulkinRaids", 10);
         for (int i = 0; i < raidsTag.size(); ++i) {
             CompoundTag compoundTag = raidsTag.getCompound(i);
-            SkulkinRaid raid = new SkulkinRaid(level, compoundTag);
+            AbstractSkulkinRaid.Type type = AbstractSkulkinRaid.Type.of(compoundTag.getString("Type"));
+            AbstractSkulkinRaid raid = type.load(level, compoundTag);
             raids.raidMap.put(raid.getId(), raid);
         }
 
@@ -134,7 +131,7 @@ public class SkulkinRaids extends SavedData {
         compoundTag.putBoolean("MapTaken", mapTaken);
 
         ListTag listTag = new ListTag();
-        for (SkulkinRaid raid : this.raidMap.values()) {
+        for (AbstractSkulkinRaid raid : this.raidMap.values()) {
             CompoundTag compoundTag2 = new CompoundTag();
             raid.save(compoundTag2);
             listTag.add(compoundTag2);
@@ -168,19 +165,19 @@ public class SkulkinRaids extends SavedData {
     }
 
     @Nullable
-    public SkulkinRaid getNearbySkulkinRaid(BlockPos pos, int distance) {
-        SkulkinRaid raid = null;
+    public AbstractSkulkinRaid getNearbySkulkinRaid(BlockPos pos, int distance) {
+        AbstractSkulkinRaid nearby = null;
         double d = distance;
 
-        for (SkulkinRaid raid2 : this.raidMap.values()) {
-            double e = raid2.getCenter().distSqr(pos);
-            if (raid2.isActive() && e < d) {
-                raid = raid2;
+        for (AbstractSkulkinRaid raid : this.raidMap.values()) {
+            double e = raid.getCenter().distSqr(pos);
+            if (raid.isActive() && e < d) {
+                nearby = raid;
                 d = e;
             }
         }
 
-        return raid;
+        return nearby;
     }
 
     public void setMapTaken() {

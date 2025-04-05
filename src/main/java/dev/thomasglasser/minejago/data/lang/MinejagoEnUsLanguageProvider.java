@@ -32,7 +32,8 @@ import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
 import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.entity.skill.Skill;
 import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;
-import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
+import dev.thomasglasser.minejago.world.entity.skulkin.raid.AbstractSkulkinRaid;
+import dev.thomasglasser.minejago.world.entity.skulkin.raid.FourWeaponsSkulkinRaid;
 import dev.thomasglasser.minejago.world.entity.spinjitzucourse.AbstractSpinjitzuCourseElement;
 import dev.thomasglasser.minejago.world.item.FilledTeacupItem;
 import dev.thomasglasser.minejago.world.item.MinejagoCreativeModeTabs;
@@ -251,10 +252,10 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
 
         add(ScrollViewScreen.TAKE_SCROLL, "Take Scroll");
 
-        add(SkulkinRaid.RAID_NAME_COMPONENT, "Skulkin Raid");
-        add(SkulkinRaid.RAID_BAR_VICTORY_COMPONENT, "Skulkin Raid - Victory");
-        add(SkulkinRaid.RAID_BAR_DEFEAT_COMPONENT, "Skulkin Raid - Defeat");
-        add(SkulkinRaid.SKULKIN_REMAINING, "Skulkin Remaining: %s");
+        add(AbstractSkulkinRaid.SKULKIN_REMAINING, "Skulkin Remaining: %s");
+        add(FourWeaponsSkulkinRaid.NAME_COMPONENT, "Four Weapons Skulkin Raid");
+        add(FourWeaponsSkulkinRaid.VICTORY_COMPONENT, "Four Weapons Skulkin Raid - Victory");
+        add(FourWeaponsSkulkinRaid.DEFEAT_COMPONENT, "Four Weapons Skulkin Raid - Defeat");
 
         add(TeapotBrewingRecipeCategory.RECIPE_KEY, "Teapot Brewing");
 
@@ -306,7 +307,6 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(MinejagoItems.SCROLL.get(), "Scroll");
         add(MinejagoItems.WRITABLE_SCROLL.get(), "Scroll and Quill");
         add(MinejagoItems.WRITTEN_SCROLL.get(), "Written Scroll");
-        add(SkulkinRaid.CURSED_BANNER_PATTERN_NAME, "Cursed Banner");
 
         // Teas
         add(MinejagoItems.TEACUP.get(), "Teacup");

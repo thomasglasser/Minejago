@@ -26,7 +26,7 @@ public class SkulkinArmySpawner implements CustomSpawner {
     public int tick(ServerLevel level, boolean spawnEnemies, boolean spawnFriendlies) {
         if (!spawnEnemies) {
             return 0;
-        } else if (!((SkulkinRaidsHolder) level).minejago$getSkulkinRaids().isMapTaken()) {
+        } else if (!SkulkinRaidsHolder.of(level).minejago$getSkulkinRaids().isMapTaken()) {
             return 0;
         } else if (!MinejagoServerConfig.get().enableSkulkinRaids.get()) {
             return 0;

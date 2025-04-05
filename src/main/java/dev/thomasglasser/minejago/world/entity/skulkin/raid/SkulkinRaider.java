@@ -1,11 +1,10 @@
 package dev.thomasglasser.minejago.world.entity.skulkin.raid;
 
-import dev.thomasglasser.minejago.core.component.MinejagoDataComponents;
 import dev.thomasglasser.minejago.tags.MinejagoEntityTypeTags;
 import dev.thomasglasser.minejago.world.entity.ai.behavior.FleeSkulkinRaidAndDespawn;
 import dev.thomasglasser.minejago.world.entity.ai.behavior.PathfindToSkulkinRaid;
-import dev.thomasglasser.minejago.world.entity.ai.behavior.SeekAndTakeHiddenFourWeaponsMap;
-import dev.thomasglasser.minejago.world.entity.ai.behavior.SeekAndTakeNearbyItems;
+import dev.thomasglasser.minejago.world.entity.ai.behavior.SeekAndTakeNearbyBlockRaidItems;
+import dev.thomasglasser.minejago.world.entity.ai.behavior.SeekAndTakeNearbyDroppedRaidItems;
 import dev.thomasglasser.minejago.world.entity.ai.memory.MinejagoMemoryModuleTypes;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import java.util.List;
@@ -70,7 +69,7 @@ import org.jetbrains.annotations.Nullable;
 
 public abstract class SkulkinRaider extends Skeleton implements SmartBrainOwner<SkulkinRaider> {
     @Nullable
-    protected SkulkinRaid raid;
+    protected AbstractSkulkinRaid raid;
     private int wave;
     private int ticksOutsideRaid;
 
@@ -150,8 +149,8 @@ public abstract class SkulkinRaider extends Skeleton implements SmartBrainOwner<
         return new BrainActivityGroup<SkulkinRaider>(Activity.RAID)
                 .onlyStartWithMemoryStatus(MinejagoMemoryModuleTypes.IN_RAID.get(), MemoryStatus.VALUE_PRESENT)
                 .priority(10).behaviours(
-                        new SeekAndTakeNearbyItems<>().speedModifier(1.5F).setPredicate(stack -> stack.has(MinejagoDataComponents.GOLDEN_WEAPONS_MAP.get())),
-                        new SeekAndTakeHiddenFourWeaponsMap<>(),
+                        new SeekAndTakeNearbyDroppedRaidItems<>().speedModifier(1.5F),
+                        new SeekAndTakeNearbyBlockRaidItems<>(),
                         new FleeSkulkinRaidAndDespawn<>(),
                         new PathfindToSkulkinRaid<>());
     }
@@ -182,12 +181,14 @@ public abstract class SkulkinRaider extends Skeleton implements SmartBrainOwner<
 
     @Override
     public boolean wantsToPickUp(ItemStack stack) {
-        return stack.has(MinejagoDataComponents.GOLDEN_WEAPONS_MAP.get());
+        AbstractSkulkinRaid raid = getCurrentRaid();
+        return raid != null && raid.isValidRaidItem(stack);
     }
 
     @Override
     public EquipmentSlot getEquipmentSlotForItem(ItemStack stack) {
-        if (stack.has(MinejagoDataComponents.GOLDEN_WEAPONS_MAP.get()))
+        AbstractSkulkinRaid raid = getCurrentRaid();
+        if (raid != null && raid.isValidRaidItem(stack))
             return EquipmentSlot.OFFHAND;
         return super.getEquipmentSlotForItem(stack);
     }
@@ -215,7 +216,7 @@ public abstract class SkulkinRaider extends Skeleton implements SmartBrainOwner<
         this.wave = pCompound.getInt("Wave");
         if (pCompound.contains("SkulkinRaidId", 3)) {
             if (this.level() instanceof ServerLevel) {
-                this.raid = ((SkulkinRaidsHolder) this.level()).minejago$getSkulkinRaids().get(pCompound.getInt("SkulkinRaidId"));
+                this.raid = SkulkinRaidsHolder.of(level()).minejago$getSkulkinRaids().get(pCompound.getInt("SkulkinRaidId"));
             }
 
             if (this.raid != null) {
@@ -237,12 +238,12 @@ public abstract class SkulkinRaider extends Skeleton implements SmartBrainOwner<
         super.aiStep();
 
         if (this.level() instanceof ServerLevel && this.isAlive()) {
-            SkulkinRaid raid = this.getCurrentRaid();
+            AbstractSkulkinRaid raid = this.getCurrentRaid();
             if (raid == null) {
                 if (this.level().getGameTime() % 20L == 0L) {
-                    SkulkinRaid raid2 = ((SkulkinRaidsHolder) this.level()).getSkulkinRaidAt(this.blockPosition());
-                    if (raid2 != null && SkulkinRaids.canJoinSkulkinRaid(this, raid2)) {
-                        raid2.joinRaid(raid2.getGroupsSpawned(), this, null, true);
+                    AbstractSkulkinRaid raidAtPos = SkulkinRaidsHolder.of(this.level()).getSkulkinRaidAt(this.blockPosition());
+                    if (raidAtPos != null && SkulkinRaids.canJoinSkulkinRaid(this, raidAtPos)) {
+                        raidAtPos.joinRaid(raidAtPos.getGroupsSpawned(), this, null, true);
                     }
                 }
             } else {
@@ -262,7 +263,7 @@ public abstract class SkulkinRaider extends Skeleton implements SmartBrainOwner<
     @Override
     public void die(DamageSource damageSource) {
         if (this.level() instanceof ServerLevel) {
-            SkulkinRaid raid = this.getCurrentRaid();
+            AbstractSkulkinRaid raid = this.getCurrentRaid();
             if (raid != null) {
                 raid.removeFromRaid(this, false);
             }
@@ -271,7 +272,7 @@ public abstract class SkulkinRaider extends Skeleton implements SmartBrainOwner<
         super.die(damageSource);
     }
 
-    public void setCurrentRaid(@Nullable SkulkinRaid raid) {
+    public void setCurrentRaid(@Nullable AbstractSkulkinRaid raid) {
         this.raid = raid;
         if (raid != null) {
             brain.setMemory(MinejagoMemoryModuleTypes.IN_RAID.get(), Unit.INSTANCE);
@@ -281,7 +282,7 @@ public abstract class SkulkinRaider extends Skeleton implements SmartBrainOwner<
     }
 
     @Nullable
-    public SkulkinRaid getCurrentRaid() {
+    public AbstractSkulkinRaid getCurrentRaid() {
         return this.raid;
     }
 
@@ -312,8 +313,9 @@ public abstract class SkulkinRaider extends Skeleton implements SmartBrainOwner<
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if (this.hasActiveRaid()) {
-            this.getCurrentRaid().updateBossbar();
+        AbstractSkulkinRaid raid = this.getCurrentRaid();
+        if (this.hasActiveRaid() && raid != null) {
+            raid.updateBossbar();
         }
 
         return super.hurt(source, amount);

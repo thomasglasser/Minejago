@@ -19,7 +19,7 @@ public class MinejagoMemoryModuleTypes {
     public static final DeferredHolder<MemoryModuleType<?>, MemoryModuleType<Unit>> IN_RAID = register("in_raid", Unit.CODEC);
 
     public static <T> DeferredHolder<MemoryModuleType<?>, MemoryModuleType<T>> register(String id, Codec<T> codec) {
-        return MEMORY_MODULE_TYPES.register(id, () -> new MemoryModuleType<T>(Optional.of(codec)));
+        return MEMORY_MODULE_TYPES.register(id, () -> new MemoryModuleType<>(Optional.of(codec)));
     }
 
     public static void init() {}

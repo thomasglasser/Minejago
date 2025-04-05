@@ -38,7 +38,7 @@ import dev.thomasglasser.minejago.world.entity.skill.Skill;
 import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;
 import dev.thomasglasser.minejago.world.entity.skulkin.SkulkinHorse;
 import dev.thomasglasser.minejago.world.entity.skulkin.Spykor;
-import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaid;
+import dev.thomasglasser.minejago.world.entity.skulkin.raid.AbstractSkulkinRaid;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaidsHolder;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
 import dev.thomasglasser.minejago.world.focus.FocusData;
@@ -321,8 +321,9 @@ public class MinejagoEntityEvents {
                     }
                 }
 
-                if (MinejagoLevelUtils.isGoldenWeaponsMapHolderNearby(serverPlayer, SkulkinRaid.PAINTING_RADIUS_BUFFER)) {
-                    ((SkulkinRaidsHolder) serverLevel).minejago$getSkulkinRaids().createOrExtendSkulkinRaid(serverPlayer);
+                Painting fw = MinejagoLevelUtils.getGoldenWeaponsMapHolderNearby(serverPlayer, AbstractSkulkinRaid.CENTER_RADIUS_BUFFER);
+                if (fw != null) {
+                    SkulkinRaidsHolder.of(serverLevel).minejago$getSkulkinRaids().createOrExtendSkulkinRaid(serverPlayer, fw.blockPosition(), AbstractSkulkinRaid.Type.FOUR_WEAPONS);
                 }
 
                 persistentData.putBoolean(KEY_IS_IN_CAVE_OF_DESPAIR, MinejagoLevelUtils.isStructureInRange(MinejagoStructureTags.CAVE_OF_DESPAIR, serverLevel, serverPlayer.blockPosition(), 64));
@@ -495,7 +496,7 @@ public class MinejagoEntityEvents {
         Entity entity = event.getTarget();
         CompoundTag persistentData = TommyLibServices.ENTITY.getPersistentData(entity);
         if (level instanceof ServerLevel serverLevel && hand == InteractionHand.MAIN_HAND && entity instanceof Painting painting && painting.getVariant().is(MinejagoPaintingVariants.FOUR_WEAPONS) && !persistentData.getBoolean("MapTaken")) {
-            player.addItem(MinejagoItemUtils.createFourWeaponsMaps(serverLevel, player));
+            player.addItem(MinejagoItemUtils.createFourWeaponsMaps(serverLevel, player.blockPosition()));
             if (!player.isCreative()) {
                 persistentData.putBoolean("MapTaken", true);
                 persistentData.putBoolean("MapTakenByPlayer", true);

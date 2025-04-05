@@ -12,8 +12,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Unit;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.MapItem;
@@ -30,31 +28,30 @@ public final class MinejagoItemUtils {
 
     private MinejagoItemUtils() {}
 
-    public static ItemStack createGoldenWeaponsMap(ServerLevel serverLevel, Entity entity, TagKey<Structure> structure, Holder<MapDecorationType> decoration) {
-        BlockPos pos = serverLevel.findNearestMapStructure(structure, entity.blockPosition(), RADIUS, true);
-        if (pos == null) {
-            if (entity instanceof Player player)
-                player.displayClientMessage(Component.translatable(NO_STRUCTURES_FOUND, Component.translatable(Tags.getTagTranslationKey(structure))), true);
+    public static ItemStack createGoldenWeaponsMap(ServerLevel serverLevel, BlockPos pos, TagKey<Structure> structure, Holder<MapDecorationType> decoration) {
+        BlockPos structurePos = serverLevel.findNearestMapStructure(structure, pos, RADIUS, true);
+        if (structurePos == null) {
+            serverLevel.getServer().sendSystemMessage(Component.translatable(NO_STRUCTURES_FOUND, Component.translatable(Tags.getTagTranslationKey(structure))));
             return ItemStack.EMPTY;
         }
-        ItemStack map = newMap(serverLevel, pos);
-        MapItemSavedData.addTargetDecoration(map, pos, "structure", decoration);
+        ItemStack map = newMap(serverLevel, structurePos);
+        MapItemSavedData.addTargetDecoration(map, structurePos, "structure", decoration);
         map.set(MinejagoDataComponents.GOLDEN_WEAPONS_MAP.get(), Unit.INSTANCE);
         map.set(DataComponents.CUSTOM_NAME, Component.translatable(Tags.getTagTranslationKey(structure)));
         return map;
     }
 
-    public static ItemStack createFourWeaponsMaps(ServerLevel serverLevel, Entity entity) {
+    public static ItemStack createFourWeaponsMaps(ServerLevel serverLevel, BlockPos pos) {
         ItemStack bundle = Items.BUNDLE.getDefaultInstance();
         List<ItemStack> maps = new ArrayList<>();
-        maps.add(createGoldenWeaponsMap(serverLevel, entity, MinejagoStructureTags.FOUR_WEAPONS, MinejagoMapDecorationTypes.FOUR_WEAPONS.asReferenceFrom(serverLevel.registryAccess())));
-        maps.add(createGoldenWeaponsMap(serverLevel, entity, MinejagoStructureTags.NINJAGO_CITY, MinejagoMapDecorationTypes.NINJAGO_CITY.asReferenceFrom(serverLevel.registryAccess())));
-        maps.add(createGoldenWeaponsMap(serverLevel, entity, MinejagoStructureTags.MONASTERY_OF_SPINJITZU, MinejagoMapDecorationTypes.MONASTERY_OF_SPINJITZU.asReferenceFrom(serverLevel.registryAccess())));
-        maps.add(createGoldenWeaponsMap(serverLevel, entity, MinejagoStructureTags.CAVE_OF_DESPAIR, MinejagoMapDecorationTypes.CAVE_OF_DESPAIR.asReferenceFrom(serverLevel.registryAccess())));
+        maps.add(createGoldenWeaponsMap(serverLevel, pos, MinejagoStructureTags.FOUR_WEAPONS, MinejagoMapDecorationTypes.FOUR_WEAPONS.asReferenceFrom(serverLevel.registryAccess())));
+        maps.add(createGoldenWeaponsMap(serverLevel, pos, MinejagoStructureTags.NINJAGO_CITY, MinejagoMapDecorationTypes.NINJAGO_CITY.asReferenceFrom(serverLevel.registryAccess())));
+        maps.add(createGoldenWeaponsMap(serverLevel, pos, MinejagoStructureTags.MONASTERY_OF_SPINJITZU, MinejagoMapDecorationTypes.MONASTERY_OF_SPINJITZU.asReferenceFrom(serverLevel.registryAccess())));
+        maps.add(createGoldenWeaponsMap(serverLevel, pos, MinejagoStructureTags.CAVE_OF_DESPAIR, MinejagoMapDecorationTypes.CAVE_OF_DESPAIR.asReferenceFrom(serverLevel.registryAccess())));
         // TODO: Add other structures
-//        maps.add(createGoldenWeaponsMap(serverLevel, entity, MinejagoStructureTags.ICE_TEMPLE, MinejagoMapDecorationTypes.ICE_TEMPLE.asReferenceFrom(serverLevel.registryAccess())));
-//        maps.add(createGoldenWeaponsMap(serverLevel, entity, MinejagoStructureTags.FLOATING_RUINS, MinejagoMapDecorationTypes.FLOATING_RUINS.asReferenceFrom(serverLevel.registryAccess())));
-//        maps.add(createGoldenWeaponsMap(serverLevel, entity, MinejagoStructureTags.FIRE_TEMPLE, MinejagoMapDecorationTypes.FIRE_TEMPLE.asReferenceFrom(serverLevel.registryAccess())));
+//        maps.add(createGoldenWeaponsMap(serverLevel, pos, MinejagoStructureTags.ICE_TEMPLE, MinejagoMapDecorationTypes.ICE_TEMPLE.asReferenceFrom(serverLevel.registryAccess())));
+//        maps.add(createGoldenWeaponsMap(serverLevel, pos, MinejagoStructureTags.FLOATING_RUINS, MinejagoMapDecorationTypes.FLOATING_RUINS.asReferenceFrom(serverLevel.registryAccess())));
+//        maps.add(createGoldenWeaponsMap(serverLevel, pos, MinejagoStructureTags.FIRE_TEMPLE, MinejagoMapDecorationTypes.FIRE_TEMPLE.asReferenceFrom(serverLevel.registryAccess())));
         maps.removeIf(ItemStack::isEmpty);
         BundleContents contents = new BundleContents(maps);
         bundle.set(DataComponents.BUNDLE_CONTENTS, contents);

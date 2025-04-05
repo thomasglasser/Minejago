@@ -7,7 +7,14 @@ public interface SkulkinRaidsHolder {
     SkulkinRaids minejago$getSkulkinRaids();
 
     @Nullable
-    default SkulkinRaid getSkulkinRaidAt(BlockPos pos) {
-        return this.minejago$getSkulkinRaids().getNearbySkulkinRaid(pos, SkulkinRaid.VALID_RAID_RADIUS_SQR);
+    default AbstractSkulkinRaid getSkulkinRaidAt(BlockPos pos) {
+        return this.minejago$getSkulkinRaids().getNearbySkulkinRaid(pos, AbstractSkulkinRaid.VALID_RAID_RADIUS_SQR);
+    }
+
+    static SkulkinRaidsHolder of(Object object) {
+        if (object instanceof SkulkinRaidsHolder skulkinRaidsHolder) {
+            return skulkinRaidsHolder;
+        }
+        throw new IllegalArgumentException("Object" + object + " is not a SkulkinRaidsHolder");
     }
 }
