@@ -23,6 +23,7 @@ import dev.thomasglasser.minejago.world.entity.MinejagoEntitySerializers;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.ai.memory.MinejagoMemoryModuleTypes;
 import dev.thomasglasser.minejago.world.entity.ai.poi.MinejagoPoiTypes;
+import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaidTypes;
 import dev.thomasglasser.minejago.world.focus.modifier.MinejagoFocusModifierSerializers;
 import dev.thomasglasser.minejago.world.item.MinejagoCreativeModeTabs;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
@@ -117,6 +118,7 @@ public class Minejago {
         MinejagoArgumentTypes.init();
         MinejagoFocusModifierSerializers.init();
         MinejagoBiomeSources.init();
+        SkulkinRaidTypes.init();
 
         if (FMLEnvironment.dist.isClient())
             MinejagoKeyMappings.init();

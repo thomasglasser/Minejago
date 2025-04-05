@@ -23,6 +23,13 @@ public class FourWeaponsSkulkinRaid extends AbstractSkulkinRaid {
         super(level, compound, NAME_COMPONENT);
     }
 
+    public static @Nullable BlockPos findValidRaidCenter(ServerLevel level, BlockPos pos) {
+        Painting fw = MinejagoLevelUtils.getGoldenWeaponsMapHolderNearby(level, pos, VALID_RAID_RADIUS);
+        if (fw != null)
+            return fw.blockPosition();
+        return null;
+    }
+
     @Override
     public boolean isValidRaidItem(ItemStack stack) {
         return stack.has(MinejagoDataComponents.GOLDEN_WEAPONS_MAP.get());
@@ -51,7 +58,7 @@ public class FourWeaponsSkulkinRaid extends AbstractSkulkinRaid {
     }
 
     @Override
-    protected Type getType() {
-        return Type.FOUR_WEAPONS;
+    protected SkulkinRaidType getType() {
+        return SkulkinRaidTypes.FOUR_WEAPONS.get();
     }
 }

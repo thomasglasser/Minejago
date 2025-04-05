@@ -43,6 +43,7 @@ public class MinejagoCoreEvents {
 
     public static void onNewRegistry(NewRegistryEvent event) {
         event.register(MinejagoBuiltInRegistries.FOCUS_MODIFIER_SERIALIZER);
+        event.register(MinejagoBuiltInRegistries.SKULKIN_RAID_TYPES);
     }
 
     public static void onNewDataPackRegistry(DataPackRegistryEvent.NewRegistry event) {

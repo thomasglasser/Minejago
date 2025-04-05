@@ -500,6 +500,10 @@
     "minejago:lightning",
     "minejago:none"
   ],
+  "minejago:skulkin_raid_types": [
+    "minejago:four_weapons",
+    "minejago:golden_weapons"
+  ],
   "neoforge:attachment_types": [
     "minejago:focus",
     "minejago:power",

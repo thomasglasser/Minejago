@@ -1,6 +1,8 @@
 package dev.thomasglasser.minejago.world.entity.skulkin.raid;
 
 import com.google.common.collect.Maps;
+import dev.thomasglasser.minejago.Minejago;
+import dev.thomasglasser.minejago.core.registries.MinejagoBuiltInRegistries;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -10,6 +12,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.datafix.DataFixTypes;
@@ -61,7 +64,7 @@ public class SkulkinRaids extends SavedData {
     public void checkRaidCenters(ServerPlayer serverPlayer) {
         BlockPos pos = serverPlayer.blockPosition();
         if (getSkulkinRaidAt(pos) == null && !isRaidedChunk(pos)) {
-            for (AbstractSkulkinRaid.Type type : AbstractSkulkinRaid.Type.values()) {
+            for (SkulkinRaidType type : MinejagoBuiltInRegistries.SKULKIN_RAID_TYPES) {
                 BlockPos center = type.findValidRaidCenter(serverPlayer.serverLevel(), pos);
                 if (center != null) {
                     createOrExtendSkulkinRaid(serverPlayer, center, type);
@@ -80,7 +83,7 @@ public class SkulkinRaids extends SavedData {
     }
 
     @Nullable
-    public AbstractSkulkinRaid createOrExtendSkulkinRaid(ServerPlayer serverPlayer, BlockPos center, AbstractSkulkinRaid.Type type) {
+    public AbstractSkulkinRaid createOrExtendSkulkinRaid(ServerPlayer serverPlayer, BlockPos center, SkulkinRaidType type) {
         if (serverPlayer.isSpectator()) {
             return null;
         } else if (!MinejagoServerConfig.get().enableSkulkinRaids.get()) {
@@ -107,7 +110,7 @@ public class SkulkinRaids extends SavedData {
         raidedAreas.removeIf(area -> area.contains(pos.getX(), pos.getY(), pos.getZ()));
     }
 
-    private AbstractSkulkinRaid getOrCreateSkulkinRaid(ServerLevel serverLevel, BlockPos center, AbstractSkulkinRaid.Type type) {
+    private AbstractSkulkinRaid getOrCreateSkulkinRaid(ServerLevel serverLevel, BlockPos center, SkulkinRaidType type) {
         AbstractSkulkinRaid raid = getSkulkinRaidAt(center);
         return raid != null ? raid : type.create(serverLevel, this.getUniqueId(), center);
     }
@@ -121,9 +124,14 @@ public class SkulkinRaids extends SavedData {
         ListTag raidsTag = tag.getList("SkulkinRaids", 10);
         for (int i = 0; i < raidsTag.size(); ++i) {
             CompoundTag compoundTag = raidsTag.getCompound(i);
-            AbstractSkulkinRaid.Type type = AbstractSkulkinRaid.Type.of(compoundTag.getString("Type"));
-            AbstractSkulkinRaid raid = type.load(level, compoundTag);
-            raids.raidMap.put(raid.getId(), raid);
+            String key = compoundTag.getString("Type");
+            SkulkinRaidType type = MinejagoBuiltInRegistries.SKULKIN_RAID_TYPES.get(ResourceLocation.tryParse(key));
+            if (type != null) {
+                AbstractSkulkinRaid raid = type.load(level, compoundTag);
+                raids.raidMap.put(raid.getId(), raid);
+            } else {
+                Minejago.LOGGER.warn("Unknown skulkin raid type {}, discarding", key);
+            }
         }
 
         ListTag raidedAreasTag = tag.getList("RaidedAreas", 10);

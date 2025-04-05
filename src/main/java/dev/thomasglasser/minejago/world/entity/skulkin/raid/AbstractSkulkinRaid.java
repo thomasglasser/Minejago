@@ -3,6 +3,7 @@ package dev.thomasglasser.minejago.world.entity.skulkin.raid;
 import com.google.common.collect.Sets;
 import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
 import dev.thomasglasser.minejago.advancements.criterion.SkulkinRaidTrigger;
+import dev.thomasglasser.minejago.core.registries.MinejagoBuiltInRegistries;
 import dev.thomasglasser.minejago.network.ClientboundAddSkulkinRaidPayload;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
@@ -11,8 +12,6 @@ import dev.thomasglasser.minejago.world.entity.skulkin.Kruncha;
 import dev.thomasglasser.minejago.world.entity.skulkin.Nuckal;
 import dev.thomasglasser.minejago.world.entity.skulkin.Samukai;
 import dev.thomasglasser.minejago.world.entity.skulkin.SkullTruck;
-import dev.thomasglasser.minejago.world.level.MinejagoLevelUtils;
-import dev.thomasglasser.minejago.world.level.block.GoldenWeaponHolder;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,7 +24,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.BiFunction;
 import java.util.stream.Stream;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
@@ -33,13 +31,13 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundSoundPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
@@ -48,16 +46,11 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnPlacementType;
 import net.minecraft.world.entity.SpawnPlacements;
-import net.minecraft.world.entity.decoration.Painting;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.EventHooks;
-import org.apache.commons.lang3.function.TriFunction;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractSkulkinRaid {
@@ -686,7 +679,9 @@ public abstract class AbstractSkulkinRaid {
     }
 
     public CompoundTag save(CompoundTag compound) {
-        compound.putString("Type", this.getType().getSerializedName());
+        ResourceLocation key = MinejagoBuiltInRegistries.SKULKIN_RAID_TYPES.getKey(this.getType());
+        if (key == null) throw new IllegalStateException("SkulkinRaidType " + this.getType() + " is not registered");
+        compound.putString("Type", key.toString());
         compound.putInt("Id", this.id);
         compound.putInt("NumGroups", this.numGroups);
         compound.putBoolean("Started", this.started);
@@ -708,7 +703,7 @@ public abstract class AbstractSkulkinRaid {
         return compound;
     }
 
-    protected abstract Type getType();
+    protected abstract SkulkinRaidType getType();
 
     enum SkulkinRaidStatus {
         ONGOING,
@@ -728,71 +723,6 @@ public abstract class AbstractSkulkinRaid {
 
         public String getName() {
             return this.name().toLowerCase(Locale.ROOT);
-        }
-    }
-
-    public enum Type implements StringRepresentable {
-        FOUR_WEAPONS(FourWeaponsSkulkinRaid::new, FourWeaponsSkulkinRaid::new, (level, pos) -> {
-            Painting fw = MinejagoLevelUtils.getGoldenWeaponsMapHolderNearby(level, pos, VALID_RAID_RADIUS);
-            if (fw != null)
-                return fw.blockPosition();
-            return null;
-        }),
-        GOLDEN_WEAPON(GoldenWeaponSkulkinRaid::new, GoldenWeaponSkulkinRaid::new, (level, pos) -> {
-            if (!SkulkinRaidsHolder.of(level).minejago$getSkulkinRaids().isMapTaken())
-                return null;
-            BlockPos center = null;
-            double minDist = Double.MAX_VALUE;
-            AABB toCheck = AABB.ofSize(pos.getCenter(), VALID_RAID_RADIUS, VALID_RAID_RADIUS, VALID_RAID_RADIUS);
-            ChunkPos min = new ChunkPos(new BlockPos((int) toCheck.minX, (int) toCheck.minY, (int) toCheck.minZ));
-            ChunkPos max = new ChunkPos(new BlockPos((int) toCheck.maxX, (int) toCheck.maxY, (int) toCheck.maxZ));
-            for (int x = min.x; x <= max.x; x++) {
-                for (int z = min.z; z <= max.z; z++) {
-                    for (Map.Entry<BlockPos, BlockEntity> entry : level.getChunk(x, z).getBlockEntities().entrySet()) {
-                        BlockPos blockPos = entry.getKey();
-                        BlockEntity blockEntity = entry.getValue();
-                        if (blockEntity instanceof GoldenWeaponHolder goldenWeaponHolder && goldenWeaponHolder.hasGoldenWeapon()) {
-                            double dist = pos.distSqr(blockPos);
-                            if (dist < minDist) {
-                                center = blockPos;
-                                minDist = dist;
-                            }
-                        }
-                    }
-                }
-            }
-            return center;
-        });
-
-        private final TriFunction<ServerLevel, Integer, BlockPos, AbstractSkulkinRaid> createConstructor;
-        private final BiFunction<ServerLevel, CompoundTag, AbstractSkulkinRaid> loadConstructor;
-        private final BiFunction<ServerLevel, BlockPos, @Nullable BlockPos> centerFunction;
-
-        Type(TriFunction<ServerLevel, Integer, BlockPos, AbstractSkulkinRaid> createConstructor, BiFunction<ServerLevel, CompoundTag, AbstractSkulkinRaid> loadConstructor, BiFunction<ServerLevel, BlockPos, @Nullable BlockPos> centerFunction) {
-            this.createConstructor = createConstructor;
-            this.loadConstructor = loadConstructor;
-            this.centerFunction = centerFunction;
-        }
-
-        public AbstractSkulkinRaid create(ServerLevel level, Integer id, BlockPos center) {
-            return this.createConstructor.apply(level, id, center);
-        }
-
-        public AbstractSkulkinRaid load(ServerLevel level, CompoundTag compound) {
-            return this.loadConstructor.apply(level, compound);
-        }
-
-        public @Nullable BlockPos findValidRaidCenter(ServerLevel level, BlockPos pos) {
-            return this.centerFunction.apply(level, pos);
-        }
-
-        @Override
-        public String getSerializedName() {
-            return this.name().toLowerCase();
-        }
-
-        public static Type of(String name) {
-            return valueOf(name.toUpperCase());
         }
     }
 }
