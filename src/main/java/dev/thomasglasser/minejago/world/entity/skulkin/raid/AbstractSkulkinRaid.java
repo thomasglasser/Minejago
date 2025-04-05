@@ -11,6 +11,8 @@ import dev.thomasglasser.minejago.world.entity.skulkin.Kruncha;
 import dev.thomasglasser.minejago.world.entity.skulkin.Nuckal;
 import dev.thomasglasser.minejago.world.entity.skulkin.Samukai;
 import dev.thomasglasser.minejago.world.entity.skulkin.SkullTruck;
+import dev.thomasglasser.minejago.world.level.MinejagoLevelUtils;
+import dev.thomasglasser.minejago.world.level.block.GoldenWeaponHolder;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,6 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiFunction;
@@ -45,9 +48,13 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnPlacementType;
 import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.decoration.Painting;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.EventHooks;
 import org.apache.commons.lang3.function.TriFunction;
@@ -55,6 +62,8 @@ import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractSkulkinRaid {
     public static final String SKULKIN_REMAINING = "event.minejago.skulkin_raid.skulkin_remaining";
+    public static final Component VICTORY_COMPONENT = Component.translatable("event.minejago.skulkin_raid.victory.full");
+    public static final Component DEFEAT_COMPONENT = Component.translatable("event.minejago.skulkin_raid.defeat.full");
     public static final int TIME_MIDNIGHT = 18000;
     public static final int CENTER_RADIUS_BUFFER = 16;
     public static final int MAX_NO_ACTION_TIME = 2400;
@@ -78,8 +87,6 @@ public abstract class AbstractSkulkinRaid {
     private final int id;
     private final int numGroups;
     private final Component name;
-    private final Component victory;
-    private final Component defeat;
     private final ServerBossEvent raidEvent;
 
     private boolean started;
@@ -95,7 +102,7 @@ public abstract class AbstractSkulkinRaid {
     private BlockPos center;
     private Vec3 escapePos;
 
-    public AbstractSkulkinRaid(ServerLevel level, int id, BlockPos center, Component name, Component victory, Component defeat) {
+    public AbstractSkulkinRaid(ServerLevel level, int id, BlockPos center, Component name) {
         this.level = level;
         this.id = id;
         this.numGroups = switch (level.getDifficulty()) {
@@ -109,15 +116,13 @@ public abstract class AbstractSkulkinRaid {
         this.status = SkulkinRaidStatus.ONGOING;
         this.center = center;
         this.name = name;
-        this.victory = victory;
-        this.defeat = defeat;
         this.raidEvent = new ServerBossEvent(name, BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.NOTCHED_10);
         this.raidEvent.setPlayBossMusic(true);
         this.raidEvent.setProgress(0.0F);
         TommyLibServices.NETWORK.sendToAllClients(new ClientboundAddSkulkinRaidPayload(raidEvent.getId()), level.getServer());
     }
 
-    public AbstractSkulkinRaid(ServerLevel level, CompoundTag compound, Component name, Component victory, Component defeat) {
+    public AbstractSkulkinRaid(ServerLevel level, CompoundTag compound, Component name) {
         this.level = level;
         this.id = compound.getInt("Id");
         this.numGroups = compound.getInt("NumGroups");
@@ -133,8 +138,6 @@ public abstract class AbstractSkulkinRaid {
         if (compound.contains("EscapeX", CompoundTag.TAG_DOUBLE))
             this.escapePos = new Vec3(compound.getDouble("EscapeX"), compound.getDouble("EscapeY"), compound.getDouble("EscapeZ"));
         this.name = name;
-        this.victory = victory;
-        this.defeat = defeat;
         this.raidEvent = new ServerBossEvent(name, BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.NOTCHED_10);
         this.raidEvent.setPlayBossMusic(true);
         TommyLibServices.NETWORK.sendToAllClients(new ClientboundAddSkulkinRaidPayload(this.raidEvent.getId()), level.getServer());
@@ -186,9 +189,8 @@ public abstract class AbstractSkulkinRaid {
         return this.status == SkulkinRaidStatus.DEFEAT;
     }
 
-    public void setDefeat(Vec3 escapePos) {
+    public void setDefeat() {
         this.status = SkulkinRaidStatus.DEFEAT;
-        this.setEscapePos(escapePos);
     }
 
     public boolean isStopped() {
@@ -271,7 +273,7 @@ public abstract class AbstractSkulkinRaid {
                     this.level.setDayTime(TIME_MIDNIGHT);
                 }
 
-                if (!this.isValidRaidCenter(center)) {
+                if (!(this.getType().findValidRaidCenter(this.level, center) == null)) {
                     this.moveRaidCenterToNearbyValidTarget();
                 }
 
@@ -374,21 +376,19 @@ public abstract class AbstractSkulkinRaid {
                     this.raidEvent.setVisible(true);
                     if (this.isVictory()) {
                         this.raidEvent.setProgress(0.0F);
-                        this.raidEvent.setName(victory);
+                        this.raidEvent.setName(name.copy().append(" - ").append(VICTORY_COMPONENT));
                     } else {
-                        this.raidEvent.setName(defeat);
+                        this.raidEvent.setName(name.copy().append(" - ").append(DEFEAT_COMPONENT));
                     }
                 }
             }
         }
     }
 
-    protected abstract boolean isValidRaidCenter(BlockPos blockPos);
-
     private void moveRaidCenterToNearbyValidTarget() {
         Stream<SectionPos> stream = SectionPos.cube(SectionPos.of(this.center), SECTION_RADIUS_FOR_FINDING_NEW_CENTER);
-        stream.map(SectionPos::center)
-                .filter(this::isValidRaidCenter)
+        stream.map(pos -> this.getType().findValidRaidCenter(this.level, pos.center()))
+                .filter(Objects::nonNull)
                 .min(Comparator.comparingDouble(pos -> pos.distSqr(this.center)))
                 .ifPresent(this::setCenter);
     }
@@ -420,7 +420,7 @@ public abstract class AbstractSkulkinRaid {
             int z = this.center.getZ() + Mth.floor(Mth.sin(f) * CENTER_SEARCH_RADIUS * (float) fixedOffsetMultiplier) + this.level.random.nextInt(5);
             int y = this.level.getHeight(Heightmap.Types.WORLD_SURFACE, x, z);
             spawnPos.set(x, y, z);
-            if (!this.isValidRaidCenter(spawnPos) || offsetMultiplier >= 2) {
+            if (this.getType().findValidRaidCenter(getLevel(), spawnPos) == null || offsetMultiplier >= 2) {
                 int offset = 10;
                 if (this.level
                         .hasChunksAt(
@@ -442,7 +442,7 @@ public abstract class AbstractSkulkinRaid {
 
     private void updatePlayers() {
         Set<ServerPlayer> eventPlayers = Sets.newHashSet(this.raidEvent.getPlayers());
-        List<ServerPlayer> validPlayers = this.level.getPlayers(serverPlayer -> serverPlayer.isAlive() && SkulkinRaidsHolder.of(level).getSkulkinRaidAt(serverPlayer.blockPosition()) == this);
+        List<ServerPlayer> validPlayers = this.level.getPlayers(serverPlayer -> serverPlayer.isAlive() && SkulkinRaidsHolder.of(level).minejago$getSkulkinRaids().getSkulkinRaidAt(serverPlayer.blockPosition()) == this);
 
         for (ServerPlayer serverPlayer : validPlayers) {
             if (!eventPlayers.contains(serverPlayer)) {
@@ -473,7 +473,7 @@ public abstract class AbstractSkulkinRaid {
                         lostRaiders.add(raider);
                     }
 
-                    if (!isValidRaidCenter(blockPos) && raider.getNoActionTime() > MAX_NO_ACTION_TIME) {
+                    if (this.getType().findValidRaidCenter(this.level, blockPos) == null && raider.getNoActionTime() > MAX_NO_ACTION_TIME) {
                         raider.setTicksOutsideRaid(raider.getTicksOutsideRaid() + 1);
                     }
 
@@ -732,14 +732,46 @@ public abstract class AbstractSkulkinRaid {
     }
 
     public enum Type implements StringRepresentable {
-        FOUR_WEAPONS(FourWeaponsSkulkinRaid::new, FourWeaponsSkulkinRaid::new);
+        FOUR_WEAPONS(FourWeaponsSkulkinRaid::new, FourWeaponsSkulkinRaid::new, (level, pos) -> {
+            Painting fw = MinejagoLevelUtils.getGoldenWeaponsMapHolderNearby(level, pos, VALID_RAID_RADIUS);
+            if (fw != null)
+                return fw.blockPosition();
+            return null;
+        }),
+        GOLDEN_WEAPON(GoldenWeaponSkulkinRaid::new, GoldenWeaponSkulkinRaid::new, (level, pos) -> {
+            if (!SkulkinRaidsHolder.of(level).minejago$getSkulkinRaids().isMapTaken())
+                return null;
+            BlockPos center = null;
+            double minDist = Double.MAX_VALUE;
+            AABB toCheck = AABB.ofSize(pos.getCenter(), VALID_RAID_RADIUS, VALID_RAID_RADIUS, VALID_RAID_RADIUS);
+            ChunkPos min = new ChunkPos(new BlockPos((int) toCheck.minX, (int) toCheck.minY, (int) toCheck.minZ));
+            ChunkPos max = new ChunkPos(new BlockPos((int) toCheck.maxX, (int) toCheck.maxY, (int) toCheck.maxZ));
+            for (int x = min.x; x <= max.x; x++) {
+                for (int z = min.z; z <= max.z; z++) {
+                    for (Map.Entry<BlockPos, BlockEntity> entry : level.getChunk(x, z).getBlockEntities().entrySet()) {
+                        BlockPos blockPos = entry.getKey();
+                        BlockEntity blockEntity = entry.getValue();
+                        if (blockEntity instanceof GoldenWeaponHolder goldenWeaponHolder && goldenWeaponHolder.hasGoldenWeapon()) {
+                            double dist = pos.distSqr(blockPos);
+                            if (dist < minDist) {
+                                center = blockPos;
+                                minDist = dist;
+                            }
+                        }
+                    }
+                }
+            }
+            return center;
+        });
 
         private final TriFunction<ServerLevel, Integer, BlockPos, AbstractSkulkinRaid> createConstructor;
         private final BiFunction<ServerLevel, CompoundTag, AbstractSkulkinRaid> loadConstructor;
+        private final BiFunction<ServerLevel, BlockPos, @Nullable BlockPos> centerFunction;
 
-        Type(TriFunction<ServerLevel, Integer, BlockPos, AbstractSkulkinRaid> createConstructor, BiFunction<ServerLevel, CompoundTag, AbstractSkulkinRaid> loadConstructor) {
+        Type(TriFunction<ServerLevel, Integer, BlockPos, AbstractSkulkinRaid> createConstructor, BiFunction<ServerLevel, CompoundTag, AbstractSkulkinRaid> loadConstructor, BiFunction<ServerLevel, BlockPos, @Nullable BlockPos> centerFunction) {
             this.createConstructor = createConstructor;
             this.loadConstructor = loadConstructor;
+            this.centerFunction = centerFunction;
         }
 
         public AbstractSkulkinRaid create(ServerLevel level, Integer id, BlockPos center) {
@@ -748,6 +780,10 @@ public abstract class AbstractSkulkinRaid {
 
         public AbstractSkulkinRaid load(ServerLevel level, CompoundTag compound) {
             return this.loadConstructor.apply(level, compound);
+        }
+
+        public @Nullable BlockPos findValidRaidCenter(ServerLevel level, BlockPos pos) {
+            return this.centerFunction.apply(level, pos);
         }
 
         @Override

@@ -38,7 +38,6 @@ import dev.thomasglasser.minejago.world.entity.skill.Skill;
 import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;
 import dev.thomasglasser.minejago.world.entity.skulkin.SkulkinHorse;
 import dev.thomasglasser.minejago.world.entity.skulkin.Spykor;
-import dev.thomasglasser.minejago.world.entity.skulkin.raid.AbstractSkulkinRaid;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaidsHolder;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
 import dev.thomasglasser.minejago.world.focus.FocusData;
@@ -54,7 +53,6 @@ import dev.thomasglasser.minejago.world.level.MinejagoLevelUtils;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
 import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
-import dev.thomasglasser.minejago.world.level.levelgen.SkulkinArmySpawner;
 import dev.thomasglasser.minejago.world.level.storage.ShadowSourceData;
 import dev.thomasglasser.minejago.world.level.storage.SkillData;
 import dev.thomasglasser.minejago.world.level.storage.SkillDataSet;
@@ -66,6 +64,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
+import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
@@ -123,7 +122,6 @@ import net.neoforged.neoforge.event.entity.living.LivingKnockBackEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
-import net.neoforged.neoforge.event.level.ModifyCustomSpawnersEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
@@ -321,10 +319,8 @@ public class MinejagoEntityEvents {
                     }
                 }
 
-                Painting fw = MinejagoLevelUtils.getGoldenWeaponsMapHolderNearby(serverPlayer, AbstractSkulkinRaid.CENTER_RADIUS_BUFFER);
-                if (fw != null) {
-                    SkulkinRaidsHolder.of(serverLevel).minejago$getSkulkinRaids().createOrExtendSkulkinRaid(serverPlayer, fw.blockPosition(), AbstractSkulkinRaid.Type.FOUR_WEAPONS);
-                }
+                if (serverPlayer.tickCount % (SharedConstants.TICKS_PER_SECOND * 5) == 0)
+                    SkulkinRaidsHolder.of(serverLevel).minejago$getSkulkinRaids().checkRaidCenters(serverPlayer);
 
                 persistentData.putBoolean(KEY_IS_IN_CAVE_OF_DESPAIR, MinejagoLevelUtils.isStructureInRange(MinejagoStructureTags.CAVE_OF_DESPAIR, serverLevel, serverPlayer.blockPosition(), 64));
                 persistentData.putBoolean(KEY_IS_IN_MONASTERY_OF_SPINJITZU, MinejagoLevelUtils.isStructureInRange(MinejagoStructureTags.MONASTERY_OF_SPINJITZU, serverLevel, serverPlayer.blockPosition(), 64));
@@ -687,10 +683,6 @@ public class MinejagoEntityEvents {
             else if (attacker.getMainHandItem().is(ConventionalItemTags.MELEE_WEAPON_TOOLS))
                 data.addPractice(attacker, Skill.TOOL_PROFICIENCY, event.getAmount() / (data.get(Skill.TOOL_PROFICIENCY).level() + 1));
         }
-    }
-
-    public static void onModifyCustomSpawners(ModifyCustomSpawnersEvent event) {
-        event.addCustomSpawner(new SkulkinArmySpawner());
     }
 
     public static void onLivingDeath(LivingDeathEvent event) {

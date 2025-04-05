@@ -48,7 +48,7 @@ public class SeekAndTakeNearbyDroppedRaidItems<T extends SkulkinRaider> extends 
                 while (escapePos == null) {
                     escapePos = DefaultRandomPos.getPosAway(entity, 64, 32, Vec3.atBottomCenterOf(raid.getCenter()));
                 }
-                raid.setDefeat(escapePos);
+                raid.setEscapePos(escapePos);
             } else {
                 BrainUtils.getMemory(entity, SBLMemoryTypes.NEARBY_ITEMS.get()).stream().filter(item -> raid.isValidRaidItem(item.getItem())).findFirst().ifPresent(item -> {
                     BrainUtils.setMemory(entity, MemoryModuleType.WALK_TARGET, new WalkTarget(item.position(), speedModifier, 1));

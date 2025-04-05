@@ -59,7 +59,7 @@ public abstract class ServerPlayerMixin {
 
     @Inject(method = "startSleepInBed", at = @At("HEAD"), cancellable = true)
     private void minejago_startSleepInBed(BlockPos bedPos, CallbackInfoReturnable<Either<Player.BedSleepingProblem, Unit>> cir) {
-        AbstractSkulkinRaid raid = SkulkinRaidsHolder.of(serverLevel()).getSkulkinRaidAt(bedPos);
+        AbstractSkulkinRaid raid = SkulkinRaidsHolder.of(serverLevel()).minejago$getSkulkinRaids().getSkulkinRaidAt(bedPos);
         if (raid != null && raid.isActive())
             cir.setReturnValue(Either.left(Player.BedSleepingProblem.NOT_SAFE));
     }

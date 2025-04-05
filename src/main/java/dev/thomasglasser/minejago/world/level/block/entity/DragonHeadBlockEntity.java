@@ -3,12 +3,15 @@ package dev.thomasglasser.minejago.world.level.block.entity;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.level.block.DragonHeadBlock;
+import dev.thomasglasser.minejago.world.level.block.GoldenWeaponHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
@@ -19,13 +22,13 @@ import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class DragonHeadBlockEntity extends BlockEntity implements GeoBlockEntity {
+public class DragonHeadBlockEntity extends BlockEntity implements GeoBlockEntity, GoldenWeaponHolder {
     protected static final RawAnimation ACTIVATE = RawAnimation.begin().thenPlay("misc.activate");
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     private int activatedTicks;
-    public boolean hasScythe = true;
+    private boolean hasScythe = true;
 
     public DragonHeadBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(MinejagoBlockEntityTypes.DRAGON_HEAD.get(), blockPos, blockState);
@@ -60,5 +63,31 @@ public class DragonHeadBlockEntity extends BlockEntity implements GeoBlockEntity
                 level.addFreshEntity(item);
             }
         }
+    }
+
+    public boolean hasScythe() {
+        return hasScythe;
+    }
+
+    public void setHasScythe(boolean hasScythe) {
+        this.hasScythe = hasScythe;
+    }
+
+    @Override
+    public boolean hasGoldenWeapon() {
+        return this.hasScythe();
+    }
+
+    @Override
+    public ItemStack extractGoldenWeapon() {
+        if (this.hasScythe() && this.getLevel() instanceof ServerLevel level) {
+            BlockState blockState = level.getBlockState(this.getBlockPos());
+            setHasScythe(false);
+            if (!blockState.getValue(DragonHeadBlock.ACTIVATED)) {
+                level.setBlock(this.getBlockPos(), blockState.setValue(DragonHeadBlock.ACTIVATED, true), Block.UPDATE_ALL);
+            }
+            return MinejagoItems.SCYTHE_OF_QUAKES.get().getDefaultInstance();
+        }
+        return null;
     }
 }

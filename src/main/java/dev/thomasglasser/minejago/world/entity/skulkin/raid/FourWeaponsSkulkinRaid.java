@@ -14,15 +14,13 @@ import org.jetbrains.annotations.Nullable;
 
 public class FourWeaponsSkulkinRaid extends AbstractSkulkinRaid {
     public static final Component NAME_COMPONENT = Component.translatable("event.minejago.four_weapons_skulkin_raid");
-    public static final Component VICTORY_COMPONENT = Component.translatable("event.minejago.four_weapons_skulkin_raid.victory.full");
-    public static final Component DEFEAT_COMPONENT = Component.translatable("event.minejago.four_weapons_skulkin_raid.defeat.full");
 
     public FourWeaponsSkulkinRaid(ServerLevel level, int id, BlockPos center) {
-        super(level, id, center, NAME_COMPONENT, VICTORY_COMPONENT, DEFEAT_COMPONENT);
+        super(level, id, center, NAME_COMPONENT);
     }
 
     public FourWeaponsSkulkinRaid(ServerLevel level, CompoundTag compound) {
-        super(level, compound, NAME_COMPONENT, VICTORY_COMPONENT, DEFEAT_COMPONENT);
+        super(level, compound, NAME_COMPONENT);
     }
 
     @Override
@@ -32,12 +30,12 @@ public class FourWeaponsSkulkinRaid extends AbstractSkulkinRaid {
 
     @Override
     public boolean isInValidRaidSearchArea(SkulkinRaider raider) {
-        return MinejagoLevelUtils.isGoldenWeaponsMapHolderNearby(raider, 16);
+        return getCenter().closerThan(raider.blockPosition(), CENTER_RADIUS_BUFFER);
     }
 
     @Override
     public boolean canExtractRaidItem(SkulkinRaider raider) {
-        return MinejagoLevelUtils.isGoldenWeaponsMapHolderNearby(raider, 1);
+        return getCenter().closerThan(raider.blockPosition().above(3), 2);
     }
 
     @Override
@@ -50,11 +48,6 @@ public class FourWeaponsSkulkinRaid extends AbstractSkulkinRaid {
             return MinejagoItemUtils.createFourWeaponsMaps(this.getLevel(), raider.blockPosition());
         }
         return null;
-    }
-
-    @Override
-    protected boolean isValidRaidCenter(BlockPos blockPos) {
-        return MinejagoLevelUtils.isGoldenWeaponsMapHolderNearby(this.getLevel(), blockPos, VALID_RAID_RADIUS);
     }
 
     @Override

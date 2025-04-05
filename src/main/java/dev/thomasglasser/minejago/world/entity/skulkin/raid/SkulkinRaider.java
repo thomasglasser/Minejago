@@ -241,7 +241,7 @@ public abstract class SkulkinRaider extends Skeleton implements SmartBrainOwner<
             AbstractSkulkinRaid raid = this.getCurrentRaid();
             if (raid == null) {
                 if (this.level().getGameTime() % 20L == 0L) {
-                    AbstractSkulkinRaid raidAtPos = SkulkinRaidsHolder.of(this.level()).getSkulkinRaidAt(this.blockPosition());
+                    AbstractSkulkinRaid raidAtPos = SkulkinRaidsHolder.of(this.level()).minejago$getSkulkinRaids().getSkulkinRaidAt(this.blockPosition());
                     if (raidAtPos != null && SkulkinRaids.canJoinSkulkinRaid(this, raidAtPos)) {
                         raidAtPos.joinRaid(raidAtPos.getGroupsSpawned(), this, null, true);
                     }

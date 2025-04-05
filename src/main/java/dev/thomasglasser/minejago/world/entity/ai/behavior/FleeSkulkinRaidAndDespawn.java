@@ -29,7 +29,6 @@ public class FleeSkulkinRaidAndDespawn<T extends SkulkinRaider> extends Extended
         return !BrainUtils.hasMemory(entity, MemoryModuleType.ATTACK_TARGET)
                 && !entity.isVehicle()
                 && raid != null
-                && raid.isOver()
                 && raid.getEscapePos() != null;
     }
 
@@ -44,8 +43,11 @@ public class FleeSkulkinRaidAndDespawn<T extends SkulkinRaider> extends Extended
         if (raid != null && raid.getEscapePos() != null) {
             if (entity.position().closerThan(raid.getEscapePos(), 5)) {
                 // TODO: Place underworld portal blocks
-                if (raid.isValidRaidItem(entity.getItemInHand(InteractionHand.MAIN_HAND)) || raid.isValidRaidItem(entity.getItemInHand(InteractionHand.OFF_HAND)))
+                if (raid.isValidRaidItem(entity.getItemInHand(InteractionHand.MAIN_HAND)) || raid.isValidRaidItem(entity.getItemInHand(InteractionHand.OFF_HAND))) {
+                    // TODO: Make more generic and set item itself taken
                     SkulkinRaidsHolder.of(entity.level()).minejago$getSkulkinRaids().setMapTaken();
+                    raid.setDefeat();
+                }
                 if (entity.getVehicle() != null)
                     entity.getVehicle().remove(Entity.RemovalReason.CHANGED_DIMENSION);
                 entity.remove(Entity.RemovalReason.CHANGED_DIMENSION);

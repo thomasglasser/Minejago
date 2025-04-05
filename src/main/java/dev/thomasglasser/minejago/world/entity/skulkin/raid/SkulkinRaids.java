@@ -58,6 +58,19 @@ public class SkulkinRaids extends SavedData {
         }
     }
 
+    public void checkRaidCenters(ServerPlayer serverPlayer) {
+        BlockPos pos = serverPlayer.blockPosition();
+        if (getSkulkinRaidAt(pos) == null && !isRaidedChunk(pos)) {
+            for (AbstractSkulkinRaid.Type type : AbstractSkulkinRaid.Type.values()) {
+                BlockPos center = type.findValidRaidCenter(serverPlayer.serverLevel(), pos);
+                if (center != null) {
+                    createOrExtendSkulkinRaid(serverPlayer, center, type);
+                    break;
+                }
+            }
+        }
+    }
+
     public static boolean canJoinSkulkinRaid(SkulkinRaider raider, AbstractSkulkinRaid raid) {
         if (raider != null && raid != null && raid.getLevel() != null) {
             return raider.isAlive() && raider.getNoActionTime() <= 2400 && raider.level().dimensionType() == raid.getLevel().dimensionType();
@@ -95,7 +108,7 @@ public class SkulkinRaids extends SavedData {
     }
 
     private AbstractSkulkinRaid getOrCreateSkulkinRaid(ServerLevel serverLevel, BlockPos center, AbstractSkulkinRaid.Type type) {
-        AbstractSkulkinRaid raid = SkulkinRaidsHolder.of(serverLevel).getSkulkinRaidAt(center);
+        AbstractSkulkinRaid raid = getSkulkinRaidAt(center);
         return raid != null ? raid : type.create(serverLevel, this.getUniqueId(), center);
     }
 
@@ -178,6 +191,10 @@ public class SkulkinRaids extends SavedData {
         }
 
         return nearby;
+    }
+
+    public @Nullable AbstractSkulkinRaid getSkulkinRaidAt(BlockPos pos) {
+        return this.getNearbySkulkinRaid(pos, AbstractSkulkinRaid.VALID_RAID_RADIUS_SQR);
     }
 
     public void setMapTaken() {

@@ -34,6 +34,7 @@ import dev.thomasglasser.minejago.world.entity.skill.Skill;
 import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.AbstractSkulkinRaid;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.FourWeaponsSkulkinRaid;
+import dev.thomasglasser.minejago.world.entity.skulkin.raid.GoldenWeaponSkulkinRaid;
 import dev.thomasglasser.minejago.world.entity.spinjitzucourse.AbstractSpinjitzuCourseElement;
 import dev.thomasglasser.minejago.world.item.FilledTeacupItem;
 import dev.thomasglasser.minejago.world.item.MinejagoCreativeModeTabs;
@@ -253,9 +254,10 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(ScrollViewScreen.TAKE_SCROLL, "Take Scroll");
 
         add(AbstractSkulkinRaid.SKULKIN_REMAINING, "Skulkin Remaining: %s");
+        add(AbstractSkulkinRaid.VICTORY_COMPONENT, "Victory");
+        add(AbstractSkulkinRaid.DEFEAT_COMPONENT, "Defeat");
         add(FourWeaponsSkulkinRaid.NAME_COMPONENT, "Four Weapons Skulkin Raid");
-        add(FourWeaponsSkulkinRaid.VICTORY_COMPONENT, "Four Weapons Skulkin Raid - Victory");
-        add(FourWeaponsSkulkinRaid.DEFEAT_COMPONENT, "Four Weapons Skulkin Raid - Defeat");
+        add(GoldenWeaponSkulkinRaid.NAME_COMPONENT, "Golden Weapon Skulkin Raid");
 
         add(TeapotBrewingRecipeCategory.RECIPE_KEY, "Teapot Brewing");
 

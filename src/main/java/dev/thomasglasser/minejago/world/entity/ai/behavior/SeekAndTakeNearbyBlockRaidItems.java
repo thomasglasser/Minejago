@@ -59,7 +59,7 @@ public class SeekAndTakeNearbyBlockRaidItems<T extends SkulkinRaider> extends Ab
                         while (escapePos == null) {
                             escapePos = DefaultRandomPos.getPosAway(entity, 64, 32, center);
                         }
-                        raid.setDefeat(escapePos);
+                        raid.setEscapePos(escapePos);
                     }
                 } else {
                     visited.add(pos);
