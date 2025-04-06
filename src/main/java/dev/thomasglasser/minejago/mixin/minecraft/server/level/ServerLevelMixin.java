@@ -4,6 +4,8 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaids;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaidsHolder;
+import dev.thomasglasser.minejago.world.entity.skulkin.raid.StolenItems;
+import dev.thomasglasser.minejago.world.entity.skulkin.raid.StolenItemsHolder;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -26,12 +28,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerLevel.class)
-public abstract class ServerLevelMixin implements SkulkinRaidsHolder {
+public abstract class ServerLevelMixin implements SkulkinRaidsHolder, StolenItemsHolder {
     @Unique
     private final ServerLevel minejago$INSTANCE = ((ServerLevel) (Object) (this));
 
     @Unique
     protected SkulkinRaids minejago$skulkinRaids;
+    @Unique
+    protected StolenItems minejago$stolenItems;
 
     @Shadow
     public abstract DimensionDataStorage getDataStorage();
@@ -39,6 +43,7 @@ public abstract class ServerLevelMixin implements SkulkinRaidsHolder {
     @Inject(method = "<init>", at = @At("RETURN"))
     private void init(MinecraftServer minecraftServer, Executor executor, LevelStorageSource.LevelStorageAccess levelStorageAccess, ServerLevelData serverLevelData, ResourceKey resourceKey, LevelStem levelStem, ChunkProgressListener chunkProgressListener, boolean bl, long l, List list, boolean bl2, RandomSequences randomSequences, CallbackInfo ci) {
         minejago$skulkinRaids = this.getDataStorage().computeIfAbsent(SkulkinRaids.factory(minejago$INSTANCE), SkulkinRaids.getFileId());
+        minejago$stolenItems = this.getDataStorage().computeIfAbsent(StolenItems.factory(minejago$INSTANCE), StolenItems.getFileId());
     }
 
     @Inject(method = "tick", at = @At("TAIL"))
@@ -49,6 +54,11 @@ public abstract class ServerLevelMixin implements SkulkinRaidsHolder {
     @Override
     public SkulkinRaids minejago$getSkulkinRaids() {
         return minejago$skulkinRaids;
+    }
+
+    @Override
+    public StolenItems minejago$getStolenItems() {
+        return minejago$stolenItems;
     }
 
     @Inject(method = "lambda$wakeUpAllPlayers$3", at = @At("TAIL"))

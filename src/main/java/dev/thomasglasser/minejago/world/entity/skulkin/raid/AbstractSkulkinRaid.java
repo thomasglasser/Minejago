@@ -282,6 +282,9 @@ public abstract class AbstractSkulkinRaid {
                         if (this.groupsSpawned > 0) {
                             this.raidCooldownTicks = DEFAULT_PRE_RAID_TICKS;
                             this.raidEvent.setName(name);
+                            if (this.getEscapePos() != null) {
+                                this.setEscapePos(null);
+                            }
                             return;
                         }
                     } else {
@@ -378,7 +381,7 @@ public abstract class AbstractSkulkinRaid {
         }
     }
 
-    private void moveRaidCenterToNearbyValidTarget() {
+    protected void moveRaidCenterToNearbyValidTarget() {
         Stream<SectionPos> stream = SectionPos.cube(SectionPos.of(this.center), SECTION_RADIUS_FOR_FINDING_NEW_CENTER);
         stream.map(pos -> this.getType().findValidRaidCenter(this.level, pos.center()))
                 .filter(Objects::nonNull)
@@ -398,11 +401,11 @@ public abstract class AbstractSkulkinRaid {
         return this.getGroupsSpawned() == this.numGroups;
     }
 
-    private Optional<BlockPos> findValidSpawnPos(int offsetMultiplier) {
+    protected Optional<BlockPos> findValidSpawnPos(int offsetMultiplier) {
         return this.findRandomSpawnPos(offsetMultiplier, 8);
     }
 
-    private Optional<BlockPos> findRandomSpawnPos(int offsetMultiplier, int maxTry) {
+    protected Optional<BlockPos> findRandomSpawnPos(int offsetMultiplier, int maxTry) {
         int fixedOffsetMultiplier = 2 - offsetMultiplier;
         BlockPos.MutableBlockPos spawnPos = new BlockPos.MutableBlockPos();
         SpawnPlacementType spawnPlacementType = SpawnPlacements.getPlacementType(EntityType.RAVAGER);
@@ -433,7 +436,7 @@ public abstract class AbstractSkulkinRaid {
         return Optional.empty();
     }
 
-    private void updatePlayers() {
+    protected void updatePlayers() {
         Set<ServerPlayer> eventPlayers = Sets.newHashSet(this.raidEvent.getPlayers());
         List<ServerPlayer> validPlayers = this.level.getPlayers(serverPlayer -> serverPlayer.isAlive() && SkulkinRaidsHolder.of(level).minejago$getSkulkinRaids().getSkulkinRaidAt(serverPlayer.blockPosition()) == this);
 
@@ -450,7 +453,7 @@ public abstract class AbstractSkulkinRaid {
         }
     }
 
-    private void updateRaiders() {
+    protected void updateRaiders() {
         Iterator<Set<SkulkinRaider>> waveRaiders = this.raidersByWave.values().iterator();
         Set<SkulkinRaider> lostRaiders = Sets.newHashSet();
 
@@ -498,11 +501,11 @@ public abstract class AbstractSkulkinRaid {
         }
     }
 
-    private boolean shouldSpawnGroup() {
+    protected boolean shouldSpawnGroup() {
         return this.raidCooldownTicks == 0 && (this.groupsSpawned < this.numGroups) && this.getTotalRaidersAlive() == 0;
     }
 
-    private void spawnGroup(BlockPos pos) {
+    protected void spawnGroup(BlockPos pos) {
         int groupNum = this.groupsSpawned + 1;
         this.totalHealth = 0.0F;
         DifficultyInstance difficultyInstance = this.level.getCurrentDifficultyAt(pos);
@@ -531,7 +534,7 @@ public abstract class AbstractSkulkinRaid {
         this.setDirty();
     }
 
-    private int getDefaultNumSpawns(int wave) {
+    protected int getDefaultNumSpawns(int wave) {
         return switch (wave) {
             case 1, 4, 5, 6 -> 4;
             case 2, 3 -> 3;
@@ -540,7 +543,7 @@ public abstract class AbstractSkulkinRaid {
         };
     }
 
-    private int getPotentialBonusSpawns(RandomSource random, DifficultyInstance difficultyInstance) {
+    protected int getPotentialBonusSpawns(RandomSource random, DifficultyInstance difficultyInstance) {
         Difficulty difficulty = difficultyInstance.getDifficulty();
         boolean easy = difficulty == Difficulty.EASY;
         boolean normal = difficulty == Difficulty.NORMAL;
@@ -556,7 +559,7 @@ public abstract class AbstractSkulkinRaid {
         return i > 0 ? random.nextInt(i + 1) : 0;
     }
 
-    private void spawnBosses(int groupNum, BlockPos pos) {
+    protected void spawnBosses(int groupNum, BlockPos pos) {
         Samukai samukai = MinejagoEntityTypes.SAMUKAI.get().create(this.level);
         if (samukai != null)
             this.joinRaid(groupNum, samukai, pos, false);
@@ -607,7 +610,7 @@ public abstract class AbstractSkulkinRaid {
             raider.setTicksOutsideRaid(0);
             if (!isRecruited && pos != null) {
                 raider.setPos((double) pos.getX() + 0.5, (double) pos.getY() + 1.0, (double) pos.getZ() + 0.5);
-                raider.finalizeSpawn(this.level, this.level.getCurrentDifficultyAt(pos), MobSpawnType.EVENT, null);
+                EventHooks.finalizeMobSpawn(raider, this.level, this.level.getCurrentDifficultyAt(pos), MobSpawnType.EVENT, null);
                 this.level.addFreshEntityWithPassengers(raider);
             }
         }
@@ -644,7 +647,7 @@ public abstract class AbstractSkulkinRaid {
         return true;
     }
 
-    private void spawnVehicle(SkulkinRaider raider, BlockPos pos) {
+    protected void spawnVehicle(SkulkinRaider raider, BlockPos pos) {
         Mob ride;
         if (MinejagoServerConfig.get().enableTech.get())
             ride = MinejagoEntityTypes.SKULL_MOTORBIKE.get().create(this.level);
@@ -659,7 +662,7 @@ public abstract class AbstractSkulkinRaid {
         raider.startRiding(ride);
     }
 
-    private void playSound(BlockPos pos) {
+    protected void playSound(BlockPos pos) {
         float f = 13.0F;
         int i = 64;
         Collection<ServerPlayer> collection = this.raidEvent.getPlayers();

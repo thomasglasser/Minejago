@@ -9,7 +9,9 @@ import dev.thomasglasser.minejago.world.entity.skulkin.SkulkinHorse;
 import dev.thomasglasser.minejago.world.entity.skulkin.SkullTruck;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.AbstractSkulkinRaid;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaider;
-import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaidsHolder;
+import dev.thomasglasser.minejago.world.entity.skulkin.raid.StolenItems;
+import dev.thomasglasser.minejago.world.entity.skulkin.raid.StolenItemsHolder;
+import dev.thomasglasser.minejago.world.level.MinejagoLevels;
 import java.util.List;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -17,6 +19,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.ai.memory.WalkTarget;
+import net.minecraft.world.item.ItemStack;
 import net.tslat.smartbrainlib.api.core.behaviour.ExtendedBehaviour;
 import net.tslat.smartbrainlib.util.BrainUtils;
 
@@ -43,9 +46,16 @@ public class FleeSkulkinRaidAndDespawn<T extends SkulkinRaider> extends Extended
         if (raid != null && raid.getEscapePos() != null) {
             if (entity.position().closerThan(raid.getEscapePos(), 5)) {
                 // TODO: Place underworld portal blocks
-                if (raid.isValidRaidItem(entity.getItemInHand(InteractionHand.MAIN_HAND)) || raid.isValidRaidItem(entity.getItemInHand(InteractionHand.OFF_HAND))) {
-                    // TODO: Make more generic and set item itself taken
-                    SkulkinRaidsHolder.of(entity.level()).minejago$getSkulkinRaids().setMapTaken();
+                ItemStack mainHandItem = entity.getItemInHand(InteractionHand.MAIN_HAND);
+                boolean mainHandValid = raid.isValidRaidItem(mainHandItem);
+                ItemStack offHandItem = entity.getItemInHand(InteractionHand.OFF_HAND);
+                boolean offHandValid = raid.isValidRaidItem(offHandItem);
+                if (mainHandValid || offHandValid) {
+                    StolenItems stolenItems = StolenItemsHolder.of(entity.getServer().getLevel(MinejagoLevels.UNDERWORLD)).minejago$getStolenItems();
+                    if (mainHandValid)
+                        stolenItems.add(mainHandItem);
+                    if (offHandValid)
+                        stolenItems.add(offHandItem);
                     raid.setDefeat();
                 }
                 if (entity.getVehicle() != null)

@@ -27,7 +27,6 @@ public class SkulkinRaids extends SavedData {
     private final List<AABB> raidedAreas = new ArrayList<>();
     private int nextAvailableID;
     private int tick;
-    private boolean mapTaken;
 
     public static SavedData.Factory<SkulkinRaids> factory(ServerLevel level) {
         return new SavedData.Factory<>(SkulkinRaids::new, (compoundTag, provider) -> SkulkinRaids.load(level, compoundTag), DataFixTypes.SAVED_DATA_RAIDS);
@@ -119,7 +118,6 @@ public class SkulkinRaids extends SavedData {
         SkulkinRaids raids = new SkulkinRaids();
         raids.nextAvailableID = tag.getInt("NextAvailableID");
         raids.tick = tag.getInt("Tick");
-        raids.mapTaken = tag.getBoolean("MapTaken");
 
         ListTag raidsTag = tag.getList("SkulkinRaids", 10);
         for (int i = 0; i < raidsTag.size(); ++i) {
@@ -149,7 +147,6 @@ public class SkulkinRaids extends SavedData {
     public CompoundTag save(CompoundTag compoundTag, HolderLookup.Provider provider) {
         compoundTag.putInt("NextAvailableID", this.nextAvailableID);
         compoundTag.putInt("Tick", this.tick);
-        compoundTag.putBoolean("MapTaken", mapTaken);
 
         ListTag listTag = new ListTag();
         for (AbstractSkulkinRaid raid : this.raidMap.values()) {
@@ -203,14 +200,6 @@ public class SkulkinRaids extends SavedData {
 
     public @Nullable AbstractSkulkinRaid getSkulkinRaidAt(BlockPos pos) {
         return this.getNearbySkulkinRaid(pos, AbstractSkulkinRaid.VALID_RAID_RADIUS_SQR);
-    }
-
-    public void setMapTaken() {
-        this.mapTaken = true;
-    }
-
-    public boolean isMapTaken() {
-        return mapTaken;
     }
 
     public boolean isRaidedChunk(BlockPos pos) {
