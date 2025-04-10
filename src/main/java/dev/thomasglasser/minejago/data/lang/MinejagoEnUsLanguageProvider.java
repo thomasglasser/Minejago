@@ -378,7 +378,7 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
 
     protected void addEntityTypes() {
         // Projectiles
-        add(MinejagoEntityTypes.THROWN_SHURIKEN_OF_ICE.get(), "Shurikens of Ice");
+        add(MinejagoEntityTypes.THROWN_SHURIKEN_OF_ICE.get(), "Shuriken of Ice");
         add(MinejagoEntityTypes.THROWN_BONE_KNIFE.get(), "Bone Knife");
         add(MinejagoEntityTypes.THROWN_BAMBOO_STAFF.get(), "Bamboo Staff");
         add(MinejagoEntityTypes.EARTH_BLAST.get(), "Earth Blast");

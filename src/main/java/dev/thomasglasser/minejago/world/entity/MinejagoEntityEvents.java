@@ -73,7 +73,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.TicketType;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.DamageTypeTags;
@@ -480,9 +479,7 @@ public class MinejagoEntityEvents {
             }
             if (livingEntity instanceof Player player) {
                 return player.getInventory().items.stream().anyMatch(predicate);
-            } else if (livingEntity instanceof InventoryCarrier carrier && carrier.getInventory().getItems().stream().anyMatch(predicate)) {
-                return true;
-            }
+            } else return livingEntity instanceof InventoryCarrier carrier && carrier.getInventory().getItems().stream().anyMatch(predicate);
         } else if (entity instanceof ItemEntity itemEntity) {
             return predicate.test(itemEntity.getItem());
         }
@@ -673,7 +670,6 @@ public class MinejagoEntityEvents {
         if (TommyLibServices.ENTITY.getPersistentData(entity).getBoolean(FrozenMobEffect.TAG_FROZEN) && !(event.getSource().is(DamageTypeTags.IS_FREEZING) || event.getSource().is(DamageTypeTags.BYPASSES_INVULNERABILITY))) {
             event.setCanceled(true);
             if ((event.getSource().is(DamageTypeTags.IS_FIRE) || event.getSource().getWeaponItem() != null && event.getSource().getWeaponItem().canPerformAction(ItemAbilities.PICKAXE_DIG)) && entity.getRandom().nextInt(10) == 0) {
-                entity.level().playSound(null, entity.blockPosition(), SoundEvents.GLASS_BREAK, SoundSource.PLAYERS, 1.0F, 1.0F);
                 entity.removeEffect(MinejagoMobEffects.FROZEN);
                 // TODO: Remove when TEL fixes onRemove
                 entity.addEffect(new MobEffectInstance(MinejagoMobEffects.FROZEN, 1, 0));
