@@ -16,6 +16,7 @@ import dev.thomasglasser.minejago.data.particles.MinejagoParticleDescriptionProv
 import dev.thomasglasser.minejago.data.recipes.MinejagoRecipeProvider;
 import dev.thomasglasser.minejago.data.recipes.expansions.MinejagoPotionPotPackRecipes;
 import dev.thomasglasser.minejago.data.sounds.MinejagoSoundDefinitions;
+import dev.thomasglasser.minejago.data.tags.ElementTagsProvider;
 import dev.thomasglasser.minejago.data.tags.MinejagoBannerPatternTagsProvider;
 import dev.thomasglasser.minejago.data.tags.MinejagoBiomeTagsProvider;
 import dev.thomasglasser.minejago.data.tags.MinejagoBlockTagsProvider;
@@ -123,6 +124,7 @@ public class MinejagoDataGenerators {
         generator.addProvider(includeServer, new MinejagoBiomeTagsProvider(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(includeServer, new MinejagoStructureTagsProvider(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(includeServer, new MinejagoDamageTypeTagsProvider(packOutput, lookupProvider, existingFileHelper));
+        generator.addProvider(includeServer, new ElementTagsProvider(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(includeServer, new MinejagoAdvancementProvider(packOutput, lookupProvider, existingFileHelper, enUs));
         generator.addProvider(includeServer, new MinejagoRecipeProvider(packOutput, lookupProvider));
         generator.addProvider(includeServer, new MinejagoBookProvider(packOutput, lookupProvider, enUs::add));

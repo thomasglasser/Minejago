@@ -21,7 +21,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import org.jetbrains.annotations.Nullable;
@@ -37,7 +36,7 @@ public class ElementSelectionScreen extends Screen {
     private static final int BACKGROUND_HEIGHT = 166;
     private final int BACKGROUND_VERTICAL_START = BACKGROUND_HEIGHT + 50;
 
-    private final List<ResourceKey<Element>> elements;
+    private final List<Holder<Element>> elements;
     private final List<ElementButton> shownElementButtons = new ArrayList<>();
     private final List<ElementButton> allElementButtons = new ArrayList<>();
 
@@ -57,7 +56,7 @@ public class ElementSelectionScreen extends Screen {
     @Nullable
     private ElementSelectionScreen.ElementButton selectedElementButton;
 
-    public ElementSelectionScreen(Component pTitle, List<ResourceKey<Element>> elements, @Nullable Wu wu) {
+    public ElementSelectionScreen(Component pTitle, ArrayList<Holder<Element>> elements, @Nullable Wu wu) {
         super(pTitle);
         this.elements = elements;
         wuForList = wu;
@@ -67,25 +66,23 @@ public class ElementSelectionScreen extends Screen {
     protected void init() {
         clearWidgets();
         if (minecraft != null && minecraft.level != null) {
-            elements.forEach(key -> {
-                minecraft.level.holder(key).ifPresent(holder -> {
-                    ElementButton button = new ElementButton(((this.width - BACKGROUND_WIDTH) / 2) + 41 + ((elements.indexOf(key) % 5) * 34), ((this.height - BACKGROUND_VERTICAL_START) / 2) + 7, holder);
-                    if (elements.indexOf(key) < 5) {
-                        addRenderableWidget(button);
-                        shownElementButtons.add(button);
-                    }
-                    allElementButtons.add(button);
-                    showRightArrow = elements.size() > 5;
-                });
+            elements.forEach(holder -> {
+                ElementButton button = new ElementButton(((this.width - BACKGROUND_WIDTH) / 2) + 41 + ((elements.indexOf(holder) % 5) * 34), ((this.height - BACKGROUND_VERTICAL_START) / 2) + 7, holder);
+                if (elements.indexOf(holder) < 5) {
+                    addRenderableWidget(button);
+                    shownElementButtons.add(button);
+                }
+                allElementButtons.add(button);
+                showRightArrow = elements.size() > 5;
             });
 
             selectOrDone = Button.builder(Component.translatable("gui.done"), button -> {
                 if (selectedElement != null && minecraft.player != null) {
                     if (wuForList != null) {
                         if (wuForList.distanceTo(minecraft.player) > 1.0f)
-                            TommyLibServices.NETWORK.sendToServer(new ServerboundSetElementDataPayload(selectedElement.getKey(), true, Optional.of(wuForList.getId())));
+                            TommyLibServices.NETWORK.sendToServer(new ServerboundSetElementDataPayload(selectedElement, true, Optional.of(wuForList.getId())));
                     } else {
-                        TommyLibServices.NETWORK.sendToServer(new ServerboundSetElementDataPayload(selectedElement.getKey(), true, Optional.empty()));
+                        TommyLibServices.NETWORK.sendToServer(new ServerboundSetElementDataPayload(selectedElement, true, Optional.empty()));
                     }
                 }
                 onClose();

@@ -6,6 +6,7 @@ import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.network.ClientboundOpenElementSelectionScreenPayload;
 import dev.thomasglasser.minejago.network.ClientboundSetGlowingTag;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
+import dev.thomasglasser.minejago.tags.ElementTags;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntitySerializers;
 import dev.thomasglasser.minejago.world.entity.ai.behavior.GiveElementAndGi;
@@ -23,7 +24,6 @@ import dev.thomasglasser.minejago.world.level.storage.ElementData;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -32,12 +32,11 @@ import java.util.Optional;
 import java.util.Set;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -94,7 +93,7 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
     protected final Map<Integer, List<Player>> entitiesOnCooldown = new HashMap<>();
     protected final Set<AbstractSpinjitzuCourseElement<?>> trackedCourseElements = new HashSet<>();
 
-    protected List<ResourceKey<Element>> elementsToGive = new ArrayList<>();
+    protected ArrayList<Holder<Element>> elementsToGive = new ArrayList<>();
     protected boolean givingElement;
     protected boolean lifting;
     protected int maxTime;
@@ -137,13 +136,11 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         boolean canGiveElement = !player.getData(MinejagoAttachmentTypes.ELEMENT).given() || MinejagoServerConfig.get().allowChange.get();
         if (canGiveElement && player.getInventory().hasAnyMatching(itemStack -> itemStack.has(MinejagoDataComponents.GOLDEN_WEAPONS_MAP.get()))) {
-            Registry<Element> registry = level().registryAccess().registryOrThrow(MinejagoRegistries.ELEMENT);
 
             if (!MinejagoServerConfig.get().drainPool.get() || (elementsToGive.size() <= 1)) {
-                elementsToGive = new ArrayList<>(registry.registryKeySet());
+                elementsToGive = new ArrayList<>(level().registryAccess().registryOrThrow(MinejagoRegistries.ELEMENT).getOrCreateTag(ElementTags.ELEMENTS_OF_CREATION).stream().toList());
                 if (!MinejagoServerConfig.get().enableNoElement.get())
-                    removeElementsToGive(MinejagoElements.NONE);
-                elementsToGive.removeIf(key -> registry.get(key).isSpecial());
+                    removeElementsToGive(level().holderOrThrow(MinejagoElements.NONE));
             }
 
             if (player instanceof ServerPlayer serverPlayer && hand == InteractionHand.MAIN_HAND) {
@@ -151,18 +148,18 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
                 if (MinejagoServerConfig.get().allowChoose.get()) {
                     TommyLibServices.NETWORK.sendToClient(new ClientboundOpenElementSelectionScreenPayload(elementsToGive, Optional.of(this.getId())), serverPlayer);
                 } else if (this.distanceTo(serverPlayer) > 1.0f) {
-                    ResourceKey<Element> oldElement = serverPlayer.getData(MinejagoAttachmentTypes.ELEMENT).element();
+                    Holder<Element> oldElement = level().holderOrThrow(serverPlayer.getData(MinejagoAttachmentTypes.ELEMENT).element());
                     if (serverPlayer.getData(MinejagoAttachmentTypes.ELEMENT).given() && oldElement != MinejagoElements.NONE && MinejagoServerConfig.get().drainPool.get())
                         addElementsToGive(oldElement);
-                    ResourceKey<Element> newElement = elementsToGive.get(random.nextInt(elementsToGive.size()));
-                    if (newElement != MinejagoElements.NONE) removeElementsToGive(newElement);
+                    Holder<Element> newElement = elementsToGive.get(random.nextInt(elementsToGive.size()));
+                    if (newElement.getKey() != MinejagoElements.NONE) removeElementsToGive(newElement);
                     if (newElement == MinejagoElements.NONE) {
-                        new ElementData(newElement, true).save(serverPlayer, true);
+                        new ElementData(newElement.getKey(), true).save(serverPlayer, true);
                         serverPlayer.displayClientMessage(Component.translatable(Wu.NO_ELEMENT_GIVEN_KEY), true);
                         givingElement = false;
                     } else {
                         BrainUtils.setMemory(this, MemoryModuleType.INTERACTION_TARGET, serverPlayer);
-                        BrainUtils.setMemory(this, MinejagoMemoryModuleTypes.SELECTED_ELEMENT.get(), newElement);
+                        BrainUtils.setMemory(this, MinejagoMemoryModuleTypes.SELECTED_ELEMENT.get(), newElement.getKey());
                     }
                 }
             }
@@ -227,19 +224,19 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
     }
 
     @SafeVarargs
-    public final List<ResourceKey<Element>> addElementsToGive(ResourceKey<Element>... keys) {
-        Arrays.stream(keys).forEach(key -> {
-            if (!elementsToGive.contains(key)) elementsToGive.add(key);
-        });
+    public final ArrayList<Holder<Element>> addElementsToGive(Holder<Element>... holders) {
+        for (Holder<Element> holder : holders) {
+            if (!elementsToGive.contains(holder)) elementsToGive.add(holder);
+        }
 
         return elementsToGive;
     }
 
     @SafeVarargs
-    public final List<ResourceKey<Element>> removeElementsToGive(ResourceKey<Element>... keys) {
-        Arrays.stream(keys).forEach(key -> {
-            while (elementsToGive.contains(key)) elementsToGive.remove(key);
-        });
+    public final ArrayList<Holder<Element>> removeElementsToGive(Holder<Element>... holders) {
+        for (Holder<Element> holder : holders) {
+            while (elementsToGive.contains(holder)) elementsToGive.remove(holder);
+        }
 
         return elementsToGive;
     }

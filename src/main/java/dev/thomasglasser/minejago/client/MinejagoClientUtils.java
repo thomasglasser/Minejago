@@ -14,15 +14,15 @@ import dev.thomasglasser.minejago.world.entity.element.Element;
 import dev.thomasglasser.minejago.world.inventory.DragonInventoryMenu;
 import dev.thomasglasser.tommylib.api.client.ClientUtils;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.BookViewScreen;
 import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
@@ -81,7 +81,7 @@ public class MinejagoClientUtils {
         return bewlr;
     }
 
-    public static void openElementSelectionScreen(List<ResourceKey<Element>> elements, Optional<Integer> wuId) {
+    public static void openElementSelectionScreen(ArrayList<Holder<Element>> elements, Optional<Integer> wuId) {
         ClientUtils.setScreen(new ElementSelectionScreen(Component.translatable(ElementSelectionScreen.TITLE), elements, wuId.isPresent() && ClientUtils.getEntityById(wuId.get()) instanceof Wu wu ? wu : null));
     }
 

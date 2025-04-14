@@ -63,7 +63,6 @@ public class MinejagoElements {
         context.register(CREATION, Element.builder(CREATION)
                 .color("#F8D66F")
                 .borderParticle(MinejagoParticleTypes.SPARKLES)
-                .isSpecial()
                 .build());
     }
 }

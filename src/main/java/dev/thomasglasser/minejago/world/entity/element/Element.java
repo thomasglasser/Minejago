@@ -9,14 +9,17 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextColor;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 
-public record Element(TextColor color, Component tagline, Optional<ParticleOptions> borderParticle, boolean hasSets, boolean hasSpecialSets, Display display, boolean isSpecial) {
+public record Element(TextColor color, Component tagline, Optional<ParticleOptions> borderParticle, boolean hasSets, boolean hasSpecialSets, Display display) {
 
     public static final Codec<Element> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             TextColor.CODEC.optionalFieldOf("color", TextColor.fromLegacyFormat(ChatFormatting.GRAY)).forGetter(Element::color),
@@ -24,8 +27,15 @@ public record Element(TextColor color, Component tagline, Optional<ParticleOptio
             ParticleTypes.CODEC.optionalFieldOf("border_particle").forGetter(Element::borderParticle),
             Codec.BOOL.optionalFieldOf("has_sets", false).forGetter(Element::hasSets),
             Codec.BOOL.optionalFieldOf("has_special_sets", false).forGetter(Element::hasSpecialSets),
-            Display.CODEC.optionalFieldOf("display", Display.EMPTY).forGetter(Element::display),
-            Codec.BOOL.optionalFieldOf("is_special", false).forGetter(Element::isSpecial)).apply(instance, Element::new));
+            Display.CODEC.optionalFieldOf("display", Display.EMPTY).forGetter(Element::display)).apply(instance, Element::new));
+    public static final StreamCodec<RegistryFriendlyByteBuf, Element> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.fromCodecWithRegistries(TextColor.CODEC), Element::color,
+            ComponentSerialization.STREAM_CODEC, Element::tagline,
+            ByteBufCodecs.optional(ParticleTypes.STREAM_CODEC), Element::borderParticle,
+            ByteBufCodecs.BOOL, Element::hasSets,
+            ByteBufCodecs.BOOL, Element::hasSpecialSets,
+            Display.STREAM_CODEC, Element::display,
+            Element::new);
 
     public static ResourceLocation getIcon(ResourceKey<Element> key) {
         return key.location().withPrefix("textures/" + MinejagoRegistries.ELEMENT.location().getPath() + "/").withSuffix(".png");
@@ -50,14 +60,13 @@ public record Element(TextColor color, Component tagline, Optional<ParticleOptio
         return new Builder(id);
     }
     public static class Builder {
-        private final ResourceLocation id;
-        private TextColor color;
+        protected final ResourceLocation id;
+        protected TextColor color;
+        protected Component tagline;
         protected ParticleOptions borderParticle;
         protected boolean hasSets;
         protected boolean hasSpecialSets;
         protected Display display;
-        protected boolean isSpecial;
-        protected Component tagline;
 
         public Builder(ResourceLocation id) {
             this.id = id;
@@ -67,7 +76,6 @@ public record Element(TextColor color, Component tagline, Optional<ParticleOptio
             this.hasSets = false;
             this.hasSpecialSets = false;
             this.display = Display.EMPTY;
-            this.isSpecial = false;
         }
 
         public Builder color(ChatFormatting color) {
@@ -110,18 +118,8 @@ public record Element(TextColor color, Component tagline, Optional<ParticleOptio
             return this;
         }
 
-        public Builder hasSets(boolean has) {
-            this.hasSets = has;
-            return this;
-        }
-
         public Builder hasSpecialSets() {
             this.hasSpecialSets = true;
-            return this;
-        }
-
-        public Builder hasSpecialSets(boolean has) {
-            this.hasSpecialSets = has;
             return this;
         }
 
@@ -135,13 +133,8 @@ public record Element(TextColor color, Component tagline, Optional<ParticleOptio
             return this;
         }
 
-        public Builder isSpecial() {
-            this.isSpecial = true;
-            return this;
-        }
-
         public Element build() {
-            return new Element(color, tagline, Optional.ofNullable(borderParticle), hasSets, hasSpecialSets, display, isSpecial);
+            return new Element(color, tagline, Optional.ofNullable(borderParticle), hasSets, hasSpecialSets, display);
         }
     }
 
@@ -151,6 +144,10 @@ public record Element(TextColor color, Component tagline, Optional<ParticleOptio
         public static final Codec<Display> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 ComponentSerialization.CODEC.optionalFieldOf("lore", Component.empty()).forGetter(Display::lore),
                 ComponentSerialization.CODEC.optionalFieldOf("description", Component.empty()).forGetter(Display::description)).apply(instance, Display::new));
+        public static final StreamCodec<RegistryFriendlyByteBuf, Display> STREAM_CODEC = StreamCodec.composite(
+                ComponentSerialization.STREAM_CODEC, Display::lore,
+                ComponentSerialization.STREAM_CODEC, Display::description,
+                Display::new);
 
         public static Display withDefaultKeys(ResourceLocation id) {
             return new Display(Component.translatable(id.toLanguageKey(MinejagoRegistries.ELEMENT.location().getPath()) + ".lore"), Component.translatable(id.toLanguageKey(MinejagoRegistries.ELEMENT.location().getPath()) + ".description"));
