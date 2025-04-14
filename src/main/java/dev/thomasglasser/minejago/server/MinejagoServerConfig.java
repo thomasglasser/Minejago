@@ -12,12 +12,12 @@ public class MinejagoServerConfig {
     public final ModConfigSpec.BooleanValue enableTech;
     public final ModConfigSpec.BooleanValue enableSkulkinRaids;
 
-    // Powers
-    public static final String POWERS = "powers";
+    // Elements
+    public static final String ELEMENTS = "elements";
     public final ModConfigSpec.BooleanValue allowChoose;
     public final ModConfigSpec.BooleanValue allowChange;
     public final ModConfigSpec.BooleanValue drainPool;
-    public final ModConfigSpec.BooleanValue enableNoPower;
+    public final ModConfigSpec.BooleanValue enableNoElement;
 
     // Spinjitzu
     public static final String SPINJITZU = "spinjitzu";
@@ -36,15 +36,15 @@ public class MinejagoServerConfig {
                 .define("enable_skulkin_raids", true);
         builder.pop();
 
-        builder.push(POWERS);
+        builder.push(ELEMENTS);
         allowChoose = builder
                 .define("allow_choose", false);
         allowChange = builder
                 .define("allow_change", false);
         drainPool = builder
                 .define("drain_pool", true);
-        enableNoPower = builder
-                .define("enable_no_power", true);
+        enableNoElement = builder
+                .define("enable_no_element", true);
         builder.pop();
 
         builder.push(SPINJITZU);

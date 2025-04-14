@@ -6,9 +6,9 @@ import dev.thomasglasser.minejago.client.model.BambooStaffModel;
 import dev.thomasglasser.minejago.client.model.ScytheModel;
 import dev.thomasglasser.minejago.client.model.ShurikenModel;
 import dev.thomasglasser.minejago.core.component.MinejagoDataComponents;
-import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
+import dev.thomasglasser.minejago.world.entity.element.MinejagoElements;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
-import dev.thomasglasser.minejago.world.item.armor.PoweredArmorItem;
+import dev.thomasglasser.minejago.world.item.armor.ElementalGiArmorItem;
 import dev.thomasglasser.tommylib.api.client.ClientUtils;
 import java.util.Optional;
 import net.minecraft.client.Minecraft;
@@ -53,11 +53,11 @@ public class MinejagoBlockEntityWithoutLevelRenderer extends BlockEntityWithoutL
             poseStack.scale(1.0F, -1.0F, -1.0F);
             VertexConsumer vertexConsumer = ItemRenderer.getFoilBuffer(buffer, this.scytheModel.renderType(ShurikenModel.TEXTURE), false, stack.hasFoil());
             this.shurikenModel.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
-        } else if (stack.getItem() instanceof PoweredArmorItem item) {
+        } else if (stack.getItem() instanceof ElementalGiArmorItem item) {
             poseStack.translate(0.5D, 0.5D, 0.5D);
-            ResourceLocation power = stack.getOrDefault(MinejagoDataComponents.POWER.get(), MinejagoPowers.NONE).location();
+            ResourceLocation element = stack.getOrDefault(MinejagoDataComponents.ELEMENT.get(), MinejagoElements.NONE).location();
             Optional<String> optionalPath = BuiltInRegistries.ITEM.getResourceKey(item).map(ResourceKey::location).map(ResourceLocation::getPath);
-            optionalPath.ifPresent(path -> ClientUtils.renderItem(stack, displayContext, false, poseStack, buffer, packedLight, packedOverlay, power.getNamespace(), "minejago_armor/" + power.getPath() + "_" + path));
+            optionalPath.ifPresent(path -> ClientUtils.renderItem(stack, displayContext, false, poseStack, buffer, packedLight, packedOverlay, element.getNamespace(), "minejago_armor/" + element.getPath() + "_" + path));
         }
         poseStack.popPose();
     }

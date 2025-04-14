@@ -11,16 +11,16 @@
   "pages": [
     {
       "type": "modonomicon:image",
-      "anchor": "power",
+      "anchor": "element",
       "border": true,
       "condition": {
         "type": "modonomicon:none"
       },
       "images": [
-        "minejago:textures/modonomicon/wiki/dependencies/tslatentitystatus/power.png"
+        "minejago:textures/modonomicon/wiki/dependencies/tslatentitystatus/element.png"
       ],
-      "text": "book.minejago.wiki.dependencies.tslatentitystatus.power.text",
-      "title": "book.minejago.wiki.dependencies.tslatentitystatus.power.title",
+      "text": "book.minejago.wiki.dependencies.tslatentitystatus.element.text",
+      "title": "book.minejago.wiki.dependencies.tslatentitystatus.element.title",
       "use_legacy_rendering": false
     }
   ],

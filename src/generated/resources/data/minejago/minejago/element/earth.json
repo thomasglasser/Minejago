@@ -1,0 +1,19 @@
+{
+  "border_particle": {
+    "type": "minejago:rocks"
+  },
+  "color": "#5A4441",
+  "display": {
+    "description": {
+      "translate": "element.minejago.earth.description"
+    },
+    "lore": {
+      "translate": "element.minejago.earth.lore"
+    }
+  },
+  "has_sets": true,
+  "has_special_sets": true,
+  "tagline": {
+    "translate": "element.minejago.earth.tagline"
+  }
+}

@@ -34,7 +34,7 @@ import dev.thomasglasser.minejago.data.worldgen.placement.MinejagoTreePlacements
 import dev.thomasglasser.minejago.data.worldgen.placement.MinejagoVegetationPlacements;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
-import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
+import dev.thomasglasser.minejago.world.entity.element.MinejagoElements;
 import dev.thomasglasser.minejago.world.focus.modifier.MinejagoFocusModifiers;
 import dev.thomasglasser.minejago.world.level.biome.MinejagoBiomes;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPatterns;
@@ -61,7 +61,7 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 public class MinejagoDataGenerators {
     private static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
-            .add(MinejagoRegistries.POWER, MinejagoPowers::bootstrap)
+            .add(MinejagoRegistries.ELEMENT, MinejagoElements::bootstrap)
             .add(Registries.TEMPLATE_POOL, MinejagoPools::bootstrap)
             .add(Registries.STRUCTURE, MinejagoStructures::bootstrap)
             .add(Registries.STRUCTURE_SET, MinejagoStructureSets::bootstrap)

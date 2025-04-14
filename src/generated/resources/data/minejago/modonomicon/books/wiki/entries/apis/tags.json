@@ -82,8 +82,8 @@
         "type": "modonomicon:none"
       },
       "show_title_separator": true,
-      "text": "book.minejago.wiki.apis.tags.power.text",
-      "title": "book.minejago.wiki.apis.tags.power.title",
+      "text": "book.minejago.wiki.apis.tags.element.text",
+      "title": "book.minejago.wiki.apis.tags.element.title",
       "use_markdown_in_title": false
     },
     {

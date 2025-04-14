@@ -73,7 +73,7 @@ public class Minejago {
         registerConfigs(modContainer);
 
         if (Dependencies.TSLAT_ENTITY_STATUS.isInstalled() && FMLEnvironment.dist.isClient()) {
-            TESAPI.addTESHudElement(Minejago.modLoc("power_symbol"), MinejagoClientEvents::renderPowerSymbol);
+            TESAPI.addTESHudElement(Minejago.modLoc("element_icon"), MinejagoClientEvents::renderElementIcon);
         }
 
         if (FMLEnvironment.dist.isClient()) bus.addListener(MinejagoClientEvents::onClientSetup);

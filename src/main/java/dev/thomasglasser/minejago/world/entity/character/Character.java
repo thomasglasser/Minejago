@@ -6,7 +6,6 @@ import dev.thomasglasser.minejago.tags.MinejagoEntityTypeTags;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntitySerializers;
 import dev.thomasglasser.minejago.world.entity.SpinjitzuDoer;
-import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.level.gameevent.MinejagoGameEvents;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -251,13 +250,12 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
     @Override
     public void tick() {
         super.tick();
-        Power power1 = level().holderOrThrow(this.getData(MinejagoAttachmentTypes.POWER).power()).value();
-        if (!level().isClientSide && isDoingSpinjitzu()) {
+        if (!level().isClientSide() && this.isDoingSpinjitzu()) {
             if (tickCount % 20 == 0) {
                 level().playSound(null, blockPosition(), MinejagoSoundEvents.SPINJITZU_ACTIVE.get(), SoundSource.NEUTRAL);
                 level().gameEvent(this, MinejagoGameEvents.SPINJITZU, blockPosition());
             }
-            MinejagoParticleUtils.renderNormalSpinjitzuBorder(power1.getBorderParticle(), this, 4, false);
+            level().holderOrThrow(this.getData(MinejagoAttachmentTypes.ELEMENT).element()).value().borderParticle().ifPresent(particle -> MinejagoParticleUtils.renderSpinjitzuBorder(particle, this, 4, false));
         }
         if (this.getHealth() < this.getMaxHealth() && this.tickCount % 20 == 0) {
             this.heal(1.0F);

@@ -46,7 +46,6 @@ import dev.thomasglasser.minejago.client.renderer.entity.layers.FreezingIceLayer
 import dev.thomasglasser.minejago.client.renderer.entity.layers.LegacyDevTeamLayer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterLayer;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
-import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.network.ClientboundStartSpinjitzuPayload;
 import dev.thomasglasser.minejago.network.ServerboundFlyVehiclePayload;
 import dev.thomasglasser.minejago.network.ServerboundStopMeditationPayload;
@@ -54,7 +53,8 @@ import dev.thomasglasser.minejago.sounds.MinejagoMusics;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityEvents;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
-import dev.thomasglasser.minejago.world.entity.power.Power;
+import dev.thomasglasser.minejago.world.entity.element.Element;
+import dev.thomasglasser.minejago.world.entity.element.MinejagoElements;
 import dev.thomasglasser.minejago.world.entity.spinjitzucourse.CenterSpinjitzuCourseElement;
 import dev.thomasglasser.minejago.world.entity.spinjitzucourse.SpinningDummiesSpinjitzuCourseElement;
 import dev.thomasglasser.minejago.world.entity.spinjitzucourse.SpinningMacesSpinjitzuCourseElement;
@@ -177,11 +177,11 @@ public class MinejagoClientEvents {
         }
     }
 
-    public static int renderPowerSymbol(GuiGraphics guiGraphics, Minecraft mc, DeltaTracker deltaTracker, LivingEntity entity, float opacity, boolean inWorldHud) {
+    public static int renderElementIcon(GuiGraphics guiGraphics, Minecraft mc, DeltaTracker deltaTracker, LivingEntity entity, float opacity, boolean inWorldHud) {
         if (mc.level != null && !inWorldHud) {
-            Optional<Holder.Reference<Power>> power = mc.level.holder(entity.getData(MinejagoAttachmentTypes.POWER).power());
-            if (power.isPresent()) {
-                TESClientUtil.prepRenderForTexture(power.orElseThrow().value().getIcon(mc.level.registryAccess().registryOrThrow(MinejagoRegistries.POWER)));
+            Optional<Holder.Reference<Element>> element = mc.level.holder(entity.getData(MinejagoAttachmentTypes.ELEMENT).element());
+            if (element.isPresent() && element.get().key() != MinejagoElements.NONE) {
+                TESClientUtil.prepRenderForTexture(Element.getIcon(element.get()));
                 guiGraphics.pose().pushPose();
                 guiGraphics.pose().scale(0.5f, 0.5f, 1.0f);
                 TESClientUtil.drawSimpleTexture(guiGraphics, -2, -1, 18, 18, 32, 32, 32, 32, 32, 32);
@@ -342,8 +342,7 @@ public class MinejagoClientEvents {
             model.getBody().copyFrom(event.getRenderer().getModel().body);
             float scale = (float) player.getAttributeValue(Attributes.SCALE);
             event.getPoseStack().scale(scale, scale, scale);
-            int color = player.level().holderOrThrow(player.getData(MinejagoAttachmentTypes.POWER).power()).value().getColor().getValue();
-            model.render(event.getPoseStack(), event.getMultiBufferSource(), player.tickCount, event.getPartialTick(), 0xFF000000 | color);
+            model.render(event.getPoseStack(), event.getMultiBufferSource(), player.tickCount, event.getPartialTick(), 0xFF000000 | player.level().holderOrThrow(player.getData(MinejagoAttachmentTypes.ELEMENT).element()).value().color().getValue());
         }
     }
 

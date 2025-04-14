@@ -53,10 +53,10 @@ public class MinejagoJeiPlugin implements IModPlugin {
         for (FilledTeacupItem teacup : MinejagoItems.allFilledTeacups()) {
             registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, teacup, PotionSubtypeInterpreter.INSTANCE);
         }
-        MinejagoArmors.POWERED_GI_SETS.forEach(set -> set.getAllAsItems().forEach(item -> registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, item, GiSubtypeInterpreter.INSTANCE)));
-        MinejagoArmors.SPECIAL_POWERED_GI_SETS.forEach(set -> set.getAllAsItems().forEach(item -> registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, item, GiSubtypeInterpreter.INSTANCE)));
-        MinejagoArmors.STANDALONE_POWERED_GI.forEach(item -> registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, item.get(), GiSubtypeInterpreter.INSTANCE));
-        MinejagoArmors.STANDALONE_SPECIAL_POWERED_GI.forEach(item -> registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, item.get(), GiSubtypeInterpreter.INSTANCE));
+        MinejagoArmors.ELEMENTAL_GI_SETS.forEach(set -> set.getAllAsItems().forEach(item -> registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, item, GiSubtypeInterpreter.INSTANCE)));
+        MinejagoArmors.SPECIAL_ELEMENTAL_GI_SETS.forEach(set -> set.getAllAsItems().forEach(item -> registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, item, GiSubtypeInterpreter.INSTANCE)));
+        MinejagoArmors.STANDALONE_ELEMENTAL_GI.forEach(item -> registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, item.get(), GiSubtypeInterpreter.INSTANCE));
+        MinejagoArmors.STANDALONE_SPECIAL_ELEMENTAL_GI.forEach(item -> registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, item.get(), GiSubtypeInterpreter.INSTANCE));
     }
 
     @Override

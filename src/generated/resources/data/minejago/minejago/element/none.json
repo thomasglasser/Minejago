@@ -1,0 +1,13 @@
+{
+  "display": {
+    "description": {
+      "translate": "element.minejago.none.description"
+    },
+    "lore": {
+      "translate": "element.minejago.none.lore"
+    }
+  },
+  "tagline": {
+    "translate": "element.minejago.none.tagline"
+  }
+}

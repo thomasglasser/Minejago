@@ -36,9 +36,9 @@ public class NinjaTeamEntry extends IndexModeEntryProvider {
                 Master Wu is the leader of the Ninja Team.
                 He is wise and powerful, with maxed out stats.
                 He can be found in the [Monastery of Spinjitzu](entry://locations/monastery_of_spinjitzu).
-                He has the power of Creation and carries a Bamboo Staff.
+                He has the element of Creation and carries a Bamboo Staff.
                 This is a new item that can be crafted with bamboo and can be thrown.
-                He is responsible for giving players their [elemental powers](category://powers) and helping them unlock [Spinjitzu](category://spinjitzu).
+                He is responsible for giving players their [element](category://elements) and helping them unlock [Spinjitzu](category://spinjitzu).
                 """);
 
         page("kai", () -> BookImagePageModel.create()
@@ -50,7 +50,7 @@ public class NinjaTeamEntry extends IndexModeEntryProvider {
         add(context().pageTitle(), "Kai");
         add(context().pageText(), """
                 Kai can be found in the [Four Weapons Blacksmith](entry://locations/four_weapons).
-                He has the power of Fire.
+                He has the element of Fire.
                 When fighting, he wil don his iron armor and wield his iron sword.
                 """);
 
@@ -63,7 +63,7 @@ public class NinjaTeamEntry extends IndexModeEntryProvider {
         add(context().pageTitle(), "Nya");
         add(context().pageText(), """
                 Nya can be found in the [Four Weapons Blacksmith](entry://locations/four_weapons).
-                She currently has no power and is an unskilled fighter.
+                She currently has no element and is an unskilled fighter.
                 """);
 
         page("jay", () -> BookImagePageModel.create()
@@ -75,7 +75,7 @@ public class NinjaTeamEntry extends IndexModeEntryProvider {
         add(context().pageTitle(), "Jay");
         add(context().pageText(), """
                 Jay can be found in [Ninjago City](entry://locations/ninjago_city).
-                He has the power of Lightning and wears an Elytra that he doesn't know how to use.
+                He has the element of Lightning and wears an Elytra that he doesn't know how to use.
                 """);
 
         page("cole", () -> BookImagePageModel.create()
@@ -87,7 +87,7 @@ public class NinjaTeamEntry extends IndexModeEntryProvider {
         add(context().pageTitle(), "Cole");
         add(context().pageText(), """
                 Cole can be found in Mountain biomes.
-                He has the power of Earth.
+                He has the element of Earth.
                 He is a skilled climber,
                 so he is stronger, more durable, and can climb walls.
                 """);
@@ -101,7 +101,7 @@ public class NinjaTeamEntry extends IndexModeEntryProvider {
         add(context().pageTitle(), "Zane");
         add(context().pageText(), """
                 Zane can be found in the Frozen River biome meditating underwater.
-                He has the power of Ice.
+                He has the element of Ice.
                 """);
     }
 

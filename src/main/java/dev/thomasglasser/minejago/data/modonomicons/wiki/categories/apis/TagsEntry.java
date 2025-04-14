@@ -72,13 +72,13 @@ public class TagsEntry extends IndexModeEntryProvider {
                 These can be used to add more variants of these items.
                 """);
 
-        page("power", () -> BookTextPageModel.create()
+        page("element", () -> BookTextPageModel.create()
                 .withTitle(context().pageTitle())
                 .withText(context().pageText()));
 
         add(context().pageTitle(), "Powers");
         add(context().pageText(), """
-                There are power tags for the elemental powers used by Golden Weapons.
+                There are element tags for the elemental powers used by Golden Weapons.
                 These can be used to allow custom powers to use a Golden Weapon.
                 """);
 

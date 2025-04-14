@@ -1,0 +1,19 @@
+{
+  "border_particle": {
+    "type": "minejago:snows"
+  },
+  "color": "#EDECE4",
+  "display": {
+    "description": {
+      "translate": "element.minejago.ice.description"
+    },
+    "lore": {
+      "translate": "element.minejago.ice.lore"
+    }
+  },
+  "has_sets": true,
+  "has_special_sets": true,
+  "tagline": {
+    "translate": "element.minejago.ice.tagline"
+  }
+}

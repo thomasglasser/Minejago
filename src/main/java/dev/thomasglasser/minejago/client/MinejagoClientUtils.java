@@ -1,7 +1,7 @@
 package dev.thomasglasser.minejago.client;
 
 import dev.thomasglasser.minejago.client.gui.screens.inventory.DragonInventoryScreen;
-import dev.thomasglasser.minejago.client.gui.screens.inventory.PowerSelectionScreen;
+import dev.thomasglasser.minejago.client.gui.screens.inventory.ElementSelectionScreen;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.ScrollViewScreen;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.SkillScreen;
 import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
@@ -10,7 +10,7 @@ import dev.thomasglasser.minejago.client.renderer.entity.layers.VipData;
 import dev.thomasglasser.minejago.network.ServerboundChangeVipDataPayload;
 import dev.thomasglasser.minejago.world.entity.character.Wu;
 import dev.thomasglasser.minejago.world.entity.dragon.Dragon;
-import dev.thomasglasser.minejago.world.entity.power.Power;
+import dev.thomasglasser.minejago.world.entity.element.Element;
 import dev.thomasglasser.minejago.world.inventory.DragonInventoryMenu;
 import dev.thomasglasser.tommylib.api.client.ClientUtils;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
@@ -81,8 +81,8 @@ public class MinejagoClientUtils {
         return bewlr;
     }
 
-    public static void openPowerSelectionScreen(List<ResourceKey<Power>> powers, Optional<Integer> wuId) {
-        ClientUtils.setScreen(new PowerSelectionScreen(Component.translatable(PowerSelectionScreen.TITLE), powers, wuId.isPresent() && ClientUtils.getEntityById(wuId.get()) instanceof Wu wu ? wu : null));
+    public static void openElementSelectionScreen(List<ResourceKey<Element>> elements, Optional<Integer> wuId) {
+        ClientUtils.setScreen(new ElementSelectionScreen(Component.translatable(ElementSelectionScreen.TITLE), elements, wuId.isPresent() && ClientUtils.getEntityById(wuId.get()) instanceof Wu wu ? wu : null));
     }
 
     public static void openScrollScreen(BookViewScreen.BookAccess bookAccess) {

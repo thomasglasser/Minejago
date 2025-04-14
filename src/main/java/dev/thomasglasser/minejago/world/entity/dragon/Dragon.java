@@ -7,12 +7,12 @@ import dev.thomasglasser.minejago.tags.MinejagoEntityTypeTags;
 import dev.thomasglasser.minejago.tags.MinejagoItemTags;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityEvents;
-import dev.thomasglasser.minejago.world.entity.power.Power;
+import dev.thomasglasser.minejago.world.entity.element.Element;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
 import dev.thomasglasser.minejago.world.focus.FocusData;
 import dev.thomasglasser.minejago.world.inventory.DragonInventoryMenu;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
-import dev.thomasglasser.minejago.world.level.storage.PowerData;
+import dev.thomasglasser.minejago.world.level.storage.ElementData;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import dev.thomasglasser.tommylib.api.world.entity.PlayerRideableFlying;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -125,9 +125,9 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
 
     protected SimpleContainer inventory;
 
-    public Dragon(EntityType<? extends Dragon> entityType, Level level, ResourceKey<Power> power, TagKey<Item> protectingItems) {
+    public Dragon(EntityType<? extends Dragon> entityType, Level level, ResourceKey<Element> element, TagKey<Item> protectingItems) {
         super(entityType, level);
-        new PowerData(power, false).save(this, false);
+        new ElementData(element, false).save(this, false);
         this.protectingItems = protectingItems;
         setTame(false, false);
         createInventory();
@@ -393,10 +393,10 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
                 increaseBond(player, stack.is(MinejagoItemTags.DRAGON_TREATS) ? TREAT_BOND : FOOD_BOND);
                 return InteractionResult.SUCCESS;
             } else {
-                Holder<Power> power = level().holderOrThrow(player.getData(MinejagoAttachmentTypes.POWER).power());
+                Holder<Element> element = level().holderOrThrow(player.getData(MinejagoAttachmentTypes.ELEMENT).element());
                 if (bond <= 50 && focusData.getFocusLevel() >= FocusConstants.DRAGON_TALK_LEVEL && random.nextInt(10) < 2) {
                     double i = TALK_BOND;
-                    if (power.is(getData(MinejagoAttachmentTypes.POWER).power())) i += 1.5;
+                    if (element.is(getData(MinejagoAttachmentTypes.ELEMENT).element())) i += 1.5;
                     increaseBond(player, i);
                     player.getData(MinejagoAttachmentTypes.FOCUS).addExhaustion(FocusConstants.EXHAUSTION_DRAGON_TALK);
                     return InteractionResult.SUCCESS;
@@ -409,12 +409,12 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
                             this.equipSaddle(stack, SoundSource.PLAYERS);
                         else
                             player.startRiding(this);
-                    } else if (power.is(getData(MinejagoAttachmentTypes.POWER).power()) && focusData.getFocusLevel() >= 14) {
-                        if (power.value().hasSpecialSets()) {
+                    } else if (element.is(getData(MinejagoAttachmentTypes.ELEMENT).element()) && focusData.getFocusLevel() >= 14) {
+                        if (element.value().hasSpecialSets()) {
                             List<ItemStack> armorStacks = MinejagoArmors.DRAGON_EXTREME_GI_SET.getAllAsStacks();
                             for (int i = 0; i < armorStacks.size(); i++) {
                                 ItemStack dx = armorStacks.get(i);
-                                dx.set(MinejagoDataComponents.POWER, power.getKey());
+                                dx.set(MinejagoDataComponents.ELEMENT, element.getKey());
                                 inventory.setItem(i + 1, dx);
                             }
                         }

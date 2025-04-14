@@ -26,8 +26,8 @@ public class CaveOfDespairEntry extends IndexModeEntryProvider {
 
         add(context().pageTitle(), "Obtaining the Scythe of Quakes");
         add(context().pageText(), """
-                To obtain the [Scythe of Quakes](entry://powers/golden_weapons@scythe_of_quakes),
-                you must interact with the [Earth Dragon](entry://powers/dragons)'s head in the center.
+                To obtain the [Scythe of Quakes](entry://elements/golden_weapons@scythe_of_quakes),
+                you must interact with the [Earth Dragon](entry://elements/dragons)'s head in the center.
                 The Earth Dragon will then come out of the ground and try to protect the Scythe.
                 You must either tame or escape it to obtain the Scythe.
                 """);

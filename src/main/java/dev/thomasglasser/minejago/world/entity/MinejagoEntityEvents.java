@@ -31,7 +31,6 @@ import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.character.Character;
 import dev.thomasglasser.minejago.world.entity.character.Zane;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
-import dev.thomasglasser.minejago.world.entity.power.Power;
 import dev.thomasglasser.minejago.world.entity.shadow.ShadowClone;
 import dev.thomasglasser.minejago.world.entity.shadow.ShadowSource;
 import dev.thomasglasser.minejago.world.entity.skill.Skill;
@@ -205,10 +204,7 @@ public class MinejagoEntityEvents {
                             serverLevel.playSound(null, serverPlayer.blockPosition(), MinejagoSoundEvents.SPINJITZU_ACTIVE.get(), SoundSource.PLAYERS);
                             serverLevel.gameEvent(serverPlayer, MinejagoGameEvents.SPINJITZU, serverPlayer.blockPosition());
                         }
-                        Power power = player.level().holderOrThrow(player.getData(MinejagoAttachmentTypes.POWER).power()).value();
-                        if (power.getBorderParticle() != null) {
-                            MinejagoParticleUtils.renderNormalSpinjitzuBorder(power.getBorderParticle(), serverPlayer, 4, false);
-                        }
+                        player.level().holderOrThrow(player.getData(MinejagoAttachmentTypes.ELEMENT).element()).value().borderParticle().ifPresent(particle -> MinejagoParticleUtils.renderSpinjitzuBorder(particle, serverPlayer, 4, false));
                     } else {
                         stopSpinjitzu(spinjitzu, serverPlayer, true);
                     }
@@ -602,7 +598,7 @@ public class MinejagoEntityEvents {
     public static void onEntityJoinLevel(EntityJoinLevelEvent event) {
         Entity entity = event.getEntity();
         if (!entity.level().isClientSide && entity instanceof LivingEntity livingEntity) {
-            entity.getData(MinejagoAttachmentTypes.POWER).save(livingEntity, true);
+            entity.getData(MinejagoAttachmentTypes.ELEMENT).save(livingEntity, true);
             entity.getData(MinejagoAttachmentTypes.SPINJITZU).save(livingEntity, true);
             entity.getData(MinejagoAttachmentTypes.FOCUS).setDirty(true);
             entity.getData(MinejagoAttachmentTypes.SKILL).save(livingEntity, true);
@@ -627,7 +623,7 @@ public class MinejagoEntityEvents {
     public static void onPlayerClone(PlayerEvent.Clone event) {
         if (!event.getEntity().level().isClientSide) {
             event.getEntity().getData(MinejagoAttachmentTypes.SPINJITZU).save(event.getEntity(), true);
-            event.getEntity().getData(MinejagoAttachmentTypes.POWER).save(event.getEntity(), true);
+            event.getEntity().getData(MinejagoAttachmentTypes.ELEMENT).save(event.getEntity(), true);
         }
     }
 

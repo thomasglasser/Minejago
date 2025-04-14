@@ -33,7 +33,7 @@
         "type": "modonomicon:none"
       },
       "images": [
-        "minejago:textures/modonomicon/wiki/powers/golden_weapons/scythe_of_quakes.png"
+        "minejago:textures/modonomicon/wiki/elements/golden_weapons/scythe_of_quakes.png"
       ],
       "text": "book.minejago.wiki.dependencies.playeranimator.golden_weapons.text",
       "title": "book.minejago.wiki.dependencies.playeranimator.golden_weapons.title",

@@ -1,0 +1,39 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "elements",
+  "description": "book.minejago.wiki.elements.configuration.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "minecraft:command_block"
+  },
+  "name": "book.minejago.wiki.elements.configuration.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "values",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.minejago.wiki.elements.configuration.values.text",
+      "title": "book.minejago.wiki.elements.configuration.values.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "command",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.minejago.wiki.elements.configuration.command.text",
+      "title": "book.minejago.wiki.elements.configuration.command.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 4,
+  "x": 0,
+  "y": 0
+}

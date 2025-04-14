@@ -15,14 +15,14 @@ public class TslatEntityStatusEntry extends IndexModeEntryProvider {
 
     @Override
     protected void generatePages() {
-        page("power", () -> BookImagePageModel.create()
-                .withAnchor("power")
-                .withImages(WikiBookSubProvider.wikiTexture("dependencies/tslatentitystatus/power.png"))
+        page("element", () -> BookImagePageModel.create()
+                .withAnchor("element")
+                .withImages(WikiBookSubProvider.wikiTexture("dependencies/tslatentitystatus/element.png"))
                 .withTitle(context().pageTitle())
                 .withText(context().pageText()));
 
-        add(context().pageTitle(), "Power");
-        add(context().pageText(), "[TslatEntityStatus](https://modrinth.com/mod/tslatentitystatus) is able to show the power information of living entities.");
+        add(context().pageTitle(), "Element");
+        add(context().pageText(), "[TslatEntityStatus](https://modrinth.com/mod/tslatentitystatus) is able to show the element information of living entities.");
     }
 
     @Override

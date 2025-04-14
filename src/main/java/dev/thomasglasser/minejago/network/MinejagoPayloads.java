@@ -12,7 +12,7 @@ public class MinejagoPayloads {
     public static List<PayloadInfo<?>> PAYLOADS = List.of(
             // Clientbound
             new PayloadInfo<>(ClientboundChangeVipDataPayload.TYPE, ExtendedPacketPayload.Direction.SERVER_TO_CLIENT, ClientboundChangeVipDataPayload.CODEC),
-            new PayloadInfo<>(ClientboundOpenPowerSelectionScreenPayload.TYPE, ExtendedPacketPayload.Direction.SERVER_TO_CLIENT, ClientboundOpenPowerSelectionScreenPayload.CODEC),
+            new PayloadInfo<>(ClientboundOpenElementSelectionScreenPayload.TYPE, ExtendedPacketPayload.Direction.SERVER_TO_CLIENT, ClientboundOpenElementSelectionScreenPayload.CODEC),
             new PayloadInfo<>(ClientboundOpenScrollPayload.TYPE, ExtendedPacketPayload.Direction.SERVER_TO_CLIENT, ClientboundOpenScrollPayload.CODEC),
             new PayloadInfo<>(ClientboundRefreshVipDataPayload.TYPE, ExtendedPacketPayload.Direction.SERVER_TO_CLIENT, ClientboundRefreshVipDataPayload.CODEC),
             new PayloadInfo<>(ClientboundSetFocusPayload.TYPE, ExtendedPacketPayload.Direction.SERVER_TO_CLIENT, ClientboundSetFocusPayload.CODEC),
@@ -25,7 +25,7 @@ public class MinejagoPayloads {
             new PayloadInfo<>(ClientboundStopMeditationPayload.TYPE, ExtendedPacketPayload.Direction.SERVER_TO_CLIENT, ClientboundStopMeditationPayload.CODEC),
             new PayloadInfo<>(ClientboundStopSpinjitzuPayload.TYPE, ExtendedPacketPayload.Direction.SERVER_TO_CLIENT, ClientboundStopSpinjitzuPayload.CODEC),
             new PayloadInfo<>(ClientboundOpenDragonInventoryScreenPayload.TYPE, ExtendedPacketPayload.Direction.SERVER_TO_CLIENT, ClientboundOpenDragonInventoryScreenPayload.CODEC),
-            new PayloadInfo<>(ClientboundSyncPowerDataPayload.TYPE, ExtendedPacketPayload.Direction.SERVER_TO_CLIENT, ClientboundSyncPowerDataPayload.CODEC),
+            new PayloadInfo<>(ClientboundSyncElementDataPayload.TYPE, ExtendedPacketPayload.Direction.SERVER_TO_CLIENT, ClientboundSyncElementDataPayload.CODEC),
             new PayloadInfo<>(ClientboundSyncSpinjitzuDataPayload.TYPE, ExtendedPacketPayload.Direction.SERVER_TO_CLIENT, ClientboundSyncSpinjitzuDataPayload.CODEC),
             new PayloadInfo<>(ClientboundAddSkulkinRaidPayload.TYPE, ExtendedPacketPayload.Direction.SERVER_TO_CLIENT, ClientboundAddSkulkinRaidPayload.CODEC),
             new PayloadInfo<>(ClientboundSyncSkillDataSetPayload.TYPE, ExtendedPacketPayload.Direction.SERVER_TO_CLIENT, ClientboundSyncSkillDataSetPayload.CODEC),
@@ -37,7 +37,7 @@ public class MinejagoPayloads {
             // Serverbound
             new PayloadInfo<>(ServerboundChangeVipDataPayload.TYPE, ExtendedPacketPayload.Direction.CLIENT_TO_SERVER, ServerboundChangeVipDataPayload.CODEC),
             new PayloadInfo<>(ServerboundFlyVehiclePayload.TYPE, ExtendedPacketPayload.Direction.CLIENT_TO_SERVER, ServerboundFlyVehiclePayload.CODEC),
-            new PayloadInfo<>(ServerboundSetPowerDataPayload.TYPE, ExtendedPacketPayload.Direction.CLIENT_TO_SERVER, ServerboundSetPowerDataPayload.CODEC),
+            new PayloadInfo<>(ServerboundSetElementDataPayload.TYPE, ExtendedPacketPayload.Direction.CLIENT_TO_SERVER, ServerboundSetElementDataPayload.CODEC),
             new PayloadInfo<>(ServerboundStartMeditationPayload.TYPE, ExtendedPacketPayload.Direction.CLIENT_TO_SERVER, ServerboundStartMeditationPayload.CODEC),
             new PayloadInfo<>(ServerboundStartSpinjitzuPayload.TYPE, ExtendedPacketPayload.Direction.CLIENT_TO_SERVER, ServerboundStartSpinjitzuPayload.CODEC),
             new PayloadInfo<>(ServerboundStopMeditationPayload.TYPE, ExtendedPacketPayload.Direction.CLIENT_TO_SERVER, ServerboundStopMeditationPayload.CODEC),

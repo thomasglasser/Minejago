@@ -1,5 +1,5 @@
 {
-  "parent": "minejago:story/get_power",
+  "parent": "minejago:story/get_element",
   "criteria": {
     "enter_cave_of_despair": {
       "conditions": {

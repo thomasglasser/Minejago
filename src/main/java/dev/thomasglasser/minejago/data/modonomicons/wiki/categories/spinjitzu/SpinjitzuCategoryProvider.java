@@ -32,7 +32,7 @@ public class SpinjitzuCategoryProvider extends IndexModeCategoryProvider {
 
     @Override
     protected String categoryDescription() {
-        return "A martial art that involves the user spinning rapidly to create a tornado of power. Toggled with 'N' by default.";
+        return "A martial art that involves the user spinning rapidly to create a tornado of energy. Toggled with 'N' by default.";
     }
 
     @Override

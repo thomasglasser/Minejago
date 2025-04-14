@@ -2,10 +2,10 @@ package dev.thomasglasser.minejago.data.advancements.packs;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.advancements.criterion.DidSpinjitzuTrigger;
-import dev.thomasglasser.minejago.advancements.criterion.GotPowerTrigger;
+import dev.thomasglasser.minejago.advancements.criterion.GotElementTrigger;
 import dev.thomasglasser.minejago.core.component.MinejagoDataComponents;
 import dev.thomasglasser.minejago.tags.MinejagoEntityTypeTags;
-import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
+import dev.thomasglasser.minejago.world.entity.element.MinejagoElements;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
@@ -58,16 +58,16 @@ public class MinejagoStoryAdvancements extends ExtendedAdvancementGenerator {
                 "get_four_weapons_maps", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().hasComponents(DataComponentPredicate.builder().expect(MinejagoDataComponents.GOLDEN_WEAPONS_MAP.get(), Unit.INSTANCE).build()).build()), "The Journey Begins", "Obtain the Four Weapons Maps");
 
         ItemStack fireHead = MinejagoArmors.TRAINEE_GI_SET.HEAD.get().getDefaultInstance();
-        fireHead.set(MinejagoDataComponents.POWER.get(), MinejagoPowers.FIRE);
-        AdvancementHolder getPower = create(getFourWeaponsMaps, fireHead, "get_power", AdvancementType.TASK, true, true, false, null,
-                "get_power", GotPowerTrigger.TriggerInstance.gotPower(), "I've Got the Power!", "Discover your elemental power");
+        fireHead.set(MinejagoDataComponents.ELEMENT.get(), MinejagoElements.FIRE);
+        AdvancementHolder getElement = create(getFourWeaponsMaps, fireHead, "get_element", AdvancementType.TASK, true, true, false, null,
+                "get_element", GotElementTrigger.TriggerInstance.gotElement(), "I've Got the Power!", "Discover your elemental power");
 
         Map<String, Criterion<?>> goldenWeaponsStructures = Map.of(
                 "enter_cave_of_despair", PlayerTrigger.TriggerInstance.located(LocationPredicate.Builder.inStructure(registries.lookupOrThrow(Registries.STRUCTURE).getOrThrow(MinejagoStructures.CAVE_OF_DESPAIR)))
         // TODO: Add other structures
         );
 
-        AdvancementHolder enterGoldenWeaponsStructure = create(getPower, MinejagoItems.SCYTHE_OF_QUAKES.get(), "enter_golden_weapons_structure", AdvancementType.TASK, true, true, false, null, AdvancementRequirements.Strategy.OR, goldenWeaponsStructures, "The Weapon is Near", "Enter a structure containing a Golden Weapon");
+        AdvancementHolder enterGoldenWeaponsStructure = create(getElement, MinejagoItems.SCYTHE_OF_QUAKES.get(), "enter_golden_weapons_structure", AdvancementType.TASK, true, true, false, null, AdvancementRequirements.Strategy.OR, goldenWeaponsStructures, "The Weapon is Near", "Enter a structure containing a Golden Weapon");
 
         AdvancementHolder enterAllGoldenWeaponsStructures = create(enterGoldenWeaponsStructure, MinejagoItems.SCYTHE_OF_QUAKES.get()/*TODO: Replace with sword of fire*/, "enter_all_golden_weapons_structures", AdvancementType.GOAL, true, true, false, AdvancementRewards.Builder.experience(50).build(), AdvancementRequirements.Strategy.AND, goldenWeaponsStructures, "The Homes of Creation", "Find all structures containing Golden Weapons");
 

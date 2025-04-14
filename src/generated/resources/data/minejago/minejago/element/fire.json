@@ -1,0 +1,19 @@
+{
+  "border_particle": {
+    "type": "minejago:sparks"
+  },
+  "color": "#B90E04",
+  "display": {
+    "description": {
+      "translate": "element.minejago.fire.description"
+    },
+    "lore": {
+      "translate": "element.minejago.fire.lore"
+    }
+  },
+  "has_sets": true,
+  "has_special_sets": true,
+  "tagline": {
+    "translate": "element.minejago.fire.tagline"
+  }
+}

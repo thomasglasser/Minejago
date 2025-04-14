@@ -93,10 +93,11 @@ public class SpinjitzuModel<T extends Entity> extends EntityModel<T> {
 
     public void render(PoseStack poseStack, MultiBufferSource source, int tickCount, float partialTick, int color) {
         float f = (float) tickCount + partialTick;
+        poseStack.pushPose();
         poseStack.mulPose(Axis.XP.rotationDegrees(180.0F));
         inner.render(poseStack, source.getBuffer(RenderType.entityTranslucent(BASE_TEXTURE)), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0xFF000000 | color);
         outer.render(poseStack, source.getBuffer(RenderType.breezeWind(SWIRL_TEXTURE, xOffset(f) % 1.0F, 0.0F)), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0xFF000000 | color);
-        poseStack.mulPose(Axis.XP.rotationDegrees(180.0F));
+        poseStack.popPose();
     }
 
     private static float xOffset(float tickCount) {

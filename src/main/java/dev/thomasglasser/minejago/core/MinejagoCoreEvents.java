@@ -5,7 +5,7 @@ import dev.thomasglasser.minejago.core.registries.MinejagoBuiltInRegistries;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.datamaps.MinejagoDataMaps;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
-import dev.thomasglasser.minejago.world.entity.power.Power;
+import dev.thomasglasser.minejago.world.entity.element.Element;
 import dev.thomasglasser.minejago.world.focus.modifier.FocusModifier;
 import dev.thomasglasser.tommylib.api.packs.PackInfo;
 import java.util.Optional;
@@ -47,7 +47,7 @@ public class MinejagoCoreEvents {
     }
 
     public static void onNewDataPackRegistry(DataPackRegistryEvent.NewRegistry event) {
-        event.dataPackRegistry(MinejagoRegistries.POWER, Power.CODEC, Power.CODEC);
+        event.dataPackRegistry(MinejagoRegistries.ELEMENT, Element.CODEC, Element.CODEC);
         event.dataPackRegistry(MinejagoRegistries.FOCUS_MODIFIER, FocusModifier.DIRECT_CODEC, FocusModifier.DIRECT_CODEC);
     }
 

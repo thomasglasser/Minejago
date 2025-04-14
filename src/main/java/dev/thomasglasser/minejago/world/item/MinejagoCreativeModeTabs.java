@@ -3,7 +3,7 @@ package dev.thomasglasser.minejago.world.item;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.core.component.MinejagoDataComponents;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
-import dev.thomasglasser.minejago.world.entity.power.Power;
+import dev.thomasglasser.minejago.world.entity.element.Element;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import dev.thomasglasser.tommylib.api.registration.DeferredHolder;
@@ -31,12 +31,12 @@ public class MinejagoCreativeModeTabs {
         MinejagoArmors.STANDALONE_GI.forEach(item -> output.accept(item.get()));
         MinejagoArmors.NORMAL_GI_SETS.forEach(set -> output.acceptAll(set.getAllAsStacks()));
         parameters.holders()
-                .lookup(MinejagoRegistries.POWER)
-                .ifPresent(powers -> {
-                    generatePoweredItems(MinejagoArmors.STANDALONE_POWERED_GI, output, powers);
-                    generatePoweredSpecialItems(MinejagoArmors.STANDALONE_SPECIAL_POWERED_GI, output, powers);
-                    generatePoweredSets(MinejagoArmors.POWERED_GI_SETS, output, powers);
-                    generatePoweredSpecialSets(MinejagoArmors.SPECIAL_POWERED_GI_SETS, output, powers);
+                .lookup(MinejagoRegistries.ELEMENT)
+                .ifPresent(elements -> {
+                    generateElementalItems(MinejagoArmors.STANDALONE_ELEMENTAL_GI, output, elements);
+                    generateElementalSpecialItems(MinejagoArmors.STANDALONE_SPECIAL_ELEMENTAL_GI, output, elements);
+                    generateElementalSets(MinejagoArmors.ELEMENTAL_GI_SETS, output, elements);
+                    generateElementalSpecialSets(MinejagoArmors.SPECIAL_ELEMENTAL_GI_SETS, output, elements);
                 });
     }).build());
 
@@ -60,66 +60,66 @@ public class MinejagoCreativeModeTabs {
         return CREATIVE_MODE_TABS.register(name, tab);
     }
 
-    private static void generatePoweredItems(
+    private static void generateElementalItems(
             List<DeferredItem<? extends ArmorItem>> items,
             CreativeModeTab.Output output,
-            HolderLookup.RegistryLookup<Power> powers) {
-        powers.listElements()
+            HolderLookup.RegistryLookup<Element> elements) {
+        elements.listElements()
                 .forEach(
-                        power -> {
-                            if (power.value().hasSets()) {
-                                items.forEach(item -> generatePoweredArmorItem(item, power.getKey(), output));
+                        element -> {
+                            if (element.value().hasSets()) {
+                                items.forEach(item -> generateElementalArmorItem(item, element.getKey(), output));
                             }
                         });
     }
 
-    private static void generatePoweredSets(
+    private static void generateElementalSets(
             List<ArmorSet> armorSets,
             CreativeModeTab.Output output,
-            HolderLookup.RegistryLookup<Power> powers) {
-        powers.listElements()
+            HolderLookup.RegistryLookup<Element> elements) {
+        elements.listElements()
                 .forEach(
-                        power -> {
-                            if (power.value().hasSets()) {
-                                ResourceKey<Power> key = power.getKey();
-                                armorSets.forEach(set -> set.getAll().forEach(item -> generatePoweredArmorItem(item, key, output)));
+                        element -> {
+                            if (element.value().hasSets()) {
+                                ResourceKey<Element> key = element.getKey();
+                                armorSets.forEach(set -> set.getAll().forEach(item -> generateElementalArmorItem(item, key, output)));
                             }
                         });
     }
 
-    private static void generatePoweredSpecialItems(
+    private static void generateElementalSpecialItems(
             List<DeferredItem<? extends ArmorItem>> items,
             CreativeModeTab.Output output,
-            HolderLookup.RegistryLookup<Power> powers) {
-        powers.listElements()
+            HolderLookup.RegistryLookup<Element> elements) {
+        elements.listElements()
                 .forEach(
-                        power -> {
-                            if (power.value().hasSpecialSets()) {
-                                items.forEach(item -> generatePoweredArmorItem(item, power.getKey(), output));
+                        element -> {
+                            if (element.value().hasSpecialSets()) {
+                                items.forEach(item -> generateElementalArmorItem(item, element.getKey(), output));
                             }
                         });
     }
 
-    private static void generatePoweredSpecialSets(
+    private static void generateElementalSpecialSets(
             List<ArmorSet> armorSets,
             CreativeModeTab.Output output,
-            HolderLookup.RegistryLookup<Power> powers) {
-        powers.listElements()
+            HolderLookup.RegistryLookup<Element> elements) {
+        elements.listElements()
                 .forEach(
-                        power -> {
-                            if (power.value().hasSpecialSets()) {
-                                ResourceKey<Power> key = power.getKey();
-                                armorSets.forEach(set -> set.getAll().forEach(item -> generatePoweredArmorItem(item, key, output)));
+                        element -> {
+                            if (element.value().hasSpecialSets()) {
+                                ResourceKey<Element> key = element.getKey();
+                                armorSets.forEach(set -> set.getAll().forEach(item -> generateElementalArmorItem(item, key, output)));
                             }
                         });
     }
 
-    private static void generatePoweredArmorItem(
+    private static void generateElementalArmorItem(
             DeferredItem<? extends ArmorItem> item,
-            ResourceKey<Power> power,
+            ResourceKey<Element> element,
             CreativeModeTab.Output output) {
         ItemStack stack = item.toStack();
-        stack.set(MinejagoDataComponents.POWER, power);
+        stack.set(MinejagoDataComponents.ELEMENT, element);
         output.accept(stack);
     }
 

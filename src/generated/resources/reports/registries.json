@@ -73,8 +73,8 @@
     "minejago:minejago"
   ],
   "minecraft:data_component_type": [
-    "minejago:golden_weapons_map_data",
-    "minejago:power"
+    "minejago:element",
+    "minejago:golden_weapons_map_data"
   ],
   "minecraft:dimension": [
     "minejago:underworld"
@@ -271,7 +271,7 @@
   ],
   "minecraft:memory_module_type": [
     "minejago:in_raid",
-    "minejago:selected_power"
+    "minejago:selected_element"
   ],
   "minecraft:mob_effect": [
     "minejago:frozen",
@@ -406,7 +406,7 @@
   "minecraft:trigger_type": [
     "minejago:brewed_tea",
     "minejago:did_spinjitzu",
-    "minejago:got_power",
+    "minejago:got_element",
     "minejago:increased_skill",
     "minejago:skulkin_raid_status_changed"
   ],
@@ -465,6 +465,14 @@
     "minejago:ninjago_city/billboards",
     "minejago:ninjago_city/buildings"
   ],
+  "minejago:element": [
+    "minejago:creation",
+    "minejago:earth",
+    "minejago:fire",
+    "minejago:ice",
+    "minejago:lightning",
+    "minejago:none"
+  ],
   "minejago:focus_modifier": [
     "minejago:biome/mountains",
     "minejago:block/1_lit_candle",
@@ -492,21 +500,13 @@
     "minejago:location",
     "minejago:world"
   ],
-  "minejago:power": [
-    "minejago:creation",
-    "minejago:earth",
-    "minejago:fire",
-    "minejago:ice",
-    "minejago:lightning",
-    "minejago:none"
-  ],
   "minejago:skulkin_raid_types": [
     "minejago:four_weapons",
     "minejago:golden_weapons"
   ],
   "neoforge:attachment_types": [
+    "minejago:element",
     "minejago:focus",
-    "minejago:power",
     "minejago:shadow_clones",
     "minejago:shadow_source",
     "minejago:skill",

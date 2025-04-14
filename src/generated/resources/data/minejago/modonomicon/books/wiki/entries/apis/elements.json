@@ -1,0 +1,42 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "apis",
+  "description": "book.minejago.wiki.apis.elements.description",
+  "hide_while_locked": false,
+  "icon": {
+    "components": {
+      "minejago:element": "minejago:fire"
+    },
+    "item": "minejago:trainee_gi_jacket"
+  },
+  "name": "book.minejago.wiki.apis.elements.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.minejago.wiki.apis.elements.generator.text",
+      "title": "book.minejago.wiki.apis.elements.generator.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.minejago.wiki.apis.elements.guide.text",
+      "title": "book.minejago.wiki.apis.elements.guide.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 1,
+  "x": 0,
+  "y": 0
+}

@@ -37,15 +37,15 @@ public class AdvancementTriggersEntry extends IndexModeEntryProvider {
                 This trigger is called when a player activates spinjitzu. It has no parameters.
                 """);
 
-        page("got_power", () -> BookTextPageModel.create()
-                .withAnchor("got_power")
+        page("got_element", () -> BookTextPageModel.create()
+                .withAnchor("got_element")
                 .withTitle(context().pageTitle())
                 .withText(context().pageText()));
 
-        add(context().pageTitle(), "Got Power");
+        add(context().pageTitle(), "Got Element");
         add(context().pageText(), """
-                This trigger is called when a player gets a power. It has one parameter:
-                - "power": The power ID.
+                This trigger is called when a player gets a element. It has one parameter:
+                - "element": The element ID.
                 """);
 
         page("brewed_tea", () -> BookTextPageModel.create()

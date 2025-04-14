@@ -3,17 +3,16 @@ package dev.thomasglasser.minejago.data.lang;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.MinejagoClientConfig;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
-import dev.thomasglasser.minejago.client.gui.screens.inventory.PowerSelectionScreen;
+import dev.thomasglasser.minejago.client.gui.screens.inventory.ElementSelectionScreen;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.ScrollEditScreen;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.ScrollViewScreen;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.SkillScreen;
 import dev.thomasglasser.minejago.commands.MinejagoCommandEvents;
-import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import dev.thomasglasser.minejago.plugins.MinejagoWailaPlugin;
 import dev.thomasglasser.minejago.plugins.jei.TeapotBrewingRecipeCategory;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
-import dev.thomasglasser.minejago.server.commands.PowerCommand;
+import dev.thomasglasser.minejago.server.commands.ElementCommand;
 import dev.thomasglasser.minejago.server.commands.SkillCommand;
 import dev.thomasglasser.minejago.server.commands.SpinjitzuCommand;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
@@ -28,8 +27,8 @@ import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.character.Wu;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
-import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
-import dev.thomasglasser.minejago.world.entity.power.Power;
+import dev.thomasglasser.minejago.world.entity.element.Element;
+import dev.thomasglasser.minejago.world.entity.element.MinejagoElements;
 import dev.thomasglasser.minejago.world.entity.skill.Skill;
 import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.AbstractSkulkinRaid;
@@ -53,13 +52,13 @@ import dev.thomasglasser.tommylib.api.world.item.armor.ArmorSet;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.PackOutput;
 import net.minecraft.network.chat.contents.TranslatableContents;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.DyeColor;
@@ -99,28 +98,27 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         addTags();
         addConfigs();
 
-        // TODO: Better Power descriptions, lore, taglines
-        HolderGetter<Power> powers = registries.lookupOrThrow(MinejagoRegistries.POWER);
-        addPower(powers.getOrThrow(MinejagoPowers.NONE), "None", "The average Joe.", "TODO: Lore", """
+        // TODO: Better Element descriptions, lore, taglines
+        addElement(MinejagoElements.NONE, "None", "The average Joe.", "TODO: Lore", """
                 TODO: Description
                 """);
-        addPower(powers.getOrThrow(MinejagoPowers.ICE), "Ice", "Cool as ice.", "TODO: Lore", """
+        addElement(MinejagoElements.ICE, "Ice", "Cool as ice.", "TODO: Lore", """
                 Like ice itself, the Master of Ice is cold and calculating.
                 They keep their cool in the heat of battle,
                 and can keep their team in check.
 
                 TODO:Description
                 """);
-        addPower(powers.getOrThrow(MinejagoPowers.EARTH), "Earth", "Solid as rock.", "TODO: Lore", """
+        addElement(MinejagoElements.EARTH, "Earth", "Solid as rock.", "TODO: Lore", """
                 TODO: Description
                 """);
-        addPower(powers.getOrThrow(MinejagoPowers.FIRE), "Fire", "It burns bright in you.", "TODO: Lore", """
+        addElement(MinejagoElements.FIRE, "Fire", "It burns bright in you.", "TODO: Lore", """
                 TODO: Description
                 """);
-        addPower(powers.getOrThrow(MinejagoPowers.LIGHTNING), "Lightning", "Ignite the storm within.", "TODO: Lore", """
+        addElement(MinejagoElements.LIGHTNING, "Lightning", "Ignite the storm within.", "TODO: Lore", """
                 TODO: Description
                 """);
-        add(MinejagoPowers.CREATION, "Creation");
+        add(MinejagoElements.CREATION, "Creation");
 
         add(Skulkin.Variant.STRENGTH, "Strength");
         add(Skulkin.Variant.SPEED, "Speed");
@@ -174,14 +172,14 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
 
         add(MinejagoCommandEvents.NOT_LIVING_ENTITY, "Target %s (%s) is not a LivingEntity");
 
-        add(PowerCommand.SUCCESS_SELF, "Set own power to %s");
-        add(PowerCommand.CHANGED, "Your power has been updated to %s");
-        add(PowerCommand.SUCCESS_OTHER, "Set %s's power to %s");
-        add(PowerCommand.SUCCESS_CLEARED_SELF, "Reset own power to %s and enabled power discovery");
-        add(PowerCommand.CLEARED, "Your power has been reset to %s and power discovery has been enabled");
-        add(PowerCommand.SUCCESS_CLEARED_OTHER, "Reset %s's power to %s and enabled power discovery");
-        add(PowerCommand.QUERY, "Your power is currently set to: %s");
-        add(PowerCommand.INVALID, "Power not found in world. Check enabled data packs.");
+        add(ElementCommand.SUCCESS_SELF, "Set own element to %s");
+        add(ElementCommand.CHANGED, "Your element has been updated to %s");
+        add(ElementCommand.SUCCESS_OTHER, "Set %s's element to %s");
+        add(ElementCommand.SUCCESS_CLEARED_SELF, "Reset own element to %s and enabled element discovery");
+        add(ElementCommand.CLEARED, "Your element has been reset to %s and element discovery has been enabled");
+        add(ElementCommand.SUCCESS_CLEARED_OTHER, "Reset %s's element to %s and enabled element discovery");
+        add(ElementCommand.QUERY, "Your element is currently set to: %s");
+        add(ElementCommand.INVALID, "Element not found in world. Check enabled data packs.");
 
         add(SpinjitzuCommand.LOCKED, "Locked");
         add(SpinjitzuCommand.UNLOCKED, "Unlocked");
@@ -226,11 +224,11 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(MinejagoPacks.IMMERSION, "Minejago Immersion Pack", "Increases Ninjago immersion with slight cosmetic changes");
         add(MinejagoPacks.POTION_POT, "Minejago Potion Pot Pack", "Makes vanilla potions brewable in the teapot");
 
-        add(Wu.NO_POWER_GIVEN_KEY, "You feel no new power rise from within. You are not an elemental master...");
-        add(Wu.POWER_GIVEN_KEY, "<%s> %s, Master of %s. %s");
+        add(Wu.NO_ELEMENT_GIVEN_KEY, "You feel no new element rise from within. You are not an elemental master...");
+        add(Wu.ELEMENT_GIVEN_KEY, "<%s> %s, Master of %s. %s");
 
         add("gui.choose", "Choose");
-        add(PowerSelectionScreen.TITLE, "Select Power");
+        add(ElementSelectionScreen.TITLE, "Select Element");
 
         add("block.minejago.teapot.waila.potion", "Potion: %s");
         add("block.minejago.teapot.waila.item", "Item: %s");
@@ -239,7 +237,7 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add("block.minejago.teapot.waila.temp", "Temperature: %s");
         add("block.minejago.teapot.waila.empty", "Empty");
 
-        add("entity.minejago.living.waila.power", "Power: %s");
+        add("entity.minejago.living.waila.element", "Element: %s");
         add("entity.minejago.dragon.waila.bond", "Bond: %s");
         add("entity.minejago.painting.waila.map", "Has Golden Weapons Map");
 
@@ -336,8 +334,8 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAllAsItems().forEach(item -> add(item, "Skeletal Chestplate"));
         add(MinejagoArmors.SAMUKAIS_CHESTPLATE.get(), "Samukai's Chestplate");
         addGi(MinejagoArmors.NORMAL_GI_SETS);
-        addGi(MinejagoArmors.POWERED_GI_SETS);
-        addGi(MinejagoArmors.SPECIAL_POWERED_GI_SETS);
+        addGi(MinejagoArmors.ELEMENTAL_GI_SETS);
+        addGi(MinejagoArmors.SPECIAL_ELEMENTAL_GI_SETS);
     }
 
     protected void addGi(List<ArmorSet> armorSets) {
@@ -535,11 +533,11 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         addConfig(MinejagoServerConfig.get().enableTech, "Enable Technology", "Enable the technology of the mod, such as vehicles and computers");
         addConfig(MinejagoServerConfig.get().enableSkulkinRaids, "Enable Skulkin Raids", "Enable Skulkin Raids on Four Weapons structures");
 
-        addConfigSection(MinejagoServerConfig.POWERS, "Powers", "Settings for powers (elemental or otherwise)");
-        addConfig(MinejagoServerConfig.get().allowChoose, "Allow Choosing Power", "Allow players to choose the power given to them by interacting with Master Wu");
-        addConfig(MinejagoServerConfig.get().allowChange, "Allow Changing Power", "Allow players to get a new power by interacting with Master Wu again");
-        addConfig(MinejagoServerConfig.get().drainPool, "Drain Power Pool", "Remove a power from the option list once given and reset when all powers have been given");
-        addConfig(MinejagoServerConfig.get().enableNoPower, "Enable No Power", "Enable players to receive no power from Master Wu");
+        addConfigSection(MinejagoServerConfig.ELEMENTS, "Elements", "Settings for elements");
+        addConfig(MinejagoServerConfig.get().allowChoose, "Allow Choosing Element", "Allow players to choose the element given to them by interacting with Master Wu");
+        addConfig(MinejagoServerConfig.get().allowChange, "Allow Changing Element", "Allow players to get a new element by interacting with Master Wu again");
+        addConfig(MinejagoServerConfig.get().drainPool, "Drain Element Pool", "Remove an element from the option list once given and reset when all elements have been given");
+        addConfig(MinejagoServerConfig.get().enableNoElement, "Enable No Element", "Enable players to receive no element from Master Wu");
 
         addConfigSection(MinejagoServerConfig.SPINJITZU, "Spinjitzu", "Settings for Spinjitzu");
         addConfig(MinejagoServerConfig.get().requireCourseCompletion, "Require Course Completion", "Require players to complete the Spinjitzu course to use Spinjitzu");
@@ -559,16 +557,16 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         addConfig(MinejagoClientConfig.get().yOffset, "Vertical Offset", "Vertical pixels off from the normal position");
     }
 
-    protected void addPower(Holder.Reference<Power> power, String name, String tagline, String lore, String description) {
-        add(power.getKey(), name);
-        Power value = power.value();
-        if (value.getTagline().getContents() instanceof TranslatableContents translatableContents) {
+    protected void addElement(ResourceKey<Element> key, String name, String tagline, String lore, String description) {
+        add(key, name);
+        Element value = registries.holderOrThrow(key).value();
+        if (value.tagline().getContents() instanceof TranslatableContents translatableContents) {
             add(translatableContents.getKey(), tagline);
         }
-        if (value.getDisplay().lore().getContents() instanceof TranslatableContents translatableContents) {
+        if (value.display().lore().getContents() instanceof TranslatableContents translatableContents) {
             add(translatableContents.getKey(), lore);
         }
-        if (value.getDisplay().description().getContents() instanceof TranslatableContents translatableContents) {
+        if (value.display().description().getContents() instanceof TranslatableContents translatableContents) {
             add(translatableContents.getKey(), description);
         }
     }

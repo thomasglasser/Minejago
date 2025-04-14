@@ -1,12 +1,11 @@
 package dev.thomasglasser.minejago.world.entity.component;
 
-import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.plugins.MinejagoWailaPlugin;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
-import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
-import dev.thomasglasser.minejago.world.entity.power.Power;
+import dev.thomasglasser.minejago.world.entity.element.Element;
+import dev.thomasglasser.minejago.world.entity.element.MinejagoElements;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.core.Registry;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -16,7 +15,6 @@ import snownee.jade.api.EntityAccessor;
 import snownee.jade.api.IEntityComponentProvider;
 import snownee.jade.api.ITooltip;
 import snownee.jade.api.config.IPluginConfig;
-import snownee.jade.api.ui.Element;
 import snownee.jade.api.ui.IElement;
 
 public enum LivingEntityComponentProvider implements IEntityComponentProvider {
@@ -25,11 +23,10 @@ public enum LivingEntityComponentProvider implements IEntityComponentProvider {
     @Override
     public void appendTooltip(ITooltip iTooltip, EntityAccessor entityAccessor, IPluginConfig iPluginConfig) {
         if (entityAccessor.getEntity() instanceof LivingEntity livingEntity && entityAccessor.getLevel() != null) {
-            ResourceKey<Power> powerKey = livingEntity.getData(MinejagoAttachmentTypes.POWER).power();
-            if (powerKey != MinejagoPowers.NONE) {
-                Registry<Power> registry = entityAccessor.getLevel().registryAccess().registryOrThrow(MinejagoRegistries.POWER);
-                Power power = registry.get(powerKey);
-                IElement icon = new Element() {
+            ResourceKey<Element> elementKey = livingEntity.getData(MinejagoAttachmentTypes.ELEMENT).element();
+            Holder<Element> elementHolder = entityAccessor.getLevel().holderOrThrow(elementKey);
+            if (elementKey != MinejagoElements.NONE) {
+                IElement icon = new snownee.jade.api.ui.Element() {
                     private Vec2 size;
 
                     @Override
@@ -40,11 +37,13 @@ public enum LivingEntityComponentProvider implements IEntityComponentProvider {
 
                     @Override
                     public void render(GuiGraphics guiGraphics, float x, float y, float maxX, float maxY) {
-                        guiGraphics.blit(power.getIcon(registry), (int) x - 2, (int) y - 1, 0, 0, 10, 10, 32, 32, 32, 32);
+                        guiGraphics.pose().pushPose();
+                        guiGraphics.blit(Element.getIcon(elementKey), (int) x - 2, (int) y - 1, 10, 10, 32, 32, 32, 32, 32, 32);
+                        guiGraphics.pose().popPose();
                     }
                 };
                 iTooltip.add(icon);
-                iTooltip.append(Component.translatable("entity.minejago.living.waila.power", power.getFormattedName(registry)));
+                iTooltip.append(Component.translatable("entity.minejago.living.waila.element", Element.getFormattedName(elementHolder)));
             }
         }
     }

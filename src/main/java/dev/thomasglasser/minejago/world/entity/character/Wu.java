@@ -3,23 +3,23 @@ package dev.thomasglasser.minejago.world.entity.character;
 import com.mojang.datafixers.util.Pair;
 import dev.thomasglasser.minejago.core.component.MinejagoDataComponents;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
-import dev.thomasglasser.minejago.network.ClientboundOpenPowerSelectionScreenPayload;
+import dev.thomasglasser.minejago.network.ClientboundOpenElementSelectionScreenPayload;
 import dev.thomasglasser.minejago.network.ClientboundSetGlowingTag;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntitySerializers;
-import dev.thomasglasser.minejago.world.entity.ai.behavior.GivePowerAndGi;
+import dev.thomasglasser.minejago.world.entity.ai.behavior.GiveElementAndGi;
 import dev.thomasglasser.minejago.world.entity.ai.behavior.TrackSpinjitzuCourseCompletion;
 import dev.thomasglasser.minejago.world.entity.ai.memory.MinejagoMemoryModuleTypes;
 import dev.thomasglasser.minejago.world.entity.ai.poi.MinejagoPoiTypes;
-import dev.thomasglasser.minejago.world.entity.power.MinejagoPowers;
-import dev.thomasglasser.minejago.world.entity.power.Power;
+import dev.thomasglasser.minejago.world.entity.element.Element;
+import dev.thomasglasser.minejago.world.entity.element.MinejagoElements;
 import dev.thomasglasser.minejago.world.entity.spinjitzucourse.AbstractSpinjitzuCourseElement;
 import dev.thomasglasser.minejago.world.entity.spinjitzucourse.SpinjitzuCourseTracker;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
-import dev.thomasglasser.minejago.world.level.storage.PowerData;
+import dev.thomasglasser.minejago.world.level.storage.ElementData;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import java.util.ArrayList;
@@ -75,8 +75,8 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.constant.DefaultAnimations;
 
 public class Wu extends Character implements SpinjitzuCourseTracker {
-    public static final String POWER_GIVEN_KEY = "gui.power_selection.power_given";
-    public static final String NO_POWER_GIVEN_KEY = "gui.power_selection.no_power_given";
+    public static final String ELEMENT_GIVEN_KEY = "gui.element_selection.element_given";
+    public static final String NO_ELEMENT_GIVEN_KEY = "gui.element_selection.no_element_given";
 
     public static final RawAnimation ATTACK_SWING_WITH_STICK = RawAnimation.begin().thenPlay("attack.swing_with_stick");
     public static final RawAnimation MOVE_WALK_WITH_STICK = RawAnimation.begin().thenPlay("move.walk_with_stick");
@@ -94,15 +94,15 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
     protected final Map<Integer, List<Player>> entitiesOnCooldown = new HashMap<>();
     protected final Set<AbstractSpinjitzuCourseElement<?>> trackedCourseElements = new HashSet<>();
 
-    protected List<ResourceKey<Power>> powersToGive = new ArrayList<>();
-    protected boolean givingPower;
+    protected List<ResourceKey<Element>> elementsToGive = new ArrayList<>();
+    protected boolean givingElement;
     protected boolean lifting;
     protected int maxTime;
     protected int timeLeft;
 
     public Wu(EntityType<? extends Wu> entityType, Level level) {
         super(entityType, level);
-        new PowerData(MinejagoPowers.CREATION, true).save(this, false);
+        new ElementData(MinejagoElements.CREATION, true).save(this, false);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -135,34 +135,34 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
 
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
-        boolean canGivePower = !player.getData(MinejagoAttachmentTypes.POWER).given() || MinejagoServerConfig.get().allowChange.get();
-        if (canGivePower && player.getInventory().hasAnyMatching(itemStack -> itemStack.has(MinejagoDataComponents.GOLDEN_WEAPONS_MAP.get()))) {
-            Registry<Power> registry = level().registryAccess().registryOrThrow(MinejagoRegistries.POWER);
+        boolean canGiveElement = !player.getData(MinejagoAttachmentTypes.ELEMENT).given() || MinejagoServerConfig.get().allowChange.get();
+        if (canGiveElement && player.getInventory().hasAnyMatching(itemStack -> itemStack.has(MinejagoDataComponents.GOLDEN_WEAPONS_MAP.get()))) {
+            Registry<Element> registry = level().registryAccess().registryOrThrow(MinejagoRegistries.ELEMENT);
 
-            if (!MinejagoServerConfig.get().drainPool.get() || (powersToGive.size() <= 1)) {
-                powersToGive = new ArrayList<>(registry.registryKeySet());
-                if (!MinejagoServerConfig.get().enableNoPower.get())
-                    removePowersToGive(MinejagoPowers.NONE);
-                powersToGive.removeIf(key -> registry.get(key).isSpecial());
+            if (!MinejagoServerConfig.get().drainPool.get() || (elementsToGive.size() <= 1)) {
+                elementsToGive = new ArrayList<>(registry.registryKeySet());
+                if (!MinejagoServerConfig.get().enableNoElement.get())
+                    removeElementsToGive(MinejagoElements.NONE);
+                elementsToGive.removeIf(key -> registry.get(key).isSpecial());
             }
 
             if (player instanceof ServerPlayer serverPlayer && hand == InteractionHand.MAIN_HAND) {
-                givingPower = true;
+                givingElement = true;
                 if (MinejagoServerConfig.get().allowChoose.get()) {
-                    TommyLibServices.NETWORK.sendToClient(new ClientboundOpenPowerSelectionScreenPayload(powersToGive, Optional.of(this.getId())), serverPlayer);
+                    TommyLibServices.NETWORK.sendToClient(new ClientboundOpenElementSelectionScreenPayload(elementsToGive, Optional.of(this.getId())), serverPlayer);
                 } else if (this.distanceTo(serverPlayer) > 1.0f) {
-                    ResourceKey<Power> oldPower = serverPlayer.getData(MinejagoAttachmentTypes.POWER).power();
-                    if (serverPlayer.getData(MinejagoAttachmentTypes.POWER).given() && oldPower != MinejagoPowers.NONE && MinejagoServerConfig.get().drainPool.get())
-                        addPowersToGive(oldPower);
-                    ResourceKey<Power> newPower = powersToGive.get(random.nextInt(powersToGive.size()));
-                    if (newPower != MinejagoPowers.NONE) removePowersToGive(newPower);
-                    if (newPower == MinejagoPowers.NONE) {
-                        new PowerData(newPower, true).save(serverPlayer, true);
-                        serverPlayer.displayClientMessage(Component.translatable(Wu.NO_POWER_GIVEN_KEY), true);
-                        givingPower = false;
+                    ResourceKey<Element> oldElement = serverPlayer.getData(MinejagoAttachmentTypes.ELEMENT).element();
+                    if (serverPlayer.getData(MinejagoAttachmentTypes.ELEMENT).given() && oldElement != MinejagoElements.NONE && MinejagoServerConfig.get().drainPool.get())
+                        addElementsToGive(oldElement);
+                    ResourceKey<Element> newElement = elementsToGive.get(random.nextInt(elementsToGive.size()));
+                    if (newElement != MinejagoElements.NONE) removeElementsToGive(newElement);
+                    if (newElement == MinejagoElements.NONE) {
+                        new ElementData(newElement, true).save(serverPlayer, true);
+                        serverPlayer.displayClientMessage(Component.translatable(Wu.NO_ELEMENT_GIVEN_KEY), true);
+                        givingElement = false;
                     } else {
                         BrainUtils.setMemory(this, MemoryModuleType.INTERACTION_TARGET, serverPlayer);
-                        BrainUtils.setMemory(this, MinejagoMemoryModuleTypes.SELECTED_POWER.get(), newPower);
+                        BrainUtils.setMemory(this, MinejagoMemoryModuleTypes.SELECTED_ELEMENT.get(), newElement);
                     }
                 }
             }
@@ -227,29 +227,29 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
     }
 
     @SafeVarargs
-    public final List<ResourceKey<Power>> addPowersToGive(ResourceKey<Power>... keys) {
+    public final List<ResourceKey<Element>> addElementsToGive(ResourceKey<Element>... keys) {
         Arrays.stream(keys).forEach(key -> {
-            if (!powersToGive.contains(key)) powersToGive.add(key);
+            if (!elementsToGive.contains(key)) elementsToGive.add(key);
         });
 
-        return powersToGive;
+        return elementsToGive;
     }
 
     @SafeVarargs
-    public final List<ResourceKey<Power>> removePowersToGive(ResourceKey<Power>... keys) {
+    public final List<ResourceKey<Element>> removeElementsToGive(ResourceKey<Element>... keys) {
         Arrays.stream(keys).forEach(key -> {
-            while (powersToGive.contains(key)) powersToGive.remove(key);
+            while (elementsToGive.contains(key)) elementsToGive.remove(key);
         });
 
-        return powersToGive;
+        return elementsToGive;
     }
 
     @Override
     public BrainActivityGroup<Character> getIdleTasks() {
         return super.getIdleTasks().behaviours(
                 new FirstApplicableBehaviour<>(
-                        Pair.of(new GivePowerAndGi<Character>()
-                                .startCondition(character -> character instanceof Wu wu && wu.givingPower)
+                        Pair.of(new GiveElementAndGi<Character>()
+                                .startCondition(character -> character instanceof Wu wu && wu.givingElement)
                                 .whenStarting(character -> character.setDoingSpinjitzu(true))
                                 .whenStopping(character -> character.setDoingSpinjitzu(false)), 0),
                         Pair.of(new TrackSpinjitzuCourseCompletion(), 0)));

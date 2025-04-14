@@ -1,0 +1,19 @@
+{
+  "border_particle": {
+    "type": "minejago:bolts"
+  },
+  "color": "#4668D5",
+  "display": {
+    "description": {
+      "translate": "element.minejago.lightning.description"
+    },
+    "lore": {
+      "translate": "element.minejago.lightning.lore"
+    }
+  },
+  "has_sets": true,
+  "has_special_sets": true,
+  "tagline": {
+    "translate": "element.minejago.lightning.tagline"
+  }
+}

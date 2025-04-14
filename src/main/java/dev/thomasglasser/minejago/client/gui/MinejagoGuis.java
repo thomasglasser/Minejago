@@ -27,7 +27,7 @@ public class MinejagoGuis {
 
     public static void renderFocusBar(GuiGraphics guiGraphics) {
         Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.gameMode != null && minecraft.gameMode.canHurtPlayer() && !minecraft.options.hideGui) {
+        if (minecraft.level != null && minecraft.gameMode != null && minecraft.gameMode.canHurtPlayer() && !minecraft.options.hideGui) {
             Gui gui = minecraft.gui;
             Player player = ClientUtils.getMainClientPlayer();
             LivingEntity livingEntity = gui.getPlayerVehicleWithHealth();
@@ -45,7 +45,7 @@ public class MinejagoGuis {
                         y = startY + (minecraft.level.random.nextInt(3) - 1);
                     }
 
-                    int color = minecraft.level.holderOrThrow(player.getData(MinejagoAttachmentTypes.POWER).power()).value().getColor().getValue();
+                    int color = minecraft.level.holderOrThrow(player.getData(MinejagoAttachmentTypes.ELEMENT).element()).value().color().getValue();
 
                     int x = startX - i * 8 - 9;
 

@@ -70,11 +70,11 @@ public class MinejagoItemTagsProvider extends ExtendedItemTagsProvider {
 
         IntrinsicTagAppender<Item> gi = tag(MinejagoItemTags.GI);
         MinejagoArmors.NORMAL_GI_SETS.forEach(set -> gi.addAll(set.getAllKeys()));
-        MinejagoArmors.POWERED_GI_SETS.forEach(set -> gi.addAll(set.getAllKeys()));
-        MinejagoArmors.SPECIAL_POWERED_GI_SETS.forEach(set -> gi.addAll(set.getAllKeys()));
+        MinejagoArmors.ELEMENTAL_GI_SETS.forEach(set -> gi.addAll(set.getAllKeys()));
+        MinejagoArmors.SPECIAL_ELEMENTAL_GI_SETS.forEach(set -> gi.addAll(set.getAllKeys()));
         MinejagoArmors.STANDALONE_GI.forEach(item -> gi.add(item.get()));
-        MinejagoArmors.STANDALONE_POWERED_GI.forEach(item -> gi.add(item.get()));
-        MinejagoArmors.STANDALONE_SPECIAL_POWERED_GI.forEach(item -> gi.add(item.get()));
+        MinejagoArmors.STANDALONE_ELEMENTAL_GI.forEach(item -> gi.add(item.get()));
+        MinejagoArmors.STANDALONE_SPECIAL_ELEMENTAL_GI.forEach(item -> gi.add(item.get()));
 
         tag(MinejagoItemTags.TEACUPS)
                 .add(MinejagoItems.allTeacups().toArray(new Item[0]));

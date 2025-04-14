@@ -9,10 +9,10 @@ import dev.thomasglasser.minejago.data.modonomicons.wiki.categories.characters.C
 import dev.thomasglasser.minejago.data.modonomicons.wiki.categories.cosmetics.CosmeticsCategoryProvider;
 import dev.thomasglasser.minejago.data.modonomicons.wiki.categories.decorations.DecorationsCategoryProvider;
 import dev.thomasglasser.minejago.data.modonomicons.wiki.categories.dependencies.DependenciesCategoryProvider;
+import dev.thomasglasser.minejago.data.modonomicons.wiki.categories.elements.ElementsCategoryProvider;
 import dev.thomasglasser.minejago.data.modonomicons.wiki.categories.expansions.ExpansionsCategoryProvider;
 import dev.thomasglasser.minejago.data.modonomicons.wiki.categories.focus.FocusCategoryProvider;
 import dev.thomasglasser.minejago.data.modonomicons.wiki.categories.locations.LocationsCategoryProvider;
-import dev.thomasglasser.minejago.data.modonomicons.wiki.categories.powers.PowersCategoryProvider;
 import dev.thomasglasser.minejago.data.modonomicons.wiki.categories.skills.SkillsCategoryProvider;
 import dev.thomasglasser.minejago.data.modonomicons.wiki.categories.skulkin.SkulkinCategoryProvider;
 import dev.thomasglasser.minejago.data.modonomicons.wiki.categories.spinjitzu.SpinjitzuCategoryProvider;
@@ -33,7 +33,7 @@ public class WikiBookSubProvider extends SingleBookSubProvider {
 
     @Override
     protected void generateCategories() {
-        add(new PowersCategoryProvider(this).generate());
+        add(new ElementsCategoryProvider(this).generate());
         add(new SpinjitzuCategoryProvider(this).generate());
         add(new SkillsCategoryProvider(this).generate());
         add(new FocusCategoryProvider(this).generate());

@@ -25,12 +25,12 @@ public class MinejagoArmors {
 
     public static final List<ArmorSet> ARMOR_SETS = new ArrayList<>();
     public static final List<ArmorSet> NORMAL_GI_SETS = new ArrayList<>();
-    public static final List<ArmorSet> POWERED_GI_SETS = new ArrayList<>();
-    public static final List<ArmorSet> SPECIAL_POWERED_GI_SETS = new ArrayList<>();
+    public static final List<ArmorSet> ELEMENTAL_GI_SETS = new ArrayList<>();
+    public static final List<ArmorSet> SPECIAL_ELEMENTAL_GI_SETS = new ArrayList<>();
     public static final List<DeferredItem<? extends ArmorItem>> STANDALONE = new ArrayList<>();
     public static final List<DeferredItem<? extends ArmorItem>> STANDALONE_GI = new ArrayList<>();
-    public static final List<DeferredItem<? extends ArmorItem>> STANDALONE_POWERED_GI = new ArrayList<>();
-    public static final List<DeferredItem<? extends ArmorItem>> STANDALONE_SPECIAL_POWERED_GI = new ArrayList<>();
+    public static final List<DeferredItem<? extends ArmorItem>> STANDALONE_ELEMENTAL_GI = new ArrayList<>();
+    public static final List<DeferredItem<? extends ArmorItem>> STANDALONE_SPECIAL_ELEMENTAL_GI = new ArrayList<>();
 
     // Skulkin
     public static final SkeletalChestplateSet SKELETAL_CHESTPLATE_SET = new SkeletalChestplateSet();
@@ -38,8 +38,8 @@ public class MinejagoArmors {
 
     // Gi
     public static final ArmorSet BLACK_GI_SET = createGi("black_gi", "Black Gi", BlackGiItem::new, new Item.Properties().stacksTo(1), false, false);
-    public static final ArmorSet TRAINEE_GI_SET = createGi("trainee_gi", "Trainee Gi", TraineeGiItem::new, new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON), true, false);
-    public static final ArmorSet DRAGON_EXTREME_GI_SET = createGi("dragon_extreme_gi", "Dragon eXtreme Gi", DragonExtremeGiItem::new, new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON), true, true);
+    public static final ArmorSet TRAINEE_GI_SET = createGi("trainee_gi", "Trainee Gi", TraineeGiArmorItem::new, new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON), true, false);
+    public static final ArmorSet DRAGON_EXTREME_GI_SET = createGi("dragon_extreme_gi", "Dragon eXtreme Gi", DragonExtremeGiArmorItem::new, new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON), true, true);
 
     public static class SkeletalChestplateSet {
         private final DeferredItem<SkeletalChestplateItem> STRENGTH;
@@ -108,7 +108,7 @@ public class MinejagoArmors {
         return set;
     }
 
-    private static ArmorSet create(String name, String displayName, boolean powered, BiFunction<ArmorItem.Type, Item.Properties, ArmorItem> item, Item.Properties properties) {
+    private static ArmorSet create(String name, String displayName, BiFunction<ArmorItem.Type, Item.Properties, ArmorItem> item, Item.Properties properties) {
         return create(name, Map.of(
                 ArmorItem.Type.HELMET, "helmet",
                 ArmorItem.Type.CHESTPLATE, "chestplate",
@@ -116,16 +116,16 @@ public class MinejagoArmors {
                 ArmorItem.Type.BOOTS, "boots"), displayName, item, properties);
     }
 
-    private static ArmorSet createGi(String name, String displayName, BiFunction<ArmorItem.Type, Item.Properties, ArmorItem> item, Item.Properties properties, boolean powered, boolean special) {
+    private static ArmorSet createGi(String name, String displayName, BiFunction<ArmorItem.Type, Item.Properties, ArmorItem> item, Item.Properties properties, boolean elemental, boolean special) {
         ArmorSet set = create(name, Map.of(
                 ArmorItem.Type.HELMET, "hood",
                 ArmorItem.Type.CHESTPLATE, "jacket",
                 ArmorItem.Type.LEGGINGS, "pants",
                 ArmorItem.Type.BOOTS, "boots"), displayName, item, properties);
-        if (powered && special)
-            SPECIAL_POWERED_GI_SETS.add(set);
-        else if (powered)
-            POWERED_GI_SETS.add(set);
+        if (elemental && special)
+            SPECIAL_ELEMENTAL_GI_SETS.add(set);
+        else if (elemental)
+            ELEMENTAL_GI_SETS.add(set);
         else
             NORMAL_GI_SETS.add(set);
         return set;
@@ -137,12 +137,12 @@ public class MinejagoArmors {
         return armorItem;
     }
 
-    private static <T extends ArmorItem> DeferredItem<T> createStandaloneGi(String name, Supplier<T> item, boolean powered, boolean special) {
+    private static <T extends ArmorItem> DeferredItem<T> createStandaloneGi(String name, Supplier<T> item, boolean elemental, boolean special) {
         DeferredItem<T> armorItem = createStandalone(name, item);
-        if (powered && special)
-            STANDALONE_SPECIAL_POWERED_GI.add(armorItem);
-        else if (powered)
-            STANDALONE_POWERED_GI.add(armorItem);
+        if (elemental && special)
+            STANDALONE_SPECIAL_ELEMENTAL_GI.add(armorItem);
+        else if (elemental)
+            STANDALONE_ELEMENTAL_GI.add(armorItem);
         else
             STANDALONE_GI.add(armorItem);
         return armorItem;

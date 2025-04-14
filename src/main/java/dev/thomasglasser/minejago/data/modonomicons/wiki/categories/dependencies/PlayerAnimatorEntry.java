@@ -4,7 +4,7 @@ import com.klikli_dev.modonomicon.api.datagen.IndexModeEntryProvider;
 import com.klikli_dev.modonomicon.api.datagen.book.BookIconModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookImagePageModel;
 import dev.thomasglasser.minejago.data.modonomicons.wiki.WikiBookSubProvider;
-import dev.thomasglasser.minejago.data.modonomicons.wiki.categories.powers.GoldenWeaponsEntry;
+import dev.thomasglasser.minejago.data.modonomicons.wiki.categories.elements.GoldenWeaponsEntry;
 import dev.thomasglasser.minejago.data.modonomicons.wiki.categories.spinjitzu.SpinjitzuCategoryProvider;
 
 public class PlayerAnimatorEntry extends IndexModeEntryProvider {
@@ -32,7 +32,7 @@ public class PlayerAnimatorEntry extends IndexModeEntryProvider {
                 .withText(context().pageText()));
 
         add(context().pageTitle(), "Golden Weapons");
-        add(context().pageText(), "There are special animations for using the [Golden Weapons](entry://powers/golden_weapons) with [playerAnimator](https://modrinth.com/mod/playeranimator) installed.");
+        add(context().pageText(), "There are special animations for using the [Golden Weapons](entry://elements/golden_weapons) with [playerAnimator](https://modrinth.com/mod/playeranimator) installed.");
     }
 
     @Override

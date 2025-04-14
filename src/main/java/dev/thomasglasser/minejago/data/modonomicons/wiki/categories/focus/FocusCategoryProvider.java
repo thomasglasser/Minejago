@@ -32,7 +32,7 @@ public class FocusCategoryProvider extends IndexModeCategoryProvider {
     protected String categoryDescription() {
         return """
                 A new gameplay mechanic that allows you to focus your energy to gain powerful abilities.
-                The bar is tinted to your power color.
+                The bar is tinted to your element color.
                 By default, the bar is placed above your hunger bar, but this can be changed in the client config.
                 """;
     }

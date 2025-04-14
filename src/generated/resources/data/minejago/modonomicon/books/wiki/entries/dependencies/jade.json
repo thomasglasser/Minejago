@@ -39,16 +39,16 @@
     },
     {
       "type": "modonomicon:image",
-      "anchor": "power",
+      "anchor": "element",
       "border": true,
       "condition": {
         "type": "modonomicon:none"
       },
       "images": [
-        "minejago:textures/modonomicon/wiki/dependencies/jade/power.png"
+        "minejago:textures/modonomicon/wiki/dependencies/jade/element.png"
       ],
-      "text": "book.minejago.wiki.dependencies.jade.power.text",
-      "title": "book.minejago.wiki.dependencies.jade.power.title",
+      "text": "book.minejago.wiki.dependencies.jade.element.text",
+      "title": "book.minejago.wiki.dependencies.jade.element.title",
       "use_legacy_rendering": false
     }
   ],

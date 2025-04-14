@@ -140,9 +140,7 @@ public class CharacterRenderer<T extends Character> extends GeoEntityRenderer<T>
             }
             spinjitzuModel.setupAnim(entity, 0, 0, entity.tickCount + partialTick, 0, 0);
             copyFromBone(model.getBone(BODY).orElseThrow(), spinjitzuModel.getBody());
-            poseStack.mulPose(Axis.XP.rotationDegrees(180.0F));
-            int color = entity.level().holderOrThrow(entity.getData(MinejagoAttachmentTypes.POWER).power()).value().getColor().getValue();
-            spinjitzuModel.render(poseStack, bufferSource, entity.tickCount, partialTick, color);
+            spinjitzuModel.render(poseStack, bufferSource, entity.tickCount, partialTick, entity.level().holderOrThrow(entity.getData(MinejagoAttachmentTypes.ELEMENT).element()).value().color().getValue());
         }
     }
 

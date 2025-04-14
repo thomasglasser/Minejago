@@ -15,7 +15,7 @@ public class ApisCategoryProvider extends IndexModeCategoryProvider {
     @Override
     protected void generateEntries() {
         add(new TeapotBrewingRecipeEntry(this).generate());
-        add(new PowersEntry(this).generate());
+        add(new ElementsEntry(this).generate());
         add(new FocusModifiersEntry(this).generate());
         add(new AdvancementTriggersEntry(this).generate());
         add(new DataMapsEntry(this).generate());

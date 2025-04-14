@@ -34,14 +34,14 @@ public class JadeEntry extends IndexModeEntryProvider {
         add(context().pageTitle(), "Golden Weapons Map");
         add(context().pageText(), "[Jade](https://modrinth.com/mod/jade) is able to show whether a Four Weapons sign contains a Golden Weapons Map.");
 
-        page("power", () -> BookImagePageModel.create()
-                .withAnchor("power")
-                .withImages(WikiBookSubProvider.wikiTexture("dependencies/jade/power.png"))
+        page("element", () -> BookImagePageModel.create()
+                .withAnchor("element")
+                .withImages(WikiBookSubProvider.wikiTexture("dependencies/jade/element.png"))
                 .withTitle(context().pageTitle())
                 .withText(context().pageText()));
 
-        add(context().pageTitle(), "Power");
-        add(context().pageText(), "[Jade](https://modrinth.com/mod/jade) is able to show the power information of living entities.");
+        add(context().pageTitle(), "Element");
+        add(context().pageText(), "[Jade](https://modrinth.com/mod/jade) is able to show the element information of living entities.");
     }
 
     @Override

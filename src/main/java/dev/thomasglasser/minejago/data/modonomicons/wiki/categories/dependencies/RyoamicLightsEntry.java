@@ -32,7 +32,7 @@ public class RyoamicLightsEntry extends IndexModeEntryProvider {
                 .withText(context().pageText()));
 
         add(context().pageTitle(), "Golden Weapons");
-        add(context().pageText(), "[Golden Weapons](entry://powers/golden_weapons) emit light when [RyoamicLights](https://modrinth.com/mod/ryoamiclights) is installed.");
+        add(context().pageText(), "[Golden Weapons](entry://elements/golden_weapons) emit light when [RyoamicLights](https://modrinth.com/mod/ryoamiclights) is installed.");
     }
 
     @Override

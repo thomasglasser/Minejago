@@ -14,7 +14,7 @@ public class GiSubtypeInterpreter implements ISubtypeInterpreter<ItemStack> {
     @Override
     @Nullable
     public Object getSubtypeData(ItemStack ingredient, UidContext context) {
-        return ingredient.get(MinejagoDataComponents.POWER);
+        return ingredient.get(MinejagoDataComponents.ELEMENT);
     }
 
     @Override

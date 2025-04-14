@@ -113,36 +113,36 @@ public class MinejagoItemModelProvider extends ExtendedItemModelProvider {
 
         MinejagoArmors.NORMAL_GI_SETS.forEach(set -> set.getAll().forEach(item -> singleTexture(item.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/" + item.getId().getPath()))));
         MinejagoArmors.STANDALONE_GI.forEach(item -> singleTexture(item.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/" + item.getId().getPath())));
-        registries.lookupOrThrow(MinejagoRegistries.POWER).listElements().forEach(power -> {
-            if (power.value().hasSets()) {
-                MinejagoArmors.POWERED_GI_SETS.forEach(set -> {
+        registries.lookupOrThrow(MinejagoRegistries.ELEMENT).listElements().forEach(element -> {
+            if (element.value().hasSets()) {
+                MinejagoArmors.ELEMENTAL_GI_SETS.forEach(set -> {
                     set.getAllKeys().forEach(item -> {
-                        String path = power.getKey().location().getPath() + "_" + item.location().getPath();
+                        String path = element.getKey().location().getPath() + "_" + item.location().getPath();
                         singleTexture("item/minejago_armor/" + path, mcLoc("item/generated"), "layer0", modLoc("item/" + path));
                     });
                 });
-                MinejagoArmors.STANDALONE_POWERED_GI.forEach(item -> {
-                    String path = power.getKey().location().getPath() + "_" + item.getKey().location().getPath();
+                MinejagoArmors.STANDALONE_ELEMENTAL_GI.forEach(item -> {
+                    String path = element.getKey().location().getPath() + "_" + item.getKey().location().getPath();
                     singleTexture("item/minejago_armor/" + path, mcLoc("item/generated"), "layer0", modLoc("item/" + path));
                 });
             }
-            if (power.value().hasSpecialSets()) {
-                MinejagoArmors.SPECIAL_POWERED_GI_SETS.forEach(set -> {
+            if (element.value().hasSpecialSets()) {
+                MinejagoArmors.SPECIAL_ELEMENTAL_GI_SETS.forEach(set -> {
                     set.getAllKeys().forEach(item -> {
-                        String path = power.getKey().location().getPath() + "_" + item.location().getPath();
+                        String path = element.getKey().location().getPath() + "_" + item.location().getPath();
                         singleTexture("item/minejago_armor/" + path, mcLoc("item/generated"), "layer0", modLoc("item/" + path));
                     });
                 });
-                MinejagoArmors.STANDALONE_SPECIAL_POWERED_GI.forEach(item -> {
-                    String path = power.getKey().location().getPath() + "_" + item.getKey().location().getPath();
+                MinejagoArmors.STANDALONE_SPECIAL_ELEMENTAL_GI.forEach(item -> {
+                    String path = element.getKey().location().getPath() + "_" + item.getKey().location().getPath();
                     singleTexture("item/minejago_armor/" + path, mcLoc("item/generated"), "layer0", modLoc("item/" + path));
                 });
             }
         });
-        MinejagoArmors.POWERED_GI_SETS.forEach(set -> set.getAll().forEach(item -> withEntityModel(item).guiLight(BlockModel.GuiLight.FRONT)));
-        MinejagoArmors.SPECIAL_POWERED_GI_SETS.forEach(set -> set.getAll().forEach(item -> withEntityModel(item).guiLight(BlockModel.GuiLight.FRONT)));
-        MinejagoArmors.STANDALONE_POWERED_GI.forEach(item -> withEntityModel(item).guiLight(BlockModel.GuiLight.FRONT));
-        MinejagoArmors.STANDALONE_SPECIAL_POWERED_GI.forEach(item -> withEntityModel(item).guiLight(BlockModel.GuiLight.FRONT));
+        MinejagoArmors.ELEMENTAL_GI_SETS.forEach(set -> set.getAll().forEach(item -> withEntityModel(item).guiLight(BlockModel.GuiLight.FRONT)));
+        MinejagoArmors.SPECIAL_ELEMENTAL_GI_SETS.forEach(set -> set.getAll().forEach(item -> withEntityModel(item).guiLight(BlockModel.GuiLight.FRONT)));
+        MinejagoArmors.STANDALONE_ELEMENTAL_GI.forEach(item -> withEntityModel(item).guiLight(BlockModel.GuiLight.FRONT));
+        MinejagoArmors.STANDALONE_SPECIAL_ELEMENTAL_GI.forEach(item -> withEntityModel(item).guiLight(BlockModel.GuiLight.FRONT));
 
         withEntityModelInHand(MinejagoItems.BAMBOO_STAFF, withEntityModel(MinejagoItems.BAMBOO_STAFF)
                 .texture("particle", itemLoc(MinejagoItems.BAMBOO_STAFF))

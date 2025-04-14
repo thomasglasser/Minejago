@@ -38,13 +38,13 @@
     },
     {
       "type": "modonomicon:text",
-      "anchor": "got_power",
+      "anchor": "got_element",
       "condition": {
         "type": "modonomicon:none"
       },
       "show_title_separator": true,
-      "text": "book.minejago.wiki.apis.advancement_triggers.got_power.text",
-      "title": "book.minejago.wiki.apis.advancement_triggers.got_power.title",
+      "text": "book.minejago.wiki.apis.advancement_triggers.got_element.text",
+      "title": "book.minejago.wiki.apis.advancement_triggers.got_element.title",
       "use_markdown_in_title": false
     },
     {
