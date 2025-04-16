@@ -44,6 +44,7 @@ jobs:
         continue-on-error: false
         with:
           name: Minejago
+          path: build/libs
 
       - name: Checking and setting the environment
         id: mod_env
