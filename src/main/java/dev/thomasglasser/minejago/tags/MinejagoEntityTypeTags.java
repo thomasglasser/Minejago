@@ -10,6 +10,7 @@ public class MinejagoEntityTypeTags {
     public static final TagKey<EntityType<?>> NINJA_FRIENDS = create("ninja_friends");
     public static final TagKey<EntityType<?>> SKULKINS = create("skulkins");
     public static final TagKey<EntityType<?>> SKULL_TRUCK_RIDERS = create("skull_truck_riders");
+    public static final TagKey<EntityType<?>> GOLDEN_WEAPON_HOLDERS = create("golden_weapon_holders");
 
     private static TagKey<EntityType<?>> create(String name) {
         return TagKey.create(Registries.ENTITY_TYPE, Minejago.modLoc(name));

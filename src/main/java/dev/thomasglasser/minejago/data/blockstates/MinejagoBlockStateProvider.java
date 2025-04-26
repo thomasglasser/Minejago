@@ -81,15 +81,6 @@ public class MinejagoBlockStateProvider extends ExtendedBlockStateProvider {
                     .build();
         });
 
-        getVariantBuilder(MinejagoBlocks.EARTH_DRAGON_HEAD.get()).forAllStates(blockState -> {
-            Direction facing = blockState.getValue(TopPostBlock.FACING);
-
-            return ConfiguredModel.builder()
-                    .modelFile(models().getBuilder(MinejagoBlocks.EARTH_DRAGON_HEAD.getId().getPath()).parent(new ModelFile.UncheckedModelFile(mcLoc("builtin/entity"))).texture("particle", modLoc("entity/dragon/earth_dragon")))
-                    .rotationY((int) (facing.getOpposite()).toYRot())
-                    .build();
-        });
-
         getVariantBuilder(MinejagoBlocks.DRAGON_BUTTON.get()).forAllStates(blockState -> {
             Direction facing = blockState.getValue(TopPostBlock.FACING);
             return ConfiguredModel.builder()

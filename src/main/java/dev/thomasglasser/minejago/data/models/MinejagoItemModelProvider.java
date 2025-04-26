@@ -39,25 +39,25 @@ public class MinejagoItemModelProvider extends ExtendedItemModelProvider {
     @Override
     protected void registerModels() {
         handheldItem(MinejagoItems.BONE_KNIFE);
-        basicItem(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN.get());
-        basicItem(MinejagoItems.ICE_CUBE_POTTERY_SHERD.get());
-        basicItem(MinejagoItems.THUNDER_POTTERY_SHERD.get());
-        basicItem(MinejagoItems.PEAKS_POTTERY_SHERD.get());
-        basicItem(MinejagoItems.MASTER_POTTERY_SHERD.get());
-        basicItem(MinejagoItems.YIN_YANG_POTTERY_SHERD.get());
-        basicItem(MinejagoItems.DRAGONS_HEAD_POTTERY_SHERD.get());
-        basicItem(MinejagoItems.DRAGONS_TAIL_POTTERY_SHERD.get());
-        basicItem(MinejagoItems.FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE.get());
-        basicItem(MinejagoItems.TERRAIN_ARMOR_TRIM_SMITHING_TEMPLATE.get());
-        basicItem(MinejagoItems.LOTUS_ARMOR_TRIM_SMITHING_TEMPLATE.get());
-        basicItem(MinejagoBlocks.TEAPOT.get().asItem());
-        basicItem(MinejagoBlocks.JASPOT.get().asItem());
-        basicItem(MinejagoBlocks.GOLD_DISC.get().asItem());
-        basicItem(MinejagoBlocks.TOP_POST.get().asItem());
-        basicItem(MinejagoItems.SCROLL.get());
-        basicItem(MinejagoItems.WRITABLE_SCROLL.get());
-        basicItem(MinejagoItems.WRITTEN_SCROLL.get());
-        basicItem(MinejagoBlocks.DRAGON_BUTTON.get().asItem());
+        basicItem(MinejagoItems.FOUR_WEAPONS_BANNER_PATTERN);
+        basicItem(MinejagoItems.ICE_CUBE_POTTERY_SHERD);
+        basicItem(MinejagoItems.THUNDER_POTTERY_SHERD);
+        basicItem(MinejagoItems.PEAKS_POTTERY_SHERD);
+        basicItem(MinejagoItems.MASTER_POTTERY_SHERD);
+        basicItem(MinejagoItems.YIN_YANG_POTTERY_SHERD);
+        basicItem(MinejagoItems.DRAGONS_HEAD_POTTERY_SHERD);
+        basicItem(MinejagoItems.DRAGONS_TAIL_POTTERY_SHERD);
+        basicItem(MinejagoItems.FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE);
+        basicItem(MinejagoItems.TERRAIN_ARMOR_TRIM_SMITHING_TEMPLATE);
+        basicItem(MinejagoItems.LOTUS_ARMOR_TRIM_SMITHING_TEMPLATE);
+        basicItem(MinejagoBlocks.TEAPOT.asItem());
+        basicItem(MinejagoBlocks.JASPOT.asItem());
+        basicItem(MinejagoBlocks.GOLD_DISC.asItem());
+        basicItem(MinejagoBlocks.TOP_POST.asItem());
+        basicItem(MinejagoItems.SCROLL);
+        basicItem(MinejagoItems.WRITABLE_SCROLL);
+        basicItem(MinejagoItems.WRITTEN_SCROLL);
+        basicItem(MinejagoBlocks.DRAGON_BUTTON.asItem());
         basicItem(MinejagoItems.CENTER_SPINJITZU_COURSE_ELEMENT);
         basicItem(MinejagoItems.BOUNCING_POLE_SPINJITZU_COURSE_ELEMENT);
         basicItem(MinejagoItems.ROCKING_POLE_SPINJITZU_COURSE_ELEMENT);
@@ -66,8 +66,8 @@ public class MinejagoItemModelProvider extends ExtendedItemModelProvider {
         basicItem(MinejagoItems.SPINNING_DUMMIES_SPINJITZU_COURSE_ELEMENT);
         basicItem(MinejagoItems.SWIRLING_KNIVES_SPINJITZU_COURSE_ELEMENT);
         basicItem(MinejagoItems.SPINNING_AXES_SPINJITZU_COURSE_ELEMENT);
-        basicItem(MinejagoBlocks.EARTH_DRAGON_HEAD.get().asItem());
-        basicItem(MinejagoItems.NINJA_BANNER_PATTERN.get());
+        basicItem(MinejagoItems.NINJA_BANNER_PATTERN);
+        basicItem(MinejagoItems.EARTH_DRAGON_HEAD);
 
         basicBlockItem(MinejagoBlocks.SCROLL_SHELF);
         basicBlockItem(MinejagoBlocks.FREEZING_ICE);
@@ -87,7 +87,7 @@ public class MinejagoItemModelProvider extends ExtendedItemModelProvider {
                 .texture("layer0", modItemLoc(MinejagoItems.MINICUP.getId().getPath()))
                 .texture("layer1", modItemLoc(MinejagoItems.FILLED_TEACUP.getId().getPath() + "_overlay"));
 
-        MinejagoBlocks.TEAPOTS.forEach((dyeColor, itemRegistryObject) -> basicItem(itemRegistryObject.get().asItem()));
+        MinejagoBlocks.TEAPOTS.forEach((dyeColor, itemRegistryObject) -> basicItem(itemRegistryObject.asItem()));
 
         spawnEggItem(MinejagoItems.WU_SPAWN_EGG);
         spawnEggItem(MinejagoItems.KAI_SPAWN_EGG);
@@ -109,7 +109,7 @@ public class MinejagoItemModelProvider extends ExtendedItemModelProvider {
         leavesSet(MinejagoBlocks.FOCUS_LEAVES_SET);
 
         MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAll().forEach(item -> singleTexture(item.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/skeletal_chestplate_" + item.get().getVariant().getSerializedName())));
-        basicItem(MinejagoArmors.SAMUKAIS_CHESTPLATE.get());
+        basicItem(MinejagoArmors.SAMUKAIS_CHESTPLATE);
 
         MinejagoArmors.NORMAL_GI_SETS.forEach(set -> set.getAll().forEach(item -> singleTexture(item.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/" + item.getId().getPath()))));
         MinejagoArmors.STANDALONE_GI.forEach(item -> singleTexture(item.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/" + item.getId().getPath())));

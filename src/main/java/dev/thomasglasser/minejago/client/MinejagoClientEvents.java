@@ -240,10 +240,11 @@ public class MinejagoClientEvents {
         event.registerEntityRenderer(MinejagoEntityTypes.SWIRLING_KNIVES_SPINJITZU_COURSE_ELEMENT.get(), pContext -> new DirectionalSpinjitzuCourseElementRenderer<>(pContext, new SpinningSpinjitzuCourseElementModel<SwirlingKnivesSpinjitzuCourseElement>(MinejagoEntityTypes.SWIRLING_KNIVES_SPINJITZU_COURSE_ELEMENT.getId(), "structure")));
         event.registerEntityRenderer(MinejagoEntityTypes.SPINNING_AXES_SPINJITZU_COURSE_ELEMENT.get(), pContext -> new DirectionalSpinjitzuCourseElementRenderer<>(pContext, new SpinningAxesSpinjitzuCourseElementModel()));
 
+        event.registerEntityRenderer(MinejagoEntityTypes.EARTH_DRAGON_HEAD.get(), context -> new DragonHeadRenderer(context, MinejagoEntityTypes.EARTH_DRAGON_HEAD.getId()));
+
         event.registerEntityRenderer(MinejagoEntityTypes.SHADOW_SOURCE.get(), ShadowSourceRenderer::new);
         event.registerEntityRenderer(MinejagoEntityTypes.SHADOW_CLONE.get(), AbstractShadowCopyRenderer::new);
 
-        event.registerBlockEntityRenderer(MinejagoBlockEntityTypes.DRAGON_HEAD.get(), pContext -> new DragonHeadRenderer());
         event.registerBlockEntityRenderer(MinejagoBlockEntityTypes.DRAGON_BUTTON.get(), context -> new DragonButtonRenderer(MinejagoBlocks.DRAGON_BUTTON.getId()));
     }
 
@@ -571,7 +572,7 @@ public class MinejagoClientEvents {
             event.insertAfter(Items.WOLF_SPAWN_EGG.getDefaultInstance(), MinejagoItems.WU_SPAWN_EGG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(MinejagoItems.WU_SPAWN_EGG.toStack(), MinejagoItems.ZANE_SPAWN_EGG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
         } else if (event.getTabKey() == CreativeModeTabs.OP_BLOCKS && Minecraft.getInstance().options.operatorItemsTab().get()) {
-            event.insertAfter(Items.STRUCTURE_VOID.getDefaultInstance(), MinejagoBlocks.EARTH_DRAGON_HEAD.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(Items.STRUCTURE_VOID.getDefaultInstance(), MinejagoItems.EARTH_DRAGON_HEAD.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
         }
     }
 

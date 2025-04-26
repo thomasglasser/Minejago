@@ -31,6 +31,8 @@ public class MinejagoItemTagsProvider extends ExtendedItemTagsProvider {
                 .add(MinejagoItems.SCYTHE_OF_QUAKES.get())
                 .add(MinejagoItems.SHURIKEN_OF_ICE.get())
                 .add(MinejagoItems.NUNCHUCKS_OF_LIGHTNING.get());
+        tag(MinejagoItemTags.GOLDEN_WEAPON_HOLDERS)
+                .add(MinejagoItems.EARTH_DRAGON_HEAD.get());
         MinejagoArmors.ARMOR_SETS.forEach(this::armorSet);
         tag(ItemTags.CHEST_ARMOR)
                 .add(MinejagoArmors.SAMUKAIS_CHESTPLATE.get())

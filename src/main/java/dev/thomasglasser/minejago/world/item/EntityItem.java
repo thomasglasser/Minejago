@@ -1,19 +1,19 @@
 package dev.thomasglasser.minejago.world.item;
 
-import dev.thomasglasser.minejago.world.entity.spinjitzucourse.AbstractSpinjitzuCourseElement;
 import java.util.Set;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
 
-public class SpinjitzuCourseElementItem extends Item {
-    private Supplier<EntityType<? extends AbstractSpinjitzuCourseElement<?>>> entityType;
+public class EntityItem<T extends Entity> extends Item {
+    private Supplier<EntityType<T>> entityType;
 
-    public SpinjitzuCourseElementItem(Supplier<EntityType<? extends AbstractSpinjitzuCourseElement<?>>> entityType, Properties properties) {
+    public EntityItem(Supplier<EntityType<T>> entityType, Properties properties) {
         super(properties);
         this.entityType = entityType;
     }
@@ -23,7 +23,7 @@ public class SpinjitzuCourseElementItem extends Item {
         if (context.getLevel().isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
-            AbstractSpinjitzuCourseElement<?> entity = entityType.get().create(context.getLevel());
+            T entity = createEntity((ServerLevel) context.getLevel());
             if (entity != null) {
                 BlockPos pos = context.getClickedPos();
                 if (context.getLevel().getBlockState(pos).canBeReplaced()) {
@@ -41,5 +41,9 @@ public class SpinjitzuCourseElementItem extends Item {
             }
             return InteractionResult.FAIL;
         }
+    }
+
+    protected T createEntity(ServerLevel level) {
+        return entityType.get().create(level);
     }
 }

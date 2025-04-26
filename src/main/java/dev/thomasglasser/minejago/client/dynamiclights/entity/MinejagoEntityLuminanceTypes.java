@@ -7,6 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class MinejagoEntityLuminanceTypes {
     public static final EntityLuminance.Type SPINJITZU = register("spinjitzu", SpinjitzuLuminance.CODEC);
+    public static final EntityLuminance.Type GOLDEN_WEAPON_HOLDER = registerSimple("golden_weapon_holder", GoldenWeaponHolderLuminance.INSTANCE);
 
     private static EntityLuminance.Type register(ResourceLocation id, MapCodec<? extends EntityLuminance> codec) {
         return EntityLuminance.Type.register(id, codec);

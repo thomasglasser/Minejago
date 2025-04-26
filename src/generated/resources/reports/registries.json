@@ -18,7 +18,6 @@
     "minejago:chiseled_scroll_shelf",
     "minejago:cyan_teapot",
     "minejago:dragon_button",
-    "minejago:earth_dragon_head",
     "minejago:enchanted_button",
     "minejago:enchanted_door",
     "minejago:enchanted_fence",
@@ -62,7 +61,6 @@
   "minecraft:block_entity_type": [
     "minejago:chiseled_scroll_shelf",
     "minejago:dragon_button",
-    "minejago:dragon_head",
     "minejago:teapot"
   ],
   "minecraft:command_argument_type": [
@@ -88,6 +86,7 @@
     "minejago:cole",
     "minejago:earth_blast",
     "minejago:earth_dragon",
+    "minejago:earth_dragon_head",
     "minejago:jay",
     "minejago:kai",
     "minejago:kruncha",

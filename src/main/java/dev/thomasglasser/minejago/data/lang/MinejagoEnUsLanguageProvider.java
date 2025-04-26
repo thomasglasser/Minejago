@@ -35,11 +35,11 @@ import dev.thomasglasser.minejago.world.entity.skulkin.raid.AbstractSkulkinRaid;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.FourWeaponsSkulkinRaid;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.GoldenWeaponSkulkinRaid;
 import dev.thomasglasser.minejago.world.entity.spinjitzucourse.AbstractSpinjitzuCourseElement;
+import dev.thomasglasser.minejago.world.item.EntityItem;
 import dev.thomasglasser.minejago.world.item.FilledTeacupItem;
 import dev.thomasglasser.minejago.world.item.MinejagoCreativeModeTabs;
 import dev.thomasglasser.minejago.world.item.MinejagoItemUtils;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
-import dev.thomasglasser.minejago.world.item.SpinjitzuCourseElementItem;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
 import dev.thomasglasser.minejago.world.level.block.MinejagoBlocks;
@@ -60,6 +60,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
@@ -284,9 +285,13 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         addPluginConfig(location, Minejago.MOD_NAME, name);
     }
 
-    protected <T extends AbstractSpinjitzuCourseElement<T>> void addSpinjitzuCourseElement(DeferredHolder<EntityType<?>, EntityType<T>> entity, DeferredItem<? extends SpinjitzuCourseElementItem> item, String name) {
-        add(entity.get(), name + " Spinjitzu Course Element");
-        add(item.get(), name + " Spinjitzu Course Element");
+    protected <T extends Entity> void addWithItem(DeferredHolder<EntityType<?>, EntityType<T>> entity, DeferredItem<? extends EntityItem<T>> item, String name) {
+        add(entity.get(), name);
+        add(item.get(), name);
+    }
+
+    protected <T extends AbstractSpinjitzuCourseElement<T>> void addSpinjitzuCourseElement(DeferredHolder<EntityType<?>, EntityType<T>> entity, DeferredItem<? extends EntityItem<T>> item, String name) {
+        addWithItem(entity, item, name + " Spinjitzu Course Element");
     }
 
     protected void add(Skulkin.Variant variant, String name) {
@@ -356,7 +361,6 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(MinejagoBlocks.GOLD_DISC.get(), "Gold Disc");
         add(MinejagoBlocks.TOP_POST.get(), "Top Post");
         add(MinejagoBlocks.CHISELED_SCROLL_SHELF.get(), "Chiseled Scroll Shelf");
-        add(MinejagoBlocks.EARTH_DRAGON_HEAD.get(), "Earth Dragon Head");
         add(MinejagoBlocks.SUSPICIOUS_RED_SAND.get(), "Suspicious Red Sand");
         add(MinejagoBlocks.DRAGON_BUTTON.get(), "Dragon Button");
         add(MinejagoBlocks.SCROLL_SHELF.get(), "Scroll Shelf");
@@ -411,6 +415,9 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         addSpinjitzuCourseElement(MinejagoEntityTypes.SPINNING_DUMMIES_SPINJITZU_COURSE_ELEMENT, MinejagoItems.SPINNING_DUMMIES_SPINJITZU_COURSE_ELEMENT, "Spinning Dummies");
         addSpinjitzuCourseElement(MinejagoEntityTypes.SWIRLING_KNIVES_SPINJITZU_COURSE_ELEMENT, MinejagoItems.SWIRLING_KNIVES_SPINJITZU_COURSE_ELEMENT, "Swirling Knives");
         addSpinjitzuCourseElement(MinejagoEntityTypes.SPINNING_AXES_SPINJITZU_COURSE_ELEMENT, MinejagoItems.SPINNING_AXES_SPINJITZU_COURSE_ELEMENT, "Spinning Axes");
+
+        // Golden Weapon Holders
+        addWithItem(MinejagoEntityTypes.EARTH_DRAGON_HEAD, MinejagoItems.EARTH_DRAGON_HEAD, "Earth Dragon Head");
 
         add(MinejagoEntityTypes.SHADOW_SOURCE.get(), "%s's Shadow Source");
         add(MinejagoEntityTypes.SHADOW_CLONE.get(), "%s's Shadow Clone");

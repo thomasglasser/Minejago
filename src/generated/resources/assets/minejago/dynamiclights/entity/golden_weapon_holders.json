@@ -1,0 +1,10 @@
+{
+  "luminance": [
+    {
+      "type": "minejago:golden_weapon_holder"
+    }
+  ],
+  "match": {
+    "type": "#minejago:golden_weapon_holders"
+  }
+}

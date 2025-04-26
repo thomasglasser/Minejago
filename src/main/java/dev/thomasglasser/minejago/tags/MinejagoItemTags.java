@@ -7,6 +7,7 @@ import net.minecraft.world.item.Item;
 
 public class MinejagoItemTags {
     public static final TagKey<Item> GOLDEN_WEAPONS = create("golden_weapons");
+    public static final TagKey<Item> GOLDEN_WEAPON_HOLDERS = create("golden_weapon_holders");
     public static final TagKey<Item> TEAPOTS = create("teapots");
     public static final TagKey<Item> LECTERN_SCROLLS = create("lectern_scrolls");
     public static final TagKey<Item> SCROLL_SHELF_SCROLLS = create("scroll_shelf_scrolls");

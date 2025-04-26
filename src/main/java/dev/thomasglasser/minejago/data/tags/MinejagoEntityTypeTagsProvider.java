@@ -50,5 +50,8 @@ public class MinejagoEntityTypeTagsProvider extends ExtendedIntrinsicHolderTagsP
                 .add(MinejagoEntityTypes.SAMUKAI.get())
                 .add(MinejagoEntityTypes.NUCKAL.get())
                 .add(MinejagoEntityTypes.KRUNCHA.get());
+
+        tag(MinejagoEntityTypeTags.GOLDEN_WEAPON_HOLDERS)
+                .add(MinejagoEntityTypes.EARTH_DRAGON_HEAD.get());
     }
 }

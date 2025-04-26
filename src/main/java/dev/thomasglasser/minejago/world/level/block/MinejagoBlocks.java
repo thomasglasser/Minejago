@@ -2,7 +2,6 @@ package dev.thomasglasser.minejago.world.level.block;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.data.worldgen.features.MinejagoTreeFeatures;
-import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.vehicle.MinejagoBoatTypes;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.level.block.state.properties.MinejagoWoodTypes;
@@ -55,8 +54,6 @@ public class MinejagoBlocks {
     public static final DeferredBlock<TeapotBlock> TEAPOT = registerBlockAndItemAndWrap("teapot", () -> TEAPOT_FUNCTION.apply(MapColor.COLOR_ORANGE, MinejagoItems.FILLED_TEACUP));
     public static final SortedMap<DyeColor, DeferredBlock<TeapotBlock>> TEAPOTS = teapots();
     public static final DeferredBlock<TeapotBlock> JASPOT = registerBlockAndItemAndWrap("jaspot", () -> TEAPOT_FUNCTION.apply(MapColor.COLOR_LIGHT_BLUE, MinejagoItems.MINICUP), new Item.Properties().rarity(Rarity.UNCOMMON));
-
-    public static final DeferredBlock<DragonHeadBlock> EARTH_DRAGON_HEAD = registerBlockAndItemAndWrap("earth_dragon_head", () -> new DragonHeadBlock(MinejagoEntityTypes.EARTH_DRAGON::get, BlockBehaviour.Properties.ofFullCopy(Blocks.BARRIER).mapColor(MapColor.NONE).noLootTable().lightLevel(state -> state.getValue(DragonHeadBlock.ACTIVATED) ? 0 : 10)));
 
     private static <T extends Block> DeferredBlock<T> registerBlockAndItemAndWrap(
             String name,

@@ -52,7 +52,7 @@ public class StolenItems extends SavedData {
         List<ItemStack> removed = new ArrayList<>();
         for (ItemStack stack : List.copyOf(currentlyStolen)) {
             if (predicate.test(stack)) {
-                removed.add(stack);
+                removed.add(stack.copy());
                 remove(stack);
             }
         }

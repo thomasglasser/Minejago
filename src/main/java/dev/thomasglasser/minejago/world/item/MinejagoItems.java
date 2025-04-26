@@ -4,7 +4,16 @@ import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.MinejagoClientUtils;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.tags.MinejagoBannerPatternTags;
+import dev.thomasglasser.minejago.world.entity.GoldenWeaponHolder;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
+import dev.thomasglasser.minejago.world.entity.spinjitzucourse.BouncingPoleSpinjitzuCourseElement;
+import dev.thomasglasser.minejago.world.entity.spinjitzucourse.CenterSpinjitzuCourseElement;
+import dev.thomasglasser.minejago.world.entity.spinjitzucourse.RockingPoleSpinjitzuCourseElement;
+import dev.thomasglasser.minejago.world.entity.spinjitzucourse.SpinningAxesSpinjitzuCourseElement;
+import dev.thomasglasser.minejago.world.entity.spinjitzucourse.SpinningDummiesSpinjitzuCourseElement;
+import dev.thomasglasser.minejago.world.entity.spinjitzucourse.SpinningMacesSpinjitzuCourseElement;
+import dev.thomasglasser.minejago.world.entity.spinjitzucourse.SpinningPoleSpinjitzuCourseElement;
+import dev.thomasglasser.minejago.world.entity.spinjitzucourse.SwirlingKnivesSpinjitzuCourseElement;
 import dev.thomasglasser.minejago.world.item.armortrim.MinejagoTrimPatterns;
 import dev.thomasglasser.tommylib.api.client.renderer.BewlrProvider;
 import dev.thomasglasser.tommylib.api.registration.DeferredItem;
@@ -111,14 +120,17 @@ public class MinejagoItems {
     public static final DeferredItem<SpawnEggItem> ZANE_SPAWN_EGG = registerSpawnEgg("zane_spawn_egg", MinejagoEntityTypes.ZANE::get, 2697513, 16769956);
 
     // Spinjitzu Course Elements
-    public static final DeferredItem<SpinjitzuCourseElementItem> CENTER_SPINJITZU_COURSE_ELEMENT = register("center_spinjitzu_course_element", () -> new SpinjitzuCourseElementItem(MinejagoEntityTypes.CENTER_SPINJITZU_COURSE_ELEMENT::get, new Item.Properties()));
-    public static final DeferredItem<SpinjitzuCourseElementItem> SPINNING_DUMMIES_SPINJITZU_COURSE_ELEMENT = register("spinning_dummies_spinjitzu_course_element", () -> new SpinjitzuCourseElementItem(MinejagoEntityTypes.SPINNING_DUMMIES_SPINJITZU_COURSE_ELEMENT::get, new Item.Properties()));
-    public static final DeferredItem<SpinjitzuCourseElementItem> SPINNING_POLE_SPINJITZU_COURSE_ELEMENT = register("spinning_pole_spinjitzu_course_element", () -> new SpinjitzuCourseElementItem(MinejagoEntityTypes.SPINNING_POLE_SPINJITZU_COURSE_ELEMENT::get, new Item.Properties()));
-    public static final DeferredItem<SpinjitzuCourseElementItem> SWIRLING_KNIVES_SPINJITZU_COURSE_ELEMENT = register("swirling_knives_spinjitzu_course_element", () -> new SpinjitzuCourseElementItem(MinejagoEntityTypes.SWIRLING_KNIVES_SPINJITZU_COURSE_ELEMENT::get, new Item.Properties()));
-    public static final DeferredItem<SpinjitzuCourseElementItem> BOUNCING_POLE_SPINJITZU_COURSE_ELEMENT = register("bouncing_pole_spinjitzu_course_element", () -> new SpinjitzuCourseElementItem(MinejagoEntityTypes.BOUNCING_POLE_SPINJITZU_COURSE_ELEMENT::get, new Item.Properties()));
-    public static final DeferredItem<SpinjitzuCourseElementItem> SPINNING_AXES_SPINJITZU_COURSE_ELEMENT = register("spinning_axes_spinjitzu_course_element", () -> new SpinjitzuCourseElementItem(MinejagoEntityTypes.SPINNING_AXES_SPINJITZU_COURSE_ELEMENT::get, new Item.Properties()));
-    public static final DeferredItem<SpinjitzuCourseElementItem> ROCKING_POLE_SPINJITZU_COURSE_ELEMENT = register("rocking_pole_spinjitzu_course_element", () -> new SpinjitzuCourseElementItem(MinejagoEntityTypes.ROCKING_POLE_SPINJITZU_COURSE_ELEMENT::get, new Item.Properties()));
-    public static final DeferredItem<SpinjitzuCourseElementItem> SPINNING_MACES_SPINJITZU_COURSE_ELEMENT = register("spinning_maces_spinjitzu_course_element", () -> new SpinjitzuCourseElementItem(MinejagoEntityTypes.SPINNING_MACES_SPINJITZU_COURSE_ELEMENT::get, new Item.Properties()));
+    public static final DeferredItem<EntityItem<CenterSpinjitzuCourseElement>> CENTER_SPINJITZU_COURSE_ELEMENT = register("center_spinjitzu_course_element", () -> new EntityItem<>(MinejagoEntityTypes.CENTER_SPINJITZU_COURSE_ELEMENT, new Item.Properties()));
+    public static final DeferredItem<EntityItem<SpinningDummiesSpinjitzuCourseElement>> SPINNING_DUMMIES_SPINJITZU_COURSE_ELEMENT = register("spinning_dummies_spinjitzu_course_element", () -> new EntityItem<>(MinejagoEntityTypes.SPINNING_DUMMIES_SPINJITZU_COURSE_ELEMENT, new Item.Properties()));
+    public static final DeferredItem<EntityItem<SpinningPoleSpinjitzuCourseElement>> SPINNING_POLE_SPINJITZU_COURSE_ELEMENT = register("spinning_pole_spinjitzu_course_element", () -> new EntityItem<>(MinejagoEntityTypes.SPINNING_POLE_SPINJITZU_COURSE_ELEMENT, new Item.Properties()));
+    public static final DeferredItem<EntityItem<SwirlingKnivesSpinjitzuCourseElement>> SWIRLING_KNIVES_SPINJITZU_COURSE_ELEMENT = register("swirling_knives_spinjitzu_course_element", () -> new EntityItem<>(MinejagoEntityTypes.SWIRLING_KNIVES_SPINJITZU_COURSE_ELEMENT, new Item.Properties()));
+    public static final DeferredItem<EntityItem<BouncingPoleSpinjitzuCourseElement>> BOUNCING_POLE_SPINJITZU_COURSE_ELEMENT = register("bouncing_pole_spinjitzu_course_element", () -> new EntityItem<>(MinejagoEntityTypes.BOUNCING_POLE_SPINJITZU_COURSE_ELEMENT, new Item.Properties()));
+    public static final DeferredItem<EntityItem<SpinningAxesSpinjitzuCourseElement>> SPINNING_AXES_SPINJITZU_COURSE_ELEMENT = register("spinning_axes_spinjitzu_course_element", () -> new EntityItem<>(MinejagoEntityTypes.SPINNING_AXES_SPINJITZU_COURSE_ELEMENT, new Item.Properties()));
+    public static final DeferredItem<EntityItem<RockingPoleSpinjitzuCourseElement>> ROCKING_POLE_SPINJITZU_COURSE_ELEMENT = register("rocking_pole_spinjitzu_course_element", () -> new EntityItem<>(MinejagoEntityTypes.ROCKING_POLE_SPINJITZU_COURSE_ELEMENT, new Item.Properties()));
+    public static final DeferredItem<EntityItem<SpinningMacesSpinjitzuCourseElement>> SPINNING_MACES_SPINJITZU_COURSE_ELEMENT = register("spinning_maces_spinjitzu_course_element", () -> new EntityItem<>(MinejagoEntityTypes.SPINNING_MACES_SPINJITZU_COURSE_ELEMENT, new Item.Properties()));
+
+    // Golden Weapon Holders
+    public static final DeferredItem<EntityItem<GoldenWeaponHolder>> EARTH_DRAGON_HEAD = register("earth_dragon_head", () -> new EntityItem<>(MinejagoEntityTypes.EARTH_DRAGON_HEAD, new Item.Properties().rarity(Rarity.EPIC)));
 
     public static void init() {}
 

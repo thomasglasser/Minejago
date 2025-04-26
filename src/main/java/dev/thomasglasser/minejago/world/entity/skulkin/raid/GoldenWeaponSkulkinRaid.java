@@ -3,16 +3,15 @@ package dev.thomasglasser.minejago.world.entity.skulkin.raid;
 import dev.thomasglasser.minejago.core.component.MinejagoDataComponents;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.tags.MinejagoItemTags;
+import dev.thomasglasser.minejago.world.entity.GoldenWeaponHolder;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.skulkin.Kruncha;
 import dev.thomasglasser.minejago.world.entity.skulkin.Nuckal;
 import dev.thomasglasser.minejago.world.entity.skulkin.Samukai;
 import dev.thomasglasser.minejago.world.entity.skulkin.SkullTruck;
 import dev.thomasglasser.minejago.world.level.MinejagoLevels;
-import dev.thomasglasser.minejago.world.level.block.GoldenWeaponHolder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
@@ -25,8 +24,6 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.BundleContents;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
@@ -45,27 +42,9 @@ public class GoldenWeaponSkulkinRaid extends AbstractSkulkinRaid {
     public static @Nullable BlockPos findValidRaidCenter(ServerLevel level, BlockPos pos) {
         if (!StolenItemsHolder.of(level.getServer().getLevel(MinejagoLevels.UNDERWORLD)).minejago$getStolenItems().hasEverStolen(stack -> stack.has(MinejagoDataComponents.GOLDEN_WEAPONS_MAP)))
             return null;
-        BlockPos center = null;
-        double minDist = Double.MAX_VALUE;
-        AABB toCheck = AABB.ofSize(pos.getCenter(), VALID_RAID_RADIUS, VALID_RAID_RADIUS, VALID_RAID_RADIUS);
-        ChunkPos min = new ChunkPos(new BlockPos((int) toCheck.minX, (int) toCheck.minY, (int) toCheck.minZ));
-        ChunkPos max = new ChunkPos(new BlockPos((int) toCheck.maxX, (int) toCheck.maxY, (int) toCheck.maxZ));
-        for (int x = min.x; x <= max.x; x++) {
-            for (int z = min.z; z <= max.z; z++) {
-                for (Map.Entry<BlockPos, BlockEntity> entry : level.getChunk(x, z).getBlockEntities().entrySet()) {
-                    BlockPos blockPos = entry.getKey();
-                    BlockEntity blockEntity = entry.getValue();
-                    if (blockEntity instanceof GoldenWeaponHolder goldenWeaponHolder && goldenWeaponHolder.hasGoldenWeapon()) {
-                        double dist = pos.distSqr(blockPos);
-                        if (dist < minDist) {
-                            center = blockPos;
-                            minDist = dist;
-                        }
-                    }
-                }
-            }
-        }
-        return center;
+        // Accounts for bounds of structure
+        List<GoldenWeaponHolder> holders = level.getEntitiesOfClass(GoldenWeaponHolder.class, AABB.ofSize(pos.getCenter(), VALID_RAID_RADIUS + 38 * 2, VALID_RAID_RADIUS + 20 * 2, VALID_RAID_RADIUS + 38 * 2), GoldenWeaponHolder::hasGoldenWeapon);
+        return holders.isEmpty() ? null : holders.getFirst().blockPosition();
     }
 
     @Override
@@ -85,7 +64,8 @@ public class GoldenWeaponSkulkinRaid extends AbstractSkulkinRaid {
 
     @Override
     public @Nullable ItemStack extractRaidItem(SkulkinRaider raider) {
-        return getLevel().getBlockEntity(getCenter()) instanceof GoldenWeaponHolder goldenWeaponHolder ? goldenWeaponHolder.extractGoldenWeapon() : null;
+        List<GoldenWeaponHolder> holders = raider.level().getEntitiesOfClass(GoldenWeaponHolder.class, AABB.ofSize(getCenter().getCenter(), 1, 1, 1), GoldenWeaponHolder::hasGoldenWeapon);
+        return holders.isEmpty() ? null : holders.getFirst().extractGoldenWeapon();
     }
 
     @Override
