@@ -503,13 +503,17 @@
     "minejago:four_weapons",
     "minejago:golden_weapons"
   ],
+  "minejago:tornado_of_creation": [
+    "minejago:skulkin"
+  ],
   "neoforge:attachment_types": [
     "minejago:element",
     "minejago:focus",
     "minejago:shadow_clones",
     "minejago:shadow_source",
     "minejago:skill",
-    "minejago:spinjitzu"
+    "minejago:spinjitzu",
+    "minejago:tornado_of_creation"
   ],
   "neoforge:biome_modifier": [
     "minejago:add_cole",

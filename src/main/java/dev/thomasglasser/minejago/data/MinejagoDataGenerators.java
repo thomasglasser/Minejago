@@ -35,8 +35,9 @@ import dev.thomasglasser.minejago.data.worldgen.placement.MinejagoTreePlacements
 import dev.thomasglasser.minejago.data.worldgen.placement.MinejagoVegetationPlacements;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
-import dev.thomasglasser.minejago.world.entity.element.MinejagoElements;
-import dev.thomasglasser.minejago.world.focus.modifier.MinejagoFocusModifiers;
+import dev.thomasglasser.minejago.world.entity.element.Elements;
+import dev.thomasglasser.minejago.world.entity.element.tornadoofcreation.TornadoOfCreationConfigs;
+import dev.thomasglasser.minejago.world.focus.modifier.FocusModifiers;
 import dev.thomasglasser.minejago.world.level.biome.MinejagoBiomes;
 import dev.thomasglasser.minejago.world.level.block.entity.MinejagoBannerPatterns;
 import dev.thomasglasser.minejago.world.level.dimension.MinejagoDimensionTypes;
@@ -62,7 +63,7 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 public class MinejagoDataGenerators {
     private static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
-            .add(MinejagoRegistries.ELEMENT, MinejagoElements::bootstrap)
+            .add(MinejagoRegistries.ELEMENT, Elements::bootstrap)
             .add(Registries.TEMPLATE_POOL, MinejagoPools::bootstrap)
             .add(Registries.STRUCTURE, MinejagoStructures::bootstrap)
             .add(Registries.STRUCTURE_SET, MinejagoStructureSets::bootstrap)
@@ -78,11 +79,12 @@ public class MinejagoDataGenerators {
             }))
             .add(Registries.BANNER_PATTERN, MinejagoBannerPatterns::bootstrap)
             .add(Registries.PAINTING_VARIANT, MinejagoPaintingVariants::boostrap)
-            .add(MinejagoRegistries.FOCUS_MODIFIER, MinejagoFocusModifiers::bootstrap)
+            .add(MinejagoRegistries.FOCUS_MODIFIER, FocusModifiers::bootstrap)
             .add(Registries.BIOME, MinejagoBiomes::bootstrap)
             .add(Registries.DIMENSION_TYPE, MinejagoDimensionTypes::bootstrap)
             .add(Registries.LEVEL_STEM, MinejagoLevelStems::bootstrap)
-            .add(Registries.NOISE_SETTINGS, MinejagoNoiseGeneratorSettings::bootstrap);
+            .add(Registries.NOISE_SETTINGS, MinejagoNoiseGeneratorSettings::bootstrap)
+            .add(MinejagoRegistries.TORNADO_OF_CREATION_CONFIG, TornadoOfCreationConfigs::bootstrap);
 
     public static void gatherData(GatherDataEvent event) {
         DataGenerator generator = event.getGenerator();

@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.world.entity.character;
 
-import dev.thomasglasser.minejago.world.entity.element.MinejagoElements;
+import dev.thomasglasser.minejago.world.entity.element.Elements;
 import dev.thomasglasser.minejago.world.level.storage.ElementData;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 public class Jay extends Character {
     public Jay(EntityType<? extends Jay> entityType, Level level) {
         super(entityType, level);
-        new ElementData(MinejagoElements.LIGHTNING, true).save(this, false);
+        new ElementData(Elements.LIGHTNING, true).save(this, false);
     }
 
     @Override

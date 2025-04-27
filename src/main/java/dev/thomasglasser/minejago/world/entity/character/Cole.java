@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.world.entity.character;
 
-import dev.thomasglasser.minejago.world.entity.element.MinejagoElements;
+import dev.thomasglasser.minejago.world.entity.element.Elements;
 import dev.thomasglasser.minejago.world.level.storage.ElementData;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -23,7 +23,7 @@ public class Cole extends Character {
 
     public Cole(EntityType<? extends Cole> entityType, Level level) {
         super(entityType, level);
-        new ElementData(MinejagoElements.EARTH, true).save(this, false);
+        new ElementData(Elements.EARTH, true).save(this, false);
     }
 
     @Override

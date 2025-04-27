@@ -7,12 +7,12 @@ import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import java.util.List;
 import java.util.function.Function;
 import net.minecraft.core.Holder;
-import net.minecraft.resources.RegistryFixedCodec;
+import net.minecraft.resources.RegistryFileCodec;
 
 public interface FocusModifier {
     Codec<FocusModifier> DIRECT_CODEC = MinejagoBuiltInRegistries.FOCUS_MODIFIER_SERIALIZER.byNameCodec()
             .dispatch(FocusModifier::codec, Function.identity());
-    Codec<Holder<FocusModifier>> CODEC = RegistryFixedCodec.create(MinejagoRegistries.FOCUS_MODIFIER);
+    Codec<Holder<FocusModifier>> CODEC = RegistryFileCodec.create(MinejagoRegistries.FOCUS_MODIFIER, DIRECT_CODEC);
 
     Operation operation();
 

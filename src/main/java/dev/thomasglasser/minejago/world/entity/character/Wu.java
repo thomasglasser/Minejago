@@ -14,7 +14,7 @@ import dev.thomasglasser.minejago.world.entity.ai.behavior.TrackSpinjitzuCourseC
 import dev.thomasglasser.minejago.world.entity.ai.memory.MinejagoMemoryModuleTypes;
 import dev.thomasglasser.minejago.world.entity.ai.poi.MinejagoPoiTypes;
 import dev.thomasglasser.minejago.world.entity.element.Element;
-import dev.thomasglasser.minejago.world.entity.element.MinejagoElements;
+import dev.thomasglasser.minejago.world.entity.element.Elements;
 import dev.thomasglasser.minejago.world.entity.spinjitzucourse.AbstractSpinjitzuCourseElement;
 import dev.thomasglasser.minejago.world.entity.spinjitzucourse.SpinjitzuCourseTracker;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
@@ -101,7 +101,7 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
 
     public Wu(EntityType<? extends Wu> entityType, Level level) {
         super(entityType, level);
-        new ElementData(MinejagoElements.CREATION, true).save(this, false);
+        new ElementData(Elements.CREATION, true).save(this, false);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -140,7 +140,7 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
             if (!MinejagoServerConfig.get().drainPool.get() || (elementsToGive.size() <= 1)) {
                 elementsToGive = new ArrayList<>(level().registryAccess().registryOrThrow(MinejagoRegistries.ELEMENT).getOrCreateTag(ElementTags.ELEMENTS_OF_CREATION).stream().toList());
                 if (!MinejagoServerConfig.get().enableNoElement.get())
-                    removeElementsToGive(level().holderOrThrow(MinejagoElements.NONE));
+                    removeElementsToGive(level().holderOrThrow(Elements.NONE));
             }
 
             if (player instanceof ServerPlayer serverPlayer && hand == InteractionHand.MAIN_HAND) {
@@ -149,11 +149,11 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
                     TommyLibServices.NETWORK.sendToClient(new ClientboundOpenElementSelectionScreenPayload(elementsToGive, Optional.of(this.getId())), serverPlayer);
                 } else if (this.distanceTo(serverPlayer) > 1.0f) {
                     Holder<Element> oldElement = level().holderOrThrow(serverPlayer.getData(MinejagoAttachmentTypes.ELEMENT).element());
-                    if (serverPlayer.getData(MinejagoAttachmentTypes.ELEMENT).given() && oldElement != MinejagoElements.NONE && MinejagoServerConfig.get().drainPool.get())
+                    if (serverPlayer.getData(MinejagoAttachmentTypes.ELEMENT).given() && oldElement != Elements.NONE && MinejagoServerConfig.get().drainPool.get())
                         addElementsToGive(oldElement);
                     Holder<Element> newElement = elementsToGive.get(random.nextInt(elementsToGive.size()));
-                    if (newElement.getKey() != MinejagoElements.NONE) removeElementsToGive(newElement);
-                    if (newElement == MinejagoElements.NONE) {
+                    if (newElement.getKey() != Elements.NONE) removeElementsToGive(newElement);
+                    if (newElement == Elements.NONE) {
                         new ElementData(newElement.getKey(), true).save(serverPlayer, true);
                         serverPlayer.displayClientMessage(Component.translatable(Wu.NO_ELEMENT_GIVEN_KEY), true);
                         givingElement = false;

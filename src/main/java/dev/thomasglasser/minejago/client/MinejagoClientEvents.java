@@ -54,7 +54,7 @@ import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityEvents;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.element.Element;
-import dev.thomasglasser.minejago.world.entity.element.MinejagoElements;
+import dev.thomasglasser.minejago.world.entity.element.Elements;
 import dev.thomasglasser.minejago.world.entity.spinjitzucourse.CenterSpinjitzuCourseElement;
 import dev.thomasglasser.minejago.world.entity.spinjitzucourse.SpinningDummiesSpinjitzuCourseElement;
 import dev.thomasglasser.minejago.world.entity.spinjitzucourse.SpinningMacesSpinjitzuCourseElement;
@@ -180,7 +180,7 @@ public class MinejagoClientEvents {
     public static int renderElementIcon(GuiGraphics guiGraphics, Minecraft mc, DeltaTracker deltaTracker, LivingEntity entity, float opacity, boolean inWorldHud) {
         if (mc.level != null && !inWorldHud) {
             Optional<Holder.Reference<Element>> element = mc.level.holder(entity.getData(MinejagoAttachmentTypes.ELEMENT).element());
-            if (element.isPresent() && element.get().key() != MinejagoElements.NONE) {
+            if (element.isPresent() && element.get().key() != Elements.NONE) {
                 TESClientUtil.prepRenderForTexture(Element.getIcon(element.get()));
                 guiGraphics.pose().pushPose();
                 guiGraphics.pose().scale(0.5f, 0.5f, 1.0f);
@@ -325,6 +325,7 @@ public class MinejagoClientEvents {
         event.registerReloadListener((ResourceManagerReloadListener) resourceManager -> {
             MinejagoClientUtils.refreshVip();
             AbstractShadowCopyRenderer.clearShadowTextures();
+            spinjitzuModel = null;
         });
     }
 
@@ -335,15 +336,25 @@ public class MinejagoClientEvents {
         }
     }
 
+    private static SpinjitzuModel<Player> spinjitzuModel = null;
+
     public static void onPostPlayerRender(RenderPlayerEvent.Post event) {
         Player player = event.getEntity();
-        SpinjitzuModel<Player> model = new SpinjitzuModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(SpinjitzuModel.LAYER_LOCATION));
-        if (!(ClientUtils.getMainClientPlayer() == player && ClientUtils.getMinecraft().options.getCameraType().isFirstPerson()) && player.getData(MinejagoAttachmentTypes.SPINJITZU).active() && TommyLibServices.ENTITY.getPersistentData(player).getInt(ClientboundStartSpinjitzuPayload.KEY_SPINJITZUSTARTTICKS) <= 0) {
-            model.setupAnim(player, 0, 0, player.tickCount + event.getPartialTick(), 0, 0);
-            model.getBody().copyFrom(event.getRenderer().getModel().body);
+        if (spinjitzuModel == null)
+            spinjitzuModel = new SpinjitzuModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(SpinjitzuModel.LAYER_LOCATION));
+        CompoundTag data = TommyLibServices.ENTITY.getPersistentData(player);
+        boolean renderTornadoOfCreation = data.getInt(MinejagoEntityEvents.KEY_TORNADO_OF_CREATION_SECONDS) > 0;
+        if (!(ClientUtils.getMainClientPlayer() == player && ClientUtils.getMinecraft().options.getCameraType().isFirstPerson()) && player.getData(MinejagoAttachmentTypes.SPINJITZU).active() && data.getInt(ClientboundStartSpinjitzuPayload.KEY_SPINJITZUSTARTTICKS) <= 0 && (!data.getBoolean(MinejagoEntityEvents.KEY_IS_IN_TORNADO_OF_CREATION) || renderTornadoOfCreation)) {
+            spinjitzuModel.setupAnim(player, 0, 0, player.tickCount + event.getPartialTick(), 0, 0);
+            spinjitzuModel.getBody().copyFrom(event.getRenderer().getModel().body);
             float scale = (float) player.getAttributeValue(Attributes.SCALE);
+            if (renderTornadoOfCreation)
+                scale *= 5;
             event.getPoseStack().scale(scale, scale, scale);
-            model.render(event.getPoseStack(), event.getMultiBufferSource(), player.tickCount, event.getPartialTick(), 0xFF000000 | player.level().holderOrThrow(player.getData(MinejagoAttachmentTypes.ELEMENT).element()).value().color().getValue());
+            int color = player.level().holderOrThrow(player.getData(MinejagoAttachmentTypes.ELEMENT).element()).value().color().getValue();
+            if (renderTornadoOfCreation)
+                color = player.level().holderOrThrow(Elements.CREATION).value().color().getValue();
+            spinjitzuModel.render(event.getPoseStack(), event.getMultiBufferSource(), player.tickCount, event.getPartialTick(), 0xFF000000 | color);
         }
     }
 

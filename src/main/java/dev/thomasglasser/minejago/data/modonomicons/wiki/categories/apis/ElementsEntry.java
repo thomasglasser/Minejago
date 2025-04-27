@@ -5,7 +5,7 @@ import com.klikli_dev.modonomicon.api.datagen.IndexModeEntryProvider;
 import com.klikli_dev.modonomicon.api.datagen.book.BookIconModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
 import dev.thomasglasser.minejago.core.component.MinejagoDataComponents;
-import dev.thomasglasser.minejago.world.entity.element.MinejagoElements;
+import dev.thomasglasser.minejago.world.entity.element.Elements;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import net.minecraft.world.item.ItemStack;
 
@@ -53,7 +53,7 @@ public class ElementsEntry extends IndexModeEntryProvider {
     @Override
     protected BookIconModel entryIcon() {
         ItemStack icon = MinejagoArmors.TRAINEE_GI_SET.CHEST.toStack();
-        icon.set(MinejagoDataComponents.ELEMENT, MinejagoElements.FIRE);
+        icon.set(MinejagoDataComponents.ELEMENT, Elements.FIRE);
         return BookIconModel.create(icon);
     }
 

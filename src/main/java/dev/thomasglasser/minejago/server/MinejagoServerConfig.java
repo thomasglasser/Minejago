@@ -26,6 +26,12 @@ public class MinejagoServerConfig {
     public final ModConfigSpec.IntValue courseRadius;
     public final ModConfigSpec.DoubleValue courseSpeed;
 
+    // Tornado Of Creation
+    public static final String TORNADO_OF_CREATION = "tornado_of_creation";
+    public final ModConfigSpec.IntValue resourcesAbsorbedPerSecond;
+    public final ModConfigSpec.IntValue timeout;
+    public final ModConfigSpec.IntValue resourceAbsorbDistance;
+
     public MinejagoServerConfig() {
         ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
 
@@ -57,6 +63,14 @@ public class MinejagoServerConfig {
         courseSpeed = builder
                 .defineInRange("course_speed", 0.5, 0.1, 1);
         builder.pop();
+
+        builder.push(TORNADO_OF_CREATION);
+        resourcesAbsorbedPerSecond = builder
+                .defineInRange("resources_absorbed_per_second", 1, 1, 16);
+        timeout = builder
+                .defineInRange("timeout", 60, 10, 600);
+        resourceAbsorbDistance = builder
+                .defineInRange("resource_absorb_distance", 16, 4, 32);
 
         configSpec = builder.build();
     }

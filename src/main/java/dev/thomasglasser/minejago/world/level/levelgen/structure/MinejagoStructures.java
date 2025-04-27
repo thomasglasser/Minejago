@@ -27,12 +27,12 @@ import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
 
 public class MinejagoStructures {
-    public static final ResourceKey<Structure> FOUR_WEAPONS = createKey("four_weapons");
-    public static final ResourceKey<Structure> NINJAGO_CITY = createKey("ninjago_city");
-    public static final ResourceKey<Structure> MONASTERY_OF_SPINJITZU = createKey("monastery_of_spinjitzu");
-    public static final ResourceKey<Structure> CAVE_OF_DESPAIR = createKey("cave_of_despair");
+    public static final ResourceKey<Structure> FOUR_WEAPONS = create("four_weapons");
+    public static final ResourceKey<Structure> NINJAGO_CITY = create("ninjago_city");
+    public static final ResourceKey<Structure> MONASTERY_OF_SPINJITZU = create("monastery_of_spinjitzu");
+    public static final ResourceKey<Structure> CAVE_OF_DESPAIR = create("cave_of_despair");
 
-    private static ResourceKey<Structure> createKey(String name) {
+    private static ResourceKey<Structure> create(String name) {
         return ResourceKey.create(Registries.STRUCTURE, Minejago.modLoc(name));
     }
 

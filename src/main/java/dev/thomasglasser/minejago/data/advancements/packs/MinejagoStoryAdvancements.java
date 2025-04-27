@@ -5,7 +5,7 @@ import dev.thomasglasser.minejago.advancements.criterion.DidSpinjitzuTrigger;
 import dev.thomasglasser.minejago.advancements.criterion.GotElementTrigger;
 import dev.thomasglasser.minejago.core.component.MinejagoDataComponents;
 import dev.thomasglasser.minejago.tags.MinejagoEntityTypeTags;
-import dev.thomasglasser.minejago.world.entity.element.MinejagoElements;
+import dev.thomasglasser.minejago.world.entity.element.Elements;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
@@ -58,7 +58,7 @@ public class MinejagoStoryAdvancements extends ExtendedAdvancementGenerator {
                 "get_four_weapons_maps", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().hasComponents(DataComponentPredicate.builder().expect(MinejagoDataComponents.GOLDEN_WEAPONS_MAP.get(), Unit.INSTANCE).build()).build()), "The Journey Begins", "Obtain the Four Weapons Maps");
 
         ItemStack fireHead = MinejagoArmors.TRAINEE_GI_SET.HEAD.get().getDefaultInstance();
-        fireHead.set(MinejagoDataComponents.ELEMENT.get(), MinejagoElements.FIRE);
+        fireHead.set(MinejagoDataComponents.ELEMENT.get(), Elements.FIRE);
         AdvancementHolder getElement = create(getFourWeaponsMaps, fireHead, "get_element", AdvancementType.TASK, true, true, false, null,
                 "get_element", GotElementTrigger.TriggerInstance.gotElement(), "I've Got the Power!", "Discover your elemental power");
 

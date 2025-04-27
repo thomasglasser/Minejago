@@ -1,0 +1,24 @@
+{
+  "creations": [
+    {
+      "structure": "minejago:ninjago_city",
+      "weight": 1
+    }
+  ],
+  "required_blocks": [
+    {
+      "count": 10,
+      "predicate": {
+        "blocks": "minecraft:bone_block"
+      }
+    }
+  ],
+  "required_entities": [
+    {
+      "count": 20,
+      "predicate": {
+        "type": "#minejago:skulkins"
+      }
+    }
+  ]
+}

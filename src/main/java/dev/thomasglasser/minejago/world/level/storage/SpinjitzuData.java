@@ -13,7 +13,7 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Entity;
 
 public record SpinjitzuData(boolean unlocked, boolean active) {
     public static final Codec<SpinjitzuData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -36,7 +36,7 @@ public record SpinjitzuData(boolean unlocked, boolean active) {
         return !MinejagoServerConfig.get().requireCourseCompletion.get() || unlocked;
     }
 
-    public void save(LivingEntity entity, boolean syncToClient) {
+    public void save(Entity entity, boolean syncToClient) {
         entity.setData(MinejagoAttachmentTypes.SPINJITZU, this);
         if (active && entity instanceof ServerPlayer serverPlayer)
             MinejagoCriteriaTriggers.DID_SPINJITZU.get().trigger(serverPlayer);

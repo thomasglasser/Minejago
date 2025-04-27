@@ -20,7 +20,7 @@ public record EntityFocusModifier(EntityPredicate entity, Optional<Boolean> self
             Codec.DOUBLE.fieldOf("modifier").forGetter(EntityFocusModifier::modifier)).apply(instance, EntityFocusModifier::new));
     @Override
     public MapCodec<? extends FocusModifier> codec() {
-        return MinejagoFocusModifierSerializers.ENTITY_FOCUS_MODIFIER.get();
+        return FocusModifierSerializers.ENTITY_FOCUS_MODIFIER.get();
     }
 
     public static double checkAndApply(ServerLevel level, Vec3 pos, Entity entity, boolean self, double oldValue) {

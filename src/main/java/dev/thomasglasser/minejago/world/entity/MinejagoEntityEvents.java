@@ -2,10 +2,12 @@ package dev.thomasglasser.minejago.world.entity;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.util.concurrent.AtomicDouble;
+import com.mojang.datafixers.util.Pair;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.MinejagoClientUtils;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleUtils;
+import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.network.ClientboundRefreshVipDataPayload;
 import dev.thomasglasser.minejago.network.ClientboundStartMeditationPayload;
 import dev.thomasglasser.minejago.network.ClientboundStartMegaMeditationPayload;
@@ -22,7 +24,9 @@ import dev.thomasglasser.minejago.network.ServerboundStopShadowFormPayload;
 import dev.thomasglasser.minejago.network.ServerboundStopSpinjitzuPayload;
 import dev.thomasglasser.minejago.network.ServerboundSummonClonePayload;
 import dev.thomasglasser.minejago.network.ServerboundSwitchDimensionPayload;
+import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
+import dev.thomasglasser.minejago.tags.ElementTags;
 import dev.thomasglasser.minejago.tags.MinejagoItemTags;
 import dev.thomasglasser.minejago.tags.MinejagoStructureTags;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
@@ -31,6 +35,8 @@ import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.character.Character;
 import dev.thomasglasser.minejago.world.entity.character.Zane;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
+import dev.thomasglasser.minejago.world.entity.element.Element;
+import dev.thomasglasser.minejago.world.entity.element.tornadoofcreation.TornadoOfCreationConfig;
 import dev.thomasglasser.minejago.world.entity.shadow.ShadowClone;
 import dev.thomasglasser.minejago.world.entity.shadow.ShadowSource;
 import dev.thomasglasser.minejago.world.entity.skill.Skill;
@@ -56,17 +62,25 @@ import dev.thomasglasser.minejago.world.level.storage.ShadowSourceData;
 import dev.thomasglasser.minejago.world.level.storage.SkillData;
 import dev.thomasglasser.minejago.world.level.storage.SkillDataSet;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
+import dev.thomasglasser.minejago.world.level.storage.TornadoOfCreationData;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import dev.thomasglasser.tommylib.api.tags.ConventionalItemTags;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import net.minecraft.SharedConstants;
+import net.minecraft.advancements.critereon.BlockPredicate;
+import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
+import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -76,6 +90,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
+import net.minecraft.util.random.WeightedRandom;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -97,12 +112,18 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.portal.DimensionTransition;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.NeoForgeMod;
@@ -129,6 +150,8 @@ public class MinejagoEntityEvents {
     public static final String KEY_START_POS = "StartPos";
     public static final String KEY_IS_IN_MONASTERY_OF_SPINJITZU = "IsInMonasteryOfSpinjitzu";
     public static final String KEY_IS_IN_CAVE_OF_DESPAIR = "IsInCaveOfDespair";
+    public static final String KEY_IS_IN_TORNADO_OF_CREATION = "IsInTornadoOfCreation";
+    public static final String KEY_TORNADO_OF_CREATION_SECONDS = "TornadoOfCreationSeconds";
 
     public static final Predicate<LivingEntity> NO_SPINJITZU = (entity -> !entity.getData(MinejagoAttachmentTypes.SPINJITZU).canDoSpinjitzu() ||
             entity.isCrouching() ||
@@ -190,7 +213,8 @@ public class MinejagoEntityEvents {
                 if (!player.onGround()) {
                     persistentData.putInt(KEY_OFF_GROUND_TICKS, persistentData.getInt(KEY_OFF_GROUND_TICKS) + 1);
                 } else if (persistentData.getInt(KEY_OFF_GROUND_TICKS) > 0) {
-                    persistentData.putInt(KEY_OFF_GROUND_TICKS, 0);
+                    persistentData.remove(KEY_OFF_GROUND_TICKS);
+                    TommyLibServices.ENTITY.removePersistentData(serverPlayer, true, KEY_OFF_GROUND_TICKS);
                 }
 
                 if (spinjitzu.active()) {
@@ -203,11 +227,159 @@ public class MinejagoEntityEvents {
                         if (player.tickCount % 20 == 0) {
                             serverLevel.playSound(null, serverPlayer.blockPosition(), MinejagoSoundEvents.SPINJITZU_ACTIVE.get(), SoundSource.PLAYERS);
                             serverLevel.gameEvent(serverPlayer, MinejagoGameEvents.SPINJITZU, serverPlayer.blockPosition());
+
+                            // Tornado of Creation
+                            Set<Entity> spinners = new HashSet<>(serverLevel.getEntitiesOfClass(Entity.class, player.getBoundingBox().inflate(1), entity -> entity.getData(MinejagoAttachmentTypes.SPINJITZU).active()));
+                            if (persistentData.getBoolean(KEY_IS_IN_TORNADO_OF_CREATION)) {
+                                Optional<TornadoOfCreationData> optionalData = player.getData(MinejagoAttachmentTypes.TORNADO_OF_CREATION);
+                                if (optionalData.isPresent()) {
+                                    TornadoOfCreationData tornadoData = optionalData.get();
+                                    Set<Entity> originalParticipants = tornadoData.originalParticipants();
+                                    if (!spinners.containsAll(originalParticipants) || shouldTornadoOfCreationFail(spinners, serverLevel)) {
+                                        Set<Entity> all = new HashSet<>(spinners);
+                                        all.addAll(originalParticipants);
+                                        failTornadoOfCreation(serverLevel, player, all);
+                                    } else {
+                                        // Handle progress
+                                        int seconds = persistentData.getInt(KEY_TORNADO_OF_CREATION_SECONDS) + 1;
+                                        persistentData.putInt(KEY_TORNADO_OF_CREATION_SECONDS, seconds);
+                                        if (tornadoData.blocksRemaining().isEmpty() && tornadoData.entitiesRemaining().isEmpty()) {
+                                            // Place structure
+                                            Optional<Structure> optionalStructure = WeightedRandom.getRandomItem(serverLevel.random, tornadoData.structures()).map(entry -> entry.structure().value());
+                                            if (optionalStructure.isPresent()) {
+                                                Structure structure = optionalStructure.get();
+                                                ChunkGenerator chunkgenerator = serverLevel.getChunkSource().getGenerator();
+                                                BlockPos pos = player.blockPosition().offset(serverLevel.random.nextInt(-8, 8), 0, serverLevel.random.nextInt(-8, 8));
+                                                StructureStart structurestart = structure.generate(serverLevel.registryAccess(), chunkgenerator, chunkgenerator.getBiomeSource(), serverLevel.getChunkSource().randomState(), serverLevel.getStructureManager(), serverLevel.getSeed(), new ChunkPos(pos), 0, serverLevel, (p_214580_) -> true);
+                                                if (!structurestart.isValid())
+                                                    failTornadoOfCreation(serverLevel, player, spinners);
+                                                else {
+                                                    BoundingBox boundingbox = structurestart.getBoundingBox();
+                                                    ChunkPos start = new ChunkPos(SectionPos.blockToSectionCoord(boundingbox.minX()), SectionPos.blockToSectionCoord(boundingbox.minZ()));
+                                                    ChunkPos end = new ChunkPos(SectionPos.blockToSectionCoord(boundingbox.maxX()), SectionPos.blockToSectionCoord(boundingbox.maxZ()));
+                                                    ChunkPos.rangeClosed(start, end).forEach((chunkPos) -> structurestart.placeInChunk(serverLevel, serverLevel.structureManager(), chunkgenerator, serverLevel.getRandom(), new BoundingBox(chunkPos.getMinBlockX(), serverLevel.getMinBuildHeight(), chunkPos.getMinBlockZ(), chunkPos.getMaxBlockX(), serverLevel.getMaxBuildHeight(), chunkPos.getMaxBlockZ()), chunkPos));
+                                                    stopTornadoOfCreation(spinners);
+                                                }
+                                            } else
+                                                failTornadoOfCreation(serverLevel, player, spinners);
+                                        } else if (seconds > MinejagoServerConfig.get().timeout.getAsInt()) {
+                                            failTornadoOfCreation(serverLevel, player, spinners);
+                                        } else {
+                                            AABB pickupRange = player.getBoundingBox().inflate(MinejagoServerConfig.get().resourceAbsorbDistance.getAsInt());
+                                            List<Pair<BlockPredicate, BlockPos>> blocks = new ArrayList<>();
+                                            BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
+                                            for (int x = (int) pickupRange.minX; x < pickupRange.maxX; x++) {
+                                                mutable.setX(x);
+                                                for (int y = (int) pickupRange.minY; y < pickupRange.maxY; y++) {
+                                                    mutable.setY(y);
+                                                    for (int z = (int) pickupRange.minZ; z < pickupRange.maxZ; z++) {
+                                                        mutable.setZ(z);
+                                                        for (BlockPredicate predicate : tornadoData.blocksRemaining().keySet()) {
+                                                            if (predicate.matches(serverLevel, mutable)) {
+                                                                blocks.add(Pair.of(predicate, mutable.immutable()));
+                                                                break;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            List<Pair<EntityPredicate, Entity>> entities = new ArrayList<>();
+                                            for (Entity entity : serverLevel.getEntities(player, pickupRange, entity -> !spinners.contains(entity))) {
+                                                for (EntityPredicate predicate : tornadoData.entitiesRemaining().keySet()) {
+                                                    if (predicate.matches(serverPlayer, entity)) {
+                                                        entities.add(Pair.of(predicate, entity));
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                            for (int i = 0; i < spinners.size() * MinejagoServerConfig.get().resourcesAbsorbedPerSecond.getAsInt(); i++) {
+                                                if (serverLevel.random.nextBoolean() && !blocks.isEmpty()) {
+                                                    // Take block
+                                                    Pair<BlockPredicate, BlockPos> taken = blocks.get(serverLevel.random.nextInt(blocks.size()));
+                                                    serverLevel.destroyBlock(taken.getSecond(), false);
+                                                    tornadoData.absorbedBlock(taken.getFirst());
+                                                } else if (!entities.isEmpty()) {
+                                                    // Take entity
+                                                    Pair<EntityPredicate, Entity> taken = entities.get(serverLevel.random.nextInt(entities.size()));
+                                                    taken.getSecond().discard();
+                                                    tornadoData.absorbedEntity(taken.getFirst());
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            } else {
+                                Set<Holder<Element>> elements = spinners.stream().map(entity -> serverLevel.holderOrThrow(entity.getData(MinejagoAttachmentTypes.ELEMENT).element())).collect(Collectors.toSet());
+                                boolean hasAllCreation = true;
+                                for (Holder<Element> element : serverLevel.holderLookup(MinejagoRegistries.ELEMENT).get(ElementTags.ELEMENTS_OF_CREATION).orElseThrow()) {
+                                    if (!elements.contains(element)) {
+                                        hasAllCreation = false;
+                                        break;
+                                    }
+                                }
+                                if (hasAllCreation) {
+                                    if (shouldTornadoOfCreationFail(spinners, serverLevel)) {
+                                        failTornadoOfCreation(serverLevel, player, spinners);
+                                    } else {
+                                        AABB pickupRange = player.getBoundingBox().inflate(MinejagoServerConfig.get().resourceAbsorbDistance.getAsInt() * 2);
+                                        List<BlockPos> blocks = new ArrayList<>();
+                                        BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
+                                        for (int x = (int) pickupRange.minX; x < pickupRange.maxX; x++) {
+                                            mutable.setX(x);
+                                            for (int y = (int) pickupRange.minY; y < pickupRange.maxY; y++) {
+                                                mutable.setY(y);
+                                                for (int z = (int) pickupRange.minZ; z < pickupRange.maxZ; z++) {
+                                                    mutable.setZ(z);
+                                                    blocks.add(mutable.immutable());
+                                                }
+                                            }
+                                        }
+                                        List<Entity> entities = new ArrayList<>(serverLevel.getEntities(player, pickupRange, entity -> !spinners.contains(entity)));
+                                        List<TornadoOfCreationConfig> valid = serverLevel.holderLookup(MinejagoRegistries.TORNADO_OF_CREATION_CONFIG).listElements().map(Holder::value).filter(config -> {
+                                            for (TornadoOfCreationConfig.BlockRequirement blockRequirement : config.requiredBlocks()) {
+                                                int matching = 0;
+                                                for (BlockPos pos : blocks) {
+                                                    if (blockRequirement.predicate().matches(serverLevel, pos))
+                                                        matching++;
+                                                }
+                                                if (matching < blockRequirement.count())
+                                                    return false;
+                                            }
+                                            for (TornadoOfCreationConfig.EntityRequirement entityRequirement : config.requiredEntities()) {
+                                                int matching = 0;
+                                                for (Entity entity : entities) {
+                                                    if (entityRequirement.predicate().matches(serverPlayer, entity))
+                                                        matching++;
+                                                }
+                                                if (matching < entityRequirement.count())
+                                                    return false;
+                                            }
+                                            return true;
+                                        }).toList();
+                                        if (valid.isEmpty())
+                                            failTornadoOfCreation(serverLevel, player, spinners);
+                                        else {
+                                            TornadoOfCreationConfig config = valid.get(serverLevel.random.nextInt(valid.size()));
+                                            player.setData(MinejagoAttachmentTypes.TORNADO_OF_CREATION, Optional.of(TornadoOfCreationData.create(spinners, config)));
+                                            persistentData.putInt(KEY_TORNADO_OF_CREATION_SECONDS, 0);
+                                            CompoundTag tag = new CompoundTag();
+                                            tag.putBoolean(KEY_IS_IN_TORNADO_OF_CREATION, true);
+                                            for (Entity spinner : spinners) {
+                                                TommyLibServices.ENTITY.mergePersistentData(spinner, tag, true);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
-                        player.level().holderOrThrow(player.getData(MinejagoAttachmentTypes.ELEMENT).element()).value().borderParticle().ifPresent(particle -> MinejagoParticleUtils.renderSpinjitzuBorder(particle, serverPlayer, 4, false));
+                        if (player.getData(MinejagoAttachmentTypes.TORNADO_OF_CREATION).isEmpty())
+                            player.level().holderOrThrow(player.getData(MinejagoAttachmentTypes.ELEMENT).element()).value().borderParticle().ifPresent(particle -> MinejagoParticleUtils.renderSpinjitzuBorder(particle, serverPlayer));
                     } else {
                         stopSpinjitzu(spinjitzu, serverPlayer, true);
                     }
+                } else if (persistentData.getBoolean(KEY_IS_IN_TORNADO_OF_CREATION)) {
+                    persistentData.remove(KEY_IS_IN_TORNADO_OF_CREATION);
+                    TommyLibServices.ENTITY.removePersistentData(serverPlayer, true, KEY_IS_IN_TORNADO_OF_CREATION);
                 }
 
                 ShadowSource source = shadowSource.map(data -> serverLevel.getServer().getLevel(data.level()) instanceof ServerLevel sourceLevel && sourceLevel.getEntity(data.uuid()) instanceof ShadowSource s ? s : null).orElse(null);
@@ -256,7 +428,7 @@ public class MinejagoEntityEvents {
                                 i.set(EntityFocusModifier.checkAndApply(finalLevel, entity.position(), entity, false, i.get()));
                             }
                         });
-                        Inventory inventory = /*shadowMeditating ? source.getInventory() :*/ serverPlayer.getInventory();
+                        Inventory inventory = serverPlayer.getInventory();
                         inventory.armor.forEach(stack -> i.set(ItemFocusModifier.checkAndApply(finalLevel, stack, i.get())));
                         inventory.items.forEach(stack -> i.set(ItemFocusModifier.checkAndApply(finalLevel, stack, i.get())));
                         inventory.offhand.forEach(stack -> i.set(ItemFocusModifier.checkAndApply(finalLevel, stack, i.get())));
@@ -314,16 +486,16 @@ public class MinejagoEntityEvents {
                     }
                 }
 
-                if (serverPlayer.tickCount % (SharedConstants.TICKS_PER_SECOND * 5) == 0)
+                if (serverPlayer.tickCount % (SharedConstants.TICKS_PER_SECOND * 5) == 0) {
                     SkulkinRaidsHolder.of(serverLevel).minejago$getSkulkinRaids().checkRaidCenters(serverPlayer);
-
-                persistentData.putBoolean(KEY_IS_IN_CAVE_OF_DESPAIR, MinejagoLevelUtils.isStructureInRange(MinejagoStructureTags.CAVE_OF_DESPAIR, serverLevel, serverPlayer.blockPosition(), 64));
-                persistentData.putBoolean(KEY_IS_IN_MONASTERY_OF_SPINJITZU, MinejagoLevelUtils.isStructureInRange(MinejagoStructureTags.MONASTERY_OF_SPINJITZU, serverLevel, serverPlayer.blockPosition(), 64));
+                    persistentData.putBoolean(KEY_IS_IN_CAVE_OF_DESPAIR, MinejagoLevelUtils.isStructureInRange(MinejagoStructureTags.CAVE_OF_DESPAIR, serverLevel, serverPlayer.blockPosition(), 64));
+                    persistentData.putBoolean(KEY_IS_IN_MONASTERY_OF_SPINJITZU, MinejagoLevelUtils.isStructureInRange(MinejagoStructureTags.MONASTERY_OF_SPINJITZU, serverLevel, serverPlayer.blockPosition(), 64));
+                }
 
                 if (!persistentData.equals(TommyLibServices.ENTITY.getPersistentData(serverPlayer))) {
                     TommyLibServices.ENTITY.mergePersistentData(serverPlayer, persistentData, true);
                 }
-            } else {
+            } else if (player.isLocalPlayer()) {
                 int startTicks = persistentData.getInt(ClientboundStartSpinjitzuPayload.KEY_SPINJITZUSTARTTICKS);
                 if (startTicks > 0)
                     persistentData.putInt(ClientboundStartSpinjitzuPayload.KEY_SPINJITZUSTARTTICKS, startTicks - 1);
@@ -388,6 +560,34 @@ public class MinejagoEntityEvents {
                 }
                 TommyLibServices.ENTITY.mergePersistentData(player, persistentData, false);
             }
+        }
+    }
+
+    public static boolean shouldTornadoOfCreationFail(Set<Entity> participants, Level level) {
+        double averageFocusPercent = 0;
+        for (Entity entity : participants) {
+            averageFocusPercent += entity.getData(MinejagoAttachmentTypes.FOCUS).getFocusLevel();
+        }
+        averageFocusPercent /= participants.size();
+        averageFocusPercent /= FocusConstants.MAX_FOCUS;
+        return level.random.nextDouble() < 1.01 - averageFocusPercent;
+    }
+
+    public static void failTornadoOfCreation(ServerLevel level, Entity main, Set<Entity> participants) {
+        int radius = Math.min(participants.size() * participants.size(), 256);
+        level.explode(main, main.getX(), main.getY(), main.getZ(), radius, true, Level.ExplosionInteraction.MOB);
+        stopTornadoOfCreation(participants);
+    }
+
+    public static void stopTornadoOfCreation(Set<Entity> participants) {
+        for (Entity entity : participants) {
+            stopSpinjitzu(entity.getData(MinejagoAttachmentTypes.SPINJITZU), entity, false);
+            entity.getData(MinejagoAttachmentTypes.FOCUS).addExhaustion(FocusConstants.EXHAUSTION_TORNADO_OF_CREATION);
+            entity.removeData(MinejagoAttachmentTypes.TORNADO_OF_CREATION);
+            TommyLibServices.ENTITY.removePersistentData(entity, true, KEY_TORNADO_OF_CREATION_SECONDS);
+            TommyLibServices.ENTITY.removePersistentData(entity, true, KEY_IS_IN_TORNADO_OF_CREATION);
+            if (entity instanceof LivingEntity livingEntity)
+                livingEntity.knockback(2, entity.getX(), entity.getZ());
         }
     }
 
@@ -498,17 +698,19 @@ public class MinejagoEntityEvents {
         }
     }
 
-    public static void stopSpinjitzu(SpinjitzuData spinjitzu, LivingEntity entity, boolean fail) {
+    public static void stopSpinjitzu(SpinjitzuData spinjitzu, Entity entity, boolean fail) {
         if (spinjitzu.active()) {
             new SpinjitzuData(spinjitzu.unlocked(), false).save(entity, true);
             if (entity instanceof ServerPlayer serverPlayer)
                 TommyLibServices.NETWORK.sendToAllClients(new ClientboundStopSpinjitzuPayload(serverPlayer.getUUID(), fail), serverPlayer.getServer());
-            AttributeInstance speed = entity.getAttribute(Attributes.MOVEMENT_SPEED);
-            if (speed != null && speed.hasModifier(SpinjitzuData.SPEED_MODIFIER))
-                speed.removeModifier(SpinjitzuData.SPEED_MODIFIER);
-            AttributeInstance kb = entity.getAttribute(Attributes.ATTACK_KNOCKBACK);
-            if (kb != null && kb.hasModifier(SpinjitzuData.KNOCKBACK_MODIFIER))
-                kb.removeModifier(SpinjitzuData.KNOCKBACK_MODIFIER);
+            if (entity instanceof LivingEntity livingEntity) {
+                AttributeInstance speed = livingEntity.getAttribute(Attributes.MOVEMENT_SPEED);
+                if (speed != null && speed.hasModifier(SpinjitzuData.SPEED_MODIFIER))
+                    speed.removeModifier(SpinjitzuData.SPEED_MODIFIER);
+                AttributeInstance kb = livingEntity.getAttribute(Attributes.ATTACK_KNOCKBACK);
+                if (kb != null && kb.hasModifier(SpinjitzuData.KNOCKBACK_MODIFIER))
+                    kb.removeModifier(SpinjitzuData.KNOCKBACK_MODIFIER);
+            }
             entity.level().playSound(null, entity.blockPosition(), MinejagoSoundEvents.SPINJITZU_STOP.get(), SoundSource.PLAYERS);
         }
     }

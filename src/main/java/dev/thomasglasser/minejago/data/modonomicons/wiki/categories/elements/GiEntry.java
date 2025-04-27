@@ -7,7 +7,7 @@ import com.klikli_dev.modonomicon.api.datagen.book.page.BookImagePageModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
 import dev.thomasglasser.minejago.core.component.MinejagoDataComponents;
 import dev.thomasglasser.minejago.data.modonomicons.wiki.WikiBookSubProvider;
-import dev.thomasglasser.minejago.world.entity.element.MinejagoElements;
+import dev.thomasglasser.minejago.world.entity.element.Elements;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import net.minecraft.world.item.ItemStack;
 
@@ -79,7 +79,7 @@ public class GiEntry extends IndexModeEntryProvider {
     @Override
     protected BookIconModel entryIcon() {
         ItemStack fireHead = MinejagoArmors.TRAINEE_GI_SET.HEAD.get().getDefaultInstance();
-        fireHead.set(MinejagoDataComponents.ELEMENT.get(), MinejagoElements.FIRE);
+        fireHead.set(MinejagoDataComponents.ELEMENT.get(), Elements.FIRE);
         return BookIconModel.create(fireHead);
     }
 

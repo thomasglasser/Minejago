@@ -6,7 +6,7 @@ import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.tommylib.api.registration.DeferredHolder;
 import dev.thomasglasser.tommylib.api.registration.DeferredRegister;
 
-public class MinejagoFocusModifierSerializers {
+public class FocusModifierSerializers {
     private static final DeferredRegister<MapCodec<? extends FocusModifier>> FOCUS_MODIFIER_SERIALIZERS = DeferredRegister.create(MinejagoRegistries.FOCUS_MODIFIER_SERIALIZER, Minejago.MOD_ID);
 
     public static final DeferredHolder<MapCodec<? extends FocusModifier>, MapCodec<BlockFocusModifier>> BLOCK_FOCUS_MODIFIER = FOCUS_MODIFIER_SERIALIZERS.register("block", () -> BlockFocusModifier.CODEC);

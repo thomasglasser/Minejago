@@ -255,7 +255,7 @@ public class Character extends AgeableMob implements SmartBrainOwner<Character>,
                 level().playSound(null, blockPosition(), MinejagoSoundEvents.SPINJITZU_ACTIVE.get(), SoundSource.NEUTRAL);
                 level().gameEvent(this, MinejagoGameEvents.SPINJITZU, blockPosition());
             }
-            level().holderOrThrow(this.getData(MinejagoAttachmentTypes.ELEMENT).element()).value().borderParticle().ifPresent(particle -> MinejagoParticleUtils.renderSpinjitzuBorder(particle, this, 4, false));
+            level().holderOrThrow(this.getData(MinejagoAttachmentTypes.ELEMENT).element()).value().borderParticle().ifPresent(particle -> MinejagoParticleUtils.renderSpinjitzuBorder(particle, this));
         }
         if (this.getHealth() < this.getMaxHealth() && this.tickCount % 20 == 0) {
             this.heal(1.0F);

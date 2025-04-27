@@ -17,7 +17,7 @@ public record BlockFocusModifier(BlockPredicate block, Operation operation, doub
             Codec.DOUBLE.fieldOf("modifier").forGetter(BlockFocusModifier::modifier)).apply(instance, BlockFocusModifier::new));
     @Override
     public MapCodec<? extends FocusModifier> codec() {
-        return MinejagoFocusModifierSerializers.BLOCK_FOCUS_MODIFIER.get();
+        return FocusModifierSerializers.BLOCK_FOCUS_MODIFIER.get();
     }
 
     public static double checkAndApply(ServerLevel level, BlockPos pos, double oldValue) {

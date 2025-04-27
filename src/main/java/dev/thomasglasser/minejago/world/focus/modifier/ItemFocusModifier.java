@@ -17,7 +17,7 @@ public record ItemFocusModifier(ItemPredicate item, Operation operation, double 
             Codec.DOUBLE.fieldOf("modifier").forGetter(ItemFocusModifier::modifier)).apply(instance, ItemFocusModifier::new));
     @Override
     public MapCodec<? extends FocusModifier> codec() {
-        return MinejagoFocusModifierSerializers.ITEM_FOCUS_MODIFIER.get();
+        return FocusModifierSerializers.ITEM_FOCUS_MODIFIER.get();
     }
 
     public static double checkAndApply(ServerLevel level, ItemStack stack, double oldValue) {

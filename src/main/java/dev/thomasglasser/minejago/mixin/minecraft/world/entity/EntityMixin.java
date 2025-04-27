@@ -31,7 +31,7 @@ public class EntityMixin {
 
     @Inject(method = "playerTouch", at = @At("TAIL"))
     private void minejago_playerTouch(Player player, CallbackInfo ci) {
-        if (player.getData(MinejagoAttachmentTypes.SPINJITZU).active() && minejago$INSTANCE instanceof LivingEntity livingEntity) {
+        if (player.getData(MinejagoAttachmentTypes.SPINJITZU).active() && minejago$INSTANCE instanceof LivingEntity livingEntity && !livingEntity.getData(MinejagoAttachmentTypes.SPINJITZU).active()) {
             livingEntity.knockback(random.nextDouble(), player.getX() - minejago$INSTANCE.getX(), player.getZ() - minejago$INSTANCE.getZ());
         }
     }

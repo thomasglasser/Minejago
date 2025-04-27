@@ -6,7 +6,7 @@ import dev.thomasglasser.minejago.client.model.BambooStaffModel;
 import dev.thomasglasser.minejago.client.model.ScytheModel;
 import dev.thomasglasser.minejago.client.model.ShurikenModel;
 import dev.thomasglasser.minejago.core.component.MinejagoDataComponents;
-import dev.thomasglasser.minejago.world.entity.element.MinejagoElements;
+import dev.thomasglasser.minejago.world.entity.element.Elements;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.ElementalGiArmorItem;
 import dev.thomasglasser.tommylib.api.client.ClientUtils;
@@ -55,7 +55,7 @@ public class MinejagoBlockEntityWithoutLevelRenderer extends BlockEntityWithoutL
             this.shurikenModel.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
         } else if (stack.getItem() instanceof ElementalGiArmorItem item) {
             poseStack.translate(0.5D, 0.5D, 0.5D);
-            ResourceLocation element = stack.getOrDefault(MinejagoDataComponents.ELEMENT.get(), MinejagoElements.NONE).location();
+            ResourceLocation element = stack.getOrDefault(MinejagoDataComponents.ELEMENT.get(), Elements.NONE).location();
             Optional<String> optionalPath = BuiltInRegistries.ITEM.getResourceKey(item).map(ResourceKey::location).map(ResourceLocation::getPath);
             optionalPath.ifPresent(path -> ClientUtils.renderItem(stack, displayContext, false, poseStack, buffer, packedLight, packedOverlay, element.getNamespace(), "minejago_armor/" + element.getPath() + "_" + path));
         }

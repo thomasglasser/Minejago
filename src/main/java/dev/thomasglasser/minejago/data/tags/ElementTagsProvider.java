@@ -4,7 +4,7 @@ import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.tags.ElementTags;
 import dev.thomasglasser.minejago.world.entity.element.Element;
-import dev.thomasglasser.minejago.world.entity.element.MinejagoElements;
+import dev.thomasglasser.minejago.world.entity.element.Elements;
 import dev.thomasglasser.tommylib.api.data.tags.ExtendedTagsProvider;
 import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.HolderLookup;
@@ -24,12 +24,12 @@ public class ElementTagsProvider extends ExtendedTagsProvider<Element> {
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         tag(ElementTags.ELEMENTS_OF_CREATION)
-                .add(MinejagoElements.EARTH)
-                .add(MinejagoElements.FIRE)
-                .add(MinejagoElements.LIGHTNING)
-                .add(MinejagoElements.ICE);
+                .add(Elements.EARTH)
+                .add(Elements.FIRE)
+                .add(Elements.LIGHTNING)
+                .add(Elements.ICE);
 
         tag(ElementTags.ELEMENTAL_REMAINS)
-                .add(MinejagoElements.CREATION);
+                .add(Elements.CREATION);
     }
 }

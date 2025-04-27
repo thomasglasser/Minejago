@@ -22,7 +22,7 @@ public record WorldFocusModifier(Optional<MinMaxBounds.Ints> dayTime, Optional<W
 
     @Override
     public MapCodec<? extends FocusModifier> codec() {
-        return MinejagoFocusModifierSerializers.WORLD_FOCUS_MODIFIER.get();
+        return FocusModifierSerializers.WORLD_FOCUS_MODIFIER.get();
     }
 
     public static double checkAndApply(ServerLevel level, int dayTime, Weather weather, int y, int temperature, double oldValue) {

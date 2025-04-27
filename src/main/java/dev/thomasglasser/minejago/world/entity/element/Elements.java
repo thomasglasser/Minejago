@@ -6,7 +6,7 @@ import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 
-public class MinejagoElements {
+public class Elements {
     public static final ResourceKey<Element> NONE = create("none");
     public static final ResourceKey<Element> ICE = create("ice");
     public static final ResourceKey<Element> EARTH = create("earth");

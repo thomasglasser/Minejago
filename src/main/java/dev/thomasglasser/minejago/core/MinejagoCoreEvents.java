@@ -6,6 +6,7 @@ import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.datamaps.MinejagoDataMaps;
 import dev.thomasglasser.minejago.packs.MinejagoPacks;
 import dev.thomasglasser.minejago.world.entity.element.Element;
+import dev.thomasglasser.minejago.world.entity.element.tornadoofcreation.TornadoOfCreationConfig;
 import dev.thomasglasser.minejago.world.focus.modifier.FocusModifier;
 import dev.thomasglasser.tommylib.api.packs.PackInfo;
 import java.util.Optional;
@@ -49,6 +50,7 @@ public class MinejagoCoreEvents {
     public static void onNewDataPackRegistry(DataPackRegistryEvent.NewRegistry event) {
         event.dataPackRegistry(MinejagoRegistries.ELEMENT, Element.CODEC, Element.CODEC);
         event.dataPackRegistry(MinejagoRegistries.FOCUS_MODIFIER, FocusModifier.DIRECT_CODEC, FocusModifier.DIRECT_CODEC);
+        event.dataPackRegistry(MinejagoRegistries.TORNADO_OF_CREATION_CONFIG, TornadoOfCreationConfig.DIRECT_CODEC);
     }
 
     public static void onRegisterDataMapTypes(RegisterDataMapTypesEvent event) {

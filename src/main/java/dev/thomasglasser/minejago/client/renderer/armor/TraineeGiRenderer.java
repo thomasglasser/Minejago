@@ -1,7 +1,7 @@
 package dev.thomasglasser.minejago.client.renderer.armor;
 
 import dev.thomasglasser.minejago.core.component.MinejagoDataComponents;
-import dev.thomasglasser.minejago.world.entity.element.MinejagoElements;
+import dev.thomasglasser.minejago.world.entity.element.Elements;
 import dev.thomasglasser.minejago.world.item.armor.TraineeGiArmorItem;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.model.DefaultedItemGeoModel;
@@ -14,6 +14,6 @@ public class TraineeGiRenderer extends GeoArmorRenderer<TraineeGiArmorItem> {
 
     @Override
     public ResourceLocation getTextureLocation(TraineeGiArmorItem animatable) {
-        return GiUtils.getElementalTextureLocation("trainee", currentStack.getOrDefault(MinejagoDataComponents.ELEMENT.get(), MinejagoElements.NONE));
+        return GiUtils.getElementalTextureLocation("trainee", currentStack.getOrDefault(MinejagoDataComponents.ELEMENT.get(), Elements.NONE));
     }
 }

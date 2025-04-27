@@ -28,7 +28,7 @@ import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.character.Wu;
 import dev.thomasglasser.minejago.world.entity.decoration.MinejagoPaintingVariants;
 import dev.thomasglasser.minejago.world.entity.element.Element;
-import dev.thomasglasser.minejago.world.entity.element.MinejagoElements;
+import dev.thomasglasser.minejago.world.entity.element.Elements;
 import dev.thomasglasser.minejago.world.entity.skill.Skill;
 import dev.thomasglasser.minejago.world.entity.skulkin.Skulkin;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.AbstractSkulkinRaid;
@@ -100,26 +100,26 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         addConfigs();
 
         // TODO: Better Element descriptions, lore, taglines
-        addElement(MinejagoElements.NONE, "None", "The average Joe.", "TODO: Lore", """
+        addElement(Elements.NONE, "None", "The average Joe.", "TODO: Lore", """
                 TODO: Description
                 """);
-        addElement(MinejagoElements.ICE, "Ice", "Cool as ice.", "TODO: Lore", """
+        addElement(Elements.ICE, "Ice", "Cool as ice.", "TODO: Lore", """
                 Like ice itself, the Master of Ice is cold and calculating.
                 They keep their cool in the heat of battle,
                 and can keep their team in check.
 
                 TODO:Description
                 """);
-        addElement(MinejagoElements.EARTH, "Earth", "Solid as rock.", "TODO: Lore", """
+        addElement(Elements.EARTH, "Earth", "Solid as rock.", "TODO: Lore", """
                 TODO: Description
                 """);
-        addElement(MinejagoElements.FIRE, "Fire", "It burns bright in you.", "TODO: Lore", """
+        addElement(Elements.FIRE, "Fire", "It burns bright in you.", "TODO: Lore", """
                 TODO: Description
                 """);
-        addElement(MinejagoElements.LIGHTNING, "Lightning", "Ignite the storm within.", "TODO: Lore", """
+        addElement(Elements.LIGHTNING, "Lightning", "Ignite the storm within.", "TODO: Lore", """
                 TODO: Description
                 """);
-        add(MinejagoElements.CREATION, "Creation");
+        add(Elements.CREATION, "Creation");
 
         add(Skulkin.Variant.STRENGTH, "Strength");
         add(Skulkin.Variant.SPEED, "Speed");

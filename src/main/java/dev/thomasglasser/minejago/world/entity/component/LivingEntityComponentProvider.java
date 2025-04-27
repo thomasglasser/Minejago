@@ -3,7 +3,7 @@ package dev.thomasglasser.minejago.world.entity.component;
 import dev.thomasglasser.minejago.plugins.MinejagoWailaPlugin;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.element.Element;
-import dev.thomasglasser.minejago.world.entity.element.MinejagoElements;
+import dev.thomasglasser.minejago.world.entity.element.Elements;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
@@ -25,7 +25,7 @@ public enum LivingEntityComponentProvider implements IEntityComponentProvider {
         if (entityAccessor.getEntity() instanceof LivingEntity livingEntity && entityAccessor.getLevel() != null) {
             ResourceKey<Element> elementKey = livingEntity.getData(MinejagoAttachmentTypes.ELEMENT).element();
             Holder<Element> elementHolder = entityAccessor.getLevel().holderOrThrow(elementKey);
-            if (elementKey != MinejagoElements.NONE) {
+            if (elementKey != Elements.NONE) {
                 IElement icon = new snownee.jade.api.ui.Element() {
                     private Vec2 size;
 

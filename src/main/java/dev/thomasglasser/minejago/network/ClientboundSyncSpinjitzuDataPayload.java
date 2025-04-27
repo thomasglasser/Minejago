@@ -8,7 +8,6 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
 public record ClientboundSyncSpinjitzuDataPayload(int id, SpinjitzuData data) implements ExtendedPacketPayload {
@@ -22,8 +21,8 @@ public record ClientboundSyncSpinjitzuDataPayload(int id, SpinjitzuData data) im
     @Override
     public void handle(Player player) {
         Entity entity = player.level().getEntity(id);
-        if (entity instanceof LivingEntity livingEntity)
-            data.save(livingEntity, false);
+        if (entity != null)
+            data.save(entity, false);
     }
 
     @Override

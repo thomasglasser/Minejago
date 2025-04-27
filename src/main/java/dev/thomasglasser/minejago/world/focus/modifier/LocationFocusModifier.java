@@ -17,7 +17,7 @@ public record LocationFocusModifier(LocationPredicate location, Operation operat
             Codec.DOUBLE.fieldOf("modifier").forGetter(LocationFocusModifier::modifier)).apply(instance, LocationFocusModifier::new));
     @Override
     public MapCodec<? extends FocusModifier> codec() {
-        return MinejagoFocusModifierSerializers.LOCATION_FOCUS_MODIFIER.get();
+        return FocusModifierSerializers.LOCATION_FOCUS_MODIFIER.get();
     }
 
     public static double checkAndApply(ServerLevel level, Vec3 pos, double oldValue) {

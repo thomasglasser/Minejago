@@ -7,7 +7,7 @@ import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.ai.memory.MinejagoMemoryModuleTypes;
 import dev.thomasglasser.minejago.world.entity.character.Wu;
 import dev.thomasglasser.minejago.world.entity.element.Element;
-import dev.thomasglasser.minejago.world.entity.element.MinejagoElements;
+import dev.thomasglasser.minejago.world.entity.element.Elements;
 import dev.thomasglasser.minejago.world.level.storage.ElementData;
 import dev.thomasglasser.tommylib.api.network.ExtendedPacketPayload;
 import java.util.Optional;
@@ -39,11 +39,11 @@ public record ServerboundSetElementDataPayload(Holder<Element> element, boolean 
                 wu = (Wu) serverPlayer.level().getEntity(wuId.get());
             }
             Holder<Element> old = player.level().holderOrThrow(serverPlayer.getData(MinejagoAttachmentTypes.ELEMENT).element());
-            if (serverPlayer.getData(MinejagoAttachmentTypes.ELEMENT).given() && old != MinejagoElements.NONE && MinejagoServerConfig.get().drainPool.get() && wu != null) {
+            if (serverPlayer.getData(MinejagoAttachmentTypes.ELEMENT).given() && old != Elements.NONE && MinejagoServerConfig.get().drainPool.get() && wu != null) {
                 wu.addElementsToGive(old);
             }
-            if (element != MinejagoElements.NONE && wu != null) wu.removeElementsToGive(element);
-            if (element == MinejagoElements.NONE) {
+            if (element != Elements.NONE && wu != null) wu.removeElementsToGive(element);
+            if (element == Elements.NONE) {
                 new ElementData(element.getKey(), true).save(serverPlayer, true);
                 serverPlayer.displayClientMessage(Component.translatable(Wu.NO_ELEMENT_GIVEN_KEY), true);
             } else if (wu != null) {

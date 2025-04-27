@@ -24,7 +24,7 @@ import dev.thomasglasser.minejago.world.entity.MinejagoEntityTypes;
 import dev.thomasglasser.minejago.world.entity.ai.memory.MinejagoMemoryModuleTypes;
 import dev.thomasglasser.minejago.world.entity.ai.poi.MinejagoPoiTypes;
 import dev.thomasglasser.minejago.world.entity.skulkin.raid.SkulkinRaidTypes;
-import dev.thomasglasser.minejago.world.focus.modifier.MinejagoFocusModifierSerializers;
+import dev.thomasglasser.minejago.world.focus.modifier.FocusModifierSerializers;
 import dev.thomasglasser.minejago.world.item.MinejagoCreativeModeTabs;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
@@ -116,7 +116,7 @@ public class Minejago {
         MinejagoMapDecorationTypes.init();
         MinejagoPoiTypes.init();
         MinejagoArgumentTypes.init();
-        MinejagoFocusModifierSerializers.init();
+        FocusModifierSerializers.init();
         MinejagoBiomeSources.init();
         SkulkinRaidTypes.init();
 

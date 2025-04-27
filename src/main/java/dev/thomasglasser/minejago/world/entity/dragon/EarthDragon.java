@@ -2,7 +2,7 @@ package dev.thomasglasser.minejago.world.entity.dragon;
 
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.tags.MinejagoItemTags;
-import dev.thomasglasser.minejago.world.entity.element.MinejagoElements;
+import dev.thomasglasser.minejago.world.entity.element.Elements;
 import dev.thomasglasser.minejago.world.entity.projectile.EarthBlast;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class EarthDragon extends Dragon {
     public EarthDragon(EntityType<? extends EarthDragon> entityType, Level level) {
-        super(entityType, level, MinejagoElements.EARTH, MinejagoItemTags.EARTH_DRAGON_PROTECTS);
+        super(entityType, level, Elements.EARTH, MinejagoItemTags.EARTH_DRAGON_PROTECTS);
     }
 
     @Nullable

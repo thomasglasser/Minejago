@@ -6,6 +6,7 @@ import dev.thomasglasser.minejago.world.level.storage.ElementData;
 import dev.thomasglasser.minejago.world.level.storage.ShadowSourceData;
 import dev.thomasglasser.minejago.world.level.storage.SkillDataSet;
 import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
+import dev.thomasglasser.minejago.world.level.storage.TornadoOfCreationData;
 import dev.thomasglasser.tommylib.api.registration.DeferredHolder;
 import dev.thomasglasser.tommylib.api.registration.DeferredRegister;
 import java.util.List;
@@ -24,6 +25,7 @@ public class MinejagoAttachmentTypes {
     public static final DeferredHolder<AttachmentType<?>, AttachmentType<SkillDataSet>> SKILL = ATTACHMENT_TYPES.register("skill", () -> AttachmentType.builder(() -> new SkillDataSet()).serialize(SkillDataSet.CODEC).build());
     public static final DeferredHolder<AttachmentType<?>, AttachmentType<Optional<ShadowSourceData>>> SHADOW_SOURCE = ATTACHMENT_TYPES.register("shadow_source", () -> AttachmentType.builder(Optional::<ShadowSourceData>empty).serialize(ShadowSourceData.CODEC.optionalFieldOf("data").codec()).build());
     public static final DeferredHolder<AttachmentType<?>, AttachmentType<List<UUID>>> SHADOW_CLONES = ATTACHMENT_TYPES.register("shadow_clones", () -> AttachmentType.builder(() -> List.<UUID>of()).serialize(UUIDUtil.CODEC.listOf()).build());
+    public static final DeferredHolder<AttachmentType<?>, AttachmentType<Optional<TornadoOfCreationData>>> TORNADO_OF_CREATION = ATTACHMENT_TYPES.register("tornado_of_creation", () -> AttachmentType.builder(Optional::<TornadoOfCreationData>empty).build());
 
     public static void init() {}
 }

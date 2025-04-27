@@ -7,7 +7,7 @@ import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.network.ClientboundSyncElementDataPayload;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.element.Element;
-import dev.thomasglasser.minejago.world.entity.element.MinejagoElements;
+import dev.thomasglasser.minejago.world.entity.element.Elements;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -28,7 +28,7 @@ public record ElementData(ResourceKey<Element> element, boolean given) {
             ElementData::new);
 
     public ElementData() {
-        this(MinejagoElements.NONE, false);
+        this(Elements.NONE, false);
     }
 
     public ElementData(ResourceLocation location, boolean given) {
@@ -37,12 +37,12 @@ public record ElementData(ResourceKey<Element> element, boolean given) {
 
     @Override
     public ResourceKey<Element> element() {
-        return element == null ? MinejagoElements.NONE : element;
+        return element == null ? Elements.NONE : element;
     }
 
     public void save(LivingEntity entity, boolean syncToClient) {
         entity.setData(MinejagoAttachmentTypes.ELEMENT, this);
-        if (element != MinejagoElements.NONE && entity instanceof ServerPlayer serverPlayer)
+        if (element != Elements.NONE && entity instanceof ServerPlayer serverPlayer)
             MinejagoCriteriaTriggers.GOT_ELEMENT.get().trigger(serverPlayer, this.element());
         if (syncToClient) TommyLibServices.NETWORK.sendToAllClients(new ClientboundSyncElementDataPayload(entity.getId(), this), entity.getServer());
     }

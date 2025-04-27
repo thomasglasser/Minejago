@@ -28,7 +28,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CandleBlock;
 
-public class MinejagoFocusModifiers {
+public class FocusModifiers {
     public static void bootstrap(BootstrapContext<FocusModifier> context) {
         HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
 

@@ -7,7 +7,7 @@ import dev.thomasglasser.minejago.commands.MinejagoCommandEvents;
 import dev.thomasglasser.minejago.core.registries.MinejagoRegistries;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.entity.element.Element;
-import dev.thomasglasser.minejago.world.entity.element.MinejagoElements;
+import dev.thomasglasser.minejago.world.entity.element.Elements;
 import dev.thomasglasser.minejago.world.level.storage.ElementData;
 import java.util.Collection;
 import java.util.Collections;
@@ -95,10 +95,10 @@ public class ElementCommand {
 
         for (Entity entity : entities) {
             if (entity instanceof LivingEntity livingEntity) {
-                new ElementData(MinejagoElements.NONE, false).save(livingEntity, true);
+                new ElementData(Elements.NONE, false).save(livingEntity, true);
                 ++i;
             }
-            logElementChange(pSource.getSource(), entity, MinejagoElements.NONE, true);
+            logElementChange(pSource.getSource(), entity, Elements.NONE, true);
         }
 
         return i;

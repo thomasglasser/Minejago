@@ -4,7 +4,7 @@ import com.klikli_dev.modonomicon.api.datagen.IndexModeCategoryProvider;
 import com.klikli_dev.modonomicon.api.datagen.ModonomiconProviderBase;
 import com.klikli_dev.modonomicon.api.datagen.book.BookIconModel;
 import dev.thomasglasser.minejago.world.entity.element.Element;
-import dev.thomasglasser.minejago.world.entity.element.MinejagoElements;
+import dev.thomasglasser.minejago.world.entity.element.Elements;
 
 public class ElementsCategoryProvider extends IndexModeCategoryProvider {
     private static final String ID = "elements";
@@ -34,7 +34,7 @@ public class ElementsCategoryProvider extends IndexModeCategoryProvider {
 
     @Override
     protected BookIconModel categoryIcon() {
-        return BookIconModel.create(Element.getIcon(MinejagoElements.LIGHTNING), 32, 32);
+        return BookIconModel.create(Element.getIcon(Elements.LIGHTNING), 32, 32);
     }
 
     @Override

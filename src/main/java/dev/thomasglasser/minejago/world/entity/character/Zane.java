@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.world.entity.character;
 
-import dev.thomasglasser.minejago.world.entity.element.MinejagoElements;
+import dev.thomasglasser.minejago.world.entity.element.Elements;
 import dev.thomasglasser.minejago.world.level.storage.ElementData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
@@ -26,7 +26,7 @@ public class Zane extends Character {
 
     public Zane(EntityType<? extends Zane> entityType, Level level) {
         super(entityType, level);
-        new ElementData(MinejagoElements.ICE, true).save(this, false);
+        new ElementData(Elements.ICE, true).save(this, false);
         this.setPathfindingMalus(PathType.WATER, 0.0F);
     }
 
