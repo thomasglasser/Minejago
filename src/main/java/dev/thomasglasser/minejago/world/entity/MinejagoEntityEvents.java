@@ -207,7 +207,7 @@ public class MinejagoEntityEvents {
 
                 int j = Mth.clamp(serverPlayer.getStats().getValue(Stats.CUSTOM.get(Stats.TIME_SINCE_REST)), 1, Integer.MAX_VALUE);
                 if (j >= 24000 && serverLevel.getGameRules().getBoolean(GameRules.RULE_DOINSOMNIA) && !serverPlayer.getAbilities().instabuild) {
-                    focusData.addExhaustion(FocusConstants.EXHAUSTION_INSOMNIA);
+                    focusData.addExhaustion(FocusConstants.EXHAUSTION_INSOMNIA * ((float) j / 24000f));
                 }
 
                 if (!player.onGround()) {
