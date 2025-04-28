@@ -5,7 +5,7 @@ plugins {
 	id 'java-library'
 	id 'maven-publish'
 	id 'signing'
-	id 'dev.lukebemish.immaculate' version '0.1.6'
+	id 'dev.lukebemish.immaculate' version '0.1.8'
 	id 'idea'
 	id 'net.neoforged.moddev' version "${mdg_version}"
 	id 'org.sinytra.adapter.userdev' version "${adapter_version}"
@@ -140,11 +140,9 @@ repositories {
 		name = 'Mojang Meta'
 		url = 'https://maven.neoforged.net/mojang-meta'
 	}
-	mavenLocal()
 	mavenCentral()
+	mavenLocal()
 }
-
-sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 neoForge {
 	version = "${neoforge_version}"
@@ -167,7 +165,13 @@ neoForge {
 			client()
 			ideName = "Client 2"
 			gameDirectory = project.layout.projectDirectory.dir('runs/client_alt')
-			programArguments = ["--username", "DevAlt"]
+			programArguments.addAll "--username", "DevAlt"
+		}
+		client_alt_alt {
+			client()
+			ideName = "Client 3"
+			gameDirectory = project.layout.projectDirectory.dir('runs/client_alt_alt')
+			programArguments.addAll "--username", "DevAltAlt"
 		}
 		server {
 			server()
@@ -227,44 +231,54 @@ dependencies {
 	localRuntime "maven.modrinth:huge-structure-blocks:${huge_structure_blocks_version}-neoforge"
 }
 
-processResources {
-	def expandProps = [
-			"version": version,
-			"group": project.group,
-			"minecraft_version": minecraft_version,
-			"next_minecraft_version": next_minecraft_version,
-			"mod_name": mod_name,
-			"mod_author": mod_author,
-			"mod_id": mod_id,
-			"license": license,
-			"description": project.description,
-			"neoforge_version": neoforge_version,
-			"major_fml_version": major_fml_version,
-			"contributors": contributors,
-			"java_version": java_version,
-			"icon": icon,
-			"github_name": github_name,
-			"resource_pack_version": resource_pack_version,
-			"data_pack_version": data_pack_version,
-			"tommylib_version": tommylib_version,
-			"geckolib_version": geckolib_version,
-			"smartbrainlib_version": smartbrainlib_version,
-			"sherdsapi_version": sherdsapi_version,
-			"trimmed_version": trimmed_version,
-			"tslateffectslib_version": tslateffectslib_version,
-			"jade_version": jade_version,
-			"jei_version": jei_version,
-			"lambdynlights_version": lambdynlights_version,
-			"modonomicon_version": modonomicon_version,
-			"playeranimator_version": playeranimator_version,
-			"tslatentitystatus_version": tslatentitystatus_version
+var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
+	var replaceProperties = [
+			version: project.version,
+			group: project.group,
+			minecraft_version: minecraft_version,
+			next_minecraft_version: next_minecraft_version,
+			mod_name: mod_name,
+			mod_author: mod_author,
+			mod_id: mod_id,
+			license: license,
+			description: project.description,
+			neoforge_version: neoforge_version,
+			major_fml_version: major_fml_version,
+			contributors: contributors,
+			java_version: java_version,
+			icon: icon,
+			github_name: github_name,
+			resource_pack_version: resource_pack_version,
+			data_pack_version: data_pack_version,
+			tommylib_version: tommylib_version,
+			geckolib_version: geckolib_version,
+			smartbrainlib_version: smartbrainlib_version,
+			sherdsapi_version: sherdsapi_version,
+			trimmed_version: trimmed_version,
+			tslateffectslib_version: tslateffectslib_version,
+			jade_version: jade_version,
+			jei_version: jei_version,
+			lambdynlights_version: lambdynlights_version,
+			modonomicon_version: modonomicon_version,
+			playeranimator_version: playeranimator_version,
+			tslatentitystatus_version: tslatentitystatus_version
 	]
 
-	filesMatching(['META-INF/neoforge.mods.toml', '*.mixins.json', '**/pack.mcmeta']) {
-		expand expandProps
-	}
-	inputs.properties(expandProps)
+	inputs.properties replaceProperties
+	expand replaceProperties
+	from "src/main/templates"
+	into "build/generated/sources/modMetadata"
 }
+
+// Include the output of "generateModMetadata" as an input directory for the build
+// this works with both building through Gradle and the IDE.
+sourceSets.main.resources.srcDir generateModMetadata
+// To avoid having to run "generateModMetadata" manually, make it run on every project reload
+tasks.processResources.dependsOn generateModMetadata
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+build.dependsOn immaculateCheck
 
 immaculate {
 	workflows.register('java') {
@@ -312,10 +326,6 @@ immaculate {
 			fileContents.replace('javax.annotation.Nullable', 'org.jetbrains.annotations.Nullable')
 		}
 	}
-}
-
-tasks.named('compileJava') {
-	dependsOn 'immaculateApply'
 }
 
 javadoc {

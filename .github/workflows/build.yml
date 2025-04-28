@@ -29,5 +29,4 @@ jobs:
         with:
           name: Minejago
           if-no-files-found: error
-          path: |
-            build/libs
+          path: build/libs
