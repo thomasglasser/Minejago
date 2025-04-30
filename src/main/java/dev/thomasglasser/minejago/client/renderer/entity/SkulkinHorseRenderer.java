@@ -2,6 +2,7 @@ package dev.thomasglasser.minejago.client.renderer.entity;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.entity.skulkin.SkulkinHorse;
+import dev.thomasglasser.tommylib.api.client.renderer.entity.layers.AbstractHorseArmorLayer;
 import net.minecraft.client.model.HorseModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.AbstractHorseRenderer;
@@ -13,7 +14,7 @@ public class SkulkinHorseRenderer extends AbstractHorseRenderer<SkulkinHorse, Ho
 
     public SkulkinHorseRenderer(EntityRendererProvider.Context context) {
         super(context, new HorseModel<>(context.bakeLayer(ModelLayers.SKELETON_HORSE)), 0.75F);
-//        this.addLayer(new HorseArmorLayer(this, context.getModelSet(), context.getEquipmentRenderer()));
+        this.addLayer(new AbstractHorseArmorLayer<>(this, context.getModelSet()));
     }
 
     @Override
