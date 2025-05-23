@@ -8,6 +8,7 @@ import dev.thomasglasser.minejago.network.ClientboundStopAnimationPayload;
 import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import dev.thomasglasser.tommylib.api.tags.ConventionalBlockTags;
+import dev.thomasglasser.tommylib.api.world.entity.EntityUtils;
 import dev.thomasglasser.tommylib.api.world.level.LevelUtils;
 import java.util.Optional;
 import net.minecraft.core.BlockPos;
@@ -129,7 +130,7 @@ public class ScytheOfQuakesItem extends GoldenWeaponItem {
             return;
         }
         if (remainingUseDuration % 10 == 0) {
-            LevelUtils.beamParticles(MinejagoParticleTypes.ROCKS.get(), level, player);
+            EntityUtils.beamParticles(MinejagoParticleTypes.ROCKS.get(), level, player);
             Vec3 loc = player.pick(Double.MAX_EXPONENT, 0.0F, false).getLocation();
             BlockPos pos = new BlockPos((int) loc.x, (int) loc.y, (int) loc.z);
             Direction direction = player.getDirection();

@@ -29,7 +29,7 @@ public class MinejagoGuis {
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.level != null && minecraft.gameMode != null && minecraft.gameMode.canHurtPlayer() && !minecraft.options.hideGui) {
             Gui gui = minecraft.gui;
-            Player player = ClientUtils.getMainClientPlayer();
+            Player player = ClientUtils.getLocalPlayer();
             LivingEntity livingEntity = gui.getPlayerVehicleWithHealth();
             int vehicleMaxHearts = gui.getVehicleMaxHearts(livingEntity);
             if (vehicleMaxHearts == 0) {

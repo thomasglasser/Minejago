@@ -71,7 +71,6 @@ import dev.thomasglasser.minejago.world.level.dimension.MinejagoDimensionTypes;
 import dev.thomasglasser.tommylib.api.client.ClientUtils;
 import dev.thomasglasser.tommylib.api.client.renderer.entity.ThrownSwordRenderer;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
-import dev.thomasglasser.tommylib.api.world.entity.PlayerRideableFlying;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -142,36 +141,36 @@ public class MinejagoClientEvents {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null)
             return;
-        if (PlayerRideableFlying.isRidingFlyable(player)) {
-            if (MinejagoKeyMappings.ASCEND.get().isDown()) {
-                ((PlayerRideableFlying) player.getVehicle()).ascend();
-                TommyLibServices.NETWORK.sendToServer(new ServerboundFlyVehiclePayload(ServerboundFlyVehiclePayload.Stage.START_ASCEND));
-            } else if (MinejagoKeyMappings.DESCEND.get().isDown()) {
-                ((PlayerRideableFlying) player.getVehicle()).descend();
-                TommyLibServices.NETWORK.sendToServer(new ServerboundFlyVehiclePayload(ServerboundFlyVehiclePayload.Stage.START_DESCEND));
-            } else {
-                ((PlayerRideableFlying) player.getVehicle()).stop();
-                TommyLibServices.NETWORK.sendToServer(new ServerboundFlyVehiclePayload(ServerboundFlyVehiclePayload.Stage.STOP));
-            }
-        }
+//        if (PlayerRideableFlying.isRidingFlyable(player)) {
+//            if (MinejagoKeyMappings.ASCEND.get().isDown()) {
+//                ((PlayerRideableFlying) player.getVehicle()).ascend();
+//                TommyLibServices.NETWORK.sendToServer(new ServerboundFlyVehiclePayload(ServerboundFlyVehiclePayload.Stage.START_ASCEND));
+//            } else if (MinejagoKeyMappings.DESCEND.get().isDown()) {
+//                ((PlayerRideableFlying) player.getVehicle()).descend();
+//                TommyLibServices.NETWORK.sendToServer(new ServerboundFlyVehiclePayload(ServerboundFlyVehiclePayload.Stage.START_DESCEND));
+//            } else {
+//                ((PlayerRideableFlying) player.getVehicle()).stop();
+//                TommyLibServices.NETWORK.sendToServer(new ServerboundFlyVehiclePayload(ServerboundFlyVehiclePayload.Stage.STOP));
+//            }
+//        }
     }
 
     public static void onInput(int key) {
-        Player mainClientPlayer = ClientUtils.getMainClientPlayer();
-        if (mainClientPlayer != null && !(key >= GLFW.GLFW_KEY_F1 && key <= GLFW.GLFW_KEY_F25) && !MinejagoKeyMappings.MEDITATE.get().isDown() && !MinejagoKeyMappings.ENTER_SHADOW_FORM.get().isDown() && key != GLFW.GLFW_KEY_LEFT_SHIFT && key != GLFW.GLFW_KEY_ESCAPE) {
+        Player mainClientPlayer = ClientUtils.getLocalPlayer();
+        if (mainClientPlayer != null && !(key >= GLFW.GLFW_KEY_F1 && key <= GLFW.GLFW_KEY_F25) && !MinejagoKeyMappings.MEDITATE.isDown() && !MinejagoKeyMappings.ENTER_SHADOW_FORM.isDown() && key != GLFW.GLFW_KEY_LEFT_SHIFT && key != GLFW.GLFW_KEY_ESCAPE) {
             FocusData focusData = mainClientPlayer.getData(MinejagoAttachmentTypes.FOCUS);
-            CompoundTag persistentData = TommyLibServices.ENTITY.getPersistentData(mainClientPlayer);
+            CompoundTag persistentData = /*TommyLibServices.ENTITY.getPersistentData(mainClientPlayer)*/new CompoundTag();
             if (focusData.isMeditating() && persistentData.getInt(MinejagoEntityEvents.KEY_WAIT_TICKS) <= 0) {
                 TommyLibServices.NETWORK.sendToServer(new ServerboundStopMeditationPayload(true));
                 focusData.stopMeditating();
                 persistentData.putInt(MinejagoEntityEvents.KEY_WAIT_TICKS, 5);
-                TommyLibServices.ENTITY.mergePersistentData(mainClientPlayer, persistentData, false);
+                /*TommyLibServices.ENTITY.mergePersistentData(mainClientPlayer, persistentData, false);*/
             }
         }
     }
 
     public static void onInteractionKeyMappingTriggered(InputEvent.InteractionKeyMappingTriggered event) {
-        Player player = ClientUtils.getMainClientPlayer();
+        Player player = ClientUtils.getLocalPlayer();
         if (player != null && player.getData(MinejagoAttachmentTypes.SHADOW_SOURCE).isPresent() && player.getAbilities().flying) {
             event.setCanceled(true);
         }
@@ -274,7 +273,7 @@ public class MinejagoClientEvents {
         }, MinejagoItems.allFilledTeacups().toArray(new ItemLike[0]));
         event.register((itemStack, i) -> {
             BlockState blockstate = ((BlockItem) itemStack.getItem()).getBlock().defaultBlockState();
-            return ClientUtils.getMinecraft().getBlockColors().getColor(blockstate, ClientUtils.getLevel(), null, i);
+            return Minecraft.getInstance().getBlockColors().getColor(blockstate, ClientUtils.getLevel(), null, i);
         }, MinejagoBlocks.FOCUS_LEAVES_SET.leaves().get());
     }
 
@@ -342,9 +341,9 @@ public class MinejagoClientEvents {
         Player player = event.getEntity();
         if (spinjitzuModel == null)
             spinjitzuModel = new SpinjitzuModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(SpinjitzuModel.LAYER_LOCATION));
-        CompoundTag data = TommyLibServices.ENTITY.getPersistentData(player);
+        CompoundTag data = /*TommyLibServices.ENTITY.getPersistentData(player)*/new CompoundTag();
         boolean renderTornadoOfCreation = data.getInt(MinejagoEntityEvents.KEY_TORNADO_OF_CREATION_SECONDS) > 0;
-        if (!(ClientUtils.getMainClientPlayer() == player && ClientUtils.getMinecraft().options.getCameraType().isFirstPerson()) && player.getData(MinejagoAttachmentTypes.SPINJITZU).active() && data.getInt(ClientboundStartSpinjitzuPayload.KEY_SPINJITZUSTARTTICKS) <= 0 && (!data.getBoolean(MinejagoEntityEvents.KEY_IS_IN_TORNADO_OF_CREATION) || renderTornadoOfCreation)) {
+        if (!(ClientUtils.getLocalPlayer() == player && Minecraft.getInstance().options.getCameraType().isFirstPerson()) && player.getData(MinejagoAttachmentTypes.SPINJITZU).active() && data.getInt(ClientboundStartSpinjitzuPayload.KEY_SPINJITZUSTARTTICKS) <= 0 && (!data.getBoolean(MinejagoEntityEvents.KEY_IS_IN_TORNADO_OF_CREATION) || renderTornadoOfCreation)) {
             spinjitzuModel.setupAnim(player, 0, 0, player.tickCount + event.getPartialTick(), 0, 0);
             spinjitzuModel.getBody().copyFrom(event.getRenderer().getModel().body);
             float scale = (float) player.getAttributeValue(Attributes.SCALE);
@@ -359,15 +358,15 @@ public class MinejagoClientEvents {
     }
 
     public static boolean hasSkulkinRaid() {
-        BossHealthOverlay bossHealthOverlay = ClientUtils.getMinecraft().gui.getBossOverlay();
+        BossHealthOverlay bossHealthOverlay = Minecraft.getInstance().gui.getBossOverlay();
         return skulkinRaids.stream().anyMatch(bossHealthOverlay.events::containsKey);
     }
 
     public static void onSelectMusic(SelectMusicEvent event) {
-        Player player = ClientUtils.getMainClientPlayer();
+        Player player = ClientUtils.getLocalPlayer();
         if (player != null) {
-            CompoundTag data = TommyLibServices.ENTITY.getPersistentData(player);
-            BossHealthOverlay bossOverlay = ClientUtils.getMinecraft().gui.getBossOverlay();
+            CompoundTag data = /*TommyLibServices.ENTITY.getPersistentData(player)*/new CompoundTag();
+            BossHealthOverlay bossOverlay = Minecraft.getInstance().gui.getBossOverlay();
             if (bossOverlay.shouldPlayMusic() && hasSkulkinRaid()) {
                 event.setMusic(MinejagoMusics.SKULKIN_RAID);
             } else if (data.getBoolean(MinejagoEntityEvents.KEY_IS_IN_MONASTERY_OF_SPINJITZU)) {

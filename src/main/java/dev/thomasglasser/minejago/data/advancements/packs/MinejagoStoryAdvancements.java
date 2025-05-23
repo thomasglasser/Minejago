@@ -42,40 +42,40 @@ public class MinejagoStoryAdvancements extends ExtendedAdvancementGenerator {
 
     @Override
     public void generate(HolderLookup.Provider registries) {
-        AdvancementHolder root = root(MinejagoItems.SCYTHE_OF_QUAKES.get(), "root", Minejago.modLoc("textures/gui/advancements/backgrounds/minejago.png"), AdvancementType.TASK, false, false, false, null,
-                "get_crafting_table", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.CRAFTING_TABLE), "Minejago", "Long before time had a name...");
-
-        AdvancementHolder enterMonastery = create(root, MinejagoItems.SCROLL.get(), "enter_monastery", AdvancementType.TASK, true, true, false, null,
-                "enter_monastery", PlayerTrigger.TriggerInstance.located(LocationPredicate.Builder.inStructure(registries.lookupOrThrow(Registries.STRUCTURE).getOrThrow(MinejagoStructures.MONASTERY_OF_SPINJITZU))), "Long Before Time Had a Name...", "Enter the Monastery of Spinjitzu");
-
-        AdvancementHolder getBlackGi = create(enterMonastery, MinejagoArmors.BLACK_GI_SET.HEAD.get(), "get_black_gi", AdvancementType.TASK, true, true, false, null,
-                "get_black_gi_set", InventoryChangeTrigger.TriggerInstance.hasItems(MinejagoArmors.BLACK_GI_SET.getAllAsItems().toArray(new ItemLike[] {})), "Ninja in Training", "Receive the Black Gi");
-
-        AdvancementHolder doSpinjitzu = create(getBlackGi, PotionContents.createItemStack(MinejagoItems.FILLED_TEACUP.get(), MinejagoPotions.OAK_TEA.asReferenceFrom(registries)), "do_spinjitzu", AdvancementType.TASK, true, true, false, null,
-                "do_spinjitzu", DidSpinjitzuTrigger.TriggerInstance.didSpinjitzu(), "Twistitzu? Tornadzu?", "Do spinjitzu for the first time");
-
-        AdvancementHolder getFourWeaponsMaps = create(getBlackGi, Items.FILLED_MAP, "get_four_weapons_maps", AdvancementType.TASK, true, true, false, null,
-                "get_four_weapons_maps", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().hasComponents(DataComponentPredicate.builder().expect(MinejagoDataComponents.GOLDEN_WEAPONS_MAP.get(), Unit.INSTANCE).build()).build()), "The Journey Begins", "Obtain the Four Weapons Maps");
-
-        ItemStack fireHead = MinejagoArmors.TRAINEE_GI_SET.HEAD.get().getDefaultInstance();
-        fireHead.set(MinejagoDataComponents.ELEMENT.get(), Elements.FIRE);
-        AdvancementHolder getElement = create(getFourWeaponsMaps, fireHead, "get_element", AdvancementType.TASK, true, true, false, null,
-                "get_element", GotElementTrigger.TriggerInstance.gotElement(), "I've Got the Power!", "Discover your elemental power");
-
-        Map<String, Criterion<?>> goldenWeaponsStructures = Map.of(
-                "enter_cave_of_despair", PlayerTrigger.TriggerInstance.located(LocationPredicate.Builder.inStructure(registries.lookupOrThrow(Registries.STRUCTURE).getOrThrow(MinejagoStructures.CAVE_OF_DESPAIR)))
-        // TODO: Add other structures
-        );
-
-        AdvancementHolder enterGoldenWeaponsStructure = create(getElement, MinejagoItems.SCYTHE_OF_QUAKES.get(), "enter_golden_weapons_structure", AdvancementType.TASK, true, true, false, null, AdvancementRequirements.Strategy.OR, goldenWeaponsStructures, "The Weapon is Near", "Enter a structure containing a Golden Weapon");
-
-        AdvancementHolder enterAllGoldenWeaponsStructures = create(enterGoldenWeaponsStructure, MinejagoItems.SCYTHE_OF_QUAKES.get()/*TODO: Replace with sword of fire*/, "enter_all_golden_weapons_structures", AdvancementType.GOAL, true, true, false, AdvancementRewards.Builder.experience(50).build(), AdvancementRequirements.Strategy.AND, goldenWeaponsStructures, "The Homes of Creation", "Find all structures containing Golden Weapons");
-
-        AdvancementHolder tameDragon = create(enterGoldenWeaponsStructure, Items.SADDLE, "tame_dragon", AdvancementType.CHALLENGE, true, true, false, AdvancementRewards.Builder.experience(15).build(),
-                "tame_dragon", TameAnimalTrigger.TriggerInstance.tamedAnimal(EntityPredicate.Builder.entity().of(MinejagoEntityTypeTags.DRAGONS)), "Out of this World", "Tame a dragon");
-
-        AdvancementHolder useScytheOfQuakes = create(enterGoldenWeaponsStructure, MinejagoItems.SCYTHE_OF_QUAKES.get(), "use_scythe_of_quakes", AdvancementType.TASK, true, true, false, null,
-                "use_scythe_of_quakes", ItemUsedOnLocationTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location(), ItemPredicate.Builder.item().of(MinejagoItems.SCYTHE_OF_QUAKES.get())), "A Groundbreaking Discovery", "Perform an ability using the Scythe of Quakes");
+//        AdvancementHolder root = root(MinejagoItems.SCYTHE_OF_QUAKES.get(), "root", Minejago.modLoc("textures/gui/advancements/backgrounds/minejago.png"), AdvancementType.TASK, false, false, false, null,
+//                "get_crafting_table", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.CRAFTING_TABLE), "Minejago", "Long before time had a name...");
+//
+//        AdvancementHolder enterMonastery = create(root, MinejagoItems.SCROLL.get(), "enter_monastery", AdvancementType.TASK, true, true, false, null,
+//                "enter_monastery", PlayerTrigger.TriggerInstance.located(LocationPredicate.Builder.inStructure(registries.lookupOrThrow(Registries.STRUCTURE).getOrThrow(MinejagoStructures.MONASTERY_OF_SPINJITZU))), "Long Before Time Had a Name...", "Enter the Monastery of Spinjitzu");
+//
+//        AdvancementHolder getBlackGi = create(enterMonastery, MinejagoArmors.BLACK_GI_SET.HEAD.get(), "get_black_gi", AdvancementType.TASK, true, true, false, null,
+//                "get_black_gi_set", InventoryChangeTrigger.TriggerInstance.hasItems(MinejagoArmors.BLACK_GI_SET.getAllAsItems().toArray(new ItemLike[] {})), "Ninja in Training", "Receive the Black Gi");
+//
+//        AdvancementHolder doSpinjitzu = create(getBlackGi, PotionContents.createItemStack(MinejagoItems.FILLED_TEACUP.get(), MinejagoPotions.OAK_TEA.asReferenceFrom(registries)), "do_spinjitzu", AdvancementType.TASK, true, true, false, null,
+//                "do_spinjitzu", DidSpinjitzuTrigger.TriggerInstance.didSpinjitzu(), "Twistitzu? Tornadzu?", "Do spinjitzu for the first time");
+//
+//        AdvancementHolder getFourWeaponsMaps = create(getBlackGi, Items.FILLED_MAP, "get_four_weapons_maps", AdvancementType.TASK, true, true, false, null,
+//                "get_four_weapons_maps", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().hasComponents(DataComponentPredicate.builder().expect(MinejagoDataComponents.GOLDEN_WEAPONS_MAP.get(), Unit.INSTANCE).build()).build()), "The Journey Begins", "Obtain the Four Weapons Maps");
+//
+//        ItemStack fireHead = MinejagoArmors.TRAINEE_GI_SET.HEAD.get().getDefaultInstance();
+//        fireHead.set(MinejagoDataComponents.ELEMENT.get(), Elements.FIRE);
+//        AdvancementHolder getElement = create(getFourWeaponsMaps, fireHead, "get_element", AdvancementType.TASK, true, true, false, null,
+//                "get_element", GotElementTrigger.TriggerInstance.gotElement(), "I've Got the Power!", "Discover your elemental power");
+//
+//        Map<String, Criterion<?>> goldenWeaponsStructures = Map.of(
+//                "enter_cave_of_despair", PlayerTrigger.TriggerInstance.located(LocationPredicate.Builder.inStructure(registries.lookupOrThrow(Registries.STRUCTURE).getOrThrow(MinejagoStructures.CAVE_OF_DESPAIR)))
+//        // TODO: Add other structures
+//        );
+//
+//        AdvancementHolder enterGoldenWeaponsStructure = create(getElement, MinejagoItems.SCYTHE_OF_QUAKES.get(), "enter_golden_weapons_structure", AdvancementType.TASK, true, true, false, null, AdvancementRequirements.Strategy.OR, goldenWeaponsStructures, "The Weapon is Near", "Enter a structure containing a Golden Weapon");
+//
+//        AdvancementHolder enterAllGoldenWeaponsStructures = create(enterGoldenWeaponsStructure, MinejagoItems.SCYTHE_OF_QUAKES.get()/*TODO: Replace with sword of fire*/, "enter_all_golden_weapons_structures", AdvancementType.GOAL, true, true, false, AdvancementRewards.Builder.experience(50).build(), AdvancementRequirements.Strategy.AND, goldenWeaponsStructures, "The Homes of Creation", "Find all structures containing Golden Weapons");
+//
+//        AdvancementHolder tameDragon = create(enterGoldenWeaponsStructure, Items.SADDLE, "tame_dragon", AdvancementType.CHALLENGE, true, true, false, AdvancementRewards.Builder.experience(15).build(),
+//                "tame_dragon", TameAnimalTrigger.TriggerInstance.tamedAnimal(EntityPredicate.Builder.entity().of(MinejagoEntityTypeTags.DRAGONS)), "Out of this World", "Tame a dragon");
+//
+//        AdvancementHolder useScytheOfQuakes = create(enterGoldenWeaponsStructure, MinejagoItems.SCYTHE_OF_QUAKES.get(), "use_scythe_of_quakes", AdvancementType.TASK, true, true, false, null,
+//                "use_scythe_of_quakes", ItemUsedOnLocationTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location(), ItemPredicate.Builder.item().of(MinejagoItems.SCYTHE_OF_QUAKES.get())), "A Groundbreaking Discovery", "Perform an ability using the Scythe of Quakes");
 
         // TODO: Use Shuriken of Ice
     }

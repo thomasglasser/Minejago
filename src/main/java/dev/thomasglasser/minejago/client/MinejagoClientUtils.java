@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
+
+import dev.thomasglasser.tommylib.api.world.entity.player.SpecialPlayerUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.BookViewScreen;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -28,29 +30,23 @@ import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
 
 public class MinejagoClientUtils {
-    private static final String GIST = "thomasglasser/281c3473f07430ddb83aac3e357a7797";
     private static final HashMap<Player, VipData> vipData = new HashMap<>();
     private static final MinejagoBlockEntityWithoutLevelRenderer bewlr = new MinejagoBlockEntityWithoutLevelRenderer();
 
-    public static boolean renderCosmeticLayerInSlot(AbstractClientPlayer player, EquipmentSlot slot) {
-        return slot == null || !player.hasItemInSlot(slot);
-    }
-
     public static boolean renderSnapshotTesterLayer(AbstractClientPlayer player) {
-        return vipData.get(player) != null && snapshotChoice(player) != null && renderCosmeticLayerInSlot(player, snapshotChoice(player).slot()) && vipData.get(player).displaySnapshot();
+        return vipData.get(player) != null && SpecialPlayerUtils.renderCosmeticLayerInSlot(player, snapshotChoice(player).slot()) && vipData.get(player).displaySnapshot();
     }
 
-    @Nullable
     public static SnapshotTesterCosmeticOptions snapshotChoice(AbstractClientPlayer player) {
-        return vipData.get(player) != null && vipData.get(player).choice() != null ? vipData.get(player).choice() : null;
+        return vipData.get(player) != null && vipData.get(player).choice() != null ? vipData.get(player).choice() : SnapshotTesterCosmeticOptions.BAMBOO_HAT;
     }
 
     public static boolean renderDevLayer(AbstractClientPlayer player) {
-        return vipData.get(player) != null && renderCosmeticLayerInSlot(player, EquipmentSlot.HEAD/*TODO:Figure out slot*/) && vipData.get(player).displayDev();
+        return vipData.get(player) != null && SpecialPlayerUtils.renderCosmeticLayerInSlot(player, EquipmentSlot.HEAD/*TODO:Figure out slot*/) && vipData.get(player).displayDev();
     }
 
     public static boolean renderLegacyDevLayer(AbstractClientPlayer player) {
-        return vipData.get(player) != null && renderCosmeticLayerInSlot(player, EquipmentSlot.HEAD) && vipData.get(player).displayLegacyDev();
+        return vipData.get(player) != null && SpecialPlayerUtils.renderCosmeticLayerInSlot(player, EquipmentSlot.HEAD) && vipData.get(player).displayLegacyDev();
     }
 
     public static void refreshVip() {
@@ -61,16 +57,16 @@ public class MinejagoClientUtils {
             boolean displayDev;
             boolean displayLegacyDev;
 
-            displaySnapshot = MinejagoClientConfig.get().displaySnapshotTesterCosmetic.get() && ClientUtils.checkSnapshotTester(GIST, uuid);
-            displayDev = MinejagoClientConfig.get().displayDevTeamCosmetic.get() && ClientUtils.checkDevTeam(GIST, uuid);
-            displayLegacyDev = MinejagoClientConfig.get().displayLegacyDevTeamCosmetic.get() && ClientUtils.checkLegacyDevTeam(GIST, uuid);
+            displaySnapshot = MinejagoClientConfig.get().displaySnapshotTesterCosmetic.get();
+            displayDev = MinejagoClientConfig.get().displayDevTeamCosmetic.get();
+            displayLegacyDev = MinejagoClientConfig.get().displayLegacyDevTeamCosmetic.get();
 
-            TommyLibServices.NETWORK.sendToServer(new ServerboundChangeVipDataPayload(uuid, new VipData(MinejagoClientConfig.get().snapshotTesterCosmeticChoice.get(), displaySnapshot, /*displayDev*/false, displayLegacyDev)));
+            TommyLibServices.NETWORK.sendToServer(new ServerboundChangeVipDataPayload(uuid, new VipData(MinejagoClientConfig.get().snapshotTesterCosmeticChoice.get(), displaySnapshot, displayDev, displayLegacyDev)));
         }
     }
 
     public static boolean verifySnapshotTester(UUID uuid) {
-        return ClientUtils.checkSnapshotTester(GIST, uuid);
+        return SpecialPlayerUtils.getSpecialTypes(VipData.GIST, uuid).contains(SpecialPlayerUtils.SNAPSHOT_TESTER_KEY);
     }
 
     public static void setVipData(Player player, VipData data) {
@@ -82,18 +78,18 @@ public class MinejagoClientUtils {
     }
 
     public static void openElementSelectionScreen(ArrayList<Holder<Element>> elements, Optional<Integer> wuId) {
-        ClientUtils.setScreen(new ElementSelectionScreen(Component.translatable(ElementSelectionScreen.TITLE), elements, wuId.isPresent() && ClientUtils.getEntityById(wuId.get()) instanceof Wu wu ? wu : null));
+        Minecraft.getInstance().setScreen(new ElementSelectionScreen(Component.translatable(ElementSelectionScreen.TITLE), elements, wuId.isPresent() && ClientUtils.getEntityById(wuId.get()) instanceof Wu wu ? wu : null));
     }
 
     public static void openScrollScreen(BookViewScreen.BookAccess bookAccess) {
-        ClientUtils.setScreen(new ScrollViewScreen(bookAccess));
+        Minecraft.getInstance().setScreen(new ScrollViewScreen(bookAccess));
     }
 
     public static void openDragonInventoryScreen(DragonInventoryMenu dragonInventoryMenu, Player player, Dragon dragon, int columns) {
-        ClientUtils.setScreen(new DragonInventoryScreen(dragonInventoryMenu, player.getInventory(), dragon, columns));
+        Minecraft.getInstance().setScreen(new DragonInventoryScreen(dragonInventoryMenu, player.getInventory(), dragon, columns));
     }
 
     public static void openSkillScreen() {
-        ClientUtils.setScreen(new SkillScreen());
+        Minecraft.getInstance().setScreen(new SkillScreen());
     }
 }

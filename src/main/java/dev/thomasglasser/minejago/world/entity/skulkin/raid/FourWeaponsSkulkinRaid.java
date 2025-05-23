@@ -49,9 +49,9 @@ public class FourWeaponsSkulkinRaid extends AbstractSkulkinRaid {
     public @Nullable ItemStack extractRaidItem(SkulkinRaider raider) {
         Painting fw = MinejagoLevelUtils.getGoldenWeaponsMapHolderNearby(raider, 1);
         if (fw != null) {
-            CompoundTag persistentData = TommyLibServices.ENTITY.getPersistentData(fw);
-            persistentData.putBoolean("MapTaken", true);
-            TommyLibServices.ENTITY.setPersistentData(fw, persistentData, true);
+//            CompoundTag persistentData = TommyLibServices.ENTITY.getPersistentData(fw);
+//            persistentData.putBoolean("MapTaken", true);
+//            TommyLibServices.ENTITY.setPersistentData(fw, persistentData, true);
             return MinejagoItemUtils.createFourWeaponsMaps(this.getLevel(), raider.blockPosition());
         }
         return null;

@@ -5,7 +5,7 @@ import dev.thomasglasser.minejago.client.animation.definitions.PlayerAnimations;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.minejago.world.focus.FocusData;
 import dev.thomasglasser.tommylib.api.client.ClientUtils;
-import dev.thomasglasser.tommylib.api.client.animation.AnimationUtils;
+import dev.thomasglasser.tommylib.api.client.animation.PlayerAnimationHandler;
 import dev.thomasglasser.tommylib.api.network.ExtendedPacketPayload;
 import io.netty.buffer.ByteBuf;
 import java.util.UUID;
@@ -30,9 +30,9 @@ public record ClientboundStopMeditationPayload(UUID uuid, boolean fail) implemen
         player.refreshDimensions();
         if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled()) {
             if (fail)
-                AnimationUtils.stopAnimation(clientPlayer);
+                PlayerAnimationHandler.stopAnimation(clientPlayer);
             else
-                AnimationUtils.startAnimation(PlayerAnimations.Meditation.FINISH.getAnimation(), clientPlayer);
+                PlayerAnimationHandler.startAnimation(PlayerAnimations.Meditation.FINISH.getAnimation(), clientPlayer);
         }
     }
 

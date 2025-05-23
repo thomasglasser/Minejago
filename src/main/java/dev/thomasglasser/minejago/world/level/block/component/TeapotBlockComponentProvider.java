@@ -36,7 +36,7 @@ public enum TeapotBlockComponentProvider implements IBlockComponentProvider {
                 iTooltip.append(Component.translatable("block.minejago.teapot.waila.potion", be.getPotion() == Potions.WATER ? Blocks.WATER.getName() : PotionContents.createItemStack(Items.POTION, be.getPotion()).getHoverName()).withStyle(ChatFormatting.GRAY));
             }
 
-            ItemStack item = be.getInSlot(0);
+            ItemStack item = be.getStackInSlot(0);
             if (!item.isEmpty()) {
                 IElement icon = ElementHelper.INSTANCE.item(item, 0.5f).translate(new Vec2(0, -2));
                 iTooltip.add(icon);

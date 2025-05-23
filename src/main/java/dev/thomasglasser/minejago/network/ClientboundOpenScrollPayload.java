@@ -23,7 +23,7 @@ public record ClientboundOpenScrollPayload(InteractionHand hand) implements Exte
 
     // ON CLIENT
     public void handle(@Nullable Player player) {
-        ItemStack itemStack = ClientUtils.getMainClientPlayer().getItemInHand(hand);
+        ItemStack itemStack = ClientUtils.getLocalPlayer().getItemInHand(hand);
         if (itemStack.is(MinejagoItems.WRITTEN_SCROLL.get())) {
             BookViewScreen.BookAccess bookAccess = BookViewScreen.BookAccess.fromItem(itemStack);
             if (bookAccess != null) {

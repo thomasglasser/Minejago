@@ -15,7 +15,7 @@ public class KrunchaRenderer extends HumanoidMobRenderer<Kruncha, KrunchaModel<K
     public KrunchaRenderer(EntityRendererProvider.Context context) {
         super(context, new KrunchaModel<>(context.bakeLayer(KrunchaModel.LAYER_LOCATION)), 0.5f);
         HumanoidSelectiveArmorLayer<Kruncha, KrunchaModel<Kruncha>, KrunchaModel<Kruncha>> armorLayer = new HumanoidSelectiveArmorLayer<>(this, new KrunchaModel<>(context.bakeLayer(ModelLayers.SKELETON_INNER_ARMOR)), new KrunchaModel<>(context.bakeLayer(ModelLayers.SKELETON_OUTER_ARMOR)), context.getModelManager());
-        armorLayer.renderHead = false;
+        armorLayer.setRenderHead(false);
         addLayer(armorLayer);
     }
 

@@ -127,9 +127,9 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(Skulkin.Variant.KNIFE, "Knife");
         add(Skulkin.Variant.BONE, "Bone");
 
-        addArmorTrim(MinejagoItems.FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE.get(), "Four Weapons");
-        addArmorTrim(MinejagoItems.TERRAIN_ARMOR_TRIM_SMITHING_TEMPLATE.get(), "Terrain");
-        addArmorTrim(MinejagoItems.LOTUS_ARMOR_TRIM_SMITHING_TEMPLATE.get(), "Lotus");
+        addArmorTrim(MinejagoItems.FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE.get());
+        addArmorTrim(MinejagoItems.TERRAIN_ARMOR_TRIM_SMITHING_TEMPLATE.get());
+        addArmorTrim(MinejagoItems.LOTUS_ARMOR_TRIM_SMITHING_TEMPLATE.get());
 
         addPattern(MinejagoBannerPatterns.EDGE_LINES, "Edge Lines");
         addPattern(MinejagoBannerPatterns.FOUR_WEAPONS_LEFT, "Four Weapons Left");
@@ -159,17 +159,17 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(MinejagoMobEffects.FROZEN.get(), "Frozen");
 
         add(MinejagoKeyMappings.CATEGORY_SHADOW_FORM, "Shadow Form");
-        add(MinejagoKeyMappings.ACTIVATE_SPINJITZU.get(), "Activate Spinjitzu");
-        add(MinejagoKeyMappings.MEDITATE.get(), "Meditate");
-        add(MinejagoKeyMappings.ASCEND.get(), "Ascend");
-        add(MinejagoKeyMappings.DESCEND.get(), "Descend");
-        add(MinejagoKeyMappings.OPEN_SKILL_SCREEN.get(), "Open Skill Screen");
-        add(MinejagoKeyMappings.ENTER_SHADOW_FORM.get(), "Enter Shadow Form");
-        add(MinejagoKeyMappings.SWITCH_DIMENSION.get(), "Switch Dimension");
-        add(MinejagoKeyMappings.INCREASE_SCALE.get(), "Increase Scale");
-        add(MinejagoKeyMappings.DECREASE_SCALE.get(), "Decrease Scale");
-        add(MinejagoKeyMappings.SUMMON_CLONE.get(), "Summon Clone");
-        add(MinejagoKeyMappings.RECALL_CLONES.get(), "Recall Clones");
+        add(MinejagoKeyMappings.ACTIVATE_SPINJITZU, "Activate Spinjitzu");
+        add(MinejagoKeyMappings.MEDITATE, "Meditate");
+        add(MinejagoKeyMappings.ASCEND, "Ascend");
+        add(MinejagoKeyMappings.DESCEND, "Descend");
+        add(MinejagoKeyMappings.OPEN_SKILL_SCREEN, "Open Skill Screen");
+        add(MinejagoKeyMappings.ENTER_SHADOW_FORM, "Enter Shadow Form");
+        add(MinejagoKeyMappings.SWITCH_DIMENSION, "Switch Dimension");
+        add(MinejagoKeyMappings.INCREASE_SCALE, "Increase Scale");
+        add(MinejagoKeyMappings.DECREASE_SCALE, "Decrease Scale");
+        add(MinejagoKeyMappings.SUMMON_CLONE, "Summon Clone");
+        add(MinejagoKeyMappings.RECALL_CLONES, "Recall Clones");
 
         add(MinejagoCommandEvents.NOT_LIVING_ENTITY, "Target %s (%s) is not a LivingEntity");
 
@@ -212,13 +212,13 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         addPaintingVariant(MinejagoPaintingVariants.IT_TAKES_A_VILLAGE, "It Takes A Village", "waifu_png_pl");
         addPaintingVariant(MinejagoPaintingVariants.IT_TAKES_A_VILLAGE_WRECKED, "It Takes A Village (Wrecked)", "waifu_png_pl");
 
-        addSherd(MinejagoItems.ICE_CUBE_POTTERY_SHERD.get(), "Ice Cube");
-        addSherd(MinejagoItems.THUNDER_POTTERY_SHERD.get(), "Thunder");
-        addSherd(MinejagoItems.PEAKS_POTTERY_SHERD.get(), "Peaks");
-        addSherd(MinejagoItems.MASTER_POTTERY_SHERD.get(), "Master");
-        addSherd(MinejagoItems.YIN_YANG_POTTERY_SHERD.get(), "Yin Yang");
-        addSherd(MinejagoItems.DRAGONS_HEAD_POTTERY_SHERD.get(), "Dragon's Head");
-        addSherd(MinejagoItems.DRAGONS_TAIL_POTTERY_SHERD.get(), "Dragon's Tail");
+        addSherd(MinejagoItems.ICE_CUBE_POTTERY_SHERD);
+        addSherd(MinejagoItems.THUNDER_POTTERY_SHERD);
+        addSherd(MinejagoItems.PEAKS_POTTERY_SHERD);
+        addSherd(MinejagoItems.MASTER_POTTERY_SHERD);
+        addSherd(MinejagoItems.YIN_YANG_POTTERY_SHERD);
+        addSherd(MinejagoItems.DRAGONS_HEAD_POTTERY_SHERD);
+        addSherd(MinejagoItems.DRAGONS_TAIL_POTTERY_SHERD);
 
         add(MinejagoItems.MOD_NEEDED, "To get the full functionality of this item, please install the %s mod.");
 

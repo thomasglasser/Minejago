@@ -4,7 +4,7 @@ import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.animation.definitions.PlayerAnimations;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
 import dev.thomasglasser.tommylib.api.client.ClientUtils;
-import dev.thomasglasser.tommylib.api.client.animation.AnimationUtils;
+import dev.thomasglasser.tommylib.api.client.animation.PlayerAnimationHandler;
 import dev.thomasglasser.tommylib.api.network.ExtendedPacketPayload;
 import io.netty.buffer.ByteBuf;
 import java.util.UUID;
@@ -27,7 +27,7 @@ public record ClientboundStartMeditationPayload(UUID uuid) implements ExtendedPa
         player.refreshDimensions();
 
         if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled())
-            AnimationUtils.startAnimation(PlayerAnimations.Meditation.START.getAnimation(), player);
+            PlayerAnimationHandler.startAnimation(PlayerAnimations.Meditation.START.getAnimation(), player);
     }
 
     @Override

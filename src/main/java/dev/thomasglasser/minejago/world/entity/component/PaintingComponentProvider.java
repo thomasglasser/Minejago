@@ -37,8 +37,8 @@ public enum PaintingComponentProvider implements IEntityComponentProvider, IServ
     @Override
     public void appendServerData(CompoundTag compoundTag, EntityAccessor accessor) {
         if (accessor.getEntity() instanceof Painting painting) {
-            CompoundTag tag = TommyLibServices.ENTITY.getPersistentData(painting);
-            compoundTag.putBoolean("MapTaken", tag.getBoolean("MapTaken"));
+//            CompoundTag tag = TommyLibServices.ENTITY.getPersistentData(painting);
+//            compoundTag.putBoolean("MapTaken", tag.getBoolean("MapTaken"));
         }
     }
 }

@@ -3,7 +3,7 @@ package dev.thomasglasser.minejago.network;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.client.animation.definitions.ItemAnimations;
 import dev.thomasglasser.tommylib.api.client.ClientUtils;
-import dev.thomasglasser.tommylib.api.client.animation.AnimationUtils;
+import dev.thomasglasser.tommylib.api.client.animation.PlayerAnimationHandler;
 import dev.thomasglasser.tommylib.api.network.ExtendedPacketPayload;
 import dev.thomasglasser.tommylib.api.network.NetworkUtils;
 import java.util.Optional;
@@ -28,7 +28,7 @@ public record ClientboundStartScytheAnimationPayload(UUID uuid, ItemAnimations.S
     // ON CLIENT
     public void handle(@Nullable Player player) {
         if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled())
-            AnimationUtils.startAnimation(startAnim.getAnimation(), goAnim.map(ItemAnimations.ScytheOfQuakes::getAnimation).orElse(null), ClientUtils.getPlayerByUUID(uuid));
+            PlayerAnimationHandler.startAnimation(startAnim.getAnimation(), goAnim.map(ItemAnimations.ScytheOfQuakes::getAnimation).orElse(null), ClientUtils.getPlayerByUUID(uuid));
     }
 
     @Override

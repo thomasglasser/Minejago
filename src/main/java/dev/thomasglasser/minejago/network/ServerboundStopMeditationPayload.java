@@ -23,7 +23,7 @@ public record ServerboundStopMeditationPayload(boolean fail) implements Extended
         if (player instanceof ServerPlayer serverPlayer) {
             player.getData(MinejagoAttachmentTypes.FOCUS).stopMeditating();
             player.refreshDimensions();
-            TommyLibServices.ENTITY.getPersistentData(serverPlayer).remove(MinejagoEntityEvents.KEY_START_POS);
+//            TommyLibServices.ENTITY.getPersistentData(serverPlayer).remove(MinejagoEntityEvents.KEY_START_POS);
             TommyLibServices.NETWORK.sendToAllClients(new ClientboundStopMeditationPayload(serverPlayer.getUUID(), fail), serverPlayer.getServer());
         }
     }

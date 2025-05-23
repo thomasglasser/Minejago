@@ -3,7 +3,6 @@ package dev.thomasglasser.minejago.network;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.tommylib.api.network.ExtendedPacketPayload;
 import dev.thomasglasser.tommylib.api.network.NetworkUtils;
-import dev.thomasglasser.tommylib.api.world.entity.PlayerRideableFlying;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -17,13 +16,13 @@ public record ServerboundFlyVehiclePayload(Stage stage) implements ExtendedPacke
 
     // On Server
     public void handle(Player player) {
-        if (player.getVehicle() instanceof PlayerRideableFlying flying) {
-            switch (stage) {
-                case START_ASCEND -> flying.ascend();
-                case START_DESCEND -> flying.descend();
-                case STOP -> flying.stop();
-            }
-        }
+//        if (player.getVehicle() instanceof PlayerRideableFlying flying) {
+//            switch (stage) {
+//                case START_ASCEND -> flying.ascend();
+//                case START_DESCEND -> flying.descend();
+//                case STOP -> flying.stop();
+//            }
+//        }
     }
 
     @Override

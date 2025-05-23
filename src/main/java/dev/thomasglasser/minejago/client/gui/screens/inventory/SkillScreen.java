@@ -48,7 +48,7 @@ public class SkillScreen extends Screen {
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (keyCode == MinejagoKeyMappings.OPEN_SKILL_SCREEN.get().getKey().getValue()) {
+        if (keyCode == MinejagoKeyMappings.OPEN_SKILL_SCREEN.getKey().getValue()) {
             minecraft.setScreen(null);
             return true;
         }

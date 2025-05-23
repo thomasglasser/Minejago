@@ -24,9 +24,9 @@ public record ServerboundStartMeditationPayload() implements ExtendedPacketPaylo
         if (player instanceof ServerPlayer serverPlayer) {
             player.getData(MinejagoAttachmentTypes.FOCUS).startMeditating();
             player.refreshDimensions();
-            CompoundTag persistentData = TommyLibServices.ENTITY.getPersistentData(serverPlayer);
-            persistentData.putString(MinejagoEntityEvents.KEY_START_POS, serverPlayer.blockPosition().toString());
-            TommyLibServices.ENTITY.mergePersistentData(serverPlayer, persistentData, false);
+//            CompoundTag persistentData = TommyLibServices.ENTITY.getPersistentData(serverPlayer);
+//            persistentData.putString(MinejagoEntityEvents.KEY_START_POS, serverPlayer.blockPosition().toString());
+//            TommyLibServices.ENTITY.mergePersistentData(serverPlayer, persistentData, false);
             TommyLibServices.NETWORK.sendToAllClients(new ClientboundStartMeditationPayload(serverPlayer.getUUID()), serverPlayer.getServer());
         }
     }

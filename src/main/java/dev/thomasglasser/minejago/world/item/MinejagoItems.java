@@ -47,6 +47,7 @@ import net.minecraft.world.item.armortrim.TrimPattern;
 import net.minecraft.world.item.component.WritableBookContent;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.entity.BannerPattern;
+import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 
 public class MinejagoItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Minejago.MOD_ID);
@@ -155,7 +156,7 @@ public class MinejagoItems {
     }
 
     private static DeferredItem<SpawnEggItem> registerSpawnEgg(String name, Supplier<EntityType<? extends Mob>> entityType, int primaryColor, int secondaryColor) {
-        return ItemUtils.registerSpawnEgg(ITEMS, name, entityType, primaryColor, secondaryColor);
+        return register(name, () -> new DeferredSpawnEggItem(entityType, primaryColor, secondaryColor, new Item.Properties()));
     }
 
     private static SortedMap<DyeColor, DeferredItem<TeacupItem>> teacups() {
