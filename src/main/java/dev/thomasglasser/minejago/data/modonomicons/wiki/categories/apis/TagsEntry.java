@@ -22,7 +22,7 @@ public class TagsEntry extends IndexModeEntryProvider {
 
         add(context().pageTitle(), "Generator");
         add(context().pageText(), """
-                A generator for vanilla tags is available online [here](https://snapshot-jsons.thomasglasser.dev/generators/) and for mod tags [here](https://snapshot-jsons.thomasglasser.dev/partners/).
+                A generator for vanilla tags is available online [here](https://beta-jsons.thomasglasser.dev/generators/) and for mod tags [here](https://beta-jsons.thomasglasser.dev/partners/).
                 """);
 
         page("biome", () -> BookTextPageModel.create()

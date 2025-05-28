@@ -15,14 +15,14 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 
-public class PilotsSnapshotTesterHatModel extends Model {
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Minejago.modLoc("pilots_snapshot_tester_hat"), "main");
-    public static final ResourceLocation TEXTURE = Minejago.modLoc("textures/entity/player/pilots_snapshot_hat.png");
-    public static final ResourceLocation HOLIDAY_TEXTURE = Minejago.modLoc("textures/entity/player/pilots_snapshot_holiday_hat.png");
+public class BambooHatModel extends Model {
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Minejago.modLoc("pilots_beta_tester_hat"), "main");
+    public static final ResourceLocation TEXTURE = Minejago.modLoc("textures/entity/player/pilots_beta_hat.png");
+    public static final ResourceLocation HOLIDAY_TEXTURE = Minejago.modLoc("textures/entity/player/pilots_beta_holiday_hat.png");
 
     private final ModelPart hat;
 
-    public PilotsSnapshotTesterHatModel(ModelPart root) {
+    public BambooHatModel(ModelPart root) {
         super(RenderType::entityCutout);
         this.hat = root.getChild("hat");
     }

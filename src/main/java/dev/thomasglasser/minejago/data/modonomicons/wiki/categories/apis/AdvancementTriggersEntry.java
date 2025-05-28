@@ -24,7 +24,7 @@ public class AdvancementTriggersEntry extends IndexModeEntryProvider {
 
         add(context().pageTitle(), "Generator");
         add(context().pageText(), """
-                A generator for these triggers is available online [here](https://snapshot-jsons.thomasglasser.dev/advancement/).
+                A generator for these triggers is available online [here](https://beta-jsons.thomasglasser.dev/advancement/).
                 """);
 
         page("did_spinjitzu", () -> BookTextPageModel.create()

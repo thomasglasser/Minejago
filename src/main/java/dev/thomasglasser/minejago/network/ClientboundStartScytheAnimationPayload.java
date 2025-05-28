@@ -5,9 +5,10 @@ import dev.thomasglasser.minejago.client.animation.definitions.ItemAnimations;
 import dev.thomasglasser.tommylib.api.client.ClientUtils;
 import dev.thomasglasser.tommylib.api.client.animation.PlayerAnimationHandler;
 import dev.thomasglasser.tommylib.api.network.ExtendedPacketPayload;
-import dev.thomasglasser.tommylib.api.network.NetworkUtils;
 import java.util.Optional;
 import java.util.UUID;
+
+import dev.thomasglasser.tommylib.api.network.codec.ExtraStreamCodecs;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -21,8 +22,8 @@ public record ClientboundStartScytheAnimationPayload(UUID uuid, ItemAnimations.S
     public static final Type<ClientboundStartScytheAnimationPayload> TYPE = new Type<>(Minejago.modLoc("clientbound_start_scythe_animation"));
     public static final StreamCodec<FriendlyByteBuf, ClientboundStartScytheAnimationPayload> CODEC = StreamCodec.composite(
             UUIDUtil.STREAM_CODEC, ClientboundStartScytheAnimationPayload::uuid,
-            NetworkUtils.enumCodec(ItemAnimations.ScytheOfQuakes.class), ClientboundStartScytheAnimationPayload::startAnim,
-            ByteBufCodecs.optional(NetworkUtils.enumCodec(ItemAnimations.ScytheOfQuakes.class)), ClientboundStartScytheAnimationPayload::goAnim,
+            ExtraStreamCodecs.forEnum(ItemAnimations.ScytheOfQuakes.class), ClientboundStartScytheAnimationPayload::startAnim,
+            ByteBufCodecs.optional(ExtraStreamCodecs.forEnum(ItemAnimations.ScytheOfQuakes.class)), ClientboundStartScytheAnimationPayload::goAnim,
             ClientboundStartScytheAnimationPayload::new);
 
     // ON CLIENT

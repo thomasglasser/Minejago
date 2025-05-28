@@ -5,7 +5,7 @@ import dev.thomasglasser.minejago.client.MinejagoClientUtils;
 import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.tommylib.api.client.ClientUtils;
 import dev.thomasglasser.tommylib.api.network.ExtendedPacketPayload;
-import dev.thomasglasser.tommylib.api.network.NetworkUtils;
+import dev.thomasglasser.tommylib.api.network.codec.ExtraStreamCodecs;
 import net.minecraft.client.gui.screens.inventory.BookViewScreen;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 public record ClientboundOpenScrollPayload(InteractionHand hand) implements ExtendedPacketPayload {
     public static final Type<ClientboundOpenScrollPayload> TYPE = new Type<>(Minejago.modLoc("clientbound_open_scroll"));
     public static final StreamCodec<FriendlyByteBuf, ClientboundOpenScrollPayload> CODEC = StreamCodec.composite(
-            NetworkUtils.enumCodec(InteractionHand.class), ClientboundOpenScrollPayload::hand,
+            ExtraStreamCodecs.forEnum(InteractionHand.class), ClientboundOpenScrollPayload::hand,
             ClientboundOpenScrollPayload::new);
 
     // ON CLIENT

@@ -5,7 +5,7 @@ import dev.thomasglasser.minejago.client.gui.screens.inventory.ElementSelectionS
 import dev.thomasglasser.minejago.client.gui.screens.inventory.ScrollViewScreen;
 import dev.thomasglasser.minejago.client.gui.screens.inventory.SkillScreen;
 import dev.thomasglasser.minejago.client.renderer.MinejagoBlockEntityWithoutLevelRenderer;
-import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterCosmeticOptions;
+import dev.thomasglasser.minejago.client.renderer.entity.layers.BetaTesterCosmeticOptions;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.VipData;
 import dev.thomasglasser.minejago.network.ServerboundChangeVipDataPayload;
 import dev.thomasglasser.minejago.world.entity.character.Wu;
@@ -33,12 +33,12 @@ public class MinejagoClientUtils {
     private static final HashMap<Player, VipData> vipData = new HashMap<>();
     private static final MinejagoBlockEntityWithoutLevelRenderer bewlr = new MinejagoBlockEntityWithoutLevelRenderer();
 
-    public static boolean renderSnapshotTesterLayer(AbstractClientPlayer player) {
-        return vipData.get(player) != null && SpecialPlayerUtils.renderCosmeticLayerInSlot(player, snapshotChoice(player).slot()) && vipData.get(player).displaySnapshot();
+    public static boolean renderBetaTesterLayer(AbstractClientPlayer player) {
+        return vipData.get(player) != null && SpecialPlayerUtils.renderCosmeticLayerInSlot(player, betaChoice(player).slot()) && vipData.get(player).displayBeta();
     }
 
-    public static SnapshotTesterCosmeticOptions snapshotChoice(AbstractClientPlayer player) {
-        return vipData.get(player) != null && vipData.get(player).choice() != null ? vipData.get(player).choice() : SnapshotTesterCosmeticOptions.BAMBOO_HAT;
+    public static BetaTesterCosmeticOptions betaChoice(AbstractClientPlayer player) {
+        return vipData.get(player) != null && vipData.get(player).choice() != null ? vipData.get(player).choice() : BetaTesterCosmeticOptions.BAMBOO_HAT;
     }
 
     public static boolean renderDevLayer(AbstractClientPlayer player) {
@@ -53,20 +53,20 @@ public class MinejagoClientUtils {
         if (Minecraft.getInstance().player != null) {
             UUID uuid = Minecraft.getInstance().player.getUUID();
 
-            boolean displaySnapshot;
+            boolean displayBeta;
             boolean displayDev;
             boolean displayLegacyDev;
 
-            displaySnapshot = MinejagoClientConfig.get().displaySnapshotTesterCosmetic.get();
+            displayBeta = MinejagoClientConfig.get().displayBetaTesterCosmetic.get();
             displayDev = MinejagoClientConfig.get().displayDevTeamCosmetic.get();
             displayLegacyDev = MinejagoClientConfig.get().displayLegacyDevTeamCosmetic.get();
 
-            TommyLibServices.NETWORK.sendToServer(new ServerboundChangeVipDataPayload(uuid, new VipData(MinejagoClientConfig.get().snapshotTesterCosmeticChoice.get(), displaySnapshot, displayDev, displayLegacyDev)));
+            TommyLibServices.NETWORK.sendToServer(new ServerboundChangeVipDataPayload(uuid, new VipData(MinejagoClientConfig.get().betaTesterCosmeticChoice.get(), displayBeta, displayDev, displayLegacyDev)));
         }
     }
 
-    public static boolean verifySnapshotTester(UUID uuid) {
-        return SpecialPlayerUtils.getSpecialTypes(VipData.GIST, uuid).contains(SpecialPlayerUtils.SNAPSHOT_TESTER_KEY);
+    public static boolean verifyBetaTester(UUID uuid) {
+        return SpecialPlayerUtils.getSpecialTypes(VipData.GIST, uuid).contains(SpecialPlayerUtils.BETA_TESTER_KEY);
     }
 
     public static void setVipData(Player player, VipData data) {

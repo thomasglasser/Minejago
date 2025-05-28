@@ -7,10 +7,10 @@ import com.klikli_dev.modonomicon.api.datagen.book.page.BookImagePageModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
 import dev.thomasglasser.minejago.data.modonomicons.wiki.WikiBookSubProvider;
 
-public class SnapshotEntry extends IndexModeEntryProvider {
-    private static final String ID = "snapshot";
+public class BetaEntry extends IndexModeEntryProvider {
+    private static final String ID = "beta";
 
-    public SnapshotEntry(CategoryProviderBase parent) {
+    public BetaEntry(CategoryProviderBase parent) {
         super(parent);
     }
 
@@ -18,7 +18,7 @@ public class SnapshotEntry extends IndexModeEntryProvider {
     protected void generatePages() {
         page("pilots", () -> BookImagePageModel.create()
                 .withAnchor("pilots")
-                .withImages(WikiBookSubProvider.wikiTexture("cosmetics/snapshot/icon_s0.png"), WikiBookSubProvider.wikiTexture("cosmetics/snapshot/pilots.png"))
+                .withImages(WikiBookSubProvider.wikiTexture("cosmetics/beta/icon_s0.png"), WikiBookSubProvider.wikiTexture("cosmetics/beta/pilots.png"))
                 .withTitle(context().pageTitle())
                 .withText(context().pageText()));
 
@@ -32,20 +32,20 @@ public class SnapshotEntry extends IndexModeEntryProvider {
 
         add(context().pageTitle(), "Configuration");
         add(context().pageText(), """
-                Snapshot Cosmetics have two client configuration options:
-                - "display_snapshot_tester_cosmetic" - Whether or not to display the Snapshot Tester cosmetic.
-                - "snapshot_tester_cosmetic_choice" - The cosmetic to display for the Snapshot Tester.
+                Beta Cosmetics have two client configuration options:
+                - "display_beta_tester_cosmetic" - Whether or not to display the Beta Tester cosmetic.
+                - "beta_tester_cosmetic_choice" - The cosmetic to display for the Beta Tester.
                 """);
     }
 
     @Override
     protected String entryName() {
-        return "Snapshot Testers";
+        return "Beta Testers";
     }
 
     @Override
     protected String entryDescription() {
-        return "Exclusive cosmetics for members of the Snapshot Program.";
+        return "Exclusive cosmetics for members of the Beta Program.";
     }
 
     @Override

@@ -64,8 +64,8 @@ public class Minejago {
     public Minejago(IEventBus bus, ModContainer modContainer) {
         LOGGER.info("Initializing {} for {} in a {} environment...", MOD_NAME, TommyLibServices.PLATFORM.getPlatformName(), TommyLibServices.PLATFORM.getEnvironmentName());
 
-        if (FMLEnvironment.production && FMLEnvironment.dist.isClient() && !modContainer.getModInfo().getVersion().getQualifier().isEmpty() && !MinejagoClientUtils.verifySnapshotTester(Minecraft.getInstance().getUser().getProfileId())) {
-            throw new RuntimeException("You are running a snapshot version of Minejago and are not a part of the Snapshot Program. Please switch to a stable version.");
+        if (FMLEnvironment.production && FMLEnvironment.dist.isClient() && !modContainer.getModInfo().getVersion().getQualifier().isEmpty() && !MinejagoClientUtils.verifyBetaTester(Minecraft.getInstance().getUser().getProfileId())) {
+            throw new RuntimeException("You are running a beta version of Minejago and are not a part of the Beta Program. Please switch to a stable version.");
         }
 
         initRegistries();

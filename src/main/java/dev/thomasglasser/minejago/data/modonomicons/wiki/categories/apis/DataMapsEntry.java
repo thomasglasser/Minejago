@@ -22,7 +22,7 @@ public class DataMapsEntry extends IndexModeEntryProvider {
 
         add(context().pageTitle(), "Generator");
         add(context().pageText(), """
-                A generator for these maps is available online [here](https://snapshot-jsons.thomasglasser.dev/partners/).
+                A generator for these maps is available online [here](https://beta-jsons.thomasglasser.dev/partners/).
                 """);
 
         page("potion_fillables", () -> BookTextPageModel.create()

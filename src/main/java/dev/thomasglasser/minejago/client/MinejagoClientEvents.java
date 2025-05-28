@@ -9,7 +9,7 @@ import dev.thomasglasser.minejago.client.model.FreezingIceModel;
 import dev.thomasglasser.minejago.client.model.KrunchaModel;
 import dev.thomasglasser.minejago.client.model.LegacyDevTeamBeardModel;
 import dev.thomasglasser.minejago.client.model.NuckalModel;
-import dev.thomasglasser.minejago.client.model.PilotsSnapshotTesterHatModel;
+import dev.thomasglasser.minejago.client.model.BambooHatModel;
 import dev.thomasglasser.minejago.client.model.RockingPoleSpinjitzuCourseElementModel;
 import dev.thomasglasser.minejago.client.model.ScytheModel;
 import dev.thomasglasser.minejago.client.model.ShurikenModel;
@@ -44,10 +44,9 @@ import dev.thomasglasser.minejago.client.renderer.entity.SpykorRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.ThrownShurikenOfIceRenderer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.FreezingIceLayer;
 import dev.thomasglasser.minejago.client.renderer.entity.layers.LegacyDevTeamLayer;
-import dev.thomasglasser.minejago.client.renderer.entity.layers.SnapshotTesterLayer;
+import dev.thomasglasser.minejago.client.renderer.entity.layers.BetaTesterLayer;
 import dev.thomasglasser.minejago.core.particles.MinejagoParticleTypes;
 import dev.thomasglasser.minejago.network.ClientboundStartSpinjitzuPayload;
-import dev.thomasglasser.minejago.network.ServerboundFlyVehiclePayload;
 import dev.thomasglasser.minejago.network.ServerboundStopMeditationPayload;
 import dev.thomasglasser.minejago.sounds.MinejagoMusics;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
@@ -201,7 +200,7 @@ public class MinejagoClientEvents {
         event.registerLayerDefinition(BambooStaffModel.LAYER_LOCATION, BambooStaffModel::createBodyLayer);
         event.registerLayerDefinition(ScytheModel.LAYER_LOCATION, ScytheModel::createBodyLayer);
         event.registerLayerDefinition(ShurikenModel.LAYER_LOCATION, ShurikenModel::createBodyLayer);
-        event.registerLayerDefinition(PilotsSnapshotTesterHatModel.LAYER_LOCATION, PilotsSnapshotTesterHatModel::createBodyLayer);
+        event.registerLayerDefinition(BambooHatModel.LAYER_LOCATION, BambooHatModel::createBodyLayer);
         event.registerLayerDefinition(LegacyDevTeamBeardModel.LAYER_LOCATION, LegacyDevTeamBeardModel::createBodyLayer);
         event.registerLayerDefinition(FreezingIceModel.LAYER_LOCATION, FreezingIceModel::createBodyLayer);
         event.registerLayerDefinition(KrunchaModel.LAYER_LOCATION, KrunchaModel::createBodyLayer);
@@ -297,7 +296,7 @@ public class MinejagoClientEvents {
 
             if (player != null) {
                 player.addLayer(new FreezingIceLayer(player, models));
-                player.addLayer(new SnapshotTesterLayer<>(player, models));
+                player.addLayer(new BetaTesterLayer<>(player, models));
                 player.addLayer(new LegacyDevTeamLayer<>(player, models));
             }
         }

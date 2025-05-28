@@ -2,12 +2,12 @@ package dev.thomasglasser.minejago.client.renderer.entity.layers;
 
 import net.minecraft.world.entity.EquipmentSlot;
 
-public enum SnapshotTesterCosmeticOptions {
+public enum BetaTesterCosmeticOptions {
     BAMBOO_HAT(EquipmentSlot.HEAD);
 
     final EquipmentSlot slot;
 
-    SnapshotTesterCosmeticOptions(EquipmentSlot slot) {
+    BetaTesterCosmeticOptions(EquipmentSlot slot) {
         this.slot = slot;
     }
 
