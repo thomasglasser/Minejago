@@ -4,8 +4,6 @@ import com.mojang.blaze3d.platform.InputConstants;
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.tommylib.api.client.ClientUtils;
 import dev.thomasglasser.tommylib.api.client.ExtendedKeyMapping;
-import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
-import java.util.function.Supplier;
 import net.minecraft.client.KeyMapping;
 
 public class MinejagoKeyMappings {

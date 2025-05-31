@@ -1,8 +1,6 @@
 package dev.thomasglasser.minejago.world.effect;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;

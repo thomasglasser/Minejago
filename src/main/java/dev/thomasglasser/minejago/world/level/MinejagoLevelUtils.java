@@ -1,7 +1,6 @@
 package dev.thomasglasser.minejago.world.level;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

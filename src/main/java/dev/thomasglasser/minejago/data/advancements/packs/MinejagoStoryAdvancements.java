@@ -1,43 +1,13 @@
 package dev.thomasglasser.minejago.data.advancements.packs;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.advancements.criterion.DidSpinjitzuTrigger;
-import dev.thomasglasser.minejago.advancements.criterion.GotElementTrigger;
-import dev.thomasglasser.minejago.core.component.MinejagoDataComponents;
-import dev.thomasglasser.minejago.tags.MinejagoEntityTypeTags;
-import dev.thomasglasser.minejago.world.entity.element.Elements;
-import dev.thomasglasser.minejago.world.item.MinejagoItems;
-import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
-import dev.thomasglasser.minejago.world.item.brewing.MinejagoPotions;
-import dev.thomasglasser.minejago.world.level.levelgen.structure.MinejagoStructures;
 import dev.thomasglasser.tommylib.api.data.advancements.ExtendedAdvancementGenerator;
-import java.util.Map;
-import net.minecraft.advancements.AdvancementHolder;
-import net.minecraft.advancements.AdvancementRequirements;
-import net.minecraft.advancements.AdvancementRewards;
-import net.minecraft.advancements.AdvancementType;
-import net.minecraft.advancements.Criterion;
-import net.minecraft.advancements.critereon.EntityPredicate;
-import net.minecraft.advancements.critereon.InventoryChangeTrigger;
-import net.minecraft.advancements.critereon.ItemPredicate;
-import net.minecraft.advancements.critereon.ItemUsedOnLocationTrigger;
-import net.minecraft.advancements.critereon.LocationPredicate;
-import net.minecraft.advancements.critereon.PlayerTrigger;
-import net.minecraft.advancements.critereon.TameAnimalTrigger;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.component.DataComponentPredicate;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.util.Unit;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionContents;
-import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 
 public class MinejagoStoryAdvancements extends ExtendedAdvancementGenerator {
     public MinejagoStoryAdvancements(LanguageProvider enUs) {
-        super(Minejago.MOD_ID, "story", enUs);
+        super(Minejago.MOD_ID, "story", enUs::add);
     }
 
     @Override

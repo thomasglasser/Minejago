@@ -3,10 +3,8 @@ package dev.thomasglasser.minejago.data.advancements;
 import dev.thomasglasser.minejago.data.advancements.packs.MinejagoAdventureAdvancements;
 import dev.thomasglasser.minejago.data.advancements.packs.MinejagoStoryAdvancements;
 import dev.thomasglasser.tommylib.api.data.advancements.ExtendedAdvancementProvider;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
+import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;

@@ -30,7 +30,6 @@ import dev.thomasglasser.minejago.tags.ElementTags;
 import dev.thomasglasser.minejago.tags.MinejagoItemTags;
 import dev.thomasglasser.minejago.tags.MinejagoStructureTags;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
-import dev.thomasglasser.minejago.world.effect.FrozenMobEffect;
 import dev.thomasglasser.minejago.world.effect.MinejagoMobEffects;
 import dev.thomasglasser.minejago.world.entity.character.Character;
 import dev.thomasglasser.minejago.world.entity.character.Zane;
@@ -65,7 +64,7 @@ import dev.thomasglasser.minejago.world.level.storage.SpinjitzuData;
 import dev.thomasglasser.minejago.world.level.storage.TornadoOfCreationData;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import dev.thomasglasser.tommylib.api.tags.ConventionalItemTags;
-
+import dev.thomasglasser.tommylib.api.world.entity.EntityUtils;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -75,9 +74,6 @@ import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import dev.thomasglasser.tommylib.api.world.entity.EntityUtils;
-import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import net.minecraft.SharedConstants;
 import net.minecraft.advancements.critereon.BlockPredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
@@ -111,7 +107,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.entity.decoration.Painting;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.npc.InventoryCarrier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -188,7 +183,7 @@ public class MinejagoEntityEvents {
 //            TommyLibServices.ENTITY.getPersistentData(entity).getInt(KEY_OFF_GROUND_TICKS) > 0 ||
             entity.getData(MinejagoAttachmentTypes.SPINJITZU).active() ||
             entity.getData(MinejagoAttachmentTypes.SHADOW_SOURCE).isPresent() /*||*/
-            /*(!TommyLibServices.ENTITY.getPersistentData(entity).getString(KEY_START_POS).isEmpty() && !entity.blockPosition().toString().equals(TommyLibServices.ENTITY.getPersistentData(entity).getString(KEY_START_POS)))*/);
+    /*(!TommyLibServices.ENTITY.getPersistentData(entity).getString(KEY_START_POS).isEmpty() && !entity.blockPosition().toString().equals(TommyLibServices.ENTITY.getPersistentData(entity).getString(KEY_START_POS)))*/);
 
     public static final Predicate<LivingEntity> NO_SHADOW_FORM = (entity -> entity.getData(MinejagoAttachmentTypes.FOCUS).getFocusLevel() < FocusConstants.SHADOW_FORM_LEVEL);
 

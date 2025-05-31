@@ -3,8 +3,6 @@ package dev.thomasglasser.minejago.client.renderer.entity.layers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.thomasglasser.minejago.client.model.FreezingIceModel;
-import dev.thomasglasser.minejago.world.effect.FrozenMobEffect;
-import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.MultiBufferSource;

@@ -14,12 +14,11 @@ import dev.thomasglasser.minejago.world.entity.element.Element;
 import dev.thomasglasser.minejago.world.inventory.DragonInventoryMenu;
 import dev.thomasglasser.tommylib.api.client.ClientUtils;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
+import dev.thomasglasser.tommylib.api.world.entity.player.SpecialPlayerUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
-
-import dev.thomasglasser.tommylib.api.world.entity.player.SpecialPlayerUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.BookViewScreen;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -27,7 +26,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
-import org.jetbrains.annotations.Nullable;
 
 public class MinejagoClientUtils {
     private static final HashMap<Player, VipData> vipData = new HashMap<>();
