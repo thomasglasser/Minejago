@@ -5,9 +5,7 @@ import dev.thomasglasser.minejago.client.animation.definitions.ItemAnimations;
 import dev.thomasglasser.tommylib.api.client.ClientUtils;
 import dev.thomasglasser.tommylib.api.client.animation.PlayerAnimationHandler;
 import dev.thomasglasser.tommylib.api.network.ExtendedPacketPayload;
-import dev.thomasglasser.tommylib.api.network.codec.ExtraStreamCodecs;
-import java.util.Optional;
-import java.util.UUID;
+import dev.thomasglasser.tommylib.api.util.TommyLibExtraStreamCodecs;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -16,13 +14,16 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+import java.util.UUID;
+
 public record ClientboundStartScytheAnimationPayload(UUID uuid, ItemAnimations.ScytheOfQuakes startAnim, Optional<ItemAnimations.ScytheOfQuakes> goAnim) implements ExtendedPacketPayload {
 
     public static final Type<ClientboundStartScytheAnimationPayload> TYPE = new Type<>(Minejago.modLoc("clientbound_start_scythe_animation"));
     public static final StreamCodec<FriendlyByteBuf, ClientboundStartScytheAnimationPayload> CODEC = StreamCodec.composite(
             UUIDUtil.STREAM_CODEC, ClientboundStartScytheAnimationPayload::uuid,
-            ExtraStreamCodecs.forEnum(ItemAnimations.ScytheOfQuakes.class), ClientboundStartScytheAnimationPayload::startAnim,
-            ByteBufCodecs.optional(ExtraStreamCodecs.forEnum(ItemAnimations.ScytheOfQuakes.class)), ClientboundStartScytheAnimationPayload::goAnim,
+            TommyLibExtraStreamCodecs.forEnum(ItemAnimations.ScytheOfQuakes.class), ClientboundStartScytheAnimationPayload::startAnim,
+            ByteBufCodecs.optional(TommyLibExtraStreamCodecs.forEnum(ItemAnimations.ScytheOfQuakes.class)), ClientboundStartScytheAnimationPayload::goAnim,
             ClientboundStartScytheAnimationPayload::new);
 
     // ON CLIENT

@@ -37,9 +37,9 @@ public class MinejagoArmors {
     public static final DeferredItem<SamukaisChestplateItem> SAMUKAIS_CHESTPLATE = createStandalone("samukais_chestplate", () -> new SamukaisChestplateItem(MinejagoArmorMaterials.SAMUKAI, new Item.Properties().stacksTo(1).rarity(Rarity.RARE)));
 
     // Gi
-    public static final ArmorSet BLACK_GI_SET = createGi("black_gi", "Black Gi", BlackGiItem::new, new Item.Properties().stacksTo(1), false, false);
-    public static final ArmorSet TRAINEE_GI_SET = createGi("trainee_gi", "Trainee Gi", TraineeGiArmorItem::new, new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON), true, false);
-    public static final ArmorSet DRAGON_EXTREME_GI_SET = createGi("dragon_extreme_gi", "Dragon eXtreme Gi", DragonExtremeGiArmorItem::new, new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON), true, true);
+    public static final ArmorSet BLACK_GI_SET = createGi("black_gi", BlackGiItem::new, new Item.Properties().stacksTo(1), false, false);
+    public static final ArmorSet TRAINEE_GI_SET = createGi("trainee_gi", TraineeGiArmorItem::new, new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON), true, false);
+    public static final ArmorSet DRAGON_EXTREME_GI_SET = createGi("dragon_extreme_gi", DragonExtremeGiArmorItem::new, new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON), true, true);
 
     public static class SkeletalChestplateSet {
         private final DeferredItem<SkeletalChestplateItem> STRENGTH;
@@ -85,7 +85,7 @@ public class MinejagoArmors {
         }
     }
 
-    private static ArmorSet create(String name, Map<ArmorItem.Type, String> suffixes, String displayName, BiFunction<ArmorItem.Type, Item.Properties, ArmorItem> item, Item.Properties properties) {
+    private static ArmorSet create(String name, Map<ArmorItem.Type, String> suffixes, BiFunction<ArmorItem.Type, Item.Properties, ArmorItem> item, Item.Properties properties) {
         Supplier<ArmorItem> headItem;
         Supplier<ArmorItem> chestItem;
         Supplier<ArmorItem> legsItem;
@@ -101,27 +101,27 @@ public class MinejagoArmors {
         DeferredItem<ArmorItem> legs = register(name + "_" + suffixes.get(ArmorItem.Type.LEGGINGS), legsItem);
         DeferredItem<ArmorItem> feet = register(name + "_" + suffixes.get(ArmorItem.Type.BOOTS), feetItem);
 
-        ArmorSet set = new ArmorSet(name, displayName, head, chest, legs, feet);
+        ArmorSet set = new ArmorSet(name, head, chest, legs, feet);
 
         ARMOR_SETS.add(set);
 
         return set;
     }
 
-    private static ArmorSet create(String name, String displayName, BiFunction<ArmorItem.Type, Item.Properties, ArmorItem> item, Item.Properties properties) {
+    private static ArmorSet create(String name, BiFunction<ArmorItem.Type, Item.Properties, ArmorItem> item, Item.Properties properties) {
         return create(name, Map.of(
                 ArmorItem.Type.HELMET, "helmet",
                 ArmorItem.Type.CHESTPLATE, "chestplate",
                 ArmorItem.Type.LEGGINGS, "leggings",
-                ArmorItem.Type.BOOTS, "boots"), displayName, item, properties);
+                ArmorItem.Type.BOOTS, "boots"), item, properties);
     }
 
-    private static ArmorSet createGi(String name, String displayName, BiFunction<ArmorItem.Type, Item.Properties, ArmorItem> item, Item.Properties properties, boolean elemental, boolean special) {
+    private static ArmorSet createGi(String name, BiFunction<ArmorItem.Type, Item.Properties, ArmorItem> item, Item.Properties properties, boolean elemental, boolean special) {
         ArmorSet set = create(name, Map.of(
                 ArmorItem.Type.HELMET, "hood",
                 ArmorItem.Type.CHESTPLATE, "jacket",
                 ArmorItem.Type.LEGGINGS, "pants",
-                ArmorItem.Type.BOOTS, "boots"), displayName, item, properties);
+                ArmorItem.Type.BOOTS, "boots"), item, properties);
         if (elemental && special)
             SPECIAL_ELEMENTAL_GI_SETS.add(set);
         else if (elemental)

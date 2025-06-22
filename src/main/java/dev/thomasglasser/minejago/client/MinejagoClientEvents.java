@@ -486,10 +486,10 @@ public class MinejagoClientEvents {
             event.insertAfter(MinejagoItems.BAMBOO_STAFF.toStack(), MinejagoItems.BONE_KNIFE.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 
             // Armor Sets
-            event.insertAfter(Items.NETHERITE_BOOTS.getDefaultInstance(), MinejagoArmors.BLACK_GI_SET.HEAD.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-            event.insertAfter(MinejagoArmors.BLACK_GI_SET.HEAD.toStack(), MinejagoArmors.BLACK_GI_SET.CHEST.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-            event.insertAfter(MinejagoArmors.BLACK_GI_SET.CHEST.toStack(), MinejagoArmors.BLACK_GI_SET.LEGS.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-            event.insertAfter(MinejagoArmors.BLACK_GI_SET.LEGS.toStack(), MinejagoArmors.BLACK_GI_SET.FEET.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(Items.NETHERITE_BOOTS.getDefaultInstance(), MinejagoArmors.BLACK_GI_SET.head().toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoArmors.BLACK_GI_SET.head().toStack(), MinejagoArmors.BLACK_GI_SET.chest().toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoArmors.BLACK_GI_SET.chest().toStack(), MinejagoArmors.BLACK_GI_SET.legs().toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(MinejagoArmors.BLACK_GI_SET.legs().toStack(), MinejagoArmors.BLACK_GI_SET.feet().toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 
             // Unique Armor
             List<ItemStack> skeletalChestplates = MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAllAsStacks();

@@ -10,6 +10,7 @@ import dev.thomasglasser.tommylib.api.world.entity.projectile.ThrownSword;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.effect.MobEffectUtil;
@@ -70,7 +71,12 @@ public class Samukai extends SkulkinRaider implements GeoEntity {
     @Override
     public void performRangedAttack(LivingEntity target, float velocity) {
         for (int i = -1; i < 3; i++) {
-            ThrownSword thrownKnife = new ThrownSword(MinejagoEntityTypes.THROWN_BONE_KNIFE.get(), this.level(), this, MinejagoItems.BONE_KNIFE.get().getDefaultInstance(), MinejagoSoundEvents.BONE_KNIFE_IMPACT);
+            ThrownSword thrownKnife = new ThrownSword(MinejagoEntityTypes.THROWN_BONE_KNIFE.get(), this, level(), MinejagoItems.BONE_KNIFE.toStack(), 4.5f, MinejagoSoundEvents.BONE_KNIFE_IMPACT.get(), SoundEvents.TRIDENT_RETURN) {
+                @Override
+                protected ItemStack getDefaultPickupItem() {
+                    return MinejagoItems.BONE_KNIFE.toStack();
+                }
+            };
             double d = target.getX() - this.getX();
             double e = target.getY(0.3333333333333333) - thrownKnife.getY() + i;
             double f = target.getZ() - this.getZ();

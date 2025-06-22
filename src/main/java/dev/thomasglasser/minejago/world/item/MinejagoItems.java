@@ -32,6 +32,7 @@ import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -42,6 +43,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.SmithingTemplateItem;
 import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.armortrim.TrimPattern;
 import net.minecraft.world.item.component.WritableBookContent;
@@ -54,18 +57,13 @@ public class MinejagoItems {
 
     public static final String MOD_NEEDED = "error.mod_needed";
 
-    public static final DeferredItem<ModeledThrowableSwordItem> BAMBOO_STAFF = register("bamboo_staff", () -> new ModeledThrowableSwordItem(MinejagoEntityTypes.THROWN_BAMBOO_STAFF::value, MinejagoSoundEvents.BAMBOO_STAFF_THROW, MinejagoSoundEvents.BAMBOO_STAFF_IMPACT, MinejagoTiers.BONE, new Item.Properties()) {
+    public static final DeferredItem<ModeledThrowableSwordItem> BAMBOO_STAFF = register("bamboo_staff", () -> new ModeledThrowableSwordItem(MinejagoEntityTypes.THROWN_BAMBOO_STAFF::value, 5, MinejagoSoundEvents.BAMBOO_STAFF_THROW.get(), MinejagoSoundEvents.BAMBOO_STAFF_IMPACT.get(), SoundEvents.TRIDENT_RETURN, MinejagoTiers.BONE, new Item.Properties().attributes(SwordItem.createAttributes(Tiers.WOOD, 5, -1.4F))) {
         @Override
         public void createBewlrProvider(Consumer<BewlrProvider> consumer) {
-            consumer.accept(new BewlrProvider() {
-                @Override
-                public BlockEntityWithoutLevelRenderer getBewlr() {
-                    return MinejagoClientUtils.getBewlr();
-                }
-            });
+            consumer.accept(MinejagoClientUtils::getBewlr);
         }
     });
-    public static final DeferredItem<ThrowableSwordItem> BONE_KNIFE = register("bone_knife", () -> new ThrowableSwordItem(MinejagoEntityTypes.THROWN_BONE_KNIFE::value, MinejagoSoundEvents.BONE_KNIFE_THROW, MinejagoSoundEvents.BONE_KNIFE_IMPACT, MinejagoTiers.BONE, new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final DeferredItem<ThrowableSwordItem> BONE_KNIFE = register("bone_knife", () -> new ThrowableSwordItem(MinejagoEntityTypes.THROWN_BONE_KNIFE::value, 4.5f, MinejagoSoundEvents.BONE_KNIFE_THROW.get(), MinejagoSoundEvents.BONE_KNIFE_IMPACT.get(), SoundEvents.TRIDENT_RETURN, MinejagoTiers.BONE, new Item.Properties().attributes(SwordItem.createAttributes(Tiers.IRON, 2.5f, -0.4F)).rarity(Rarity.UNCOMMON)));
     public static final DeferredItem<Item> SCROLL = register("scroll", () -> new Item(new Item.Properties()));
     public static final DeferredItem<WritableScrollItem> WRITABLE_SCROLL = register("writable_scroll", () -> new WritableScrollItem(new Item.Properties().stacksTo(1).component(DataComponents.WRITABLE_BOOK_CONTENT, WritableBookContent.EMPTY)));
     public static final DeferredItem<WrittenScrollItem> WRITTEN_SCROLL = register("written_scroll", () -> new WrittenScrollItem(new Item.Properties().stacksTo(16).component(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true)));

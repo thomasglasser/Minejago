@@ -1,6 +1,6 @@
 package dev.thomasglasser.minejago.client.renderer.entity.layers;
 
-import dev.thomasglasser.tommylib.api.network.codec.ExtraStreamCodecs;
+import dev.thomasglasser.tommylib.api.util.TommyLibExtraStreamCodecs;
 import dev.thomasglasser.tommylib.api.world.entity.player.SpecialPlayerUtils;
 import java.util.Set;
 import java.util.UUID;
@@ -11,7 +11,7 @@ import net.minecraft.network.codec.StreamCodec;
 public record VipData(BetaTesterCosmeticOptions choice, boolean displayBeta, boolean displayDev, boolean displayLegacyDev) {
 
     public static final StreamCodec<FriendlyByteBuf, VipData> STREAM_CODEC = StreamCodec.composite(
-            ExtraStreamCodecs.forEnum(BetaTesterCosmeticOptions.class), VipData::choice,
+            TommyLibExtraStreamCodecs.forEnum(BetaTesterCosmeticOptions.class), VipData::choice,
             ByteBufCodecs.BOOL, VipData::displayBeta,
             ByteBufCodecs.BOOL, VipData::displayDev,
             ByteBufCodecs.BOOL, VipData::displayLegacyDev,

@@ -52,7 +52,7 @@ public class ElementsEntry extends IndexModeEntryProvider {
 
     @Override
     protected BookIconModel entryIcon() {
-        ItemStack icon = MinejagoArmors.TRAINEE_GI_SET.CHEST.toStack();
+        ItemStack icon = MinejagoArmors.TRAINEE_GI_SET.chest().toStack();
         icon.set(MinejagoDataComponents.ELEMENT, Elements.FIRE);
         return BookIconModel.create(icon);
     }

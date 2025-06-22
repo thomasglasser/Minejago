@@ -338,23 +338,13 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         // Armors
         MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAllAsItems().forEach(item -> add(item, "Skeletal Chestplate"));
         add(MinejagoArmors.SAMUKAIS_CHESTPLATE.get(), "Samukai's Chestplate");
-        addGi(MinejagoArmors.NORMAL_GI_SETS);
-        addGi(MinejagoArmors.ELEMENTAL_GI_SETS);
-        addGi(MinejagoArmors.SPECIAL_ELEMENTAL_GI_SETS);
+//        addGi(MinejagoArmors.NORMAL_GI_SETS);
+//        addGi(MinejagoArmors.ELEMENTAL_GI_SETS);
+//        addGi(MinejagoArmors.SPECIAL_ELEMENTAL_GI_SETS);
     }
 
-    protected void addGi(List<ArmorSet> armorSets) {
-        armorSets.forEach(set -> set.getAllAsItems().forEach(item -> {
-            String nameForSlot = switch (set.getForItem(item)) {
-                case FEET -> "Boots";
-                case LEGS -> "Pants";
-                case CHEST -> "Jacket";
-                case HEAD -> "Hood";
-                default -> null;
-            };
-
-            add(item, set.getDisplayName() + " " + nameForSlot);
-        }));
+    protected void addGi(ArmorSet set, String displayName) {
+        add(set, displayName, "Hood", "Jacket", "Pants", "Boots");
     }
 
     protected void addBlocks() {
