@@ -347,7 +347,7 @@ publishing {
 				licenses {
 					license {
 						name = project.license
-						url = "https://github.com/thomasglasser/${github_name}/blob/${minecraft_version}/LICENSE.md"
+						url = project.license_url
 					}
 				}
 				developers {
