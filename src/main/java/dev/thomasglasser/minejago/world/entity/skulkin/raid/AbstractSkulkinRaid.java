@@ -2,7 +2,6 @@ package dev.thomasglasser.minejago.world.entity.skulkin.raid;
 
 import com.google.common.collect.Sets;
 import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
-import dev.thomasglasser.minejago.advancements.criterion.SkulkinRaidTrigger;
 import dev.thomasglasser.minejago.core.registries.MinejagoBuiltInRegistries;
 import dev.thomasglasser.minejago.network.ClientboundAddSkulkinRaidPayload;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
@@ -154,7 +153,7 @@ public abstract class AbstractSkulkinRaid {
 
     public void setStarted() {
         this.started = true;
-        this.raidEvent.getPlayers().forEach(serverPlayer -> MinejagoCriteriaTriggers.SKULKIN_RAID_STATUS_CHANGED.get().trigger(serverPlayer, SkulkinRaidTrigger.Status.STARTED));
+        this.raidEvent.getPlayers().forEach(serverPlayer -> MinejagoCriteriaTriggers.STARTED_SKULKIN_RAID.get().trigger(serverPlayer));
     }
 
     public boolean isActive() {
@@ -175,7 +174,7 @@ public abstract class AbstractSkulkinRaid {
 
     public void setVictory() {
         this.status = SkulkinRaidStatus.VICTORY;
-        this.raidEvent.getPlayers().forEach(serverPlayer -> MinejagoCriteriaTriggers.SKULKIN_RAID_STATUS_CHANGED.get().trigger(serverPlayer, SkulkinRaidTrigger.Status.WON));
+        this.raidEvent.getPlayers().forEach(serverPlayer -> MinejagoCriteriaTriggers.WON_SKULKIN_RAID.get().trigger(serverPlayer));
     }
 
     public boolean isDefeat() {

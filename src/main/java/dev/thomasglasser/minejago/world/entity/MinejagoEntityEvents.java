@@ -851,7 +851,7 @@ public class MinejagoEntityEvents {
             entity.getData(MinejagoAttachmentTypes.FOCUS).addExhaustion(FocusConstants.EXHAUSTION_SHADOW_FORM_NORMAL_ABILITY);
         }
         if (/*TommyLibServices.ENTITY.getPersistentData(entity).getBoolean(FrozenMobEffect.TAG_FROZEN) &&*/ !(event.getSource().is(DamageTypeTags.IS_FREEZING) || event.getSource().is(DamageTypeTags.BYPASSES_INVULNERABILITY))) {
-            event.setCanceled(true);
+//            event.setCanceled(true);
             if ((event.getSource().is(DamageTypeTags.IS_FIRE) || event.getSource().getWeaponItem() != null && event.getSource().getWeaponItem().canPerformAction(ItemAbilities.PICKAXE_DIG)) && entity.getRandom().nextInt(10) == 0) {
                 entity.removeEffect(MinejagoMobEffects.FROZEN);
                 // TODO: Remove when TEL fixes onRemove

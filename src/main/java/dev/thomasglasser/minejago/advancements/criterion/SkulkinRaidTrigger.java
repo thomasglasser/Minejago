@@ -1,7 +1,7 @@
 package dev.thomasglasser.minejago.advancements.criterion;
 
+import com.google.common.base.Predicates;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.thomasglasser.minejago.advancements.MinejagoCriteriaTriggers;
 import java.util.Optional;
@@ -12,37 +12,33 @@ import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.server.level.ServerPlayer;
 
 public class SkulkinRaidTrigger extends SimpleCriterionTrigger<SkulkinRaidTrigger.TriggerInstance> {
-    public SkulkinRaidTrigger() {}
-
     public Codec<SkulkinRaidTrigger.TriggerInstance> codec() {
-        return SkulkinRaidTrigger.TriggerInstance.CODEC;
+        return TriggerInstance.CODEC;
     }
 
-    public void trigger(ServerPlayer serverPlayer, Status status) {
-        this.trigger(serverPlayer, triggerInstance -> triggerInstance.status.isPresent() && triggerInstance.status.get() == status);
+    public void trigger(ServerPlayer player) {
+        this.trigger(player, Predicates.alwaysTrue());
     }
 
-    public record TriggerInstance(Optional<ContextAwarePredicate> player, Optional<Status> status) implements SimpleCriterionTrigger.SimpleInstance {
-        public static final Codec<SkulkinRaidTrigger.TriggerInstance> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
-                EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(SkulkinRaidTrigger.TriggerInstance::player),
-                Codec.STRING.comapFlatMap(s -> DataResult.success(Status.of(s)), Status::toString).optionalFieldOf("status").forGetter(TriggerInstance::status))
-                .apply(instance, SkulkinRaidTrigger.TriggerInstance::new));
+    public record TriggerInstance(Optional<ContextAwarePredicate> player) implements SimpleInstance {
+        public static final Codec<TriggerInstance> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
+                EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(TriggerInstance::player))
+                .apply(instance, TriggerInstance::new));
 
-        public static Criterion<SkulkinRaidTrigger.TriggerInstance> raidStarted() {
-            return MinejagoCriteriaTriggers.SKULKIN_RAID_STATUS_CHANGED.get().createCriterion(new TriggerInstance(Optional.empty(), Optional.of(Status.STARTED)));
+        public static Criterion<TriggerInstance> raidStarted() {
+            return raidStarted(Optional.empty());
         }
 
-        public static Criterion<SkulkinRaidTrigger.TriggerInstance> raidWon() {
-            return MinejagoCriteriaTriggers.SKULKIN_RAID_STATUS_CHANGED.get().createCriterion(new TriggerInstance(Optional.empty(), Optional.of(Status.WON)));
+        public static Criterion<TriggerInstance> raidWon() {
+            return raidWon(Optional.empty());
         }
-    }
 
-    public enum Status {
-        STARTED,
-        WON;
+        public static Criterion<TriggerInstance> raidStarted(Optional<ContextAwarePredicate> player) {
+            return MinejagoCriteriaTriggers.STARTED_SKULKIN_RAID.get().createCriterion(new TriggerInstance(player));
+        }
 
-        public static Status of(String s) {
-            return valueOf(s.toUpperCase());
+        public static Criterion<TriggerInstance> raidWon(Optional<ContextAwarePredicate> player) {
+            return MinejagoCriteriaTriggers.WON_SKULKIN_RAID.get().createCriterion(new TriggerInstance(player));
         }
     }
 }

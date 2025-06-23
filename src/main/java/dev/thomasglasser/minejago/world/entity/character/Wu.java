@@ -8,6 +8,7 @@ import dev.thomasglasser.minejago.network.ClientboundSetGlowingTag;
 import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.tags.ElementTags;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
+import dev.thomasglasser.minejago.world.entity.ElementGiver;
 import dev.thomasglasser.minejago.world.entity.MinejagoEntitySerializers;
 import dev.thomasglasser.minejago.world.entity.ai.behavior.GiveElementAndGi;
 import dev.thomasglasser.minejago.world.entity.ai.behavior.TrackSpinjitzuCourseCompletion;
@@ -73,7 +74,7 @@ import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.constant.DefaultAnimations;
 
-public class Wu extends Character implements SpinjitzuCourseTracker {
+public class Wu extends Character implements SpinjitzuCourseTracker, ElementGiver {
     public static final String ELEMENT_GIVEN_KEY = "gui.element_selection.element_given";
     public static final String NO_ELEMENT_GIVEN_KEY = "gui.element_selection.no_element_given";
 
@@ -134,7 +135,7 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
 
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
-        boolean canGiveElement = !player.getData(MinejagoAttachmentTypes.ELEMENT).given() || MinejagoServerConfig.get().allowChange.get();
+        boolean canGiveElement = !player.getData(MinejagoAttachmentTypes.ELEMENT).received() || MinejagoServerConfig.get().allowChange.get();
         if (canGiveElement && player.getInventory().hasAnyMatching(itemStack -> itemStack.has(MinejagoDataComponents.GOLDEN_WEAPONS_MAP.get()))) {
 
             if (!MinejagoServerConfig.get().drainPool.get() || (elementsToGive.size() <= 1)) {
@@ -149,7 +150,7 @@ public class Wu extends Character implements SpinjitzuCourseTracker {
                     TommyLibServices.NETWORK.sendToClient(new ClientboundOpenElementSelectionScreenPayload(elementsToGive, Optional.of(this.getId())), serverPlayer);
                 } else if (this.distanceTo(serverPlayer) > 1.0f) {
                     Holder<Element> oldElement = level().holderOrThrow(serverPlayer.getData(MinejagoAttachmentTypes.ELEMENT).element());
-                    if (serverPlayer.getData(MinejagoAttachmentTypes.ELEMENT).given() && oldElement != Elements.NONE && MinejagoServerConfig.get().drainPool.get())
+                    if (serverPlayer.getData(MinejagoAttachmentTypes.ELEMENT).received() && oldElement != Elements.NONE && MinejagoServerConfig.get().drainPool.get())
                         addElementsToGive(oldElement);
                     Holder<Element> newElement = elementsToGive.get(random.nextInt(elementsToGive.size()));
                     if (newElement.getKey() != Elements.NONE) removeElementsToGive(newElement);

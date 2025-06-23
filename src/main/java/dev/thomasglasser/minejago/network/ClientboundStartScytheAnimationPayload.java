@@ -6,6 +6,8 @@ import dev.thomasglasser.tommylib.api.client.ClientUtils;
 import dev.thomasglasser.tommylib.api.client.animation.PlayerAnimationHandler;
 import dev.thomasglasser.tommylib.api.network.ExtendedPacketPayload;
 import dev.thomasglasser.tommylib.api.util.TommyLibExtraStreamCodecs;
+import java.util.Optional;
+import java.util.UUID;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -13,9 +15,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Optional;
-import java.util.UUID;
 
 public record ClientboundStartScytheAnimationPayload(UUID uuid, ItemAnimations.ScytheOfQuakes startAnim, Optional<ItemAnimations.ScytheOfQuakes> goAnim) implements ExtendedPacketPayload {
 

@@ -21,8 +21,9 @@ import net.minecraft.resources.ResourceLocation;
 
 public record Element(TextColor color, Component tagline, Optional<ParticleOptions> borderParticle, boolean hasSets, boolean hasSpecialSets, Display display) {
 
+    public static final TextColor DEFAULT_COLOR = TextColor.fromLegacyFormat(ChatFormatting.GRAY);
     public static final Codec<Element> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            TextColor.CODEC.optionalFieldOf("color", TextColor.fromLegacyFormat(ChatFormatting.GRAY)).forGetter(Element::color),
+            TextColor.CODEC.optionalFieldOf("color", DEFAULT_COLOR).forGetter(Element::color),
             ComponentSerialization.CODEC.optionalFieldOf("tagline", Component.empty()).forGetter(Element::tagline),
             ParticleTypes.CODEC.optionalFieldOf("border_particle").forGetter(Element::borderParticle),
             Codec.BOOL.optionalFieldOf("has_sets", false).forGetter(Element::hasSets),
@@ -70,7 +71,7 @@ public record Element(TextColor color, Component tagline, Optional<ParticleOptio
 
         public Builder(ResourceLocation id) {
             this.id = id;
-            this.color = TextColor.fromLegacyFormat(ChatFormatting.GRAY);
+            this.color = DEFAULT_COLOR;
             this.tagline = Component.empty();
             this.borderParticle = null;
             this.hasSets = false;
@@ -89,7 +90,7 @@ public record Element(TextColor color, Component tagline, Optional<ParticleOptio
         }
 
         public Builder color(String colorCode) {
-            this.color = TextColor.parseColor(colorCode).result().orElse(TextColor.fromLegacyFormat(ChatFormatting.GRAY));
+            this.color = TextColor.parseColor(colorCode).result().orElse(DEFAULT_COLOR);
             return this;
         }
 

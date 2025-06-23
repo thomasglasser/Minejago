@@ -60,21 +60,21 @@ public class MinejagoGuis {
 
                     guiGraphics.blit(EMPTY_FOCUS_LOCATION, x, y, 0, 0, 9, 9, 9, 9);
                     if (i * 2 + 1 < focusLevel)
-                        renderEyes(guiGraphics, x, y, OUTER_FULL_FOCUS_LOCATION, INNER_FULL_FOCUS_LOCATION, color);
+                        renderEye(guiGraphics, x, y, OUTER_FULL_FOCUS_LOCATION, INNER_FULL_FOCUS_LOCATION, color);
                     if (i * 2 + 21 < focusLevel)
-                        renderEyes(guiGraphics, x, y, OUTER_FULL_MEGA_FOCUS_LOCATION, INNER_FULL_MEGA_FOCUS_LOCATION, color);
+                        renderEye(guiGraphics, x, y, OUTER_FULL_MEGA_FOCUS_LOCATION, INNER_FULL_MEGA_FOCUS_LOCATION, color);
 
                     if (i * 2 + 1 == focusLevel) {
-                        renderEyes(guiGraphics, x, y, OUTER_HALF_FOCUS_LOCATION, INNER_HALF_FOCUS_LOCATION, color);
+                        renderEye(guiGraphics, x, y, OUTER_HALF_FOCUS_LOCATION, INNER_HALF_FOCUS_LOCATION, color);
                     }
                     if (i * 2 + 21 == focusLevel)
-                        renderEyes(guiGraphics, x, y, HALF_MEGA_FOCUS_LOCATION, null, color);
+                        renderEye(guiGraphics, x, y, HALF_MEGA_FOCUS_LOCATION, null, color);
                 }
             }
         }
     }
 
-    private static void renderEyes(GuiGraphics guiGraphics, int x, int y, ResourceLocation outer, @Nullable ResourceLocation inner, int color) {
+    private static void renderEye(GuiGraphics guiGraphics, int x, int y, ResourceLocation outer, @Nullable ResourceLocation inner, int color) {
         if (inner != null) guiGraphics.innerBlit(inner, x, x + 9, y, y + 9, 0, 0, 1, 0, 1, FastColor.ARGB32.red(color) / 255f, FastColor.ARGB32.green(color) / 255f, FastColor.ARGB32.blue(color) / 255f, 1);
         guiGraphics.blit(outer, x, y, 0, 0, 9, 9, 9, 9);
     }

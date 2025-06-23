@@ -30,7 +30,7 @@ public class MinejagoStoryAdvancements extends ExtendedAdvancementGenerator {
 //        ItemStack fireHead = MinejagoArmors.TRAINEE_GI_SET.HEAD.get().getDefaultInstance();
 //        fireHead.set(MinejagoDataComponents.ELEMENT.get(), Elements.FIRE);
 //        AdvancementHolder getElement = create(getFourWeaponsMaps, fireHead, "get_element", AdvancementType.TASK, true, true, false, null,
-//                "get_element", GotElementTrigger.TriggerInstance.gotElement(), "I've Got the Power!", "Discover your elemental power");
+//                "get_element", ReceivedElementTrigger.TriggerInstance.gotElement(), "I've Got the Power!", "Discover your elemental power");
 //
 //        Map<String, Criterion<?>> goldenWeaponsStructures = Map.of(
 //                "enter_cave_of_despair", PlayerTrigger.TriggerInstance.located(LocationPredicate.Builder.inStructure(registries.lookupOrThrow(Registries.STRUCTURE).getOrThrow(MinejagoStructures.CAVE_OF_DESPAIR)))

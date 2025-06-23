@@ -6,11 +6,12 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Objects;
 
+// TODO: Load and handle these better
 public class ItemAnimations {
     private static final List<KeyframeAnimation> SCYTHE_OF_QUAKES = AnimationSerializing.deserializeAnimation(new InputStreamReader(Objects.requireNonNull(ItemAnimations.class.getClassLoader().getResourceAsStream("assets/minejago/animations/player/scythe_of_quakes.animation.json"))));
 
     public enum ScytheOfQuakes {
-        SLAM_START(SCYTHE_OF_QUAKES.get(0)),
+        SLAM_START(SCYTHE_OF_QUAKES.getFirst()),
         SLAM_RUMBLE(SCYTHE_OF_QUAKES.get(1)),
         BEAM_START(SCYTHE_OF_QUAKES.get(2)),
         BEAM_ACTIVE(SCYTHE_OF_QUAKES.get(3));

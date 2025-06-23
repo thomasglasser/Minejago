@@ -49,7 +49,6 @@ import dev.thomasglasser.tommylib.api.data.lang.ExtendedEnUsLanguageProvider;
 import dev.thomasglasser.tommylib.api.registration.DeferredHolder;
 import dev.thomasglasser.tommylib.api.registration.DeferredItem;
 import dev.thomasglasser.tommylib.api.world.item.armor.ArmorSet;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -228,7 +227,7 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(Wu.NO_ELEMENT_GIVEN_KEY, "You feel no new element rise from within. You are not an elemental master...");
         add(Wu.ELEMENT_GIVEN_KEY, "<%s> %s, Master of %s. %s");
 
-        add("gui.choose", "Choose");
+        add(ElementSelectionScreen.GUI_CHOOSE, "Choose");
         add(ElementSelectionScreen.TITLE, "Select Element");
 
         add("block.minejago.teapot.waila.potion", "Potion: %s");
@@ -531,9 +530,9 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         addConfig(MinejagoServerConfig.get().enableSkulkinRaids, "Enable Skulkin Raids", "Enable Skulkin Raids on Four Weapons structures");
 
         addConfigSection(MinejagoServerConfig.ELEMENTS, "Elements", "Settings for elements");
-        addConfig(MinejagoServerConfig.get().allowChoose, "Allow Choosing Element", "Allow players to choose the element given to them by interacting with Master Wu");
+        addConfig(MinejagoServerConfig.get().allowChoose, "Allow Choosing Element", "Allow players to choose the element they receive by interacting with Master Wu");
         addConfig(MinejagoServerConfig.get().allowChange, "Allow Changing Element", "Allow players to get a new element by interacting with Master Wu again");
-        addConfig(MinejagoServerConfig.get().drainPool, "Drain Element Pool", "Remove an element from the option list once given and reset when all elements have been given");
+        addConfig(MinejagoServerConfig.get().drainPool, "Drain Element Pool", "Remove an element from the option list once received and reset when all elements have been received");
         addConfig(MinejagoServerConfig.get().enableNoElement, "Enable No Element", "Enable players to receive no element from Master Wu");
 
         addConfigSection(MinejagoServerConfig.SPINJITZU, "Spinjitzu", "Settings for Spinjitzu");

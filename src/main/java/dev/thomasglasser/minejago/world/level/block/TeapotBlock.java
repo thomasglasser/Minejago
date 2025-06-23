@@ -141,7 +141,7 @@ public class TeapotBlock extends BaseEntityBlock {
                             filled.set(DataComponents.POTION_CONTENTS, new PotionContents(be.getPotion()));
                             pPlayer.addItem(filled);
                             be.take(fillable.cups());
-                            MinejagoCriteriaTriggers.BREWED_TEA.get().trigger((ServerPlayer) pPlayer, be.getPotion());
+                            MinejagoCriteriaTriggers.BREWED_TEA.get().trigger((ServerPlayer) pPlayer, be.getPotion().getKey());
                             pLevel.playSound(null, pPos, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
                             be.giveExperienceForCup((ServerLevel) pLevel, pPos.getCenter());
                         } else if (be.hasRecipe(inHand, pLevel)) {
