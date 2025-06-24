@@ -54,7 +54,7 @@ public class CharacterRenderer<T extends Character> extends GeoEntityRenderer<T>
                 // Return the items relevant to the bones being rendered for additional rendering
                 return switch (bone.getName()) {
                     case LEFT_BOOT, RIGHT_BOOT -> this.bootsStack;
-                    case LEFT_ARMOR_LEG, RIGHT_ARMOR_LEG -> this.leggingsStack;
+                    case LEFT_ARMOR_LEG, RIGHT_ARMOR_LEG, BODY -> this.leggingsStack;
                     case CHESTPLATE, RIGHT_SLEEVE, LEFT_SLEEVE -> this.chestplateStack;
                     case HELMET -> this.helmetStack;
                     default -> null;
@@ -66,7 +66,7 @@ public class CharacterRenderer<T extends Character> extends GeoEntityRenderer<T>
             protected EquipmentSlot getEquipmentSlotForBone(GeoBone bone, ItemStack stack, T animatable) {
                 return switch (bone.getName()) {
                     case LEFT_BOOT, RIGHT_BOOT -> EquipmentSlot.FEET;
-                    case LEFT_ARMOR_LEG, RIGHT_ARMOR_LEG -> EquipmentSlot.LEGS;
+                    case LEFT_ARMOR_LEG, RIGHT_ARMOR_LEG, BODY -> EquipmentSlot.LEGS;
                     case RIGHT_SLEEVE -> !animatable.isLeftHanded() ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
                     case LEFT_SLEEVE -> !animatable.isLeftHanded() ? EquipmentSlot.OFFHAND : EquipmentSlot.MAINHAND;
                     case CHESTPLATE -> EquipmentSlot.CHEST;
@@ -83,7 +83,7 @@ public class CharacterRenderer<T extends Character> extends GeoEntityRenderer<T>
                     case RIGHT_BOOT, RIGHT_ARMOR_LEG -> baseModel.rightLeg;
                     case RIGHT_SLEEVE -> baseModel.rightArm;
                     case LEFT_SLEEVE -> baseModel.leftArm;
-                    case CHESTPLATE -> baseModel.body;
+                    case CHESTPLATE, BODY -> baseModel.body;
                     case HELMET -> baseModel.head;
                     default -> super.getModelPartForBone(bone, slot, stack, animatable, baseModel);
                 };
