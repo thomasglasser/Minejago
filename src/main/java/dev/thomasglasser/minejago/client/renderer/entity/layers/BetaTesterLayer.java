@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.thomasglasser.minejago.client.MinejagoClientUtils;
 import dev.thomasglasser.minejago.client.model.BambooHatModel;
-import java.util.Calendar;
+import dev.thomasglasser.tommylib.api.client.ClientUtils;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -16,39 +16,33 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
 public class BetaTesterLayer<S extends AbstractClientPlayer> extends RenderLayer<S, PlayerModel<S>> {
+    private final boolean holidayTextures;
     private final BambooHatModel bambooHatModel;
-    private final boolean xmasTextures;
 
     public BetaTesterLayer(RenderLayerParent<S, PlayerModel<S>> renderer, EntityModelSet modelSet) {
         super(renderer);
-        this.bambooHatModel = new BambooHatModel(modelSet.bakeLayer(BambooHatModel.LAYER_LOCATION));
+        this.holidayTextures = ClientUtils.isHoliday();
 
-        Calendar calendar = Calendar.getInstance();
-        this.xmasTextures = (calendar.get(Calendar.MONTH) + 1 == 12 && calendar.get(Calendar.DATE) >= 24 && calendar.get(Calendar.DATE) <= 26);
+        this.bambooHatModel = new BambooHatModel(modelSet.bakeLayer(BambooHatModel.LAYER_LOCATION));
     }
 
     @Override
     protected ResourceLocation getTextureLocation(S player) {
         return switch (MinejagoClientUtils.betaChoice(player)) {
-            case BAMBOO_HAT -> {
-                if (xmasTextures)
-                    yield BambooHatModel.HOLIDAY_TEXTURE;
-                else
-                    yield BambooHatModel.TEXTURE;
-            }
-            case null -> null;
+            case BAMBOO_HAT -> holidayTextures ? BambooHatModel.HOLIDAY_TEXTURE : BambooHatModel.TEXTURE;
         };
     }
 
     @Override
-    public void render(PoseStack poseStack, MultiBufferSource multiBufferSource, int i, S player, float v, float v1, float v2, float v3, float v4, float v5) {
-        if (MinejagoClientUtils.renderBetaTesterLayer(player)) {
-            VertexConsumer vertexConsumer = multiBufferSource.getBuffer(RenderType.entityCutout(getTextureLocation(player)));
+    public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, S player, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
+        if (MinejagoClientUtils.shouldRenderBetaTesterLayer(player)) {
+            poseStack.pushPose();
+            VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.entityCutout(getTextureLocation(player)));
             getParentModel().getHead().translateAndRotate(poseStack);
             switch (MinejagoClientUtils.betaChoice(player)) {
-                case BAMBOO_HAT -> bambooHatModel.renderToBuffer(poseStack, vertexConsumer, i, OverlayTexture.NO_OVERLAY);
-                case null -> {}
+                case BAMBOO_HAT -> bambooHatModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
             }
+            poseStack.popPose();
         }
     }
 }

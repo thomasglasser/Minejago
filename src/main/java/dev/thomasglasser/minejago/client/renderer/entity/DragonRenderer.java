@@ -13,8 +13,12 @@ public class DragonRenderer<T extends Dragon> extends GeoEntityRenderer<T> {
     private static final String SADDLE = "saddle";
     private static final String CHESTS = "chests";
 
-    public DragonRenderer(EntityRendererProvider.Context renderManager, ResourceLocation entityLoc) {
-        super(renderManager, new DefaultedEntityGeoModel<>(entityLoc.withPrefix("dragon/"), true));
+    public DragonRenderer(EntityRendererProvider.Context renderManager, ResourceLocation entityId) {
+        super(renderManager, new DefaultedEntityGeoModel<>(makeDragonLocation(entityId), true));
+    }
+
+    public static ResourceLocation makeDragonLocation(ResourceLocation entityId) {
+        return entityId.withPrefix("dragon/");
     }
 
     @Override

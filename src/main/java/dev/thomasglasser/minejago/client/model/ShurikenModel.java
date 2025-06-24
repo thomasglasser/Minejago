@@ -34,15 +34,15 @@ public class ShurikenModel extends Model {
 
         PartDefinition shuriken = partdefinition.addOrReplaceChild("shuriken", CubeListBuilder.create().texOffs(0, 0).addBox(-2.5F, 1.75F, -1.0F, 5.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.5F, 20.25F, 0.0F));
 
-        PartDefinition cube2_r1 = shuriken.addOrReplaceChild("cube2_r1", CubeListBuilder.create().texOffs(0, 0).addBox(-2.9F, -1.0F, -1.0F, 5.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(1.9F, -1.25F, 0.0F, 0.0F, 0.0F, -2.0944F));
+        PartDefinition cube_r1 = shuriken.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(0, 0).addBox(-2.9F, -1.0F, -1.0F, 5.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(1.9F, -1.25F, 0.0F, 0.0F, 0.0F, -2.0944F));
 
-        PartDefinition cube_r1 = shuriken.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(0, 0).addBox(-4.3F, -1.0F, -1.0F, 5.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-3.0F, 0.65F, 0.0F, 0.0F, 0.0F, 2.0944F));
+        PartDefinition cube_r2 = shuriken.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(0, 0).addBox(-4.3F, -1.0F, -1.0F, 5.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-3.0F, 0.65F, 0.0F, 0.0F, 0.0F, 2.0944F));
 
-        PartDefinition cube_r2 = shuriken.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(0, 4).addBox(-1.5F, -2.0F, 0.0F, 3.0F, 4.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.5F, -3.55F, 0.0F, 0.0F, 0.0F, -3.1416F));
+        PartDefinition cube_r3 = shuriken.addOrReplaceChild("cube_r3", CubeListBuilder.create().texOffs(0, 4).addBox(-1.5F, -2.0F, 0.0F, 3.0F, 4.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.5F, -3.55F, 0.0F, 0.0F, 0.0F, -3.1416F));
 
-        PartDefinition cube_r3 = shuriken.addOrReplaceChild("cube_r3", CubeListBuilder.create().texOffs(0, 4).addBox(-1.5F, -2.0F, 0.0F, 3.0F, 4.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-3.1122F, 2.6993F, 0.0F, 0.0F, 0.0F, 1.0472F));
+        PartDefinition cube_r4 = shuriken.addOrReplaceChild("cube_r4", CubeListBuilder.create().texOffs(0, 4).addBox(-1.5F, -2.0F, 0.0F, 3.0F, 4.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-3.1122F, 2.6993F, 0.0F, 0.0F, 0.0F, 1.0472F));
 
-        PartDefinition cube_r4 = shuriken.addOrReplaceChild("cube_r4", CubeListBuilder.create().texOffs(0, 4).addBox(-1.5F, -1.9634F, 0.0F, 3.0F, 4.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(3.5778F, 1.8134F, 0.0F, 0.0F, 0.0F, -1.0472F));
+        PartDefinition cube_r5 = shuriken.addOrReplaceChild("cube_r5", CubeListBuilder.create().texOffs(0, 4).addBox(-1.5F, -1.9634F, 0.0F, 3.0F, 4.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(3.5778F, 1.8134F, 0.0F, 0.0F, 0.0F, -1.0472F));
 
         return LayerDefinition.create(meshdefinition, 16, 16);
     }
@@ -52,7 +52,7 @@ public class ShurikenModel extends Model {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int i, int i1, int i2) {
-        shuriken.render(poseStack, vertexConsumer, i, i1, i2);
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
+        shuriken.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
     }
 }

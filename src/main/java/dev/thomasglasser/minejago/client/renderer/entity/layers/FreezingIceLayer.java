@@ -28,6 +28,7 @@ public class FreezingIceLayer<E extends LivingEntity> extends RenderLayer<E, Ent
             int height = Mth.ceil(entity.getBbHeight());
             VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.entityTranslucentCull(FreezingIceModel.TEXTURE));
             if (/*TommyLibServices.ENTITY.getPersistentData(entity).getBoolean(FrozenMobEffect.TAG_FROZEN)*/false) {
+                // TODO: Switch to scaling the one cube
                 poseStack.translate(-width, 0, -width);
                 renderColumn(poseStack, vertexConsumer, packedLight, height);
                 for (float z = 0; z < width * 2 + 1; z++) {

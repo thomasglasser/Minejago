@@ -41,13 +41,13 @@ public class SkillCommand {
             return;
         }
         if (pSource.getEntity() == entity) {
-            pSource.sendSuccess(() -> Component.translatable(SUCCESS_SELF, Component.translatable(skill.toLanguageKey()), level), true);
+            pSource.sendSuccess(() -> Component.translatable(SUCCESS_SELF, skill.displayName(), level), true);
         } else {
             if (pSource.getLevel().getGameRules().getBoolean(GameRules.RULE_SENDCOMMANDFEEDBACK) && livingEntity instanceof Player player) {
-                player.displayClientMessage(Component.translatable(CHANGED, Component.translatable(skill.toLanguageKey()), level), false);
+                player.displayClientMessage(Component.translatable(CHANGED, skill.displayName(), level), false);
             }
 
-            pSource.sendSuccess(() -> Component.translatable(SUCCESS_OTHER, livingEntity.getDisplayName(), Component.translatable(skill.toLanguageKey()), level), true);
+            pSource.sendSuccess(() -> Component.translatable(SUCCESS_OTHER, livingEntity.getDisplayName(), skill.displayName(), level), true);
         }
     }
 
@@ -58,7 +58,7 @@ public class SkillCommand {
             if (entity instanceof LivingEntity livingEntity) {
                 SkillDataSet skillDataSet = livingEntity.getData(MinejagoAttachmentTypes.SKILL);
                 SkillData skillData = skillDataSet.get(skill);
-                pSource.getSource().sendSuccess(() -> Component.translatable(QUERY, Component.translatable(skill.toLanguageKey()), skillData.level()), false);
+                pSource.getSource().sendSuccess(() -> Component.translatable(QUERY, skill.displayName(), skillData.level()), false);
                 ++i;
             }
         }

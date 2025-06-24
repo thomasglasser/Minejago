@@ -267,7 +267,7 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(Skill.AGILITY, "Agility");
         add(Skill.STEALTH, "Stealth");
         add(Skill.DEXTERITY, "Dexterity");
-        add(Skill.TOOL_PROFICIENCY, "Tool Proficiency");
+        add(Skill.PROFICIENCY, "Proficiency");
 
         add(SkillScreen.TITLE, "Skills");
     }
@@ -298,7 +298,7 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
     }
 
     protected void add(Skill key, String name) {
-        add(key.toLanguageKey(), name);
+        add(key.displayName(), name);
     }
 
     protected void addItems() {
@@ -547,10 +547,6 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         addConfig(MinejagoClientConfig.get().betaTesterCosmeticChoice, "Beta Tester Cosmetic Choice", "The Beta Tester Cosmetic to be displayed (if eligible)");
         addConfig(MinejagoClientConfig.get().displayDevTeamCosmetic, "Display Dev Team Cosmetic", "Display the Dev Team cosmetic (if eligible)");
         addConfig(MinejagoClientConfig.get().displayLegacyDevTeamCosmetic, "Display Legacy Dev Team Cosmetic", "Display the Legacy Dev Team cosmetic (if eligible)");
-
-        addConfigSection(MinejagoClientConfig.FOCUS_BAR, "Focus Bar", "Settings for focus bar");
-        addConfig(MinejagoClientConfig.get().xOffset, "Horizontal Offset", "Horizontal pixels off from the normal position");
-        addConfig(MinejagoClientConfig.get().yOffset, "Vertical Offset", "Vertical pixels off from the normal position");
     }
 
     protected void addElement(ResourceKey<Element> key, String name, String tagline, String lore, String description) {

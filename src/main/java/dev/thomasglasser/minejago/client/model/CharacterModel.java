@@ -2,39 +2,29 @@ package dev.thomasglasser.minejago.client.model;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.entity.character.Character;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 
 public class CharacterModel<T extends Character> extends DefaultedEntityGeoModel<T> {
     public static final ResourceLocation ANIMATIONS = Minejago.modLoc("animations/entity/character/character.animation.json");
 
-    private final ResourceLocation slimModel;
-    private final boolean slim;
+    private static final ResourceLocation MODEL = Minejago.modLoc("layered_biped");
+    private static final ResourceLocation SLIM_MODEL = Minejago.modLoc("layered_biped_slim");
 
-    private ResourceLocation texture;
+    private final ResourceLocation textureLocation;
 
-    public CharacterModel(boolean slim) {
-        super(Minejago.modLoc("layered_biped"), true);
-        this.slimModel = buildFormattedModelPath(Minejago.modLoc("layered_biped_slim"));
-        this.slim = slim;
+    public CharacterModel(ResourceLocation entityId, boolean slim) {
+        super(slim ? SLIM_MODEL : MODEL, true);
+        this.textureLocation = entityId.withPrefix("textures/entity/character/").withSuffix(".png");
     }
 
-    public CharacterModel() {
-        this(false);
-    }
-
-    @Override
-    public ResourceLocation getModelResource(T animatable) {
-        return slim ? slimModel : super.getModelResource(animatable);
+    public CharacterModel(ResourceLocation entityId) {
+        this(entityId, false);
     }
 
     @Override
     public ResourceLocation getTextureResource(T animatable) {
-        if (texture == null) {
-            texture = Minejago.modLoc("textures/entity/character/" + BuiltInRegistries.ENTITY_TYPE.getKey(animatable.getType()).getPath() + ".png");
-        }
-        return texture;
+        return textureLocation;
     }
 
     @Override

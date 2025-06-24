@@ -8,13 +8,13 @@ import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.core.particles.SimpleParticleType;
 
-public class VaporsParticle extends TextureSheetParticle {
-    public VaporsParticle(ClientLevel pLevel, double pX, double pY, double pZ) {
+public class FleetingParticle extends TextureSheetParticle {
+    public FleetingParticle(ClientLevel pLevel, double pX, double pY, double pZ) {
         super(pLevel, pX, pY, pZ);
         this.lifetime = 10 + ((int) (Math.random() * 6));
     }
 
-    public VaporsParticle(ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
+    public FleetingParticle(ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
         super(pLevel, pX, pY, pZ, pXSpeed, pYSpeed, pZSpeed);
         this.lifetime = 10 + ((int) (Math.random() * 6));
     }
@@ -38,7 +38,7 @@ public class VaporsParticle extends TextureSheetParticle {
         }
 
         public Particle createParticle(SimpleParticleType pType, ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
-            VaporsParticle particle = new VaporsParticle(pLevel, pX, pY, pZ, pXSpeed, pYSpeed, pZSpeed);
+            FleetingParticle particle = new FleetingParticle(pLevel, pX, pY, pZ, pXSpeed, pYSpeed, pZSpeed);
             particle.pickSprite(this.sprites);
             return particle;
         }

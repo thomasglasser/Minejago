@@ -15,11 +15,6 @@ public class MinejagoClientConfig {
     public final ModConfigSpec.BooleanValue displayDevTeamCosmetic;
     public final ModConfigSpec.BooleanValue displayLegacyDevTeamCosmetic;
 
-    // Focus Bar
-    public static final String FOCUS_BAR = "focus_bar";
-    public final ModConfigSpec.ConfigValue<Integer> xOffset;
-    public final ModConfigSpec.ConfigValue<Integer> yOffset;
-
     public MinejagoClientConfig() {
         ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
 
@@ -32,13 +27,6 @@ public class MinejagoClientConfig {
                 .define("display_dev_team_cosmetic", true);
         displayLegacyDevTeamCosmetic = builder
                 .define("display_legacy_dev_team_cosmetic", true);
-        builder.pop();
-
-        builder.push(FOCUS_BAR);
-        xOffset = builder
-                .define("x_offset", 0);
-        yOffset = builder
-                .define("y_offset", 0);
         builder.pop();
 
         configSpec = builder.build();

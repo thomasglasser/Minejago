@@ -194,10 +194,9 @@ public class ThrownShurikenOfIce extends AbstractArrow {
     }
 
     public void playerTouch(Player pEntity) {
-        if (!pEntity.swinging) {
+        if (!pEntity.swinging && !pEntity.getAbilities().invulnerable) {
             onHitEntity(new EntityHitResult(pEntity));
-        }
-        if (this.ownedBy(pEntity) || this.getOwner() == null) {
+        } else if (this.ownedBy(pEntity) || this.getOwner() == null) {
             super.playerTouch(pEntity);
         }
     }

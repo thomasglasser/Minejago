@@ -646,9 +646,9 @@ public class MinejagoEntityEvents {
                     emptyHandModifiers.put(Attributes.BLOCK_BREAK_SPEED, new AttributeModifier(Minejago.modLoc("dexterity_modifier"), 0.1 * (data.get(Skill.DEXTERITY).level()), AttributeModifier.Operation.ADD_VALUE));
 
                     HashMultimap<Holder<Attribute>, AttributeModifier> toolModifiers = HashMultimap.create();
-                    toolModifiers.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(Minejago.modLoc("tool_proficiency_modifier"), 0.2 * (data.get(Skill.TOOL_PROFICIENCY).level()), AttributeModifier.Operation.ADD_VALUE));
-                    toolModifiers.put(Attributes.ATTACK_SPEED, new AttributeModifier(Minejago.modLoc("tool_proficiency_modifier"), 0.2 * (data.get(Skill.TOOL_PROFICIENCY).level()), AttributeModifier.Operation.ADD_VALUE));
-                    toolModifiers.put(Attributes.BLOCK_BREAK_SPEED, new AttributeModifier(Minejago.modLoc("tool_proficiency_modifier"), 0.1 * (data.get(Skill.TOOL_PROFICIENCY).level()), AttributeModifier.Operation.ADD_VALUE));
+                    toolModifiers.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(Minejago.modLoc("proficiency_modifier"), 0.2 * (data.get(Skill.PROFICIENCY).level()), AttributeModifier.Operation.ADD_VALUE));
+                    toolModifiers.put(Attributes.ATTACK_SPEED, new AttributeModifier(Minejago.modLoc("proficiency_modifier"), 0.2 * (data.get(Skill.PROFICIENCY).level()), AttributeModifier.Operation.ADD_VALUE));
+                    toolModifiers.put(Attributes.BLOCK_BREAK_SPEED, new AttributeModifier(Minejago.modLoc("proficiency_modifier"), 0.1 * (data.get(Skill.PROFICIENCY).level()), AttributeModifier.Operation.ADD_VALUE));
 
                     if (emptyHanded) {
                         livingEntity.getAttributes().addTransientAttributeModifiers(emptyHandModifiers);
@@ -836,7 +836,7 @@ public class MinejagoEntityEvents {
             if (player.getMainHandItem().isEmpty())
                 data.addPractice(player, Skill.DEXTERITY, defaultDestroyTime);
             else if (player.getMainHandItem().isCorrectToolForDrops(event.getState()))
-                data.addPractice(player, Skill.TOOL_PROFICIENCY, defaultDestroyTime);
+                data.addPractice(player, Skill.PROFICIENCY, defaultDestroyTime);
         }
     }
 
@@ -864,7 +864,7 @@ public class MinejagoEntityEvents {
             if (attacker.getMainHandItem().isEmpty())
                 data.addPractice(attacker, Skill.DEXTERITY, event.getAmount() / (data.get(Skill.DEXTERITY).level() + 1));
             else if (attacker.getMainHandItem().is(ConventionalItemTags.MELEE_WEAPON_TOOLS))
-                data.addPractice(attacker, Skill.TOOL_PROFICIENCY, event.getAmount() / (data.get(Skill.TOOL_PROFICIENCY).level() + 1));
+                data.addPractice(attacker, Skill.PROFICIENCY, event.getAmount() / (data.get(Skill.PROFICIENCY).level() + 1));
         }
     }
 

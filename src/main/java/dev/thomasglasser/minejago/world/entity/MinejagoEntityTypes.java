@@ -11,6 +11,7 @@ import dev.thomasglasser.minejago.world.entity.character.Zane;
 import dev.thomasglasser.minejago.world.entity.dragon.Dragon;
 import dev.thomasglasser.minejago.world.entity.dragon.EarthDragon;
 import dev.thomasglasser.minejago.world.entity.projectile.EarthBlast;
+import dev.thomasglasser.minejago.world.entity.projectile.ThrownBoneKnife;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownShurikenOfIce;
 import dev.thomasglasser.minejago.world.entity.shadow.ShadowClone;
 import dev.thomasglasser.minejago.world.entity.shadow.ShadowSource;
@@ -62,12 +63,7 @@ public class MinejagoEntityTypes {
         }
     }, MobCategory.MISC)
             .sized(0.5F, 0.5F));
-    public static final DeferredHolder<EntityType<?>, EntityType<ThrownSword>> THROWN_BONE_KNIFE = register("thrown_bone_knife", EntityType.Builder.<ThrownSword>of((entityType, level) -> new ThrownSword(entityType, level) {
-        @Override
-        protected ItemStack getDefaultPickupItem() {
-            return MinejagoItems.BONE_KNIFE.toStack();
-        }
-    }, MobCategory.MISC)
+    public static final DeferredHolder<EntityType<?>, EntityType<ThrownBoneKnife>> THROWN_BONE_KNIFE = register("thrown_bone_knife", EntityType.Builder.<ThrownBoneKnife>of(ThrownBoneKnife::new, MobCategory.MISC)
             .sized(0.5F, 0.5F));
     public static final DeferredHolder<EntityType<?>, EntityType<EarthBlast>> EARTH_BLAST = register("earth_blast", EntityType.Builder.<EarthBlast>of(EarthBlast::new, MobCategory.MISC)
             .sized(1.0F, 1.0F));

@@ -5,6 +5,7 @@ import dev.thomasglasser.minejago.client.MinejagoClientConfig;
 import dev.thomasglasser.minejago.client.MinejagoClientEvents;
 import dev.thomasglasser.minejago.client.MinejagoClientUtils;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
+import dev.thomasglasser.minejago.client.gui.MinejagoGuis;
 import dev.thomasglasser.minejago.commands.MinejagoCommandEvents;
 import dev.thomasglasser.minejago.core.MinejagoCoreEvents;
 import dev.thomasglasser.minejago.core.component.MinejagoDataComponents;
@@ -152,7 +153,7 @@ public class Minejago {
         bus.addListener(MinejagoClientEvents::onRegisterLayers);
         bus.addListener(MinejagoClientEvents::registerModels);
         bus.addListener(MinejagoClientEvents::onAddLayers);
-        bus.addListener(MinejagoClientEvents::onRegisterGuiOverlays);
+        bus.addListener(MinejagoGuis::onRegisterGuiLayers);
         bus.addListener(MinejagoClientEvents::onRegisterClientReloadListeners);
         bus.addListener(MinejagoClientEvents::onBuildCreativeModeTabContents);
         bus.addListener(MinejagoClientEvents::onRegisterDimensionSpecialEffects);

@@ -4,7 +4,6 @@ import dev.thomasglasser.minejago.server.MinejagoServerConfig;
 import dev.thomasglasser.minejago.world.entity.spinjitzucourse.AbstractSpinjitzuCourseElement;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.animation.AnimationState;
-import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 
 public class SpinningSpinjitzuCourseElementModel<T extends AbstractSpinjitzuCourseElement<T>> extends DefaultedEntityGeoModel<T> {
@@ -18,19 +17,18 @@ public class SpinningSpinjitzuCourseElementModel<T extends AbstractSpinjitzuCour
     @Override
     public void setCustomAnimations(T animatable, long instanceId, AnimationState<T> animationState) {
         super.setCustomAnimations(animatable, instanceId, animationState);
-        GeoBone structure = this.getBone(spinningBone).orElse(null);
         if (animatable.isActive() && animatable.isFullyActive()) {
-            if (structure != null) {
-                structure.setRotX(0);
-                structure.setRotY((animatable.tickCount + animationState.getPartialTick()) * MinejagoServerConfig.get().courseSpeed.get().floatValue());
-                structure.setRotZ(0);
-            }
+            this.getBone(spinningBone).ifPresent(bone -> {
+                bone.setRotX(0);
+                bone.setRotY((animatable.tickCount + animationState.getPartialTick()) * MinejagoServerConfig.get().courseSpeed.get().floatValue());
+                bone.setRotZ(0);
+            });
         } else {
-            if (structure != null) {
-                structure.setRotX(0);
-                structure.setRotY(0);
-                structure.setRotZ(0);
-            }
+            this.getBone(spinningBone).ifPresent(bone -> {
+                bone.setRotX(0);
+                bone.setRotY(0);
+                bone.setRotZ(0);
+            });
         }
     }
 }

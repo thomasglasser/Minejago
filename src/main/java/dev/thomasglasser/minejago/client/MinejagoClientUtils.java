@@ -30,7 +30,7 @@ public class MinejagoClientUtils {
     private static final HashMap<Player, VipData> vipData = new HashMap<>();
     private static final MinejagoBlockEntityWithoutLevelRenderer bewlr = new MinejagoBlockEntityWithoutLevelRenderer();
 
-    public static boolean renderBetaTesterLayer(AbstractClientPlayer player) {
+    public static boolean shouldRenderBetaTesterLayer(AbstractClientPlayer player) {
         return vipData.get(player) != null && SpecialPlayerUtils.renderCosmeticLayerInSlot(player, betaChoice(player).slot()) && vipData.get(player).displayBeta();
     }
 
@@ -87,6 +87,6 @@ public class MinejagoClientUtils {
     }
 
     public static void openSkillScreen() {
-        Minecraft.getInstance().setScreen(new SkillScreen());
+        Minecraft.getInstance().setScreen(new SkillScreen(MinejagoKeyMappings.OPEN_SKILL_SCREEN.getKey().getValue()));
     }
 }
