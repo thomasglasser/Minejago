@@ -124,7 +124,7 @@ public class TeapotBlock extends BaseEntityBlock {
         } else {
             if (pLevel.getBlockEntity(pPos) instanceof TeapotBlockEntity be) {
                 ItemStack inHand = pPlayer.getItemInHand(pHand);
-                if (be.getInSlot(0) == ItemStack.EMPTY) {
+                if (be.getStackInSlot(0).isEmpty()) {
                     PotionDrainable drainable = inHand.getItemHolder().getData(MinejagoDataMaps.POTION_DRAINABLES);
                     if (drainable != null) {
                         if (be.tryFill(drainable.cups(), drainable.potion().orElseGet(() -> inHand.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).potion().orElseThrow()))) {
@@ -141,11 +141,11 @@ public class TeapotBlock extends BaseEntityBlock {
                             filled.set(DataComponents.POTION_CONTENTS, new PotionContents(be.getPotion()));
                             pPlayer.addItem(filled);
                             be.take(fillable.cups());
-                            MinejagoCriteriaTriggers.BREWED_TEA.get().trigger((ServerPlayer) pPlayer, be.getPotion());
+                            MinejagoCriteriaTriggers.BREWED_TEA.get().trigger((ServerPlayer) pPlayer, be.getPotion().getKey());
                             pLevel.playSound(null, pPos, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
                             be.giveExperienceForCup((ServerLevel) pLevel, pPos.getCenter());
                         } else if (be.hasRecipe(inHand, pLevel)) {
-                            be.insert(0, inHand);
+                            be.insertItem(0, inHand, false);
                             ItemUtils.safeShrink(1, inHand, pPlayer);
                         }
                     }
@@ -254,7 +254,7 @@ public class TeapotBlock extends BaseEntityBlock {
         if (blockentity instanceof TeapotBlockEntity teapotBlockEntity) {
             params = params.withDynamicDrop(CONTENTS, p_56219_ -> {
                 for (int i = 0; i < teapotBlockEntity.getContainerSize(); i++) {
-                    p_56219_.accept(teapotBlockEntity.getInSlot(i));
+                    p_56219_.accept(teapotBlockEntity.getStackInSlot(i));
                 }
             });
         }

@@ -8,42 +8,40 @@ import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
-import net.minecraft.core.Holder;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.alchemy.Potion;
 
 public class BrewedTeaTrigger extends SimpleCriterionTrigger<BrewedTeaTrigger.TriggerInstance> {
-    public BrewedTeaTrigger() {}
-
     public Codec<TriggerInstance> codec() {
         return TriggerInstance.CODEC;
     }
 
-    public void trigger(ServerPlayer serverPlayer, Holder<Potion> holder) {
-        this.trigger(serverPlayer, (triggerInstance) -> triggerInstance.matches(holder));
+    public void trigger(ServerPlayer player, ResourceKey<Potion> potion) {
+        this.trigger(player, instance -> instance.matches(potion));
     }
 
-    public record TriggerInstance(Optional<ContextAwarePredicate> player, Optional<Holder<Potion>> potion) implements SimpleCriterionTrigger.SimpleInstance {
+    public record TriggerInstance(Optional<ContextAwarePredicate> player, Optional<ResourceKey<Potion>> potion) implements SimpleInstance {
         public static final Codec<TriggerInstance> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
                 EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(TriggerInstance::player),
-                BuiltInRegistries.POTION.holderByNameCodec().optionalFieldOf("potion").forGetter(TriggerInstance::potion))
+                ResourceKey.codec(Registries.POTION).optionalFieldOf("potion").forGetter(TriggerInstance::potion))
                 .apply(instance, TriggerInstance::new));
 
         public static Criterion<TriggerInstance> brewedTea() {
-            return MinejagoCriteriaTriggers.BREWED_TEA.get().createCriterion(new TriggerInstance(Optional.empty(), Optional.empty()));
+            return brewedTea(Optional.empty(), Optional.empty());
         }
 
-        public boolean matches(Holder<Potion> holder) {
-            return this.potion.isEmpty() || this.potion.get().equals(holder);
+        public static Criterion<TriggerInstance> brewedTea(ResourceKey<Potion> potion) {
+            return brewedTea(Optional.empty(), Optional.of(potion));
         }
 
-        public Optional<ContextAwarePredicate> player() {
-            return this.player;
+        public static Criterion<TriggerInstance> brewedTea(Optional<ContextAwarePredicate> player, Optional<ResourceKey<Potion>> potion) {
+            return MinejagoCriteriaTriggers.BREWED_TEA.get().createCriterion(new TriggerInstance(player, potion));
         }
 
-        public Optional<Holder<Potion>> potion() {
-            return this.potion;
+        public boolean matches(ResourceKey<Potion> potion) {
+            return this.potion.map(p -> p == potion).orElse(true);
         }
     }
 }

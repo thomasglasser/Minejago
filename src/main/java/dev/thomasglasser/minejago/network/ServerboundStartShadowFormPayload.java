@@ -2,14 +2,12 @@ package dev.thomasglasser.minejago.network;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
-import dev.thomasglasser.minejago.world.entity.MinejagoEntityEvents;
 import dev.thomasglasser.minejago.world.entity.shadow.ShadowSource;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
 import dev.thomasglasser.minejago.world.level.storage.ShadowSourceData;
 import dev.thomasglasser.tommylib.api.network.ExtendedPacketPayload;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
@@ -32,9 +30,9 @@ public record ServerboundStartShadowFormPayload() implements ExtendedPacketPaylo
             new ShadowSourceData(shadowSource.getUUID(), shadowSource.level().dimension()).save(serverPlayer, true);
             player.level().addFreshEntity(shadowSource);
             serverPlayer.serverLevel().getChunkSource().addRegionTicket(TicketType.PLAYER, shadowSource.chunkPosition(), 3, shadowSource.chunkPosition());
-            CompoundTag persistentData = TommyLibServices.ENTITY.getPersistentData(shadowSource);
-            persistentData.putString(MinejagoEntityEvents.KEY_START_POS, shadowSource.blockPosition().toString());
-            TommyLibServices.ENTITY.mergePersistentData(shadowSource, persistentData, false);
+//            CompoundTag persistentData = TommyLibServices.ENTITY.getPersistentData(shadowSource);
+//            persistentData.putString(MinejagoEntityEvents.KEY_START_POS, shadowSource.blockPosition().toString());
+//            TommyLibServices.ENTITY.mergePersistentData(shadowSource, persistentData, false);
             AttributeInstance flight = serverPlayer.getAttribute(NeoForgeMod.CREATIVE_FLIGHT);
             if (flight != null && !flight.hasModifier(ShadowSourceData.FLIGHT_MODIFIER)) {
                 flight.addTransientModifier(new AttributeModifier(ShadowSourceData.FLIGHT_MODIFIER, 1, AttributeModifier.Operation.ADD_VALUE));

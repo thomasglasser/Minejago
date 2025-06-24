@@ -2,7 +2,6 @@ package dev.thomasglasser.minejago.network;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
-import dev.thomasglasser.minejago.world.entity.MinejagoEntityEvents;
 import dev.thomasglasser.tommylib.api.network.ExtendedPacketPayload;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import io.netty.buffer.ByteBuf;
@@ -23,7 +22,7 @@ public record ServerboundStopMeditationPayload(boolean fail) implements Extended
         if (player instanceof ServerPlayer serverPlayer) {
             player.getData(MinejagoAttachmentTypes.FOCUS).stopMeditating();
             player.refreshDimensions();
-            TommyLibServices.ENTITY.getPersistentData(serverPlayer).remove(MinejagoEntityEvents.KEY_START_POS);
+//            TommyLibServices.ENTITY.getPersistentData(serverPlayer).remove(MinejagoEntityEvents.KEY_START_POS);
             TommyLibServices.NETWORK.sendToAllClients(new ClientboundStopMeditationPayload(serverPlayer.getUUID(), fail), serverPlayer.getServer());
         }
     }

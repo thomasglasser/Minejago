@@ -22,12 +22,12 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.player.Player;
 import net.tslat.smartbrainlib.util.BrainUtils;
 
-public record ServerboundSetElementDataPayload(Holder<Element> element, boolean markGiven, Optional<Integer> wuId) implements ExtendedPacketPayload {
+public record ServerboundSetElementDataPayload(Holder<Element> element, boolean markReceived, Optional<Integer> wuId) implements ExtendedPacketPayload {
 
     public static final Type<ServerboundSetElementDataPayload> TYPE = new Type<>(Minejago.modLoc("serverbound_set_element_data_packet"));
     public static final StreamCodec<RegistryFriendlyByteBuf, ServerboundSetElementDataPayload> CODEC = StreamCodec.composite(
             ByteBufCodecs.holder(MinejagoRegistries.ELEMENT, Element.STREAM_CODEC), ServerboundSetElementDataPayload::element,
-            ByteBufCodecs.BOOL, ServerboundSetElementDataPayload::markGiven,
+            ByteBufCodecs.BOOL, ServerboundSetElementDataPayload::markReceived,
             ByteBufCodecs.optional(ByteBufCodecs.INT), ServerboundSetElementDataPayload::wuId,
             ServerboundSetElementDataPayload::new);
 
@@ -39,7 +39,7 @@ public record ServerboundSetElementDataPayload(Holder<Element> element, boolean 
                 wu = (Wu) serverPlayer.level().getEntity(wuId.get());
             }
             Holder<Element> old = player.level().holderOrThrow(serverPlayer.getData(MinejagoAttachmentTypes.ELEMENT).element());
-            if (serverPlayer.getData(MinejagoAttachmentTypes.ELEMENT).given() && old != Elements.NONE && MinejagoServerConfig.get().drainPool.get() && wu != null) {
+            if (serverPlayer.getData(MinejagoAttachmentTypes.ELEMENT).received() && old != Elements.NONE && MinejagoServerConfig.get().drainPool.get() && wu != null) {
                 wu.addElementsToGive(old);
             }
             if (element != Elements.NONE && wu != null) wu.removeElementsToGive(element);

@@ -7,8 +7,6 @@ import dev.thomasglasser.minejago.world.entity.character.Wu;
 import dev.thomasglasser.minejago.world.entity.element.Element;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.level.storage.ElementData;
-import dev.thomasglasser.tommylib.api.registration.DeferredItem;
-import dev.thomasglasser.tommylib.api.world.item.armor.ArmorSet;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import java.util.List;
 import net.minecraft.core.BlockPos;
@@ -16,6 +14,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
@@ -76,22 +75,18 @@ public class GiveElementAndGi<E extends PathfinderMob> extends MoveToWalkTarget<
     }
 
     protected void equipGi() {
-        ArmorSet set = MinejagoArmors.TRAINEE_GI_SET;
-        for (ArmorItem.Type value : ArmorItem.Type.values()) {
-            DeferredItem<ArmorItem> ro = set.getForSlot(value.getSlot());
-            if (ro != null) {
-                ArmorItem armor = ro.get();
-                ItemStack armorStack = armor.getDefaultInstance();
-                armorStack.set(MinejagoDataComponents.ELEMENT.get(), elementKey);
-                if (target instanceof Player player) {
-                    ItemStack oldStack = player.getItemBySlot(value.getSlot());
-                    if (!player.addItem(oldStack)) player.drop(oldStack, true);
-                    player.setItemSlot(value.getSlot(), armorStack);
-                } else {
-                    ItemStack oldStack = target.getItemBySlot(value.getSlot());
-                    target.spawnAtLocation(oldStack);
-                    target.setItemSlot(value.getSlot(), armorStack);
-                }
+        for (ArmorItem gi : MinejagoArmors.TRAINEE_GI_SET.getAllAsItems()) {
+            ItemStack armorStack = gi.getDefaultInstance();
+            armorStack.set(MinejagoDataComponents.ELEMENT.get(), elementKey);
+            EquipmentSlot slot = MinejagoArmors.TRAINEE_GI_SET.getForItem(gi);
+            if (target instanceof Player player) {
+                ItemStack oldStack = player.getItemBySlot(slot);
+                if (!player.addItem(oldStack)) player.drop(oldStack, true);
+                player.setItemSlot(slot, armorStack);
+            } else {
+                ItemStack oldStack = target.getItemBySlot(slot);
+                target.spawnAtLocation(oldStack);
+                target.setItemSlot(slot, armorStack);
             }
         }
     }

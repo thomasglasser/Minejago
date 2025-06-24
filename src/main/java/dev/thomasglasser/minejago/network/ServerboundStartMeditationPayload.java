@@ -2,11 +2,9 @@ package dev.thomasglasser.minejago.network;
 
 import dev.thomasglasser.minejago.Minejago;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
-import dev.thomasglasser.minejago.world.entity.MinejagoEntityEvents;
 import dev.thomasglasser.tommylib.api.network.ExtendedPacketPayload;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
@@ -24,9 +22,9 @@ public record ServerboundStartMeditationPayload() implements ExtendedPacketPaylo
         if (player instanceof ServerPlayer serverPlayer) {
             player.getData(MinejagoAttachmentTypes.FOCUS).startMeditating();
             player.refreshDimensions();
-            CompoundTag persistentData = TommyLibServices.ENTITY.getPersistentData(serverPlayer);
-            persistentData.putString(MinejagoEntityEvents.KEY_START_POS, serverPlayer.blockPosition().toString());
-            TommyLibServices.ENTITY.mergePersistentData(serverPlayer, persistentData, false);
+//            CompoundTag persistentData = TommyLibServices.ENTITY.getPersistentData(serverPlayer);
+//            persistentData.putString(MinejagoEntityEvents.KEY_START_POS, serverPlayer.blockPosition().toString());
+//            TommyLibServices.ENTITY.mergePersistentData(serverPlayer, persistentData, false);
             TommyLibServices.NETWORK.sendToAllClients(new ClientboundStartMeditationPayload(serverPlayer.getUUID()), serverPlayer.getServer());
         }
     }

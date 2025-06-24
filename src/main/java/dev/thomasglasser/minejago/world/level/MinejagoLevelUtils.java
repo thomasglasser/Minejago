@@ -1,7 +1,6 @@
 package dev.thomasglasser.minejago.world.level;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,20 +27,20 @@ public final class MinejagoLevelUtils {
     private MinejagoLevelUtils() {}
 
     public static boolean isGoldenWeaponsMapHolderNearby(LivingEntity entity, int distance) {
-        return !entity.level().getEntitiesOfClass(Painting.class, entity.getBoundingBox().inflate(distance, distance + 3, distance), painting -> painting.getVariant().is(Minejago.modLoc("four_weapons")) && !TommyLibServices.ENTITY.getPersistentData(painting).getBoolean("MapTaken")).isEmpty();
+        return !entity.level().getEntitiesOfClass(Painting.class, entity.getBoundingBox().inflate(distance, distance + 3, distance), painting -> painting.getVariant().is(Minejago.modLoc("four_weapons"))/* && !TommyLibServices.ENTITY.getPersistentData(painting).getBoolean("MapTaken")*/).isEmpty();
     }
 
     public static boolean isGoldenWeaponsMapHolderNearby(Level level, BlockPos pos, int distance) {
-        return !level.getEntitiesOfClass(Painting.class, AABB.ofSize(pos.getCenter(), distance, distance + 3, distance), painting -> painting.getVariant().is(Minejago.modLoc("four_weapons")) && !TommyLibServices.ENTITY.getPersistentData(painting).getBoolean("MapTaken")).isEmpty();
+        return !level.getEntitiesOfClass(Painting.class, AABB.ofSize(pos.getCenter(), distance, distance + 3, distance), painting -> painting.getVariant().is(Minejago.modLoc("four_weapons"))/* && !TommyLibServices.ENTITY.getPersistentData(painting).getBoolean("MapTaken")*/).isEmpty();
     }
 
     public static Painting getGoldenWeaponsMapHolderNearby(LivingEntity entity, int distance) {
-        List<Painting> paintings = entity.level().getEntitiesOfClass(Painting.class, entity.getBoundingBox().inflate(distance, distance + 3, distance), painting -> painting.getVariant().is(Minejago.modLoc("four_weapons")) && !TommyLibServices.ENTITY.getPersistentData(painting).getBoolean("MapTaken"));
+        List<Painting> paintings = entity.level().getEntitiesOfClass(Painting.class, entity.getBoundingBox().inflate(distance, distance + 3, distance), painting -> painting.getVariant().is(Minejago.modLoc("four_weapons"))/* && !TommyLibServices.ENTITY.getPersistentData(painting).getBoolean("MapTaken")*/);
         return !paintings.isEmpty() ? paintings.getFirst() : null;
     }
 
     public static Painting getGoldenWeaponsMapHolderNearby(Level level, BlockPos pos, int distance) {
-        List<Painting> paintings = level.getEntitiesOfClass(Painting.class, AABB.ofSize(pos.getCenter(), distance, distance + 3, distance), painting -> painting.getVariant().is(Minejago.modLoc("four_weapons")) && !TommyLibServices.ENTITY.getPersistentData(painting).getBoolean("MapTaken"));
+        List<Painting> paintings = level.getEntitiesOfClass(Painting.class, AABB.ofSize(pos.getCenter(), distance, distance + 3, distance), painting -> painting.getVariant().is(Minejago.modLoc("four_weapons"))/* && !TommyLibServices.ENTITY.getPersistentData(painting).getBoolean("MapTaken")*/);
         return !paintings.isEmpty() ? paintings.getFirst() : null;
     }
 

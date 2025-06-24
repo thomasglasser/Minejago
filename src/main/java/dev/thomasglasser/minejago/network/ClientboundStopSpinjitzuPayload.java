@@ -1,9 +1,7 @@
 package dev.thomasglasser.minejago.network;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.minejago.client.animation.definitions.PlayerAnimations;
 import dev.thomasglasser.tommylib.api.client.ClientUtils;
-import dev.thomasglasser.tommylib.api.client.animation.AnimationUtils;
 import dev.thomasglasser.tommylib.api.network.ExtendedPacketPayload;
 import io.netty.buffer.ByteBuf;
 import java.util.UUID;
@@ -24,10 +22,10 @@ public record ClientboundStopSpinjitzuPayload(UUID uuid, boolean fail) implement
     public void handle(Player player) {
         Player clientPlayer = ClientUtils.getPlayerByUUID(uuid);
         if (Minejago.Dependencies.PLAYER_ANIMATOR.isInstalled()) {
-            if (fail)
-                AnimationUtils.startAnimation(PlayerAnimations.Spinjitzu.WOBBLE.getAnimation(), null, clientPlayer);
-            else
-                AnimationUtils.startAnimation(PlayerAnimations.Spinjitzu.FINISH.getAnimation(), null, clientPlayer);
+//            if (fail)
+//                PlayerAnimationHandler.startAnimation(PlayerAnimations.Spinjitzu.WOBBLE.getAnimation(), null, clientPlayer);
+//            else
+//                PlayerAnimationHandler.startAnimation(PlayerAnimations.Spinjitzu.FINISH.getAnimation(), null, clientPlayer);
         }
     }
 

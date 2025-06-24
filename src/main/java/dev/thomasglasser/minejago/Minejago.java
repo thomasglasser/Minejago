@@ -5,6 +5,7 @@ import dev.thomasglasser.minejago.client.MinejagoClientConfig;
 import dev.thomasglasser.minejago.client.MinejagoClientEvents;
 import dev.thomasglasser.minejago.client.MinejagoClientUtils;
 import dev.thomasglasser.minejago.client.MinejagoKeyMappings;
+import dev.thomasglasser.minejago.client.gui.MinejagoGuis;
 import dev.thomasglasser.minejago.commands.MinejagoCommandEvents;
 import dev.thomasglasser.minejago.core.MinejagoCoreEvents;
 import dev.thomasglasser.minejago.core.component.MinejagoDataComponents;
@@ -64,8 +65,8 @@ public class Minejago {
     public Minejago(IEventBus bus, ModContainer modContainer) {
         LOGGER.info("Initializing {} for {} in a {} environment...", MOD_NAME, TommyLibServices.PLATFORM.getPlatformName(), TommyLibServices.PLATFORM.getEnvironmentName());
 
-        if (FMLEnvironment.production && FMLEnvironment.dist.isClient() && !modContainer.getModInfo().getVersion().getQualifier().isEmpty() && !MinejagoClientUtils.verifySnapshotTester(Minecraft.getInstance().getUser().getProfileId())) {
-            throw new RuntimeException("You are running a snapshot version of Minejago and are not a part of the Snapshot Program. Please switch to a stable version.");
+        if (FMLEnvironment.production && FMLEnvironment.dist.isClient() && !modContainer.getModInfo().getVersion().getQualifier().isEmpty() && !MinejagoClientUtils.verifyBetaTester(Minecraft.getInstance().getUser().getProfileId())) {
+            throw new RuntimeException("You are running a beta version of Minejago and are not a part of the Beta Program. Please switch to a stable version.");
         }
 
         initRegistries();
@@ -152,7 +153,7 @@ public class Minejago {
         bus.addListener(MinejagoClientEvents::onRegisterLayers);
         bus.addListener(MinejagoClientEvents::registerModels);
         bus.addListener(MinejagoClientEvents::onAddLayers);
-        bus.addListener(MinejagoClientEvents::onRegisterGuiOverlays);
+        bus.addListener(MinejagoGuis::onRegisterGuiLayers);
         bus.addListener(MinejagoClientEvents::onRegisterClientReloadListeners);
         bus.addListener(MinejagoClientEvents::onBuildCreativeModeTabContents);
         bus.addListener(MinejagoClientEvents::onRegisterDimensionSpecialEffects);

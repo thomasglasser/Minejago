@@ -58,14 +58,14 @@ public class MinejagoBlocks {
     private static <T extends Block> DeferredBlock<T> registerBlockAndItemAndWrap(
             String name,
             Supplier<T> blockFactory) {
-        return BlockUtils.registerBlockAndItemAndWrap(BLOCKS, name, blockFactory, MinejagoItems::register);
+        return BlockUtils.registerBlockAndItemAndWrap(BLOCKS, name, blockFactory, MinejagoItems.ITEMS);
     }
 
     private static <T extends Block> DeferredBlock<T> registerBlockAndItemAndWrap(
             String name,
             Supplier<T> blockFactory,
             Item.Properties itemProperties) {
-        return BlockUtils.registerBlockAndItemAndWrap(BLOCKS, name, blockFactory, MinejagoItems::register, block -> new BlockItem(block, itemProperties));
+        return BlockUtils.registerBlockAndItemAndWrap(BLOCKS, name, blockFactory, MinejagoItems.ITEMS, block -> new BlockItem(block, itemProperties));
     }
 
     private static <T extends Block> DeferredBlock<T> register(String name, Supplier<T> blockFactory) {
@@ -73,11 +73,11 @@ public class MinejagoBlocks {
     }
 
     private static WoodSet registerWoodSet(String name, MapColor logColor, MapColor strippedLogColor, Supplier<WoodType> woodType, Boat.Type boatType) {
-        return BlockUtils.registerWoodSet(BLOCKS, name, logColor, strippedLogColor, woodType, boatType, MinejagoItems::register);
+        return BlockUtils.registerWoodSet(BLOCKS, name, logColor, strippedLogColor, woodType, boatType, MinejagoItems.ITEMS);
     }
 
     private static LeavesSet registerLeavesSet(String name, TreeGrower treeGrower) {
-        return BlockUtils.registerLeavesSet(BLOCKS, name, treeGrower, MinejagoItems::register);
+        return BlockUtils.registerLeavesSet(BLOCKS, name, treeGrower, MinejagoItems.ITEMS);
     }
 
     private static SortedMap<DyeColor, DeferredBlock<TeapotBlock>> teapots() {

@@ -11,6 +11,7 @@ import dev.thomasglasser.minejago.world.entity.character.Zane;
 import dev.thomasglasser.minejago.world.entity.dragon.Dragon;
 import dev.thomasglasser.minejago.world.entity.dragon.EarthDragon;
 import dev.thomasglasser.minejago.world.entity.projectile.EarthBlast;
+import dev.thomasglasser.minejago.world.entity.projectile.ThrownBoneKnife;
 import dev.thomasglasser.minejago.world.entity.projectile.ThrownShurikenOfIce;
 import dev.thomasglasser.minejago.world.entity.shadow.ShadowClone;
 import dev.thomasglasser.minejago.world.entity.shadow.ShadowSource;
@@ -46,7 +47,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
 public class MinejagoEntityTypes {
@@ -55,11 +56,16 @@ public class MinejagoEntityTypes {
     // Projectiles
     public static final DeferredHolder<EntityType<?>, EntityType<ThrownShurikenOfIce>> THROWN_SHURIKEN_OF_ICE = register("thrown_shuriken_of_ice", EntityType.Builder.<ThrownShurikenOfIce>of(ThrownShurikenOfIce::new, MobCategory.MISC)
             .sized(0.5F, 0.5F));
-    public static final DeferredHolder<EntityType<?>, EntityType<ThrownSword>> THROWN_BAMBOO_STAFF = register("thrown_bamboo_staff", EntityType.Builder.<ThrownSword>of(ThrownSword::new, MobCategory.MISC)
+    public static final DeferredHolder<EntityType<?>, EntityType<ThrownSword>> THROWN_BAMBOO_STAFF = register("thrown_bamboo_staff", EntityType.Builder.<ThrownSword>of((entityType, level) -> new ThrownSword(entityType, level) {
+        @Override
+        protected ItemStack getDefaultPickupItem() {
+            return MinejagoItems.BAMBOO_STAFF.toStack();
+        }
+    }, MobCategory.MISC)
             .sized(0.5F, 0.5F));
-    public static final DeferredHolder<EntityType<?>, EntityType<ThrownSword>> THROWN_BONE_KNIFE = register("thrown_bone_knife", EntityType.Builder.<ThrownSword>of(ThrownSword::new, MobCategory.MISC)
+    public static final DeferredHolder<EntityType<?>, EntityType<ThrownBoneKnife>> THROWN_BONE_KNIFE = register("thrown_bone_knife", EntityType.Builder.<ThrownBoneKnife>of(ThrownBoneKnife::new, MobCategory.MISC)
             .sized(0.5F, 0.5F));
-    public static final DeferredHolder<EntityType<?>, EntityType<EarthBlast>> EARTH_BLAST = register("earth_blast", EntityType.Builder.of(((EntityType<EarthBlast> entityType, Level level) -> new EarthBlast(entityType, level)), MobCategory.MISC)
+    public static final DeferredHolder<EntityType<?>, EntityType<EarthBlast>> EARTH_BLAST = register("earth_blast", EntityType.Builder.<EarthBlast>of(EarthBlast::new, MobCategory.MISC)
             .sized(1.0F, 1.0F));
 
     // Characters

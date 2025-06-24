@@ -1,15 +1,15 @@
 package dev.thomasglasser.minejago.client.dynamiclights.entity;
 
+import com.mojang.serialization.MapCodec;
 import dev.lambdaurora.lambdynlights.api.entity.luminance.EntityLuminance;
 import dev.lambdaurora.lambdynlights.api.item.ItemLightSourceManager;
 import dev.thomasglasser.minejago.world.entity.GoldenWeaponHolder;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.Range;
 
-public class GoldenWeaponHolderLuminance implements EntityLuminance {
+public record GoldenWeaponHolderLuminance() implements EntityLuminance {
     public static final GoldenWeaponHolderLuminance INSTANCE = new GoldenWeaponHolderLuminance();
-
-    private GoldenWeaponHolderLuminance() {}
+    public static final MapCodec<GoldenWeaponHolderLuminance> CODEC = MapCodec.unit(INSTANCE);
 
     @Override
     public Type type() {

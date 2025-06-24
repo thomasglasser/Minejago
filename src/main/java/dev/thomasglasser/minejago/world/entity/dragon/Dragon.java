@@ -6,7 +6,6 @@ import dev.thomasglasser.minejago.sounds.MinejagoSoundEvents;
 import dev.thomasglasser.minejago.tags.MinejagoEntityTypeTags;
 import dev.thomasglasser.minejago.tags.MinejagoItemTags;
 import dev.thomasglasser.minejago.world.attachment.MinejagoAttachmentTypes;
-import dev.thomasglasser.minejago.world.entity.MinejagoEntityEvents;
 import dev.thomasglasser.minejago.world.entity.element.Element;
 import dev.thomasglasser.minejago.world.focus.FocusConstants;
 import dev.thomasglasser.minejago.world.focus.FocusData;
@@ -14,7 +13,7 @@ import dev.thomasglasser.minejago.world.inventory.DragonInventoryMenu;
 import dev.thomasglasser.minejago.world.item.armor.MinejagoArmors;
 import dev.thomasglasser.minejago.world.level.storage.ElementData;
 import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
-import dev.thomasglasser.tommylib.api.world.entity.PlayerRideableFlying;
+import dev.thomasglasser.tommylib.api.world.entity.EntityUtils;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -103,7 +102,8 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBrainOwner<Dragon>, PlayerRideableFlying, RangedAttackMob, Saddleable, ContainerListener, HasCustomInventoryScreen {
+// TODO: Implement flying like happy ghast
+public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBrainOwner<Dragon>, RangedAttackMob, Saddleable, ContainerListener, HasCustomInventoryScreen {
     public static final RawAnimation LIFT = RawAnimation.begin().thenPlay("move.lift");
     private static final EntityDataAccessor<Boolean> DATA_SHOOTING = SynchedEntityData.defineId(Dragon.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DATA_SADDLED = SynchedEntityData.defineId(Dragon.class, EntityDataSerializers.BOOLEAN);
@@ -119,7 +119,6 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
     private final TagKey<Item> protectingItems;
 
     private boolean isLiftingOff;
-    private Flight flight = Flight.HOVERING;
     private int flyingTicks = 0;
     private double speedMultiplier = 1;
 
@@ -208,7 +207,7 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
                     if (target.isAlliedTo(dragon)) return false;
                     LivingEntity owner = dragon.getOwner();
                     if (owner == null) {
-                        return MinejagoEntityEvents.hasInInventory(target, stack -> stack.is(protectingItems)) || (target instanceof Player player && getBond(player) < 0) || (target instanceof TamableAnimal tamableAnimal && tamableAnimal.getOwner() instanceof Player targetOwner && getBond(targetOwner) < 0);
+                        return EntityUtils.hasAnyInInventory(target, stack -> stack.is(protectingItems)) || (target instanceof Player player && getBond(player) < 0) || (target instanceof TamableAnimal tamableAnimal && tamableAnimal.getOwner() instanceof Player targetOwner && getBond(targetOwner) < 0);
                     } else {
                         if (target.isAlliedTo(owner)) return false;
                         if (target instanceof TamableAnimal tamableAnimal && tamableAnimal.getOwner() == dragon.getOwner()) return false;
@@ -258,7 +257,7 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
     @Override
     public BrainActivityGroup<? extends Dragon> getFightTasks() {
         return BrainActivityGroup.fightTasks(
-                new InvalidateAttackTarget<>().invalidateIf((entity, target) -> target instanceof Player player ? (player.isCreative() || player.isSpectator() || (getBond(player) >= 0 && !MinejagoEntityEvents.hasInInventory(player, stack -> stack.is(protectingItems)))) : !MinejagoEntityEvents.hasInInventory(target, stack -> stack.is(protectingItems))), 	 // Invalidate the attack target if it's no longer applicable
+                new InvalidateAttackTarget<>().invalidateIf((entity, target) -> target instanceof Player player ? (player.isCreative() || player.isSpectator() || (getBond(player) >= 0 && !EntityUtils.hasAnyInInventory(player, stack -> stack.is(protectingItems)))) : !EntityUtils.hasAnyInInventory(target, stack -> stack.is(protectingItems))), 	 // Invalidate the attack target if it's no longer applicable
                 new FirstApplicableBehaviour<>( 																							  	 // Run only one of the below behaviours, trying each one in order
                         new AnimatableMeleeAttack<>(0).whenStarting(entity -> setAggressive(false)), // Melee attack
                         new AnimatableRangedAttack<Dragon>(20).whenStarting(dragon -> dragon.setShooting(true)).whenStopping(dragon -> dragon.setShooting(false)))	 												 // Fire a bow, if holding one
@@ -270,20 +269,20 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
         if (this.isAlive()) {
             if (this.isVehicle() && hasControllingPassenger()) {
                 Vec3 velocity = this.getDeltaMovement();
-                switch (flight) {
-                    case ASCENDING:
-                        this.setDeltaMovement(velocity.x, getVerticalSpeed(), velocity.z);
-                        break;
-                    case DESCENDING:
-                        this.setDeltaMovement(velocity.x, -getVerticalSpeed(), velocity.z);
-                        if (!this.level().getBlockState(this.blockPosition().below()).isAir() && isNoGravity()) {
-                            setNoGravity(false);
-                            flyingTicks = 0;
-                        }
-                        break;
-                    case HOVERING:
-                        break;
-                }
+//                switch (flight) {
+//                    case ASCENDING:
+//                        this.setDeltaMovement(velocity.x, getVerticalSpeed(), velocity.z);
+//                        break;
+//                    case DESCENDING:
+//                        this.setDeltaMovement(velocity.x, -getVerticalSpeed(), velocity.z);
+//                        if (!this.level().getBlockState(this.blockPosition().below()).isAir() && isNoGravity()) {
+//                            setNoGravity(false);
+//                            flyingTicks = 0;
+//                        }
+//                        break;
+//                    case HOVERING:
+//                        break;
+//                }
                 LivingEntity livingentity = this.getControllingPassenger();
                 this.setYRot(livingentity.getYRot());
                 this.yRotO = this.getYRot();
@@ -345,24 +344,24 @@ public abstract class Dragon extends TamableAnimal implements GeoEntity, SmartBr
         }
     }
 
-    @Override
-    public void ascend() {
-        if (flyingTicks == 0) {
-            isLiftingOff = true;
-        }
-        this.setNoGravity(true);
-        this.flight = Flight.ASCENDING;
-    }
-
-    @Override
-    public void descend() {
-        this.flight = Flight.DESCENDING;
-    }
-
-    @Override
-    public void stop() {
-        this.flight = Flight.HOVERING;
-    }
+//    @Override
+//    public void ascend() {
+//        if (flyingTicks == 0) {
+//            isLiftingOff = true;
+//        }
+//        this.setNoGravity(true);
+//        this.flight = Flight.ASCENDING;
+//    }
+//
+//    @Override
+//    public void descend() {
+//        this.flight = Flight.DESCENDING;
+//    }
+//
+//    @Override
+//    public void stop() {
+//        this.flight = Flight.HOVERING;
+//    }
 
     @Nullable
     @Override

@@ -18,7 +18,7 @@ public enum DragonComponentProvider implements IEntityComponentProvider, IServer
     @Override
     public void appendTooltip(ITooltip iTooltip, EntityAccessor entityAccessor, IPluginConfig iPluginConfig) {
         if (entityAccessor.getEntity() instanceof Dragon dragon) {
-            iTooltip.add(Component.translatable("entity.minejago.dragon.waila.bond", String.format("%.2f", entityAccessor.getServerData().getCompound("Bonds").getDouble(ClientUtils.getMainClientPlayer().getStringUUID()))));
+            iTooltip.add(Component.translatable("entity.minejago.dragon.waila.bond", String.format("%.2f", entityAccessor.getServerData().getCompound("Bonds").getDouble(ClientUtils.getLocalPlayer().getStringUUID()))));
         }
     }
 

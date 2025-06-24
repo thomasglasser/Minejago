@@ -27,7 +27,7 @@ import net.minecraft.world.item.ItemStackLinkedSet;
 public class MinejagoCreativeModeTabs {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(BuiltInRegistries.CREATIVE_MODE_TAB, Minejago.MOD_ID);
 
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GI = register("gi", () -> TommyLibServices.CLIENT.tabBuilder().title(Component.translatable(Minejago.modLoc("gi").toLanguageKey("item_group"))).icon(() -> MinejagoArmors.BLACK_GI_SET.HEAD.get().getDefaultInstance()).displayItems((parameters, output) -> {
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GI = register("gi", () -> TommyLibServices.CLIENT.tabBuilder().title(Component.translatable(Minejago.modLoc("gi").toLanguageKey("item_group"))).icon(() -> MinejagoArmors.BLACK_GI_SET.head().toStack()).displayItems((parameters, output) -> {
         MinejagoArmors.STANDALONE_GI.forEach(item -> output.accept(item.get()));
         MinejagoArmors.NORMAL_GI_SETS.forEach(set -> output.acceptAll(set.getAllAsStacks()));
         parameters.holders()
@@ -40,7 +40,7 @@ public class MinejagoCreativeModeTabs {
                 });
     }).build());
 
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MINEJAGO = register("minejago", () -> TommyLibServices.CLIENT.tabBuilder().title(Component.translatable(Minejago.modLoc(Minejago.MOD_ID).toLanguageKey("item_group"))).icon(() -> MinejagoItems.SCYTHE_OF_QUAKES.get().getDefaultInstance()).type(CreativeModeTab.Type.SEARCH).displayItems((parameters, output) -> {
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MINEJAGO = register("minejago", () -> TommyLibServices.CLIENT.tabBuilder().title(Component.translatable(Minejago.modLoc(Minejago.MOD_ID).toLanguageKey("item_group"))).icon(MinejagoItems.SCYTHE_OF_QUAKES::toStack).type(CreativeModeTab.Type.SEARCH).displayItems((parameters, output) -> {
         Set<ItemStack> set = ItemStackLinkedSet.createTypeAndComponentsSet();
 
         for (CreativeModeTab creativemodetab : parameters.holders().lookupOrThrow(Registries.CREATIVE_MODE_TAB).listElements().map(Holder::value).toList()) {

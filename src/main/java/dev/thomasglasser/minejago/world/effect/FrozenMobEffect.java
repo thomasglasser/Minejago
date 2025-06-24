@@ -1,8 +1,6 @@
 package dev.thomasglasser.minejago.world.effect;
 
 import dev.thomasglasser.minejago.Minejago;
-import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -38,9 +36,9 @@ public class FrozenMobEffect extends ExtendedMobEffect {
     @Override
     public void onApplication(@Nullable MobEffectInstance effectInstance, @Nullable Entity source, LivingEntity entity, int amplifier) {
         super.onApplication(effectInstance, source, entity, amplifier);
-        CompoundTag entityData = TommyLibServices.ENTITY.getPersistentData(entity);
-        entityData.putBoolean(TAG_FROZEN, true);
-        TommyLibServices.ENTITY.mergePersistentData(entity, entityData, true);
+//        CompoundTag entityData = TommyLibServices.ENTITY.getPersistentData(entity);
+//        entityData.putBoolean(TAG_FROZEN, true);
+//        TommyLibServices.ENTITY.mergePersistentData(entity, entityData, true);
         Level level = entity.level();
         if (!level.isClientSide())
             level.playSound(null, entity.blockPosition(), SoundEvents.SNOW_GOLEM_DEATH, SoundSource.PLAYERS, 1.0F, 1.0F);
@@ -62,7 +60,7 @@ public class FrozenMobEffect extends ExtendedMobEffect {
     public void onExpiry(MobEffectInstance effectInstance, LivingEntity entity) {
         super.onExpiry(effectInstance, entity);
         entity.setTicksFrozen(0);
-        TommyLibServices.ENTITY.removePersistentData(entity, true, TAG_FROZEN);
+//        TommyLibServices.ENTITY.removePersistentData(entity, true, TAG_FROZEN);
         Level level = entity.level();
         if (!level.isClientSide())
             level.playSound(null, entity.blockPosition(), SoundEvents.GLASS_BREAK, SoundSource.PLAYERS, 1.0F, 1.0F);

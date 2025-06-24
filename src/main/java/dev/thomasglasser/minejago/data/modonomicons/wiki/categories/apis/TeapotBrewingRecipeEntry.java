@@ -21,7 +21,7 @@ public class TeapotBrewingRecipeEntry extends IndexModeEntryProvider {
 
         add(context().pageTitle(), "Generator");
         add(context().pageText(), """
-                A generator for recipes is available online [here](https://snapshot-jsons.thomasglasser.dev/recipe/).
+                A generator for recipes is available online [here](https://beta-jsons.thomasglasser.dev/recipe/).
                 """);
 
         page("format", () -> BookTextPageModel.create()

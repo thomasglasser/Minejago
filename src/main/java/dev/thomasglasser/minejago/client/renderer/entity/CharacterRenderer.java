@@ -14,6 +14,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
@@ -28,8 +29,8 @@ public class CharacterRenderer<T extends Character> extends GeoEntityRenderer<T>
     private static final String HEAD = "head";
     private static final String LEFT_HAND = "left_hand";
     private static final String RIGHT_HAND = "right_hand";
-    private static final String LEFT_BOOT = "left_foot";
-    private static final String RIGHT_BOOT = "right_foot";
+    private static final String LEFT_BOOT = "left_boot";
+    private static final String RIGHT_BOOT = "right_boot";
     private static final String LEFT_ARMOR_LEG = "outer_left_leg";
     private static final String RIGHT_ARMOR_LEG = "outer_right_leg";
     private static final String CHESTPLATE = "outer_body";
@@ -53,7 +54,7 @@ public class CharacterRenderer<T extends Character> extends GeoEntityRenderer<T>
                 // Return the items relevant to the bones being rendered for additional rendering
                 return switch (bone.getName()) {
                     case LEFT_BOOT, RIGHT_BOOT -> this.bootsStack;
-                    case LEFT_ARMOR_LEG, RIGHT_ARMOR_LEG -> this.leggingsStack;
+                    case LEFT_ARMOR_LEG, RIGHT_ARMOR_LEG, BODY -> this.leggingsStack;
                     case CHESTPLATE, RIGHT_SLEEVE, LEFT_SLEEVE -> this.chestplateStack;
                     case HELMET -> this.helmetStack;
                     default -> null;
@@ -65,7 +66,7 @@ public class CharacterRenderer<T extends Character> extends GeoEntityRenderer<T>
             protected EquipmentSlot getEquipmentSlotForBone(GeoBone bone, ItemStack stack, T animatable) {
                 return switch (bone.getName()) {
                     case LEFT_BOOT, RIGHT_BOOT -> EquipmentSlot.FEET;
-                    case LEFT_ARMOR_LEG, RIGHT_ARMOR_LEG -> EquipmentSlot.LEGS;
+                    case LEFT_ARMOR_LEG, RIGHT_ARMOR_LEG, BODY -> EquipmentSlot.LEGS;
                     case RIGHT_SLEEVE -> !animatable.isLeftHanded() ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
                     case LEFT_SLEEVE -> !animatable.isLeftHanded() ? EquipmentSlot.OFFHAND : EquipmentSlot.MAINHAND;
                     case CHESTPLATE -> EquipmentSlot.CHEST;
@@ -82,7 +83,7 @@ public class CharacterRenderer<T extends Character> extends GeoEntityRenderer<T>
                     case RIGHT_BOOT, RIGHT_ARMOR_LEG -> baseModel.rightLeg;
                     case RIGHT_SLEEVE -> baseModel.rightArm;
                     case LEFT_SLEEVE -> baseModel.leftArm;
-                    case CHESTPLATE -> baseModel.body;
+                    case CHESTPLATE, BODY -> baseModel.body;
                     case HELMET -> baseModel.head;
                     default -> super.getModelPartForBone(bone, slot, stack, animatable, baseModel);
                 };
@@ -114,12 +115,12 @@ public class CharacterRenderer<T extends Character> extends GeoEntityRenderer<T>
         });
     }
 
-    public CharacterRenderer(EntityRendererProvider.Context context, boolean slim) {
-        this(context, new CharacterModel<>(slim));
+    public CharacterRenderer(EntityRendererProvider.Context context, ResourceLocation entityId, boolean slim) {
+        this(context, new CharacterModel<>(entityId, slim));
     }
 
-    public CharacterRenderer(EntityRendererProvider.Context context) {
-        this(context, false);
+    public CharacterRenderer(EntityRendererProvider.Context context, ResourceLocation entityId) {
+        this(context, entityId, false);
     }
 
     @Override
@@ -160,21 +161,21 @@ public class CharacterRenderer<T extends Character> extends GeoEntityRenderer<T>
         CharacterModel<T> characterModel = (CharacterModel<T>) model;
         if (!model.getAnimationProcessor().getRegisteredBones().isEmpty()) {
             if (entity.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof GeoArmorItem geoArmorItem && geoArmorItem.isSkintight()) {
-                characterModel.getBone(LEFT_SLEEVE).orElseThrow().setHidden(true);
-                characterModel.getBone(RIGHT_SLEEVE).orElseThrow().setHidden(true);
-                characterModel.getBone(CHESTPLATE).orElseThrow().setHidden(true);
+                characterModel.getBone(LEFT_SLEEVE).ifPresent(bone -> bone.setHidden(true));
+                characterModel.getBone(RIGHT_SLEEVE).ifPresent(bone -> bone.setHidden(true));
+                characterModel.getBone(CHESTPLATE).ifPresent(bone -> bone.setHidden(true));
             } else {
-                characterModel.getBone(LEFT_SLEEVE).orElseThrow().setHidden(false);
-                characterModel.getBone(RIGHT_SLEEVE).orElseThrow().setHidden(false);
-                characterModel.getBone(CHESTPLATE).orElseThrow().setHidden(false);
+                characterModel.getBone(LEFT_SLEEVE).ifPresent(bone -> bone.setHidden(false));
+                characterModel.getBone(RIGHT_SLEEVE).ifPresent(bone -> bone.setHidden(false));
+                characterModel.getBone(CHESTPLATE).ifPresent(bone -> bone.setHidden(false));
             }
             characterModel.getBone(HELMET).orElseThrow().setHidden(entity.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof GeoArmorItem geoArmorItem && geoArmorItem.isSkintight());
             if (entity.getItemBySlot(EquipmentSlot.FEET).getItem() instanceof GeoArmorItem iGeoArmorBoots && iGeoArmorBoots.isSkintight() || entity.getItemBySlot(EquipmentSlot.LEGS).getItem() instanceof GeoArmorItem iGeoArmorLeggings && iGeoArmorLeggings.isSkintight()) {
-                characterModel.getBone(RIGHT_ARMOR_LEG).orElseThrow().setHidden(true);
-                characterModel.getBone(LEFT_ARMOR_LEG).orElseThrow().setHidden(true);
+                characterModel.getBone(RIGHT_ARMOR_LEG).ifPresent(bone -> bone.setHidden(true));
+                characterModel.getBone(LEFT_ARMOR_LEG).ifPresent(bone -> bone.setHidden(true));
             } else {
-                characterModel.getBone(RIGHT_ARMOR_LEG).orElseThrow().setHidden(false);
-                characterModel.getBone(LEFT_ARMOR_LEG).orElseThrow().setHidden(false);
+                characterModel.getBone(RIGHT_ARMOR_LEG).ifPresent(bone -> bone.setHidden(false));
+                characterModel.getBone(LEFT_ARMOR_LEG).ifPresent(bone -> bone.setHidden(false));
             }
         }
     }

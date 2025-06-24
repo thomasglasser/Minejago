@@ -114,7 +114,7 @@ public class MinejagoDataGenerators {
         new MinejagoTrimDatagenSuite(event, enUs);
 
         //Server
-        generator.addProvider(includeServer, new ModRegistryDumpReport(packOutput, Minejago.MOD_ID, lookupProvider));
+        generator.addProvider(includeServer, new ModRegistryDumpReport(packOutput, lookupProvider, Minejago.MOD_ID));
         BlockTagsProvider blockTags = generator.addProvider(includeServer, new MinejagoBlockTagsProvider(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(includeServer, new MinejagoItemTagsProvider(packOutput, lookupProvider, blockTags.contentsGetter(), existingFileHelper));
         generator.addProvider(includeServer, new MinejagoEntityTypeTagsProvider(packOutput, lookupProvider, existingFileHelper));

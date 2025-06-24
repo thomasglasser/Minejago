@@ -49,7 +49,6 @@ import dev.thomasglasser.tommylib.api.data.lang.ExtendedEnUsLanguageProvider;
 import dev.thomasglasser.tommylib.api.registration.DeferredHolder;
 import dev.thomasglasser.tommylib.api.registration.DeferredItem;
 import dev.thomasglasser.tommylib.api.world.item.armor.ArmorSet;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -127,9 +126,9 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(Skulkin.Variant.KNIFE, "Knife");
         add(Skulkin.Variant.BONE, "Bone");
 
-        addArmorTrim(MinejagoItems.FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE.get(), "Four Weapons");
-        addArmorTrim(MinejagoItems.TERRAIN_ARMOR_TRIM_SMITHING_TEMPLATE.get(), "Terrain");
-        addArmorTrim(MinejagoItems.LOTUS_ARMOR_TRIM_SMITHING_TEMPLATE.get(), "Lotus");
+//        addArmorTrim(MinejagoItems.FOUR_WEAPONS_ARMOR_TRIM_SMITHING_TEMPLATE.get());
+//        addArmorTrim(MinejagoItems.TERRAIN_ARMOR_TRIM_SMITHING_TEMPLATE.get());
+//        addArmorTrim(MinejagoItems.LOTUS_ARMOR_TRIM_SMITHING_TEMPLATE.get());
 
         addPattern(MinejagoBannerPatterns.EDGE_LINES, "Edge Lines");
         addPattern(MinejagoBannerPatterns.FOUR_WEAPONS_LEFT, "Four Weapons Left");
@@ -159,17 +158,17 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(MinejagoMobEffects.FROZEN.get(), "Frozen");
 
         add(MinejagoKeyMappings.CATEGORY_SHADOW_FORM, "Shadow Form");
-        add(MinejagoKeyMappings.ACTIVATE_SPINJITZU.get(), "Activate Spinjitzu");
-        add(MinejagoKeyMappings.MEDITATE.get(), "Meditate");
-        add(MinejagoKeyMappings.ASCEND.get(), "Ascend");
-        add(MinejagoKeyMappings.DESCEND.get(), "Descend");
-        add(MinejagoKeyMappings.OPEN_SKILL_SCREEN.get(), "Open Skill Screen");
-        add(MinejagoKeyMappings.ENTER_SHADOW_FORM.get(), "Enter Shadow Form");
-        add(MinejagoKeyMappings.SWITCH_DIMENSION.get(), "Switch Dimension");
-        add(MinejagoKeyMappings.INCREASE_SCALE.get(), "Increase Scale");
-        add(MinejagoKeyMappings.DECREASE_SCALE.get(), "Decrease Scale");
-        add(MinejagoKeyMappings.SUMMON_CLONE.get(), "Summon Clone");
-        add(MinejagoKeyMappings.RECALL_CLONES.get(), "Recall Clones");
+        add(MinejagoKeyMappings.ACTIVATE_SPINJITZU, "Activate Spinjitzu");
+        add(MinejagoKeyMappings.MEDITATE, "Meditate");
+        add(MinejagoKeyMappings.ASCEND, "Ascend");
+        add(MinejagoKeyMappings.DESCEND, "Descend");
+        add(MinejagoKeyMappings.OPEN_SKILL_SCREEN, "Open Skill Screen");
+        add(MinejagoKeyMappings.ENTER_SHADOW_FORM, "Enter Shadow Form");
+        add(MinejagoKeyMappings.SWITCH_DIMENSION, "Switch Dimension");
+        add(MinejagoKeyMappings.INCREASE_SCALE, "Increase Scale");
+        add(MinejagoKeyMappings.DECREASE_SCALE, "Decrease Scale");
+        add(MinejagoKeyMappings.SUMMON_CLONE, "Summon Clone");
+        add(MinejagoKeyMappings.RECALL_CLONES, "Recall Clones");
 
         add(MinejagoCommandEvents.NOT_LIVING_ENTITY, "Target %s (%s) is not a LivingEntity");
 
@@ -212,13 +211,13 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         addPaintingVariant(MinejagoPaintingVariants.IT_TAKES_A_VILLAGE, "It Takes A Village", "waifu_png_pl");
         addPaintingVariant(MinejagoPaintingVariants.IT_TAKES_A_VILLAGE_WRECKED, "It Takes A Village (Wrecked)", "waifu_png_pl");
 
-        addSherd(MinejagoItems.ICE_CUBE_POTTERY_SHERD.get(), "Ice Cube");
-        addSherd(MinejagoItems.THUNDER_POTTERY_SHERD.get(), "Thunder");
-        addSherd(MinejagoItems.PEAKS_POTTERY_SHERD.get(), "Peaks");
-        addSherd(MinejagoItems.MASTER_POTTERY_SHERD.get(), "Master");
-        addSherd(MinejagoItems.YIN_YANG_POTTERY_SHERD.get(), "Yin Yang");
-        addSherd(MinejagoItems.DRAGONS_HEAD_POTTERY_SHERD.get(), "Dragon's Head");
-        addSherd(MinejagoItems.DRAGONS_TAIL_POTTERY_SHERD.get(), "Dragon's Tail");
+        addSherd(MinejagoItems.ICE_CUBE_POTTERY_SHERD);
+        addSherd(MinejagoItems.THUNDER_POTTERY_SHERD);
+        addSherd(MinejagoItems.PEAKS_POTTERY_SHERD);
+        addSherd(MinejagoItems.MASTER_POTTERY_SHERD);
+        addSherd(MinejagoItems.YIN_YANG_POTTERY_SHERD);
+        addSherd(MinejagoItems.DRAGONS_HEAD_POTTERY_SHERD);
+        addSherd(MinejagoItems.DRAGONS_TAIL_POTTERY_SHERD);
 
         add(MinejagoItems.MOD_NEEDED, "To get the full functionality of this item, please install the %s mod.");
 
@@ -228,7 +227,7 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(Wu.NO_ELEMENT_GIVEN_KEY, "You feel no new element rise from within. You are not an elemental master...");
         add(Wu.ELEMENT_GIVEN_KEY, "<%s> %s, Master of %s. %s");
 
-        add("gui.choose", "Choose");
+        add(ElementSelectionScreen.GUI_CHOOSE, "Choose");
         add(ElementSelectionScreen.TITLE, "Select Element");
 
         add("block.minejago.teapot.waila.potion", "Potion: %s");
@@ -268,7 +267,7 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(Skill.AGILITY, "Agility");
         add(Skill.STEALTH, "Stealth");
         add(Skill.DEXTERITY, "Dexterity");
-        add(Skill.TOOL_PROFICIENCY, "Tool Proficiency");
+        add(Skill.PROFICIENCY, "Proficiency");
 
         add(SkillScreen.TITLE, "Skills");
     }
@@ -299,7 +298,7 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
     }
 
     protected void add(Skill key, String name) {
-        add(key.toLanguageKey(), name);
+        add(key.displayName(), name);
     }
 
     protected void addItems() {
@@ -338,23 +337,13 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         // Armors
         MinejagoArmors.SKELETAL_CHESTPLATE_SET.getAllAsItems().forEach(item -> add(item, "Skeletal Chestplate"));
         add(MinejagoArmors.SAMUKAIS_CHESTPLATE.get(), "Samukai's Chestplate");
-        addGi(MinejagoArmors.NORMAL_GI_SETS);
-        addGi(MinejagoArmors.ELEMENTAL_GI_SETS);
-        addGi(MinejagoArmors.SPECIAL_ELEMENTAL_GI_SETS);
+//        addGi(MinejagoArmors.NORMAL_GI_SETS);
+//        addGi(MinejagoArmors.ELEMENTAL_GI_SETS);
+//        addGi(MinejagoArmors.SPECIAL_ELEMENTAL_GI_SETS);
     }
 
-    protected void addGi(List<ArmorSet> armorSets) {
-        armorSets.forEach(set -> set.getAllAsItems().forEach(item -> {
-            String nameForSlot = switch (set.getForItem(item)) {
-                case FEET -> "Boots";
-                case LEGS -> "Pants";
-                case CHEST -> "Jacket";
-                case HEAD -> "Hood";
-                default -> null;
-            };
-
-            add(item, set.getDisplayName() + " " + nameForSlot);
-        }));
+    protected void addGi(ArmorSet set, String displayName) {
+        add(set, displayName, "Hood", "Jacket", "Pants", "Boots");
     }
 
     protected void addBlocks() {
@@ -386,25 +375,25 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         add(MinejagoEntityTypes.EARTH_BLAST.get(), "Earth Blast");
 
         // Characters
-        add(MinejagoEntityTypes.WU.get(), "Wu", MinejagoItems.WU_SPAWN_EGG.get());
-        add(MinejagoEntityTypes.KAI.get(), "Kai", MinejagoItems.KAI_SPAWN_EGG.get());
-        add(MinejagoEntityTypes.NYA.get(), "Nya", MinejagoItems.NYA_SPAWN_EGG.get());
-        add(MinejagoEntityTypes.JAY.get(), "Jay", MinejagoItems.JAY_SPAWN_EGG.get());
-        add(MinejagoEntityTypes.COLE.get(), "Cole", MinejagoItems.COLE_SPAWN_EGG.get());
-        add(MinejagoEntityTypes.ZANE.get(), "Zane", MinejagoItems.ZANE_SPAWN_EGG.get());
-
-        // Skulkin
-        add(MinejagoEntityTypes.SKULKIN.get(), "Skulkin", MinejagoItems.SKULKIN_SPAWN_EGG.get());
-        add(MinejagoEntityTypes.KRUNCHA.get(), "Kruncha", MinejagoItems.KRUNCHA_SPAWN_EGG.get());
-        add(MinejagoEntityTypes.NUCKAL.get(), "Nuckal", MinejagoItems.NUCKAL_SPAWN_EGG.get());
-        add(MinejagoEntityTypes.SAMUKAI.get(), "Samukai", MinejagoItems.SAMUKAI_SPAWN_EGG.get());
-        add(MinejagoEntityTypes.SKULKIN_HORSE.get(), "Skulkin Horse", MinejagoItems.SKULKIN_HORSE_SPAWN_EGG.get());
-        add(MinejagoEntityTypes.SKULL_MOTORBIKE.get(), "Skull Motorbike", MinejagoItems.SKULL_MOTORBIKE_SPAWN_EGG.get());
-        add(MinejagoEntityTypes.SKULL_TRUCK.get(), "Skull Truck", MinejagoItems.SKULL_TRUCK_SPAWN_EGG.get());
-        add(MinejagoEntityTypes.SPYKOR.get(), "Spykor", MinejagoItems.SPYKOR_SPAWN_EGG.get());
-
-        // Dragons
-        add(MinejagoEntityTypes.EARTH_DRAGON.get(), "Earth Dragon", MinejagoItems.EARTH_DRAGON_SPAWN_EGG.get());
+//        add(MinejagoEntityTypes.WU.get(), "Wu", MinejagoItems.WU_SPAWN_EGG.get());
+//        add(MinejagoEntityTypes.KAI.get(), "Kai", MinejagoItems.KAI_SPAWN_EGG.get());
+//        add(MinejagoEntityTypes.NYA.get(), "Nya", MinejagoItems.NYA_SPAWN_EGG.get());
+//        add(MinejagoEntityTypes.JAY.get(), "Jay", MinejagoItems.JAY_SPAWN_EGG.get());
+//        add(MinejagoEntityTypes.COLE.get(), "Cole", MinejagoItems.COLE_SPAWN_EGG.get());
+//        add(MinejagoEntityTypes.ZANE.get(), "Zane", MinejagoItems.ZANE_SPAWN_EGG.get());
+//
+//        // Skulkin
+//        add(MinejagoEntityTypes.SKULKIN.get(), "Skulkin", MinejagoItems.SKULKIN_SPAWN_EGG.get());
+//        add(MinejagoEntityTypes.KRUNCHA.get(), "Kruncha", MinejagoItems.KRUNCHA_SPAWN_EGG.get());
+//        add(MinejagoEntityTypes.NUCKAL.get(), "Nuckal", MinejagoItems.NUCKAL_SPAWN_EGG.get());
+//        add(MinejagoEntityTypes.SAMUKAI.get(), "Samukai", MinejagoItems.SAMUKAI_SPAWN_EGG.get());
+//        add(MinejagoEntityTypes.SKULKIN_HORSE.get(), "Skulkin Horse", MinejagoItems.SKULKIN_HORSE_SPAWN_EGG.get());
+//        add(MinejagoEntityTypes.SKULL_MOTORBIKE.get(), "Skull Motorbike", MinejagoItems.SKULL_MOTORBIKE_SPAWN_EGG.get());
+//        add(MinejagoEntityTypes.SKULL_TRUCK.get(), "Skull Truck", MinejagoItems.SKULL_TRUCK_SPAWN_EGG.get());
+//        add(MinejagoEntityTypes.SPYKOR.get(), "Spykor", MinejagoItems.SPYKOR_SPAWN_EGG.get());
+//
+//        // Dragons
+//        add(MinejagoEntityTypes.EARTH_DRAGON.get(), "Earth Dragon", MinejagoItems.EARTH_DRAGON_SPAWN_EGG.get());
 
         // Spinjitzu Course Elements
         addSpinjitzuCourseElement(MinejagoEntityTypes.CENTER_SPINJITZU_COURSE_ELEMENT, MinejagoItems.CENTER_SPINJITZU_COURSE_ELEMENT, "Center");
@@ -541,9 +530,9 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
         addConfig(MinejagoServerConfig.get().enableSkulkinRaids, "Enable Skulkin Raids", "Enable Skulkin Raids on Four Weapons structures");
 
         addConfigSection(MinejagoServerConfig.ELEMENTS, "Elements", "Settings for elements");
-        addConfig(MinejagoServerConfig.get().allowChoose, "Allow Choosing Element", "Allow players to choose the element given to them by interacting with Master Wu");
+        addConfig(MinejagoServerConfig.get().allowChoose, "Allow Choosing Element", "Allow players to choose the element they receive by interacting with Master Wu");
         addConfig(MinejagoServerConfig.get().allowChange, "Allow Changing Element", "Allow players to get a new element by interacting with Master Wu again");
-        addConfig(MinejagoServerConfig.get().drainPool, "Drain Element Pool", "Remove an element from the option list once given and reset when all elements have been given");
+        addConfig(MinejagoServerConfig.get().drainPool, "Drain Element Pool", "Remove an element from the option list once received and reset when all elements have been received");
         addConfig(MinejagoServerConfig.get().enableNoElement, "Enable No Element", "Enable players to receive no element from Master Wu");
 
         addConfigSection(MinejagoServerConfig.SPINJITZU, "Spinjitzu", "Settings for Spinjitzu");
@@ -554,14 +543,10 @@ public class MinejagoEnUsLanguageProvider extends ExtendedEnUsLanguageProvider {
 
         // Client
         addConfigSection(MinejagoClientConfig.COSMETICS, "Player Cosmetics", "Settings for player cosmetics");
-        addConfig(MinejagoClientConfig.get().displaySnapshotTesterCosmetic, "Display Snapshot Tester Cosmetic", "Display your preferred Snapshot Tester Cosmetic (if eligible)");
-        addConfig(MinejagoClientConfig.get().snapshotTesterCosmeticChoice, "Snapshot Tester Cosmetic Choice", "The Snapshot Tester Cosmetic to be displayed (if eligible)");
+        addConfig(MinejagoClientConfig.get().displayBetaTesterCosmetic, "Display Beta Tester Cosmetic", "Display your preferred Beta Tester Cosmetic (if eligible)");
+        addConfig(MinejagoClientConfig.get().betaTesterCosmeticChoice, "Beta Tester Cosmetic Choice", "The Beta Tester Cosmetic to be displayed (if eligible)");
         addConfig(MinejagoClientConfig.get().displayDevTeamCosmetic, "Display Dev Team Cosmetic", "Display the Dev Team cosmetic (if eligible)");
         addConfig(MinejagoClientConfig.get().displayLegacyDevTeamCosmetic, "Display Legacy Dev Team Cosmetic", "Display the Legacy Dev Team cosmetic (if eligible)");
-
-        addConfigSection(MinejagoClientConfig.FOCUS_BAR, "Focus Bar", "Settings for focus bar");
-        addConfig(MinejagoClientConfig.get().xOffset, "Horizontal Offset", "Horizontal pixels off from the normal position");
-        addConfig(MinejagoClientConfig.get().yOffset, "Vertical Offset", "Vertical pixels off from the normal position");
     }
 
     protected void addElement(ResourceKey<Element> key, String name, String tagline, String lore, String description) {

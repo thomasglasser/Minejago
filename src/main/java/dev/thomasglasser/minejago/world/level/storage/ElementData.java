@@ -13,26 +13,21 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 
-public record ElementData(ResourceKey<Element> element, boolean given) {
+public record ElementData(ResourceKey<Element> element, boolean received) {
     public static final Codec<ElementData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ResourceKey.codec(MinejagoRegistries.ELEMENT).fieldOf("element").forGetter(ElementData::element),
-            Codec.BOOL.fieldOf("given").forGetter(ElementData::given))
+            Codec.BOOL.fieldOf("received").forGetter(ElementData::received))
             .apply(instance, ElementData::new));
     public static final StreamCodec<ByteBuf, ElementData> STREAM_CODEC = StreamCodec.composite(
             ResourceKey.streamCodec(MinejagoRegistries.ELEMENT), ElementData::element,
-            ByteBufCodecs.BOOL, ElementData::given,
+            ByteBufCodecs.BOOL, ElementData::received,
             ElementData::new);
 
     public ElementData() {
         this(Elements.NONE, false);
-    }
-
-    public ElementData(ResourceLocation location, boolean given) {
-        this(ResourceKey.create(MinejagoRegistries.ELEMENT, location), given);
     }
 
     @Override
@@ -42,8 +37,8 @@ public record ElementData(ResourceKey<Element> element, boolean given) {
 
     public void save(LivingEntity entity, boolean syncToClient) {
         entity.setData(MinejagoAttachmentTypes.ELEMENT, this);
-        if (element != Elements.NONE && entity instanceof ServerPlayer serverPlayer)
-            MinejagoCriteriaTriggers.GOT_ELEMENT.get().trigger(serverPlayer, this.element());
+        if (element != Elements.NONE && received && entity instanceof ServerPlayer serverPlayer)
+            MinejagoCriteriaTriggers.RECEIVED_ELEMENT.get().trigger(serverPlayer, this.element());
         if (syncToClient) TommyLibServices.NETWORK.sendToAllClients(new ClientboundSyncElementDataPayload(entity.getId(), this), entity.getServer());
     }
 }

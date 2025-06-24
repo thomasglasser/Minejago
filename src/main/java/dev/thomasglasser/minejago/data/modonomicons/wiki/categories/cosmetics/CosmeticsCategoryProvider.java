@@ -16,7 +16,7 @@ public class CosmeticsCategoryProvider extends IndexModeCategoryProvider {
 
     @Override
     protected void generateEntries() {
-        add(new SnapshotEntry(this).generate());
+        add(new BetaEntry(this).generate());
         add(new DevEntry(this).generate());
     }
 

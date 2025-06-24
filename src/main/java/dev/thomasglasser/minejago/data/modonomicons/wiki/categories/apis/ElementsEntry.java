@@ -24,7 +24,7 @@ public class ElementsEntry extends IndexModeEntryProvider {
 
         add(context().pageTitle(), "Generator");
         add(context().pageText(), """
-                A generator for these elements is available online [here](https://snapshot-jsons.thomasglasser.dev/minejago/element/).
+                A generator for these elements is available online [here](https://beta-jsons.thomasglasser.dev/minejago/element/).
                 """);
 
         page("guide", () -> BookTextPageModel.create()
@@ -33,7 +33,7 @@ public class ElementsEntry extends IndexModeEntryProvider {
 
         add(context().pageTitle(), "Guide");
         add(context().pageText(), """
-                A guide for creating elements can be found [here](https://snapshot-jsons.thomasglasser.dev/guides/element/).
+                A guide for creating elements can be found [here](https://beta-jsons.thomasglasser.dev/guides/element/).
                 """);
     }
 
@@ -52,7 +52,7 @@ public class ElementsEntry extends IndexModeEntryProvider {
 
     @Override
     protected BookIconModel entryIcon() {
-        ItemStack icon = MinejagoArmors.TRAINEE_GI_SET.CHEST.toStack();
+        ItemStack icon = MinejagoArmors.TRAINEE_GI_SET.chest().toStack();
         icon.set(MinejagoDataComponents.ELEMENT, Elements.FIRE);
         return BookIconModel.create(icon);
     }

@@ -144,7 +144,7 @@ public class MinejagoItemModelProvider extends ExtendedItemModelProvider {
         MinejagoArmors.STANDALONE_ELEMENTAL_GI.forEach(item -> withEntityModel(item).guiLight(BlockModel.GuiLight.FRONT));
         MinejagoArmors.STANDALONE_SPECIAL_ELEMENTAL_GI.forEach(item -> withEntityModel(item).guiLight(BlockModel.GuiLight.FRONT));
 
-        withEntityModelInHand(MinejagoItems.BAMBOO_STAFF, withEntityModel(MinejagoItems.BAMBOO_STAFF)
+        withSeparateInventoryModel(MinejagoItems.BAMBOO_STAFF, withEntityModel(MinejagoItems.BAMBOO_STAFF)
                 .texture("particle", itemLoc(MinejagoItems.BAMBOO_STAFF))
                 .transforms()
                 .transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).translation(8, 5, 10.5f).end()
@@ -152,7 +152,7 @@ public class MinejagoItemModelProvider extends ExtendedItemModelProvider {
                 .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0, -90, 25).translation(-3, 8, 1).end()
                 .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(0, 90, -25).translation(13, 8, 1).end()
                 .end(), basicInventoryItem(MinejagoItems.BAMBOO_STAFF));
-        withEntityModelInHand(MinejagoItems.SCYTHE_OF_QUAKES, withEntityModel(MinejagoItems.SCYTHE_OF_QUAKES)
+        withSeparateInventoryModel(MinejagoItems.SCYTHE_OF_QUAKES, withEntityModel(MinejagoItems.SCYTHE_OF_QUAKES)
                 .texture("particle", itemLoc(MinejagoItems.SCYTHE_OF_QUAKES))
                 .transforms()
                 .transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(0, -90, 0).translation(-8, 25, 10).end()
@@ -160,7 +160,7 @@ public class MinejagoItemModelProvider extends ExtendedItemModelProvider {
                 .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0, -90, 25).translation(-3, 25, 1).end()
                 .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(0, 90, -25).translation(13, 25, 1).end()
                 .end(), basicInventoryItem(MinejagoItems.SCYTHE_OF_QUAKES));
-        withEntityModelInHand(MinejagoItems.SHURIKEN_OF_ICE, withEntityModel(MinejagoItems.SHURIKEN_OF_ICE)
+        withSeparateInventoryModel(MinejagoItems.SHURIKEN_OF_ICE, withEntityModel(MinejagoItems.SHURIKEN_OF_ICE)
                 .texture("particle", itemLoc(MinejagoItems.SHURIKEN_OF_ICE))
                 .transforms()
                 .transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(30, -90, 0).translation(-8, 19, 20).end()

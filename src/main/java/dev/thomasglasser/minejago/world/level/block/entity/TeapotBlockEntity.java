@@ -6,8 +6,6 @@ import dev.thomasglasser.minejago.world.item.MinejagoItems;
 import dev.thomasglasser.minejago.world.item.crafting.MinejagoRecipeTypes;
 import dev.thomasglasser.minejago.world.item.crafting.TeapotBrewingRecipe;
 import dev.thomasglasser.minejago.world.level.block.TeapotBlock;
-import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
-import dev.thomasglasser.tommylib.api.world.level.block.entity.ItemHolder;
 import java.util.List;
 import java.util.Optional;
 import net.minecraft.core.BlockPos;
@@ -41,8 +39,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.items.IItemHandler;
 
-public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameable {
+public class TeapotBlockEntity extends BlockEntity implements IItemHandler, Nameable {
     private static final int MAX_CUPS = 6;
 
     private ItemStack item = ItemStack.EMPTY;
@@ -253,12 +252,6 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    @Override
-    public void handleTag(CompoundTag tag) {
-        TommyLibServices.BLOCK_ENTITY.handleUpdateTag(this, tag, level.registryAccess());
-        loadAdditional(tag, level.registryAccess());
-    }
-
     protected static void setChanged(Level pLevel, BlockPos pPos, BlockState pState) {
         BlockEntity.setChanged(pLevel, pPos, pState);
         pLevel.sendBlockUpdated(pPos, pLevel.getBlockState(pPos), pState, Block.UPDATE_ALL);
@@ -274,17 +267,17 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
     }
 
     @Override
-    public int getSlotCount() {
+    public int getSlots() {
         return 1;
     }
 
     @Override
-    public ItemStack getInSlot(int slot) {
+    public ItemStack getStackInSlot(int slot) {
         return slot == 0 ? item : ItemStack.EMPTY;
     }
 
     @Override
-    public ItemStack insert(int slot, ItemStack stack) {
+    public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
         if (slot == 0) {
             ItemStack newStack = stack.copy();
             newStack.setCount(1);
@@ -297,18 +290,18 @@ public class TeapotBlockEntity extends BlockEntity implements ItemHolder, Nameab
     }
 
     @Override
-    public ItemStack extract(int slot, int amount) {
-        return slot == 0 && !item.isEmpty() && amount > 0 ? item.split(amount) : ItemStack.EMPTY;
+    public ItemStack extractItem(int slot, int amount, boolean simulate) {
+        return slot == 0 && !item.isEmpty() && amount > 0 ? (simulate ? item.copy().split(amount) : item.split(amount)) : ItemStack.EMPTY;
     }
 
     @Override
-    public int getSlotMax(int slot) {
+    public int getSlotLimit(int slot) {
         return 1;
     }
 
     @Override
-    public boolean isValid(int slot, ItemStack stack) {
-        return false;
+    public boolean isItemValid(int slot, ItemStack stack) {
+        return true;
     }
 
     public boolean hasRecipe(ItemStack item, Level level) {

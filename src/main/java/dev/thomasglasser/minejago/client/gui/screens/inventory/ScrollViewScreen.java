@@ -14,10 +14,6 @@ public class ScrollViewScreen extends BookViewScreen {
         super(bookAccess);
     }
 
-    public ScrollViewScreen() {
-        this(EMPTY_ACCESS);
-    }
-
     @Override
     public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         this.renderTransparentBackground(guiGraphics);

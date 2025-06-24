@@ -22,8 +22,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 
 public class SpinjitzuModel<T extends Entity> extends EntityModel<T> {
-    public static final ResourceLocation BASE_TEXTURE = Minejago.modLoc("textures/entity/player/spinjitzu.png");
-    public static final ResourceLocation SWIRL_TEXTURE = Minejago.modLoc("textures/entity/player/spinjitzu_swirl.png");
+    public static final ResourceLocation BASE_TEXTURE = Minejago.modLoc("textures/entity/spinjitzu.png");
+    public static final ResourceLocation SWIRL_TEXTURE = Minejago.modLoc("textures/entity/spinjitzu_swirl.png");
 
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Minejago.modLoc("spinjitzu"), "main");
 
@@ -134,7 +134,7 @@ public class SpinjitzuModel<T extends Entity> extends EntityModel<T> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int i, int i1, int i2) {
-        body.render(poseStack, vertexConsumer, i, i1, i2);
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
+        body.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
     }
 }

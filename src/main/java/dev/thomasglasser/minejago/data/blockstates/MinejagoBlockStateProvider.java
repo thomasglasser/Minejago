@@ -11,6 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import net.minecraft.core.Direction;
@@ -27,15 +28,14 @@ import net.minecraft.data.models.model.ModelTemplates;
 import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.client.model.generators.ModelProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import org.apache.commons.lang3.function.TriFunction;
 
 public class MinejagoBlockStateProvider extends ExtendedBlockStateProvider {
     public MinejagoBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
@@ -49,7 +49,7 @@ public class MinejagoBlockStateProvider extends ExtendedBlockStateProvider {
                 .modelFile(blockState.getValue(TeapotBlock.CUPS) > 3 ? models().withExistingParent("teapot_filled", modBlockLoc("teapot_filled_base")) : models().withExistingParent("teapot", modBlockLoc("teapot_base")))
                 .build());
         MinejagoBlocks.TEAPOTS.forEach((dyeColor, blockBlockRegistryObject) -> {
-            if (models().existingFileHelper.exists(modBlockLoc(dyeColor.getName() + "_teapot"), TEXTURE)) {
+            if (models().existingFileHelper.exists(modBlockLoc(dyeColor.getName() + "_teapot"), ModelProvider.TEXTURE)) {
                 getVariantBuilder(blockBlockRegistryObject.get()).forAllStates(blockState -> ConfiguredModel.builder()
                         .rotationY((int) (blockState.getValue(TeapotBlock.FACING).getOpposite()).toYRot())
                         .modelFile(blockState.getValue(TeapotBlock.CUPS) > 3 ? models().withExistingParent(dyeColor.getName() + "_teapot_filled", modBlockLoc("teapot_filled_base")).texture("pot", modBlockLoc(dyeColor.getName() + "_teapot")).texture("particle", modItemLoc(dyeColor.getName() + "_teapot")) : models().withExistingParent(dyeColor.getName() + "_teapot", modBlockLoc("teapot_base")).texture("pot", modBlockLoc(dyeColor.getName() + "_teapot")).texture("particle", modItemLoc(dyeColor.getName() + "_teapot")))
@@ -101,13 +101,13 @@ public class MinejagoBlockStateProvider extends ExtendedBlockStateProvider {
     }
 
     @Override
-    protected TriFunction<Consumer<BlockStateGenerator>, BiConsumer<ResourceLocation, Supplier<JsonElement>>, Consumer<Item>, ? extends ExtendedBlockModelGenerators> getBlockModelGenerators() {
+    protected BiFunction<Consumer<BlockStateGenerator>, BiConsumer<ResourceLocation, Supplier<JsonElement>>, ? extends ExtendedBlockModelGenerators> getBlockModelGeneratorsProvider() {
         return MinejagoBlockModelGenerators::new;
     }
 
     private class MinejagoBlockModelGenerators extends ExtendedBlockModelGenerators {
-        public MinejagoBlockModelGenerators(Consumer<BlockStateGenerator> pBlockStateOutput, BiConsumer<ResourceLocation, Supplier<JsonElement>> pModelOutput, Consumer<Item> pSkippedAutoModelsOutput) {
-            super(pBlockStateOutput, pModelOutput, pSkippedAutoModelsOutput);
+        public MinejagoBlockModelGenerators(Consumer<BlockStateGenerator> pBlockStateOutput, BiConsumer<ResourceLocation, Supplier<JsonElement>> pModelOutput) {
+            super(pBlockStateOutput, pModelOutput);
         }
 
         private void createChiseledShelf(Block block) {

@@ -3,7 +3,6 @@ package dev.thomasglasser.minejago.world.entity.skulkin.raid;
 import dev.thomasglasser.minejago.core.component.MinejagoDataComponents;
 import dev.thomasglasser.minejago.world.item.MinejagoItemUtils;
 import dev.thomasglasser.minejago.world.level.MinejagoLevelUtils;
-import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -49,9 +48,9 @@ public class FourWeaponsSkulkinRaid extends AbstractSkulkinRaid {
     public @Nullable ItemStack extractRaidItem(SkulkinRaider raider) {
         Painting fw = MinejagoLevelUtils.getGoldenWeaponsMapHolderNearby(raider, 1);
         if (fw != null) {
-            CompoundTag persistentData = TommyLibServices.ENTITY.getPersistentData(fw);
-            persistentData.putBoolean("MapTaken", true);
-            TommyLibServices.ENTITY.setPersistentData(fw, persistentData, true);
+//            CompoundTag persistentData = TommyLibServices.ENTITY.getPersistentData(fw);
+//            persistentData.putBoolean("MapTaken", true);
+//            TommyLibServices.ENTITY.setPersistentData(fw, persistentData, true);
             return MinejagoItemUtils.createFourWeaponsMaps(this.getLevel(), raider.blockPosition());
         }
         return null;

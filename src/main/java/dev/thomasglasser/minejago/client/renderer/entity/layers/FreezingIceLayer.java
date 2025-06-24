@@ -3,8 +3,6 @@ package dev.thomasglasser.minejago.client.renderer.entity.layers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.thomasglasser.minejago.client.model.FreezingIceModel;
-import dev.thomasglasser.minejago.world.effect.FrozenMobEffect;
-import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -29,7 +27,8 @@ public class FreezingIceLayer<E extends LivingEntity> extends RenderLayer<E, Ent
             int width = Mth.ceil(entity.getBbWidth());
             int height = Mth.ceil(entity.getBbHeight());
             VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.entityTranslucentCull(FreezingIceModel.TEXTURE));
-            if (TommyLibServices.ENTITY.getPersistentData(entity).getBoolean(FrozenMobEffect.TAG_FROZEN)) {
+            if (/*TommyLibServices.ENTITY.getPersistentData(entity).getBoolean(FrozenMobEffect.TAG_FROZEN)*/false) {
+                // TODO: Switch to scaling the one cube
                 poseStack.translate(-width, 0, -width);
                 renderColumn(poseStack, vertexConsumer, packedLight, height);
                 for (float z = 0; z < width * 2 + 1; z++) {
